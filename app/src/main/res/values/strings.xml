@@ -155,6 +155,7 @@
     <string name="label_selecionar_times_aleatoriamente">_Selecionar_\ntimes aleatoriamente</string>
     <string name="label_selecionar_time_aleatoriamente">_Selecionar_\ntime aleatoriamente</string>
     <string name="label_escolha_time_coracao">_Escolha_\no time do coração</string>
+    <string name="label_escolha_trevos">_Escolher_\nos Trevos</string>
     <string name="label_escolha_time_seu_coracao">Escolha o time do seu coração</string>
 
     <string name="label_concurso">Concurso</string>
@@ -164,6 +165,7 @@
     <string name="label_encerramento">Encerramento</string>
     <string name="label_regras_jogo">Regras do jogo</string>
     <string name="label_mega_sena">mega-sena</string>
+    <string name="label_mais_milionaria">+Milionaria</string>
     <string name="label_lotofacil">lotofácil</string>
     <string name="label_quina">quina</string>
     <string name="label_dupla_sena">dupla sena</string>
@@ -342,6 +344,7 @@
 
     <!-- DIA SORTE -->
     <string name="dia_sorte_escolha_dia">Escolha os _n\u00fameros_</string>
+    <string name="escolha_de_seis_a_doze_numeros">Escolha de 6 a 12 números</string>
     <string name="dia_sorte_escolha_mes">Escolha o _mês_ da sorte</string>
     <string name="label_mes_surpresa">M\u00eas surpresa</string>
     <string name="label_escolher_outro_mes">Escolher outro m\u00eas</string>
@@ -908,13 +911,14 @@
     <string name="underline_lotogol_underline">_lotogol_</string>
     <string name="underline_dia_de_Sorte_underline">_dia de sorte_</string>
     <string name="underline_super_sete_underline">_super sete_</string>
+    <string name="underline_mais_milionaria_underline">_+Milionária_</string>
     <string name="extra_qtd_dezenas_possiveis_selecionado">qtdDezenasPossiveisSelecionado</string>
     <string name="extra_numero_concurso_atual">numeroConcursoAtual</string>
     <string name="extra_data_sorteio_atual">dataSorteioAtual</string>
     <string name="extra_type_game_color_light">typeGameColorLight</string>
     <string name="extra_type_game_color_Dark">typeGameColorDark</string>
     <string name="evento_entrou_selecao_prognosticos">ENTROU_SELECAO_PROGNOSTICOS</string>
-    <string name="quant_de_numeros">Quant. de Números</string>
+    <string name="quant_de_numeros">Quant. de números</string>
     <string name="espaco_numeros">&#160;números</string>
     <string name="evento_entrou_popup_teimosinha">ENTROU_POPUP_TEIMOSINHA</string>
     <string name="teimosinhas_maiusculo">Teimosinhas</string>
@@ -930,6 +934,7 @@
     <string name="name">name</string>
     <string name="especial_maiusculo">ESPECIAL</string>
     <string name="percent_zero_dois_d">%02d</string>
+    <string name="percent_d_traco">%d -&#160;</string>
     <string name="percent_zero_dois_d_traco">%02d -&#160;</string>
     <string name="barra_n_time_do_coracao_dois_pontos_espaco">\nTime do coração:&#160;</string>
     <string name="barra_n_mes_da_sorte_dois_pontos">\nMês da sorte:&#160;</string>
@@ -945,7 +950,7 @@
     <string name="percent_d">%d</string>
     <string name="barra">/</string>
     <string name="x_x">XX</string>
-    <string name="x_x_traco">XX -</string>
+    <string name="x_x_traco">XX -&#160;</string>
     <string name="chave_modalidade_chave">{modalidade}</string>
     <string name="ambos">Ambos</string>
     <string name="carrinho_favorito_titulo">Carrinho Favorito</string>
@@ -1024,6 +1029,21 @@
     <!-- App Center -->
     <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
     <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
+
+    <!-- Trevos -->
+    <string name="trevosTitulo">Trevos</string>
+    <string name="trevosInfo">Escolha a quantidade de trevos</string>
+    <string name="valores_para_apostas_com_2_trevos">* Valores para apostas com 2 trevos</string>
+    <string name="voce_escolheu_x_numeros">Você escolheu _x_ números</string>
+    <string name="subtitulo_trevos">Agora escolha de 2 a 6 trevos \npara marcar nesta aposta</string>
+    <string name="trevos">trevos</string>
+    <string name="para_aposta_com_x_numeros">Para a aposta com _x_ números</string>
+    <string name="quant_de_trevos">Quant. de trevos</string>
+    <string name="trevos_por"> trevos por </string>
+    <string name="completar_trevos_aleatoriamente">_Completar_\n Trevos aleatoriamente</string>
+    <string name="divisor_paginacao">|</string>
+    <string name="trevos_dois_pontos">"Trevos: "</string>
+    <string name="underline_trevos_underline">_trevos_</string>
 
 
 </resources>

@@ -34,6 +34,7 @@ import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLoteca;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLotogol;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
 
 /**
  * Created by joafilho on 06/02/2018.
@@ -226,9 +227,16 @@ public class DBLoteriasCrud {
                     }
                 }
 
+                String trevosSelecionados = "";
+                if (aposta.getTrevosSelecionados() != null){
+                    trevosSelecionados = new Gson()
+                            .toJson(AppUtils.converteListaInteiros((List<Integer>) aposta.getTrevosSelecionados()));
+                }
+
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_IDENTIFICADOR, aposta.getId());
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_MODALIDADE, aposta.getModalidade().fromString(aposta.getModalidade()));
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_NUMEROS_SELECIONADOS, numerosSelecionados);
+                values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TREVOS_SELECIONADOS, trevosSelecionados);
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VALOR, aposta.getValor().doubleValue());
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_CONCURSO_ALVO, aposta.getConcursoAlvo());
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_TEIMOSINHAS, aposta.getQuantidadeTeimosinhas());
@@ -242,6 +250,7 @@ public class DBLoteriasCrud {
                 //values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID, this.insertLotericaDTO(aposta.getLoterica()));
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO, aposta.getVinculoEspelho());
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS, aposta.getQuantidadeNumeros());
+                values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_TREVOS, aposta.getQuantidadeTrevos());
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA, aposta.getSurpresinha());
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA, aposta.getQuantidadeSurpresinhas());
                 values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO, this.insertParametroEquipe(aposta.getTimeDoCoracao()));
@@ -286,7 +295,6 @@ public class DBLoteriasCrud {
 
         try {
             this.db = dbLoteriasHelper.getReadableDatabase();
-
             String[] projection = {
                     TabelaIdentificaoDeUmaApostaDas8Modalidades._ID,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_IDENTIFICADOR,
@@ -294,6 +302,7 @@ public class DBLoteriasCrud {
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_VALOR,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_DESCRICAO,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_NUMEROS_SELECIONADOS,
+                    TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TREVOS_SELECIONADOS,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_VALOR,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_DESCRICAO,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VALOR,
@@ -311,12 +320,12 @@ public class DBLoteriasCrud {
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS,
+                    TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_TREVOS,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO,
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_MES_SORTE
             };
-
             cursor = db.query(
                     TabelaIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA,
                     projection,
@@ -356,6 +365,14 @@ public class DBLoteriasCrud {
                     }
                 }
 
+                String trevosSelecionadosString = cursor.getString(cursor.getColumnIndexOrThrow(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TREVOS_SELECIONADOS));
+                if (StringUtils.isNotEmpty(trevosSelecionadosString)) {
+                    TypeToken<List<Integer>> token = new TypeToken<List<Integer>>() {};
+                    List<Integer> listaInteiros = new Gson().fromJson(trevosSelecionadosString, token.getType());
+                    aposta.setTrevosSelecionados(listaInteiros);
+                }
+
+
                 DTOEnumInteger dtoEnumInteger = new DTOEnumInteger();
                 dtoEnumInteger.setValor(cursor.getInt(cursor.getColumnIndexOrThrow(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_VALOR)));
                 dtoEnumInteger.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_DESCRICAO)));
@@ -380,6 +397,7 @@ public class DBLoteriasCrud {
                //aposta.setLoterica(this.readLotericaDTO(cursor.getLong(cursor.getColumnIndexOrThrow(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID))));
                 aposta.setVinculoEspelho(cursor.getLong(cursor.getColumnIndexOrThrow(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO)));
                 aposta.setQuantidadeNumeros(cursor.getInt(cursor.getColumnIndexOrThrow(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS)));
+                aposta.setQuantidadeTrevos(cursor.getInt(cursor.getColumnIndexOrThrow(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_TREVOS)));
                 aposta.setSurpresinha(cursor.getInt(cursor.getColumnIndexOrThrow(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA)) == 1 ? Boolean.TRUE : Boolean.FALSE);
                 aposta.setQuantidadeSurpresinhas(cursor.getInt(cursor.getColumnIndexOrThrow(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA)));
                 aposta.setTimeDoCoracao(this.readParametroEquipe(cursor.getLong(cursor.getColumnIndexOrThrow(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO))));

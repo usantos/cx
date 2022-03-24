@@ -16,6 +16,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
@@ -57,6 +58,12 @@ public class ParametroJogoDTO implements Serializable {
     protected Boolean concursoCanalAberto = null;
     @SerializedName("meses")
     protected List<ParametroMesDeSorte> meses = null;
+    @SerializedName("trevos")
+    protected TrevosDTO trevos;
+
+    public boolean isTipoJogo(ModalidadeEnum tipo){
+        return getConcurso().getModalidade() == tipo;
+    }
 
     /**
      **/
@@ -241,6 +248,14 @@ public class ParametroJogoDTO implements Serializable {
         this.meses = meses;
     }
 
+    public TrevosDTO getTrevos() {
+        return trevos;
+    }
+
+    public void setTrevos(TrevosDTO trevos) {
+        this.trevos = trevos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -309,5 +324,35 @@ public class ParametroJogoDTO implements Serializable {
                 "  concursoCanalAberto: " + concursoCanalAberto + "\n" +
                 "}\n";
         return sb;
+    }
+
+    public ParametroValorApostaDTO getValorApostaBy(Integer numeroPrognostico, int numeroTrevos) {
+        if (concurso.getModalidade() != ModalidadeEnum.MAIS_MILIONARIA){
+            return null;
+        }
+
+        ParametroValorApostaDTO valor = null;
+        for (ParametroValorApostaDTO valorAposta : getValoresAposta()) {
+            if (valorAposta.getNumeroPrognosticos().equals(numeroPrognostico) && valorAposta.getNumeroTrevos().equals(numeroTrevos)){
+                valor = valorAposta;
+                break;
+            }
+        }
+        return valor;
+    }
+
+    public List<ParametroValorApostaDTO> getValoresTrevoByNumero(int prognostico) {
+        if (concurso.getModalidade() != ModalidadeEnum.MAIS_MILIONARIA){
+            return new ArrayList<>();
+        }
+
+        List<ParametroValorApostaDTO> valores = new ArrayList<>();
+
+        for (ParametroValorApostaDTO valorAposta : getValoresAposta()) {
+            if (valorAposta.getNumeroPrognosticos().equals(prognostico)){
+                valores.add(valorAposta);
+            }
+        }
+        return valores;
     }
 }

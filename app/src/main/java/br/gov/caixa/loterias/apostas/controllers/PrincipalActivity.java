@@ -61,6 +61,7 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.mock.MaisMilionariaMock;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -84,7 +85,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoS
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -93,18 +94,19 @@ import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.HomeAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.SideMenuExpandleAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
 public class PrincipalActivity extends AppCompatActivity
-        implements DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
-        DiscreteScrollView.OnItemChangedListener<HomeAdapter.ViewHolder> {
+        implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
+        DiscreteScrollView.OnItemChangedListener<HomeViewHolder> {
 
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
@@ -277,7 +279,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callWebservice() {
-        DialogUtils.show(PrincipalActivity.this);
+        AlertDialogUtils.show(PrincipalActivity.this);
 
         if(SessaoUsuarioUtil.precisaAtualizar()){
             final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
@@ -285,10 +287,11 @@ public class PrincipalActivity extends AppCompatActivity
             dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
                 @Override
                 public void onResponse(ParametrosSimulacaoResponse response) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
 
                     modalidadesParaListar = response.getPayload().getParametros();
+
                     if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
                         Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                         appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
@@ -302,7 +305,7 @@ public class PrincipalActivity extends AppCompatActivity
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
                     appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
@@ -312,9 +315,9 @@ public class PrincipalActivity extends AppCompatActivity
         }else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
             modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
             paramatroSimulacaoSuccess();
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
         }else {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
         }
 
     }
@@ -404,14 +407,14 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callRepassesSociais() {
-        DialogUtils.show(PrincipalActivity.this);
+        AlertDialogUtils.show(PrincipalActivity.this);
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
         dadosCorporativosBO.repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 repassesSociais = response.getPayload();
                 layoutTrevoAcessoRapido();
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 showMenu();
             }
 
@@ -433,6 +436,14 @@ public class PrincipalActivity extends AppCompatActivity
     private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
 
+//        if (!BuildConfig.FLAVOR.equalsIgnoreCase("prd") && !conteMaisMilionaria()){
+//            ParametroSimulacao parametro = MaisMilionariaMock.getParametroMaisMilionaria();
+//            listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
+//                                                parametro.getParametroJogo().getConcurso().getValorApostaMinima(), getResources().getString(R.string.string_vazia), getResources().getString(R.string.string_vazia), parametro.getParametroJogo().getConcurso().getModalidade(),
+//                                                parametro.getParametroJogo().getConcurso(), false, null));
+//            Toast.makeText(PrincipalActivity.this, "+Milionaria de forma mockada", Toast.LENGTH_LONG).show();
+//        }
+
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
                 listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
@@ -442,6 +453,19 @@ public class PrincipalActivity extends AppCompatActivity
         }
 
         return listaModalidades;
+    }
+
+    private boolean conteMaisMilionaria() {
+        boolean contem = false;
+
+        for (ParametroSimulacao parametro : modalidadesParaListar){
+            if (parametro.getParametroJogo().getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                contem = true;
+                break;
+            }
+        }
+
+        return contem;
     }
 
     private void layoutTrevoAcessoRapido() {
@@ -589,11 +613,11 @@ public class PrincipalActivity extends AppCompatActivity
     public void onScroll(
             float currentPosition,
             int currentIndex, int newIndex,
-            @Nullable HomeAdapter.ViewHolder currentHolder,
-            @Nullable HomeAdapter.ViewHolder newCurrent) { }
+            @Nullable HomeViewHolder currentHolder,
+            @Nullable HomeViewHolder newCurrent) { }
 
     @Override
-    public void onCurrentItemChanged(@Nullable HomeAdapter.ViewHolder viewHolder, int adapterPosition) {
+    public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
@@ -803,7 +827,7 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         dbLoteriasHelper.close();
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         super.onDestroy();
     }
 

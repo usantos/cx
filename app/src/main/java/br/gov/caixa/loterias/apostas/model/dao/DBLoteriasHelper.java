@@ -33,7 +33,6 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
         super(context, name, factory, version, errorHandler);
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTebelaLoteria());

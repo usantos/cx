@@ -20,7 +20,8 @@ public enum ModalidadeEnumSelecaoModalidades {
     @SerializedName("Timemania")TIMEMANIA,
     @SerializedName("Federal")FEDERAL,
     @SerializedName("Dia de Sorte")DIA_DE_SORTE,
-    @SerializedName("Super Sete")SUPER_SETE;
+    @SerializedName("Super Sete")SUPER_SETE,
+    @SerializedName("Mais Milionária")MAIS_MILIONALIA;
 
     public static ModalidadeEnumSelecaoModalidades toString(String modalidade) {
         switch (modalidade.toLowerCase()) {
@@ -46,6 +47,8 @@ public enum ModalidadeEnumSelecaoModalidades {
                 return ModalidadeEnumSelecaoModalidades.DIA_DE_SORTE;
             case "super sete":
                 return ModalidadeEnumSelecaoModalidades.SUPER_SETE;
+            case "mais milionária":
+                return ModalidadeEnumSelecaoModalidades.MAIS_MILIONALIA;
             default:
                 return null;
         }

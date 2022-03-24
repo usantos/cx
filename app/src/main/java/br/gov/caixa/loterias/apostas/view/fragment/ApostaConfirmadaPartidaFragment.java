@@ -23,8 +23,8 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.DetalheApostaConfirmadaLotecaAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.DetalheApostaConfirmadaLotogolAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaConfirmadaLotecaAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaConfirmadaLotogolAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
 @EFragment(R.layout.fragment_aposta_confirmada_partida)
@@ -102,6 +102,14 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
         listaPartidasApostadasExpandebleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         listaPartidasApostadasExpandebleRecyclerView.setExpanded(Boolean.TRUE);
         listaPartidasApostadasExpandebleRecyclerView.setFocusable(Boolean.FALSE);
+    }
+
+    public void atualizaValorPremio(BigDecimal valor){
+        if (valor != null){
+            valorPremio = valor;
+            tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+        }
+
     }
 
 }

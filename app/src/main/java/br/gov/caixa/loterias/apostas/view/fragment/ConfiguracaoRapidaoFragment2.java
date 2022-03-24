@@ -31,7 +31,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingl
 import br.gov.caixa.loterias.apostas.utils.CustomTypefaceSpan;
 import br.gov.caixa.loterias.apostas.utils.SafeFlexboxLayoutManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.SugestoesPremioMinimoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SugestoesPremioMinimoAdapter;
 
 import static br.gov.caixa.loterias.apostas.R.color.amareloQueimado;
 

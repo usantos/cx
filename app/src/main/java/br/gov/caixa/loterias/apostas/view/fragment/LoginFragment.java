@@ -35,7 +35,7 @@ import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
@@ -101,7 +101,7 @@ public class LoginFragment extends Fragment {
 
 
     private void verificarCadastroWebservice() {
-        DialogUtils.show(getContext());
+        AlertDialogUtils.show(getContext());
         final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getContext());
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
         List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
@@ -109,7 +109,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() == null) {
                     SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
                     if(response.getPayload().getLimiteDiario() != null){
@@ -128,7 +128,7 @@ public class LoginFragment extends Fragment {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, getActivity());
             }
         });

@@ -18,12 +18,13 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
-import br.gov.caixa.loterias.apostas.view.adapter.NumerosAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumerosAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 public class NumerosFragment extends Fragment {
 
 	private static final String LISTA_NUMEROS = "LISTA_NUMEROS";
+	private static final String LISTA_TREVOS = "LISTA_TREVOS";
 	private static final String LISTA_MARCADOS = "LISTA_MARCADOS";
 	private static final String CONFIGURACAO = "CONFIGURACAO";
 

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
-import br.gov.caixa.loterias.apostas.view.adapter.NumerosResultadosAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultadosAdapter;
 
 public class ResultadoGenericoFragment extends Fragment {
 

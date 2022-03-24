@@ -1,23 +1,19 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -31,36 +27,35 @@ import org.androidannotations.annotations.ViewById;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Random;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.model.SurpresinhaApostaModel;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
-import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
+import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 
 @EFragment(R.layout.fragment_surpresinha)
 public class SurpresinhaFragment extends Fragment implements OnClickListener {
+
+    private static final int QUANTIDADE_MINIMA_SURPRESINHAS = 1;
 
     private TextView valorAposta;
     private SimularApostaActivity parentActivity;
     private SurpresinhaFragmentListener surpresinhaFragmentListener;
     private ParametroEquipe equipeSelecionada = null;
-    private boolean isTipoTimeMania, isTipoLotomania, isDiaDeSorte;
+    private ModalidadeEnum tipoJogo;
     private ParametroJogoDTO parametroJogo;
-    private int typeGameColorLight, qtdSurpresinhas = 1;
+    private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos;
     private SurpresinhaGridViewAdapter simularDezenasAdapter;
     private BigDecimal valorTotalAposta;
 
@@ -68,10 +63,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     protected ImageView escolhaItemImageView;
 
     @ViewById
-    protected TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas;
+    protected TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas, surpresinhaTitulo, surpresinhaQtdInfo, surpresinhaInfo, qtdSurpresinhasSelecionadasTrevos;
 
     @ViewById
-    protected Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha;
+    protected Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha, btnMenosTrevos, btnMaisTrevos;
 
     @ViewById
     protected RelativeLayout escolhaItemLayout;
@@ -85,17 +80,28 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     @ViewById
     protected AppCompatCheckBox selcioneEspelhoSurpresinha;
 
+    @ViewById
+    protected ConstraintLayout maisMilionaria;
+
+    private SurpresinhaApostaModel model;
+
     public SurpresinhaFragment() {
         // Required empty public constructor
     }
 
     @AfterViews
     protected void init() {
+        model = new SurpresinhaApostaModel(getActivity());
+
         AppCenterManager.registraEvento("ENTROU_SURPRESINHA");
 
         parentActivity = ((SimularApostaActivity) getActivity());
         if (parentActivity != null) {
             parametroJogo = parentActivity.getParametroSimulacao();
+            if (parametroJogo != null && qtdTrevos == 0
+                    && parametroJogo.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
+            }
         }
 
         Bundle bundle = getArguments();
@@ -108,7 +114,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizaDezenaAdapter();
         configuraBotoes();
 
-        if (isTipoLotomania) {
+        if (isLotomania()) {
             layoutEspelhoSurpresinha.setVisibility(View.VISIBLE);
             selcioneEspelhoSurpresinha = layoutEspelhoSurpresinha.findViewById(R.id.selcioneEspelhoSurpresinha);
         }
@@ -117,13 +123,30 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             adicionarSurpresinhaNoCarrinho();
         }
 
-        if (isTipoTimeMania) {
+        if (isTimemania()) {
             escolhaItemLayout.setVisibility(View.VISIBLE);
         }
 
-        if (isDiaDeSorte) {
+        if (isDiaDeSorte()) {
             initDiaDeSorte();
         }
+
+        surpresinhaTitulo.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        surpresinhaInfo.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        surpresinhaQtdInfo.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+
+        if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
+            maisMilionaria.setVisibility(View.VISIBLE);
+
+            ConstraintLayout.LayoutParams textViewParams = (ConstraintLayout.LayoutParams) surpresinhaQtdInfo.getLayoutParams();
+            textViewParams.topToBottom = R.id.maisMilionaria;
+            surpresinhaQtdInfo.setLayoutParams(textViewParams);
+
+        }
+    }
+
+    private boolean isDiaDeSorte() {
+        return tipoJogo == ModalidadeEnum.DIA_DE_SORTE;
     }
 
     public void surpresinhaFragmentBuilder(Bundle dataBundle) {
@@ -133,19 +156,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     }
 
     private void identificarTipoJogo() {
-        ModalidadeEnum tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
-
-        switch (tipoJogo) {
-            case TIMEMANIA:
-                isTipoTimeMania = true;
-                break;
-            case LOTOMANIA:
-                isTipoLotomania = true;
-                break;
-            case DIA_DE_SORTE:
-                isDiaDeSorte = true;
-                break;
-        }
+        tipoJogo = (ModalidadeEnum) getActivity().getIntent().getSerializableExtra("tipoAposta");
     }
 
     @Override
@@ -168,8 +179,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     // METODOS DE CONFIGURACOES
     private void atualizaDezenaAdapter() {
-        simularDezenasAdapter.rows = montaListaDezenasSurpresinha();
-        simularDezenasAdapter.notifyDataSetChanged();
+        simularDezenasAdapter.atualizaDezenas(montaListaDezenasSurpresinha());
     }
 
     private void configuraBotoes() {
@@ -178,13 +188,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         }
 
-//        parentActivity.getSimularApostaLayoutCarrinhoApostas().setOnClickListener(this);
-
-        btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
-        btnMaisSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-
-        qtdSurpresinhasSelecionadas.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-        qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
+        atualizaBotoesQtdSurpresinha();
+        if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
+            atualizaBotoesQtdTrevos();
+        }
 
         Button botaoAdicionarSurpresinhaAoCarrinho = parentActivity.getBotaoAdicionarCompletarCartela();
         botaoAdicionarSurpresinhaAoCarrinho.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
@@ -194,11 +201,47 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         parentActivity.getBotaoLimparAposta().setVisibility(View.GONE);
         parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
+
+        btnMenosSurpresinha.setBackgroundTintList(getCor(R.color.cinzaescuro));
+        btnMaisSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
+    }
+
+    private void atualizaBotoesQtdSurpresinha() {
+        if (qtdSurpresinhas == QUANTIDADE_MINIMA_SURPRESINHAS){
+            btnMenosSurpresinha.setBackgroundTintList(getCor(R.color.cinzaescuro));
+            btnMaisSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
+        }else {
+            btnMenosSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
+            btnMaisSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
+        }
+
+        qtdSurpresinhasSelecionadas.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
+    }
+
+    private void atualizaBotoesQtdTrevos() {
+        if (qtdTrevos > parametroJogo.getTrevos().getQtdMinima() && qtdTrevos < parametroJogo.getTrevos().getQtdMaxima()){
+            btnMenosTrevos.setBackgroundTintList(getCor(typeGameColorLight));
+            btnMaisTrevos.setBackgroundTintList(getCor(typeGameColorLight));
+        }else if (qtdTrevos == parametroJogo.getTrevos().getQtdMinima()){
+            btnMenosTrevos.setBackgroundTintList(getCor(R.color.cinzaescuro));
+            btnMaisTrevos.setBackgroundTintList(getCor(typeGameColorLight));
+        } else {
+            btnMenosTrevos.setBackgroundTintList(getCor(typeGameColorLight));
+            btnMaisTrevos.setBackgroundTintList(getCor(R.color.cinzaescuro));
+        }
+
+        qtdSurpresinhasSelecionadasTrevos.setTextColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+        qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
+    }
+
+    private ColorStateList getCor(int cor) {
+        return ContextCompat.getColorStateList(getActivity(), cor);
     }
 
     private void configuraListaDezenas() {
         listaDezenasSurpresinha.setExpanded(true);
-        simularDezenasAdapter = new SurpresinhaGridViewAdapter(getActivity(), montaListaDezenasSurpresinha());
+        simularDezenasAdapter = new SurpresinhaGridViewAdapter(getActivity(), montaListaDezenasSurpresinha(), getActivity(), typeGameColorLight);
         listaDezenasSurpresinha.setAdapter(simularDezenasAdapter);
     }
 
@@ -216,9 +259,15 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         BigDecimal valorEmReais = BigDecimal.ZERO;
 
-        for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
-            if (parametro.getNumeroPrognosticos() == numPrognostico) {
-                valorEmReais = parametro.getValor();
+        if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
+            ParametroValorApostaDTO valor = parametroJogo.getValorApostaBy(numPrognostico, qtdTrevos);
+            valorEmReais = valor.getValor();
+        }else {
+            for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
+                if (parametro.getNumeroPrognosticos() == numPrognostico) {
+                    valorEmReais = parametro.getValor();
+                    break;
+                }
             }
         }
 
@@ -238,7 +287,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
                 ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
             }
         }
-        if (isTipoLotomania && selcioneEspelhoSurpresinha.isChecked()) {
+        if (isLotomania() && selcioneEspelhoSurpresinha.isChecked()) {
             valorEmReais = valorEmReais.multiply(Constantes.DOIS_BIG_DECIMAL);
             ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
         }
@@ -248,49 +297,35 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     public void adicionarSurpresinhaNoCarrinho() {
 
-         IncluirSurpresinhaDTO aposta = new IncluirSurpresinhaDTO();
-        aposta.setModalidade(parametroJogo.getConcurso().getModalidade());
-        aposta.setQuantidadeNumeros(parentActivity.qtdDezenasPossiveisSelecionado);
-        aposta.setQuantidadeSurpresinhas(qtdSurpresinhas);
+        IncluirSurpresinhaDTO surpresinha;
+        switch (parametroJogo.getConcurso().getModalidade()){
+            case TIMEMANIA:
+                surpresinha = ApostaUtils.getSurpresinhaTimemania(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
+                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
+                                                             valorTotalAposta, equipeSelecionada);
+                break;
+            case LOTOMANIA:
+                surpresinha = ApostaUtils.getSurpresinhaLotomania(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
+                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
+                                                             valorTotalAposta, selcioneEspelhoSurpresinha.isChecked());
+                break;
+            case MAIS_MILIONARIA:
+                surpresinha = ApostaUtils.getSurpresinhaMaisMilionaria(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
+                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
+                                                             valorTotalAposta, qtdTrevos);
+                break;
+            default:
+                surpresinha = ApostaUtils.getSurpresinha(parametroJogo,parentActivity.qtdDezenasPossiveisSelecionado,
+                                                             qtdSurpresinhas, parentActivity.qtdConcursoSelecionado,
+                                                             valorTotalAposta);
 
-        DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
-
-        String valorTipoConcurso = parametroJogo.getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL ? "1" : "2";
-        tipoConcurso.setValor(valorTipoConcurso);
-        tipoConcurso.setDescricao(parametroJogo.getConcurso().getTipoConcurso().toString());
-        aposta.setTipoConcurso(tipoConcurso);
-
-        DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
-        indicadorSurpresinha.setValor(IndicadorSurpresinha.SURPRESINHA);
-        indicadorSurpresinha.setDescricao("");
-
-        aposta.setIndicadorSurpresinha(indicadorSurpresinha);
-        aposta.setConcursoAlvo(parametroJogo.getConcurso().getNumero());
-        aposta.setQuantidadeTeimosinhas(parentActivity.qtdConcursoSelecionado);
-        aposta.setQuantidadeApostas(1);
-        aposta.setValor(valorTotalAposta);
-
-        aposta.setTimeDoCoracao(equipeSelecionada);
-
-        if (isTipoTimeMania) {
-            if(aposta.getTimeDoCoracao() == null){
-                Random randomGenerator = Utils.getRandom();
-                aposta.setTimeDoCoracao(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
-                //TODO lógica para sortear time de acordo quantidade de surpresinhas
-                    //            List<ParametroEquipe> parametroEquipeList = new ArrayList<>();
-                    //            for (int i = 0; i < qtdSurpresinhas; i++) {
-                    //                parametroEquipeList.add(parametroJogo.getEquipes().get(randomGenerator.nextInt(parametroJogo.getEquipes().size())));
-                    //            }
-                    //            aposta.setListaTimeDoCoracao(parametroEquipeList);
-            } else {
-                indicadorSurpresinha.setValor(IndicadorSurpresinha.SURPRESINHA_NUMERICA);
-            }
-        }
-        if (isTipoLotomania) {
-            aposta.setGerarEspelho(selcioneEspelhoSurpresinha.isChecked());
         }
 
-        AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoSurpresinha(parentActivity, aposta);
+        model.addSurpresinhaCarrinho(surpresinha);
+    }
+
+    private boolean isLotomania() {
+        return tipoJogo == ModalidadeEnum.LOTOMANIA;
     }
 
     @Override
@@ -317,12 +352,16 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     @Click
     protected void escolherOutroItemBtn() {
-        if (isTipoTimeMania) {
+        if (isTimemania()) {
             parentActivity.escolherOutroTimeSurpresinha();
-        } else if (isDiaDeSorte) {
+        } else if (isDiaDeSorte()) {
             parentActivity.mesDeSorteFragment(null, true);
         }
 
+    }
+
+    private boolean isTimemania() {
+        return tipoJogo == ModalidadeEnum.TIMEMANIA;
     }
 
     @Click
@@ -330,7 +369,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         if (qtdSurpresinhas > 1) {
             qtdSurpresinhas--;
             if (qtdSurpresinhas == 1) {
-                btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
+                atualizaBotoesQtdSurpresinha();
             }
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
@@ -340,13 +379,34 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     @Click
     protected void btnMaisSurpresinha() {
         if (qtdSurpresinhas == 1) {
-            btnMenosSurpresinha.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
+            atualizaBotoesQtdSurpresinha();
         }
 
         qtdSurpresinhas++;
 
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
+        btnMenosSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
+    }
+
+    @Click
+    protected void btnMaisTrevos() {
+        if (qtdTrevos < 6) {
+            qtdTrevos++;
+            atualizaBotoesQtdTrevos();
+            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+            qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
+        }
+    }
+
+    @Click
+    protected void btnMenosTrevos() {
+        if (qtdTrevos > 2) {
+            qtdTrevos--;
+            atualizaBotoesQtdTrevos();
+            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+            qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
+        }
     }
 
     @Click
@@ -372,65 +432,11 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         escolhaItemLayout.setVisibility(View.VISIBLE);
     }
 
-    // Adapter do gridview das dezenas
-    private class SurpresinhaGridViewAdapter extends BaseAdapter {
-        private Context context;
-        private ArrayList<String> rows;
-
-        SurpresinhaGridViewAdapter(Context context, ArrayList<String> activitData) {
-            this.context = context;
-            this.rows = activitData;
-        }
-
-        @Override
-        public int getCount() {
-            return rows.toArray().length;
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return rows.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            TextView textView;
-            GradientDrawable shape = new GradientDrawable();
-
-            int sizeItens = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getActivity().getResources().getDisplayMetrics());
-
-            if (view == null) {
-                textView = new TextView(this.context);
-                textView.setLayoutParams(new GridView.LayoutParams(sizeItens, sizeItens));
-            } else {
-                textView = (TextView) view;
-            }
-
-            shape.setColor(Color.WHITE);
-            textView.setTextColor(ContextCompat.getColor(context, typeGameColorLight));
-
-            shape.setCornerRadius(sizeItens / 2);
-            shape.setStroke(1, Color.GRAY);
-            textView.setBackground(shape);
-            textView.setText(rows.get(i));
-            textView.setGravity(Gravity.CENTER);
-
-            return textView;
-        }
+    public void resetQtdTrevos() {
+        qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
+        atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+        qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
+        btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
+        btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
     }
-
-    // INTERFACE DO FRAGMENT PARA A ACTIVITY
-    public interface SurpresinhaFragmentListener {
-        void adicionarApostaCarrinho();
-
-        void abreCarrinhoApostas();
-
-        void escolherOutroTimeSurpresinha();
-    }
-
 }

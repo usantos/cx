@@ -51,18 +51,18 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTORespons
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
+import br.gov.caixa.loterias.apostas.model.model.ApostaConfirmadaModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
-import br.gov.caixa.loterias.apostas.view.adapter.ApostasConfirmadasAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.FiltroApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
@@ -104,11 +104,12 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private boolean firstTime = true;
     private boolean reloadingEntireList = false;
     private int numeroDataSelecionada = 1;
-    private int qtdMesAnoPadrao = 0;
     private boolean chamarApostaNovamente = true;
     private MesAnoDTOResponse resultMesAno;
 
     private ApostaPageRequest page;
+
+    private ApostaConfirmadaModel model;
 
     private static ApostasConfirmadasFragment instance = null;
     public static ApostasConfirmadasFragment getInstance(){
@@ -121,7 +122,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        model = new ApostaConfirmadaModel(getActivity());
         isOnCreate = true;
     }
 
@@ -130,8 +131,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         super.onResume();
 
         if(isOnCreate) {
-            if (DialogUtils.isShow()) {
-                DialogUtils.dismiss();
+            if (AlertDialogUtils.isShow()) {
+                AlertDialogUtils.dismiss();
             }
 
             if (firstTime || page == null) {
@@ -211,7 +212,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     @Override
     public void onDestroy() {
         super.onDestroy();
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
     }
 
     @Override
@@ -329,7 +330,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             return;
         }
 
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         apostasLoading.setVisibility(View.GONE);
 
         if (apostasList != null) {
@@ -389,7 +390,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
             @Override
             public void onItemClick(final int position, ApostaConfirmadaHolder holder) {
-                DialogUtils.show(getActivity());
+                AlertDialogUtils.show(getActivity());
                 ApostaDTO apostaDTO = apostasList.get(position);
                 if (isHistorico) {
                     handleOnItemClickHistorico(apostaDTO);
@@ -415,7 +416,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 apostaBO.getApostaComprovantePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
                     @Override
                     public void onResponse(DetalhesPremioDTOResponse result) {
-                        DialogUtils.dismiss();
+                        AlertDialogUtils.dismiss();
                         ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO(result.getPayload()).start();
                     }
 
@@ -428,7 +429,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 apostaBO.getApostaDetalheComprovante(apostaDTO.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
                     @Override
                     public void onResponse(ComprovanteApostaDTOResponse result) {
-                        DialogUtils.dismiss();
+                        AlertDialogUtils.dismiss();
                         ComprovanteApostaDTO comprovante = result.getPayload();
                         if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
                             // ja carregou a situacao no microservico
@@ -464,13 +465,13 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = new Gson().fromJson(json, IdentificaoDeUmaApostaDas8Modalidades.class);
             ComprovanteApostaDTO                  comprovanteApostaDTO  = new ComprovanteApostaDTO();
             comprovanteApostaDTO.setAposta(apostaDas8Modalidades);
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(comprovanteApostaDTO).start();
         }
     }
 
     private void requestMesesAnosDisponiveis() {
-        DialogUtils.show(getActivity());
+        AlertDialogUtils.show(getActivity());
 
         RequestListener listener = new RequestListener<MesAnoDTOResponse>() {
             @Override
@@ -497,10 +498,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             return;
         }
 
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         mesesAnosDisponiveis = new ArrayList<>();
         if(!isHistorico){
-            mesesAnosDisponiveis.addAll(getMesesPadrao());
+            mesesAnosDisponiveis.addAll(model.getMesesPadrao());
         }
         mesesAnosDisponiveis.addAll(result.getPayload());
 
@@ -538,33 +539,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
     }
 
-    private List<MesAnoDTO> getMesesPadrao(){
-        List<MesAnoDTO> mesesPadrao = new ArrayList<>();
-        mesesPadrao.add(setMesAnoPadroes(90l));
-        mesesPadrao.add(setMesAnoPadroes(45l));
-        mesesPadrao.add(setMesAnoPadroes(30l));
-        qtdMesAnoPadrao = mesesPadrao.size();
-        return mesesPadrao;
-    }
-
-    private MesAnoDTO setMesAnoPadroes(Long dias){
-        MesAnoDTO mesAno = new MesAnoDTO();
-        mesAno.setAno(0l);
-        mesAno.setMes(setMesPadrao(dias));
-        return mesAno;
-    }
-
-    private MesDTO setMesPadrao(Long dias){
-        MesDTO  mes = new MesDTO();
-        mes.setValor(dias);
-        mes.setDescricao(getString(R.string.ultimos_qtd_dias).replace("{quantidade}",dias.toString()));
-        return mes;
-    }
-
-
     private void onMesesAnosDisponiveisError(VolleyError error) {
         if (getActivity() != null) {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             String msgError = MensagensNetwork.setMensagem(error, getActivity());
             page = null;
             hasMoreItems = false;
@@ -588,7 +565,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private String getTextoDataSelecionada(int indice){
         MesAnoDTO mesAnoSelecionado = mesesAnosDisponiveis.get(indice);
-        if(indice > qtdMesAnoPadrao - 1 || isHistorico){
+        if(indice > model.getQtdMesAnoPadrao() - 1 || isHistorico){
             return formatMesAno(mesAnoSelecionado.getMes().getValor().intValue(),mesAnoSelecionado.getAno().intValue());
         } else {
             return mesAnoSelecionado.getMes().getDescricao();
@@ -609,7 +586,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private void onApostasConfirmadasError(VolleyError error) {
         isLoading = false;
         if (getActivity() != null) {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             apostasLoading.setVisibility(View.GONE);
             RedirectNetwork.checkRedirect(error, getActivity());
         }
@@ -618,7 +595,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private void onApostasConfirmadasError500(VolleyError error) {
         isLoading = false;
         if (getActivity() != null) {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             apostasLoading.setVisibility(View.GONE);
 
             if (chamarApostaNovamente && error != null && error.networkResponse != null && error.networkResponse.statusCode == 500) {

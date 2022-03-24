@@ -33,6 +33,8 @@ public class ParametroValorApostaDTO implements Serializable {
     protected Integer quantidadeTriplos = null;
     @SerializedName("numeroApostas")
     protected Integer numeroApostas = null;
+    @SerializedName("numeroTrevos")
+    protected Integer numeroTrevos;
 
     /**
      **/
@@ -93,6 +95,13 @@ public class ParametroValorApostaDTO implements Serializable {
         this.numeroApostas = numeroApostas;
     }
 
+    public Integer getNumeroTrevos() {
+        return numeroTrevos;
+    }
+
+    public void setNumeroTrevos(Integer numeroTrevos) {
+        this.numeroTrevos = numeroTrevos;
+    }
 
     @Override
     public boolean equals(Object o) {

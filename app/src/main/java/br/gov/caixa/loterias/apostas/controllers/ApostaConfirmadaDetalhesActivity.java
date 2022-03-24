@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,7 +18,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -69,8 +67,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -78,7 +76,9 @@ import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhes;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhes_;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaFragment_;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 
@@ -132,9 +132,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected TextView validadePremioText, comprovanteText, editarTxt;
 
     @ViewById
-    protected ImageView validadePremioImage, comprovanteImage, comprovanteImpressaoImage;
-
-    @ViewById
     protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout, favoriteBtn, comprovanteLayout, layoutTextoSalveAposta;
 
     @ViewById
@@ -158,6 +155,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private ComprovanteApostaDTOResponse comprovanteApostaDTOResponse;
     private DetalhesPremioDTOResponse detalhesPremioDTOResponse;
     private DetalhesHistoricoPremioDTOResponse detalhesHistoricoPremioDTOResponse;
+    private ApostaConfirmadaPartidaFragment partidaFragment;
+    private ApostaConfirmadaNumeroDetalhes numerosFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -227,11 +226,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
-        if (estilo != null) {
-            ViewUtils.setColorDrawable(this, validadePremioImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
-            ViewUtils.setColorDrawable(this, comprovanteImage.getDrawable(), estilo.getIconValidadeComprovanteColor());
-            ViewUtils.setColorDrawable(this, comprovanteImpressaoImage.getDrawable(), estilo.getIconImpressoraColor());
-        }
         if (premioPago) {
             if (detalhesPremioDTO != null) {
                 comprovanteText.setText(detalhesPremioDTO.getNsbi());
@@ -256,33 +250,32 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void chooseFragmentToPresent() {
-        Fragment fragment = null;
 
         switch (aposta.getModalidade()) {
             case LOTOGOL:
                 disableButtonEditar();
-                fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.FALSE).build();
+                partidaFragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.FALSE).build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
-                                           .replace(R.id.fragmentContainer, fragment)
+                                           .replace(R.id.fragmentContainer, partidaFragment)
                                            .commit();
                 break;
             case LOTECA:
                 disableButtonEditar();
-                fragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).loteca(Boolean.TRUE).build();
+                partidaFragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).loteca(Boolean.TRUE).build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
-                                           .replace(R.id.fragmentContainer, fragment)
+                                           .replace(R.id.fragmentContainer, partidaFragment)
                                            .commit();
                 break;
             default:
-                fragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).build();
+                numerosFragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
-                                           .replace(R.id.fragmentContainer, fragment)
+                                           .replace(R.id.fragmentContainer, numerosFragment)
                                            .commit();
                 break;
         }
@@ -298,13 +291,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     @Click
     protected void carrinhoApostasBtn() {
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
         ApostaBO apostaBO = ApostaBO_.getInstance_(this);
 
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ApostaConfirmadaDetalhesActivity.this);
                 }
@@ -316,7 +309,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
                 } else {
@@ -383,7 +376,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     @Click
     protected void salvarApostaImg() {
         if (StringUtils.isNotEmpty(nomeApostaEditTxt.getText().toString())) {
-            DialogUtils.show(this);
+            AlertDialogUtils.show(this);
 
             ParametroJogoDTO parametroJogo;
             apostaFavoritaDTO = new ApostaFavoritaDTO();
@@ -420,7 +413,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 }
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     if(isErroNegocial(error)){
                         ViewUtils.alertTitleButtonYesOrNotListener(
                                 ApostaConfirmadaDetalhesActivity.this,
@@ -442,7 +435,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         dadosCorporativosBO.salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 favoritadoLayout.setVisibility(View.VISIBLE);
                 layoutnomeApostaLayout.setVisibility(View.GONE);
                 favoriteBtn.setVisibility(View.INVISIBLE);
@@ -467,14 +460,14 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void chamadasParaComprovante(){
-        if(!DialogUtils.isShow()) {
-            DialogUtils.show(this);
+        if(!AlertDialogUtils.isShow()) {
+            AlertDialogUtils.show(this);
         }
         if (premioPago && isHistorico) {
             apostaBO.getApostaHistoricoComprovante(aposta.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
                 @Override
                 public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     detalhesHistoricoPremioDTOResponse = result;
                 }
                 @Override
@@ -486,7 +479,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             apostaBO.getApostaComprovantePremio(aposta.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
                 @Override
                 public void onResponse(DetalhesPremioDTOResponse result) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     detalhesPremioDTOResponse = result;
                 }
 
@@ -499,7 +492,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             apostaBO.getApostaDetalheComprovante(aposta.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
                 @Override
                 public void onResponse(ComprovanteApostaDTOResponse result) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     comprovanteApostaDTOResponse = result;
                     comprovanteParaPdf = result.getPayload();
                 }
@@ -559,7 +552,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void onApostasConfirmadasError(VolleyError error) {
         if (this != null) {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             RedirectNetwork.checkRedirect(error, this);
         }
     }
@@ -602,7 +595,15 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
+
+                if (result.getPayload().getPremio().getValorLiquido() != null && !(BigDecimal.ZERO.compareTo(result.getPayload().getPremio().getValorLiquido()) == 0)) {
+                    if (numerosFragment != null){
+                        numerosFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
+                    } else if(partidaFragment != null){
+                        numerosFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
+                    }
+                }
 
                 ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
             }
@@ -615,7 +616,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void onError(VolleyError error) {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         RedirectNetwork.checkRedirect(error,ApostaConfirmadaDetalhesActivity.this);
     }
 

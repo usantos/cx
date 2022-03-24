@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.View;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
@@ -24,7 +23,7 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida>{
 	}
 
 	@Override
-	public void bind(ParametroPartida item, MinhasApostasActivity parentActivity) {
+	public void bind(ParametroPartida item, int position) {
 		Context ctx = Aplicacao.application.getApplicationContext();
 		this.partidaRow.setLayout(item, parametroJogo);
 		if(!item.isSelecionado()){
@@ -35,5 +34,4 @@ public class LotecaHolder extends LoteriasHolder<ParametroPartida>{
 			this.partidaRow.lotecaEmpate.getItemTitle().setTextColor(ctx.getResources().getColor(R.color.cinza));
 		}
 	}
-
 }

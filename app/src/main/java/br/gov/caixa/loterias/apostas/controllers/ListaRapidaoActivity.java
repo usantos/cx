@@ -30,10 +30,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.CarrinhoApostasListViewRapidaoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewRapidaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -119,17 +119,17 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         findViewById(R.id.botaoAvancarPagamentoRapidao).setOnClickListener(view -> validarCarrinho());
     }
     private void validarCarrinho() {
-        DialogUtils.show(ListaRapidaoActivity.this);
+        AlertDialogUtils.show(ListaRapidaoActivity.this);
         ApostaBO_.getInstance_(ListaRapidaoActivity.this).validarCarrinho(new RequestListener<ResourceResponse>() {
             @Override
             public void onResponse(ResourceResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 startActivity(new Intent(ListaRapidaoActivity.this, CartoesActivity.class));
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, ListaRapidaoActivity.this);
 
             }
