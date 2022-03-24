@@ -207,7 +207,7 @@ public class MercadoPagoUtil {
     }
 
     private static boolean isStatusKeyInvalida(MPErrorResponse errorResponse) {
-        return errorResponse.getStatus() == 400 || errorResponse.getStatus() == 404;
+        return errorResponse.getStatus() < 200 || errorResponse.getStatus() > 230;
     }
 
     public static boolean checaPrecisaAtualizarKeyPublicaComRespostaSilce(VolleyError error){

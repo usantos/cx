@@ -37,7 +37,7 @@ import br.gov.caixa.loterias.apostas.utils.TestVisao;
 
 public class MercadoPagoConnection {
 
-	private static boolean jaBuscouPublicKey = false;
+	private static final String MSG_ERRO_BUSCA_KEY = "Não foi possível realizar o pagamento agora. tente novamente mais tarde!";
 
 	public interface MercadoPagoListener {
 		void onSucesso(String cardId, String payment_method_id);
@@ -49,13 +49,12 @@ public class MercadoPagoConnection {
 		String publicKey = MercadoPagoUtil.getPublicKey();
 
 		if (ConfiguracaoAppSingleton.getInstance().isAtualizaPublicKey() || publicKey == null || publicKey.isEmpty()){
-			silceBuscaKeyPublic(listener, onSilceKeyPaymentMethodListener(bin, jsonObject, ctx, listener));
+			silceBuscaKeyPublic(onSilceKeyPaymentMethodListener(bin, jsonObject, ctx, listener));
 		}else {
 			String	url = BuildConfig.MP_PAYMENT_URL + ctx.getResources().getString(R.string.bin) +
 					bin +  ctx.getResources().getString(R.string.public_key) + publicKey;
 
 			StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
-				jaBuscouPublicKey = false;
 				try {
 					RequestQueue rQueue = Volley.newRequestQueue(ctx);
 					JSONArray  jsonArray   = new JSONArray(response);
@@ -69,15 +68,8 @@ public class MercadoPagoConnection {
 					e.printStackTrace();
 				}
 			}, error -> {
-				if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublica(error) && !jaBuscouPublicKey){
-					jaBuscouPublicKey = true;
-					silceBuscaKeyPublic(listener,
-										onSilceKeyPaymentMethodListener(bin, jsonObject, ctx,
-																		listener));
-				} else {
-					jaBuscouPublicKey = false;
-					onErroPayment(ctx, listener, url, error);
-				}
+				apagaPublicKey();
+				onErroPayment(ctx, listener, url, error);
 			});
 
 			RequestQueue rQueue = Volley.newRequestQueue(ctx);
@@ -95,12 +87,21 @@ public class MercadoPagoConnection {
 
 			@Override
 			public void failed(String url, VolleyError volleyError) {
-				onErroPayment(ctx, listener, url, volleyError);
+				if (volleyError == null){
+					listener.onPaymentFailure(MSG_ERRO_BUSCA_KEY);
+				} else {
+					onErroPayment(ctx, listener, url, volleyError);
+				}
+				apagaPublicKey();
 			}
 		};
 	}
 
-	private static void silceBuscaKeyPublic(MercadoPagoListener listener, OnPublicKeyListener keyListener) {
+	private static void apagaPublicKey() {
+		new MercadoPagoCRUD(Aplicacao.application.getApplicationContext()).deletaTodos();
+	}
+
+	private static void silceBuscaKeyPublic(OnPublicKeyListener keyListener) {
 		Context ctx = Aplicacao.application.getApplicationContext();
 		DadosCorporativosBO_ service = DadosCorporativosBO_.getInstance_(ctx);
 		Long                 id      = new Long(1);
@@ -108,28 +109,41 @@ public class MercadoPagoConnection {
 			@Override
 			public void onResponse(MeioPagamentoResponse result) {
 				if (result != null && result.getPayload() != null) {
-					Long inserir = new MercadoPagoCRUD(ctx).atualiza(id, result.getPayload().getPublicKey());
+					Long inserir = insereBanco(result, ctx, id);
 					if (inserir > 0){
 						ConfiguracaoAppSingleton.getInstance().setAtualizaPublicKey(false);
+						if (keyListener != null){
+							keyListener.success();
+						}
+						TestVisao.toast(result.getPayload().getPublicKey());
+					} else {
+						if (keyListener != null){
+							keyListener.failed("", null);
+						}
 					}
-					keyListener.success();
-					TestVisao.toast(result.getPayload().getPublicKey());
+				} else {
+					if (keyListener != null){
+						keyListener.failed("", null);
+					}
 				}
 			}
 
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				listener.onPaymentFailure("Não foi possível realizar o pagamento. Tente novamente mais tarde!");
+				keyListener.failed("meios-pagamento/", error);
 			}
 		});
+	}
+
+	private static Long insereBanco(MeioPagamentoResponse result, Context ctx, Long id) {
+		return new MercadoPagoCRUD(ctx).atualiza(id, result.getPayload().getPublicKey());
 	}
 
 	private static void callWebServiceCreateToken(String jsonObject, Context ctx, MercadoPagoListener listener, RequestQueue rQueue, String payment_method_id) {
 		String publicKey = MercadoPagoUtil.getPublicKey();
 
 		if (ConfiguracaoAppSingleton.getInstance().isAtualizaPublicKey() || publicKey == null || publicKey.isEmpty()){
-			silceBuscaKeyPublic(listener,
-								onBuscaSilceCreateTokenListener(jsonObject, ctx, listener, rQueue, payment_method_id));
+			silceBuscaKeyPublic(onBuscaSilceCreateTokenListener(jsonObject, ctx, listener, rQueue, payment_method_id));
 		} else {
 			String url2 = BuildConfig.MP_CREATE_TOKEN_URL +  ctx.getResources().getString(R.string.public_key) +
 					publicKey;
@@ -137,16 +151,9 @@ public class MercadoPagoConnection {
 			StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
 															response1 -> Log.i("VOLLEY", response1),
 															error -> {
-																if (MercadoPagoUtil.checaPrecisaAtualizarKeyPublica(error) && !jaBuscouPublicKey){
-																	jaBuscouPublicKey = true;
-																	silceBuscaKeyPublic(listener,
-																						onBuscaSilceCreateTokenListener(jsonObject, ctx, listener,
-																														rQueue, payment_method_id));
+																apagaPublicKey();
+																onErroCreateToken(error, ctx, url2, listener);
 
-																} else {
-																	jaBuscouPublicKey = false;
-																	onErroCreateToken(error, ctx, url2, listener);
-																}
 															}) {
 				@Override
 				public String getBodyContentType() {
@@ -167,7 +174,6 @@ public class MercadoPagoConnection {
 				protected Response<String> parseNetworkResponse(NetworkResponse response) {
 					String responseString = "";
 					if (response != null) {
-						jaBuscouPublicKey = false;
 						String body = null;
 						try {
 							body = new String(response.data,"UTF-8");
@@ -197,7 +203,12 @@ public class MercadoPagoConnection {
 
 			@Override
 			public void failed(String url, VolleyError volleyError) {
-				onErroPayment(ctx, listener, url,volleyError);
+				if (volleyError == null){
+					listener.onTokenFailure(MSG_ERRO_BUSCA_KEY);
+				} else {
+					onErroPayment(ctx, listener, url,volleyError);
+				}
+				apagaPublicKey();
 			}
 		};
 	}
