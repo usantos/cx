@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,11 +18,15 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
+import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
 import br.gov.caixa.loterias.apostas.view.listener.ICallbackQueueIT;
@@ -125,6 +130,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                         setMenuApostasDefault();
                     }
 
+                    if (precisaAtualizarPublicKey(result)){
+                        ConfiguracaoAppSingleton.getInstance().setAtualizaPublicKey(result.getPayload().getMapa().isAtualizaPublicKey());
+                    }
+
                 }
 
                 @Override
@@ -135,6 +144,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         }catch (Exception e){
             setMenuApostasDefault();
         }
+    }
+
+    private boolean precisaAtualizarPublicKey(ParametrosConfiguraveisDTOResponse result) {
+        return temDadosPayloadMapa(result) && result.getPayload().getMapa().isAtualizaPublicKey();
     }
 
     private void setMenuApostasDefault() {

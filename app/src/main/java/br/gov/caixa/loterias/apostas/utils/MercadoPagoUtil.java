@@ -3,7 +3,15 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import android.content.Context;
 
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+
+import java.io.UnsupportedEncodingException;
+
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
+import br.gov.caixa.loterias.apostas.model.bean.MPErrorResponse;
+import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
 
 public class MercadoPagoUtil {
 
@@ -159,4 +167,68 @@ public class MercadoPagoUtil {
                 return context.getString(R.string.mercado_pago_erro_default);
         }
     }
+
+    public static String getPublicKey(){
+        String          publicKey = "";
+        MercadoPagoCRUD crud      = new MercadoPagoCRUD(Aplicacao.application.getApplicationContext());
+
+        if (crud.existe((long) 1)){
+            publicKey = crud.getPublicKey();
+        }
+        return publicKey;
+    }
+
+    public static boolean checaPrecisaAtualizarKeyPublica(VolleyError error){
+        boolean precisaAtualizar = false;
+        String          body          = "";
+        MPErrorResponse errorResponse = null;
+        if(error.networkResponse.data!=null) {
+            try {
+                body          = new String(error.networkResponse.data,"UTF-8");
+                errorResponse = new Gson().fromJson(body, MPErrorResponse.class);
+                if (isStatusKeyInvalida(errorResponse)){
+                    precisaAtualizar = true;
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return precisaAtualizar;
+    }
+
+    private static boolean isMessageKeyInvalida(MPErrorResponse errorResponse) {
+        return errorResponse.getMessage().contains("invalid request") ||
+                errorResponse.getMessage().contains("Field: client_id is required and cannot be null") ||
+                errorResponse.getMessage().contains("not found public_key") ||
+                errorResponse.getMessage().contains("Invalid access parameters");
+    }
+
+    private static boolean isStatusKeyInvalida(MPErrorResponse errorResponse) {
+        return errorResponse.getStatus() < 200 || errorResponse.getStatus() > 230;
+    }
+
+    public static boolean checaPrecisaAtualizarKeyPublicaComRespostaSilce(VolleyError error){
+        boolean precisaAtualizar = false;
+        String        body          = "";
+        ErrorResponse errorResponse = null;
+        if(error.networkResponse.data!=null) {
+            try {
+                body          = new String(error.networkResponse.data,"UTF-8");
+                errorResponse = new Gson().fromJson(body, ErrorResponse.class);
+                if (errorResponse.getCodigo().equalsIgnoreCase("019012") && errorResponse.getMensagem().contains("2006")){
+                    precisaAtualizar = true;
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        return precisaAtualizar;
+    }
+
 }

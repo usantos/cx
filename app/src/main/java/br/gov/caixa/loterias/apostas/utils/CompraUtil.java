@@ -38,6 +38,7 @@ public class CompraUtil {
         ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, savedCard, payment_method_id, saveCard );
         MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
 
+        Context context = Aplicacao.application.getApplicationContext();
         ApostaBO apostaBO = ApostaBO_.getInstance_(context);
         apostaBO.postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
             @Override

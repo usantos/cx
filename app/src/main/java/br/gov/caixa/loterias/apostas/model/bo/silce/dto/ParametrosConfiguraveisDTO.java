@@ -18,6 +18,8 @@ public class ParametrosConfiguraveisDTO {
     private Boolean isMicroServico;
     @SerializedName("consultaMinhasApostas")
     private Boolean habilitaMenuApostas;
+    @SerializedName("recuperarMeioPagamento")
+    private Boolean atualizaPublicKey;
 
     public Boolean getMicroServico() {
         return isMicroServico;
@@ -49,6 +51,14 @@ public class ParametrosConfiguraveisDTO {
 
     public void setHabilitaMenuApostas(Boolean habilitaMenuApostas) {
         this.habilitaMenuApostas = habilitaMenuApostas;
+    }
+
+    public Boolean isAtualizaPublicKey() {
+        return atualizaPublicKey;
+    }
+
+    public void setAtualizaPublicKey(Boolean atualizaPublicKey) {
+        this.atualizaPublicKey = atualizaPublicKey;
     }
 
     @Override
