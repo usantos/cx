@@ -298,7 +298,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     }
 
     private void showLoading(){
-        runOnUiThread(() -> DialogUtils.show(NovaFormaPagamentoActivity.this));
+        runOnUiThread(() ->AlertDialogUtils.show(NovaFormaPagamentoActivity.this));
     }
 
     @Override

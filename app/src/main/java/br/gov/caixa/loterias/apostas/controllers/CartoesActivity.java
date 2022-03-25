@@ -379,7 +379,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void showLoading(){
-        runOnUiThread(() -> DialogUtils.show(CartoesActivity.this));
+        runOnUiThread(() -> AlertDialogUtils.show(CartoesActivity.this));
     }
 
     @Override
