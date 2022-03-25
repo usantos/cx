@@ -25,12 +25,11 @@ import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 
@@ -116,30 +115,30 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
             }
         }
 
-        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(Aplicacao.application.getApplicationContext());
-        dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
-            @Override
-            public void onResponse(ParametrosSimulacaoResponse response) {
-                if(activity != null && !activity.isDestroyed()){
-                    loadViewProgress.dismiss();
-                }
-                if (response.getPayload().getParametros().isEmpty()) {
-                    Intent appIndis = new Intent(activity, AppIndisponivelActivity.class);
-                    appIndis.putExtra("IS_BUSCA_PARAM", true);
-                    activity.startActivityForResult(appIndis, 1);
-                } else {
-                    parametroSimulacaoSuccess(response, activity);
-                }
-            }
+        new ParametrosSimulacaoModel(activity)
+                .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacaoResponse>() {
+                    @Override
+                    public void success(ParametrosSimulacaoResponse response) {
+                        if(activity != null && !activity.isDestroyed()){
+                            loadViewProgress.dismiss();
+                        }
+                        if (response.getPayload().getParametros().isEmpty()) {
+                            Intent appIndis = new Intent(activity, AppIndisponivelActivity.class);
+                            appIndis.putExtra("IS_BUSCA_PARAM", true);
+                            activity.startActivityForResult(appIndis, 1);
+                        } else {
+                            parametroSimulacaoSuccess(response, activity);
+                        }
+                    }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if(activity != null && !activity.isDestroyed()){
-                    loadViewProgress.dismiss();
-                }
-                RedirectNetwork.checkRedirect(error, activity);
-            }
-        });
+                    @Override
+                    public void error(VolleyError error) {
+                        if(activity != null && !activity.isDestroyed()){
+                            loadViewProgress.dismiss();
+                        }
+                        RedirectNetwork.checkRedirect(error, activity);
+                    }
+                });
     }
 
     private void parametroSimulacaoSuccess(ParametrosSimulacaoResponse response, Activity activity) {

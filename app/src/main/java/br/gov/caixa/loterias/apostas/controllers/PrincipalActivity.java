@@ -72,6 +72,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
@@ -83,6 +84,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
+import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -284,34 +286,35 @@ public class PrincipalActivity extends AppCompatActivity
         if(SessaoUsuarioUtil.precisaAtualizar()){
             final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
-            dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
-                @Override
-                public void onResponse(ParametrosSimulacaoResponse response) {
-                    AlertDialogUtils.dismiss();
-                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
+            new ParametrosSimulacaoModel(PrincipalActivity.this)
+                    .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacaoResponse>() {
+                        @Override
+                        public void success(ParametrosSimulacaoResponse response) {
+                            AlertDialogUtils.dismiss();
+                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
 
-                    modalidadesParaListar = response.getPayload().getParametros();
+                            modalidadesParaListar = response.getPayload().getParametros();
 
-                    if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
-                        Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                        appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+                            if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
+                                Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                                appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
-                        startActivityForResult(appIndis, 1);
-                    }
+                                startActivityForResult(appIndis, 1);
+                            }
 
-                    SessaoUsuarioUtil.atualizaParametrosSingleton(response);
-                    paramatroSimulacaoSuccess();
-                }
+                            SessaoUsuarioUtil.atualizaParametrosSingleton(response);
+                            paramatroSimulacaoSuccess();
+                        }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    AlertDialogUtils.dismiss();
-                    Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                    appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+                        @Override
+                        public void error(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                            Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                            appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
-                    startActivityForResult(appIndis, 1);
-                }
-            });
+                            startActivityForResult(appIndis, 1);
+                        }
+                    });
         }else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
             modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
             paramatroSimulacaoSuccess();

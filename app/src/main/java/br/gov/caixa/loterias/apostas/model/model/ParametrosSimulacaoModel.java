@@ -24,6 +24,7 @@ public class ParametrosSimulacaoModel {
 		dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
 			@Override
 			public void onResponse(ParametrosSimulacaoResponse response) {
+				// remove +M
 				listener.success(response);
 			}
 
