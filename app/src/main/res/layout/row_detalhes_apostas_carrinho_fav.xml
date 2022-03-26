@@ -72,7 +72,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@color/transparente"
-            android:src="@drawable/ic_x"
+            android:src="@drawable/ic_icone_lixeira_verde"
             android:tint="@color/verde_card"
             app:layout_constraintBottom_toBottomOf="@id/tv_modalidade"
             app:layout_constraintEnd_toEndOf="parent"
