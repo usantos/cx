@@ -57,7 +57,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private ParametroEquipe equipeSelecionada = null;
     private ModalidadeEnum tipoJogo;
     private ParametroJogoDTO parametroJogo;
-    private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos, getQtdNumeros;
+    private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos, getQtdNumeros = 6;
     private SurpresinhaGridViewAdapter simularDezenasAdapter;
     private BigDecimal valorTotalAposta;
 
@@ -414,7 +414,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     @Click
     protected void btnNumerosMais() {
-        if (getQtdNumeros < 6) {
+        if (getQtdNumeros < 12) {
             getQtdNumeros++;
             parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
@@ -424,7 +424,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     @Click
     protected void btnNumerosMenos() {
-        if (getQtdNumeros > 12) {
+        if (getQtdNumeros > 6) {
             getQtdNumeros--;
             parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
