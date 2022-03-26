@@ -33,6 +33,7 @@ public class ParametrosSimulacaoModel {
 					ParametroSimulacao parametro = parametrosSimulacao.getParametros().get(index);
 					if (parametro.getParametroJogo().isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 						parametrosSimulacao.getParametros().remove(index);
+						break;
 					}
 				}
 
