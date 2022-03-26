@@ -68,7 +68,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     protected TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas, surpresinhaTitulo, surpresinhaQtdInfo, surpresinhaInfo, qtdSurpresinhasSelecionadasTrevos, qtdNumerosSelecionadasNovo;
 
     @ViewById
-    protected Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha, btnMenosTrevos, btnMaisTrevos;
+    protected Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha, btnMenosTrevos, btnMaisTrevos, btnNumerosMenos, btnNumerosMais;
 
     @ViewById
     protected RelativeLayout escolhaItemLayout;
@@ -413,7 +413,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     }
 
     @Click
-    protected void btnNumerosMain() {
+    protected void btnNumerosMais() {
         if (getQtdNumeros < 6) {
             getQtdNumeros++;
             parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
