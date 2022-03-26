@@ -28,7 +28,6 @@ import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
@@ -116,18 +115,18 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
         }
 
         new ParametrosSimulacaoModel(activity)
-                .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacaoResponse>() {
+                .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
                     @Override
-                    public void success(ParametrosSimulacaoResponse response) {
+                    public void success(ParametrosSimulacao payload) {
                         if(activity != null && !activity.isDestroyed()){
                             loadViewProgress.dismiss();
                         }
-                        if (response.getPayload().getParametros().isEmpty()) {
+                        if (payload.getParametros().isEmpty()) {
                             Intent appIndis = new Intent(activity, AppIndisponivelActivity.class);
                             appIndis.putExtra("IS_BUSCA_PARAM", true);
                             activity.startActivityForResult(appIndis, 1);
                         } else {
-                            parametroSimulacaoSuccess(response, activity);
+                            parametroSimulacaoSuccess(payload, activity);
                         }
                     }
 
@@ -141,10 +140,10 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
                 });
     }
 
-    private void parametroSimulacaoSuccess(ParametrosSimulacaoResponse response, Activity activity) {
+    private void parametroSimulacaoSuccess(ParametrosSimulacao payload, Activity activity) {
         SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
         ParametrosSimulacao oldParams = sessaoUser.getParametrosSimulacao();
-        ParametrosSimulacao newParams = response.getPayload();
+        ParametrosSimulacao newParams = payload;
 
         if ( oldParams == null || (newParams != null && oldParams!= null && !newParams.equals(oldParams))) {
                 try {
@@ -155,9 +154,9 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                sessaoUser.setValorMinimimoAposta(response.getPayload().getValorMinimoCarrinho());
-                sessaoUser.setValorMaximoAposta(response.getPayload().getValorLimiteDiario());
-                sessaoUser.setParametrosSimulacao(response.getPayload());
+                sessaoUser.setValorMinimimoAposta(payload.getValorMinimoCarrinho());
+                sessaoUser.setValorMaximoAposta(payload.getValorLimiteDiario());
+                sessaoUser.setParametrosSimulacao(payload);
                 atualizaLayout(activity);
         }
     }

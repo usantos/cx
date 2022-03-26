@@ -9,6 +9,9 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 
 public class ParametrosSimulacaoModel {
@@ -19,13 +22,21 @@ public class ParametrosSimulacaoModel {
 		this.activity = activity;
 	}
 
-	public void buscaParametroSiumulacao(OnSilceListener<ParametrosSimulacaoResponse> listener) {
+	public void buscaParametroSiumulacao(OnSilceListener<ParametrosSimulacao> listener) {
 		final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(activity);
 		dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
 			@Override
 			public void onResponse(ParametrosSimulacaoResponse response) {
-				// remove +M
-				listener.success(response);
+				ParametrosSimulacao parametrosSimulacao = response.getPayload();
+
+				for (int index = 0; index < parametrosSimulacao.getParametros().size(); index++){
+					ParametroSimulacao parametro = parametrosSimulacao.getParametros().get(index);
+					if (parametro.getParametroJogo().isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
+						parametrosSimulacao.getParametros().remove(index);
+					}
+				}
+
+				listener.success(parametrosSimulacao);
 			}
 
 			@Override

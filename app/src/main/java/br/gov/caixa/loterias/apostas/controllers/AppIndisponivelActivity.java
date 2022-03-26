@@ -17,7 +17,7 @@ import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
@@ -72,14 +72,14 @@ public class AppIndisponivelActivity extends AppCompatActivity {
 
 
                 new ParametrosSimulacaoModel(AppIndisponivelActivity.this)
-                        .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacaoResponse>() {
+                        .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
                             @Override
-                            public void success(ParametrosSimulacaoResponse response) {
-                                if (response.getPayload().getParametros().isEmpty()) {
+                            public void success(ParametrosSimulacao payload) {
+                                if (payload.getParametros().isEmpty()) {
                                     loadViewProgress.dismiss();
                                     ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.nao_concluiu_operacao));
                                 } else {
-                                    SessaoUsuarioUtil.atualizaParametrosSingleton(response);
+                                    SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
                                     loadViewProgress.dismiss();
                                     finish();
                                 }
