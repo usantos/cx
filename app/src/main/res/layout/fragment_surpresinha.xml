@@ -46,7 +46,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/surpresinhaTituloNovo"
+            android:id="@+id/numeroNovoConst"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/branco"
@@ -55,7 +55,7 @@
             tools:visibility="visible">
 
             <TextView
-                android:id="@+id/surpresinhaTituloTitulo"
+                android:id="@+id/numeroTitulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="125dp"
@@ -73,7 +73,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/surpresinhaInfoNovo"
+                android:id="@+id/numerosInfo"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -84,25 +84,25 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/surpresinhaTituloTitulo" />
+                app:layout_constraintTop_toBottomOf="@+id/numeroTitulo" />
 
 
             <TextView
-                android:id="@+id/qtdSurpresinhasSelecionadasNovo"
+                android:id="@+id/qtdNumerosSelecionadasNovo"
                 android:layout_width="88dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:text="@string/_2"
+                android:text="@string/_6"
                 android:textAlignment="center"
                 android:textColor="@color/mais_milionaria_escura"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/surpresinhaInfoNovo" />
+                app:layout_constraintTop_toBottomOf="@+id/numerosInfo" />
 
             <Button
-                android:id="@+id/btnMenosSurpresinhaNovo"
+                android:id="@+id/btnNumerosMenos"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -114,11 +114,11 @@
                 android:text="@string/menos"
                 android:textColor="@color/branco"
                 android:textSize="24sp"
-                app:layout_constraintRight_toLeftOf="@+id/qtdSurpresinhasSelecionadasTrevos"
-                app:layout_constraintTop_toBottomOf="@+id/trevosInfo" />
+                app:layout_constraintRight_toLeftOf="@+id/qtdNumerosSelecionadasNovo"
+                app:layout_constraintTop_toBottomOf="@+id/numerosInfo" />
 
             <Button
-                android:id="@+id/btnMaisSurpresinhaNovo"
+                android:id="@+id/btnNumerosMain"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="0dp"
@@ -128,8 +128,8 @@
                 android:text="@string/mais"
                 android:textColor="@color/branco"
                 android:textSize="24sp"
-                app:layout_constraintLeft_toRightOf="@+id/qtdSurpresinhasSelecionadasTrevos"
-                app:layout_constraintTop_toBottomOf="@+id/trevosInfo" />
+                app:layout_constraintLeft_toRightOf="@+id/qtdNumerosSelecionadasNovo"
+                app:layout_constraintTop_toBottomOf="@+id/numerosInfo" />
 
 
 
@@ -238,7 +238,7 @@
             android:layout_height="wrap_content"
             android:background="@color/branco"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/listaDezenasSurpresinha"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaTituloNovo"
             tools:visibility="visible">
 
             <TextView
