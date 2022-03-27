@@ -51,7 +51,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 	@ViewById
 	protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt,
-			apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta, tv_resultado,
+			apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta,
 			tv_colunas_2, tv_resultado_super_sete, tv_tit_time_mes, tv_time_mes;
 
 	@ViewById
@@ -69,6 +69,9 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 	@ViewById
 	protected ConstraintLayout cl_premio_pago, clResgatePremio;
+
+	@ViewById
+	protected View viewDivisor;
 
 	@FragmentArg
 	protected BigDecimal valorPremio;
@@ -185,7 +188,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados), numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,configuraEstiloNumeros());
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commit();
 			rl_container_result_1.setVisibility(View.VISIBLE);
-			tv_resultado.setVisibility(View.VISIBLE);
 
 			int corBranco = ContextCompat.getColor(getContext(), R.color.branco);
 			int corTime = ContextCompat.getColor(getContext(), R.color.timemaniaclaro);
@@ -220,6 +222,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 				labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
 				rl_time_mes.setVisibility(View.VISIBLE);
 			}
+		} else {
+			viewDivisor.setVisibility(View.GONE);
 		}
 
 		if (numerosSorteadosSegundo != null) {
@@ -229,11 +233,11 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			rl_fg_numeros_2.setVisibility(View.VISIBLE);
 
 			Collections.sort(numerosSorteadosSegundo);
-			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados), numerosSorteadosSegundo ,numerosSorteadosSegundo,configuraEstiloNumeros());
+			fragResultado = NumerosFragment.newInstance("", numerosSorteadosSegundo ,numerosSorteadosSegundo,configuraEstiloNumeros());
 			fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commit();
 			rl_container_result_2.setVisibility(View.VISIBLE);
-			tv_resultado.setVisibility(View.VISIBLE);
 		}
+
 	}
 
 	private void configuraFragmentSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta) {
@@ -254,6 +258,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			rl_container_result_1.setVisibility(View.VISIBLE);
 			tv_resultado_super_sete.setVisibility(View.VISIBLE);
 			tv_colunas_2.setVisibility(View.VISIBLE);
+		} else {
+			viewDivisor.setVisibility(View.GONE);
 		}
 	}
 

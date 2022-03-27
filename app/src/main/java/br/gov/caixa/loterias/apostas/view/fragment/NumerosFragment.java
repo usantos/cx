@@ -119,7 +119,12 @@ public class NumerosFragment extends Fragment {
 												);
 
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		param.height = px + 50;
+		if (listaInteiros.size() > 6){
+			param.height = px + 50;
+		} else {
+			param.height = px;
+		}
+
 		view.setLayoutParams(param);
 
 	}
