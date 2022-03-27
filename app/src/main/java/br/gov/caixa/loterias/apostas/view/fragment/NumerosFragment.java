@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -28,6 +29,8 @@ public class NumerosFragment extends Fragment {
 	private static final String LISTA_MARCADOS = "LISTA_MARCADOS";
 	private static final String CONFIGURACAO = "CONFIGURACAO";
 
+	private static final String TITULO_LISTA = "TITULO_LISTA";
+
 	private String listaTexto, listaTextoMarcados;
 	private View view = null;
 	private ExpandableHeightGridView gridNumeros;
@@ -35,9 +38,12 @@ public class NumerosFragment extends Fragment {
 	private List<Integer> listaInteiros, listaInteirosMarcados;
 	private ConfiguracaoNumeros configuracao;
 
+	private TextView titulo;
+	private String tituloTexto;
+
 	public NumerosFragment() { }
 
-	public static NumerosFragment newInstance(List<Integer> numerosSelecionados, List<Integer> numerosMarcados, ConfiguracaoNumeros configuracao) {
+	public static NumerosFragment newInstance(String titulo, List<Integer> numerosSelecionados, List<Integer> numerosMarcados, ConfiguracaoNumeros configuracao) {
 		NumerosFragment fragment = new NumerosFragment();
 		Bundle                   args     = new Bundle();
 		if(numerosSelecionados != null){
@@ -50,6 +56,11 @@ public class NumerosFragment extends Fragment {
 		} else {
 			args.putString(LISTA_MARCADOS, "");
 		}
+		if (titulo != null && !titulo.isEmpty()){
+			args.putString(TITULO_LISTA, titulo);
+		} else {
+			args.putString(TITULO_LISTA, "");
+		}
 		args.putSerializable(CONFIGURACAO,configuracao);
 		fragment.setArguments(args);
 		return fragment;
@@ -61,6 +72,7 @@ public class NumerosFragment extends Fragment {
 		if (getArguments() != null) {
 			listaTexto = getArguments().getString(LISTA_NUMEROS);
 			listaTextoMarcados = getArguments().getString(LISTA_MARCADOS);
+			tituloTexto = getArguments().getString(TITULO_LISTA);
 			Gson gson = new Gson();
 			TypeToken<List<Integer>> token          = new TypeToken<List<Integer>>() {};
 			if(listaTexto!= null && listaTexto.length() > 0){
@@ -88,6 +100,13 @@ public class NumerosFragment extends Fragment {
 
 	private void setaViews(View view){
 
+		titulo = view.findViewById(R.id.lista_titulo);
+		if (tituloTexto == null || tituloTexto.isEmpty()){
+			titulo.setVisibility(View.GONE);
+		} else {
+			titulo.setText(tituloTexto);
+		}
+
 		gridNumeros = view.findViewById(R.id.ehgv_numeros);
 
 		int qtdColMax = getQtdColunas();
@@ -100,7 +119,7 @@ public class NumerosFragment extends Fragment {
 												);
 
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		param.height = px;
+		param.height = px + 50;
 		view.setLayoutParams(param);
 
 	}

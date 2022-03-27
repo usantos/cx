@@ -50,7 +50,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	protected ApostaBO apostaBO;
 
 	@ViewById
-	protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt, seusNumerosTxt,
+	protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt,
 			apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta, tv_resultado,
 			tv_colunas_2, tv_resultado_super_sete, tv_tit_time_mes, tv_time_mes;
 
@@ -158,27 +158,18 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
 				numerosSorteadosSegundo =  (List<Integer>) (resultadoConcurso != null && resultadoConcurso.getNumerosSorteadosSegundoSorteio() != null  ?
 						resultadoConcurso.getNumerosSorteadosSegundoSorteio() : new ArrayList<>());
-				fragment = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
+				fragment = NumerosFragment.newInstance(getContext().getResources().getString(R.string.seus_numeros), aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
 				break;
 			case MAIS_MILIONARIA:
-//				numerosSorteadosPrimeiro = new ArrayList<>();
-//				numerosSorteadosPrimeiro.add(1);
-//				numerosSorteadosPrimeiro.add(2);
-//				numerosSorteadosPrimeiro.add(3);
-//				numerosSorteadosPrimeiro.add(10);
-//				numerosSorteadosPrimeiro.add(20);
-//				numerosSorteadosPrimeiro.add(30);
-//				numerosSorteadosPrimeiro.add(4);
-//				numerosSorteadosPrimeiro.add(6);
 
-				fragment = NumerosTrevosFragment.newInstance(aposta.getListaNumerosSelecionados(),
+				fragment = NumerosTrevosFragment.newInstance(getContext().getResources().getString(R.string.seus_numeros), aposta.getListaNumerosSelecionados(),
 															 AppUtils.converteListaInteiros((List<Integer>) aposta.getTrevosSelecionados()),
 															 numerosSorteadosPrimeiro,configuraEstiloNumeros());
 
 				break;
 			default:
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
-				fragment = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
+				fragment = NumerosFragment.newInstance(getContext().getResources().getString(R.string.seus_numeros), aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
 				break;
 		}
 
@@ -191,7 +182,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 				numerosSorteadosPrimeiro.remove(numerosSorteadosPrimeiro.size() - 1);
 			}
 			Collections.sort(numerosSorteadosPrimeiro);
-			fragResultado = NumerosFragment.newInstance(numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,configuraEstiloNumeros());
+			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados), numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,configuraEstiloNumeros());
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commit();
 			rl_container_result_1.setVisibility(View.VISIBLE);
 			tv_resultado.setVisibility(View.VISIBLE);
@@ -233,12 +224,12 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 		if (numerosSorteadosSegundo != null) {
 			Collections.sort(numerosSorteadosSegundo);
-			fragResultado = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados() ,numerosSorteadosSegundo,configuraEstiloNumeros());
+			fragResultado = NumerosFragment.newInstance("", aposta.getListaNumerosSelecionados() ,numerosSorteadosSegundo,configuraEstiloNumeros());
 			fm.beginTransaction().replace(R.id.rl_fg_numeros_2, fragResultado).commit();
 			rl_fg_numeros_2.setVisibility(View.VISIBLE);
 
 			Collections.sort(numerosSorteadosSegundo);
-			fragResultado = NumerosFragment.newInstance(numerosSorteadosSegundo ,numerosSorteadosSegundo,configuraEstiloNumeros());
+			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados), numerosSorteadosSegundo ,numerosSorteadosSegundo,configuraEstiloNumeros());
 			fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commit();
 			rl_container_result_2.setVisibility(View.VISIBLE);
 			tv_resultado.setVisibility(View.VISIBLE);
@@ -255,7 +246,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		rl_fg_numeros_1.setVisibility(View.VISIBLE);
 		tv_colunas.setVisibility(View.VISIBLE);
 		tv_sua_aposta.setVisibility(View.VISIBLE);
-		seusNumerosTxt.setVisibility(View.GONE);
 
 		if (matrizSorteados != null) {
 			Utils.ordenaMatrizInteiro(matrizSorteados);
