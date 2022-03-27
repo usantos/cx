@@ -322,9 +322,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_fg_numeros_1"
-                android:layout_alignStart="@id/tv_sua_aposta"
+                android:layout_alignStart="@id/rl_fg_numeros_1"
                 android:visibility="gone" />
 
+            <View
+                android:layout_below="@id/rl_fg_numeros_2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/branco"/>
 
             <TextView
                 android:id="@+id/tv_resultado"
@@ -391,7 +396,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_container_result_1"
-                android:layout_alignStart="@id/tv_sua_aposta"
+                android:layout_alignStart="@id/rl_container_result_1"
                 android:visibility="gone" />
 
             <RelativeLayout
