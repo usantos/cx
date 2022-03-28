@@ -1,9 +1,12 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -111,7 +114,24 @@ public class NumerosTrevosFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_numeros_trevos, container, false);
 		setaViews();
+		setHigth(view);
 		return view;
+	}
+
+	private void setHigth(View view) {
+		int pxNumeros = getPx(getQtdColunas(listaNumerosInteiros));
+		int pxTrevos = getPx(getQtdColunas(listaTrevosInteiros));
+
+		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		param.height = pxNumeros + pxTrevos + 100;
+		view.setLayoutParams(param);
+	}
+
+	private int getPx(int qtdColMax) {
+		float     dip = qtdColMax * 38f + 40f;
+		Resources r   = getActivity().getResources();
+		int       px   = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
+		return px + 55;
 	}
 
 	private void setaViews(){
@@ -121,8 +141,12 @@ public class NumerosTrevosFragment extends Fragment {
 		fm.beginTransaction().replace(R.id.fragmentNumeros, numerosFragment).commit();
 
 		NumerosFragment trevosFragment = NumerosFragment.newInstance(tituloTrevosTexto, listaTrevosInteiros, listaTrevosMarcados, configuracao);
-		fm.beginTransaction().replace(R.id.fragmentTrevos, trevosFragment);
+		fm.beginTransaction().replace(R.id.fragmentTrevos, trevosFragment).commit();
 
+	}
+
+	private int getQtdColunas(List<Integer> list){
+		return list.size() / 6;
 	}
 
 }
