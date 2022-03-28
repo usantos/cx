@@ -252,6 +252,12 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             case R.id.qtdConcursosButton: {
                 modalTeimosinhas();
+
+                if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                    imageQtdNumerosButton.setVisibility(View.GONE);
+                    qtdNumerosButton.setVisibility(View.GONE);
+
+                }
                 break;
             }
         }

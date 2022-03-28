@@ -420,6 +420,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
         }
+        atualizarButtonColor();
     }
 
     @Click
@@ -430,6 +431,21 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
         }
+        atualizarButtonColor();
+    }
+
+    protected void atualizarButtonColor() {
+        if (getQtdNumeros == 6) {
+            btnNumerosMenos.setBackgroundTintList(getCor(R.color.cinzaescuro));
+        } else {
+            btnNumerosMenos.setBackgroundTintList(getCor(typeGameColorLight));
+        }
+        if (getQtdNumeros == 12){
+            btnNumerosMais.setBackgroundTintList(getCor(R.color.cinzaescuro));
+        }else {
+            btnNumerosMais.setBackgroundTintList(getCor(typeGameColorLight));
+        }
+
     }
 
     @Click
