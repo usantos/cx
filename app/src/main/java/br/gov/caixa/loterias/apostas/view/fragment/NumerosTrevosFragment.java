@@ -120,7 +120,7 @@ public class NumerosTrevosFragment extends Fragment {
 
 	private void setHigth(View view) {
 		int pxNumeros = getPx(getQtdColunas(listaNumerosInteiros));
-		int pxTrevos = getPx(getQtdColunas(listaTrevosInteiros));
+		int pxTrevos = getPx(getQtdColunas(listaTrevosInteiros)) + 55;
 
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		param.height = pxNumeros + pxTrevos + 100;
@@ -131,7 +131,7 @@ public class NumerosTrevosFragment extends Fragment {
 		float     dip = qtdColMax * 38f + 40f;
 		Resources r   = getActivity().getResources();
 		int       px   = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
-		return px + 55;
+		return px;
 	}
 
 	private void setaViews(){
