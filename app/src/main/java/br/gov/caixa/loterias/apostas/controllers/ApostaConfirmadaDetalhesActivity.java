@@ -271,7 +271,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                                            .commit();
                 break;
             default:
-                numerosFragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).build();
+                numerosFragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).comprovanteApostaDTO(comprovanteApostaDTO).build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -604,7 +604,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                         numerosFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
                     }
                 }
-
+                if (numerosFragment != null){
+                    numerosFragment.setDetalhesPremio(result.getPayload());
+                }
                 ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
             }
 

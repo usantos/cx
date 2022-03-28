@@ -9,8 +9,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.android.volley.VolleyError;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
@@ -23,15 +26,24 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity_;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuperSete;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -64,6 +76,9 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	@FragmentArg
 	protected ResultadoConcursoDTO resultadoConcurso;
 
+	@FragmentArg
+	protected ComprovanteApostaDTO comprovanteApostaDTO;
+
 	@ViewById
 	protected TextView tv_val_premio, tv_val_premio_tit;
 
@@ -75,6 +90,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 	@FragmentArg
 	protected BigDecimal valorPremio;
+	private DetalhesPremioDTO detalhesPremio;
 
 	@AfterViews
 	protected void init() {
@@ -283,5 +299,42 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 												R.color.supersetemedio,
 												R.color.superseteescuro,
 												R.color.supersetemedio);
+	}
+
+	@Click(R.id.clResgatePremio)
+	protected void resgatarPremio(){
+		TestVisao.toast("bora resgatar");
+		getApostaDetalhePremio(aposta.getId());
+	}
+
+	public void setDetalhesPremio(DetalhesPremioDTO detalhe){
+		detalhesPremio = detalhe;
+	}
+
+	private void getApostaDetalhePremio(Long apostaId) {
+		if (detalhesPremio != null){
+			startResgateActivity();
+		} else {
+			ApostaBO apostaBO = ApostaBO_.getInstance_(getContext());
+			apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
+				@Override
+				public void onResponse(DetalhesPremioDTOResponse result) {
+					AlertDialogUtils.dismiss();
+
+					detalhesPremio = result.getPayload();
+					startResgateActivity();
+				}
+
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					AlertDialogUtils.dismiss();
+					RedirectNetwork.checkRedirect(error, getActivity());
+				}
+			});
+		}
+	}
+
+	private void startResgateActivity() {
+		ResultadoApostaConfirmadaActivity_.intent(getContext()).detalhesPremioDTO(detalhesPremio).comprovante(comprovanteApostaDTO).start();
 	}
 }
