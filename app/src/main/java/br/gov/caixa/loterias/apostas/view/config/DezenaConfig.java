@@ -47,4 +47,8 @@ public class DezenaConfig {
 	public boolean isClickable() {
 		return isClickable;
 	}
+
+	public ShapeConfig getShapeConfig() {
+		return shapeConfig;
+	}
 }

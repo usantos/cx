@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -79,6 +80,14 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 			}
 
 		}
+
+		if (config.getShapeConfig().getHigth() > 0){
+			ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) txtNumero.getLayoutParams();
+			lp.height = config.getShapeConfig().getHigth();
+			lp.width = config.getShapeConfig().getHigth();
+			txtNumero.setLayoutParams(lp);
+		}
+
 		txtNumero.setBackground(shape);
 	}
 
