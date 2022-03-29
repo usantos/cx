@@ -138,10 +138,10 @@ public class NumerosTrevosFragment extends Fragment {
 	private void setaViews(){
 		FragmentManager fm = getActivity().getSupportFragmentManager();
 
-		NumerosFragment numerosFragment = NumerosFragment.newInstance(tituloNumerosTexto, listaNumerosInteiros, listaInteirosMarcados, configuracao);
+		NumerosFragment numerosFragment = NumerosFragment.newInstance(tituloNumerosTexto, listaNumerosInteiros, listaInteirosMarcados, configuracao, null);
 		fm.beginTransaction().replace(R.id.fragmentNumeros, numerosFragment).commit();
 
-		NumerosFragment trevosFragment = NumerosFragment.newInstance(tituloTrevosTexto, listaTrevosInteiros, listaTrevosMarcados, configuracao);
+		NumerosFragment trevosFragment = NumerosFragment.newInstance(tituloTrevosTexto, listaTrevosInteiros, listaTrevosMarcados, configuracao, null);
 		fm.beginTransaction().replace(R.id.fragmentTrevos, trevosFragment).commit();
 
 	}

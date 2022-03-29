@@ -34,6 +34,7 @@ public class NumerosFragment extends Fragment {
 	private static final String LISTA_TREVOS = "LISTA_TREVOS";
 	private static final String LISTA_MARCADOS = "LISTA_MARCADOS";
 	private static final String CONFIGURACAO = "CONFIGURACAO";
+	private static final String SHAPE = "SHAPE";
 
 	private static final String TITULO_LISTA = "TITULO_LISTA";
 	private static final int QUANTIDADE_COLUNA_LISTA = 6;
@@ -44,13 +45,16 @@ public class NumerosFragment extends Fragment {
 	private ListaDezenaRecyclerView numerosAdapter;
 	private List<Integer> listaInteiros, listaInteirosMarcados;
 	private ConfiguracaoNumeros configuracao;
+	private ShapeConfig shapeConfig;
 
 	private TextView titulo;
 	private String tituloTexto;
 
 	public NumerosFragment() { }
 
-	public static NumerosFragment newInstance(String titulo, List<Integer> numerosSelecionados, List<Integer> numerosMarcados, ConfiguracaoNumeros configuracao) {
+	public static NumerosFragment newInstance(String titulo,
+											  List<Integer> numerosSelecionados, List<Integer> numerosMarcados,
+											  ConfiguracaoNumeros configuracao, ShapeConfig shapeConfig) {
 		NumerosFragment fragment = new NumerosFragment();
 		Bundle                   args     = new Bundle();
 		if(numerosSelecionados != null){
@@ -69,6 +73,7 @@ public class NumerosFragment extends Fragment {
 			args.putString(TITULO_LISTA, "");
 		}
 		args.putSerializable(CONFIGURACAO,configuracao);
+		args.putSerializable(SHAPE,shapeConfig);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -93,6 +98,7 @@ public class NumerosFragment extends Fragment {
 				listaInteirosMarcados = new ArrayList<>();
 			}
 			configuracao = (ConfiguracaoNumeros) getArguments().getSerializable(CONFIGURACAO);
+			shapeConfig = (ShapeConfig) getArguments().getSerializable(SHAPE);
 		}
 	}
 
@@ -134,10 +140,13 @@ public class NumerosFragment extends Fragment {
 	}
 
 	private DezenaConfig getDezenaConfig() {
+		if (this.shapeConfig == null){
+			shapeConfig = new ShapeConfig(R.color.branco, configuracao.getCorTextoCirculoSelecionado());
+		}
+
 		return new DezenaConfig(false, R.color.branco,
 								R.layout.item_dezena_detalhe,
-								new ShapeConfig(R.color.branco, configuracao.getCorTextoCirculoSelecionado()),
-								false);
+								shapeConfig,false);
 	}
 
 	@NotNull

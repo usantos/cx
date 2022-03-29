@@ -1,8 +1,10 @@
 package br.gov.caixa.loterias.apostas.view.config;
 
+import java.io.Serializable;
+
 import br.gov.caixa.loterias.apostas.R;
 
-public class ShapeConfig {
+public class ShapeConfig implements Serializable {
 	private int drawable;
 	private int drawableSelecionado;
 	private int textoColor;
