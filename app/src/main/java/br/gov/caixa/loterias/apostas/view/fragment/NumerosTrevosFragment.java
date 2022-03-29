@@ -19,6 +19,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
+import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 
 public class NumerosTrevosFragment extends Fragment {
 
@@ -141,9 +142,15 @@ public class NumerosTrevosFragment extends Fragment {
 		NumerosFragment numerosFragment = NumerosFragment.newInstance(tituloNumerosTexto, listaNumerosInteiros, listaInteirosMarcados, configuracao, null);
 		fm.beginTransaction().replace(R.id.fragmentNumeros, numerosFragment).commit();
 
-		NumerosFragment trevosFragment = NumerosFragment.newInstance(tituloTrevosTexto, listaTrevosInteiros, listaTrevosMarcados, configuracao, null);
+		NumerosFragment trevosFragment = NumerosFragment.newInstance(tituloTrevosTexto, listaTrevosInteiros, listaTrevosMarcados, configuracao, getTrevoShape());
 		fm.beginTransaction().replace(R.id.fragmentTrevos, trevosFragment).commit();
 
+	}
+
+	private ShapeConfig getTrevoShape() {
+		return new ShapeConfig(R.drawable.ic_item_trevo,
+							   R.drawable.ic_item_trevo_selecionado,
+							   R.color.branco, R.color.mais_milionaria_escura);
 	}
 
 	private int getQtdColunas(List<Integer> list){

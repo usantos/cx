@@ -164,6 +164,10 @@ public class NumerosFragment extends Fragment {
 		if (restante > 0){
 			qtdColunas++;
 		}
+
+		if (qtdColunas >= 9){
+			qtdColunas += 3;
+		}
 		return qtdColunas;
 	}
 
