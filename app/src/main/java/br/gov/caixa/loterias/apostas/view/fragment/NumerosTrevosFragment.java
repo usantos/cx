@@ -28,6 +28,7 @@ public class NumerosTrevosFragment extends Fragment {
 	private static final String CONFIGURACAO = "CONFIGURACAO";
 	private static final String TITULO_LISTA = "TITULO_LISTA";
 	private static final String TITULO_TREVOS = "TITULO_TREVOS";
+	private static final int QUANTIDADE_COLUNA_LISTA = 6;
 
 	private String listaTexto, numerosTextoSorteados, listaTrevosTexto;
 	private List<Integer> listaNumerosInteiros, listaInteirosMarcados, listaTrevosInteiros, listaTrevosMarcados;
@@ -146,7 +147,12 @@ public class NumerosTrevosFragment extends Fragment {
 	}
 
 	private int getQtdColunas(List<Integer> list){
-		return list.size() / 6;
+		int qtdColunas = list.size() / QUANTIDADE_COLUNA_LISTA;
+		int restante          = list.size() - (qtdColunas * QUANTIDADE_COLUNA_LISTA);
+		if (restante > 0){
+			qtdColunas++;
+		}
+		return qtdColunas;
 	}
 
 }
