@@ -163,6 +163,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private Boolean flagApostaSalva = false;
     private int numeroConcursoAtual;
 
+    private Boolean isSurpresinha = false;
+
     @AfterViews
     protected void init() {
         isEspecial =  getIntent().getBooleanExtra(getResources().getString(R.string.extra_especial), false);
@@ -218,8 +220,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
     public void onClick(View v) {
-        imageQtdNumerosButton.setVisibility(View.VISIBLE);
-        qtdNumerosButton.setVisibility(View.VISIBLE);
 
         switch (v.getId()) {
             case R.id.simularTelaAposta: {
@@ -227,6 +227,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                     paginacaoView.setVisibility(View.VISIBLE);
                 }
                 resetaCartela();
+                imageQtdNumerosButton.setVisibility(View.VISIBLE);
+                qtdNumerosButton.setVisibility(View.VISIBLE);
                 break;
             }
 
@@ -253,11 +255,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             case R.id.qtdConcursosButton: {
                 modalTeimosinhas();
 
-                if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
-                    imageQtdNumerosButton.setVisibility(View.GONE);
-                    qtdNumerosButton.setVisibility(View.GONE);
 
-                }
                 break;
             }
         }
