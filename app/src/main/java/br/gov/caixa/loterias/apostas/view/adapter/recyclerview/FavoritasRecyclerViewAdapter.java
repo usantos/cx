@@ -171,6 +171,16 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         }else{
             holder.maisInformacoesLayout.setVisibility(View.GONE);
         }
+
+        //AQUIII
+        ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br))));
+        if (modalidadeEnum.equals(ModalidadeEnum.MAIS_MILIONARIA)){
+            holder.maisInformacoesMaisMilionaria.setVisibility(View.VISIBLE);
+            holder.informacaoTextMaisMilionaria.setText("1 - 2");
+        }else{
+            holder.maisInformacoesMaisMilionaria.setVisibility(View.GONE);
+        }
+
     }
 
 
@@ -213,7 +223,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         protected EditText editTextNomeDaAposta;
         protected RelativeLayout layoutSalvarNomeAposta;
         protected LinearLayout maisInformacoesLayout;
+        protected LinearLayout maisInformacoesMaisMilionaria;
         protected TextView labelInformacaoText;
+        protected TextView informacaoTextMaisMilionaria;
         protected TextView informacaoText;
 
         public ViewHolder(final View itemView) {
@@ -230,7 +242,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             editTextNomeDaAposta = itemView.findViewById(R.id.editTextNomeDaAposta);
             layoutSalvarNomeAposta = itemView.findViewById(R.id.layoutSalvarNomeAposta);
             maisInformacoesLayout = itemView.findViewById(R.id.maisInformacoesLayout);
+            maisInformacoesMaisMilionaria = itemView.findViewById(R.id.maisInformacoesMaisMilionaria);
             labelInformacaoText = itemView.findViewById(R.id.labelInformacaoText);
+            informacaoTextMaisMilionaria = itemView.findViewById(R.id.informacaoTextMaisMilionaria);
             informacaoText = itemView.findViewById(R.id.informacaoText);
             containerFragment = itemView.findViewById(R.id.rl_container_fragment);
         }
