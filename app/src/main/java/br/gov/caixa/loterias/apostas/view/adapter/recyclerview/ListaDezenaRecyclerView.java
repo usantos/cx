@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
@@ -42,7 +41,7 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 	@NonNull
 	@Override
 	public DezenaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dezena,
+		View view = LayoutInflater.from(parent.getContext()).inflate(dezenaConfig.getLayout(),
 																		parent, false);
 		return new DezenaHolder(view, parent.getContext(), dezenaConfig, listener);
 	}
