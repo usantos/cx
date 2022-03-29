@@ -134,7 +134,10 @@ public class NumerosFragment extends Fragment {
 	}
 
 	private DezenaConfig getDezenaConfig() {
-		return new DezenaConfig(false, R.color.branco, configuracao.getCorTextoCirculoSelecionado(), R.layout.item_dezena_detalhe, new ShapeConfig(), false);
+		return new DezenaConfig(false, R.color.branco,
+								R.layout.item_dezena_detalhe,
+								new ShapeConfig(R.color.branco, configuracao.getCorTextoCirculoSelecionado()),
+								false);
 	}
 
 	@NotNull

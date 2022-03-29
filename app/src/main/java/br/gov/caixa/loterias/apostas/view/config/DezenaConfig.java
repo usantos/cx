@@ -5,15 +5,13 @@ import br.gov.caixa.loterias.apostas.R;
 public class DezenaConfig {
 	private boolean isLabelDezena;
 	private int color;
-	private int textColor;
 	private ShapeConfig shapeConfig;
 	private boolean isClickable;
 	private int layout;
 
-	public DezenaConfig(boolean isDezena, int color, int textColor, int layout, ShapeConfig shapeConfig, boolean isClickable) {
+	public DezenaConfig(boolean isDezena, int color, int layout, ShapeConfig shapeConfig, boolean isClickable) {
 		this.isLabelDezena = isDezena;
 		this.color = color;
-		this.textColor = textColor;
 		this.shapeConfig = shapeConfig;
 		this.isClickable = isClickable;
 		this.layout = layout;
@@ -22,9 +20,8 @@ public class DezenaConfig {
 	public DezenaConfig(boolean isDezena, int color, int textColor, boolean isClickable) {
 		this.isLabelDezena = isDezena;
 		this.color = color;
-		this.textColor = textColor;
 		this.isClickable = isClickable;
-		this.shapeConfig = new ShapeConfig();
+		this.shapeConfig = new ShapeConfig(color, textColor);
 		this.layout = R.layout.item_dezena;
 	}
 
@@ -64,7 +61,4 @@ public class DezenaConfig {
 		return layout;
 	}
 
-	public int getTextColor() {
-		return textColor;
-	}
 }
