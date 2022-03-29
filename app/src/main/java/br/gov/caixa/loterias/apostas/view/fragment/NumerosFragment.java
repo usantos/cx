@@ -147,7 +147,12 @@ public class NumerosFragment extends Fragment {
 	}
 
 	private int getQtdColunas(){
-		return listaInteiros.size() / QUANTIDADE_COLUNA_LISTA;
+		int qtdColunas = listaInteiros.size() / QUANTIDADE_COLUNA_LISTA;
+		int restante          = listaInteiros.size() - (qtdColunas * QUANTIDADE_COLUNA_LISTA);
+		if (restante > 0){
+			qtdColunas++;
+		}
+		return qtdColunas;
 	}
 
 }
