@@ -10,17 +10,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
-import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumerosAdapter;
-import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
+import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 
 public class NumerosFragment extends Fragment {
 
@@ -30,11 +36,12 @@ public class NumerosFragment extends Fragment {
 	private static final String CONFIGURACAO = "CONFIGURACAO";
 
 	private static final String TITULO_LISTA = "TITULO_LISTA";
+	private static final int QUANTIDADE_COLUNA_LISTA = 6;
 
 	private String listaTexto, listaTextoMarcados;
 	private View view = null;
-	private ExpandableHeightGridView gridNumeros;
-	private NumerosAdapter numerosAdapter;
+	private RecyclerView listViewNumeros;
+	private ListaDezenaRecyclerView numerosAdapter;
 	private List<Integer> listaInteiros, listaInteirosMarcados;
 	private ConfiguracaoNumeros configuracao;
 
@@ -107,30 +114,40 @@ public class NumerosFragment extends Fragment {
 			titulo.setText(tituloTexto);
 		}
 
-		gridNumeros = view.findViewById(R.id.ehgv_numeros);
+		listViewNumeros = view.findViewById(R.id.ehgv_numeros);
 
-		int qtdColMax = getQtdColunas();
-		float     dip = qtdColMax * 38f + 40f;
+		float     dip = getQtdColunas() * 38f + 40f;
 		Resources r   = getActivity().getResources();
-		int px = (int) TypedValue.applyDimension(
-				TypedValue.COMPLEX_UNIT_DIP,
-				dip,
-				r.getDisplayMetrics()
-												);
+		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
 
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		param.height = px + 55;
 		view.setLayoutParams(param);
-
 	}
 
 	private void setaMetodos (){
-		numerosAdapter = new NumerosAdapter(configuracao, listaInteiros, listaInteirosMarcados, getActivity());
-		gridNumeros.setAdapter(numerosAdapter);
+		numerosAdapter = new ListaDezenaRecyclerView(getDezenas(), listaInteirosMarcados, getDezenaConfig(), null);
+		listViewNumeros.setAdapter(numerosAdapter);
+
+		listViewNumeros.setLayoutManager(new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA));
+		listViewNumeros.setNestedScrollingEnabled(false);
+	}
+
+	private DezenaConfig getDezenaConfig() {
+		return new DezenaConfig(false, R.color.branco, configuracao.getCorTextoCirculoSelecionado(), R.layout.item_dezena_detalhe, new ShapeConfig(), false);
+	}
+
+	@NotNull
+	private List<Dezena> getDezenas() {
+		List<Dezena> dezenas = new ArrayList<>();
+		for (int i = 0; i < listaInteiros.size(); i++) {
+			dezenas.add(new Dezena("" + listaInteiros.get(i), Boolean.FALSE));
+		}
+		return dezenas;
 	}
 
 	private int getQtdColunas(){
-		return listaInteiros.size() / 6;
+		return listaInteiros.size() / QUANTIDADE_COLUNA_LISTA;
 	}
 
 }

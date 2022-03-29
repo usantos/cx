@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.color = color;
 		this.listener = listener;
-		this.dezenaConfig = new DezenaConfig(true, color, true);
+		this.dezenaConfig = new DezenaConfig(true, color, Color.WHITE, true);
 	}
 
 	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, OnItemClickListener listener) {

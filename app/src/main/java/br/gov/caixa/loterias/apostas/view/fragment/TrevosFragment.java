@@ -90,8 +90,11 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         valorApostaSelecionado = valoresApostas.get(0);
 
         DezenaConfig dezenaConfig = new DezenaConfig(false, R.color.mais_milionaria_escura,
-                                                     R.layout.item_dezena,
-                                                     new ShapeConfig(R.drawable.ic_item_trevo, R.drawable.ic_item_trevo_selecionado, 0), true);
+                                                     R.color.mais_milionaria_escura, R.layout.item_dezena,
+                                                     new ShapeConfig(R.drawable.ic_item_trevo,
+                                                                     R.drawable.ic_item_trevo_selecionado,
+                                                                     0),
+                                                     true);
         adappter = new ListaDezenaRecyclerView(getListaDezenas(), trevoSelecionadoList, dezenaConfig, this);
         listaTrevos.setAdapter(adappter);
         RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA);

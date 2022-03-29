@@ -16,7 +16,7 @@
         android:textSize="12sp"
         />
 
-    <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ehgv_numeros"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
