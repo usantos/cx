@@ -882,7 +882,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void verificaSeMostraSalvarApostaView() {
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL) || parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) || parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL) || parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
 			ocutarSalvarAposta();
 		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 			if (isTelaSelecaoTimeAtivado && (equipeSelecionada != null && equipeSelecionada.isSelecionado())) {
