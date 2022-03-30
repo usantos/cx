@@ -44,10 +44,10 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -67,6 +67,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
+import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
@@ -95,8 +96,7 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 @OptionsMenu(R.menu.menu_apostas_confirmadas)
 public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implements ConferirResultadoHandler {
 
-    @Bean
-    protected DadosCorporativosBO dadosCorporativosBO;
+    private ApostaFavoritaModel model;
 
     @Bean
     protected PdfUtils pdfUtils;
@@ -162,6 +162,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
+
+        model = new ApostaFavoritaModel(ApostaConfirmadaDetalhesActivity.this);
+
         setaMetodos();
         setaViews();
 
@@ -399,42 +402,50 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             }
             if(aposta.getModalidade() == ModalidadeEnum.SUPER_7){
                 apostaFavoritaDTO.setNumerosSelecionados(aposta.getMatrizNumerosSelecionados());
-
             } else {
                 apostaFavoritaDTO.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
+                if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                    // preenche valor de trevos no objeto apostaFavoritaDTO
+                }
             }
             apostaFavoritaDTO.setTimeDoCoracao(aposta.getTimeDoCoracao());
             apostaFavoritaDTO.setMesDeSorte(aposta.getMesDeSorte());
 
-            dadosCorporativosBO.validarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
-                @Override
-                public void onResponse(NetworkResponse result) {
-                    salvarAposta();
-                }
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    AlertDialogUtils.dismiss();
-                    if(isErroNegocial(error)){
-                        ViewUtils.alertTitleButtonYesOrNotListener(
-                                ApostaConfirmadaDetalhesActivity.this,
-                                MensagensNetwork.getErrorMessage(error),
-                                (dialogInterface, i) ->
-                                        salvarAposta());
-                    } else {
-                        RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
-                    };
-                }
-            });
+
+            model.validaAposta(apostaFavoritaDTO, onValidaApostaListener());
 
         } else {
             ViewUtils.alert(this, getString(R.string.msg_favor_inserir_nome_aposta));
         }
     }
 
-    private void salvarAposta(){
-        dadosCorporativosBO.salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
+    private OnSilceListener<NetworkResponse> onValidaApostaListener() {
+        return new OnSilceListener<NetworkResponse>() {
             @Override
-            public void onResponse(NetworkResponse result) {
+            public void success(NetworkResponse payload) {
+                salvarAposta();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                if(isErroNegocial(error)){
+                    ViewUtils.alertTitleButtonYesOrNotListener(
+                            ApostaConfirmadaDetalhesActivity.this,
+                            MensagensNetwork.getErrorMessage(error),
+                            (dialogInterface, i) ->
+                                    salvarAposta());
+                } else {
+                    RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
+                };
+            }
+        };
+    }
+
+    private void salvarAposta(){
+        model.salvaAposta(apostaFavoritaDTO, new OnSilceListener<NetworkResponse>() {
+            @Override
+            public void success(NetworkResponse payload) {
                 AlertDialogUtils.dismiss();
                 favoritadoLayout.setVisibility(View.VISIBLE);
                 layoutnomeApostaLayout.setVisibility(View.GONE);
@@ -442,8 +453,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                onError(error);
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
             }
         });
     }
