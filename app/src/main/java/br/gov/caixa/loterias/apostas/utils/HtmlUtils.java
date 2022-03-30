@@ -317,9 +317,29 @@ public class HtmlUtils {
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA,
                                                              context.getString(R.string.label_mes_sorte_dois_pontos) + aposta.getMesDeSorte().getNome());
                     sbHtmlBodyList.append(htmlBodyList);
+                } else if (aposta.getTrevosSelecionados() != null){
+                    htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
+                    htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA,
+                                                             context.getString(R.string.trevos) + " " +
+                                                                     getTrevosText(aposta));
+                    sbHtmlBodyList.append(htmlBodyList);
                 }
                 return sbHtmlBodyList.toString();
         }
+    }
+
+    private static String getTrevosText(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
+        List<Integer> trevos = AppUtils.converteListaInteiros(aposta.getTrevosSelecionados());
+        StringBuilder sb = new StringBuilder();
+
+        if (!trevos.isEmpty()){
+            sb.append(trevos.get(0));
+            for (int i = 1; i < trevos.size(); i++){
+                sb.append(" - " + trevos.get(i));
+            }
+        }
+
+        return sb.toString();
     }
 
     private static String  montaColunasNumericas(List<Integer> numeros){

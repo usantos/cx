@@ -43,9 +43,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -350,8 +350,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
     private void adicionarCarrinho(ApostaBO apostaBO, Long idApostaFavorita, DTOEnumInteger modalidadeEnum) {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        List<ParametroSimulacao> arrayConcursos;
-        arrayConcursos = new ArrayList<>();
+        List<ParametroSimulacao> arrayConcursos = new ArrayList<>();
         List<ParametroSimulacao> parametroSimulacaoList = sessaoUsuario.getParametrosSimulacao().getParametros();
         for (ParametroSimulacao concurso : parametroSimulacaoList) {
             if (concurso.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().equals(modalidadeEnum.getDescricao())) {
@@ -377,13 +376,18 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 }
             }
         } else {
-            if (arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
-                adicionarCarrinhoCallWebservice(apostaBO, idApostaFavorita, 2, 0);
-            } else {
+            if (arrayConcursos.isEmpty()){
+                ViewUtils.alertTitulo(context, R.string.label_atencao,"Modalidade não disponível no momento.");
                 AlertDialogUtils.dismiss();
-                if (arrayConcursos.get(0).getParametroJogo().getTeimosinhas().size() > 0) {
-                    popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
-                    return;
+            } else {
+                if (arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
+                    adicionarCarrinhoCallWebservice(apostaBO, idApostaFavorita, 2, 0);
+                } else {
+                    AlertDialogUtils.dismiss();
+                    if (arrayConcursos.get(0).getParametroJogo().getTeimosinhas().size() > 0) {
+                        popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
+                        return;
+                    }
                 }
             }
         }

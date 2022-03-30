@@ -195,6 +195,7 @@ public class ApostaUtils {
 		aposta.setQuantidadeTeimosinhas(qtdConcursoSelecionado);
 		aposta.setQuantidadeApostas(1);
 		aposta.setValor(valorTotalAposta);
+		aposta.setQtdTrevos(0);
 
 		return aposta;
 	}
