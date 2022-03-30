@@ -106,7 +106,7 @@
     </LinearLayout>
 
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:id="@+id/relativeLayoutContentFavoritas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -222,10 +222,10 @@
 
                         <Button
                             android:id="@+id/excluirButtonFavoritos"
-                            android:layout_width="21dp"
-                            android:layout_height="21dp"
+                            android:layout_width="15dp"
+                            android:layout_height="20dp"
                             android:layout_centerInParent="true"
-                            android:background="@drawable/close"
+                            android:background="@drawable/ic_icone_lixeira_verde"
                             android:clickable="false" />
                     </RelativeLayout>
 
