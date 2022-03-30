@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -29,6 +30,9 @@ public class ContentResultadoPremiado extends LinearLayout {
 
     @ViewById
     protected ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
+
+    @ViewById
+    protected ConstraintLayout clVerDetalheAposta;
 
     @ViewById
     protected Button botaoAposteAgora ;
@@ -81,5 +85,9 @@ public class ContentResultadoPremiado extends LinearLayout {
 
     public LinearLayout getPremioGanhoLinearLayout() {
         return premioGanhoLinearLayout;
+    }
+
+    public ConstraintLayout getButtonVerDetalheAposta() {
+        return clVerDetalheAposta;
     }
 }

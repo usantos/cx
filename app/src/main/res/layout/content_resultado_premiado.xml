@@ -158,9 +158,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/branco"
-
         android:orientation="vertical"
         tools:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clVerDetalheAposta"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:background="@drawable/rounded_inline"
+            android:layout_alignStart="@id/quantidadeApostadasTxt"
+            android:weightSum="1">
+
+            <ImageView
+                android:id="@+id/ivDetalheAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_lupa_detalhe_aposta"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvDetalheAposta"/>
+
+            <TextView
+                android:id="@+id/tvDetalheAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ver detalhe da aposta"
+                android:textColor="@color/mais_milionaria_escura"
+                android:layout_marginStart="16sp"
+                app:layout_constraintStart_toEndOf="@+id/ivDetalheAposta"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
