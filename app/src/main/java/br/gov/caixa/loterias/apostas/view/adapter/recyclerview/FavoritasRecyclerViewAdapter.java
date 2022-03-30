@@ -124,6 +124,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         holder.tituloApostaFavorita.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
         holder.tituloApostaFavorita.setTextColor(context.getResources().getColor(estilo.getCorClara()));
         holder.tituloNomeApostaFavorita.setText(context.getResources().getString(R.string.espaco_barra_reta_espaco) + listaApostaFavorita.get(position).getNome());
+
         StringBuilder numeroStr = new StringBuilder();
 
         if(listaApostaFavorita.get(position).getModalidade().getValor().intValue() == 7) {
@@ -176,7 +177,14 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br))));
         if (modalidadeEnum.equals(ModalidadeEnum.MAIS_MILIONARIA)){
             holder.maisInformacoesMaisMilionaria.setVisibility(View.VISIBLE);
-            holder.informacaoTextMaisMilionaria.setText("1 - 2");
+
+            holder.tituloApostaFavorita.setText("+Milionária");
+
+            String trevos = "";
+            for (Object i:  listaApostaFavorita.get(position).getParametroTrevo().getTrevosSelecionados()) {
+                trevos += i.toString() + " - ";
+            }
+            holder.informacaoTextMaisMilionaria.setText(trevos.substring(0, trevos.length() - 2));
         }else{
             holder.maisInformacoesMaisMilionaria.setVisibility(View.GONE);
         }

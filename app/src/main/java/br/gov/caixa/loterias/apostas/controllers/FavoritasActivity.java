@@ -142,9 +142,6 @@ public class FavoritasActivity extends AppCompatActivity {
 
                 apostaFavoritaLista = response.getPayload().getLista();
 
-                ApostaFavoritaDTO tmp = apostaFavoritaLista.get(0);
-                tmp.getModalidade().setDescricao("+Milionária");
-
                 //recyclerView
                 recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
                 favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this, FavoritasActivity.this, apostaFavoritaLista);

@@ -68,6 +68,18 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 
 		}
 
+		if (apostaAtual.getModalidade().getValor() == 9){
+			holder.trevosRl.setVisibility(View.VISIBLE);
+
+			String trevos = "";
+			for (Object i:  apostaAtual.getParametroTrevo().getTrevosSelecionados()) {
+				trevos += i.toString() + " - ";
+			}
+
+			holder.tvTrevos.setText("Trevos: " + trevos.substring(0, trevos.length() - 2));
+
+		}
+
 		if (apostaAtual.getModalidade().getDescricao().equalsIgnoreCase("dia de sorte")) {
 			holder.tvMesDaSorte.setText(apostaAtual.getMesDeSorte().getNome());
 			holder.tvMesDaSorte.setVisibility(View.VISIBLE);
@@ -189,8 +201,8 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 	//region ViewHolder
 	class DetalheViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-		private TextView tvModalidade, tvMesDaSorte, tvNumeros;
-		private RelativeLayout containerFragment;
+		private TextView tvModalidade, tvMesDaSorte, tvNumeros, tvTrevos;
+		private RelativeLayout containerFragment, trevosRl;
 		private ImageButton btnExcluir;
 		private ImageView ivTeimosinha;
 		private Long idAposta;
@@ -204,6 +216,8 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 			ivTeimosinha = view.findViewById(R.id.iv_teimosinha);
 			containerFragment = view.findViewById(R.id.rl_container_fragment);
 			btnExcluir.setOnClickListener(this);
+			trevosRl = view.findViewById(R.id.trevosRl);
+			tvTrevos = view.findViewById(R.id.tvTrevos);
 		}
 
 		@Override
