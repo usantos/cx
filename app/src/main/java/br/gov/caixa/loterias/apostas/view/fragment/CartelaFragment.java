@@ -436,7 +436,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				}
 
 				salvarApostaLayout.setLayoutParams(relativelayoutParams);
-				
+
 				if(!parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 					salvarApostaLayout.findViewById(R.id.btnSalvarAposta).setOnClickListener(this);
 				}
