@@ -437,8 +437,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				salvarApostaLayout.setLayoutParams(relativelayoutParams);
 
 				salvarApostaLayout.findViewById(R.id.btnSalvarAposta).setOnClickListener(this);
-				if (!DadosUsuarioBO.checarUsuarioLogado(getActivity())) {
-					RedirectNetwork.connectKeycloak(getActivity());
+
+				if (!DadosUsuarioBO.checarUsuarioLogado(parentActivity)) {
+					RedirectNetwork.connectKeycloak(parentActivity);
 				}
 			}
 			break;
@@ -882,7 +883,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void verificaSeMostraSalvarApostaView() {
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL) || parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL) || parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE) || parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)) {
 			ocutarSalvarAposta();
 		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 			if (isTelaSelecaoTimeAtivado && (equipeSelecionada != null && equipeSelecionada.isSelecionado())) {

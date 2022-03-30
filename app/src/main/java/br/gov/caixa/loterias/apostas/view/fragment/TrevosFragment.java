@@ -306,9 +306,13 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         if (trevoSelecionadoList.size() >= valorApostaSelecionado.getNumeroTrevos()){
             listener.getButtonFinalizar().setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
             listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mais_milionaria_escura));
+
+            listener.getButtonSalvar().setVisibility(View.VISIBLE);
         }else {
             listener.getButtonFinalizar().setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
             listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaescuro));
+
+            listener.getButtonSalvar().setVisibility(View.GONE);
         }
     }
 }

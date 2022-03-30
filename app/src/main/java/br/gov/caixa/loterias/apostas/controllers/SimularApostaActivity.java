@@ -967,6 +967,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     @Override
+    public RelativeLayout getButtonSalvar() {
+        return salvarApostaLayout;
+    }
+
+    @Override
     public Paginacao getPaginacao() {
         Paginacao paginacao = null;
         switch (parametroSimulacao.getConcurso().getModalidade()){
