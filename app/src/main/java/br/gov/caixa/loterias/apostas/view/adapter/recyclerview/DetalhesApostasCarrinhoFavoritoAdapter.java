@@ -72,9 +72,18 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 			holder.trevosRl.setVisibility(View.VISIBLE);
 
 			String trevos = "";
-			for (Object i:  apostaAtual.getParametroTrevo().getTrevosSelecionados()) {
-				trevos += i.toString() + " - ";
+
+			if (apostaAtual.getIndicadorSurpresinha() != ApostaCarrinhoFavoritoDTO.IndicadorSurpresinhaEnum.NAO_SURPRESINHA) {
+				for (Object i:  apostaAtual.getParametroTrevo().getTrevosSelecionados()) {
+					trevos += "XX" + " - ";
+				}
+			} else {
+				for (Object i:  apostaAtual.getParametroTrevo().getTrevosSelecionados()) {
+					trevos += i.toString() + " - ";
+				}
 			}
+
+
 
 			holder.tvTrevos.setText("Trevos: " + trevos.substring(0, trevos.length() - 2));
 
