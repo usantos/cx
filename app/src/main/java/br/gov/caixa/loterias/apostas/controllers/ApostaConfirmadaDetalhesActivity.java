@@ -37,6 +37,8 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,6 +65,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
@@ -399,6 +402,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 }
             } else {
                 apostaFavoritaDTO.setNome("");
+            }
+            if(aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                apostaFavoritaDTO.setParametroTrevo(new ParametroTrevo());
+
+                apostaFavoritaDTO.getParametroTrevo().setTrevosSelecionados(aposta.getTrevosSelecionados());
             }
             if(aposta.getModalidade() == ModalidadeEnum.SUPER_7){
                 apostaFavoritaDTO.setNumerosSelecionados(aposta.getMatrizNumerosSelecionados());

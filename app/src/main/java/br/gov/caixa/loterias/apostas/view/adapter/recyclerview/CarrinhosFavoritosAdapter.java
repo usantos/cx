@@ -293,7 +293,14 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 
 		View v = inflater.inflate(R.layout.row_aposta_carrinho_favorito, null);
 		((TextView) v.findViewById(R.id.tv_nome_modalidade)).setText(aposta.getModalidade().getDescricao());
-		((TextView) v.findViewById(R.id.tv_qtd_numeros)).setText(aposta.getQuantidadeNumeros() + " num(s)");
+
+		if(aposta.getModalidade().getValor().equals(9)){
+			((TextView) v.findViewById(R.id.tv_nome_modalidade)).setText("+Milionária");
+			((TextView) v.findViewById(R.id.tv_qtd_numeros)).setText(aposta.getQuantidadeNumeros() + " num(s) " + aposta.getParametroTrevo().getTrevosSelecionados().size() +" trev(s)");
+		} else {
+			((TextView) v.findViewById(R.id.tv_qtd_numeros)).setText(aposta.getQuantidadeNumeros() + " num(s)");
+		}
+
 		//((TextView)v.findViewById(R.id.tv_valor_total_carrinho)).setText("R$10.00");
 		if (aposta.getQuantidadeTeimosinhas() > 0) {
 			(v.findViewById(R.id.iv_teimosinha)).setVisibility(View.VISIBLE);

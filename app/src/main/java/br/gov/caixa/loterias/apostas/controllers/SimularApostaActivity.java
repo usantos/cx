@@ -65,6 +65,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -522,24 +523,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
                 AlertDialogUtils.dismiss();
 
-                RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
-
-                salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
-                ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
-
-                final float scale = getResources().getDisplayMetrics().density;
-                relativelayoutParams.height = (int) (64 * scale + 0.5f);
-
-                salvarApostaLayout.setLayoutParams(relativelayoutParams);
-
-                TextView tituloSalvarAposta = getTextoSalveEstaAposta();
-                tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
-                tituloSalvarAposta.setGravity(Gravity.CENTER);
-
-                ImageView starSalvarApostaImageView = getIconStarSalvar();
-                starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
-
-                flagApostaSalva = true;
+                atualizaLayoutSalverAposta();
             }
 
             @Override
@@ -964,6 +948,47 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @Override
     public int getQtdConcursos() {
         return qtdConcursoSelecionado;
+    }
+
+    @Override
+    public RelativeLayout getButtonSalvar() {
+        return salvarApostaLayout;
+    }
+
+    @Override
+    public String nomeApostaFavorita() {
+        if(editNomeAposta != null){
+            return editNomeAposta.getText().toString();
+        }
+
+        return "";
+    }
+
+    @Override
+    public ImageButton btnSalvarAposta() {
+        return btnSalvarAposta;
+    }
+
+    @Override
+    public void atualizaLayoutSalverAposta() {
+        RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
+
+        salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
+        ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
+
+        final float scale = getResources().getDisplayMetrics().density;
+        relativelayoutParams.height = (int) (64 * scale + 0.5f);
+
+        salvarApostaLayout.setLayoutParams(relativelayoutParams);
+
+        TextView tituloSalvarAposta = getTextoSalveEstaAposta();
+        tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
+        tituloSalvarAposta.setGravity(Gravity.CENTER);
+
+        ImageView starSalvarApostaImageView = getIconStarSalvar();
+        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
+
+        flagApostaSalva = true;
     }
 
     @Override
