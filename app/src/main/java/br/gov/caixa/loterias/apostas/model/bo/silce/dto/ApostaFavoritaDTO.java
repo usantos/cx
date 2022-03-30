@@ -50,6 +50,9 @@ public class ApostaFavoritaDTO<T> {
     @SerializedName("id")
     private Long id = null;
 
+    @SerializedName("trevos")
+    private ParametroTrevo parametroTrevo;
+
     private Boolean isOpenSwipeLayout;
 
 
@@ -192,5 +195,14 @@ public class ApostaFavoritaDTO<T> {
                 "  id: " + id + "\n" +
                 "}\n";
         return sb;
+    }
+
+    @ApiModelProperty(value = "")
+    public ParametroTrevo getParametroTrevo() {
+        return parametroTrevo;
+    }
+
+    public void setParametroTrevo(ParametroTrevo parametroTrevo) {
+        this.parametroTrevo = parametroTrevo;
     }
 }
