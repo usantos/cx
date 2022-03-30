@@ -258,7 +258,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         switch (aposta.getModalidade()) {
             case LOTOGOL:
                 disableButtonEditar();
-                partidaFragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.FALSE).build();
+                partidaFragment = ApostaConfirmadaPartidaFragment_.builder()
+                                                                  .valorPremio(valorPremio)
+                                                                  .aposta(aposta).loteca(Boolean.FALSE)
+                                                                  .comprovanteApostaDTO(comprovanteApostaDTO)
+                                                                  .build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -267,7 +271,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 break;
             case LOTECA:
                 disableButtonEditar();
-                partidaFragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).loteca(Boolean.TRUE).build();
+                partidaFragment = ApostaConfirmadaPartidaFragment_.builder()
+                                                                  .valorPremio(valorPremio)
+                                                                  .aposta(aposta)
+                                                                  .resultadoConcurso(resultadoConcurso)
+                                                                  .loteca(Boolean.TRUE)
+                                                                  .comprovanteApostaDTO(comprovanteApostaDTO)
+                                                                  .build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -615,7 +625,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                     if (numerosFragment != null){
                         numerosFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
                     } else if(partidaFragment != null){
-                        numerosFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
+                        partidaFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
                     }
                 }
                 if (numerosFragment != null){
