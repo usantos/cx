@@ -1045,6 +1045,7 @@
     <string name="trevos_dois_pontos">"Trevos: "</string>
     <string name="underline_trevos_underline">_trevos_</string>
     <string name="trevos_sorteados">Trevos sorteados</string>
+    <string name="trevos_">Trevos:</string>
 
 
 </resources>
