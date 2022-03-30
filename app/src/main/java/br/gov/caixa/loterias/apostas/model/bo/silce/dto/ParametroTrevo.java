@@ -15,6 +15,7 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import io.swagger.annotations.ApiModel;
@@ -24,15 +25,15 @@ import io.swagger.annotations.ApiModelProperty;
 public class ParametroTrevo<T> implements Serializable {
   
   @SerializedName("trevosSelecionados")
-  protected T trevosSelecionados = null;
+  protected List<Integer> trevosSelecionados = null;
 
 
   @ApiModelProperty(value = "")
-  public T getTrevosSelecionados() {
+  public List<Integer> getTrevosSelecionados() {
     return trevosSelecionados;
   }
 
-  public void setTrevosSelecionados(T trevosSelecionados) {
+  public void setTrevosSelecionados(List<Integer> trevosSelecionados) {
     this.trevosSelecionados = trevosSelecionados;
   }
 

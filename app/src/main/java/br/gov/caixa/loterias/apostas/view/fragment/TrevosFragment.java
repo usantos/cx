@@ -3,10 +3,16 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
 import org.androidannotations.annotations.AfterViews;
@@ -28,14 +35,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
+import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.TrevoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -45,6 +63,8 @@ import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
+
+import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 @EFragment(R.layout.fragment_trevos)
 public class TrevosFragment extends Fragment implements OnItemClickListener<DezenaHolder> {
@@ -121,6 +141,99 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
 
         listener.getButtonLimpar().setOnClickListener(onLimparClickListener());
         listener.getButtonLimpar().setVisibility(View.GONE);
+
+        listener.btnSalvarAposta().setOnClickListener(onSalverApostaClickListener());
+    }
+
+    private View.OnClickListener onSalverApostaClickListener() {
+        return v -> {
+            if (!listener.nomeApostaFavorita().isEmpty()) {
+
+                validarApostaFav(getApostaFavoritaDTO());
+
+            } else {
+                ViewUtils.alert(getActivity(), getString(R.string.msg_favor_inserir_nome_aposta));
+            }
+        };
+    }
+
+    private void validarApostaFav(ApostaFavoritaDTO apostaFavorita) {
+        DadosCorporativosBO_.getInstance_(getContext()).validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                salvarAposta(apostaFavorita);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                if(isErroNegocial(error)){
+                    ViewUtils.alertTitleButtonYesOrNotListener(
+                            getActivity(),
+                            MensagensNetwork.getErrorMessage(error),
+                            (dialogInterface, i) ->
+                                    salvarAposta(apostaFavorita)
+
+                    );
+                } else {
+                    RedirectNetwork.checkRedirect(error, getActivity());
+                }
+
+            }
+        });
+    }
+
+    private void salvarAposta(ApostaFavoritaDTO aposta) {
+        if(!AlertDialogUtils.isShow()){
+            AlertDialogUtils.show(getContext());
+        }
+        DadosCorporativosBO_.getInstance_(getContext()).salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
+
+                AlertDialogUtils.dismiss();
+
+               listener.atualizaLayoutSalverAposta();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, getActivity());
+
+            }
+        });
+    }
+
+    private ApostaFavoritaDTO getApostaFavoritaDTO(){
+        ApostaFavoritaDTO apostaFavorita = new ApostaFavoritaDTO();
+
+        DTOEnumInteger modalidade = new DTOEnumInteger();
+        modalidade.setDescricao(parametro.getConcurso().getModalidadeDetalhada().getDescricao());
+        modalidade.setValor(parametro.getConcurso().getModalidadeDetalhada().getValor());
+        apostaFavorita.setModalidade(modalidade);
+
+        String nomeAposta = listener.nomeApostaFavorita();
+
+        if (nomeAposta != null){
+            if(nomeAposta.length() > 25){
+                apostaFavorita.setNome(nomeAposta.substring(0, 25));
+            } else {
+                apostaFavorita.setNome(nomeAposta);
+            }
+        } else {
+            apostaFavorita.setNome("");
+        }
+        apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
+        apostaFavorita.setId(Constantes.ZERO_LONG);
+
+        apostaFavorita.setParametroTrevo(new ParametroTrevo());
+        apostaFavorita.getParametroTrevo().setTrevosSelecionados(trevoSelecionadoList);
+
+
+        return apostaFavorita;
+
     }
 
     private View.OnClickListener onLimparClickListener() {
