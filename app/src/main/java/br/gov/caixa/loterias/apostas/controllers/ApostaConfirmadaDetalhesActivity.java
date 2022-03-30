@@ -37,8 +37,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -412,9 +410,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 apostaFavoritaDTO.setNumerosSelecionados(aposta.getMatrizNumerosSelecionados());
             } else {
                 apostaFavoritaDTO.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
-                if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-                    // preenche valor de trevos no objeto apostaFavoritaDTO
-                }
             }
             apostaFavoritaDTO.setTimeDoCoracao(aposta.getTimeDoCoracao());
             apostaFavoritaDTO.setMesDeSorte(aposta.getMesDeSorte());
