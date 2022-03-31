@@ -1424,6 +1424,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else {
 				if (CollectionUtils.isNotEmpty(aposta.getListaNumerosSelecionados())) {
 					dezenasSelecionadas = aposta.getListaNumerosSelecionados();
+					simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
 					parentActivity.qtdDezenasPossiveisSelecionado = aposta.getQuantidadeNumeros();
 					parentActivity.qtdConcursoSelecionado = aposta.getQuantidadeTeimosinhas();
 					parentActivity.atualizaTextoBotoesQtdSelecionadas();
@@ -1432,6 +1433,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 						isEcolhaTimeBtnAtivado = Boolean.TRUE;
 					}
 					atualizaStatusBotaoFinalizar(false);
+					verificaSeMostraBotaoLimparAposta();
+					verificaMostraRodape();
 				}
 				ViewUtils.setMoedaFormatHtml(aposta.getValor(), valorAposta);
 			}
