@@ -65,7 +65,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -562,6 +561,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     public void trevosFragment(List<Integer> dezenasSelecionadas){
         fragmentManager.beginTransaction()
                        .replace(R.id.fragmentSimularApostas, TrevosFragment_.builder()
+                                                                            .aposta(aposta)
                                                                             .parametro(parametroSimulacao)
                                                                             .dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
         Paginacao paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), dezenasSelecionadas.size(), R.color.mais_milionaria_escura);

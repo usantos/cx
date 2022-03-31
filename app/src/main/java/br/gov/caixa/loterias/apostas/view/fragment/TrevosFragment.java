@@ -3,16 +3,10 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -53,6 +45,7 @@ import br.gov.caixa.loterias.apostas.model.model.TrevoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
@@ -78,6 +71,9 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     protected ParametroJogoDTO parametro;
     @FragmentArg
     protected ArrayList<Integer> dezenasSelecionadas;
+
+    @FragmentArg
+    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     private OnTrevosListener listener;
     private List<ParametroValorApostaDTO> valoresApostas;
@@ -121,6 +117,16 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         listaTrevos.setLayoutManager(layot);
 
         model = new TrevoModel(getActivity());
+        editAposta();
+    }
+
+    private void editAposta() {
+        if (aposta != null){
+            trevoSelecionadoList = AppUtils.converteListaInteiros(aposta.getTrevosSelecionados());
+            adappter.atualizaSelecionados(trevoSelecionadoList);
+            atualizaStatusBotao();
+            checaMostraBotaoLimpar();
+        }
     }
 
     private List<Dezena> getListaDezenas() {
