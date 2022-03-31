@@ -63,6 +63,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
@@ -257,7 +258,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         switch (aposta.getModalidade()) {
             case LOTOGOL:
                 disableButtonEditar();
-                partidaFragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.FALSE).build();
+                partidaFragment = ApostaConfirmadaPartidaFragment_.builder()
+                                                                  .valorPremio(valorPremio)
+                                                                  .aposta(aposta).loteca(Boolean.FALSE)
+                                                                  .comprovanteApostaDTO(comprovanteApostaDTO)
+                                                                  .build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -266,7 +271,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 break;
             case LOTECA:
                 disableButtonEditar();
-                partidaFragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).loteca(Boolean.TRUE).build();
+                partidaFragment = ApostaConfirmadaPartidaFragment_.builder()
+                                                                  .valorPremio(valorPremio)
+                                                                  .aposta(aposta)
+                                                                  .resultadoConcurso(resultadoConcurso)
+                                                                  .loteca(Boolean.TRUE)
+                                                                  .comprovanteApostaDTO(comprovanteApostaDTO)
+                                                                  .build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -400,13 +411,15 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             } else {
                 apostaFavoritaDTO.setNome("");
             }
+            if(aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                apostaFavoritaDTO.setParametroTrevo(new ParametroTrevo());
+
+                apostaFavoritaDTO.getParametroTrevo().setTrevosSelecionados(aposta.getTrevosSelecionados());
+            }
             if(aposta.getModalidade() == ModalidadeEnum.SUPER_7){
                 apostaFavoritaDTO.setNumerosSelecionados(aposta.getMatrizNumerosSelecionados());
             } else {
                 apostaFavoritaDTO.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
-                if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-                    // preenche valor de trevos no objeto apostaFavoritaDTO
-                }
             }
             apostaFavoritaDTO.setTimeDoCoracao(aposta.getTimeDoCoracao());
             apostaFavoritaDTO.setMesDeSorte(aposta.getMesDeSorte());
@@ -612,7 +625,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                     if (numerosFragment != null){
                         numerosFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
                     } else if(partidaFragment != null){
-                        numerosFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
+                        partidaFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
                     }
                 }
                 if (numerosFragment != null){

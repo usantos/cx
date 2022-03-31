@@ -107,7 +107,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			}
 			if (apostaPremiada()){
 				resultTxt.setText(aposta.getSituacao().getDescricao());
-				clResgatePremio.setVisibility(View.VISIBLE);
+				// mudar botao resgate para visible
+				clResgatePremio.setVisibility(View.GONE);
 				cl_premio_pago.setVisibility(View.GONE);
 				resultTxt.setVisibility(View.VISIBLE);
 			} else {

@@ -62,7 +62,6 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.mock.MaisMilionariaMock;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -73,9 +72,11 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
@@ -85,9 +86,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
+import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -96,8 +98,8 @@ import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -286,34 +288,35 @@ public class PrincipalActivity extends AppCompatActivity
         if(SessaoUsuarioUtil.precisaAtualizar()){
             final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
-            dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
-                @Override
-                public void onResponse(ParametrosSimulacaoResponse response) {
-                    AlertDialogUtils.dismiss();
-                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
+            new ParametrosSimulacaoModel(PrincipalActivity.this)
+                    .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
+                        @Override
+                        public void success(ParametrosSimulacao payload) {
+                            AlertDialogUtils.dismiss();
+                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
 
-                    modalidadesParaListar = response.getPayload().getParametros();
+                            modalidadesParaListar = payload.getParametros();
 
-                    if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
-                        Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                        appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+                            if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
+                                Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                                appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
-                        startActivityForResult(appIndis, 1);
-                    }
+                                startActivityForResult(appIndis, 1);
+                            }
 
-                    SessaoUsuarioUtil.atualizaParametrosSingleton(response);
-                    paramatroSimulacaoSuccess();
-                }
+                            SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
+                            paramatroSimulacaoSuccess();
+                        }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    AlertDialogUtils.dismiss();
-                    Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                    appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+                        @Override
+                        public void error(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                            Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                            appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
-                    startActivityForResult(appIndis, 1);
-                }
-            });
+                            startActivityForResult(appIndis, 1);
+                        }
+                    });
         }else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
             modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
             paramatroSimulacaoSuccess();

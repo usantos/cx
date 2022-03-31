@@ -45,6 +45,26 @@
             tools:text="@string/placeholder_prognosticos" />
 
         <RelativeLayout
+            android:id="@+id/trevosRl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_numeros">
+
+            <TextView
+                android:id="@+id/tvTrevos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/font_family_futura"
+                android:text="@string/trevos_"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/rl_container_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +92,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@color/transparente"
-            android:src="@drawable/ic_x"
+            android:src="@drawable/ic_icone_lixeira_verde"
             android:tint="@color/verde_card"
             app:layout_constraintBottom_toBottomOf="@id/tv_modalidade"
             app:layout_constraintEnd_toEndOf="parent"

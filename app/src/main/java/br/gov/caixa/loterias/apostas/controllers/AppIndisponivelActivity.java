@@ -14,12 +14,12 @@ import com.android.volley.VolleyError;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
+import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
@@ -70,27 +70,27 @@ public class AppIndisponivelActivity extends AppCompatActivity {
             if (isBuscaParametro) {
                 loadViewProgress = LoadingViewLoterias.show(this);
 
-                final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(AppIndisponivelActivity.this);
 
-                dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
-                    @Override
-                    public void onResponse(ParametrosSimulacaoResponse response) {
-                        if (response.getPayload().getParametros().isEmpty()) {
-                            loadViewProgress.dismiss();
-                            ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.nao_concluiu_operacao));
-                        } else {
-                            SessaoUsuarioUtil.atualizaParametrosSingleton(response);
-                            loadViewProgress.dismiss();
-                            finish();
-                        }
-                    }
+                new ParametrosSimulacaoModel(AppIndisponivelActivity.this)
+                        .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
+                            @Override
+                            public void success(ParametrosSimulacao payload) {
+                                if (payload.getParametros().isEmpty()) {
+                                    loadViewProgress.dismiss();
+                                    ViewUtils.alert(AppIndisponivelActivity.this, AppIndisponivelActivity.this.getString(R.string.nao_concluiu_operacao));
+                                } else {
+                                    SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
+                                    loadViewProgress.dismiss();
+                                    finish();
+                                }
+                            }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        loadViewProgress.dismiss();
-                        RedirectNetwork.checkRedirect(error, AppIndisponivelActivity.this);
-                    }
-                });
+                            @Override
+                            public void error(VolleyError error) {
+                                loadViewProgress.dismiss();
+                                RedirectNetwork.checkRedirect(error, AppIndisponivelActivity.this);
+                            }
+                        });
             } else {
                 loadViewProgress = LoadingViewLoterias.show(this);
 

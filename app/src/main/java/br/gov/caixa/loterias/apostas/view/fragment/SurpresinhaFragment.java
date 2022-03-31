@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.LayoutAnimationController;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,7 +57,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private ParametroEquipe equipeSelecionada = null;
     private ModalidadeEnum tipoJogo;
     private ParametroJogoDTO parametroJogo;
-    private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos;
+    private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos, getQtdNumeros = 6;
     private SurpresinhaGridViewAdapter simularDezenasAdapter;
     private BigDecimal valorTotalAposta;
 
@@ -63,10 +65,10 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     protected ImageView escolhaItemImageView;
 
     @ViewById
-    protected TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas, surpresinhaTitulo, surpresinhaQtdInfo, surpresinhaInfo, qtdSurpresinhasSelecionadasTrevos;
+    protected TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas, surpresinhaTitulo, surpresinhaQtdInfo, surpresinhaInfo, qtdSurpresinhasSelecionadasTrevos, qtdNumerosSelecionadasNovo;
 
     @ViewById
-    protected Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha, btnMenosTrevos, btnMaisTrevos;
+    protected Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha, btnMenosTrevos, btnMaisTrevos, btnNumerosMenos, btnNumerosMais;
 
     @ViewById
     protected RelativeLayout escolhaItemLayout;
@@ -81,7 +83,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     protected AppCompatCheckBox selcioneEspelhoSurpresinha;
 
     @ViewById
-    protected ConstraintLayout maisMilionaria;
+    protected ConstraintLayout maisMilionaria, numeroNovoConst;
 
     private SurpresinhaApostaModel model;
 
@@ -137,6 +139,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
             maisMilionaria.setVisibility(View.VISIBLE);
+            numeroNovoConst.setVisibility(View.VISIBLE);
 
             ConstraintLayout.LayoutParams textViewParams = (ConstraintLayout.LayoutParams) surpresinhaQtdInfo.getLayoutParams();
             textViewParams.topToBottom = R.id.maisMilionaria;
@@ -407,6 +410,42 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
         }
+    }
+
+    @Click
+    protected void btnNumerosMais() {
+        if (getQtdNumeros < 12) {
+            getQtdNumeros++;
+            parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
+            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+            qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
+        }
+        atualizarButtonColor();
+    }
+
+    @Click
+    protected void btnNumerosMenos() {
+        if (getQtdNumeros > 6) {
+            getQtdNumeros--;
+            parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
+            atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
+            qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
+        }
+        atualizarButtonColor();
+    }
+
+    protected void atualizarButtonColor() {
+        if (getQtdNumeros == 6) {
+            btnNumerosMenos.setBackgroundTintList(getCor(R.color.cinzaescuro));
+        } else {
+            btnNumerosMenos.setBackgroundTintList(getCor(typeGameColorLight));
+        }
+        if (getQtdNumeros == 12){
+            btnNumerosMais.setBackgroundTintList(getCor(R.color.cinzaescuro));
+        }else {
+            btnNumerosMais.setBackgroundTintList(getCor(typeGameColorLight));
+        }
+
     }
 
     @Click

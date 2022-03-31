@@ -14,8 +14,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
 public class ExpandableListDataSideMenu {
     public static final String MENU_DADOS_PESSOAIS = "Dados Pessoais";
     public static final String MENU_MINHAS_APOSTAS = "Minhas Apostas";
-    public static final String MENU_COMPRAS = "Compras";
-    public static final String MENU_FAVORITAS = "Favoritas";
+    public static final String MENU_COMPRAS = "Minhas Compras";
+    public static final String MENU_FAVORITAS = "Apostas Favoritas";
     public static final String MENU_CARRINHOS_FAVORITOS = "Carrinhos Favoritos";
     public static final String MENU_MEUS_CARTOES = "Meus Cartões";
 

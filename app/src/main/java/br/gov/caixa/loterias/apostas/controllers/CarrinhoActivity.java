@@ -29,7 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -498,13 +498,13 @@ public class CarrinhoActivity extends AppCompatActivity {
         }
     }
 
-    private OnSilceListener<ParametrosSimulacaoResponse> onParametroSimulacaoListener() {
-        return new OnSilceListener<ParametrosSimulacaoResponse>() {
+    private OnSilceListener<ParametrosSimulacao> onParametroSimulacaoListener() {
+        return new OnSilceListener<ParametrosSimulacao>() {
             @Override
-            public void success(ParametrosSimulacaoResponse response) {
+            public void success(ParametrosSimulacao payload) {
                 AlertDialogUtils.dismiss();
 
-                List<ParametroSimulacao> parametros = response.getPayload().getParametros();
+                List<ParametroSimulacao> parametros = payload.getParametros();
                 if (parametros == null || parametros.isEmpty()) {
                     Intent appIndis = new Intent(CarrinhoActivity.this, AppIndisponivelActivity.class);
                     appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
@@ -512,7 +512,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                     startActivityForResult(appIndis, 1);
                 }
 
-                SessaoUsuarioUtil.atualizaParametrosSingleton(response);
+                SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
                 postResume();
             }
 

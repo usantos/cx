@@ -45,7 +45,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	@SerializedName(value = "numerosSelecionados")
 	public T numerosSelecionados = null;
 	@SerializedName(value = "numerosSelecionadosMaisMilionariaTrevo")
-	public T trevosSelecionados = null;
+	public List<Integer> trevosSelecionados = null;
 	@SerializedName("indicadorSurpresinha")
 	protected DTOEnumInteger indicadorSurpresinha = null;
 	@SerializedName("valor")
@@ -425,11 +425,11 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		this.mesDeSorte = mesDeSorte;
 	}
 
-	public T getTrevosSelecionados() {
+	public List<Integer> getTrevosSelecionados() {
 		return trevosSelecionados;
 	}
 
-	public void setTrevosSelecionados(T trevosSelecionados) {
+	public void setTrevosSelecionados(List<Integer> trevosSelecionados) {
 		this.trevosSelecionados = trevosSelecionados;
 	}
 

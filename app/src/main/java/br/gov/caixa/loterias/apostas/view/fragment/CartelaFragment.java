@@ -53,6 +53,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -436,9 +437,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 				salvarApostaLayout.setLayoutParams(relativelayoutParams);
 
-				salvarApostaLayout.findViewById(R.id.btnSalvarAposta).setOnClickListener(this);
-				if (!DadosUsuarioBO.checarUsuarioLogado(getActivity())) {
-					RedirectNetwork.connectKeycloak(getActivity());
+				if(!parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
+					salvarApostaLayout.findViewById(R.id.btnSalvarAposta).setOnClickListener(this);
+				}
+
+				if (!DadosUsuarioBO.checarUsuarioLogado(parentActivity)) {
+					RedirectNetwork.connectKeycloak(parentActivity);
 				}
 			}
 			break;
@@ -450,6 +454,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 					ApostaFavoritaDTO aposta = new ApostaFavoritaDTO();
 					if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA) && equipeSelecionada != null) {
 						aposta.setTimeDoCoracao(equipeSelecionada);
+					}
+
+					if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
+						aposta.setParametroTrevo(new ParametroTrevo());
+
+
 					}
 
 					if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
@@ -1414,6 +1424,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else {
 				if (CollectionUtils.isNotEmpty(aposta.getListaNumerosSelecionados())) {
 					dezenasSelecionadas = aposta.getListaNumerosSelecionados();
+					simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
 					parentActivity.qtdDezenasPossiveisSelecionado = aposta.getQuantidadeNumeros();
 					parentActivity.qtdConcursoSelecionado = aposta.getQuantidadeTeimosinhas();
 					parentActivity.atualizaTextoBotoesQtdSelecionadas();
@@ -1422,6 +1433,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 						isEcolhaTimeBtnAtivado = Boolean.TRUE;
 					}
 					atualizaStatusBotaoFinalizar(false);
+					verificaSeMostraBotaoLimparAposta();
+					verificaMostraRodape();
 				}
 				ViewUtils.setMoedaFormatHtml(aposta.getValor(), valorAposta);
 			}
