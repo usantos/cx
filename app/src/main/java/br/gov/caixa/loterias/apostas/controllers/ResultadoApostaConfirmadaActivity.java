@@ -89,6 +89,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         contentResultadoPremiado.getTituloModalidadeTextView().setText(ModalidadeEnum.fromString(detalhesPremioDTO.getAposta().getModalidade()).toLowerCase());
 
+        contentResultadoPremiado.getButtonVerDetalheAposta().setOnClickListener(v -> finish());
+
         if (detalhesPremioDTO.getPremio().getValorLiquido() != null && !(BigDecimal.ZERO.compareTo(detalhesPremioDTO.getPremio().getValorLiquido()) == 0)) {
             contentResultadoPremiado.getValorPremioTituloTextView().setText( getResources().getString(R.string.label_voce_foi_premiado).replace(getResources().getString(R.string.chave_valor_premio_chave), ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido())));
         }

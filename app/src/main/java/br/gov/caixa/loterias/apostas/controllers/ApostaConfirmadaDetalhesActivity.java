@@ -44,10 +44,10 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -63,10 +63,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
+import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
@@ -95,8 +97,7 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 @OptionsMenu(R.menu.menu_apostas_confirmadas)
 public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implements ConferirResultadoHandler {
 
-    @Bean
-    protected DadosCorporativosBO dadosCorporativosBO;
+    private ApostaFavoritaModel model;
 
     @Bean
     protected PdfUtils pdfUtils;
@@ -162,6 +163,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
+
+        model = new ApostaFavoritaModel(ApostaConfirmadaDetalhesActivity.this);
+
         setaMetodos();
         setaViews();
 
@@ -254,7 +258,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         switch (aposta.getModalidade()) {
             case LOTOGOL:
                 disableButtonEditar();
-                partidaFragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).loteca(Boolean.FALSE).build();
+                partidaFragment = ApostaConfirmadaPartidaFragment_.builder()
+                                                                  .valorPremio(valorPremio)
+                                                                  .aposta(aposta).loteca(Boolean.FALSE)
+                                                                  .comprovanteApostaDTO(comprovanteApostaDTO)
+                                                                  .build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -263,7 +271,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 break;
             case LOTECA:
                 disableButtonEditar();
-                partidaFragment = ApostaConfirmadaPartidaFragment_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).loteca(Boolean.TRUE).build();
+                partidaFragment = ApostaConfirmadaPartidaFragment_.builder()
+                                                                  .valorPremio(valorPremio)
+                                                                  .aposta(aposta)
+                                                                  .resultadoConcurso(resultadoConcurso)
+                                                                  .loteca(Boolean.TRUE)
+                                                                  .comprovanteApostaDTO(comprovanteApostaDTO)
+                                                                  .build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -271,7 +285,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                                            .commit();
                 break;
             default:
-                numerosFragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).build();
+                numerosFragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).comprovanteApostaDTO(comprovanteApostaDTO).build();
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
@@ -397,44 +411,54 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             } else {
                 apostaFavoritaDTO.setNome("");
             }
+            if(aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                apostaFavoritaDTO.setParametroTrevo(new ParametroTrevo());
+
+                apostaFavoritaDTO.getParametroTrevo().setTrevosSelecionados(aposta.getTrevosSelecionados());
+            }
             if(aposta.getModalidade() == ModalidadeEnum.SUPER_7){
                 apostaFavoritaDTO.setNumerosSelecionados(aposta.getMatrizNumerosSelecionados());
-
             } else {
                 apostaFavoritaDTO.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
             }
             apostaFavoritaDTO.setTimeDoCoracao(aposta.getTimeDoCoracao());
             apostaFavoritaDTO.setMesDeSorte(aposta.getMesDeSorte());
 
-            dadosCorporativosBO.validarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
-                @Override
-                public void onResponse(NetworkResponse result) {
-                    salvarAposta();
-                }
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    AlertDialogUtils.dismiss();
-                    if(isErroNegocial(error)){
-                        ViewUtils.alertTitleButtonYesOrNotListener(
-                                ApostaConfirmadaDetalhesActivity.this,
-                                MensagensNetwork.getErrorMessage(error),
-                                (dialogInterface, i) ->
-                                        salvarAposta());
-                    } else {
-                        RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
-                    };
-                }
-            });
+
+            model.validaAposta(apostaFavoritaDTO, onValidaApostaListener());
 
         } else {
             ViewUtils.alert(this, getString(R.string.msg_favor_inserir_nome_aposta));
         }
     }
 
-    private void salvarAposta(){
-        dadosCorporativosBO.salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
+    private OnSilceListener<NetworkResponse> onValidaApostaListener() {
+        return new OnSilceListener<NetworkResponse>() {
             @Override
-            public void onResponse(NetworkResponse result) {
+            public void success(NetworkResponse payload) {
+                salvarAposta();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                if(isErroNegocial(error)){
+                    ViewUtils.alertTitleButtonYesOrNotListener(
+                            ApostaConfirmadaDetalhesActivity.this,
+                            MensagensNetwork.getErrorMessage(error),
+                            (dialogInterface, i) ->
+                                    salvarAposta());
+                } else {
+                    RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
+                };
+            }
+        };
+    }
+
+    private void salvarAposta(){
+        model.salvaAposta(apostaFavoritaDTO, new OnSilceListener<NetworkResponse>() {
+            @Override
+            public void success(NetworkResponse payload) {
                 AlertDialogUtils.dismiss();
                 favoritadoLayout.setVisibility(View.VISIBLE);
                 layoutnomeApostaLayout.setVisibility(View.GONE);
@@ -442,8 +466,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                onError(error);
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
             }
         });
     }
@@ -601,10 +625,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                     if (numerosFragment != null){
                         numerosFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
                     } else if(partidaFragment != null){
-                        numerosFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
+                        partidaFragment.atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
                     }
                 }
-
+                if (numerosFragment != null){
+                    numerosFragment.setDetalhesPremio(result.getPayload());
+                }
                 ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
             }
 

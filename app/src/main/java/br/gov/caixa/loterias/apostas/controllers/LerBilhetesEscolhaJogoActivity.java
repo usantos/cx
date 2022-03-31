@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ScrollView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -19,16 +18,13 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
+import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TiposApostasConferirApostaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
 
@@ -134,25 +130,20 @@ public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
 
     private void callWebservice() {
 
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-
-        apostaBO.getModalidades(new RequestListener<ModalidadeDTOResponse>() {
+        AlertDialogUtils.show(this);
+        new ModalidadeModel(this).buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
             @Override
-            public void onResponse(ModalidadeDTOResponse response) {
-                loadViewProgress.dismiss();
-                modalidades = response.getPayload();
-                Log.d(getResources().getString(R.string.response), response.getPayload().toString());
+            public void success(List<ModalidadeDTO> payload) {
+                AlertDialogUtils.dismiss();
+                modalidades = payload;
+                Log.d(getResources().getString(R.string.response), payload.toString());
 
                 atualizarLayout();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), LerBilhetesEscolhaJogoActivity.this);
-                }
             }
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, LerBilhetesEscolhaJogoActivity.this );
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
             }
         });
     }

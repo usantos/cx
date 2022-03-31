@@ -15,7 +15,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
@@ -137,7 +137,7 @@ public class CarrinhoModel {
 		crud.deleteAll();
 	}
 
-	public void buscaParametroSiumulacao(OnSilceListener<ParametrosSimulacaoResponse> listener) {
+	public void buscaParametroSiumulacao(OnSilceListener<ParametrosSimulacao> listener) {
 		model.buscaParametroSiumulacao(listener);
 	}
 

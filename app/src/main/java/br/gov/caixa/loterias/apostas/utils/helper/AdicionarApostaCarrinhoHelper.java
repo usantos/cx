@@ -47,9 +47,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 /**
@@ -176,6 +177,17 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void postAdicionarApostaCarrinhoMinhasApostas(ApostaBO apostaBO) {
+        if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && aposta.getTrevosSelecionados() != null){
+            aposta.setTrevosSelecionados(AppUtils.converteListaInteiros((List<Integer>) aposta.getTrevosSelecionados()));
+        }
+
+        if (aposta.getNumerosSelecionados() != null && ((List<Integer>)aposta.getNumerosSelecionados()).size() > 0){
+            DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
+            indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
+            indicadorSurpresinha.setDescricao("");
+            aposta.setIndicadorSurpresinha(indicadorSurpresinha);
+        }
+
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse result) {
@@ -476,7 +488,9 @@ public class AdicionarApostaCarrinhoHelper {
         apostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
         apostaDas8Modalidades.setQuantidadeTeimosinhas(aposta.getQuantidadeTeimosinhas());
         apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
-        apostaDas8Modalidades.setQuantidadeTrevos(aposta.getQtdTrevos());
+        if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+            apostaDas8Modalidades.setQuantidadeTrevos(aposta.getQtdTrevos());
+        }
         apostaDas8Modalidades.setTimeDoCoracao(aposta.getTimeDoCoracao());
         apostaDas8Modalidades.setSurpresinha(true);
         apostaDas8Modalidades.setGerarEspelho(aposta.getGerarEspelho());

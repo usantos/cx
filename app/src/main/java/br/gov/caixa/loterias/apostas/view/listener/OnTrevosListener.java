@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.apostas.view.listener;
 
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 
@@ -15,4 +17,12 @@ public interface OnTrevosListener {
 	void atualizaValorAposta(ParametroValorApostaDTO valorAposta);
 
 	int getQtdConcursos();
+
+	RelativeLayout getButtonSalvar();
+
+	String nomeApostaFavorita();
+
+	ImageButton btnSalvarAposta();
+
+	void atualizaLayoutSalverAposta();
 }

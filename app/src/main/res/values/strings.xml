@@ -1044,6 +1044,11 @@
     <string name="divisor_paginacao">|</string>
     <string name="trevos_dois_pontos">"Trevos: "</string>
     <string name="underline_trevos_underline">_trevos_</string>
+    <string name="trevos_sorteados">Trevos sorteados</string>
+    <string name="trevos_">Trevos:</string>
+    <string name="n_mero">Números</string>
+    <string name="escolha_a_quantidade_de_n_meros">Escolha a quantidade de números</string>
+
 
 
 </resources>

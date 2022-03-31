@@ -16,7 +16,7 @@ android {
         targetSdkVersion 30
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211066004
+        versionCode 211066005
         versionName "1.0.66"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -96,7 +96,7 @@ android {
             buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
             buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
             buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
-            buildConfigField "String", "URL_SSO", "\"https://login.hmp.corp.caixa.gov.br\""
+            buildConfigField "String", "URL_SSO", "\"https://logindes.caixa.gov.br\""
             buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
             buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
             buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""

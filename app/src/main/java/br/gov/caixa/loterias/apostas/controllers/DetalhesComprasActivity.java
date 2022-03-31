@@ -33,16 +33,17 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -371,23 +372,23 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void buscaModalidades() {
         AlertDialogUtils.show(DetalhesComprasActivity.this);
-        ApostaBO_.getInstance_(DetalhesComprasActivity.this).getModalidades(new RequestListener<ModalidadeDTOResponse>() {
-            @Override
-            public void onResponse(ModalidadeDTOResponse response) {
-                AlertDialogUtils.dismiss();
-                if (response.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalhesComprasActivity.this);
-                }
-                if(response.getPayload() != null){
-                    setaDialogFiltrar(response.getPayload());
-                }
-            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
-            }
-        });
+        new ModalidadeModel(DetalhesComprasActivity.this)
+                .buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
+                    @Override
+                    public void success(List<ModalidadeDTO> payload) {
+                        AlertDialogUtils.dismiss();
+
+                        if(payload != null){
+                            setaDialogFiltrar(payload);
+                        }
+                    }
+
+                    @Override
+                    public void error(VolleyError error) {
+                        AlertDialogUtils.dismiss();
+                    }
+                });
+
     }
 }
