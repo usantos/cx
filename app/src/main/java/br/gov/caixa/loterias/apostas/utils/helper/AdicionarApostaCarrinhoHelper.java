@@ -488,7 +488,9 @@ public class AdicionarApostaCarrinhoHelper {
         apostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
         apostaDas8Modalidades.setQuantidadeTeimosinhas(aposta.getQuantidadeTeimosinhas());
         apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
-        apostaDas8Modalidades.setQuantidadeTrevos(aposta.getQtdTrevos());
+        if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+            apostaDas8Modalidades.setQuantidadeTrevos(aposta.getQtdTrevos());
+        }
         apostaDas8Modalidades.setTimeDoCoracao(aposta.getTimeDoCoracao());
         apostaDas8Modalidades.setSurpresinha(true);
         apostaDas8Modalidades.setGerarEspelho(aposta.getGerarEspelho());
