@@ -52,6 +52,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -80,6 +81,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoRespo
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
@@ -449,13 +451,25 @@ public class PrincipalActivity extends AppCompatActivity
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
-                listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-                        parametro.getParametroJogo().getConcurso().getValorApostaMinima(), getResources().getString(R.string.string_vazia), getResources().getString(R.string.string_vazia), parametro.getParametroJogo().getConcurso().getModalidade(),
-                        parametro.getParametroJogo().getConcurso(), false, null));
+                String descricao = getDescricaoModalidade(parametro);
+                listaModalidades.add(new Modalidade(descricao, parametro.getParametroJogo().getConcurso().getValorApostaMinima(),
+                                                    getResources().getString(R.string.string_vazia),
+                                                    getResources().getString(R.string.string_vazia),
+                                                    parametro.getParametroJogo().getConcurso().getModalidade(),
+                                                    parametro.getParametroJogo().getConcurso(), false, null));
             }
         }
 
         return listaModalidades;
+    }
+
+    @NotNull
+    private String getDescricaoModalidade(ParametroSimulacao parametro) {
+        if (parametro.getParametroJogo().getConcurso().getTipoConcurso().name().contains(TipoConcursoEnum.NORMAL.name())){
+            return parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao();
+        } else {
+            return parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricaoEspecial();
+        }
     }
 
     private boolean conteMaisMilionaria() {

@@ -163,6 +163,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private Boolean flagApostaSalva = false;
     private int numeroConcursoAtual;
 
+    private Boolean isSurpresinha = false;
+
     @AfterViews
     protected void init() {
         isEspecial =  getIntent().getBooleanExtra(getResources().getString(R.string.extra_especial), false);
@@ -218,12 +220,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.simularTelaAposta: {
                 if (temPaginacao()){
                     paginacaoView.setVisibility(View.VISIBLE);
                 }
                 resetaCartela();
+                imageQtdNumerosButton.setVisibility(View.VISIBLE);
+                qtdNumerosButton.setVisibility(View.VISIBLE);
                 break;
             }
 
@@ -232,6 +237,12 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 abrirTelaSurprezinha();
                 if (temPaginacao()){
                     paginacaoView.setVisibility(View.GONE);
+                }
+
+                if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                    imageQtdNumerosButton.setVisibility(View.GONE);
+                    qtdNumerosButton.setVisibility(View.GONE);
+
                 }
                 break;
             }
@@ -243,6 +254,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             case R.id.qtdConcursosButton: {
                 modalTeimosinhas();
+
+
                 break;
             }
         }
@@ -522,24 +535,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
                 AlertDialogUtils.dismiss();
 
-                RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
-
-                salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
-                ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
-
-                final float scale = getResources().getDisplayMetrics().density;
-                relativelayoutParams.height = (int) (64 * scale + 0.5f);
-
-                salvarApostaLayout.setLayoutParams(relativelayoutParams);
-
-                TextView tituloSalvarAposta = getTextoSalveEstaAposta();
-                tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
-                tituloSalvarAposta.setGravity(Gravity.CENTER);
-
-                ImageView starSalvarApostaImageView = getIconStarSalvar();
-                starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
-
-                flagApostaSalva = true;
+                atualizaLayoutSalverAposta();
             }
 
             @Override
@@ -565,6 +561,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     public void trevosFragment(List<Integer> dezenasSelecionadas){
         fragmentManager.beginTransaction()
                        .replace(R.id.fragmentSimularApostas, TrevosFragment_.builder()
+                                                                            .aposta(aposta)
                                                                             .parametro(parametroSimulacao)
                                                                             .dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
         Paginacao paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), dezenasSelecionadas.size(), R.color.mais_milionaria_escura);
@@ -964,6 +961,47 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @Override
     public int getQtdConcursos() {
         return qtdConcursoSelecionado;
+    }
+
+    @Override
+    public RelativeLayout getButtonSalvar() {
+        return salvarApostaLayout;
+    }
+
+    @Override
+    public String nomeApostaFavorita() {
+        if(editNomeAposta != null){
+            return editNomeAposta.getText().toString();
+        }
+
+        return "";
+    }
+
+    @Override
+    public ImageButton btnSalvarAposta() {
+        return btnSalvarAposta;
+    }
+
+    @Override
+    public void atualizaLayoutSalverAposta() {
+        RelativeLayout salvarApostaLayout = getSalvarApostaLayout();
+
+        salvarApostaLayout.setBackgroundResource(R.color.verdeazul);
+        ViewGroup.LayoutParams relativelayoutParams = salvarApostaLayout.getLayoutParams();
+
+        final float scale = getResources().getDisplayMetrics().density;
+        relativelayoutParams.height = (int) (64 * scale + 0.5f);
+
+        salvarApostaLayout.setLayoutParams(relativelayoutParams);
+
+        TextView tituloSalvarAposta = getTextoSalveEstaAposta();
+        tituloSalvarAposta.setText(R.string.label_aposta_salva_carinha);
+        tituloSalvarAposta.setGravity(Gravity.CENTER);
+
+        ImageView starSalvarApostaImageView = getIconStarSalvar();
+        starSalvarApostaImageView.setBackgroundResource(R.drawable.icon_favoritado);
+
+        flagApostaSalva = true;
     }
 
     @Override

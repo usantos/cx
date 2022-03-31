@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
@@ -28,7 +28,7 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.color = color;
 		this.listener = listener;
-		this.dezenaConfig = new DezenaConfig(true, color, true);
+		this.dezenaConfig = new DezenaConfig(true, color, Color.WHITE, true);
 	}
 
 	public ListaDezenaRecyclerView(List<Dezena> dezenas, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, OnItemClickListener listener) {
@@ -42,7 +42,7 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 	@NonNull
 	@Override
 	public DezenaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_dezena,
+		View view = LayoutInflater.from(parent.getContext()).inflate(dezenaConfig.getLayout(),
 																		parent, false);
 		return new DezenaHolder(view, parent.getContext(), dezenaConfig, listener);
 	}
