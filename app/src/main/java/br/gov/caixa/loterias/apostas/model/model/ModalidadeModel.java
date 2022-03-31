@@ -30,16 +30,8 @@ public class ModalidadeModel {
 				if (response.getRedirect() != null) {
 					RedirectNetwork.checkRedirectSucesso(response.getRedirect(), activity);
 				}
-				List<ModalidadeDTO> modalidades = response.getPayload();
 
-				for (int index = 0; index < modalidades.size(); index++){
-					if (modalidades.get(index).getValor() == 9 && modalidades.get(index).getDescricao().equalsIgnoreCase("Mais Milionária")){
-						modalidades.remove(index);
-						break;
-					}
-				}
-
-				listener.success(modalidades);
+				listener.success(response.getPayload());
 			}
 
 			@Override
