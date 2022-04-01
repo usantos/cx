@@ -236,7 +236,17 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         } else {
             apostaFavorita.setNome("");
         }
-        apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
+        if(dezenasSelecionadas == null || dezenasSelecionadas.isEmpty()){
+            dezenasSelecionadas = new ArrayList<>();
+            for (Dezena d : dezenaList){
+                dezenasSelecionadas.add(Integer.valueOf(d.getValue()));
+            }
+            apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
+        }else {
+            apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
+        }
+
+
         apostaFavorita.setId(Constantes.ZERO_LONG);
 
         apostaFavorita.setParametroTrevo(new ParametroTrevo());
