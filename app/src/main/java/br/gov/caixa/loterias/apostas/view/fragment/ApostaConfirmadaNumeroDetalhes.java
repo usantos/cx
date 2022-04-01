@@ -280,7 +280,14 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		List<Integer> sorteados = null;
 		if (resultadoConcurso != null){
 			sorteados = new ArrayList<>();
-			resultadoConcurso.getNumerosSorteadosPrimeiroSorteio()
+			List<ArrayList> listSorteados = (List<ArrayList>) resultadoConcurso.getNumerosSorteadosPrimeiroSorteio();
+			for (int i = 0; i < listSorteados.size(); i++){
+				ArrayList listNumber = listSorteados.get(i);
+				if (listNumber != null && !listNumber.isEmpty()){
+					Number number = (Number) listNumber.get(0);
+					sorteados.add(new Integer(number.intValue()));
+				}
+			}
 		}
 		return sorteados;
 	}
