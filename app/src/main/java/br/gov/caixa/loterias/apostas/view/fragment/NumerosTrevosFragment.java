@@ -26,12 +26,13 @@ public class NumerosTrevosFragment extends Fragment {
 	private static final String LISTA_NUMEROS = "LISTA_NUMEROS";
 	private static final String LISTA_TREVOS = "LISTA_TREVOS";
 	private static final String LISTA_MARCADOS = "LISTA_MARCADOS";
+	private static final String LISTA_TREVOS_MARCADOS = "LISTA_TREVOS_MARCADOS";
 	private static final String CONFIGURACAO = "CONFIGURACAO";
 	private static final String TITULO_LISTA = "TITULO_LISTA";
 	private static final String TITULO_TREVOS = "TITULO_TREVOS";
 	private static final int QUANTIDADE_COLUNA_LISTA = 6;
 
-	private String listaTexto, numerosTextoSorteados, listaTrevosTexto;
+	private String listaTexto, numerosTextoSorteados, trevosTextoSorteados, listaTrevosTexto;
 	private List<Integer> listaNumerosInteiros, listaInteirosMarcados, listaTrevosInteiros, listaTrevosMarcados;
 	private ConfiguracaoNumeros configuracao;
 	private String tituloNumerosTexto;
@@ -42,7 +43,9 @@ public class NumerosTrevosFragment extends Fragment {
 	public static NumerosTrevosFragment newInstance(String tituloNumeros, String tituloTrevos,
 													List<Integer> numerosSelecionados,
 													List<Integer> trevosSelecionados,
-													List<Integer> numerosSorteados, ConfiguracaoNumeros configuracao) {
+													List<Integer> numerosSorteados,
+													List<Integer> trevosSorteados,
+													ConfiguracaoNumeros configuracao) {
 		NumerosTrevosFragment fragment = new NumerosTrevosFragment();
 		Bundle                args     = new Bundle();
 		if(numerosSelecionados != null){
@@ -59,6 +62,11 @@ public class NumerosTrevosFragment extends Fragment {
 			args.putString(LISTA_MARCADOS, String.valueOf(numerosSorteados));
 		} else {
 			args.putString(LISTA_MARCADOS, "");
+		}
+		if(trevosSorteados != null) {
+			args.putString(LISTA_TREVOS_MARCADOS, String.valueOf(trevosSorteados));
+		} else {
+			args.putString(LISTA_TREVOS_MARCADOS, "");
 		}
 		if (tituloNumeros != null && !tituloNumeros.isEmpty()){
 			args.putString(TITULO_LISTA, tituloNumeros);
@@ -81,6 +89,7 @@ public class NumerosTrevosFragment extends Fragment {
 		if (getArguments() != null) {
 			listaTexto = getArguments().getString(LISTA_NUMEROS);
 			numerosTextoSorteados = getArguments().getString(LISTA_MARCADOS);
+			trevosTextoSorteados = getArguments().getString(LISTA_TREVOS_MARCADOS);
 			listaTrevosTexto = getArguments().getString(LISTA_TREVOS);
 			tituloNumerosTexto = getArguments().getString(TITULO_LISTA);
 			tituloTrevosTexto = getArguments().getString(TITULO_TREVOS);
@@ -98,14 +107,13 @@ public class NumerosTrevosFragment extends Fragment {
 			}
 			if (numerosTextoSorteados != null && numerosTextoSorteados.length() > 0){
 				listaInteirosMarcados = gson.fromJson(numerosTextoSorteados, token.getType());
-				listaTrevosMarcados = new ArrayList<>();
-				listaTrevosMarcados.add(listaInteirosMarcados.get(6));
-				listaTrevosMarcados.add(listaInteirosMarcados.get(7));
-
-				listaInteirosMarcados.remove(7);
-				listaInteirosMarcados.remove(6);
 			} else {
 				listaInteirosMarcados = new ArrayList<>();
+			}
+			if (trevosTextoSorteados != null && trevosTextoSorteados.length() > 0){
+				listaTrevosMarcados = gson.fromJson(trevosTextoSorteados, token.getType());
+			} else {
+				listaTrevosMarcados = new ArrayList<>();
 			}
 			configuracao = (ConfiguracaoNumeros) getArguments().getSerializable(CONFIGURACAO);
 		}

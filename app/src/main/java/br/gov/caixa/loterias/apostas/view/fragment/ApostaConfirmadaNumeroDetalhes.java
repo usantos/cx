@@ -183,12 +183,16 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			case MAIS_MILIONARIA:
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
 
+
+
 				fragment = NumerosTrevosFragment
 						.newInstance(getContext().getResources().getString(R.string.seus_numeros),
 									 getContext().getResources().getString(R.string.trevosTitulo),
 									 aposta.getListaNumerosSelecionados(),
 									 AppUtils.converteListaInteiros((List<Integer>) aposta.getTrevosSelecionados()),
-									 numerosSorteadosPrimeiro, configuraEstiloNumeros());
+									 getNumerosSorteadosMaisMilionaria(numerosSorteadosPrimeiro),
+									 getTrevosSorteadosMaisMilionaria(numerosSorteadosPrimeiro),
+									 configuraEstiloNumeros());
 
 				break;
 			default:
