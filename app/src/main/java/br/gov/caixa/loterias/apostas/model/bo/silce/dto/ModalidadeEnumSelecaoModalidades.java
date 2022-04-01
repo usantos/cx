@@ -48,6 +48,7 @@ public enum ModalidadeEnumSelecaoModalidades {
             case "super sete":
                 return ModalidadeEnumSelecaoModalidades.SUPER_SETE;
             case "mais milionária":
+            case "+milionária":
                 return ModalidadeEnumSelecaoModalidades.MAIS_MILIONALIA;
             default:
                 return null;

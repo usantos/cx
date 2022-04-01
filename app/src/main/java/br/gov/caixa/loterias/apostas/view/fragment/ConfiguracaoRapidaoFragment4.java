@@ -108,7 +108,7 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 	private void populaArraysTipoAposta(List<TipoAposta> array, List<ModalidadeDTO> modalidades) {
 		for (ModalidadeDTO item : modalidades) {
 			TipoAposta tipoAposta = null;
-			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
+			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
 				case QUINA:
 					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_5, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
 					break;
@@ -132,6 +132,9 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 					break;
 				case SUPER_SETE:
 					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.superseteclaro	, false, item.getValor(), item.getDescricaoEspecial());
+					break;
+				case MAIS_MILIONALIA:
+					tipoAposta = new TipoAposta("+Milionária", R.drawable.trevo_mais_milionaria_nao_selecionado, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
 					break;
 				default:
 					break;
