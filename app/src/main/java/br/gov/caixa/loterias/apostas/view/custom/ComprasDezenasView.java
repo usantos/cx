@@ -29,8 +29,9 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasAdapter;
+import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
+import br.gov.caixa.loterias.apostas.view.fragment.NumerosFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.NumerosTrevosFragment;
 
 @EViewGroup(R.layout.item_compras_dezenas_layout)
 public class ComprasDezenasView extends LinearLayout {
@@ -42,7 +43,7 @@ public class ComprasDezenasView extends LinearLayout {
     protected LinearLayout detalheLayout;
 
     @ViewById
-    protected RelativeLayout rl_container_fragment;
+    protected RelativeLayout rl_container_fragment, rl_trevos_fragment;
 
     @ViewById
     protected TextView labelDetalheTxt, detalheTxt;
@@ -111,11 +112,26 @@ public class ComprasDezenasView extends LinearLayout {
         List numeros = AppUtils.converteListaInteiros(aposta.getListaNumerosSelecionados());
         List trevos = AppUtils.converteListaInteiros(aposta.getListaTrevosSelecionados());
 
-        NumerosTrevosFragment fragment = NumerosTrevosFragment.newInstance("", activity.getResources().getString(R.string.trevosTitulo),
-                                                                                        numeros, trevos, new ArrayList<>(), trevos,
-                                                                                        configuraEstiloNumeros(aposta));
+        NumerosFragment fragment = NumerosFragment.newInstance("",
+                                                                     numeros, new ArrayList<>(),
+                                                                     configuraEstiloNumeros(aposta), null);
         fm.beginTransaction().replace(newContainerId, fragment).commit();
         rl_container_fragment.setVisibility(VISIBLE);
+
+
+        int             newContainerTrevosId = getNewContainerId(fm);
+        rl_trevos_fragment.setId(newContainerTrevosId);
+        NumerosFragment trevosFrag = NumerosFragment.newInstance(activity.getResources().getString(R.string.trevosTitulo),
+                                                               trevos, trevos,
+                                                               configuraEstiloNumeros(aposta), getTrevoShape());
+        fm.beginTransaction().replace(newContainerTrevosId, trevosFrag).commit();
+        rl_trevos_fragment.setVisibility(VISIBLE);
+    }
+
+    private ShapeConfig getTrevoShape() {
+        return new ShapeConfig(R.drawable.ic_item_trevo,
+                               R.drawable.ic_item_trevo_selecionado,
+                               R.color.branco, R.color.mais_milionaria_escura);
     }
 
     private ConfiguracaoNumeros configuraEstiloNumeros(ApostaDTO aposta) {

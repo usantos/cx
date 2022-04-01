@@ -119,6 +119,7 @@ public class NumerosFragment extends Fragment {
 		} else {
 			titulo.setText(tituloTexto);
 		}
+		titulo.setTextColor(getActivity().getResources().getColor(R.color.branco));
 
 		listViewNumeros = view.findViewById(R.id.ehgv_numeros);
 
