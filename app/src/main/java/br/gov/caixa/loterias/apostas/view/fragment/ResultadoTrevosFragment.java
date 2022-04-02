@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultadosAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TrevosResultadosAdapter;
 
 public class ResultadoTrevosFragment extends Fragment {
 
@@ -55,14 +56,14 @@ public class ResultadoTrevosFragment extends Fragment {
 
     private void configuraResultadoNumeros(ResultadoConcursoDTO resultado) {
 
-        NumerosResultadosAdapter numerosResultadosAdapter;
+        TrevosResultadosAdapter numerosResultadosAdapter;
         int numberOfColumns = 3;
         if (resultado.getListaSorteadosPrimeiroSorteio().size() > 6) {
             numberOfColumns = 4;
         }
 
         this.rvNumerosResultado.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getActivity(), resultado.getListaSorteadosPrimeiroSorteio().subList(6, resultado.getListaSorteadosPrimeiroSorteio().size()), resultado.getConcurso().getModalidade());
+        numerosResultadosAdapter = new TrevosResultadosAdapter(getActivity(), resultado.getListaSorteadosPrimeiroSorteio().subList(6, resultado.getListaSorteadosPrimeiroSorteio().size()), resultado.getConcurso().getModalidade());
         this.rvNumerosResultado.setAdapter(numerosResultadosAdapter);
     }
 

@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultadosAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TrevosResultadosAdapter;
 
 /**
  * Created by cedesbr450 on 28/03/18.
@@ -70,9 +71,9 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
             tvTrevos.setVisibility(VISIBLE);
             recyclerTrevosResultado.setVisibility(VISIBLE);
 
-            NumerosResultadosAdapter numerosResultadosAdapter2;
+            TrevosResultadosAdapter numerosResultadosAdapter2;
             this.recyclerTrevosResultado.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            numerosResultadosAdapter2 = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().subList(6, modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size()), modalidade.getTipoModalidade());
+            numerosResultadosAdapter2 = new TrevosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().subList(6, modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size()), modalidade.getTipoModalidade());
             this.recyclerTrevosResultado.setAdapter(numerosResultadosAdapter2);
         }
 
