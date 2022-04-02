@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -39,6 +40,12 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
     @ViewById
     protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
 
+    @ViewById
+    protected RecyclerView recyclerTrevosResultado;
+
+    @ViewById
+    protected TextView tvTrevos;
+
 
     @AfterViews
     protected void init() {
@@ -56,8 +63,19 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
             numberOfColumns = 4;
         }
         this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
+        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().subList(0, modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size() - 2), modalidade.getTipoModalidade());
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
+
+        if(modalidade.getNome().equalsIgnoreCase("Mais Milionária".toLowerCase())){
+            tvTrevos.setVisibility(VISIBLE);
+            recyclerTrevosResultado.setVisibility(VISIBLE);
+
+            NumerosResultadosAdapter numerosResultadosAdapter2;
+            this.recyclerTrevosResultado.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            numerosResultadosAdapter2 = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().subList(6, modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size()), modalidade.getTipoModalidade());
+            this.recyclerTrevosResultado.setAdapter(numerosResultadosAdapter2);
+        }
+
 
         this.partidaViewDetalhesResultadoView.setLayout(modalidade);
 

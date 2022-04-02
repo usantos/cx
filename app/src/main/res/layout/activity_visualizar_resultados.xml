@@ -12,9 +12,9 @@
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_toolbar"
         android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:orientation="horizontal"
-    app:layout_constraintGuide_begin="?attr/actionBarSize" />
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
     <ScrollView
         android:id="@+id/sv_resultado"
@@ -108,6 +108,33 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_numero_sorteio"/>
 
                 <TextView
+                    android:id="@+id/tv_trevos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/arialmt"
+                    android:text="Trevos: "
+                    android:visibility="gone"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/v_container_fragment" />
+
+                <LinearLayout
+                    android:id="@+id/v_container_trevos_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_trevos"/>
+
+                <TextView
                     android:id="@+id/tv_data_sorteio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -119,7 +146,7 @@
                     android:textColor="@color/branco"
                     android:textSize="14.2sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/v_container_fragment" />
+                    app:layout_constraintTop_toBottomOf="@+id/v_container_trevos_fragment" />
 
                 <View
                     android:id="@+id/v_divisoria"
@@ -177,7 +204,7 @@
                     android:paddingBottom="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_premiados"/>
+                    app:layout_constraintTop_toBottomOf="@id/ll_premiados"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </RelativeLayout>
     </ScrollView>
