@@ -147,6 +147,21 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             textViewParams.topToBottom = R.id.maisMilionaria;
             surpresinhaQtdInfo.setLayoutParams(textViewParams);
 
+            qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
+            atualizaBotoesQtdNumeros();
+        }
+    }
+
+    private void atualizaBotoesQtdNumeros() {
+        if (getQtdNumeros > parametroJogo.getQuantidadeMinima() && getQtdNumeros < parametroJogo.getQuantidadeMaxima()){
+            btnNumerosMenos.setBackgroundTintList(getCor(typeGameColorLight));
+            btnNumerosMais.setBackgroundTintList(getCor(typeGameColorLight));
+        }else if (getQtdNumeros == parametroJogo.getQuantidadeMinima()){
+            btnNumerosMenos.setBackgroundTintList(getCor(R.color.cinzaescuro));
+            btnNumerosMais.setBackgroundTintList(getCor(typeGameColorLight));
+        } else {
+            btnNumerosMenos.setBackgroundTintList(getCor(typeGameColorLight));
+            btnNumerosMais.setBackgroundTintList(getCor(R.color.cinzaescuro));
         }
     }
 
