@@ -59,7 +59,11 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 		ApostaCarrinhoFavoritoDTO apostaAtual = listApostas.get(position);
 		EstiloModalidade          estilo      = new EstiloModalidade(ModalidadeEnum.fromModalidadeDTO(apostaAtual.getModalidade()));
 
-		holder.tvModalidade.setText(apostaAtual.getModalidade().getDescricao());
+		if (apostaAtual.getModalidade().getValor() == 9){
+			holder.tvModalidade.setText(activity.getResources().getString(R.string.label_mais_milionaria_acentuado));
+		} else {
+			holder.tvModalidade.setText(apostaAtual.getModalidade().getDescricao());
+		}
 		holder.tvModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorClara()));
 		holder.tvNumeros.setText(configuraNumeros(apostaAtual, holder));
 
@@ -71,7 +75,7 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 		if (apostaAtual.getModalidade().getValor() == 9){
 			holder.trevosRl.setVisibility(View.VISIBLE);
 
-			String trevos = "";
+			String trevos = " ";
 
 			if (apostaAtual.getIndicadorSurpresinha() != ApostaCarrinhoFavoritoDTO.IndicadorSurpresinhaEnum.NAO_SURPRESINHA) {
 				for (Object i:  apostaAtual.getParametroTrevo().getTrevosSelecionados()) {
@@ -83,10 +87,7 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 				}
 			}
 
-
-
 			holder.tvTrevos.setText("Trevos: " + trevos.substring(0, trevos.length() - 2));
-
 		}
 
 		if (apostaAtual.getModalidade().getDescricao().equalsIgnoreCase("dia de sorte")) {
