@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -113,6 +114,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private TextView tvTrevos;
     private LinearLayout containerFragmentTrevos;
 
+    private ImageView iv_header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +159,8 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
         containerFragmentTrevos = findViewById(R.id.v_container_trevos_fragment);
         tvTrevos = findViewById(R.id.tv_trevos);
+
+        iv_header = findViewById(R.id.iv_header);
 
     }
     private void setaMetodos(){
@@ -403,8 +407,12 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
         if(modalidade.getTipoModalidade().equals(ModalidadeEnum.MAIS_MILIONARIA)){
             tituloModalidade.setVisibility(View.GONE);
-            layoutTrevo.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            iv_header.setVisibility(View.VISIBLE);
+            layoutTrevo.setVisibility(View.GONE);
         } else {
+            tituloModalidade.setVisibility(View.VISIBLE);
+            iv_header.setVisibility(View.GONE);
+            layoutTrevo.setVisibility(View.VISIBLE);
             if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
                 tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
             }else {
