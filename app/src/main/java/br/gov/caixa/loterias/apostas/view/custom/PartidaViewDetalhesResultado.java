@@ -349,7 +349,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("7","3 números e 2 trevos acertados");
                 mapFaixa.put("8","3 números e 1 trevo acertado");
                 mapFaixa.put("9","2 números e 2 trevos acertados");
-                mapFaixa.put("10","2 números e 1 trevos acertado");
+                mapFaixa.put("10","2 números e 1 trevo acertado");
                 break;
         }
         return mapFaixa;
