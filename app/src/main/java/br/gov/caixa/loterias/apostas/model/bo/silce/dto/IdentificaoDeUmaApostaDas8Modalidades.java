@@ -596,7 +596,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 			return false;
 		}
 		for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()) {
-			if (item.getModalidade() != ModalidadeEnum.SUPER_7) {
+			if (item.getModalidade() != ModalidadeEnum.SUPER_7 && item.getModalidade() != ModalidadeEnum.MAIS_MILIONARIA) {
 				if (item.getModalidade().equals(ModalidadeEnum.fromInteger(apostaFavoritaDTO.getModalidade().getValor()))) {
 					List<Integer> numerosSelecionados = apostaFavoritaDTO.getListaNumerosSelecionados();
 					Collections.sort(numerosSelecionados);
@@ -605,6 +605,23 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 
 					if (numerosSelecionados.equals(numerosItem)) {
 						return true;
+					}
+				}
+			} else if (item.getModalidade().equals(ModalidadeEnum.MAIS_MILIONARIA)){
+				if (item.getModalidade().equals(ModalidadeEnum.fromInteger(apostaFavoritaDTO.getModalidade().getValor()))) {
+					List<Integer> numerosSelecionados = apostaFavoritaDTO.getListaNumerosSelecionados();
+					Collections.sort(numerosSelecionados);
+					List<Integer> numerosItem = item.getListaNumerosSelecionados();
+					Collections.sort(numerosItem);
+
+					if (numerosSelecionados.equals(numerosItem)) {
+						List<Integer> trevosSelecionados = apostaFavoritaDTO.getParametroTrevo().getTrevosSelecionados();
+						Collections.sort(trevosSelecionados);
+						List<Integer> trevosItem = item.getTrevosSelecionados();
+						Collections.sort(trevosItem);
+						if (trevosSelecionados.equals(trevosItem)) {
+							return true;
+						}
 					}
 				}
 			} else {

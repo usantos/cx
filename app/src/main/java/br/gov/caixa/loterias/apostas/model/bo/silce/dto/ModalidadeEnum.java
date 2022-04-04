@@ -150,6 +150,8 @@ public enum ModalidadeEnum implements Serializable {
                 return ModalidadeEnum.SUPER_7;
             case 8:
                 return ModalidadeEnum.LOTOFACIL;
+            case 9:
+                return ModalidadeEnum.MAIS_MILIONARIA;
             case 11:
                 return ModalidadeEnum.DIA_DE_SORTE;
             case 14:
