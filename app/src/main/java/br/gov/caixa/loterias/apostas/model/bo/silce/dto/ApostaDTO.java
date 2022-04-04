@@ -560,7 +560,7 @@ public class ApostaDTO<T> implements Serializable {
             case SUPER_7:
                 return "supersete";
             case MAIS_MILIONARIA:
-                return "maismilionária";
+                return "maismilionaria";
 //      case FEDERAL:
 //        return "federal";
 

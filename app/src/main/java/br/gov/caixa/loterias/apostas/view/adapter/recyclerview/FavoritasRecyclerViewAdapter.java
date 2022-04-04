@@ -180,7 +180,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
             holder.tituloApostaFavorita.setText("+Milionária");
 
-            String trevos = "";
+            String trevos = " ";
             for (Object i:  listaApostaFavorita.get(position).getParametroTrevo().getTrevosSelecionados()) {
                 trevos += i.toString() + " - ";
             }

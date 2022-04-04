@@ -107,8 +107,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			}
 			if (apostaPremiada()){
 				resultTxt.setText(aposta.getSituacao().getDescricao());
-				// mudar botao resgate para visible
-				clResgatePremio.setVisibility(View.GONE);
+				clResgatePremio.setVisibility(View.VISIBLE);
 				cl_premio_pago.setVisibility(View.GONE);
 				resultTxt.setVisibility(View.VISIBLE);
 			} else {
@@ -181,14 +180,16 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 				fragment = NumerosFragment.newInstance(getContext().getResources().getString(R.string.seus_numeros), aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros(), null);
 				break;
 			case MAIS_MILIONARIA:
-				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
+				numerosSorteadosPrimeiro = getNumerosSorteadosResultadoMaisMilionaria();
 
 				fragment = NumerosTrevosFragment
 						.newInstance(getContext().getResources().getString(R.string.seus_numeros),
 									 getContext().getResources().getString(R.string.trevosTitulo),
 									 aposta.getListaNumerosSelecionados(),
 									 AppUtils.converteListaInteiros((List<Integer>) aposta.getTrevosSelecionados()),
-									 numerosSorteadosPrimeiro, configuraEstiloNumeros());
+									 getNumerosSorteadosMaisMilionaria(numerosSorteadosPrimeiro),
+									 getTrevosSorteadosMaisMilionaria(numerosSorteadosPrimeiro),
+									 configuraEstiloNumeros());
 
 				break;
 			default:
@@ -273,6 +274,22 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			}
 		}
 
+	}
+
+	private List<Integer> getNumerosSorteadosResultadoMaisMilionaria() {
+		List<Integer> sorteados = null;
+		if (resultadoConcurso != null){
+			sorteados = new ArrayList<>();
+			List<ArrayList> listSorteados = (List<ArrayList>) resultadoConcurso.getNumerosSorteadosPrimeiroSorteio();
+			for (int i = 0; i < listSorteados.size(); i++){
+				ArrayList listNumber = listSorteados.get(i);
+				if (listNumber != null && !listNumber.isEmpty()){
+					Number number = (Number) listNumber.get(0);
+					sorteados.add(new Integer(number.intValue()));
+				}
+			}
+		}
+		return sorteados;
 	}
 
 	private ShapeConfig getTrevoShape() {
