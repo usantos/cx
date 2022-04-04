@@ -63,7 +63,11 @@ public class VisualizarModalidadesAdapter extends BaseAdapter {
         final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloTipoApostaTextView);
 
         tituloTipoAposta.setText(tipoAposta.getTitulo());
-        imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+        if (tipoAposta.getValor() == 9){
+            imageViewTipoAPosta.setImageResource(R.drawable.ic_caixa_mm_amarelo_branco);
+        }else {
+            imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+        }
         linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
         tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
 

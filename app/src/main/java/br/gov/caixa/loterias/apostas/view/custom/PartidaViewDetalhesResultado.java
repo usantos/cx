@@ -254,10 +254,10 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     public static LinkedHashMap<String,String> obterMapFaixa(Modalidade  modalidade){
         LinkedHashMap<String,String> mapFaixa = new LinkedHashMap<>();
         String modalidadeTratada = modalidade.getNome()
-                                             .toUpperCase()
-                                             .replace(" ", "")
-                                             .replace("_", "")
-                                             .replace("-", "");
+                .toUpperCase()
+                .replace(" ", "")
+                .replace("_", "")
+                .replace("-", "");
         switch (modalidadeTratada ){
             case "DIADESORTE":
                 mapFaixa.put("0001","7 números acertados");
@@ -266,7 +266,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0004","4 números acertados");
                 mapFaixa.put("0005","Mês da Sorte\n"+
                         (modalidade.getResultadoConcursoDTO() == null ? "":
-                        modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome()));
+                                modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome()));
                 break;
             case "DUPLASENA":
                 mapFaixa.put("0001","Sena - 6 números acertados");
@@ -323,7 +323,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0005","3 números acertados");
                 mapFaixa.put("0006","Time do Coração\n"+
                         (modalidade.getResultadoConcursoDTO() == null ? "":
-                        modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome()));
+                                modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome()));
                 break;
             case "SUPERSETE":
             case "SUPER7":
@@ -337,6 +337,19 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("3","5 acertos");
                 mapFaixa.put("4","4 acertos");
                 mapFaixa.put("5","3 acertos");
+                break;
+            case "MAISMILIONARIA":
+            case "MAISMILIONÁRIA":
+                mapFaixa.put("1","6 números +2 trevos acertados");
+                mapFaixa.put("2","6 números +1 ou 6 +0 trevos acertados");
+                mapFaixa.put("3","5 números +2 trevos acertados");
+                mapFaixa.put("4","5 números e 1 ou 0 trevos acertados");
+                mapFaixa.put("5","4 números e 2 trevos acertados");
+                mapFaixa.put("6","4 números e 1 ou 0 trevos acertados");
+                mapFaixa.put("7","3 números e 2 trevos acertados");
+                mapFaixa.put("8","3 números e 1 trevo acertado");
+                mapFaixa.put("9","2 números e 2 trevos acertados");
+                mapFaixa.put("10","2 números e 1 trevo acertado");
                 break;
         }
         return mapFaixa;
@@ -395,9 +408,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO : listaGanhadores) {
                 TextView title1 = new TextView(getContext());
                 title1.setText(getResources().getString(R.string.label_texto_barra_texto,
-                                                        ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(),
-                                                        ganhadoresPorRegiaoDTO.getUfSorteio().getSigla())
-                              );
+                        ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(),
+                        ganhadoresPorRegiaoDTO.getUfSorteio().getSigla())
+                );
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 

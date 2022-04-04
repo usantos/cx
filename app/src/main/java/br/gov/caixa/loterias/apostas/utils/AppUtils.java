@@ -10,6 +10,8 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,10 +35,19 @@ public class AppUtils {
         if (lista != null && lista.size() > 0) {
             if(lista.get(0) instanceof Integer){
                 return lista;
+            } else if (lista.get(0) instanceof Number) {
+                for (Number n : lista) {
+                    listaInteiros.add(new Integer( n.intValue()));
+                }
+            } else {
+                for (int a = 0; a < lista.size(); a++){
+                    String tmp  = String.valueOf(lista.get(a)).replace("[","").replace("]", "");
+
+                    Double dNumero = Double.parseDouble(tmp);
+                    listaInteiros.add(dNumero.intValue());
+                }
             }
-            for (Number n : lista) {
-                listaInteiros.add(new Integer( n.intValue()));
-            }
+
         }
         return listaInteiros;
     }

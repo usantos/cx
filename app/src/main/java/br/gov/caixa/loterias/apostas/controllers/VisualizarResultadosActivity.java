@@ -9,11 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
+import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -52,7 +55,9 @@ import br.gov.caixa.loterias.apostas.view.fragment.ResultadoDuplaSenaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoGenericoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoLotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoLotogolFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.ResultadoMaisMilionariaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoTimemaniaDiaDeSorteFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.ResultadoTrevosFragment;
 
 import static br.gov.caixa.loterias.apostas.controllers.SelecaoModalidadesResultados.MODALIDADE;
 
@@ -106,6 +111,10 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private ImageButton ibPesquisar;
     private EditText etPesquisar;
 
+    private TextView tvTrevos;
+    private LinearLayout containerFragmentTrevos;
+
+    private ImageView iv_header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +156,11 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             setBackground(corClara,corEscura,resourceTrapezio);
         }
         setTitle("");
+
+        containerFragmentTrevos = findViewById(R.id.v_container_trevos_fragment);
+        tvTrevos = findViewById(R.id.tv_trevos);
+
+        iv_header = findViewById(R.id.iv_header);
 
     }
     private void setaMetodos(){
@@ -299,11 +313,25 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 containerFragment.addView(view7);
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
+            case MAIS_MILIONARIA:
+                setBackground(R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, R.drawable.mais_milionaria);
+                configuraResultadoSuperior(response, ResultadoMaisMilionariaFragment.newInstance(response));
+                containerFragmentTrevos.setVisibility(View.VISIBLE);
+                tvTrevos.setVisibility(View.VISIBLE);
+                configuraResultadoTrevos(response);
+                break;
             default:
                 setBackground(R.color.megasenaclaro, R.color.megasenaescuro, R.drawable.background_trapeze_megasena);
                 configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
         }
+    }
+
+    private void configuraResultadoTrevos(ResultadoConcursoDTO response) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.v_container_trevos_fragment, ResultadoTrevosFragment.newInstance(response));
+        fragmentTransaction.commit();
     }
 
     private void configuraResultadoSuperior(ResultadoConcursoDTO response, Fragment f) {
@@ -376,11 +404,23 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 response.getPayload());
 
         partidaViewDetalhesResultado.setLayout(modalidade);
-        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
-            tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
-        }else {
-            tituloModalidade.setText(txtModalidade);
+
+        if(modalidade.getTipoModalidade().equals(ModalidadeEnum.MAIS_MILIONARIA)){
+            tituloModalidade.setVisibility(View.GONE);
+            iv_header.setVisibility(View.VISIBLE);
+            layoutTrevo.setVisibility(View.GONE);
+        } else {
+            tituloModalidade.setVisibility(View.VISIBLE);
+            iv_header.setVisibility(View.GONE);
+            layoutTrevo.setVisibility(View.VISIBLE);
+            if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
+                tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+            }else {
+                tituloModalidade.setText(txtModalidade);
+            }
         }
+
+
         setButtons();
         setTitlePorConcurso(concursoAlvo);
     }

@@ -19,6 +19,26 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="19dp" />
 
+        <TextView
+            android:id="@+id/tvTrevos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/arialmt"
+            android:text="Trevos: "
+            android:textColor="@color/branco"
+            android:textSize="14.2sp"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerTrevosResultado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="19dp"
+            android:visibility="gone"/>
+
         <View
             android:id="@+id/tracoViewDivisoriaResultado"
             android:layout_width="match_parent"

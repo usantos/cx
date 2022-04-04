@@ -183,7 +183,7 @@ public class EstiloModalidade {
                 menuItemColor = R.color.branco;
                 iconValidadeComprovanteColor = R.color.black;
                 iconImpressoraColor = R.color.branco;
-                trevo = R.drawable.trevo_megasena;
+                trevo = R.drawable.ic_caixa_mm_amarelo_branco;
                 colorTextAlpha6 = R.color.white_6;
                 break;
             default: {
