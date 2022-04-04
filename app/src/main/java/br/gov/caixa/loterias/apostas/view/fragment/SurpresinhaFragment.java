@@ -147,6 +147,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             textViewParams.topToBottom = R.id.maisMilionaria;
             surpresinhaQtdInfo.setLayoutParams(textViewParams);
 
+            getQtdNumeros = parentActivity.qtdDezenasPossiveisSelecionado;
             qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
             atualizaBotoesQtdNumeros();
         }
@@ -438,6 +439,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
         }
         atualizarButtonColor();
+        parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
+        parentActivity.atualizaTextoBotoesQtdSelecionadas();
     }
 
     @Click
@@ -449,6 +452,8 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
         }
         atualizarButtonColor();
+        parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
+        parentActivity.atualizaTextoBotoesQtdSelecionadas();
     }
 
     protected void atualizarButtonColor() {
