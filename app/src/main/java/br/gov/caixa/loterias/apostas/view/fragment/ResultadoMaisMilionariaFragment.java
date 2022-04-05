@@ -57,10 +57,7 @@ public class ResultadoMaisMilionariaFragment extends Fragment {
 
         NumerosResultadosAdapter numerosResultadosAdapter;
         int numberOfColumns = 3;
-        if (resultado.getListaSorteadosPrimeiroSorteio().size() > 6) {
-            numberOfColumns = 4;
-        }
-
+        
         this.rvNumerosResultado.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
         numerosResultadosAdapter = new NumerosResultadosAdapter(getActivity(), resultado.getListaSorteadosPrimeiroSorteio().subList(0, resultado.getListaSorteadosPrimeiroSorteio().size() - 2), resultado.getConcurso().getModalidade());
         this.rvNumerosResultado.setAdapter(numerosResultadosAdapter);

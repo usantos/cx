@@ -59,10 +59,15 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
         tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
 
         NumerosResultadosAdapter numerosResultadosAdapter;
+
         int numberOfColumns = 3;
-        if (modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size()>6){
-            numberOfColumns = 4;
+        if(!modalidade.getNome().equalsIgnoreCase("Mais Milionária".toLowerCase())){
+            if (modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size()>6){
+                numberOfColumns = 4;
+            }
         }
+
+
         this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
         numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().subList(0, modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size() - 2), modalidade.getTipoModalidade());
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
