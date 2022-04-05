@@ -77,6 +77,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     @AfterViews
     public void init() {
         contentResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.GONE);
+        contentResultadoPremiado.getButtonVerDetalheAposta().setVisibility(View.GONE);
         createToolBar();
         postLerBilhetes();
     }
