@@ -26,7 +26,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/arialmt"
-            android:text="Trevos: "
+            android:text="@string/Trevos"
             android:textColor="@color/branco"
             android:textSize="14.2sp"
             android:visibility="gone" />
@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="19dp"
+            android:layout_marginStart="28dp"
             android:visibility="gone"/>
 
         <View
