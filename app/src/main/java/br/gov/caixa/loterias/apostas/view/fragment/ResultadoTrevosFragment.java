@@ -58,12 +58,9 @@ public class ResultadoTrevosFragment extends Fragment {
 
         TrevosResultadosAdapter numerosResultadosAdapter;
         int numberOfColumns = 3;
-        if (resultado.getListaSorteadosPrimeiroSorteio().size() > 6) {
-            numberOfColumns = 4;
-        }
 
         this.rvNumerosResultado.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
-        numerosResultadosAdapter = new TrevosResultadosAdapter(getActivity(), resultado.getListaSorteadosPrimeiroSorteio().subList(6, resultado.getListaSorteadosPrimeiroSorteio().size()), resultado.getConcurso().getModalidade());
+        numerosResultadosAdapter = new TrevosResultadosAdapter(getActivity(), resultado.getTrevosSorteadosPrimeiroSorteio(), resultado.getConcurso().getModalidade());
         this.rvNumerosResultado.setAdapter(numerosResultadosAdapter);
     }
 

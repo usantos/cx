@@ -69,7 +69,7 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 
 
         this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().subList(0, modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size() - 2), modalidade.getTipoModalidade());
+        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
 
         if(modalidade.getNome().equalsIgnoreCase("Mais Milionária".toLowerCase())){
@@ -78,7 +78,7 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 
             TrevosResultadosAdapter numerosResultadosAdapter2;
             this.recyclerTrevosResultado.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            numerosResultadosAdapter2 = new TrevosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().subList(6, modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size()), modalidade.getTipoModalidade());
+            numerosResultadosAdapter2 = new TrevosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getTrevosSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
             this.recyclerTrevosResultado.setAdapter(numerosResultadosAdapter2);
         }
 

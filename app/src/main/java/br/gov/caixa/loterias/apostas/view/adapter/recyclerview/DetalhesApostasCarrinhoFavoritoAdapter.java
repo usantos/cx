@@ -78,7 +78,7 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 			String trevos = " ";
 
 			if (apostaAtual.getIndicadorSurpresinha() != ApostaCarrinhoFavoritoDTO.IndicadorSurpresinhaEnum.NAO_SURPRESINHA) {
-				for (Object i:  apostaAtual.getParametroTrevo().getTrevosSelecionados()) {
+				for (int i = 0; i < apostaAtual.getQuantidadeTrevos(); i++) {
 					trevos += "XX" + " - ";
 				}
 			} else {
