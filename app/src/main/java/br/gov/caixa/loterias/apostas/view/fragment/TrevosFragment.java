@@ -106,7 +106,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         valorApostaSelecionado = valoresApostas.get(0);
 
         DezenaConfig dezenaConfig = new DezenaConfig(false, R.color.mais_milionaria_escura,
-                                                     R.layout.item_dezena,
+                                                     R.layout.item_dezena_trevo,
                                                      new ShapeConfig(R.drawable.ic_item_trevo,
 																	 R.drawable.ic_item_trevo_selecionado,
 																	 R.color.mais_milionaria_escura, R.color.mais_milionaria_escura),
@@ -448,5 +448,9 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
 
             listener.getButtonSalvar().setVisibility(View.GONE);
         }
+    }
+
+    public ParametroValorApostaDTO getParametroValorApostaSelecionado() {
+        return valorApostaSelecionado;
     }
 }
