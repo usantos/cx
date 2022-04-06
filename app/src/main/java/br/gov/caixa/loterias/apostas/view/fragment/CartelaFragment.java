@@ -1064,8 +1064,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		recyclerViewPartida = fragmentView.findViewById(R.id.recyclerViewPartida);
 
 		if (dezenas != null && dezenas.size() > 0 && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-
-
 			simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, dezenasSelecionadas,
 																typeGameColorDark, onItemClickListener());
 			listaDezenas.setAdapter(simularDezenasAdapter);
@@ -1101,7 +1099,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			if (dezenasSelecionadas.contains(valorSelecionado)) {
 				dezenasSelecionadas.remove(valorSelecionado);
 				if (dezenasSelecionadas.size() >= parametroJogo.getQuantidadeMinima()) {
-					parentActivity.qtdDezenasPossiveisSelecionado -= 1;
+					parentActivity.qtdDezenasPossiveisSelecionado = dezenasSelecionadas.size();
 					parentActivity.verificaNovoQtdDezenasMax(dezenasSelecionadas.size());
 					verificaSeMostraBotaoLimparAposta();
 				}

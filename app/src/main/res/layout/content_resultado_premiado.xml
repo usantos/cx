@@ -186,7 +186,7 @@
                 android:id="@+id/tvDetalheAposta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ver detalhe da aposta"
+                android:text="@string/ver_detalhe_da_aposta"
                 android:textColor="@color/mais_milionaria_escura"
                 android:layout_marginStart="16sp"
                 app:layout_constraintStart_toEndOf="@+id/ivDetalheAposta"
