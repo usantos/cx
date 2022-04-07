@@ -357,23 +357,9 @@
     <string name="label_arrecadacao_total_bold">_Arrecada\u00e7\u00e3o total_</string>
     <string name="label_ganhadores_regiao_bold">_Ganhadores por regi\u00e3o_</string>
     <string name="label_tres_interrogacoes">\???\</string>
-    <string-array name="dia_sorte_meses">
-        <item>Janeiro</item>
-        <item>Fevereiro</item>
-        <item>Março</item>
-        <item>Abril</item>
-        <item>Maio</item>
-        <item>Junho</item>
-        <item>Julho</item>
-        <item>Agosto</item>
-        <item>Setembro</item>
-        <item>Outubro</item>
-        <item>Novembro</item>
-        <item>Dezembro</item>
-    </string-array>
+    <string name="label_comprovante_aposta">Comprovante de aposta - %s</string>
 
     <!-- Comprovante -->
-    <string name="label_comprovante_aposta">Comprovante de aposta - %s</string>
     <string name="label_comprovante_premio">Comprovante do prêmio - %s</string>
     <string name="label_data_sorteio">Data de sorteio</string>
     <string name="label_valor_aposta">Valor da aposta</string>
@@ -411,17 +397,17 @@
     <string name="title_activity_rapidao_aposta_favorita_selecao">
         RapidaoApostaFavoritaSelecaoActivity
     </string>
+    <string name="label_explicacao_atualizacao">O seu aplicativo está desatualizado. Para continuar será necessário efetuar a atualização.</string>
 
     <!-- Versão App -->
-    <string name="label_explicacao_atualizacao">O seu aplicativo está desatualizado. Para continuar será necessário efetuar a atualização.</string>
     <string name="title_atualizar">Atualizar</string>
-
     <string name="label_app_indisponivel">O aplicativo está temporariamente indisponível. Tente novamente mais tarde.</string>
+
     <string name="nao_concluiu_operacao">Não foi possível concluir esta operação. Por favor, tente novamente.</string>
     <string name="title_tente_novamente">Tentar novamente</string>
-
-
     <string name="label_rapidao_resolve">Deixa que o _Rapidão_ resolve!</string>
+
+
     <string name="label_limites_1">Selecione os _limites da sua compra,_</string>
     <string name="label_limites_2">\nsuas _modalidades favoritas._</string>
     <string name="label_numeros_proibidos"><![CDATA[Fuja dos números  <font color=\'#EE0000\'>\"proibidos\"</font> que não te dão sorte]]></string>
@@ -464,9 +450,9 @@
     <string name="title_restrito18anos">O uso do aplicativo é restrito a maiores de 18 anos.</string>
     <string name="title_modalidades">Modalidades</string>
     <string name="title_selecioneOpcoesRapidao">Selecione as opções que você quer contemplar no Rapidão.</string>
+    <string name="mercado_pago_mes_invalido">Mês inválido.</string>
 
     <!-- Mercado pago -->
-    <string name="mercado_pago_mes_invalido">Mês inválido.</string>
     <string name="mercado_pago_ano_invalido">Ano inválido.</string>
     <string name="mercado_pago_email_invalido">Email inválido.</string>
     <string name="mercado_pago_padrao">Não foi possível realizar o pagamento.\nFavor entrar em contato com o Mercado Pago através do site\nwww.mercadopago.com.br.</string>
@@ -515,9 +501,9 @@
     <string name="mercado_pago_realizaou_pagamento_similar">Você realizou um pagamento similar há poucos instantes. Tente novamente em alguns minutos.</string>
     <string name="mercado_pago_erro_default">Não foi possível realizar a operação. Entre em contato com o meio de pagamento pelo endereço www.mercadopago.com.br/ajuda</string>
     <string name="mercado_pago_erro_payment_not_found">Meio de pagamento não encontrado. Revise o número do seu cartão.</string>
+    <string name="resultados_selecione_opcoes">Selecione a modalidade para\n ver os seus resultados</string>
 
     <!-- Resultados -->
-    <string name="resultados_selecione_opcoes">Selecione a modalidade para\n ver os seus resultados</string>
     <string name="resultados_titulo">Concurso nº %s</string>
     <string name="resultados_botao">Concurso\nnº _%s_</string>
     <string name="resultados_data_sorteio">Data do sorteio: %s</string>
@@ -525,9 +511,9 @@
     <string name="resultados_numeros_sorteados">Números sorteados:</string>
     <string name="resultados_placeholder_toolbar">Nº do concurso</string>
     <string name="resultados_validacao_concurso">O último concurso apurado é o %s</string>
+    <string name="carrinho_fav_btn">Carrinhos\nfavoritos</string>
 
     <!-- Carrinhos Favoritos -->
-    <string name="carrinho_fav_btn">Carrinhos\nfavoritos</string>
     <string name="carrinho_fav_titulo">_Carrinhos Favoritos_</string>
     <string name="carrinho_fav_lbl_msg">Carrinho favorito salvo com sucesso.</string>
     <string name="carrinho_fav_manter_surp">Manter apostas como\nsurpresinhas</string>
@@ -540,38 +526,38 @@
     <string name="carrinho_fav_deseja_excluir_aposta">Deseja realmente excluir esta aposta?</string>
     <string name="carrinho_fav_incluir_carrinho">Incluir no carrinho</string>
     <string name="carrinho_fav_segmented_desc">Existem 2 concursos abertos para a {modalidade}.\nDeseja incluir no carrinho qual concurso?</string>
+    <string name="cartoes_titulo_menu_lat">Cartões</string>
 
     <!-- Meus Cartões -->
-    <string name="cartoes_titulo_menu_lat">Cartões</string>
     <string name="cartoes_titulo">Pagamento</string>
     <string name="cartoes_subt_menu_lat">Cartões cadastrados</string>
     <string name="cartoes_desc_menu_lat">Confira aqui sua lista de cartões salvos</string>
     <string name="cartoes_subt">Seus Cartões</string>
     <string name="cartoes_desc">Escolha um cartão e cruze os dedos</string>
     <string name="cartoes_sem_cartao">Você ainda não possui um cartão de crédito cadastrado. Faça uma aposta e salve seu cartão de crédito para as compras futuras de forma rápida e fácil, se desejar.</string>
+    <string name="rsgt_lt_btn_gerar">Gerar\nnovamente</string>
 
 
     <!-- Resgate Lotérica -->
-    <string name="rsgt_lt_btn_gerar">Gerar\nnovamente</string>
     <string name="rsgt_lt_msg_qr_valido">O QR Code é válido por {tempo} minutos\nacompanhe o contador:</string>
     <string name="rsgt_lt_msg_qr_invalido">O QR Code expirou</string>
     <string name="rsgt_lt_msg_info_3">Aproveite seu _prêmio_!</string>
+    <string name="label_loterica_minusculo">lotérica</string>
 
     <!-- Loterica Resgate Prêmio -->
-    <string name="label_loterica_minusculo">lotérica</string>
     <string name="label_diriga_unidade_loterica_preferencia">Escolha uma Lotérica mais próxima</string>
     <string name="label_apresente_qr_code_acima">Mostre o QR Code ao atendente</string>
     <string name="label_aproveite_premio">Aproveite seu prêmio</string>
     <string name="label_digite_cpf">Digite seu CPF</string>
+    <string name="aval_titulo">Ei, tudo Jóia?</string>
 
     <!-- Avaliar Aplicativo -->
-    <string name="aval_titulo">Ei, tudo Jóia?</string>
     <string name="aval_desc">O que você tem achado do nosso app? \nQue tal nos deixar uma avaliação? Ficaremos felizes.</string>
     <string name="aval_positivo">Agora</string>
     <string name="aval_negativo">Deixar para depois</string>
+    <string name="conf_rapd_selecione_limites">Selecione os limites da sua compra e suas modalidades favoritas.</string>
 
     <!-- Nova Configuração do Rapidão-->
-    <string name="conf_rapd_selecione_limites">Selecione os limites da sua compra e suas modalidades favoritas.</string>
     <string name="conf_rapd_titulo_bold">_Rapidão_</string>
     <string name="conf_rapd_premio_minimo">Prêmio mínimo</string>
     <string name="conf_rapd_nossas_sugestoes">Nossas sugestões:</string>
@@ -592,18 +578,17 @@
     <string name="conf_rapd_proibidos_titulo">Números proibidos</string>
     <string name="conf_rapd_resumo">Resumo</string>
     <string name="conf_rapd_verifique_opcoes">Verifique e confirme suas opções de Rapidão.</string>
-
     <string name="ops">Ops!</string>
 
-    <!-- Filtros -->
     <string name="titulo_dialog_filtro_apostas">Filtro de Apostas</string>
+
+    <!-- Filtros -->
     <string name="modalidades_selecionadas">Modalidades Selecionadas</string>
     <string name="tit_selecione_data">Selecione a data</string>
     <string name="ultimos_qtd_dias">Últimos {quantidade} dias</string>
-
-
-
     <string name="numeros_obrigatorios">Números obrigatórios</string>
+
+
     <string name="numeros_proibidos">Números proibidos</string>
     <string name="apostas_favoritas">Apostas favoritas</string>
     <string name="resgatar">Resgatar</string>
@@ -862,6 +847,7 @@
     <string name="evento_logout_offline_sucesso">EFETUOU_LOGOUT_OFFLINE_SUCESSO</string>
     <string name="aposte_por">_Aposte_\npor</string>
     <string name="evento_entrou_simular_aposta_modalidade">ENTROU_SIMULAR_APOSTA</string>
+    <string name="evento_entrou_tutorial_mais_milionaria">ENTROU_TUTORIAL_MAIS_MILIONARIA</string>
     <string name="extra_apostas_favoritas">apostasFavoritas</string>
     <string name="extra_apostas_salvas">apostasSalvas</string>
     <string name="extra_tipos_apostas">tiposAposta</string>
@@ -983,10 +969,10 @@
     <string name="extra_ordem">ordem</string>
     <string name="data_dois_pontos_espaco">Data:&#160;</string>
     <string name="textoInfoSelecioneFormaPagamento">textoInfoSelecioneFormaPagamento</string>
+    <string name="como_jogar">Como jogar</string>
 
 
     <!-- Tutorial SuperSete -->
-    <string name="como_jogar">Como jogar</string>
     <string name="bem_vindo_super_sete">Bem vindo ao  \n_Super Sete_</string>
     <string name="jogo_simples">Jogue marcando _1_ número em\ncada uma das 7 colunas.</string>
     <string name="como_apostar">Veja como Apostar</string>
@@ -998,40 +984,40 @@
     <string name="aumente_suas_chances">Aumente suas chances de ganhar apostando agora mesmo!</string>
     <string name="avancar">Avançar</string>
     <string name="iniciar_aposta">Iniciar aposta</string>
+    <string name="bloq_local_fora_brasil">As apostas de Loterias só podem ser realizadas em território brasileiro.</string>
 
     <!-- Restrição de Geolocalização -->
-    <string name="bloq_local_fora_brasil">As apostas de Loterias só podem ser realizadas em território brasileiro.</string>
     <string name="bloq_local_desativada_msg">Precisamos conferir se você está em território brasileiro.\nHabilite sua localização.</string>
-
     <string name="bloq_local_brasil">BR</string>
 
     <string name="bloq_local_permitir">Permitir acesso a localização</string>
+
     <string name="bloq_local_ir_config">Ir para configurações</string>
     <string name="bloq_local_erro">Não foi possível recuperar sua localização. Por favor, tente novamente</string>
     <string name="bloq_local_tente_nvm">Tentar novamente</string>
+    <string name="google_url_market">market://details?id=</string>
 
     <!-- Loja do Google -->
-    <string name="google_url_market">market://details?id=</string>
     <string name="google_url_playstore">https://play.google.com/store/apps/details?id=</string>
-
-    <!-- Popup -->
     <string name="erro_req">Opa, ocorreu um erro na sua requisição. Por favor, tente novamente dentro de alguns instantes.</string>
 
-    <!-- Mercado Pago -->
+    <!-- Popup -->
     <string name="mp_token_url_redirect">https://registration-br.mercadopago.com/registration-mp?mode=mp&amp;external_registration_token={token}</string>
 
-    <!-- Carrossel -->
+    <!-- Mercado Pago -->
     <string name="msg_conc_nao_aberto">Concurso {num_concurso} ainda não aberto para aposta. Tente novamente mais tarde.</string>
+
+    <!-- Carrossel -->
     <string name="carrinho_favorito_ja_adicionado">Este carrinho favorito foi adicionado recentemente ao carrinho de compras. Deseja continuar?</string>
     <string name="valor_atual_do_carrinho">Valor atual do carrinho</string>
     <string name="mais_999">...</string>
+    <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
 
     <!-- App Center -->
-    <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
     <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
+    <string name="trevosTitulo">Trevos</string>
 
     <!-- Trevos -->
-    <string name="trevosTitulo">Trevos</string>
     <string name="trevosInfo">Escolha a quantidade de trevos</string>
     <string name="valores_para_apostas_com_2_trevos">* Valores para apostas com 2 trevos</string>
     <string name="voce_escolheu_x_numeros">Você escolheu _x_ números</string>
@@ -1041,6 +1027,8 @@
     <string name="quant_de_trevos">Quant. de trevos</string>
     <string name="trevos_por"> trevos por </string>
     <string name="completar_trevos_aleatoriamente">_Completar_\n Trevos aleatoriamente</string>
+    <string name="comecar_tutorial">_Começar_\n tutorial</string>
+    <string name="pular_tutorial">_Pular_\n apresentação</string>
     <string name="divisor_paginacao">|</string>
     <string name="trevos_dois_pontos">"Trevos: "</string>
     <string name="underline_trevos_underline">_trevos_</string>
@@ -1051,6 +1039,20 @@
     <string name="label_mais_milionaria_acentuado">+Milionária</string>
     <string name="ver_detalhe_da_aposta">Ver detalhe da aposta</string>
     <string name="Trevos">Trevos</string>
+    <string-array name="dia_sorte_meses">
+        <item>Janeiro</item>
+        <item>Fevereiro</item>
+        <item>Março</item>
+        <item>Abril</item>
+        <item>Maio</item>
+        <item>Junho</item>
+        <item>Julho</item>
+        <item>Agosto</item>
+        <item>Setembro</item>
+        <item>Outubro</item>
+        <item>Novembro</item>
+        <item>Dezembro</item>
+    </string-array>
 
 
 </resources>
