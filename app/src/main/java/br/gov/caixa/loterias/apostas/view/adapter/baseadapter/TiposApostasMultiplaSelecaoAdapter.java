@@ -69,7 +69,11 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
         tituloTipoAposta.setText(tipoAposta.getTitulo());
 
         if (tipoAposta.getSelect()){
-            imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+            if(tipoAposta.getValor() == 9){
+                imageViewTipoAPosta.setImageResource(R.drawable.ic_caixa_mm_amarelo_branco);
+            }else {
+                imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+            }
             linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
             tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
         }else{
@@ -88,7 +92,11 @@ public class TiposApostasMultiplaSelecaoAdapter extends BaseAdapter {
                 tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.cinzatextoselecionado));
             }else{
                 tiposAposta.get(position).setSelect(true);
-                imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+                if(tipoAposta.getValor() == 9){
+                    imageViewTipoAPosta.setImageResource(R.drawable.ic_caixa_mm_amarelo_branco);
+                }else {
+                    imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+                }
                 linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
                 tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
             }

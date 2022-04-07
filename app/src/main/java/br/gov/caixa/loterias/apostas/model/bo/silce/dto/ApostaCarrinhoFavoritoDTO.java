@@ -34,6 +34,8 @@ public class ApostaCarrinhoFavoritoDTO<T> implements Serializable {
 	private Integer quantidadeNumeros = null;
 	@SerializedName("trevos")
 	private ParametroTrevo parametroTrevo;
+	@SerializedName("quantidadeTrevos")
+	private Integer quantidadeTrevos;
 
 	protected ApostaCarrinhoFavoritoDTO(Parcel in) {
 		modalidade = in.readParcelable(ModalidadeDTO.class.getClassLoader());
@@ -244,5 +246,13 @@ public class ApostaCarrinhoFavoritoDTO<T> implements Serializable {
 
 	public void setParametroTrevo(ParametroTrevo parametroTrevo) {
 		this.parametroTrevo = parametroTrevo;
+	}
+
+	public Integer getQuantidadeTrevos() {
+		return quantidadeTrevos;
+	}
+
+	public void setQuantidadeTrevos(Integer quantidadeTrevos) {
+		this.quantidadeTrevos = quantidadeTrevos;
 	}
 }
