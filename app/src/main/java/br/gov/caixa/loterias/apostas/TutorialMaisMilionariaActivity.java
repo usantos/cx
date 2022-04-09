@@ -32,6 +32,7 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 	private void initFragmentList() {
 		fragmentList = new ArrayList<>();
 		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_introducao_tutorial_mais_milionaria));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_final));
 	}
 
 	@Override

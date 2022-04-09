@@ -93,11 +93,14 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 				if(isIntroducao(position)){
 					btnPrincipal.setText(getResources().getString(R.string.vamos_comecar));
 					btnPrincipal.setVisibility(View.VISIBLE);
+					tvPular.setVisibility(View.VISIBLE);
 				} else if (isFinal(position)){
 					btnPrincipal.setText(getResources().getString(R.string.label_aposte_agora));
 					btnPrincipal.setVisibility(View.VISIBLE);
+					tvPular.setVisibility(View.GONE);
 				} else {
 					btnPrincipal.setVisibility(View.GONE);
+					tvPular.setVisibility(View.VISIBLE);
 				}
 			}
 
