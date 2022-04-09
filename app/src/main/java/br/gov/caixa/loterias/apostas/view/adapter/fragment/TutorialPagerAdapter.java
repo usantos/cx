@@ -6,10 +6,12 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-public class TutorialPagerAdapter extends FragmentPagerAdapter {
-	private List<Fragment> list;
+import br.gov.caixa.loterias.apostas.view.fragment.TutorialPassoFragment;
 
-	public TutorialPagerAdapter(FragmentManager fragmentManager, List<Fragment> list) {
+public class TutorialPagerAdapter extends FragmentPagerAdapter {
+	private List<TutorialPassoFragment> list;
+
+	public TutorialPagerAdapter(FragmentManager fragmentManager, List<TutorialPassoFragment> list) {
 		super(fragmentManager);
 		this.list = list;
 	}

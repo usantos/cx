@@ -26,9 +26,9 @@
 
     <Button
         android:id="@+id/btn_principal"
-        android:layout_width="184dp"
-        android:layout_height="84dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="164dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="80dp"
         android:elevation="15dp"
         android:text="@string/vamos_comecar"
         android:textStyle="bold"

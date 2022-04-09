@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.apostas.view.listener;
 
-import androidx.fragment.app.Fragment;
-
 import java.util.List;
+
+import br.gov.caixa.loterias.apostas.view.fragment.TutorialPassoFragment;
 
 public interface OnTutorialListener {
 
@@ -10,5 +10,5 @@ public interface OnTutorialListener {
 
 	void comecar();
 
-	List<Fragment> getFragments();
+	List<TutorialPassoFragment> getFragments();
 }

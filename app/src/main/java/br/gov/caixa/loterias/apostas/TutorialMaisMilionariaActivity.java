@@ -3,18 +3,19 @@ package br.gov.caixa.loterias.apostas;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.view.fragment.TutorialNovaModalidadeFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.TutorialPassoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnTutorialListener;
 
 public class TutorialMaisMilionariaActivity extends AppCompatActivity implements OnTutorialListener {
 
-	private List<Fragment> fragmentList;
+	private List<TutorialPassoFragment> fragmentList;
 
 	private TutorialNovaModalidadeFragment fragment;
 
@@ -30,20 +31,21 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 
 	private void initFragmentList() {
 		fragmentList = new ArrayList<>();
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_introducao_tutorial_mais_milionaria));
 	}
 
 	@Override
 	public void pular() {
-
+		TestVisao.toast("Pulando");
 	}
 
 	@Override
 	public void comecar() {
-
+		TestVisao.toast("Comecando");
 	}
 
 	@Override
-	public List<Fragment> getFragments() {
+	public List<TutorialPassoFragment> getFragments() {
 		if (fragmentList == null){
 			initFragmentList();
 		}
