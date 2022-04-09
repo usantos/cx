@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,8 +26,7 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 
 	private ViewPager viewPager;
 	private CircleIndicator circleIndicator;
-	private Button btnPrincipal;
-	private TextView tvPular;
+	private Button btnPrincipal, btnPular;
 
 	private OnTutorialListener listener;
 	private TutorialPagerAdapter adapter;
@@ -76,7 +74,7 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 		viewPager 		= view.findViewById(R.id.vp_tutorial);
 		circleIndicator = view.findViewById(R.id.ci_tutorial);
 		btnPrincipal 	= view.findViewById(R.id.btn_principal);
-		tvPular 		= view.findViewById(R.id.tv_pular);
+		btnPular 		= view.findViewById(R.id.tv_pular);
 	}
 
 	private void setMetodos() {
@@ -93,14 +91,14 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 				if(isIntroducao(position)){
 					btnPrincipal.setText(getResources().getString(R.string.vamos_comecar));
 					btnPrincipal.setVisibility(View.VISIBLE);
-					tvPular.setVisibility(View.VISIBLE);
+					btnPular.setVisibility(View.VISIBLE);
 				} else if (isFinal(position)){
 					btnPrincipal.setText(getResources().getString(R.string.label_aposte_agora));
 					btnPrincipal.setVisibility(View.VISIBLE);
-					tvPular.setVisibility(View.GONE);
+					btnPular.setVisibility(View.GONE);
 				} else {
 					btnPrincipal.setVisibility(View.GONE);
-					tvPular.setVisibility(View.VISIBLE);
+					btnPular.setVisibility(View.VISIBLE);
 				}
 			}
 
@@ -110,7 +108,7 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 			}
 		});
 
-		tvPular.setOnClickListener(v -> listener.pular());
+		btnPular.setOnClickListener(v -> listener.pular());
 		btnPrincipal.setOnClickListener(v -> listener.comecar());
 	}
 

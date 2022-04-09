@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".TutorialMaisMilionariaActivity">
 
-    <TextView
+    <Button
         android:id="@+id/tv_pular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +14,8 @@
         android:textColor="@color/cinza_tutorial"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        android:background="@color/transparente"
+        android:textAllCaps="false" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/vp_tutorial"
