@@ -63,6 +63,7 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.IntroducaoTutorialActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -654,7 +655,7 @@ public class PrincipalActivity extends AppCompatActivity
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
         if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorialMaisMilionaria()){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
-            Intent activity = new Intent(PrincipalActivity.this, IntroducaoTutorialActivity.class);
+            Intent activity = new Intent(PrincipalActivity.this, TutorialMaisMilionariaActivity.class);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
             activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));

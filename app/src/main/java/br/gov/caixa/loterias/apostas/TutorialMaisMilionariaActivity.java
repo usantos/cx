@@ -1,14 +1,20 @@
 package br.gov.caixa.loterias.apostas;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity_;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.view.fragment.TutorialNovaModalidadeFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TutorialPassoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnTutorialListener;
@@ -17,6 +23,9 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 
 	private List<TutorialPassoFragment> fragmentList;
 
+	private ParametroJogoDTO parametroJogo;
+	private ModalidadeEnum modalidade;
+
 	private TutorialNovaModalidadeFragment fragment;
 
 	@Override
@@ -24,25 +33,42 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tutorial_mais_milionaria);
 
+		getBundle();
+
 		initFragmentList();
 		fragment = TutorialNovaModalidadeFragment.newInstance();
 		FragmentUtils.startFragment(getSupportFragmentManager(), R.id.frameTutorial, fragment);
 	}
 
+	private void getBundle() {
+		parametroJogo = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.extra_modalidade)), ParametroJogoDTO.class);
+		modalidade = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
+	}
+
 	private void initFragmentList() {
 		fragmentList = new ArrayList<>();
 		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_introducao_tutorial_mais_milionaria));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_1));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_2));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_3));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_4));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_5));
 		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_final));
 	}
 
 	@Override
-	public void pular() {
-		TestVisao.toast("Pulando");
-	}
+	public void apostar(Boolean naoVerNovamente) {
 
-	@Override
-	public void comecar() {
-		TestVisao.toast("Comecando");
+		if (naoVerNovamente) {
+			DadosUsuarioBO.updateTutorialMaisMilionaria(naoVerNovamente);
+		}
+
+		Intent activity = new Intent(TutorialMaisMilionariaActivity.this, SimularApostaActivity_.class);
+		activity.putExtra(getString(R.string.extra_tipo_aposta), modalidade);
+		activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+		activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
+		startActivity(activity);
+		finish();
 	}
 
 	@Override

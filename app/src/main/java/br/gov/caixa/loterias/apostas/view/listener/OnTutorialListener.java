@@ -6,9 +6,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.TutorialPassoFragment;
 
 public interface OnTutorialListener {
 
-	void pular();
-
-	void comecar();
+	void apostar(Boolean naoVerNovamente);
 
 	List<TutorialPassoFragment> getFragments();
 }

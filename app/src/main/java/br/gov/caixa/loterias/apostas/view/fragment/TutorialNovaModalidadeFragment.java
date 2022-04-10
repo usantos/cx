@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -27,6 +28,7 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 	private ViewPager viewPager;
 	private CircleIndicator circleIndicator;
 	private Button btnPrincipal, btnPular;
+	private AppCompatCheckBox checkBox;
 
 	private OnTutorialListener listener;
 	private TutorialPagerAdapter adapter;
@@ -75,6 +77,7 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 		circleIndicator = view.findViewById(R.id.ci_tutorial);
 		btnPrincipal 	= view.findViewById(R.id.btn_principal);
 		btnPular 		= view.findViewById(R.id.tv_pular);
+		checkBox 		= view.findViewById(R.id.checkboxMostrar);
 	}
 
 	private void setMetodos() {
@@ -92,13 +95,16 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 					btnPrincipal.setText(getResources().getString(R.string.vamos_comecar));
 					btnPrincipal.setVisibility(View.VISIBLE);
 					btnPular.setVisibility(View.VISIBLE);
+					checkBox.setVisibility(View.GONE);
 				} else if (isFinal(position)){
 					btnPrincipal.setText(getResources().getString(R.string.label_aposte_agora));
 					btnPrincipal.setVisibility(View.VISIBLE);
 					btnPular.setVisibility(View.GONE);
+					checkBox.setVisibility(View.VISIBLE);
 				} else {
 					btnPrincipal.setVisibility(View.GONE);
 					btnPular.setVisibility(View.VISIBLE);
+					checkBox.setVisibility(View.GONE);
 				}
 			}
 
@@ -108,8 +114,16 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 			}
 		});
 
-		btnPular.setOnClickListener(v -> listener.pular());
-		btnPrincipal.setOnClickListener(v -> listener.comecar());
+		btnPular.setOnClickListener(v -> {
+			viewPager.setCurrentItem(listener.getFragments().size() - 1);
+		});
+		btnPrincipal.setOnClickListener(v -> {
+			if (viewPager.getCurrentItem() == 0){
+				viewPager.setCurrentItem(1);
+			} else {
+				listener.apostar(checkBox.isChecked());
+			}
+		});
 	}
 
 	private boolean isFinal(int position) {
