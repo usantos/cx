@@ -349,7 +349,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("7","3 números e 2 trevos acertados");
                 mapFaixa.put("8","3 números e 1 trevo acertados");
                 mapFaixa.put("9","2 números e 2 trevos acertados");
-                mapFaixa.put("10","2 números e 1 trevo acertado");
+                mapFaixa.put("10","2 números e 1 trevo acertados");
                 mapFaixa.put("0001","6 números +2 trevos acertados");
                 mapFaixa.put("0002","6 números +1 ou 6 +0 trevos acertados");
                 mapFaixa.put("0003","5 números +2 trevos acertados");
@@ -357,9 +357,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0005","4 números e 2 trevos acertados");
                 mapFaixa.put("0006","4 números e 1 ou 0 trevos acertados");
                 mapFaixa.put("0007","3 números e 2 trevos acertados");
-                mapFaixa.put("0008","3 números e 1 trevo acertado");
+                mapFaixa.put("0008","3 números e 1 trevo acertados");
                 mapFaixa.put("0009","2 números e 2 trevos acertados");
-                mapFaixa.put("00010","2 números e 1 trevo acertado");
+                mapFaixa.put("00010","2 números e 1 trevo acertados");
                 break;
         }
         return mapFaixa;
