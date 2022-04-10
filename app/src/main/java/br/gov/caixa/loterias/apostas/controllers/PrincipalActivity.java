@@ -99,6 +99,7 @@ import br.gov.caixa.loterias.apostas.utils.OnSwipeTouchListener;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
@@ -184,6 +185,12 @@ public class PrincipalActivity extends AppCompatActivity
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+//        if (TestVisao.isTeste()){
+//            buttonHomeBet.setOnLongClickListener(v -> {
+//                nextActivity(IntroducaoTutorialActivity.class);
+//                return false;
+//            });
+//        }
     }
 
     @Override
@@ -650,12 +657,16 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.buttonHomeBet)
     protected void clickButtonHomeBet() {
-        int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
-        ModalidadeEnum modalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
+        nextActivity(TutorialMaisMilionariaActivity.class);
+    }
+
+    private void nextActivity(Class clazz) {
+        int              selecionada   = Integer.parseInt(buttonHomeBet.getTag().toString());
+        ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
         if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorialMaisMilionaria()){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
-            Intent activity = new Intent(PrincipalActivity.this, TutorialMaisMilionariaActivity.class);
+            Intent activity = new Intent(PrincipalActivity.this, clazz);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
             activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
@@ -669,7 +680,6 @@ public class PrincipalActivity extends AppCompatActivity
             activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
             startActivity(activity);
         }
-
     }
 
     @Click(R.id.relativeLayoutContentRepassados)
