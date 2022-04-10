@@ -61,7 +61,9 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.IntroducaoTutorialActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -97,6 +99,7 @@ import br.gov.caixa.loterias.apostas.utils.OnSwipeTouchListener;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
@@ -182,6 +185,12 @@ public class PrincipalActivity extends AppCompatActivity
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+//        if (TestVisao.isTeste()){
+//            buttonHomeBet.setOnLongClickListener(v -> {
+//                nextActivity(IntroducaoTutorialActivity.class);
+//                return false;
+//            });
+//        }
     }
 
     @Override
@@ -648,16 +657,29 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.buttonHomeBet)
     protected void clickButtonHomeBet() {
-        int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
-        ModalidadeEnum modalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
-        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
-        ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
+        nextActivity(TutorialMaisMilionariaActivity.class);
+    }
 
-        Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
-        activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
-        activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
-        activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
-        startActivity(activity);
+    private void nextActivity(Class clazz) {
+        int              selecionada   = Integer.parseInt(buttonHomeBet.getTag().toString());
+        ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
+        ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
+        if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorialMaisMilionaria()){
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
+            Intent activity = new Intent(PrincipalActivity.this, clazz);
+            activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
+            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
+            startActivity(activity);
+        } else {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
+
+            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
+            activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
+            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
+            startActivity(activity);
+        }
     }
 
     @Click(R.id.relativeLayoutContentRepassados)
