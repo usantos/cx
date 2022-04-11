@@ -10,7 +10,7 @@
         android:id="@+id/tv_pular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pular"
+        android:text="@string/tutorial_pular"
         android:textColor="@color/cinza_tutorial"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

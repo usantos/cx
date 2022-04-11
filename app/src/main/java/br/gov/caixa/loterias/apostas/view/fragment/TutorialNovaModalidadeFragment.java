@@ -94,16 +94,17 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 				if(isIntroducao(position)){
 					btnPrincipal.setText(getResources().getString(R.string.vamos_comecar));
 					btnPrincipal.setVisibility(View.VISIBLE);
-					btnPular.setVisibility(View.VISIBLE);
+					btnPular.setText(R.string.tutorial_pular);
+					btnPular.setText(R.string.tutorial_fechar);
 					checkBox.setVisibility(View.GONE);
 				} else if (isFinal(position)){
 					btnPrincipal.setText(getResources().getString(R.string.label_aposte_agora));
 					btnPrincipal.setVisibility(View.VISIBLE);
-					btnPular.setVisibility(View.GONE);
+					btnPular.setText(R.string.tutorial_fechar);
 					checkBox.setVisibility(View.VISIBLE);
 				} else {
 					btnPrincipal.setVisibility(View.GONE);
-					btnPular.setVisibility(View.VISIBLE);
+					btnPular.setText(R.string.tutorial_pular);
 					checkBox.setVisibility(View.GONE);
 				}
 			}
@@ -115,7 +116,11 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 		});
 
 		btnPular.setOnClickListener(v -> {
-			viewPager.setCurrentItem(listener.getFragments().size() - 1);
+			if (btnPular.getText().toString().contains(getString(R.string.tutorial_pular))){
+				viewPager.setCurrentItem(listener.getFragments().size() - 1);
+			} else {
+				getActivity().finish();
+			}
 		});
 		btnPrincipal.setOnClickListener(v -> {
 			if (viewPager.getCurrentItem() == 0){
