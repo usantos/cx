@@ -47,13 +47,13 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 
 	private void initFragmentList() {
 		fragmentList = new ArrayList<>();
-		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_introducao_tutorial_mais_milionaria));
-		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_1));
-		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_2));
-		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_3));
-		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_4));
-		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_5));
-		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_final));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_introducao_tutorial_mais_milionaria, true));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_1, false));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_2, false));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_3, false));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_4, false));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_5, false));
+		fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_final, false));
 	}
 
 	@Override

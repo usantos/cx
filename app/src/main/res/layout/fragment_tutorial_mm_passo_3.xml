@@ -11,6 +11,5 @@
         android:scaleType="centerInside"
         app:lottie_fileName="tutorial_mm_passo_3.json"
         app:lottie_speed="1.2"
-        app:lottie_loop="true"
-        app:lottie_autoPlay="true" />
+        app:lottie_loop="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

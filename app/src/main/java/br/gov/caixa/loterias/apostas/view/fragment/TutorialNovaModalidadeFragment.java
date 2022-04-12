@@ -107,6 +107,7 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 					btnPular.setText(R.string.tutorial_pular);
 					checkBox.setVisibility(View.GONE);
 				}
+				listener.getFragments().get(position).startAnimacao();
 			}
 
 			@Override
