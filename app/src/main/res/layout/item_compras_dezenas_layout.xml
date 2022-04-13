@@ -17,6 +17,12 @@
         android:layout_height="wrap_content"
         android:visibility="gone" />
 
+    <RelativeLayout
+        android:id="@+id/rl_trevos_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/detalheLayout"
         android:layout_width="match_parent"

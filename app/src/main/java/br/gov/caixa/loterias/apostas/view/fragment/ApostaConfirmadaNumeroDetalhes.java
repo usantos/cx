@@ -107,8 +107,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			}
 			if (apostaPremiada()){
 				resultTxt.setText(aposta.getSituacao().getDescricao());
-				// mudar botao resgate para visible
-				clResgatePremio.setVisibility(View.GONE);
+				clResgatePremio.setVisibility(View.VISIBLE);
 				cl_premio_pago.setVisibility(View.GONE);
 				resultTxt.setVisibility(View.VISIBLE);
 			} else {
@@ -182,13 +181,15 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 				break;
 			case MAIS_MILIONARIA:
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
-
+				List<Integer> trevoList = resultadoConcurso != null ? resultadoConcurso.getTrevosSorteadosPrimeiroSorteio() : null;
 				fragment = NumerosTrevosFragment
 						.newInstance(getContext().getResources().getString(R.string.seus_numeros),
 									 getContext().getResources().getString(R.string.trevosTitulo),
 									 aposta.getListaNumerosSelecionados(),
 									 AppUtils.converteListaInteiros((List<Integer>) aposta.getTrevosSelecionados()),
-									 numerosSorteadosPrimeiro, configuraEstiloNumeros());
+									 numerosSorteadosPrimeiro,
+									 trevoList,
+									 configuraEstiloNumeros());
 
 				break;
 			default:
@@ -203,12 +204,13 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		if(numerosSorteadosPrimeiro != null){
 			if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
 
-				numerosSorteadosSegundo = getTrevosSorteadosMaisMilionaria(numerosSorteadosPrimeiro);
-				numerosSorteadosPrimeiro = getNumerosSorteadosMaisMilionaria(numerosSorteadosPrimeiro);
+				numerosSorteadosSegundo = resultadoConcurso.getTrevosSorteadosPrimeiroSorteio();
 			} else {
 				Collections.sort(numerosSorteadosPrimeiro);
 			}
-			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados), numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,configuraEstiloNumeros(), null);
+			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
+														numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,
+														configuraEstiloNumeros(), null);
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commit();
 			rl_container_result_1.setVisibility(View.VISIBLE);
 
@@ -279,29 +281,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		return new ShapeConfig(R.drawable.ic_item_trevo,
 							   R.drawable.ic_item_trevo_selecionado,
 							   R.color.branco, R.color.mais_milionaria_escura);
-	}
-
-	private List<Integer> getNumerosSorteadosMaisMilionaria(List<Integer> sorteados) {
-		List<Integer> numeros = new ArrayList<>();
-
-		if (sorteados != null){
-			for (int i = 0; i <= 5; i++){
-				numeros.add(sorteados.get(i));
-			}
-		}
-
-		return numeros;
-	}
-
-	private List<Integer> getTrevosSorteadosMaisMilionaria(List<Integer> sorteados) {
-		List<Integer> trevos = new ArrayList<>();
-
-		if (sorteados != null && sorteados.size() == 8){
-			trevos.add(sorteados.get(6));
-			trevos.add(sorteados.get(7));
-		}
-
-		return trevos;
 	}
 
 	private void configuraFragmentSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta) {

@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.TextView;
@@ -64,16 +63,13 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 				} else {
 					txtNumero.setTextColor(ContextCompat.getColor(context, R.color.branco));
 				}
-				txtNumero.setTypeface(Typeface.DEFAULT_BOLD);
 			}else {
 				shape = AppCompatResources.getDrawable(context, config.getDrawableSelecionado());
 				txtNumero.setTextColor(config.getColor());
-				txtNumero.setTypeface(Typeface.DEFAULT_BOLD);
 			}
 		} else {
 			shape = VectorUtils.getShape(config.getDrawable(), config.getColor());
 			txtNumero.setTextColor(ContextCompat.getColor(context, config.getColor()));
-			txtNumero.setTypeface(Typeface.DEFAULT_BOLD);
 		}
 
 		txtNumero.setBackground(shape);

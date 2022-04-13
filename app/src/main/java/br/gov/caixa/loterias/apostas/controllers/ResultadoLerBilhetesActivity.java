@@ -77,6 +77,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     @AfterViews
     public void init() {
         contentResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.GONE);
+        contentResultadoPremiado.getButtonVerDetalheAposta().setVisibility(View.GONE);
         createToolBar();
         postLerBilhetes();
     }
@@ -157,11 +158,26 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
-        contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
-        contentResultadoPremiado.getPremioGanhoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
-        contentResultadoPremiado.getTopoResultadoPremioLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
-        contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
-        contentResultadoPremiado.getTituloModalidadeTextView().setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
+        if (modalidadeEnum == ModalidadeEnum.MAIS_MILIONARIA){
+            contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackground(getDrawable(R.drawable.header_interno__milionaria));
+            contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setVisibility(View.GONE);
+            contentResultadoPremiado.getTituloModalidadeTextView().setVisibility(View.GONE);
+            contentResultadoPremiado.getPremioGanhoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, R.color.mais_milionaria_clara));
+            contentResultadoPremiado.getTopoResultadoPremioLinearLayout().setBackgroundColor(ContextCompat.getColor(this, R.color.mais_milionaria_clara));
+        } else {
+            contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
+            contentResultadoPremiado.getPremioGanhoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+            contentResultadoPremiado.getTopoResultadoPremioLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+            contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
+        }
+
+
+        if (modalidadeEnum == ModalidadeEnum.MAIS_MILIONARIA){
+            contentResultadoPremiado.getTituloModalidadeTextView().setText(getResources().getString(R.string.label_mais_milionaria_acentuado));
+        } else {
+            contentResultadoPremiado.getTituloModalidadeTextView().setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
+        }
+
         contentResultadoPremiado.getBotaoAposteAgora().setText(ViewUtils.textFuturaAndFuturaBold(this ,getString(R.string.botao_aposte_agora)));
 
         if (resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido() != null && !(BigDecimal.ZERO.compareTo(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido()) == 0)) {
@@ -193,7 +209,6 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         startActivity(it);
 
     }
-
 
     private void atualizarLayoutNaoPremiado() {
         corpoBilhetePremiadoLinearLayout.setVisibility(View.GONE);

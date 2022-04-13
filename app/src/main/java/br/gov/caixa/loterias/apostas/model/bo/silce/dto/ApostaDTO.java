@@ -559,6 +559,8 @@ public class ApostaDTO<T> implements Serializable {
                 return "diadesorte";
             case SUPER_7:
                 return "supersete";
+            case MAIS_MILIONARIA:
+                return "maismilionaria";
 //      case FEDERAL:
 //        return "federal";
 

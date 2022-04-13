@@ -6,8 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.LayoutAnimationController;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,7 +55,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private ParametroEquipe equipeSelecionada = null;
     private ModalidadeEnum tipoJogo;
     private ParametroJogoDTO parametroJogo;
-    private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos, getQtdNumeros = 6;
+    private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos, getQtdNumeros;
     private SurpresinhaGridViewAdapter simularDezenasAdapter;
     private BigDecimal valorTotalAposta;
 
@@ -100,9 +98,13 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         parentActivity = ((SimularApostaActivity) getActivity());
         if (parentActivity != null) {
             parametroJogo = parentActivity.getParametroSimulacao();
-            if (parametroJogo != null && qtdTrevos == 0
-                    && parametroJogo.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-                qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
+            if (parametroJogo != null && parametroJogo.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                if (qtdTrevos == 0){
+                    qtdTrevos = parametroJogo.getTrevos().getQtdMinima();
+                }
+                if (getQtdNumeros == 0){
+                    getQtdNumeros = parametroJogo.getQuantidadeMinima();
+                }
             }
         }
 
@@ -145,6 +147,22 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             textViewParams.topToBottom = R.id.maisMilionaria;
             surpresinhaQtdInfo.setLayoutParams(textViewParams);
 
+            getQtdNumeros = parentActivity.qtdDezenasPossiveisSelecionado;
+            qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
+            atualizaBotoesQtdNumeros();
+        }
+    }
+
+    private void atualizaBotoesQtdNumeros() {
+        if (getQtdNumeros > parametroJogo.getQuantidadeMinima() && getQtdNumeros < parametroJogo.getQuantidadeMaxima()){
+            btnNumerosMenos.setBackgroundTintList(getCor(typeGameColorLight));
+            btnNumerosMais.setBackgroundTintList(getCor(typeGameColorLight));
+        }else if (getQtdNumeros == parametroJogo.getQuantidadeMinima()){
+            btnNumerosMenos.setBackgroundTintList(getCor(R.color.cinzaescuro));
+            btnNumerosMais.setBackgroundTintList(getCor(typeGameColorLight));
+        } else {
+            btnNumerosMenos.setBackgroundTintList(getCor(typeGameColorLight));
+            btnNumerosMais.setBackgroundTintList(getCor(R.color.cinzaescuro));
         }
     }
 
@@ -394,7 +412,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     @Click
     protected void btnMaisTrevos() {
-        if (qtdTrevos < 6) {
+        if (qtdTrevos < parametroJogo.getTrevos().getQtdMaxima()) {
             qtdTrevos++;
             atualizaBotoesQtdTrevos();
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
@@ -404,7 +422,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     @Click
     protected void btnMenosTrevos() {
-        if (qtdTrevos > 2) {
+        if (qtdTrevos > parametroJogo.getTrevos().getQtdMinima()) {
             qtdTrevos--;
             atualizaBotoesQtdTrevos();
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
@@ -414,24 +432,28 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     @Click
     protected void btnNumerosMais() {
-        if (getQtdNumeros < 12) {
+        if (getQtdNumeros < parametroJogo.getQuantidadeMaxima()) {
             getQtdNumeros++;
             parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
         }
         atualizarButtonColor();
+        parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
+        parentActivity.atualizaTextoBotoesQtdSelecionadas();
     }
 
     @Click
     protected void btnNumerosMenos() {
-        if (getQtdNumeros > 6) {
+        if (getQtdNumeros > parametroJogo.getQuantidadeMinima()) {
             getQtdNumeros--;
             parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdNumerosSelecionadasNovo.setText(String.format(Locale.getDefault(), "%d", getQtdNumeros));
         }
         atualizarButtonColor();
+        parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
+        parentActivity.atualizaTextoBotoesQtdSelecionadas();
     }
 
     protected void atualizarButtonColor() {

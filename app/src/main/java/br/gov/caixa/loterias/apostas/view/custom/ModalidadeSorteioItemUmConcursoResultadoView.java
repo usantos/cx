@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,6 +19,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultadosAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TrevosResultadosAdapter;
 
 /**
  * Created by cedesbr450 on 28/03/18.
@@ -39,6 +41,12 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
     @ViewById
     protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
 
+    @ViewById
+    protected RecyclerView recyclerTrevosResultado;
+
+    @ViewById
+    protected TextView tvTrevos;
+
 
     @AfterViews
     protected void init() {
@@ -51,13 +59,29 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
         tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
 
         NumerosResultadosAdapter numerosResultadosAdapter;
+
         int numberOfColumns = 3;
-        if (modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size()>6){
-            numberOfColumns = 4;
+        if(!modalidade.getNome().equalsIgnoreCase("Mais Milionária".toLowerCase())){
+            if (modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size()>6){
+                numberOfColumns = 4;
+            }
         }
+
+
         this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
         numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
+
+        if(modalidade.getNome().equalsIgnoreCase("Mais Milionária".toLowerCase())){
+            tvTrevos.setVisibility(VISIBLE);
+            recyclerTrevosResultado.setVisibility(VISIBLE);
+
+            TrevosResultadosAdapter numerosResultadosAdapter2;
+            this.recyclerTrevosResultado.setLayoutManager(new GridLayoutManager(getContext(), 3));
+            numerosResultadosAdapter2 = new TrevosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getTrevosSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
+            this.recyclerTrevosResultado.setAdapter(numerosResultadosAdapter2);
+        }
+
 
         this.partidaViewDetalhesResultadoView.setLayout(modalidade);
 

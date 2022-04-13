@@ -147,7 +147,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private boolean precisaAtualizarPublicKey(ParametrosConfiguraveisDTOResponse result) {
-        return temDadosPayloadMapa(result) && result.getPayload().getMapa().isAtualizaPublicKey();
+        return temDadosPayloadMapa(result) && result.getPayload().getMapa().isAtualizaPublicKey() != null;
     }
 
     private void setMenuApostasDefault() {

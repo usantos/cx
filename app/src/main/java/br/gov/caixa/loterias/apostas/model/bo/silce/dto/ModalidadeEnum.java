@@ -75,9 +75,8 @@ public enum ModalidadeEnum implements Serializable {
             case "super sete":
                 return ModalidadeEnum.SUPER_7;
             case "+Milionária":
-                return MAIS_MILIONARIA;
             case "mais milionária":
-                return MAIS_MILIONARIA;
+            case "maismilionária":
             case "+milionária":
                 return MAIS_MILIONARIA;
             default:
@@ -151,6 +150,8 @@ public enum ModalidadeEnum implements Serializable {
                 return ModalidadeEnum.SUPER_7;
             case 8:
                 return ModalidadeEnum.LOTOFACIL;
+            case 9:
+                return ModalidadeEnum.MAIS_MILIONARIA;
             case 11:
                 return ModalidadeEnum.DIA_DE_SORTE;
             case 14:

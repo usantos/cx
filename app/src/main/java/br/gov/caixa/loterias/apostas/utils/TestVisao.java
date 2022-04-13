@@ -11,4 +11,8 @@ public class TestVisao {
 			Toast.makeText(Aplicacao.application.getApplicationContext(), msg, Toast.LENGTH_LONG).show();
 		}
 	}
+
+	public static boolean isTeste(){
+		return BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd");
+	}
 }

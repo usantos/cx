@@ -137,5 +137,7 @@
     <color name="mais_milionaria_clara">#2C3682</color>
     <color name="mais_milionaria_media" >#252D6C</color>
     <color name="mais_milionaria_escura">#332A62</color>
+    <color name="verde_tutorial">#008254</color>
+    <color name="cinza_tutorial">#47586C</color>
 
 </resources>
