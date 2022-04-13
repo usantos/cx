@@ -120,7 +120,7 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 			if (btnPular.getText().toString().contains(getString(R.string.tutorial_pular))){
 				viewPager.setCurrentItem(listener.getFragments().size() - 1);
 			} else {
-				getActivity().finish();
+				listener.pular(checkBox.isChecked());
 			}
 		});
 		btnPrincipal.setOnClickListener(v -> {

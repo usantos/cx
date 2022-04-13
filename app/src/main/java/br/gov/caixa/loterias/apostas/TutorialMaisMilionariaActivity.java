@@ -72,6 +72,14 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 	}
 
 	@Override
+	public void pular(boolean naoVerNovamente) {
+		if (naoVerNovamente) {
+			DadosUsuarioBO.updateTutorialMaisMilionaria(naoVerNovamente);
+		}
+		finish();
+	}
+
+	@Override
 	public List<TutorialPassoFragment> getFragments() {
 		if (fragmentList == null){
 			initFragmentList();

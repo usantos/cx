@@ -8,5 +8,8 @@ public interface OnTutorialListener {
 
 	void apostar(Boolean naoVerNovamente);
 
+	void pular(boolean naoVerNovamente);
+
 	List<TutorialPassoFragment> getFragments();
+
 }
