@@ -32,6 +32,10 @@ public class ApostaCarrinhoFavoritoDTO<T> implements Serializable {
 	private Boolean espelho = null;
 	@SerializedName("quantidadeNumeros")
 	private Integer quantidadeNumeros = null;
+	@SerializedName("trevos")
+	private ParametroTrevo parametroTrevo;
+	@SerializedName("quantidadeTrevos")
+	private Integer quantidadeTrevos;
 
 	protected ApostaCarrinhoFavoritoDTO(Parcel in) {
 		modalidade = in.readParcelable(ModalidadeDTO.class.getClassLoader());
@@ -234,5 +238,21 @@ public class ApostaCarrinhoFavoritoDTO<T> implements Serializable {
 		sb.append("  indicadorSurpresinha: ").append(indicadorSurpresinha).append("\n");
 		sb.append("}\n");
 		return sb.toString();
+	}
+
+	public ParametroTrevo getParametroTrevo() {
+		return parametroTrevo;
+	}
+
+	public void setParametroTrevo(ParametroTrevo parametroTrevo) {
+		this.parametroTrevo = parametroTrevo;
+	}
+
+	public Integer getQuantidadeTrevos() {
+		return quantidadeTrevos;
+	}
+
+	public void setQuantidadeTrevos(Integer quantidadeTrevos) {
+		this.quantidadeTrevos = quantidadeTrevos;
 	}
 }

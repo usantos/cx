@@ -28,7 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -158,11 +158,11 @@ public class ResgatePremioLotericaActivity extends AppCompatActivity {
 
     protected void atualizaCodigoResgate() {
         final ApostaBO apostaBO = ApostaBO_.getInstance_(ResgatePremioLotericaActivity.this);
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
         apostaBO.getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
             @Override
             public void onResponse(CodigoResgateDTOResponse response) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ResgatePremioLotericaActivity.this);
                 }
@@ -172,7 +172,7 @@ public class ResgatePremioLotericaActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, ResgatePremioLotericaActivity.this);
             }
         });

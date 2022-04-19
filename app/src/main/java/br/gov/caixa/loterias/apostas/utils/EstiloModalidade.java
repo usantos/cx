@@ -171,6 +171,21 @@ public class EstiloModalidade {
                 trevo = R.drawable.trevo_8;
                 colorTextAlpha6 = R.color.white_6;
                 break;
+            case MAIS_MILIONARIA:
+                corClara = R.color.mais_milionaria_clara;
+                corMedia = R.color.mais_milionaria_media;
+                corEscura = R.color.mais_milionaria_escura;
+                imagemCalendario = R.drawable.ic_calendario;
+                imagemRelogio = R.drawable.ic_relogio;
+                trevoBackground = R.drawable.background_trapeze_mais_milionaria;
+                themeId = R.style.AppTheme_Modalidade_MaisMilionaria;
+                stringId = R.string.label_mais_milionaria;
+                menuItemColor = R.color.branco;
+                iconValidadeComprovanteColor = R.color.black;
+                iconImpressoraColor = R.color.branco;
+                trevo = R.drawable.ic_caixa_mm_amarelo_branco;
+                colorTextAlpha6 = R.color.white_6;
+                break;
             default: {
                 //MEGASENA
                 corClara = R.color.megasenaclaro;

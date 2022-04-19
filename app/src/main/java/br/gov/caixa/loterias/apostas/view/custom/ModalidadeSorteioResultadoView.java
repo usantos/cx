@@ -103,6 +103,12 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
                 view7.setLayout(modalidade);
                 this.contentResultadoItem.addView(view7);
                 break;
+            case MAIS_MILIONARIA:
+                this.contentResultadoItem.removeAllViews();
+                ModalidadeSorteioItemUmConcursoResultadoView viewM = ModalidadeSorteioItemUmConcursoResultadoView_.build(getContext());
+                viewM.setLayout(modalidade);
+                this.contentResultadoItem.addView(viewM);
+                break;
             default:
                 this.contentResultadoItem.removeAllViews();
                 ModalidadeSorteioItemUmConcursoResultadoView view2 = ModalidadeSorteioItemUmConcursoResultadoView_.build(getContext());

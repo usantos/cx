@@ -78,6 +78,8 @@ public class ApostaDTO<T> implements Serializable {
     protected Integer quantidadeNumeros = null;
     @SerializedName(value = "numerosSelecionados")
     protected T numerosSelecionados = null;
+    @SerializedName(value = "numerosSelecionadosMaisMilionariaTrevo")
+    protected T trevosSelecionados = null;
     /**
      * Identificador da Aposta
      **/
@@ -382,6 +384,14 @@ public class ApostaDTO<T> implements Serializable {
         }
     }
 
+    public List<Integer> getListaTrevosSelecionados(){
+        if(trevosSelecionados != null){
+            return AppUtils.converteListaInteiros((List<Integer>) trevosSelecionados);
+        } else  {
+            return  null;
+        }
+    }
+
     public ArrayList<ArrayList<Integer>> getMatrizNumerosSelecionados(){
         return AppUtils.converteMatrizInteiros((List<List<Integer>>) numerosSelecionados);
     }
@@ -549,6 +559,8 @@ public class ApostaDTO<T> implements Serializable {
                 return "diadesorte";
             case SUPER_7:
                 return "supersete";
+            case MAIS_MILIONARIA:
+                return "maismilionaria";
 //      case FEDERAL:
 //        return "federal";
 

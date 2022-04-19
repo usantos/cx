@@ -9,8 +9,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.android.volley.VolleyError;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
@@ -23,15 +26,26 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity_;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuperSete;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 
 /**
  * Created by pmotta on 23/03/2018.
@@ -48,8 +62,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	protected ApostaBO apostaBO;
 
 	@ViewById
-	protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt, seusNumerosTxt,
-			apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta, tv_resultado,
+	protected TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt,
+			apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta,
 			tv_colunas_2, tv_resultado_super_sete, tv_tit_time_mes, tv_time_mes;
 
 	@ViewById
@@ -62,14 +76,21 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	@FragmentArg
 	protected ResultadoConcursoDTO resultadoConcurso;
 
+	@FragmentArg
+	protected ComprovanteApostaDTO comprovanteApostaDTO;
+
 	@ViewById
 	protected TextView tv_val_premio, tv_val_premio_tit;
 
 	@ViewById
-	protected ConstraintLayout cl_premio_pago;
+	protected ConstraintLayout cl_premio_pago, clResgatePremio;
+
+	@ViewById
+	protected View viewDivisor;
 
 	@FragmentArg
 	protected BigDecimal valorPremio;
+	private DetalhesPremioDTO detalhesPremio;
 
 	@AfterViews
 	protected void init() {
@@ -78,15 +99,25 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			dataApostaTxt.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.barra_n) + aposta.getHoraEfetivacao());
 		}
 
-		if (valorPremio != null) {
+		if (aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO || apostaPremiada()) {
 			tv_val_premio.setVisibility(View.VISIBLE);
 			tv_val_premio_tit.setVisibility(View.VISIBLE);
-			cl_premio_pago.setVisibility(View.VISIBLE);
-			resultTxt.setVisibility(View.GONE);
-			tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+			if (valorPremio != null) {
+				tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+			}
+			if (apostaPremiada()){
+				resultTxt.setText(aposta.getSituacao().getDescricao());
+				clResgatePremio.setVisibility(View.VISIBLE);
+				cl_premio_pago.setVisibility(View.GONE);
+				resultTxt.setVisibility(View.VISIBLE);
+			} else {
+				cl_premio_pago.setVisibility(View.VISIBLE);
+				clResgatePremio.setVisibility(View.GONE);
+				resultTxt.setVisibility(View.GONE);
+			}
 		} else  {
+			clResgatePremio.setVisibility(View.GONE);
 			resultTxt.setText(aposta.getSituacao().getDescricao());
-
 		}
 
 		if (aposta.getTroca()) {
@@ -116,6 +147,18 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		configuraNumeros();
 	}
 
+	private boolean apostaPremiada() {
+		return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA;
+	}
+
+	public void atualizaValorPremio(BigDecimal valor){
+		if (valor != null){
+			valorPremio = valor;
+			tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+		}
+
+	}
+
 	private void configuraNumeros() {
 		if (!aposta.getNumerosSelecionados().isEmpty()) {
 			if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
@@ -128,17 +171,30 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 
 	private void configuraFragmentNumeros(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 		FragmentManager fm          = getActivity().getSupportFragmentManager();
-		NumerosFragment fragment,fragResultado;
+		Fragment fragment, fragResultado;
 		switch (aposta.getModalidade()){
 			case DUPLA_SENA:
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
 				numerosSorteadosSegundo =  (List<Integer>) (resultadoConcurso != null && resultadoConcurso.getNumerosSorteadosSegundoSorteio() != null  ?
 						resultadoConcurso.getNumerosSorteadosSegundoSorteio() : new ArrayList<>());
-				fragment = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
+				fragment = NumerosFragment.newInstance(getContext().getResources().getString(R.string.seus_numeros), aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros(), null);
+				break;
+			case MAIS_MILIONARIA:
+				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
+				List<Integer> trevoList = resultadoConcurso != null ? resultadoConcurso.getTrevosSorteadosPrimeiroSorteio() : null;
+				fragment = NumerosTrevosFragment
+						.newInstance(getContext().getResources().getString(R.string.seus_numeros),
+									 getContext().getResources().getString(R.string.trevosTitulo),
+									 aposta.getListaNumerosSelecionados(),
+									 AppUtils.converteListaInteiros((List<Integer>) aposta.getTrevosSelecionados()),
+									 numerosSorteadosPrimeiro,
+									 trevoList,
+									 configuraEstiloNumeros());
+
 				break;
 			default:
 				numerosSorteadosPrimeiro = resultadoConcurso != null ? resultadoConcurso.getListaSorteadosPrimeiroSorteio() : null;
-				fragment = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros());
+				fragment = NumerosFragment.newInstance(getContext().getResources().getString(R.string.seus_numeros), aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,configuraEstiloNumeros(), null);
 				break;
 		}
 
@@ -146,18 +202,22 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		rl_fg_numeros_1.setVisibility(View.VISIBLE);
 		//frag resultado
 		if(numerosSorteadosPrimeiro != null){
-			Collections.sort(numerosSorteadosPrimeiro);
-			fragResultado = NumerosFragment.newInstance(numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,configuraEstiloNumeros());
+			if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+
+				numerosSorteadosSegundo = resultadoConcurso.getTrevosSorteadosPrimeiroSorteio();
+			} else {
+				Collections.sort(numerosSorteadosPrimeiro);
+			}
+			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
+														numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,
+														configuraEstiloNumeros(), null);
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commit();
 			rl_container_result_1.setVisibility(View.VISIBLE);
-			tv_resultado.setVisibility(View.VISIBLE);
-
-			int corBranco = ContextCompat.getColor(getContext(), R.color.branco);
-			int corTime = ContextCompat.getColor(getContext(), R.color.timemaniaclaro);
-			int corDia = ContextCompat.getColor(getContext(), R.color.diasorteclaro);
 
 
 			if (aposta.getModalidade().equals(ModalidadeEnum.TIMEMANIA)) {
+				int corBranco = ContextCompat.getColor(getContext(), R.color.branco);
+				int corTime = ContextCompat.getColor(getContext(), R.color.timemaniaclaro);
 				String equipe = resultadoConcurso.getPremiacaoTimeDoCoracao().getEquipe().getNome();
 				if (equipe.equalsIgnoreCase(aposta.getTimeDoCoracao().getNome())) {
 					informacaoAdicionalTxt.setTextColor(corTime);
@@ -170,6 +230,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			}
 
 			if (aposta.getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE)) {
+				int corBranco = ContextCompat.getColor(getContext(), R.color.branco);
+				int corDia = ContextCompat.getColor(getContext(), R.color.diasorteclaro);
 				String mesDaSorte = resultadoConcurso.getPremiacaoMesDeSorte().getMesDeSorte().getNome();
 				if (mesDaSorte.equalsIgnoreCase(aposta.getMesDeSorte().getNome())) {
 					informacaoAdicionalTxt.setTextColor(corDia);
@@ -185,23 +247,41 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 				labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
 				rl_time_mes.setVisibility(View.VISIBLE);
 			}
+		} else {
+			viewDivisor.setVisibility(View.GONE);
 		}
 
 		if (numerosSorteadosSegundo != null) {
-			Collections.sort(numerosSorteadosSegundo);
-			fragResultado = NumerosFragment.newInstance(aposta.getListaNumerosSelecionados() ,numerosSorteadosSegundo,configuraEstiloNumeros());
-			fm.beginTransaction().replace(R.id.rl_fg_numeros_2, fragResultado).commit();
-			rl_fg_numeros_2.setVisibility(View.VISIBLE);
 
-			Collections.sort(numerosSorteadosSegundo);
-			fragResultado = NumerosFragment.newInstance(numerosSorteadosSegundo ,numerosSorteadosSegundo,configuraEstiloNumeros());
-			fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commit();
-			rl_container_result_2.setVisibility(View.VISIBLE);
-			tv_resultado.setVisibility(View.VISIBLE);
+			if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+				Collections.sort(numerosSorteadosSegundo);
+				fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.trevos_sorteados),
+															numerosSorteadosSegundo,
+															numerosSorteadosSegundo,
+															configuraEstiloNumeros(),
+															getTrevoShape());
+				fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commit();
+				rl_container_result_2.setVisibility(View.VISIBLE);
+			} else {
+				Collections.sort(numerosSorteadosSegundo);
+				fragResultado = NumerosFragment.newInstance("", aposta.getListaNumerosSelecionados() ,numerosSorteadosSegundo,configuraEstiloNumeros(), null);
+				fm.beginTransaction().replace(R.id.rl_fg_numeros_2, fragResultado).commit();
+				rl_fg_numeros_2.setVisibility(View.VISIBLE);
+
+				Collections.sort(numerosSorteadosSegundo);
+				fragResultado = NumerosFragment.newInstance("", numerosSorteadosSegundo ,numerosSorteadosSegundo,configuraEstiloNumeros(), null);
+				fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commit();
+				rl_container_result_2.setVisibility(View.VISIBLE);
+			}
 		}
+
 	}
 
-
+	private ShapeConfig getTrevoShape() {
+		return new ShapeConfig(R.drawable.ic_item_trevo,
+							   R.drawable.ic_item_trevo_selecionado,
+							   R.color.branco, R.color.mais_milionaria_escura);
+	}
 
 	private void configuraFragmentSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 		FragmentManager fm          = getActivity().getSupportFragmentManager();
@@ -213,7 +293,6 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		rl_fg_numeros_1.setVisibility(View.VISIBLE);
 		tv_colunas.setVisibility(View.VISIBLE);
 		tv_sua_aposta.setVisibility(View.VISIBLE);
-		seusNumerosTxt.setVisibility(View.GONE);
 
 		if (matrizSorteados != null) {
 			Utils.ordenaMatrizInteiro(matrizSorteados);
@@ -222,12 +301,18 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			rl_container_result_1.setVisibility(View.VISIBLE);
 			tv_resultado_super_sete.setVisibility(View.VISIBLE);
 			tv_colunas_2.setVisibility(View.VISIBLE);
+		} else {
+			viewDivisor.setVisibility(View.GONE);
 		}
 	}
 
 	private ConfiguracaoNumeros configuraEstiloNumeros() {
 		EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
-		return new ConfiguracaoNumeros(estilo.getCorEscura(), R.color.branco);
+		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+			return new ConfiguracaoNumeros(estilo.getCorClara(), R.color.branco);
+		} else {
+			return new ConfiguracaoNumeros(estilo.getCorEscura(), R.color.branco);
+		}
 	}
 
 	private ConfiguracaoNumerosSuperSete configuraEstiloSuperSete() {
@@ -240,5 +325,41 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 												R.color.supersetemedio,
 												R.color.superseteescuro,
 												R.color.supersetemedio);
+	}
+
+	@Click(R.id.clResgatePremio)
+	protected void resgatarPremio(){
+		getApostaDetalhePremio(aposta.getId());
+	}
+
+	public void setDetalhesPremio(DetalhesPremioDTO detalhe){
+		detalhesPremio = detalhe;
+	}
+
+	private void getApostaDetalhePremio(Long apostaId) {
+		if (detalhesPremio != null){
+			startResgateActivity();
+		} else {
+			ApostaBO apostaBO = ApostaBO_.getInstance_(getContext());
+			apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
+				@Override
+				public void onResponse(DetalhesPremioDTOResponse result) {
+					AlertDialogUtils.dismiss();
+
+					detalhesPremio = result.getPayload();
+					startResgateActivity();
+				}
+
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					AlertDialogUtils.dismiss();
+					RedirectNetwork.checkRedirect(error, getActivity());
+				}
+			});
+		}
+	}
+
+	private void startResgateActivity() {
+		ResultadoApostaConfirmadaActivity_.intent(getContext()).detalhesPremioDTO(detalhesPremio).comprovante(comprovanteApostaDTO).start();
 	}
 }

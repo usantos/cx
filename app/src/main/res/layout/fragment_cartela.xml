@@ -130,10 +130,10 @@
 
     </RelativeLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/cartelaFragmentScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/rl_colunas_super_7"
         android:fillViewport="false"
         android:orientation="vertical">
@@ -156,49 +156,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     app:layout_constraintTop_toTopOf="parent">
-
-                    <RelativeLayout
-                        android:id="@+id/ttvLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        tools:visibility="visible">
-
-                        <TextView
-                            android:id="@+id/ttvEscolha"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginTop="41dp"
-                            tools:text="@string/dia_sorte_escolha_dia" />
-
-                        <TextView
-                            android:id="@+id/ttvPagina"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_alignTop="@+id/ttvEscolha"
-                            android:layout_alignBottom="@+id/ttvEscolha"
-                            android:layout_toStartOf="@+id/ttvPaginaQuantidade"
-                            android:text="@string/label_numerico_um" />
-
-                        <TextView
-                            android:id="@+id/ttvPaginaQuantidade"
-                            android:layout_width="wrap_content"
-                            android:layout_height="0dp"
-                            android:layout_alignTop="@+id/ttvEscolha"
-                            android:layout_alignBottom="@+id/ttvEscolha"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginEnd="24dp"
-                            tools:text=" | 2" />
-                    </RelativeLayout>
                 </LinearLayout>
 
 
-                <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listaDezenas"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="match_parent"
                     android:layout_marginHorizontal="10dp"
                     android:columnWidth="50dp"
                     android:gravity="center"
@@ -207,10 +171,17 @@
                     android:paddingLeft="10dp"
                     android:paddingTop="40dp"
                     android:paddingRight="10dp"
-                    android:paddingBottom="250dp"
+                    android:paddingBottom="45dp"
                     android:stretchMode="columnWidth"
                     android:verticalSpacing="10dp"
                     app:layout_constraintTop_toBottomOf="@+id/layotLabelEscolhaNumeros" />
+
+                <View
+                    android:id="@+id/rodape_espacamento"
+                    android:layout_width="match_parent"
+                    android:layout_height="205dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/listaDezenas"/>
 
                 <ScrollView
                     android:id="@+id/sv_super_sete"
@@ -448,7 +419,7 @@
                 </LinearLayout>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
         android:id="@+id/opcaoOutrosNumerosLayout"

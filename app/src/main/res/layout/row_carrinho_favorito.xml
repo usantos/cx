@@ -54,11 +54,11 @@
             android:layout_width="40dp"
             android:layout_height="70dp"
             android:background="@color/transparente"
-            android:src="@drawable/ic_x"
+            android:src="@drawable/ic_icone_lixeira"
             android:padding="10dp"
             android:scaleType="fitCenter"
             tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
-            tols:layout_constraintEnd_toStartOf="@id/ib_lupa_detalhes"
+            tols:layout_constraintEnd_toEndOf="parent"
             tols:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
@@ -70,7 +70,7 @@
             android:padding="10dp"
             android:src="@drawable/ic_lupa_carrinho_fav"
             tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
-            tols:layout_constraintEnd_toStartOf="@id/ib_transformar_carrinho"
+            tols:layout_constraintEnd_toStartOf="@id/ib_excluir_carrinho"
             tols:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
@@ -84,7 +84,7 @@
             android:src="@drawable/icon_carrinho"
             android:tint="@color/branco"
             tols:layout_constraintBottom_toBottomOf="@id/gl_fim_card"
-            tols:layout_constraintEnd_toEndOf="parent"
+            tols:layout_constraintEnd_toStartOf="@+id/ib_lupa_detalhes"
             tols:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline

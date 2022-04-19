@@ -31,8 +31,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.DezenasAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.DezenasResultadoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasResultadoAdapter;
 
 @EFragment(R.layout.fragment_aposta_confirmada_numero_detalhes_premio_pago)
 public class ApostaConfirmadaNumeroDetalhesPremioPago extends Fragment {

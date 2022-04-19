@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -26,15 +25,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.MesesAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.MesesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ItemRetanguloTextView;
 
 @EFragment(R.layout.fragment_meses)
 public class MesesFragment extends Fragment {
-
-    @ViewById
-    protected TextView escolhaNumerosText, paginaNumeroText, paginaQuantidadeText;
 
     @ViewById
     protected ExpandableHeightGridView mesesGridView;
@@ -73,15 +69,6 @@ public class MesesFragment extends Fragment {
     }
 
     private void setTelaDiaSorte() {
-        escolhaNumerosText.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getString(R.string.dia_sorte_escolha_mes)));
-        escolhaNumerosText.setTextColor(getResources().getColor(R.color.diasortemedio));
-
-        paginaNumeroText.setText(R.string.label_numerico_dois);
-        paginaNumeroText.setTextColor(getResources().getColor(R.color.diasortemedio));
-
-        paginaQuantidadeText.setText(getString(R.string.paginacao_quantidade, getString(R.string.label_numerico_dois)));
-        paginaQuantidadeText.setTextColor(getResources().getColor(R.color.diasortemedio));
-
         parentActivity.getQtdNumerosButton().setOnClickListener(null);
 
         parentActivity.getBotaoAdicionarCompletarCartela().setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getString(R.string.adicionarAoCarrinho)));

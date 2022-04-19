@@ -24,8 +24,8 @@ class ServerMethods {
      static final String CARRINHO_FAVORITO_DELETAR_APOSTA = "/carrinhos-favoritos/{id}/apostas/{idAposta}";
      static final String CARRINHO_VERIFICA_COMPRA_PROCESSAMENTO = "/carrinhos/verifica-compra-processamento";
 
-
-
+     //MEIO PAGAMENTO
+     static final String MEIOS_PAGAMENTOS = "/meios-pagamento/{id}";
 
      static final String UFS_PATH = "/ufs";
      static final String TERMO_PATH = "/termos-de-uso/termo-vigente";

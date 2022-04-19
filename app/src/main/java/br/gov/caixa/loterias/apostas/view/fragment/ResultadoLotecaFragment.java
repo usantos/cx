@@ -17,7 +17,7 @@ import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
-import br.gov.caixa.loterias.apostas.view.adapter.LotecaResultadoTimesAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaResultadoTimesAdapter;
 
 import static br.gov.caixa.loterias.apostas.view.fragment.ResultadoGenericoFragment.RESULTADO_DTO;
 

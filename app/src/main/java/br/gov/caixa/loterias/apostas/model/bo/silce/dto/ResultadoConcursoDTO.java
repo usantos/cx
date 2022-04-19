@@ -68,6 +68,8 @@ public class ResultadoConcursoDTO<T> implements Serializable {
     protected List<GanhadoresPorRegiaoDTO> ganhadoresSegundoSorteio = null;
     @SerializedName("numerosSorteadosPrimeiroSorteio")
     protected T numerosSorteadosPrimeiroSorteio = null;
+    @SerializedName("trevosSorteadosPrimeiroSorteio")
+    protected List<Integer> trevosSorteadosPrimeiroSorteio = null;
 
     /**
      **/
@@ -320,6 +322,13 @@ public class ResultadoConcursoDTO<T> implements Serializable {
         this.ganhadoresSegundoSorteio = ganhadoresSegundoSorteio;
     }
 
+    public List<Integer> getTrevosSorteadosPrimeiroSorteio() {
+        return trevosSorteadosPrimeiroSorteio;
+    }
+
+    public void setTrevosSorteadosPrimeiroSorteio(List<Integer> trevosSorteadosPrimeiroSorteio) {
+        this.trevosSorteadosPrimeiroSorteio = trevosSorteadosPrimeiroSorteio;
+    }
 
     @Override
     public boolean equals(Object o) {

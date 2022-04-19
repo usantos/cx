@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
@@ -18,18 +17,15 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingleton;
-import br.gov.caixa.loterias.apostas.view.adapter.TiposApostasMultiplaSelecaoAdapter;
+import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TiposApostasMultiplaSelecaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,25 +74,19 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 
 	private void callWebservice() {
 
-		final AlertDialog loadViewProgress = LoadingViewLoterias.show(getContext());
-		final ApostaBO apostaBO = ApostaBO_.getInstance_(getContext());
+		AlertDialogUtils.show(getActivity());
 
-		apostaBO.getModalidades(new RequestListener<ModalidadeDTOResponse>() {
+		new ModalidadeModel(getActivity()).buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
 			@Override
-			public void onResponse(ModalidadeDTOResponse response) {
-				loadViewProgress.dismiss();
-				modalidades = response.getPayload();
-
-				if (response.getRedirect() != null) {
-					RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
-				}
+			public void success(List<ModalidadeDTO> payload) {
+				AlertDialogUtils.dismiss();
+				modalidades = payload;
 				atualizarLayout();
 			}
 
 			@Override
-			public void onErrorResponse(VolleyError error) {
-				loadViewProgress.dismiss();
-				RedirectNetwork.checkRedirect(error, getActivity());
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
 			}
 		});
 	}
@@ -108,7 +98,7 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 	private void populaArraysTipoAposta(List<TipoAposta> array, List<ModalidadeDTO> modalidades) {
 		for (ModalidadeDTO item : modalidades) {
 			TipoAposta tipoAposta = null;
-			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
+			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
 				case QUINA:
 					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_5, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
 					break;
@@ -132,6 +122,9 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 					break;
 				case SUPER_SETE:
 					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.superseteclaro	, false, item.getValor(), item.getDescricaoEspecial());
+					break;
+				case MAIS_MILIONALIA:
+					tipoAposta = new TipoAposta("+Milionária", R.drawable.trevo_mais_milionaria_nao_selecionado, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
 					break;
 				default:
 					break;

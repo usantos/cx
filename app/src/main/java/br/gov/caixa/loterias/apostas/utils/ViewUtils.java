@@ -424,13 +424,16 @@ public class ViewUtils {
      * @return
      */
     public static SpannableStringBuilder textFuturaAndFuturaBold(Context context, String texto) {
-        Typeface font = ViewUtils.getFontFuturaBold(context);
+        try{
+            Typeface font = ViewUtils.getFontFuturaBold(context);
 
-        PositionStringBold positionStringBold = positionString(texto);
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
-        spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-
-        return spannableStringBuilder;
+            PositionStringBold positionStringBold = positionString(texto);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+            spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            return spannableStringBuilder;
+        }catch (Exception e){
+            return  new SpannableStringBuilder().append(texto);
+        }
     }
 
     public static SpannableStringBuilder textColor(Context context, String texto,int idCor) {
@@ -578,22 +581,34 @@ public class ViewUtils {
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
         if(param != null){
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
+
+            if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                        ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade()) : ModalidadeEnum.getDescricao(aposta.getModalidade());
+            } else {
+                return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                        modalidadeDetalhada.getDescricaoEspecial():
+                        modalidadeDetalhada.getDescricao();
+            }
+        } else {
             return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                    modalidadeDetalhada.getDescricaoEspecial():
-                    modalidadeDetalhada.getDescricao();
-        } /*else {
-            return ModalidadeEnum.fromString(aposta.getModalidade());
-        }*/
-        return "";
+                    ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade()) :
+                    ModalidadeEnum.getDescricao(aposta.getModalidade());
+        }
     }
 
     public static String getNomeModalidadePorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
         if(param != null){
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
-            return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                    modalidadeDetalhada.getDescricaoEspecial():
-                    modalidadeDetalhada.getDescricao();
+
+            if (modalidadeDetalhada.getValor() == 9){
+                return "+Milionária";
+            } else {
+                return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                        modalidadeDetalhada.getDescricaoEspecial():
+                        modalidadeDetalhada.getDescricao();
+            }
         } /*else {
             return ModalidadeEnum.fromString(aposta.getModalidade());
         }*/

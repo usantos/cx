@@ -11,7 +11,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 
 public class ConferirResultadoHelper  {
@@ -24,17 +24,17 @@ public class ConferirResultadoHelper  {
      * @param apostaId Long
      */
     public static void conferirResultado(final Long apostaId, final Activity contextParam) {
-        DialogUtils.show(contextParam);
+        AlertDialogUtils.show(contextParam);
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
                 long codigoResultado = result.getPayload().getValor().longValue();
                 if(!(codigoResultado == SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor() || codigoResultado == SituacaoResultadoBilheteEnum.PREMIADA.getValor())){
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                 }
                 if (result.getRedirect() != null){
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     RedirectNetwork.checkRedirectSucesso( result.getRedirect(), contextParam);
                 }
 
@@ -47,19 +47,19 @@ public class ConferirResultadoHelper  {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 onError(error, contextParam);
             }
         });
     }
 
     public static void conferirResultado(ApostaConfirmadaHolder holder, final Long apostaId, final Activity contextParam) {
-        DialogUtils.show(contextParam);
+        AlertDialogUtils.show(contextParam);
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (result.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( result.getRedirect(), contextParam);
                 }
@@ -79,8 +79,8 @@ public class ConferirResultadoHelper  {
     }
 
     public static void conferirResultadoWithoutLoading(ApostaConfirmadaHolder holder, final Long apostaId, final Activity contextParam) {
-        if(DialogUtils.isShow()){
-            DialogUtils.dismiss();
+        if(AlertDialogUtils.isShow()){
+            AlertDialogUtils.dismiss();
         }
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
@@ -93,16 +93,16 @@ public class ConferirResultadoHelper  {
                 resultCheckFinal.setValor(result.getPayload().getValor().longValue());
                 resultCheckFinal.setDescricao(result.getPayload().getDescricao());
 
-                if(DialogUtils.isShow()){
-                    DialogUtils.dismiss();
+                if(AlertDialogUtils.isShow()){
+                    AlertDialogUtils.dismiss();
                 }
                 conferirResultadoHandler.handle(holder,resultCheckFinal);
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                if(DialogUtils.isShow()){
-                    DialogUtils.dismiss();
+                if(AlertDialogUtils.isShow()){
+                    AlertDialogUtils.dismiss();
                 }
                 onErrorWithoutAlert(holder, error);
             }
@@ -110,7 +110,7 @@ public class ConferirResultadoHelper  {
     }
 
     private static void onError(VolleyError error, Activity activity) {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         RedirectNetwork.checkRedirect(error,activity);
     }
 
