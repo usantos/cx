@@ -23,8 +23,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoMod
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingleton;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.NumerosRapidaoAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.TiposApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumerosRapidaoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TiposApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 
@@ -166,7 +166,7 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 	private void populaArraysTipoAposta(List<TipoAposta> array, List<ModalidadeDTO> modalidades) {
 		for (ModalidadeDTO item : modalidades) {
 			TipoAposta tipoAposta = null;
-			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
+			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
 				case QUINA:
 					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_5, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
 					break;
@@ -190,6 +190,9 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 					break;
 				case SUPER_SETE:
 					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.superseteclaro, false, item.getValor(), item.getDescricaoEspecial());
+					break;
+				case MAIS_MILIONALIA:
+					tipoAposta = new TipoAposta("+Milionária", R.drawable.trevo_mais_milionaria_nao_selecionado, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
 					break;
 				default:
 					break;

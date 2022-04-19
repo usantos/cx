@@ -44,7 +44,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioIdDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 
@@ -158,7 +158,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void callWebservice() {
-        DialogUtils.show(DadosPessoaisActivity.this);
+        AlertDialogUtils.show(DadosPessoaisActivity.this);
         final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
 
         dadosUsuarioBO.getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
@@ -171,12 +171,12 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_editar_cadastro));
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
             }
         } );
@@ -185,11 +185,11 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     private void getUFS() {
         if (listUf == null || listUFString == null) {
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
-            DialogUtils.show(DadosPessoaisActivity.this);
+            AlertDialogUtils.show(DadosPessoaisActivity.this);
             dadosCorporativosBO.ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
                 @Override
                 public void onResponse(UnidadeFederacaoDTOResponse response) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     listUFString = new ArrayList<>();
                     listUf = response.getPayload();
                     for (UnidadeFederacaoDTO uf : response.getPayload()) {
@@ -203,7 +203,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     RedirectNetwork.checkRedirect(error, DadosPessoaisActivity.this);
                 }
             });
@@ -265,13 +265,13 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         String idUF = getIdUF(ufSelect);
 
         if (idUF != null && !idUF.isEmpty()){
-            DialogUtils.show(DadosPessoaisActivity.this);
+            AlertDialogUtils.show(DadosPessoaisActivity.this);
 
             DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
             dadosCorporativosBO.municipios(idUF, new RequestListener<MunicipioDTOResponse>() {
                 @Override
                 public void onResponse(MunicipioDTOResponse response) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     listMunicipios = new ArrayList<>();
                     municipioDTOList = response.getPayload();
                     for (MunicipioDTO municipio : municipioDTOList) {
@@ -284,7 +284,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    DialogUtils.dismiss();
+                    AlertDialogUtils.dismiss();
                     RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
                 }
             });
@@ -395,12 +395,12 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void buscarBairroPorCep(String cep) {
-        DialogUtils.show(DadosPessoaisActivity.this);
+        AlertDialogUtils.show(DadosPessoaisActivity.this);
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
         dadosCorporativosBO.bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
             @Override
             public void onResponse(BairroDTOResponse response) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getPayload() != null && !response.getPayload().isEmpty()) {
                     BairroDTO bairroDTO = response.getPayload().get(0);
                     editTextUFContent.setText(bairroDTO.getMunicipio().getUf().getSigla());
@@ -415,7 +415,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 ViewUtils.alertTitleButton(DadosPessoaisActivity.this,
                         R.string.label_atencao,
                         MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this),
@@ -426,13 +426,13 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
     private void updateDadosCadastrais(ApostadorAlteracaoDTO apostadorAlteracaoDTO){
         final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
-        DialogUtils.show(DadosPessoaisActivity.this);
+        AlertDialogUtils.show(DadosPessoaisActivity.this);
         dadosUsuarioBO.putDadosUsuario(apostadorAlteracaoDTO, new RequestListener<CadastrarApostadorDTOResponse>() {
             @Override
             public void onResponse(CadastrarApostadorDTOResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_edicao_cadastro_sucesso));
 
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }else {
@@ -443,7 +443,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
             }
         });
@@ -488,7 +488,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 dadosCorporativosBO.municipios(apostadorDTO.getMunicipioId().getIdUF().toString(), new RequestListener<MunicipioDTOResponse>() {
                     @Override
                     public void onResponse(MunicipioDTOResponse response) {
-                        DialogUtils.dismiss();
+                        AlertDialogUtils.dismiss();
                         municipioDTOList = response.getPayload();
 
                         listMunicipios = new ArrayList<>();
@@ -507,7 +507,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        DialogUtils.dismiss();
+                        AlertDialogUtils.dismiss();
                         RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
                     }
                 });
@@ -515,7 +515,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
             }
         });

@@ -47,9 +47,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 /**
@@ -71,7 +72,7 @@ public class AdicionarApostaCarrinhoHelper {
         activity = actv;
         ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         aposta = getApostaPreenchida(objectAposta);
-        DialogUtils.show(activity);
+        AlertDialogUtils.show(activity);
         if (aposta != null && !checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.LISTA_APOSTA)) {
             postAdicionarApostaCarrinhoMinhasApostas(apostaBO);
         }
@@ -80,10 +81,13 @@ public class AdicionarApostaCarrinhoHelper {
     public static void incluirApostaCarrinhoMinhasApostas(Activity actv, Object objectAposta) {
         activity = actv;
         ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+        AlertDialogUtils.show(activity);
         aposta = getApostaPreenchida(objectAposta);
-        DialogUtils.show(activity);
         if (aposta != null && !checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.LISTA_APOSTA)) {
             postAdicionarApostaCarrinhoMinhasApostas(apostaBO);
+        } else {
+            AlertDialogUtils.dismiss();
+            ViewUtils.alertTitleButton(activity, R.string.label_atencao, actv.getResources().getString(R.string.erro_req), activity.getResources().getString(R.string.ok));
         }
     }
 
@@ -91,7 +95,7 @@ public class AdicionarApostaCarrinhoHelper {
         activity = actv;
         ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
         aposta = objectAposta;
-        DialogUtils.show(activity);
+        AlertDialogUtils.show(activity);
         if (aposta != null) {
             prosseguirInclusaoAposta(actv,objectAposta, apostaBO);
         }
@@ -108,7 +112,7 @@ public class AdicionarApostaCarrinhoHelper {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, activity);
             }
         });
@@ -118,11 +122,11 @@ public class AdicionarApostaCarrinhoHelper {
     public static void incluirApostaCarrinhoSurpresinha(Activity actv, final IncluirSurpresinhaDTO apostaSurpresinha) {
         activity = actv;
         ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
-        DialogUtils.show(activity);
+        AlertDialogUtils.show(activity);
         apostaBO.adicionarSurpresinhaNoCarrinho(apostaSurpresinha, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
                 telaConfirmarCarrinho(apostaSurpresinha.getModalidade(), apostaSurpresinha);
                 if (response.getRedirect() != null) {
@@ -132,7 +136,7 @@ public class AdicionarApostaCarrinhoHelper {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     inserirSurpresinhaCarrinhoLocal(apostaSurpresinha);
                     telaConfirmarCarrinho(apostaSurpresinha.getModalidade(), apostaSurpresinha);
@@ -147,7 +151,7 @@ public class AdicionarApostaCarrinhoHelper {
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
                 if (CarrinhoSingleton.getInstance().getCarrinho() != null &&
                         CarrinhoSingleton.getInstance().getCarrinho().getApostas() != null) {
@@ -173,10 +177,21 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void postAdicionarApostaCarrinhoMinhasApostas(ApostaBO apostaBO) {
+        if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && aposta.getTrevosSelecionados() != null){
+            aposta.setTrevosSelecionados(AppUtils.converteListaInteiros((List<Integer>) aposta.getTrevosSelecionados()));
+        }
+
+        if (aposta.getNumerosSelecionados() != null && ((List<Integer>)aposta.getNumerosSelecionados()).size() > 0){
+            DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
+            indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
+            indicadorSurpresinha.setDescricao("");
+            aposta.setIndicadorSurpresinha(indicadorSurpresinha);
+        }
+
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
             @Override
             public void onResponse(AgrupadorDTOApostaDTOResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
                 CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
                 activity.startActivity(new Intent(activity, CarrinhoActivity.class));
@@ -191,28 +206,17 @@ public class AdicionarApostaCarrinhoHelper {
 
     private static void checarLimiteDiario
             (final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta, final CarrinhoDTO carrinhoDTO) {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         BigDecimal limiteDiario = SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario();
         BigDecimal valorCarrinho = carrinhoDTO.getValorTotal().add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaPorPrognostico(aposta));
         if (valorCarrinho != null && limiteDiario != null && valorCarrinho.compareTo(limiteDiario) == 1) {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(activity, activity.getResources().getString(R.string.MA014), (dialog, which) -> prosseguirInclusaoAposta(activity,aposta,apostaBO));
         } else {
             prosseguirInclusaoAposta(activity,aposta,apostaBO);
         }
     }
 
-    /*private static void checarApostasRepetidas(final ApostaBO apostaBO, final IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        if (checarApostasRepetidas(activity,aposta)) {
-            DialogUtils.dismiss();
-            ViewUtils.alertTitleButtonYesOrNotListener(activity, activity.getResources().getString(R.string.MA015), (dialog, which) -> {
-                DialogUtils.show(activity);
-                postAdicionarApostaCarrinho(apostaBO);
-            });
-        } else {
-            postAdicionarApostaCarrinho(apostaBO);
-        }
-    }*/
     private static void prosseguirInclusaoAposta(Activity activity, IdentificaoDeUmaApostaDas8Modalidades aposta, ApostaBO apostaBO) {
         if(!checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.CARROSEL)){
             postAdicionarApostaCarrinho(apostaBO);
@@ -258,7 +262,7 @@ public class AdicionarApostaCarrinhoHelper {
                     break;
             }
         },(dialog, which) ->{
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
             dialog.dismiss();
         } );
     }
@@ -355,7 +359,6 @@ public class AdicionarApostaCarrinhoHelper {
             }
             AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_OFFLINE");
 
-
             return Boolean.TRUE;
         }
     }
@@ -395,6 +398,10 @@ public class AdicionarApostaCarrinhoHelper {
             } else {
                 aposta.setNumerosSelecionados(apostaDTO.getListaNumerosSelecionados());
 
+            }
+
+            if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                aposta.setTrevosSelecionados(apostaDTO.getListaTrevosSelecionados());
             }
             DTOEnumInteger indicadorSurpresinha = new DTOEnumInteger();
             indicadorSurpresinha.setValor(IndicadorSurpresinha.NAO_SURPRESINHA);
@@ -481,6 +488,9 @@ public class AdicionarApostaCarrinhoHelper {
         apostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
         apostaDas8Modalidades.setQuantidadeTeimosinhas(aposta.getQuantidadeTeimosinhas());
         apostaDas8Modalidades.setQuantidadeApostas(aposta.getQuantidadeApostas());
+        if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+            apostaDas8Modalidades.setQuantidadeTrevos(aposta.getQtdTrevos());
+        }
         apostaDas8Modalidades.setTimeDoCoracao(aposta.getTimeDoCoracao());
         apostaDas8Modalidades.setSurpresinha(true);
         apostaDas8Modalidades.setGerarEspelho(aposta.getGerarEspelho());
@@ -533,7 +543,7 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void onError(VolleyError error) {
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         if (MensagensNetwork.isUnauthorizedError(error)) {
             if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(activity, aposta)) {
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);

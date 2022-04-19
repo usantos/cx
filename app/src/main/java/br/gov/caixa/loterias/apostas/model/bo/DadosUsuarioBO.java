@@ -39,6 +39,7 @@ public class DadosUsuarioBO extends BaseBO {
     private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
     private final static String LOGIN_SUCESSO = "LOGIN_SUCESSO";
     private final static String SUPER_SETE_TUTORIAL = "SUPER_SETE_TUTORIAL";
+    private final static String MAIS_MILIONARIA_TUTORIAL = "MAIS_MILIONARIA_TUTORIAL";
 
     private static final String NOME = "NOME";
     private static final String CPF = "CPF";
@@ -179,8 +180,16 @@ public class DadosUsuarioBO extends BaseBO {
         return checarBoolean(SUPER_SETE_TUTORIAL);
     }
 
+    public static Boolean checarTutorialMaisMilionaria() {
+        return checarBoolean(MAIS_MILIONARIA_TUTORIAL);
+    }
+
     public static void updateTutorialSuperSete(Boolean status) {
         updateBoolean(status, SUPER_SETE_TUTORIAL);
+    }
+
+    public static void updateTutorialMaisMilionaria(Boolean status) {
+        updateBoolean(status, MAIS_MILIONARIA_TUTORIAL);
     }
 
     public static Boolean checarBoolean(String key) {
@@ -198,13 +207,11 @@ public class DadosUsuarioBO extends BaseBO {
         editor.commit();
     }
 
-
     public static void updateUsuarioLogado(Activity activity, Boolean status) {
         SharedPreferences sharedPref = activity.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(activity.getString(R.string.key_usuario_logado), status);
         editor.commit();
-
     }
 
     public static Boolean checarUsuarioLogado(Activity activity) {
@@ -213,13 +220,11 @@ public class DadosUsuarioBO extends BaseBO {
         return status;
     }
 
-
     public static void updateVerificarIdade(Activity activity, Boolean status) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean(activity.getString(R.string.key_idade), status);
         editor.commit();
-
     }
 
     public static Boolean checarVerificarIdade(Activity activity) {
@@ -227,7 +232,6 @@ public class DadosUsuarioBO extends BaseBO {
         Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_idade), true);
         return status;
     }
-
 
     public void getDadosUsuario(final RequestListener<ApostadorDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
@@ -274,8 +278,6 @@ public class DadosUsuarioBO extends BaseBO {
     public void putLerNotificacao(final RequestListener<RetornoPadraoDTO> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-
-
 
         final GsonRequest request = silceConnection.buildPutRequest(
                 ServerMethods.LER_NOTIFICACAO.replace("{idNotificacao}", UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getId().toString()),

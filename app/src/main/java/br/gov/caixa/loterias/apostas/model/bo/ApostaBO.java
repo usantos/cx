@@ -762,7 +762,6 @@ public class ApostaBO extends BaseBO {
         getResultadoModalidade( modalidade, "", listener);
     }
 
-
     public void getModalidades(final RequestListener<ModalidadeDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.MODALIDADES_PATH,
                                                                     new LinkedHashMap<>(),

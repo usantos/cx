@@ -52,6 +52,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -60,7 +61,9 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.IntroducaoTutorialActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -71,20 +74,24 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
+import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -92,19 +99,21 @@ import br.gov.caixa.loterias.apostas.utils.OnSwipeTouchListener;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.HomeAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.SideMenuExpandleAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
 public class PrincipalActivity extends AppCompatActivity
-        implements DiscreteScrollView.ScrollListener<HomeAdapter.ViewHolder>,
-        DiscreteScrollView.OnItemChangedListener<HomeAdapter.ViewHolder> {
+        implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
+        DiscreteScrollView.OnItemChangedListener<HomeViewHolder> {
 
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
@@ -176,6 +185,12 @@ public class PrincipalActivity extends AppCompatActivity
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+//        if (TestVisao.isTeste()){
+//            buttonHomeBet.setOnLongClickListener(v -> {
+//                nextActivity(IntroducaoTutorialActivity.class);
+//                return false;
+//            });
+//        }
     }
 
     @Override
@@ -277,44 +292,46 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callWebservice() {
-        DialogUtils.show(PrincipalActivity.this);
+        AlertDialogUtils.show(PrincipalActivity.this);
 
         if(SessaoUsuarioUtil.precisaAtualizar()){
             final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
 
-            dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
-                @Override
-                public void onResponse(ParametrosSimulacaoResponse response) {
-                    DialogUtils.dismiss();
-                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
+            new ParametrosSimulacaoModel(PrincipalActivity.this)
+                    .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
+                        @Override
+                        public void success(ParametrosSimulacao payload) {
+                            AlertDialogUtils.dismiss();
+                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
 
-                    modalidadesParaListar = response.getPayload().getParametros();
-                    if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
-                        Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                        appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+                            modalidadesParaListar = payload.getParametros();
 
-                        startActivityForResult(appIndis, 1);
-                    }
+                            if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
+                                Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                                appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
 
-                    SessaoUsuarioUtil.atualizaParametrosSingleton(response);
-                    paramatroSimulacaoSuccess();
-                }
+                                startActivityForResult(appIndis, 1);
+                            }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    DialogUtils.dismiss();
-                    Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                    appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+                            SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
+                            paramatroSimulacaoSuccess();
+                        }
 
-                    startActivityForResult(appIndis, 1);
-                }
-            });
+                        @Override
+                        public void error(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                            Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+                            appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+
+                            startActivityForResult(appIndis, 1);
+                        }
+                    });
         }else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
             modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
             paramatroSimulacaoSuccess();
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
         }else {
-            DialogUtils.dismiss();
+            AlertDialogUtils.dismiss();
         }
 
     }
@@ -404,14 +421,14 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void callRepassesSociais() {
-        DialogUtils.show(PrincipalActivity.this);
+        AlertDialogUtils.show(PrincipalActivity.this);
         final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
         dadosCorporativosBO.repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 repassesSociais = response.getPayload();
                 layoutTrevoAcessoRapido();
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 showMenu();
             }
 
@@ -433,15 +450,48 @@ public class PrincipalActivity extends AppCompatActivity
     private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
 
+//        if (!BuildConfig.FLAVOR.equalsIgnoreCase("prd") && !conteMaisMilionaria()){
+//            ParametroSimulacao parametro = MaisMilionariaMock.getParametroMaisMilionaria();
+//            listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
+//                                                parametro.getParametroJogo().getConcurso().getValorApostaMinima(), getResources().getString(R.string.string_vazia), getResources().getString(R.string.string_vazia), parametro.getParametroJogo().getConcurso().getModalidade(),
+//                                                parametro.getParametroJogo().getConcurso(), false, null));
+//            Toast.makeText(PrincipalActivity.this, "+Milionaria de forma mockada", Toast.LENGTH_LONG).show();
+//        }
+
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
-                listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-                        parametro.getParametroJogo().getConcurso().getValorApostaMinima(), getResources().getString(R.string.string_vazia), getResources().getString(R.string.string_vazia), parametro.getParametroJogo().getConcurso().getModalidade(),
-                        parametro.getParametroJogo().getConcurso(), false, null));
+                String descricao = getDescricaoModalidade(parametro);
+                listaModalidades.add(new Modalidade(descricao, parametro.getParametroJogo().getConcurso().getValorApostaMinima(),
+                                                    getResources().getString(R.string.string_vazia),
+                                                    getResources().getString(R.string.string_vazia),
+                                                    parametro.getParametroJogo().getConcurso().getModalidade(),
+                                                    parametro.getParametroJogo().getConcurso(), false, null));
             }
         }
 
         return listaModalidades;
+    }
+
+    @NotNull
+    private String getDescricaoModalidade(ParametroSimulacao parametro) {
+        if (parametro.getParametroJogo().getConcurso().getTipoConcurso().name().contains(TipoConcursoEnum.NORMAL.name())){
+            return parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao();
+        } else {
+            return parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricaoEspecial();
+        }
+    }
+
+    private boolean conteMaisMilionaria() {
+        boolean contem = false;
+
+        for (ParametroSimulacao parametro : modalidadesParaListar){
+            if (parametro.getParametroJogo().getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                contem = true;
+                break;
+            }
+        }
+
+        return contem;
     }
 
     private void layoutTrevoAcessoRapido() {
@@ -589,11 +639,11 @@ public class PrincipalActivity extends AppCompatActivity
     public void onScroll(
             float currentPosition,
             int currentIndex, int newIndex,
-            @Nullable HomeAdapter.ViewHolder currentHolder,
-            @Nullable HomeAdapter.ViewHolder newCurrent) { }
+            @Nullable HomeViewHolder currentHolder,
+            @Nullable HomeViewHolder newCurrent) { }
 
     @Override
-    public void onCurrentItemChanged(@Nullable HomeAdapter.ViewHolder viewHolder, int adapterPosition) {
+    public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
@@ -607,16 +657,29 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.buttonHomeBet)
     protected void clickButtonHomeBet() {
-        int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
-        ModalidadeEnum modalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
-        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
-        ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
+        nextActivity(TutorialMaisMilionariaActivity.class);
+    }
 
-        Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
-        activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
-        activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
-        activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
-        startActivity(activity);
+    private void nextActivity(Class clazz) {
+        int              selecionada   = Integer.parseInt(buttonHomeBet.getTag().toString());
+        ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
+        ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
+        if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorialMaisMilionaria()){
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
+            Intent activity = new Intent(PrincipalActivity.this, clazz);
+            activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
+            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
+            startActivity(activity);
+        } else {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
+
+            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
+            activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
+            activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+            activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
+            startActivity(activity);
+        }
     }
 
     @Click(R.id.relativeLayoutContentRepassados)
@@ -803,7 +866,7 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         dbLoteriasHelper.close();
-        DialogUtils.dismiss();
+        AlertDialogUtils.dismiss();
         super.onDestroy();
     }
 

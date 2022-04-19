@@ -4,6 +4,7 @@ import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaCarrinhoFavorito;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaIdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaLoterica;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaMercadoPago;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLoteca;
@@ -64,6 +65,7 @@ public final class DBTabelasLoterias {
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_VALOR + " TEXT, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TIPO_CONCURSO_DESCRICAO + " TEXT, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_NUMEROS_SELECIONADOS + " TEXT, " +
+                TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_TREVOS_SELECIONADOS + " TEXT, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_VALOR + " INTEGER, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_INDICADOR_SURPRESINHA_DESCRICAO + " TEXT, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VALOR + " REAL, " +
@@ -81,6 +83,7 @@ public final class DBTabelasLoterias {
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_LOTERICA_ID + " NUMERIC, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_VINCULO_ESPELHO + " NUMERIC, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_NUMEROS + " INTEGER, " +
+                TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_TREVOS + " INTEGER, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SURPRESINHA + " INTEGER, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_QUANTIDADE_SURPRESINHA + " INTEGER, " +
                 TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_ID_TIME_CORACAO + " NUMERIC, " +
@@ -216,6 +219,21 @@ public final class DBTabelasLoterias {
                 " ( " +
                 TabelaCarrinhoFavorito.COLUNA_ID_CARRINHO + " INTEGER PRIMARY KEY NOT NULL , " +
                 TabelaCarrinhoFavorito.COLUNA_NOME_CARRINHO + " TEXT " +
+                " ) ";
+        return sb;
+    }
+
+    /**
+     * Método para criar tabela do mercado pago
+     *
+     * @return sb
+     */
+    public static String criarTabelaMercadoPago() {
+
+        String sb = (" CREATE TABLE " + TabelaMercadoPago.NOME_TABELA) +
+                " ( " +
+                TabelaMercadoPago.COLUNA_ID + " INTEGER PRIMARY KEY NOT NULL , " +
+                TabelaMercadoPago.COLUNA_PUBLIC_KEY + " TEXT " +
                 " ) ";
         return sb;
     }

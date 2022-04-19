@@ -16,8 +16,8 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.DetalhesApostasCarrinhoFavoritoAdapter;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostasCarrinhoFavoritoAdapter;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity.RESPOSTA_APOSTAS;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity.RESPOSTA_EXCLUIU_APOSTAS;
@@ -60,11 +60,11 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
     }
 
     private void buscaApostas(){
-        DialogUtils.show(this);
+        AlertDialogUtils.show(this);
         ApostaBO_.getInstance_(this).buscaApostasCarrinhoFavorito(idCarrinho ,new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
             @Override
             public void onResponse(ListApostaCarrinhoFavoritoDTO result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(result.getRedirect(), DetalhesCarrinhoFavoritoActivity.this);
                 }
@@ -74,7 +74,7 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, DetalhesCarrinhoFavoritoActivity.this);
             }
         });

@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListDTOEnumIntegerRespon
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaCodigoWrapperResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
@@ -235,6 +236,19 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 listener.getSilceListener(),
                                                                 listener.getErrorListener(),
                                                                 getHeader());
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
+    public void buscaKeyMercadoPago(Long id, final RequestListener<MeioPagamentoResponse> listener){
+        String url = ServerMethods.MEIOS_PAGAMENTOS.replace("{id}", String.valueOf(id));
+        final GsonRequest request = silceConnection.buildGetRequest(url,
+                                                                  new HashMap<>(),
+                                                                  MeioPagamentoResponse.class,
+                                                                  listener.getSilceListener(),
+                                                                  listener.getErrorListener(),
+                                                                  getHeader());
+
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }

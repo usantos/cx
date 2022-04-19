@@ -33,21 +33,22 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
+import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.FiltroApostasAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.ListaComprasDetalhesAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 public class DetalhesComprasActivity extends AppCompatActivity {
@@ -320,11 +321,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
-        DialogUtils.show(DetalhesComprasActivity.this);
+        AlertDialogUtils.show(DetalhesComprasActivity.this);
         ApostaBO_.getInstance_(DetalhesComprasActivity.this).validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( result.getRedirect(), DetalhesComprasActivity.this);
                 }
@@ -333,7 +334,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 ViewUtils.alertTitleButtonYesOrNotListener(
                         DetalhesComprasActivity.this,
                         MensagensNetwork.getErrorMessage(error),
@@ -344,11 +345,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void favoritarCarrinho(String nome, Long idFavorito) {
-        DialogUtils.show(DetalhesComprasActivity.this);
+        AlertDialogUtils.show(DetalhesComprasActivity.this);
         ApostaBO_.getInstance_(DetalhesComprasActivity.this).salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( result.getRedirect(), DetalhesComprasActivity.this);
                 }
@@ -363,31 +364,31 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
             }
         });
     }
 
     private void buscaModalidades() {
-        DialogUtils.show(DetalhesComprasActivity.this);
-        ApostaBO_.getInstance_(DetalhesComprasActivity.this).getModalidades(new RequestListener<ModalidadeDTOResponse>() {
-            @Override
-            public void onResponse(ModalidadeDTOResponse response) {
-                DialogUtils.dismiss();
-                if (response.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalhesComprasActivity.this);
-                }
-                if(response.getPayload() != null){
-                    setaDialogFiltrar(response.getPayload());
-                }
-            }
+        AlertDialogUtils.show(DetalhesComprasActivity.this);
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                DialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
-            }
-        });
+        new ModalidadeModel(DetalhesComprasActivity.this)
+                .buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
+                    @Override
+                    public void success(List<ModalidadeDTO> payload) {
+                        AlertDialogUtils.dismiss();
+
+                        if(payload != null){
+                            setaDialogFiltrar(payload);
+                        }
+                    }
+
+                    @Override
+                    public void error(VolleyError error) {
+                        AlertDialogUtils.dismiss();
+                    }
+                });
+
     }
 }

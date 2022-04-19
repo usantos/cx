@@ -3,39 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="br.gov.caixa.loterias.apostas">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
-    <uses-feature android:name="android.hardware.camera" />
-
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="https" />
-        </intent>
-        <intent>
-            <action android:name="android.intent.action.VIEW" />
-            <!-- If you don't know the MIME type in advance, set "mimeType" to "*/*". -->
-            <data android:mimeType="*/*" />
-        </intent>
-    </queries>
-
     <application
-        android:name="br.gov.caixa.loterias.apostas.utils.Aplicacao"
+        android:name=".utils.Aplicacao"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name=".controllers.LocalizacaoActivity"
+        <activity android:name=".TutorialMaisMilionariaActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".IntroducaoTutorialActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controllers.LocalizacaoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -51,36 +38,36 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.ResgatePremioLotericaActivity"
+            android:name=".controllers.ResgatePremioLotericaActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.CartoesActivity"
+            android:name=".controllers.CartoesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.DetalhesCarrinhoFavoritoActivity"
+            android:name=".controllers.DetalhesCarrinhoFavoritoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity"
+            android:name=".controllers.CarrinhosFavoritosActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.SelecaoModalidadesResultados"
+            android:name=".controllers.SelecaoModalidadesResultados"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.VisualizarResultadosActivity"
+            android:name=".controllers.VisualizarResultadosActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity"
+            android:name=".controllers.AppIndisponivelActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.AtualizacaoActivity"
+            android:name=".controllers.AtualizacaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -89,19 +76,8 @@
                 android:screenOrientation="portrait"
                 android:value="br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity" />
         </activity>
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/images_path" />
-        </provider>
-
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity"
+            android:name=".controllers.SplashScreenActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
@@ -112,26 +88,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.IntroducaoActivity"
+            android:name=".controllers.IntroducaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.LoginActivity"
+            android:name=".controllers.LoginActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_"
+            android:name=".controllers.CadastrarActivity_"
             android:configChanges="orientation"
-            android:parentActivityName="br.gov.caixa.loterias.apostas.controllers.IntroducaoActivity"
+            android:parentActivityName=".controllers.IntroducaoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.CadastrarPasso2Activity_"
+            android:name=".controllers.CadastrarPasso2Activity_"
             android:configChanges="orientation"
-            android:parentActivityName="br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_"
+            android:parentActivityName=".controllers.CadastrarActivity_"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -139,53 +115,53 @@
                 android:value="br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_" />
         </activity>
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity_"
+            android:name=".controllers.SimularApostaActivity_"
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity"
+            android:name=".controllers.ConfirmadoInclusaoCarrinhoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity"
+            android:name=".controllers.CarrinhoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity"
+            android:name=".controllers.ConfirmacaoPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_confirmacao_pagamento"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.NovaFormaPagamentoActivity"
+            android:name=".controllers.NovaFormaPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_"
+            android:name=".controllers.PrincipalActivity_"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BrancoActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity"
+            android:name=".controllers.TermosUsoActivity"
             android:label="@string/title_activity_termos_uso"
-            android:parentActivityName="br.gov.caixa.loterias.apostas.controllers.PrincipalActivity"
+            android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.RepassesSociaisActivity"
+            android:name=".controllers.RepassesSociaisActivity"
             android:label="@string/title_activity_repasses_sociais"
-            android:parentActivityName="br.gov.caixa.loterias.apostas.controllers.PrincipalActivity"
+            android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.ListaRapidaoActivity"
+            android:name=".controllers.ListaRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
-            android:parentActivityName="br.gov.caixa.loterias.apostas.controllers.PrincipalActivity"
+            android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar">
             <meta-data
@@ -193,9 +169,9 @@
                 android:value="br.gov.caixa.loterias.apostas.controllers.PrincipalActivity" />
         </activity>
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.RapidaoConfigActivity_"
+            android:name=".controllers.RapidaoConfigActivity_"
             android:label="@string/title_activity_lista_rapidao"
-            android:parentActivityName="br.gov.caixa.loterias.apostas.controllers.ListaRapidaoActivity"
+            android:parentActivityName=".controllers.ListaRapidaoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize|adjustPan">
@@ -204,18 +180,18 @@
                 android:value="br.gov.caixa.loterias.apostas.controllers.ListaRapidaoActivity" />
         </activity>
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.SelecaoModalidadesRapidaoActivity"
+            android:name=".controllers.SelecaoModalidadesRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.NumerosRapidaoActivity"
+            android:name=".controllers.NumerosRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.AjudaActivity"
-            android:parentActivityName="br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity"
+            android:name=".controllers.AjudaActivity"
+            android:parentActivityName=".controllers.SimularApostaActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar">
             <meta-data
@@ -223,47 +199,47 @@
                 android:value="br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity" />
         </activity>
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.FavoritasActivity"
+            android:name=".controllers.FavoritasActivity"
             android:label="@string/title_activity_favoritas"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity"
+            android:name=".controllers.ListaComprasActivity"
             android:label="@string/title_activity_lista_compras"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.LerBilhetesActivity"
+            android:name=".controllers.LerBilhetesActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppFullScreenTheme" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.LerBilhetesEscolhaJogoActivity"
+            android:name=".controllers.LerBilhetesEscolhaJogoActivity"
             android:label="@string/title_activity_ler_bilhetes_escolha_jogo"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.ResultadoLerBilhetesActivity_"
+            android:name=".controllers.ResultadoLerBilhetesActivity_"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity"
+            android:name=".controllers.DetalhesComprasActivity"
             android:label="@string/title_activity_detalhes_compras"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.InsercaoManualCodBarrasActivity"
+            android:name=".controllers.InsercaoManualCodBarrasActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.DetalheDuvidaActivity_"
+            android:name=".controllers.DetalheDuvidaActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity_"
+            android:name=".controllers.MinhasApostasActivity_"
             android:label="@string/title_activity_minhas_apostas"
-            android:parentActivityName="br.gov.caixa.loterias.apostas.controllers.PrincipalActivity"
+            android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar">
             <meta-data
@@ -272,52 +248,52 @@
                 android:value="br.gov.caixa.loterias.apostas.controllers.PrincipalActivity" />
         </activity>
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioActivity"
+            android:name=".controllers.JogosConfirmadosPremioActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity"
+            android:name=".controllers.JogosConfirmadosPremioMercadoPagoActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.RestritoDezoitoAnosActivity"
+            android:name=".controllers.RestritoDezoitoAnosActivity"
             android:label="@string/title_activity_termos_uso"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivity_"
+            android:name=".controllers.ApostaConfirmadaDetalhesActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity_"
+            android:name=".controllers.ResultadoApostaConfirmadaActivity_"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait" />
-        <activity android:name="br.gov.caixa.loterias.apostas.controllers.ResgatePremioLotericaAgenciaActivity_" />
+        <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity_" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.DadosPessoaisActivity"
+            android:name=".controllers.DadosPessoaisActivity"
             android:label="@string/title_activity_dados_pessoais"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.DadosPessoaisConfirmacaoActivity"
+            android:name=".controllers.DadosPessoaisConfirmacaoActivity"
             android:label="@string/title_activity_dados_pessoais"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.CadastrarConfirmacaoActivity"
+            android:name=".controllers.CadastrarConfirmacaoActivity"
             android:label="@string/title_activity_toolbar"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.AlterarDadosLoginCaixaActivity"
+            android:name=".controllers.AlterarDadosLoginCaixaActivity"
+            android:hardwareAccelerated="true"
             android:label="@string/title_activity_alterar_dados_login_caixa"
-            android:theme="@style/AppTheme.DegradeActionBar"
-            android:hardwareAccelerated="true"/>
+            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.TokenActivity"
+            android:name=".controllers.TokenActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -333,7 +309,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="br.gov.caixa.loterias.apostas.controllers.RapidaoApostaFavoritasSelecaoActivity"
+            android:name=".controllers.RapidaoApostaFavoritasSelecaoActivity"
             android:label="@string/title_activity_lista_rapidao"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
@@ -343,6 +319,39 @@
                 android:value="br.gov.caixa.loterias.apostas.controllers.RapidaoConfigActivity_" />
         </activity>
         <activity android:name="com.queue_it.androidsdk.QueueActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/images_path" />
+        </provider>
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <!-- If you don't know the MIME type in advance, set "mimeType" to "*/*". -->
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

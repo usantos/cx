@@ -44,6 +44,8 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	protected List<PartidaLotecaDTO> partidasLoteca = null;
 	@SerializedName(value = "numerosSelecionados")
 	public T numerosSelecionados = null;
+	@SerializedName(value = "numerosSelecionadosMaisMilionariaTrevo")
+	public List<Integer> trevosSelecionados = null;
 	@SerializedName("indicadorSurpresinha")
 	protected DTOEnumInteger indicadorSurpresinha = null;
 	@SerializedName("valor")
@@ -76,6 +78,8 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	protected Long vinculoEspelho = null;
 	@SerializedName("quantidadeNumeros")
 	protected Integer quantidadeNumeros = null;
+	@SerializedName("quantidadeNumerosMaisMilionariaTrevo")
+	protected Integer quantidadeTrevos = null;
 	@SerializedName("surpresinha")
 	protected Boolean surpresinha = null;
 	@SerializedName("mesDeSorte")
@@ -421,6 +425,22 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		this.mesDeSorte = mesDeSorte;
 	}
 
+	public List<Integer> getTrevosSelecionados() {
+		return trevosSelecionados;
+	}
+
+	public void setTrevosSelecionados(List<Integer> trevosSelecionados) {
+		this.trevosSelecionados = trevosSelecionados;
+	}
+
+	public Integer getQuantidadeTrevos() {
+		return quantidadeTrevos;
+	}
+
+	public void setQuantidadeTrevos(Integer quantidadeTrevos) {
+		this.quantidadeTrevos = quantidadeTrevos;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -576,7 +596,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 			return false;
 		}
 		for (IdentificaoDeUmaApostaDas8Modalidades item : carrinhoDTO.getApostas()) {
-			if (item.getModalidade() != ModalidadeEnum.SUPER_7) {
+			if (item.getModalidade() != ModalidadeEnum.SUPER_7 && item.getModalidade() != ModalidadeEnum.MAIS_MILIONARIA) {
 				if (item.getModalidade().equals(ModalidadeEnum.fromInteger(apostaFavoritaDTO.getModalidade().getValor()))) {
 					List<Integer> numerosSelecionados = apostaFavoritaDTO.getListaNumerosSelecionados();
 					Collections.sort(numerosSelecionados);
@@ -585,6 +605,23 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 
 					if (numerosSelecionados.equals(numerosItem)) {
 						return true;
+					}
+				}
+			} else if (item.getModalidade().equals(ModalidadeEnum.MAIS_MILIONARIA)){
+				if (item.getModalidade().equals(ModalidadeEnum.fromInteger(apostaFavoritaDTO.getModalidade().getValor()))) {
+					List<Integer> numerosSelecionados = apostaFavoritaDTO.getListaNumerosSelecionados();
+					Collections.sort(numerosSelecionados);
+					List<Integer> numerosItem = item.getListaNumerosSelecionados();
+					Collections.sort(numerosItem);
+
+					if (numerosSelecionados.equals(numerosItem)) {
+						List<Integer> trevosSelecionados = apostaFavoritaDTO.getParametroTrevo().getTrevosSelecionados();
+						Collections.sort(trevosSelecionados);
+						List<Integer> trevosItem = item.getTrevosSelecionados();
+						Collections.sort(trevosItem);
+						if (trevosSelecionados.equals(trevosItem)) {
+							return true;
+						}
 					}
 				}
 			} else {
