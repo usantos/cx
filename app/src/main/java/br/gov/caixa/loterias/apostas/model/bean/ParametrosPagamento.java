@@ -20,11 +20,11 @@ public class ParametrosPagamento {
         this.PAYMENT_METHOD_ID = PAYMENT_METHOD_ID;
     }
 
-    public ParametrosPagamento(String TOKEN, String SAVED_CARD, String PAYMENT_METHOD_ID, String EMAIL){
+    public ParametrosPagamento(String TOKEN, String SAVED_CARD, String PAYMENT_METHOD_ID, String SAVE_CARD){
         this.TOKEN = TOKEN;
         this.SAVED_CARD = SAVED_CARD;
         this.PAYMENT_METHOD_ID = PAYMENT_METHOD_ID;
-        this.EMAIL = EMAIL;
+        this.SAVE_CARD = SAVE_CARD;
     }
 
     public String getToken() {
