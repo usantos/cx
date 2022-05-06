@@ -80,7 +80,7 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
                     if(partida.getEquipe2().equals(equipeDTO) && partida.getEquipe2().getVitoria()){
                         preencheAcerto(imageView,apostaEquipeLotecaView );
                     }
-                    if(equipeDTO.getNome().equalsIgnoreCase(Constantes.X_STRING) && partida.getEmpate()){
+                    if(equipeDTO.getNome() != null && equipeDTO.getNome().equalsIgnoreCase(Constantes.X_STRING) && partida.getEmpate()){
                         preencheAcerto(imageView,apostaEquipeLotecaView );
                     }
                 }
