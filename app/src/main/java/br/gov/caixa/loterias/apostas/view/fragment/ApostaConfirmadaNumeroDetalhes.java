@@ -219,7 +219,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 				int corBranco = ContextCompat.getColor(getContext(), R.color.branco);
 				int corTime = ContextCompat.getColor(getContext(), R.color.timemaniaclaro);
 				String equipe = resultadoConcurso.getPremiacaoTimeDoCoracao().getEquipe().getNome();
-				if (equipe.equalsIgnoreCase(aposta.getTimeDoCoracao().getNome())) {
+				boolean apostaValida = aposta != null && aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getNome() != null;
+				if (apostaValida && equipe.equalsIgnoreCase(aposta.getTimeDoCoracao().getNome())) {
 					informacaoAdicionalTxt.setTextColor(corTime);
 					labelInformacaoAdicionalTxt.setTextColor(corTime);
 					informacaoAdicionalTxt.setBackgroundColor(corBranco);
