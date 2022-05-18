@@ -4,6 +4,11 @@ import android.app.Activity;
 
 import com.android.volley.VolleyError;
 
+import org.joda.time.DateTime;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
@@ -17,11 +22,14 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTORespo
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UltimaCompraDTO;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.model.dao.crud.UltimaCompraCRUD;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DateUtils;
 
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
@@ -190,5 +198,26 @@ public class CarrinhoModel {
 	public void deletarApostaLocal(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 		DBLoteriasCrud crud = new DBLoteriasCrud(activity);
 		crud.deleteIdentificaoDeUmaApostaDas8Modalidades(aposta);
+	}
+
+	public boolean existeCompraMesmoValorEm24horas(BigDecimal valorTotal){
+		UltimaCompraCRUD crud = new UltimaCompraCRUD(activity);
+		UltimaCompraDTO  ultimaCompra = crud.lerUltimaCompra();
+		if (ultimaCompra == null){
+			return false;
+		} else if (ultimaCompra.getValor().compareTo(valorTotal) > 0 ||
+				   ultimaCompra.getValor().compareTo(valorTotal) < 0){
+			return false;
+		} else {
+			Date date = DateUtils.stringToDate(ultimaCompra.getDataCompra(), DateUtils.PATTERN_DD_MM_YYYY_HH_MM);
+			if (date == null){
+				return false;
+			}
+
+			DateTime data24HorasAtras = new DateTime().minusHours( 24 );
+
+			DateTime dateUltimaCompra = new DateTime(date);
+			return dateUltimaCompra.isAfter( data24HorasAtras );
+		}
 	}
 }

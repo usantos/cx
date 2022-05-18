@@ -22,6 +22,7 @@ import com.mercadolibre.android.device.sdk.DeviceSDK;
 
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -36,6 +37,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
@@ -69,6 +71,8 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
+    private CompraModel model;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +81,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
         setaViews();
         setaMetodos();
         listener = this;
+        model = new CompraModel(CartoesActivity.this);
 
         callWebservice();
         atualizaValorTotal();
@@ -338,6 +343,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
 
             @Override
             public void successCompra() {
+                model.salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(),new Date());
                 sucessoCompraAsync();
             }
 

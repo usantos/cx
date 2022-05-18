@@ -202,7 +202,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void setaMetodos() {
-        btnAvancaPagamento.setOnClickListener(v -> validarCarrinho());
+        btnAvancaPagamento.setOnClickListener(v -> onClickAvanvaPagamento());
         btnNovaAposta.setOnClickListener(v -> clickBotaoFazerNovaAposta());
         btnLimpar.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
         btnFavoritar.setOnClickListener(v -> dialogFavoritar.show());
@@ -225,6 +225,22 @@ public class CarrinhoActivity extends AppCompatActivity {
                 }, 1);
             }
         });
+    }
+
+    private void onClickAvanvaPagamento() {
+        if (model.existeCompraMesmoValorEm24horas(carrinho.getValorTotal())){
+            //modal
+            ViewUtils.alertTitleButtonYesOrNotListener(CarrinhoActivity.this,
+                                                       getString(R.string.compra_existente_24_horas),
+                                                       (dialog, which) -> {
+                                                            dialog.dismiss();
+                                                       },
+                                                       (dialog, which) -> {
+                                                           validarCarrinho();
+                                                       });
+        } else {
+            validarCarrinho();
+        }
     }
 
     public void deletaAposta(int position, IdentificaoDeUmaApostaDas8Modalidades aposta) {
