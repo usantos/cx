@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
@@ -202,22 +203,27 @@ public class CarrinhoModel {
 
 	public boolean existeCompraMesmoValorEm24horas(BigDecimal valorTotal){
 		UltimaCompraCRUD crud = new UltimaCompraCRUD(activity);
-		UltimaCompraDTO  ultimaCompra = crud.lerUltimaCompra();
-		if (ultimaCompra == null){
-			return false;
-		} else if (ultimaCompra.getValor().compareTo(valorTotal) > 0 ||
-				   ultimaCompra.getValor().compareTo(valorTotal) < 0){
+		List<UltimaCompraDTO> list = crud.lerUltimaCompraPorValor(valorTotal);
+		if (list == null || list.isEmpty()){
 			return false;
 		} else {
-			Date date = DateUtils.stringToDate(ultimaCompra.getDataCompra(), DateUtils.PATTERN_DD_MM_YYYY_HH_MM);
-			if (date == null){
-				return false;
+			boolean existeCompra = false;
+			for (UltimaCompraDTO ultimaCompra : list){
+				Date date = DateUtils.stringToDate(ultimaCompra.getDataCompra(), DateUtils.PATTERN_DD_MM_YYYY_HH_MM);
+				if (date == null){
+					return false;
+				}
+
+				DateTime data24HorasAtras = new DateTime().minusHours( 24 );
+
+				DateTime dateUltimaCompra = new DateTime(date);
+				if (dateUltimaCompra.isAfter( data24HorasAtras )){
+					existeCompra = true;
+					break;
+				}
 			}
 
-			DateTime data24HorasAtras = new DateTime().minusHours( 24 );
-
-			DateTime dateUltimaCompra = new DateTime(date);
-			return dateUltimaCompra.isAfter( data24HorasAtras );
+			return existeCompra;
 		}
 	}
 }
