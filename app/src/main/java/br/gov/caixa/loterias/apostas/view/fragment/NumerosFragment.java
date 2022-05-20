@@ -123,9 +123,13 @@ public class NumerosFragment extends Fragment {
 
 		listViewNumeros = view.findViewById(R.id.ehgv_numeros);
 
-		float     dip = getQtdColunas() * 38f + 40f;
+		float     dip = getQtdColunas(listaInteiros) * 38f + 40f;
 		Resources r   = getActivity().getResources();
 		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
+
+		if (listaInteiros.size() >= 15){
+			px = px + 100;
+		}
 
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		param.height = px + 55;
@@ -168,6 +172,15 @@ public class NumerosFragment extends Fragment {
 
 		if (qtdColunas >= 9){
 			qtdColunas += 3;
+		}
+		return qtdColunas;
+	}
+
+	private int getQtdColunas(List<Integer> list){
+		int qtdColunas = list.size() / QUANTIDADE_COLUNA_LISTA;
+		int restante          = list.size() - (qtdColunas * QUANTIDADE_COLUNA_LISTA);
+		if (restante > 0){
+			qtdColunas++;
 		}
 		return qtdColunas;
 	}
