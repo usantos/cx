@@ -127,10 +127,6 @@ public class NumerosFragment extends Fragment {
 		Resources r   = getActivity().getResources();
 		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
 
-		if (listaInteiros.size() >= 15){
-			px = px + 100;
-		}
-
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		param.height = px + 55;
 		view.setLayoutParams(param);
@@ -180,6 +176,11 @@ public class NumerosFragment extends Fragment {
 		int qtdColunas = list.size() / QUANTIDADE_COLUNA_LISTA;
 		int restante          = list.size() - (qtdColunas * QUANTIDADE_COLUNA_LISTA);
 		if (restante > 0){
+			qtdColunas++;
+		}
+		if (qtdColunas >= 4){
+			qtdColunas += 3;
+		} else {
 			qtdColunas++;
 		}
 		return qtdColunas;
