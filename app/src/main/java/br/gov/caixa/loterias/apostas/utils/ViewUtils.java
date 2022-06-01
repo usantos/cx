@@ -78,7 +78,6 @@ public class ViewUtils {
         return fontFutura;
     }
 
-
     public static Typeface getFontFuturaBold(Context context) {
         if (fontFuturaBold == null) {
             fontFuturaBold = Typeface.createFromAsset(context.getAssets(), "fonts/futura_std_bold.otf");
@@ -94,7 +93,6 @@ public class ViewUtils {
 
         return fontAriallMT;
     }
-
 
     public static void configuraStatusBarGradientLayout(Context context, Window window) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -646,8 +644,6 @@ public class ViewUtils {
         return parametos;
     }
 
-
-
     public static Integer getConcursoAtualPorModalidade(String modalidade) {
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),ModalidadeEnum.toString(modalidade));
         if(param != null) {
@@ -695,9 +691,4 @@ public class ViewUtils {
         return byteArray;
     }
 
-    public interface KeyboardListener {
-        void abriu();
-
-        void fechou();
-    }
 }

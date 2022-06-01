@@ -1057,5 +1057,6 @@
         <item>Dezembro</item>
     </string-array>
 
+    <string name="verificamos_compra_demorando_ou_processando">Verificamos que sua compra está em processamento e está demorando mais que o esperado. Aguarde alguns instantes e verifique na área  "Minhas compras" se a compra foi processada antes de tentar novamente.</string>
 
 </resources>
