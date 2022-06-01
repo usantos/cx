@@ -1042,6 +1042,7 @@
     <string name="vamos_comecar">Vamos começar?</string>
     <string name="tutorial_fechar">Fechar</string>
     <string name="tutorial_pular">Pular</string>
+    <string name="compra_existente_24_horas">Há uma compra efetivada ou em processamento com o mesmo valor do carrinho atual nas últimas 24 horas. Deseja rever o carrinho atual?</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>

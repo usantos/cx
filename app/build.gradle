@@ -215,6 +215,9 @@ dependencies {
     //Queue-IT
     implementation 'com.queue-it.androidsdk:library-androidx:2.0.34'
 
+    //Joda time
+    implementation 'net.danlew:android.joda:2.10.9.1'
+
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
