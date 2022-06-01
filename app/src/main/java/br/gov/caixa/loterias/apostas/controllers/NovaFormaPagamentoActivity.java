@@ -280,7 +280,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     }
 
     private void errorCompraAsync(VolleyError error) {
-        RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
+        RedirectNetwork.checkRedirectCompraAsync( error, NovaFormaPagamentoActivity.this );
         AlertDialogUtils.dismiss();
     }
 

@@ -375,7 +375,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     private void errorCompraAsync(VolleyError error) {
-        RedirectNetwork.checkRedirect( error, CartoesActivity.this );
+        RedirectNetwork.checkRedirectCompraAsync( error, CartoesActivity.this );
         AlertDialogUtils.dismiss();
     }
 
