@@ -62,6 +62,7 @@ import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TimeCoracaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
@@ -198,6 +199,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				dezenas.add(new Dezena("" + i, Boolean.FALSE));
 			}
 		}
+
+		if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null && !(tipoJogo == ModalidadeEnum.SUPER_7)) {
+			dezenas = VolanteUtils.getDezenas(tipoJogo, parametroJogo.getPrognosticoMaximo());
+		}
+
 
 		model = new SimularApostaModel(getActivity());
 	}
@@ -556,11 +562,33 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		}
 	}
 
+	private void orderAscDezenas() {
+		Integer       menorDezenaAtual = null;
+		List<Integer> listaOrdenadaAsc = new ArrayList<>();
+		while (dezenasSelecionadas.size() > 0) {
+			for (Integer dezena : dezenasSelecionadas) {
+				if (menorDezenaAtual == null) {
+					menorDezenaAtual = dezena;
+				} else if (menorDezenaAtual > dezena) {
+					menorDezenaAtual = dezena;
+				}
+			}
+			listaOrdenadaAsc.add(menorDezenaAtual);
+			dezenasSelecionadas.remove(menorDezenaAtual);
+			menorDezenaAtual = null;
+		}
+		dezenasSelecionadas = listaOrdenadaAsc;
+	}
+	
 	private void adicionarApostaPreencherNumerosLotomania() {
 		if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 			//verifica se foi marcada a opção para gerar outros números
 			if (selcioneOutrosNumeros.isChecked()) {
 				// Gera uma nova aposta com os outros 50 números não selecionados
+
+				if (dezenasSelecionadas != null && dezenasSelecionadas.size() > 0) {
+					orderAscDezenas();
+				}
 
 				IdentificaoDeUmaApostaDas8Modalidades aposta = getApostaPreenchida();
 
