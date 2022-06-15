@@ -1042,6 +1042,7 @@
     <string name="vamos_comecar">Vamos começar?</string>
     <string name="tutorial_fechar">Fechar</string>
     <string name="tutorial_pular">Pular</string>
+    <string name="numero_cartao_invalido">Número do cartão inválido.</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
