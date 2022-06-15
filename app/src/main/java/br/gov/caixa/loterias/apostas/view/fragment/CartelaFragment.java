@@ -194,9 +194,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			identificarTipoJogo();
 		}
 
-		if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
+		if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null
+				&& !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			for (int i = 1; i <= parametroJogo.getPrognosticoMaximo(); i++) {
-				dezenas.add(new Dezena("" + i, Boolean.FALSE));
+				if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && i == 100){
+					dezenas.add(new Dezena("" + i, Boolean.FALSE, "00"));+
+				} else {
+					dezenas.add(new Dezena("" + i, Boolean.FALSE, "" + i));
+				}
 			}
 		}
 
