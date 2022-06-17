@@ -198,7 +198,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				&& !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 			for (int i = 1; i <= parametroJogo.getPrognosticoMaximo(); i++) {
 				if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA) && i == 100){
-					dezenas.add(new Dezena("" + i, Boolean.FALSE, "00"));+
+					dezenas.add(new Dezena("" + i, Boolean.FALSE, "00"));
 				} else {
 					dezenas.add(new Dezena("" + i, Boolean.FALSE, "" + i));
 				}
@@ -208,7 +208,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null && !(tipoJogo == ModalidadeEnum.SUPER_7)) {
 			dezenas = VolanteUtils.getDezenas(tipoJogo, parametroJogo.getPrognosticoMaximo());
 		}
-
 
 		model = new SimularApostaModel(getActivity());
 	}
