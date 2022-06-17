@@ -51,7 +51,11 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         EstiloModalidade estilo = new EstiloModalidade(modalidade);
         int numeroResultado = numeroslista.get(position);
-        holder.textViewTituloNumerosResultados.setText(numeroResultado < 10 ? context.getResources().getString(R.string.zero) + numeroResultado : context.getResources().getString(R.string.string_vazia) + numeroResultado);
+        String numero = numeroResultado < 10 ? context.getResources().getString(R.string.zero) + numeroResultado : context.getResources().getString(R.string.string_vazia) + numeroResultado;
+        if (numero.equals("100")){
+            numero = "00";
+        }
+        holder.textViewTituloNumerosResultados.setText(numero);
         holder.textViewTituloNumerosResultados.setTextColor(context.getResources().getColor(estilo.getCorClara()));
         GradientDrawable drawable = new GradientDrawable();
         drawable.setColor(context.getResources().getColor(R.color.branco));
