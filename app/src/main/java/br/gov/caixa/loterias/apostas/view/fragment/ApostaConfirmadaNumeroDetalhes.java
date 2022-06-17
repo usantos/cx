@@ -152,7 +152,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	}
 
 	public void atualizaValorPremio(BigDecimal valor){
-		if (valor != null){
+		if (valor != null && tv_val_premio != null){
 			valorPremio = valor;
 			tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
 		}
