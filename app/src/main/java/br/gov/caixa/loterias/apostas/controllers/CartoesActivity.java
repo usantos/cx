@@ -389,7 +389,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
     }
 
     @Override
-    public void onSucesso(String cardToken, String payment_method_id) {
+    public void onSucesso(String cardToken, String payment_method_id, boolean luhn_validation) {
         callWebserviceRegistraApostaAsync(cardToken, payment_method_id);
     }
 

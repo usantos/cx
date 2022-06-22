@@ -308,8 +308,13 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     }
 
     @Override
-    public void onSucesso(String cardId, String payment_method_id) {
-        callWebserviceRegistraApostaAsync(cardId, payment_method_id);
+    public void onSucesso(String cardId, String payment_method_id, boolean luhn_validation) {
+        if (luhn_validation){
+            callWebserviceRegistraApostaAsync(cardId, payment_method_id);
+        } else {
+            AlertDialogUtils.dismiss();
+            apresentaModal(getString(R.string.numero_cartao_invalido));
+        }
     }
 
     @Override
