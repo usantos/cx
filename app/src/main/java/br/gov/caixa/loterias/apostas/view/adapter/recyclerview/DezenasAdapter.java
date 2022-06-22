@@ -40,7 +40,11 @@ public class DezenasAdapter extends RecyclerView.Adapter<DezenasAdapter.ViewHold
         if (position == 0) {
             holder.dezenaView.findViewById(R.id.lineDivisiveView).setVisibility(View.GONE);
         }
-        ((TextView) holder.dezenaView.findViewById(R.id.lineDezenasTextView)).setText(ViewUtils.fromHtml(dezenas.get(position)));
+        String numero = dezenas.get(position);
+        if (numero.contains("100")){
+            numero = numero.replace("100", "00");
+        }
+        ((TextView) holder.dezenaView.findViewById(R.id.lineDezenasTextView)).setText(ViewUtils.fromHtml(numero));
     }
 
     @Override

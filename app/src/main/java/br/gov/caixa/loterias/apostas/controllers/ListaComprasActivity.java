@@ -41,11 +41,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
 
 public class ListaComprasActivity extends AppCompatActivity {
 
@@ -60,7 +61,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     private Dialog dialogFavoritar;
 
     private ListaComprasRecyclerViewAdapter listaComprasRecyclerViewAdapter;
-    private ListaComprasRecyclerViewAdapter.OnFavoritarClickListener listenerFavoritar;
+    private OnFavoritarClickListener listenerFavoritar;
 
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerViewCompras;
@@ -308,7 +309,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void initRecyclerView() {
         layoutManager = new LinearLayoutManager(this);
         recyclerViewCompras.setHasFixedSize(true);
-        ListaComprasRecyclerViewAdapter.OnFavoritarClickListener listener = item -> {
+        OnFavoritarClickListener listener = item -> {
             compraSelecionada = item;
             pegaApostasDaCompra();
         };

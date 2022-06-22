@@ -8,7 +8,7 @@ public class Dezena {
 
     private String value;
     private boolean selected;
-
+    private String label;
 
     public Dezena() {
     }
@@ -16,6 +16,13 @@ public class Dezena {
     public Dezena(String value, boolean selected) {
         this.value = value;
         this.selected = selected;
+        this.label = value;
+    }
+
+    public Dezena(String value, boolean selected, String label) {
+        this.value = value;
+        this.selected = selected;
+        this.label = label;
     }
 
     public String getValue() {
@@ -33,4 +40,13 @@ public class Dezena {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
 }

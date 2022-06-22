@@ -38,12 +38,12 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 
 		if(config.isLabelDezena()){
 			if (dezena.getValue().length() == 1) {
-				txtNumero.setText(String.format("0%s", dezena.getValue()));
+				txtNumero.setText(String.format("0%s", dezena.getLabel()));
 			} else {
-				txtNumero.setText(dezena.getValue());
+				txtNumero.setText(dezena.getLabel());
 			}
 		}else {
-			txtNumero.setText(dezena.getValue());
+			txtNumero.setText(dezena.getLabel());
 		}
 		txtNumero.setTypeface(ViewUtils.getFontFuturaBold(context));
 
