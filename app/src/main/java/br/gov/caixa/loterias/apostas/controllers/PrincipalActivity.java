@@ -2,15 +2,15 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -61,7 +62,6 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
-import br.gov.caixa.loterias.apostas.IntroducaoTutorialActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
@@ -79,7 +79,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
@@ -95,11 +94,9 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.OnSwipeTouchListener;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
@@ -363,59 +360,40 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void trataPopupDeNotificacao() {
         LayoutInflater li = LayoutInflater.from(PrincipalActivity.this);
-        viewNotification = li.inflate(R.layout.popup_notificacao, null);
-        TextView tituloNotificacao = viewNotification.findViewById(R.id.tituloPopup);
-        TextView corpoNotificacao = viewNotification.findViewById(R.id.corpoPopup);
+        viewNotification = li.inflate(R.layout.nova_popup_notificacao, null);
+        ImageView img = viewNotification.findViewById(R.id.imagem_notificacao);
+        TextView tituloNotificacao = viewNotification.findViewById(R.id.titulo_notificacao);
+        TextView corpoNotificacao = viewNotification.findViewById(R.id.descricao_notificacao);
+        Button btnNotificacao = viewNotification.findViewById(R.id.fechar_notificacao);
+
+
+        try {
+            final byte[] decodedBytes = Base64.decode(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getImagem(), Base64.DEFAULT);
+            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+            img.setImageBitmap(decodedBitmap);
+        }catch (Exception e){}
 
         tituloNotificacao.setText(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getTitulo());
         corpoNotificacao.setText(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getConteudo());
-
-        viewNotification.setOnTouchListener(new OnSwipeTouchListener(PrincipalActivity.this){
-            @Override
-            public void onSwipeTop() {
-                startAndRemoveAnim(R.animator.swipe_top_anim);
-            }
-            @Override
-            public void onSwipeRight() {
-                startAndRemoveAnim(R.animator.swipe_left_anim);
-            }
-            @Override
-            public void onSwipeLeft() {
-                startAndRemoveAnim(R.animator.swipe_right_anim);
-            }
+        btnNotificacao.setOnClickListener(v -> {
+            removePopup();
         });
 
-        handlerDelayNotificacao = new Handler();
-        handlerDelayNotificacao.postDelayed(() -> startAndRemoveAnim(R.animator.swipe_top_anim), 10000);
-
-        popupNotification = new PopupWindow(viewNotification, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        popupNotification.showAtLocation(navigationBarListaModalidade, Gravity.TOP, 0, 0);
-    }
-
-    private void startAndRemoveAnim(int swipe_anim) {
-        anim = (AnimatorSet) AnimatorInflater.loadAnimator(PrincipalActivity.this, swipe_anim);
-        anim.setTarget(viewNotification);
-        anim.start();
-        removePopup();
+        popupNotification = new PopupWindow(viewNotification, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        popupNotification.showAtLocation(navigationBarListaModalidade, Gravity.CENTER, 0, 0);
     }
 
     private void removePopup() {
-        handlerDelayNotificacao.removeCallbacksAndMessages(null);
-        anim.addListener(new AnimatorListenerAdapter() {
+        dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
             @Override
-            public void onAnimationEnd(Animator animation) {
+            public void onResponse(RetornoPadraoDTO result) {
                 popupNotification.dismiss();
-                dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
-                    @Override
-                    public void onResponse(RetornoPadraoDTO result) {
-                        UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
-                    }
+                UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
+            }
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
-                    }
-                });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
             }
         });
     }
