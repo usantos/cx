@@ -534,7 +534,7 @@
     <string name="cartoes_desc_menu_lat">Confira aqui sua lista de cartões salvos</string>
     <string name="cartoes_subt">Seus Cartões</string>
     <string name="cartoes_desc">Escolha um cartão e cruze os dedos</string>
-    <string name="cartoes_sem_cartao">Você ainda não possui um cartão de crédito cadastrado. Faça uma aposta e salve seu cartão de crédito para as compras futuras de forma rápida e fácil, se desejar.</string>
+    <string name="cartoes_sem_cartao">Você ainda não possui um cartão de crédito cadastrado. A inclusão de um ou mais cartões de crédito deve ser feita ao realizar uma compra.</string>
     <string name="rsgt_lt_btn_gerar">Gerar\nnovamente</string>
 
 
