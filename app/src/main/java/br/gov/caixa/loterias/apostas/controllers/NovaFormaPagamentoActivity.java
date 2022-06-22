@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
@@ -29,6 +30,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
@@ -61,11 +63,14 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
+    private CompraModel model;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ViewUtils.configuraStatusBarGradientLayout(this, getWindow());
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_adicao_forma_pagamento));
         listener = this;
+        model = new CompraModel(NovaFormaPagamentoActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nova_forma_pagamento);
 
@@ -242,6 +247,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
             @Override
             public void successCompra() {
+                model.salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(),new Date());
                 sucessoCompraAsync();
             }
 
@@ -274,7 +280,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
     }
 
     private void errorCompraAsync(VolleyError error) {
-        RedirectNetwork.checkRedirect( error, NovaFormaPagamentoActivity.this );
+        RedirectNetwork.checkRedirectCompraAsync( error, NovaFormaPagamentoActivity.this );
         AlertDialogUtils.dismiss();
     }
 

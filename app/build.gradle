@@ -16,8 +16,8 @@ android {
         targetSdkVersion 30
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211068005
-        versionName "1.0.68"
+        versionCode 211069001
+        versionName "1.0.69"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -214,6 +214,9 @@ dependencies {
 
     //Queue-IT
     implementation 'com.queue-it.androidsdk:library-androidx:2.0.34'
+
+    //Joda time
+    implementation 'net.danlew:android.joda:2.10.9.1'
 
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
