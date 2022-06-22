@@ -451,6 +451,7 @@
     <string name="title_modalidades">Modalidades</string>
     <string name="title_selecioneOpcoesRapidao">Selecione as opções que você quer contemplar no Rapidão.</string>
     <string name="mercado_pago_mes_invalido">Mês inválido.</string>
+    <string name="numero_cartao_invalido">Número do cartão inválido.</string>
 
     <!-- Mercado pago -->
     <string name="mercado_pago_ano_invalido">Ano inválido.</string>
