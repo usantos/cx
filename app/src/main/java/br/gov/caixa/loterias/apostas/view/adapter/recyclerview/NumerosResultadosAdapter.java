@@ -34,8 +34,19 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
         this.numeroslista = numeroslista;
         this.modalidade = modalidade;
         if(numeroslista != null){
-            Collections.sort(this.numeroslista);
+            ordenaLista();
+        }
+    }
 
+    private void ordenaLista() {
+        Collections.sort(this.numeroslista);
+        for (int i = 0; i < numeroslista.size(); i++){
+            if (numeroslista.get(i) == 0 || numeroslista.get(i).equals(0)){
+                Integer num = numeroslista.get(i);
+                numeroslista.remove(i);
+                numeroslista.add(num);
+                break;
+            }
         }
     }
 
