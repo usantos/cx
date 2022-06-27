@@ -154,7 +154,7 @@ public class NumerosFragment extends Fragment {
 	private List<Dezena> getDezenas() {
 		List<Dezena> dezenas = new ArrayList<>();
 		for (int i = 0; i < listaInteiros.size(); i++) {
-			if (listaInteiros.get(i) == 100){
+			if (listaInteiros.get(i) == 100 || listaInteiros.get(i) == 0){
 				dezenas.add(new Dezena("" + listaInteiros.get(i), Boolean.FALSE, "00"));
 			} else {
 				dezenas.add(new Dezena("" + listaInteiros.get(i), Boolean.FALSE, "" + listaInteiros.get(i)));
