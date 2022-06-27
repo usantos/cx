@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.scottyab.rootbeer.RootBeer;
 
+import java.io.File;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
@@ -22,6 +24,8 @@ public class LoginActivity extends AppCompatActivity {
 
         RootBeer rootBeer = new RootBeer(this);
         if (rootBeer.isRooted()) {
+            montarMensagem("Desative modo root para usar o aplicativo");
+        } else if (isRootAvailable()){
             montarMensagem("Desative modo root para usar o aplicativo");
         } else {
             setContentView(R.layout.activity_login);
@@ -42,6 +46,15 @@ public class LoginActivity extends AppCompatActivity {
         }
         mensagemCompleta += DateUtils.getDateTime();
         return mensagemCompleta;
+    }
+
+    public static boolean isRootAvailable(){
+        for(String pathDir : System.getenv("PATH").split(":")){
+            if(new File(pathDir, "su").exists()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
