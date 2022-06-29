@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,23 +12,23 @@ import com.android.volley.VolleyError;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
 import com.microsoft.appcenter.crashes.Crashes;
+import com.scottyab.rootbeer.RootBeer;
+
+import java.io.File;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
-import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
-import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.ICallbackQueueIT;
 
 
@@ -43,10 +43,28 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
+        RootBeer rootBeer = new RootBeer(this);
+        if (rootBeer.isRooted() || isRootAvailable()) {
+            ViewUtils.alertTitleButton(this, R.string.label_atencao, "Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.",
+                                       getString(R.string.ok), (DialogInterface.OnDismissListener) dialog -> {
+                                          finish();
+                                       });
+            return;
+        }
         
         AppCenter.start(getApplication(), BuildConfig.APP_CENTER_KEY, Analytics.class, Crashes.class);
 
         startaFila();
+    }
+
+    public static boolean isRootAvailable(){
+        for(String pathDir : System.getenv("PATH").split(":")){
+            if(new File(pathDir, "su").exists()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void startaFila() {
@@ -102,7 +120,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void trataSucesso (VersionResponse response) {
         if (!response.getPayload()) {
