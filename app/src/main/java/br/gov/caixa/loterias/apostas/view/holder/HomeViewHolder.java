@@ -59,6 +59,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private LinearLayout linearLayoutResultadosApostas;
 	private RelativeLayout setaDireitaAcaoRelativeLayout;
 	private RelativeLayout setaEsquerdaAcaoRelativeLayout;
+	private ImageView imgSetaResultado;
 
 	private EstiloModalidade estilo;
 	private OnHomeListener listener;
@@ -87,6 +88,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		ivEspeciais = itemView.findViewById(R.id.iv_especiais);
 		tvNomeEspeciais = itemView.findViewById(R.id.tv_nome_especiais);
 		clEspeciais = itemView.findViewById(R.id.cl_especiais);
+		imgSetaResultado = itemView.findViewById(R.id.imgSetaResultado);
 
 
 		setaEsquerdaAcaoRelativeLayout = itemView.findViewById(R.id.setaEsquerdaAcaoRelativeLayout);
@@ -205,6 +207,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.relogio.setImageResource(estilo.getImagemRelogio());
 
 		this.buttonActionResultadosModalidade.setOnClickListener(this);
+		this.imgSetaResultado.setOnClickListener(this);
 
 		if (modalidade.getResultadosAberto()) {
 			ViewGroup.LayoutParams layoutParams = this.linearLayoutResultadosApostas.getLayoutParams();
@@ -350,6 +353,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 									 this.setaDireitaAcaoRelativeLayout,
 									 false, this);
 				break;
+			case R.id.imgSetaResultado:
 			case R.id.buttonActionResultadosModalidade:
 				if (this.linearLayoutResultadosApostas.getHeight() == 0) {
 					if (modalidade.getResultadoConcursoDTO() == null) {
@@ -360,6 +364,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 														this.setaEsquerdaAcaoRelativeLayout,
 														this.setaDireitaAcaoRelativeLayout,
 														true, this);
+						imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_cima_resultado));
 					} else {
 						animacaoAbrirResultados(itemView.getContext(),
 												this.relativeLayoutTopResultados,
@@ -367,6 +372,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 												position,
 												this.setaEsquerdaAcaoRelativeLayout,
 												this.setaDireitaAcaoRelativeLayout);
+						imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_cima_resultado));
 					}
 				} else {
 					modalidade.setResultadosAberto(false);
@@ -375,6 +381,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 											 this.linearLayoutResultadosApostas,
 											 this.setaEsquerdaAcaoRelativeLayout,
 											 this.setaDireitaAcaoRelativeLayout);
+					imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_baixo_resultado));
 				}
 				break;
 		}
