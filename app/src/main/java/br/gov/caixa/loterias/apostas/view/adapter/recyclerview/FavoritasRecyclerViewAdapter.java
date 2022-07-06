@@ -141,8 +141,11 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
                 }
             }
         }
-
-        holder.numerosApostaFavorita.setText(numeroStr.toString());
+        if (numeroStr.toString().contains("100")){
+            holder.numerosApostaFavorita.setText(numeroStr.toString().replace("100","00"));
+        } else {
+            holder.numerosApostaFavorita.setText(numeroStr.toString());
+        }
         //Retirando swipe
         //holder.editarRelativeLayoutFavoritos.setOnClickListener(v -> swipeLayout.open(true));
 

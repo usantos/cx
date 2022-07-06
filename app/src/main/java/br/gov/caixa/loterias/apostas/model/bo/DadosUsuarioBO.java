@@ -25,8 +25,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.Criptografia;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by cedesbr450 on 07/12/17.
@@ -88,7 +91,7 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
-    public void gravarUsuario(CadastrarApostadorDTO apostadorDTO, final RequestListener<ApostadorDTOResponse> listener) {
+    public void gravarUsuario(CadastrarApostadorDTO apostadorDTO, @NonNull final RequestListener<ApostadorDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
@@ -108,7 +111,7 @@ public class DadosUsuarioBO extends BaseBO {
         if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(NOME, name);
+            editor.putString(NOME, Criptografia.encrypt(name, 12));
             editor.apply();
         }
     }
@@ -117,7 +120,7 @@ public class DadosUsuarioBO extends BaseBO {
         Context context = Aplicacao.application.getApplicationContext();
         if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
-            return sharedPreferences.getString(NOME, "");
+            return Criptografia.decrypt(sharedPreferences.getString(NOME, ""),12);
         }
         return "";
     }
@@ -127,7 +130,7 @@ public class DadosUsuarioBO extends BaseBO {
         if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(CPF, cpf);
+            editor.putString(CPF, Criptografia.encrypt(cpf,12));
             editor.apply();
         }
     }
@@ -136,7 +139,7 @@ public class DadosUsuarioBO extends BaseBO {
         Context context = Aplicacao.application.getApplicationContext();
         if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
-            return sharedPreferences.getString(CPF, "");
+            return Criptografia.decrypt(sharedPreferences.getString(CPF, ""),12);
         }
         return "";
     }
@@ -302,4 +305,5 @@ public class DadosUsuarioBO extends BaseBO {
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request, listener);
     }
+
 }

@@ -149,7 +149,6 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         valorTotal();
     }
 
-
     private void callWebserviceRemoveItem(IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades){
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaRapidaoActivity.this);
@@ -175,7 +174,6 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         });
 
     }
-
 
     private void callWebservice(int quantidade) {
 

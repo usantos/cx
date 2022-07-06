@@ -123,7 +123,7 @@ public class NumerosFragment extends Fragment {
 
 		listViewNumeros = view.findViewById(R.id.ehgv_numeros);
 
-		float     dip = getQtdColunas() * 38f + 40f;
+		float     dip = getQtdColunas(listaInteiros) * 38f + 40f;
 		Resources r   = getActivity().getResources();
 		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
 
@@ -154,7 +154,12 @@ public class NumerosFragment extends Fragment {
 	private List<Dezena> getDezenas() {
 		List<Dezena> dezenas = new ArrayList<>();
 		for (int i = 0; i < listaInteiros.size(); i++) {
-			dezenas.add(new Dezena("" + listaInteiros.get(i), Boolean.FALSE));
+			if (listaInteiros.get(i) == 100){
+				dezenas.add(new Dezena("" + listaInteiros.get(i), Boolean.FALSE, "00"));
+			} else {
+				dezenas.add(new Dezena("" + listaInteiros.get(i), Boolean.FALSE, "" + listaInteiros.get(i)));
+			}
+
 		}
 		return dezenas;
 	}
@@ -168,6 +173,20 @@ public class NumerosFragment extends Fragment {
 
 		if (qtdColunas >= 9){
 			qtdColunas += 3;
+		}
+		return qtdColunas;
+	}
+
+	private int getQtdColunas(List<Integer> list){
+		int qtdColunas = list.size() / QUANTIDADE_COLUNA_LISTA;
+		int restante          = list.size() - (qtdColunas * QUANTIDADE_COLUNA_LISTA);
+		if (restante > 0){
+			qtdColunas++;
+		}
+		if (qtdColunas >= 4){
+			qtdColunas += 3;
+		} else {
+			qtdColunas++;
 		}
 		return qtdColunas;
 	}

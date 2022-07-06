@@ -304,6 +304,9 @@ public class HtmlUtils {
                 return sbHtmlBodyList.toString();
             default:
                 String numerosSelecionados = aposta.getListaNumerosSelecionados().toString().replaceAll("[\\[,\\]]", "");
+                if (numerosSelecionados.contains("100")){
+                    numerosSelecionados = numerosSelecionados.replace("100", "00");
+                }
                 htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
                 htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA, numerosSelecionados);
 
