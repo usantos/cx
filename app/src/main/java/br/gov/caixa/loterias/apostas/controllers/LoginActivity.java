@@ -2,6 +2,8 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -18,15 +20,17 @@ import br.gov.caixa.loterias.apostas.view.fragment.LoginFragment;
 
 public class LoginActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         RootBeer rootBeer = new RootBeer(this);
         if (rootBeer.isRooted()) {
-            montarMensagem("Desative modo root para usar o aplicativo");
+            montarMensagem("Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.");
         } else if (isRootAvailable()){
-            montarMensagem("Desative modo root para usar o aplicativo");
+            montarMensagem("Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.");
         } else {
             setContentView(R.layout.activity_login);
 
