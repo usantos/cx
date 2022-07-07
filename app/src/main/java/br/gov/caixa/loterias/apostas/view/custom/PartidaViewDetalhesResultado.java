@@ -282,8 +282,8 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0008","Terno - 3" + numerosAcertados);
                 break;
             case "LOTECA":
-                mapFaixa.put("0001","1º (14 acertos)");
-                mapFaixa.put("0002","2º (13 acertos)");
+                mapFaixa.put("0001","1º (14 jogos acertados)");
+                mapFaixa.put("0002","2º (13 jogos acertados)");
                 break;
             case "LOTOFACIL":
             case "LOTOFÁCIL":
@@ -305,7 +305,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0004","17" + numerosAcertados);
                 mapFaixa.put("0005","16" + numerosAcertados);
                 mapFaixa.put("0006","15" + numerosAcertados);
-                mapFaixa.put("0007","0"  + numerosAcertados);
+                mapFaixa.put("0007","0"  + " acertos");
                 break;
             case "MEGASENA":
                 mapFaixa.put("0001","Sena - 6" + numerosAcertados);
