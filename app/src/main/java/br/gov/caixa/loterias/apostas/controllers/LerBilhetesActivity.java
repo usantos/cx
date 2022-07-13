@@ -32,6 +32,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class LerBilhetesActivity extends AppCompatActivity {
 
+    private boolean isActivityRunning;
     private DecoratedBarcodeView barcodeScannerView;
 
     private BarcodeCallback callback = new BarcodeCallback() {
@@ -66,6 +67,12 @@ public class LerBilhetesActivity extends AppCompatActivity {
     };
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ler_bilhetes);
@@ -92,8 +99,15 @@ public class LerBilhetesActivity extends AppCompatActivity {
 
     private void startDezSegundos() {
         new Handler().postDelayed((Runnable) () -> {
-            pause(barcodeScannerView);
-            showAlert();
+            if(isActivityRunning){
+                pause(barcodeScannerView);
+                showAlert();
+            } else {
+                new Handler().postDelayed((Runnable) () -> {
+                    startDezSegundos();
+                }, 5000);
+            }
+
         }, 10000);
     }
 
@@ -139,6 +153,12 @@ public class LerBilhetesActivity extends AppCompatActivity {
 
     public void triggerScan(View view) {
         barcodeScannerView.decodeSingle(callback);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning = false;
     }
 
     @Override
