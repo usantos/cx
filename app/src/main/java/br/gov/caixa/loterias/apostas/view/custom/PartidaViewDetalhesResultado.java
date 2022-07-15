@@ -258,37 +258,40 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 .replace(" ", "")
                 .replace("_", "")
                 .replace("-", "");
+
+        String numerosAcertados = " números acertados";
+
         switch (modalidadeTratada ){
             case "DIADESORTE":
-                mapFaixa.put("0001","7 números acertados");
-                mapFaixa.put("0002","6 números acertados");
-                mapFaixa.put("0003","5 números acertados");
-                mapFaixa.put("0004","4 números acertados");
+                mapFaixa.put("0001","7" + numerosAcertados);
+                mapFaixa.put("0002","6" + numerosAcertados);
+                mapFaixa.put("0003","5" + numerosAcertados);
+                mapFaixa.put("0004","4" + numerosAcertados);
                 mapFaixa.put("0005","Mês da Sorte\n"+
                         (modalidade.getResultadoConcursoDTO() == null ? "":
                                 modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome()));
                 break;
             case "DUPLASENA":
-                mapFaixa.put("0001","Sena - 6 números acertados");
-                mapFaixa.put("0002","Quina - 5 números acertados");
-                mapFaixa.put("0003","Quadra - 4 números acertados");
-                mapFaixa.put("0004","Terno - 3 números acertados");
-                mapFaixa.put("0005","Sena - 6 números acertados");
-                mapFaixa.put("0006","Quina - 5 números acertados");
-                mapFaixa.put("0007","Quadra - 4 números acertados");
-                mapFaixa.put("0008","Terno - 3 números acertados");
+                mapFaixa.put("0001","Sena - 6" + numerosAcertados);
+                mapFaixa.put("0002","Quina - 5" + numerosAcertados);
+                mapFaixa.put("0003","Quadra - 4" + numerosAcertados);
+                mapFaixa.put("0004","Terno - 3" + numerosAcertados);
+                mapFaixa.put("0005","Sena - 6" + numerosAcertados);
+                mapFaixa.put("0006","Quina - 5" + numerosAcertados);
+                mapFaixa.put("0007","Quadra - 4" + numerosAcertados);
+                mapFaixa.put("0008","Terno - 3" + numerosAcertados);
                 break;
             case "LOTECA":
-                mapFaixa.put("0001","1º (14 acertos)");
-                mapFaixa.put("0002","2º (13 acertos)");
+                mapFaixa.put("0001","1º (14 jogos acertados)");
+                mapFaixa.put("0002","2º (13 jogos acertados)");
                 break;
             case "LOTOFACIL":
             case "LOTOFÁCIL":
-                mapFaixa.put("0001","15 acertos");
-                mapFaixa.put("0002","14 acertos");
-                mapFaixa.put("0003","13 acertos");
-                mapFaixa.put("0004","12 acertos");
-                mapFaixa.put("0005","11 acertos");
+                mapFaixa.put("0001","15" + numerosAcertados);
+                mapFaixa.put("0002","14" + numerosAcertados);
+                mapFaixa.put("0003","13" + numerosAcertados);
+                mapFaixa.put("0004","12" + numerosAcertados);
+                mapFaixa.put("0005","11" + numerosAcertados);
                 break;
             case "LOTOGOL":
                 mapFaixa.put("0001","1º (5 acertos)");
@@ -296,47 +299,47 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0003","3º (3 acertos)");
                 break;
             case "LOTOMANIA":
-                mapFaixa.put("0001","20 números acertados");
-                mapFaixa.put("0002","19 números acertados");
-                mapFaixa.put("0003","18 números acertados");
-                mapFaixa.put("0004","17 números acertados");
-                mapFaixa.put("0005","16 números acertados");
-                mapFaixa.put("0006","15 números acertados");
-                mapFaixa.put("0007","0 acertos");
+                mapFaixa.put("0001","20" + numerosAcertados);
+                mapFaixa.put("0002","19" + numerosAcertados);
+                mapFaixa.put("0003","18" + numerosAcertados);
+                mapFaixa.put("0004","17" + numerosAcertados);
+                mapFaixa.put("0005","16" + numerosAcertados);
+                mapFaixa.put("0006","15" + numerosAcertados);
+                mapFaixa.put("0007","0"  + " acertos");
                 break;
             case "MEGASENA":
-                mapFaixa.put("0001","Sena - 6 números acertados");
-                mapFaixa.put("0002","Quina - 5 números acertados");
-                mapFaixa.put("0003","Quadra - 4 números acertados");
+                mapFaixa.put("0001","Sena - 6" + numerosAcertados);
+                mapFaixa.put("0002","Quina - 5" + numerosAcertados);
+                mapFaixa.put("0003","Quadra - 4" + numerosAcertados);
                 break;
             case "QUINA":
-                mapFaixa.put("0001","Quina - 5 números acertados");
-                mapFaixa.put("0002","Quadra - 4 números acertados");
-                mapFaixa.put("0003","Terno - 3 números acertados");
-                mapFaixa.put("0004","Duque - 2 números acertados");
+                mapFaixa.put("0001","Quina - 5" + numerosAcertados);
+                mapFaixa.put("0002","Quadra - 4" + numerosAcertados);
+                mapFaixa.put("0003","Terno - 3" + numerosAcertados);
+                mapFaixa.put("0004","Duque - 2" + numerosAcertados);
                 break;
             case "TIMEMANIA":
-                mapFaixa.put("0001","7 números acertados");
-                mapFaixa.put("0002","6 números acertados");
-                mapFaixa.put("0003","5 números acertados");
-                mapFaixa.put("0004","4 números acertados");
-                mapFaixa.put("0005","3 números acertados");
+                mapFaixa.put("0001","7" + numerosAcertados);
+                mapFaixa.put("0002","6" + numerosAcertados);
+                mapFaixa.put("0003","5" + numerosAcertados);
+                mapFaixa.put("0004","4" + numerosAcertados);
+                mapFaixa.put("0005","3" + numerosAcertados);
                 mapFaixa.put("0006","Time do Coração\n"+
                         (modalidade.getResultadoConcursoDTO() == null ? "":
                                 modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome()));
                 break;
             case "SUPERSETE":
             case "SUPER7":
-                mapFaixa.put("0001","7 acertos");
-                mapFaixa.put("0002","6 acertos");
-                mapFaixa.put("0003","5 acertos");
-                mapFaixa.put("0004","4 acertos");
-                mapFaixa.put("0005","3 acertos");
-                mapFaixa.put("1","7 acertos");
-                mapFaixa.put("2","6 acertos");
-                mapFaixa.put("3","5 acertos");
-                mapFaixa.put("4","4 acertos");
-                mapFaixa.put("5","3 acertos");
+                mapFaixa.put("0001","7" + numerosAcertados);
+                mapFaixa.put("0002","6" + numerosAcertados);
+                mapFaixa.put("0003","5" + numerosAcertados);
+                mapFaixa.put("0004","4" + numerosAcertados);
+                mapFaixa.put("0005","3" + numerosAcertados);
+                mapFaixa.put("1","7" + numerosAcertados);
+                mapFaixa.put("2","6" + numerosAcertados);
+                mapFaixa.put("3","5" + numerosAcertados);
+                mapFaixa.put("4","4" + numerosAcertados);
+                mapFaixa.put("5","3" + numerosAcertados);
                 break;
             case "MAISMILIONARIA":
             case "MAISMILIONÁRIA":
