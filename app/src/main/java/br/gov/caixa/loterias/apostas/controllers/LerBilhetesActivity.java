@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -31,8 +32,8 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class LerBilhetesActivity extends AppCompatActivity {
 
+    private boolean isActivityRunning;
     private DecoratedBarcodeView barcodeScannerView;
-
 
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
@@ -40,7 +41,11 @@ public class LerBilhetesActivity extends AppCompatActivity {
             try {
                 pause(barcodeScannerView);
                 String code = Crypto.cripfyBarcode(result.getText());
-                ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).start();
+                if (code.length() >= 23){
+                    ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).start();
+                } else {
+                    resume(barcodeScannerView);
+                }
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             } catch (InvalidKeySpecException e) {
@@ -62,6 +67,12 @@ public class LerBilhetesActivity extends AppCompatActivity {
     };
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        isActivityRunning = true;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ler_bilhetes);
@@ -74,8 +85,7 @@ public class LerBilhetesActivity extends AppCompatActivity {
 
         Button buttonDigitarAposta = findViewById(R.id.buttonDigitarAposta);
         buttonDigitarAposta.setOnClickListener(v -> {
-            Intent activity = new Intent(LerBilhetesActivity.this, InsercaoManualCodBarrasActivity.class);
-            startActivity(activity);
+            startBilheteManual();
         });
 
         barcodeScannerView = findViewById(R.id.DecoratedBarcodeViewBilhetes);
@@ -87,16 +97,49 @@ public class LerBilhetesActivity extends AppCompatActivity {
         buttonDigitarAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_digite_aposta_realizada)));
     }
 
+    private void startDezSegundos() {
+        new Handler().postDelayed((Runnable) () -> {
+            if(isActivityRunning){
+                pause(barcodeScannerView);
+                showAlert();
+            } else {
+                new Handler().postDelayed((Runnable) () -> {
+                    startDezSegundos();
+                }, 5000);
+            }
+
+        }, 10000);
+    }
+
+    private void showAlert() {
+        ViewUtils.alertTitleButtonYesOrNotListener(LerBilhetesActivity.this,
+                                                   getString(R.string.nao_foi_possivel_realizar_leitura),
+                                                   getString(R.string.tentar_novamente),
+                                                   (dialog, which) -> {
+                                                       resume(barcodeScannerView);
+                                                       startDezSegundos();
+                                                   },
+                                                   getString(R.string.digitar_codigo),
+                                                   (dialog, which) -> {
+                                                       startBilheteManual();
+                                                   });
+    }
+
+    private void startBilheteManual() {
+        Intent activity = new Intent(LerBilhetesActivity.this, InsercaoManualCodBarrasActivity.class);
+        startActivity(activity);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        startDezSegundos();
         barcodeScannerView.resume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
         barcodeScannerView.pause();
     }
 
@@ -110,6 +153,12 @@ public class LerBilhetesActivity extends AppCompatActivity {
 
     public void triggerScan(View view) {
         barcodeScannerView.decodeSingle(callback);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isActivityRunning = false;
     }
 
     @Override
