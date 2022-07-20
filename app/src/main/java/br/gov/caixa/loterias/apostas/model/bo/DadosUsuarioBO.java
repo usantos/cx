@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.model.bo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 
@@ -47,6 +48,9 @@ public class DadosUsuarioBO extends BaseBO {
     private final static String LOGIN_SUCESSO = "LOGIN_SUCESSO";
     private final static String SUPER_SETE_TUTORIAL = "SUPER_SETE_TUTORIAL";
     private final static String MAIS_MILIONARIA_TUTORIAL = "MAIS_MILIONARIA_TUTORIAL";
+
+    private static final String alphabetString = "abcdefghijklmnopqrstuvwxyz";
+    private static final String numberString = "0123456789";
 
     private static final String NOME = "NOME";
     private static final String CPF = "CPF";
@@ -134,8 +138,9 @@ public class DadosUsuarioBO extends BaseBO {
         if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(CPF, Criptografia.encrypt(cpf,12));
+            editor.putString(CPF, Criptografia.encrypt(cpf,10));
             editor.apply();
+            Log.d("cpf criptografado: ", Criptografia.encrypt(cpf,10));
         }
     }
 
@@ -143,7 +148,8 @@ public class DadosUsuarioBO extends BaseBO {
         Context context = Aplicacao.application.getApplicationContext();
         if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
-            return Criptografia.decrypt(sharedPreferences.getString(CPF, ""),12);
+            Log.d("cpf criptografado: ", Criptografia.decrypt(sharedPreferences.getString(CPF, ""),10));
+            return Criptografia.decrypt(sharedPreferences.getString(CPF, ""),10);
         }
         return "";
     }
@@ -310,4 +316,24 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
+    // method to show the final output on the output
+    // textView when decrypt button is clicked
+    public static String decrypt12(String cipher, int key) {
+        return (Criptografia.decrypt(cipher, key).toLowerCase());
+    }
+
+    // method to show the final output on the output
+    // textView when encrypt button is clicked
+    public static String encrypt12(String message, int shiftkey) {
+        message = message.toLowerCase();
+        String cipherText = "";
+        for (int i = 0; i < message.length(); i++) {
+            int charPosition = numberString.indexOf(message.charAt(i));
+            int keyval = (shiftkey + charPosition) % 26;
+            char replaceVAL = numberString.charAt(keyval);
+            cipherText += replaceVAL;
+        }
+        // returning the final ciphertext
+        return cipherText;
+    }
 }
