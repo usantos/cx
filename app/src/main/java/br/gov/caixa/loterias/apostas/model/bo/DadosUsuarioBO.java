@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceCrypto;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.Criptografia;
@@ -30,6 +31,9 @@ import br.gov.caixa.loterias.apostas.utils.Criptografia;
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 import androidx.annotation.NonNull;
+
+import javax.crypto.Cipher;
+import javax.crypto.EncryptedPrivateKeyInfo;
 
 /**
  * Created by cedesbr450 on 07/12/17.
@@ -111,7 +115,7 @@ public class DadosUsuarioBO extends BaseBO {
         if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(NOME, Criptografia.encrypt(name, 12));
+            editor.putString(NOME, name);
             editor.apply();
         }
     }
@@ -120,7 +124,7 @@ public class DadosUsuarioBO extends BaseBO {
         Context context = Aplicacao.application.getApplicationContext();
         if (context != null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
-            return Criptografia.decrypt(sharedPreferences.getString(NOME, ""),12);
+            return sharedPreferences.getString(NOME, "");
         }
         return "";
     }
