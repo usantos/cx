@@ -10,6 +10,7 @@ import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLoteca;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLotogol;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaUltimaCompra;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaUsuario;
 
 /**
  * Created by joafilho on 01/02/2018.
@@ -251,6 +252,22 @@ public final class DBTabelasLoterias {
                 TabelaUltimaCompra.COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
                 TabelaUltimaCompra.COLUNA_VALOR + " REAL, " +
                 TabelaUltimaCompra.COLUNA_DATA + " TEXT " +
+                " ) ";
+        return sb;
+    }
+
+    /**
+     * Método para criar tabela de usuario
+     *
+     * @return sb
+     */
+    public static String criarTabelaUsuario() {
+
+        String sb = (" CREATE TABLE " + TabelaUsuario.NOME_TABELA) +
+                " ( " +
+                TabelaUsuario.COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
+                TabelaUsuario.COLUNA_NOME + " TEXT, " +
+                TabelaUsuario.COLUNA_CPF + " TEXT " +
                 " ) ";
         return sb;
     }

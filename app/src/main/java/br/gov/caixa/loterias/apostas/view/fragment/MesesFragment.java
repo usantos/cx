@@ -69,7 +69,7 @@ public class MesesFragment extends Fragment {
     }
 
     private void setTelaDiaSorte() {
-        parentActivity.getQtdNumerosButton().setOnClickListener(null);
+        //parentActivity.getQtdNumerosButton().setOnClickListener(null);
 
         parentActivity.getBotaoAdicionarCompletarCartela().setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getString(R.string.adicionarAoCarrinho)));
         if (dezenasSelecionadas == null) {

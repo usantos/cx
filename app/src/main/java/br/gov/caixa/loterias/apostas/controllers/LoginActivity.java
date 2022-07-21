@@ -2,6 +2,8 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -11,6 +13,8 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.view.fragment.LoginFragment;
 
 public class LoginActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

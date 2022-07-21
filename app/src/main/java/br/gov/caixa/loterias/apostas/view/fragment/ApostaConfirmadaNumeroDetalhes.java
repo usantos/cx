@@ -104,6 +104,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			tv_val_premio_tit.setVisibility(View.VISIBLE);
 			if (valorPremio != null) {
 				tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+			} else {
+				getValorPremio(aposta.getId());
 			}
 			if (apostaPremiada()){
 				resultTxt.setText(aposta.getSituacao().getDescricao());
@@ -145,6 +147,21 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			informacaoAdicionalTxt.setText(aposta.getMesDeSorte().getNome());
 		}
 		configuraNumeros();
+	}
+
+	private void getValorPremio(Long apostaId) {
+		ApostaBO apostaBO = ApostaBO_.getInstance_(getContext());
+		apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
+			@Override
+			public void onResponse(DetalhesPremioDTOResponse result) {
+				AlertDialogUtils.dismiss();
+				atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
+			}
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+			}
+		});
 	}
 
 	private boolean apostaPremiada() {
