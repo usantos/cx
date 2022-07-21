@@ -239,6 +239,22 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static Dialog alertTitleButtonYesOrNotListener(Context context, String message,
+                                                          String positiveButton, DialogInterface.OnClickListener listenerYes,
+                                                          String negativeButton, DialogInterface.OnClickListener  listenerNo) {
+        Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
+                                 .setCancelable(false)
+                                 .setNegativeButton (negativeButton, listenerNo)
+                                 .setPositiveButton(positiveButton, listenerYes)
+                                 .show();
+
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontFuturaBold(context));
+        textMessageView.setTypeface(getFontFutura(context));
+        return dialog;
+    }
+
     public static Dialog alertTitleButtonYesListener(Context context, String message, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
                                  .setCancelable(false)

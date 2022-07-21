@@ -3,11 +3,16 @@ package br.gov.caixa.loterias.apostas.model.bo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.android.volley.NetworkResponse;
 
 import org.androidannotations.annotations.EBean;
+import org.apache.commons.codec.binary.Base64;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,10 +26,14 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTORes
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
+import br.gov.caixa.loterias.apostas.model.dao.crud.UsuarioCRUD;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.Criptografia;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
@@ -41,8 +50,8 @@ public class DadosUsuarioBO extends BaseBO {
     private final static String SUPER_SETE_TUTORIAL = "SUPER_SETE_TUTORIAL";
     private final static String MAIS_MILIONARIA_TUTORIAL = "MAIS_MILIONARIA_TUTORIAL";
 
-    private static final String NOME = "NOME";
-    private static final String CPF = "CPF";
+    private static final String alphabetString = "abcdefghijklmnopqrstuvwxyz";
+    private static final String numberString = "0123456789";
 
     public void cartoes(final RequestListener<ListCartaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
@@ -88,7 +97,7 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
-    public void gravarUsuario(CadastrarApostadorDTO apostadorDTO, final RequestListener<ApostadorDTOResponse> listener) {
+    public void gravarUsuario(CadastrarApostadorDTO apostadorDTO, @NonNull final RequestListener<ApostadorDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
@@ -103,47 +112,57 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
-    public static void salvarNomeUsuairo(String name) {
+    public static void salvarUsuairo(String name, String cpf) {
         Context context = Aplicacao.application.getApplicationContext();
         if (context != null) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(NOME, name);
-            editor.apply();
+            UsuarioCRUD              crud = new UsuarioCRUD(context);
+            if (crud.lerUsuario() != null){
+                crud.deletaUsuario();
+            }
+            crud.inserirUsuario(new UsuarioDTO(getEncoded(name), getEncoded(cpf)));
         }
+    }
+
+    private static String getEncoded(String dado) {
+        return Bin.fromUtf8(dado).toBase64();
     }
 
     public static String obterNome() {
         Context context = Aplicacao.application.getApplicationContext();
         if (context != null) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
-            return sharedPreferences.getString(NOME, "");
+            UsuarioCRUD       crud       = new UsuarioCRUD(context);
+            UsuarioDTO        usuario = crud.lerUsuario();
+            if (usuario != null){
+                return getDecoded(usuario.getNome());
+            }
         }
         return "";
-    }
-
-    public static void salvarCpfUsuario(String cpf) {
-        Context context = Aplicacao.application.getApplicationContext();
-        if (context != null) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(CPF, cpf);
-            editor.apply();
-        }
     }
 
     public static String obterCpf() {
         Context context = Aplicacao.application.getApplicationContext();
         if (context != null) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences(USUARIO_KEY, Context.MODE_PRIVATE);
-            return sharedPreferences.getString(CPF, "");
+            UsuarioCRUD       crud       = new UsuarioCRUD(context);
+            UsuarioDTO        usuario = crud.lerUsuario();
+            if (usuario != null){
+                return getDecoded(usuario.getCpf());
+            }
         }
         return "";
     }
 
+    private static String getDecoded(String dado) {
+        byte[] decoded = Base64.decodeBase64(dado);
+        try {
+            return new String(decoded, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     public static void limparRegistros() {
-        salvarCpfUsuario("");
-        salvarNomeUsuairo("");
+        salvarUsuairo("", "");
     }
 
     public static void updateFecharIntroducao(Activity activity, Boolean status) {
@@ -301,5 +320,26 @@ public class DadosUsuarioBO extends BaseBO {
 
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request, listener);
+    }
+
+    // method to show the final output on the output
+    // textView when decrypt button is clicked
+    public static String decrypt12(String cipher, int key) {
+        return (Criptografia.decrypt(cipher, key).toLowerCase());
+    }
+
+    // method to show the final output on the output
+    // textView when encrypt button is clicked
+    public static String encrypt12(String message, int shiftkey) {
+        message = message.toLowerCase();
+        String cipherText = "";
+        for (int i = 0; i < message.length(); i++) {
+            int charPosition = numberString.indexOf(message.charAt(i));
+            int keyval = (shiftkey + charPosition) % 26;
+            char replaceVAL = numberString.charAt(keyval);
+            cipherText += replaceVAL;
+        }
+        // returning the final ciphertext
+        return cipherText;
     }
 }
