@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaLotecaAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaLotogolAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoSwipeList;
@@ -203,13 +204,13 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 					} else {
 						IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica = aposta;
 						if (apostaNumerica.getListaNumerosSelecionados() != null) {
-							List<Integer> numerosSelecionados = ListaUtils.transformaListDoubleEmListInteger(aposta.getNumerosSelecionados());
-
-							for(int num = 0; num < numerosSelecionados.size(); num++){
-								if (num == numerosSelecionados.size() -1){
-									numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d), numerosSelecionados.get(num)));
+							for (Integer num : apostaNumerica.getListaNumerosSelecionados()) {
+								if (isUltimoNumero(num, apostaNumerica)) {
+									numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d),
+																   VolanteUtils.getLabelPrognostico(num, aposta.getModalidade())));
 								} else {
-									numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco), numerosSelecionados.get(num)));
+									numeroStr.append(String.format(context.getResources().getString(R.string.percent_zero_dois_d_traco),
+																   VolanteUtils.getLabelPrognostico(num, aposta.getModalidade())));
 								}
 							}
 						}
@@ -271,6 +272,11 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
 		}
 	}
+
+	private boolean isUltimoNumero(Integer num, IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica){
+		return num.equals(apostaNumerica.getListaNumerosSelecionados().get(apostaNumerica.getListaNumerosSelecionados().size() - 1));
+	}
+
 
 	private String removeUltimoTraco(String str) {
 		if (str.endsWith("-")){

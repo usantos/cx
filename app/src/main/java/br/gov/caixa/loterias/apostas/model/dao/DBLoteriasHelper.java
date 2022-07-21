@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLoteca;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLotogol;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaUltimaCompra;
 
 /**
  * Created by joafilho on 06/02/2018.
@@ -22,7 +23,7 @@ import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLotogol;
 
 public class DBLoteriasHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     public static final String DATABASE_NAME = "Loterias.db";
 
     public DBLoteriasHelper(Context context) {
@@ -44,6 +45,7 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaMesDeSorte());
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaCarrinhoFavorito());
         criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaMercadoPago());
+        criarTabela(sqLiteDatabase, DBTabelasLoterias.criarTabelaUltimaCompra());
     }
 
     @Override
@@ -62,6 +64,7 @@ public class DBLoteriasHelper extends SQLiteOpenHelper {
         deletaTabela(sqLiteDatabase, DBTabelasLoterias.deleteTabela(TabelaMesDeSorte.NOME_TABELA));
         deletaTabela(sqLiteDatabase,DBTabelasLoterias.deleteTabela(TabelaCarrinhoFavorito.NOME_TABELA));
         deletaTabela(sqLiteDatabase,DBTabelasLoterias.deleteTabela(TabelaMercadoPago.NOME_TABELA));
+        deletaTabela(sqLiteDatabase,DBTabelasLoterias.deleteTabela(TabelaUltimaCompra.NOME_TABELA));
     }
 
     private void criarTabela(SQLiteDatabase sqLiteDatabase, String tabela) {

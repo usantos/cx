@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -21,6 +20,7 @@ import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
+import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
@@ -39,80 +39,6 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
  */
 
 public class  RedirectNetwork {
-
-    public static void checkRedirect(VolleyError error, final Context context, Activity activity){
-
-        if (error.networkResponse == null) {
-            if (!AppUtils.isNetworkAvailable(activity)) {
-                if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
-                    ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
-                }
-                return;
-            } else {
-                ViewUtils.alertTitleButton(activity, R.string.label_atencao, MensagensNetwork.setMensagem(error, activity), activity.getResources().getString(R.string.ok));
-                return;
-            }
-        }
-        NetworkResponse response = error.networkResponse;
-
-        Gson gsonResponse = new Gson();
-
-        ErrorResponse errorResponse = new ErrorResponse();
-
-        String body;
-        //get response body and parse with appropriate encoding
-        if(error.networkResponse.data!=null) {
-            try {
-                body = new String(error.networkResponse.data,"UTF-8");
-                errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-
-        if (errorResponse.getRedirect() != null){
-            RedirectEnum redirectEnum = RedirectEnum.fromString( errorResponse.getRedirect() );
-            switch (redirectEnum){
-                case ACEITAR_TERMO_DE_USO:
-                    verificaRedirectTermo(activity);
-                    return;
-                case LOGIN:
-                    connectKeycloak(activity);
-                    return;
-                case CADASTRAR_APOSTADOR:
-                    if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
-                        context.startActivity(new Intent(context, CadastrarActivity_.class));
-                    }
-                    return;
-                case INDISPONIVEL:
-                    context.startActivity(new Intent(context, AppIndisponivelActivity.class));
-                    return;
-                case VERIFICA_COMPRA_PROCESSAMENTO:
-                    return;
-                default:
-                    break;
-            }
-        }
-
-        if (response.statusCode == 401){
-            connectKeycloak(activity);
-        }else {
-            if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
-                ViewUtils.alertTitleButtonYesOrNotListener(context, errorResponse.getMensagem(), (dialog, which) -> {
-                    Uri webpage = Uri.parse("https://www.mercadopago.com.br/registration-mp?mode=mp");
-                    Intent intentAc = new Intent(Intent.ACTION_VIEW, webpage);
-                    if (intentAc.resolveActivity(context.getPackageManager()) != null) {
-                        context.startActivity(intentAc);
-                    }
-                });
-            }else{
-                ViewUtils.alertTitleButton(context, R.string.label_atencao, MensagensNetwork.setMensagem( error, context ), context.getResources().getString( R.string.ok ) );
-            }
-        }
-    }
 
     private static void  verificaRedirectTermo(Activity activity){
         if (!activity.getClass().equals(TermosUsoActivity.class)) {
@@ -169,37 +95,7 @@ public class  RedirectNetwork {
 
         if (errorResponse != null) {
             if (errorResponse.getRedirect() != null){
-                RedirectEnum redirectEnum = RedirectEnum.fromString( errorResponse.getRedirect() );
-                switch (redirectEnum){
-                    case ACEITAR_TERMO_DE_USO:
-                        verificaRedirectTermo(activity);
-                        return;
-                    case LOGIN:
-                        connectKeycloak(activity);
-                        return;
-                    case CADASTRAR_APOSTADOR:
-                        if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
-                            activity.startActivity(new Intent(activity, CadastrarActivity_.class));
-                        }
-                        return;
-                    case INDISPONIVEL:
-                        if (activity.getClass() != AppIndisponivelActivity.class) {
-                            activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
-                        } else {
-                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface ->{});
-                        }
-                        return;
-                    case CARRINHO:
-                        activity.startActivity(new Intent(activity, CarrinhoActivity.class));
-                        return;
-                    case CARRINHOS_FAVORITOS:
-                        activity.startActivity(new Intent(activity, CarrinhosFavoritosActivity.class));
-                        return;
-                    case VERIFICA_COMPRA_PROCESSAMENTO:
-                        return;
-                    default:
-                        break;
-                }
+                trataRedict(activity, errorResponse);
             }else {
                 if (!lancouEvento) {
                     if (errorResponse.getCodigo() != null) {
@@ -229,6 +125,137 @@ public class  RedirectNetwork {
             }
         }else {
             AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
+        }
+    }
+
+    public static void checkRedirectCompraAsync(VolleyError error, final Activity activity){
+        boolean lancouEvento = false;
+        if (error.networkResponse == null) {
+            AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO, error);
+
+            if (!AppUtils.isNetworkAvailable(activity)) {
+                if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
+                    ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
+                }
+                return;
+            } else {
+                String msg = MensagensNetwork.setMensagem(error, activity);
+                if (msg.equalsIgnoreCase(activity.getString(R.string.sistema_indisponivel))){
+                       showAlertToRedirectMinhasCompras(activity);
+                } else {
+                    ViewUtils.alertTitleButton(activity, R.string.label_atencao, msg, activity.getResources().getString(R.string.ok));
+                }
+                return;
+            }
+        }
+        NetworkResponse response = error.networkResponse;
+
+        Gson gsonResponse = new Gson();
+
+        ErrorResponse errorResponse = new ErrorResponse();
+
+        String body = null;
+        //get response body and parse with appropriate encoding
+        if(error.networkResponse.data != null) {
+            try {
+                body = new String(error.networkResponse.data,"UTF-8");
+                errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                AppCenterManager.registraEventoErro(AppCenterManager.ERRO_UNSUPPORTED_ENCODING, error, body);
+                lancouEvento = true;
+            } catch (Exception e){
+                e.printStackTrace();
+                AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO_SERIALIZACAO, error, body);
+                lancouEvento = true;
+            }
+        }else {
+            AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
+            lancouEvento = true;
+        }
+
+        if (errorResponse != null) {
+            if (errorResponse.getRedirect() != null){
+                trataRedict(activity, errorResponse);
+            }else {
+                if (!lancouEvento) {
+                    if (errorResponse.getCodigo() != null) {
+                        AppCenterManager.registraEventoErro(errorResponse.getCodigo(), error, body);
+                    } else {
+                        AppCenterManager.registraEventoErro(String.valueOf(response.statusCode), error, body);
+                    }
+                }
+                switch (response.statusCode){
+                    case 401:
+                        connectKeycloak(activity);
+                        return;
+                    case 404:
+                    case 400:
+                        treatNegotialErros(errorResponse, error, activity);
+                        return;
+                    case 500:
+                        trataErro500(activity,errorResponse);
+                        return;
+                    default:
+                        if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
+                            enviaRegistrarMp(activity, error);
+                        } else {
+                            showAlertToRedirectMinhasCompras(activity);
+                        }
+                        break;
+                }
+            }
+        }else {
+            AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
+            showAlertToRedirectMinhasCompras(activity);
+        }
+    }
+
+    private static void showAlertToRedirectMinhasCompras(Activity activity){
+        ViewUtils.alertTitleButtonYesListener(activity,
+                                              activity.getResources().getString(R.string.verificamos_compra_demorando_ou_processando),
+                                              (dialog, which) -> {
+                                                  goToMinhasCompras(activity);
+                                              });
+    }
+
+    private static void goToMinhasCompras(Activity activity){
+        activity.startActivity(new Intent(activity, ListaComprasActivity.class));
+        activity.finish();
+    }
+
+    private static void trataRedict(Activity activity, ErrorResponse errorResponse) {
+        RedirectEnum redirectEnum = RedirectEnum.fromString(errorResponse.getRedirect());
+        switch (redirectEnum) {
+            case ACEITAR_TERMO_DE_USO:
+                verificaRedirectTermo(activity);
+                return;
+            case LOGIN:
+                connectKeycloak(activity);
+                return;
+            case CADASTRAR_APOSTADOR:
+                if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
+                    activity.startActivity(new Intent(activity, CadastrarActivity_.class));
+                }
+                return;
+            case INDISPONIVEL:
+                if (activity.getClass() != AppIndisponivelActivity.class) {
+                    activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
+                } else {
+                    ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> {});
+                }
+                return;
+            case CARRINHO:
+                activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+                return;
+            case CARRINHOS_FAVORITOS:
+                activity.startActivity(new Intent(activity, CarrinhosFavoritosActivity.class));
+                return;
+            case VERIFICA_COMPRA_PROCESSAMENTO:
+                return;
+            default:
+                break;
         }
     }
 

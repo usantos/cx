@@ -67,8 +67,6 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
     // 5
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-
-
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.linearlayout_numeros_rapidao, null);
@@ -76,7 +74,11 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
 
         final NumerosSelecionadosRapidao numeroRapidao = numerosSelecionadosRapidao[position];
         final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloNumeroRapidao);
-        tituloTipoAposta.setText(mContext.getResources().getString(R.string.string_vazia) + numeroRapidao.getNumero());
+        if(numeroRapidao.getNumero() == 100){
+            tituloTipoAposta.setText(mContext.getResources().getString(R.string.string_vazia) + "00");
+        } else {
+            tituloTipoAposta.setText(mContext.getResources().getString(R.string.string_vazia) + numeroRapidao.getNumero());
+        }
         final LinearLayout linearLayoutNumerosRapidao = convertView.findViewById(R.id.LinearLayoutContentNumerosRapidao);
         if (numeroRapidao.getSelecionado()) {
             linearLayoutNumerosRapidao.setBackground(ContextCompat.getDrawable(mContext, R.drawable.circle_numeros_obrigatorios));

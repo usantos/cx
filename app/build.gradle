@@ -16,8 +16,8 @@ android {
         targetSdkVersion 30
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211068001
-        versionName "1.0.68"
+        versionCode 211070001
+        versionName "1.0.70"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -215,6 +215,9 @@ dependencies {
     //Queue-IT
     implementation 'com.queue-it.androidsdk:library-androidx:2.0.34'
 
+    //Joda time
+    implementation 'net.danlew:android.joda:2.10.9.1'
+
     // testImplementation deps
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
@@ -224,6 +227,9 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    // root check
+    implementation 'com.scottyab:rootbeer-lib:0.1.0'
 
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestUtil 'androidx.test:orchestrator:1.1.0'

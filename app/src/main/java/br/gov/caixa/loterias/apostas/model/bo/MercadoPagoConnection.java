@@ -40,7 +40,7 @@ public class MercadoPagoConnection {
 	private static final String MSG_ERRO_BUSCA_KEY = "Não foi possível realizar o pagamento agora. tente novamente mais tarde!";
 
 	public interface MercadoPagoListener {
-		void onSucesso(String cardId, String payment_method_id);
+		void onSucesso(String cardId, String payment_method_id, boolean luhn_validation);
 		void onTokenFailure(String msgError);
 		void onPaymentFailure(String msgError);
 	}
@@ -142,6 +142,8 @@ public class MercadoPagoConnection {
 	private static void callWebServiceCreateToken(String jsonObject, Context ctx, MercadoPagoListener listener, RequestQueue rQueue, String payment_method_id) {
 		String publicKey = MercadoPagoUtil.getPublicKey();
 
+		final CardTokenResponse[] cardResponse = {null};
+
 		if (ConfiguracaoAppSingleton.getInstance().isAtualizaPublicKey() || publicKey == null || publicKey.isEmpty()){
 			silceBuscaKeyPublic(onBuscaSilceCreateTokenListener(jsonObject, ctx, listener, rQueue, payment_method_id));
 		} else {
@@ -149,7 +151,12 @@ public class MercadoPagoConnection {
 					publicKey;
 
 			StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,
-															response1 -> Log.i("VOLLEY", response1),
+															response1 -> {
+																Log.i("VOLLEY", response1);
+																if (cardResponse != null && cardResponse[0] != null){
+																	listener.onSucesso(cardResponse[0].getId(),payment_method_id, cardResponse[0].getLuhn_validation());
+																}
+															},
 															error -> {
 																apagaPublicKey();
 																onErroCreateToken(error, ctx, url2, listener);
@@ -177,14 +184,12 @@ public class MercadoPagoConnection {
 						String body = null;
 						try {
 							body = new String(response.data,"UTF-8");
-							Log.d("'", "'");
 						} catch (UnsupportedEncodingException e) {
 							e.printStackTrace();
 						}
-						CardTokenResponse cardResponse = new Gson().fromJson(body, CardTokenResponse.class);
+						cardResponse[0] = new Gson().fromJson(body, CardTokenResponse.class);
 
-						listener.onSucesso(cardResponse.getId(),payment_method_id);
-
+						//listener.onSucesso(cardResponse.getId(),payment_method_id, cardResponse.getLuhn_validation());
 					}
 					return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
 				}

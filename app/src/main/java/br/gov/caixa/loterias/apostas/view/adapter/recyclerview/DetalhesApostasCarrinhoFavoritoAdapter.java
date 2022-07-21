@@ -138,6 +138,10 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 			}
 		}
 
+		if (numeroStr.toString().contains("100")){
+			return numeroStr.toString().replace("100", "00");
+		}
+
 		return numeroStr.toString();
 	}
 
