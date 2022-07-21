@@ -74,6 +74,7 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -225,12 +226,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         switch (v.getId()) {
             case R.id.simularTelaAposta: {
-                if (temPaginacao()){
-                    paginacaoView.setVisibility(View.VISIBLE);
-                }
-                resetaCartela();
-                imageQtdNumerosButton.setVisibility(View.VISIBLE);
-                qtdNumerosButton.setVisibility(View.VISIBLE);
+                voltaPraEscolhaDeNumeros();
                 break;
             }
 
@@ -261,6 +257,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 break;
             }
         }
+    }
+
+    private void voltaPraEscolhaDeNumeros() {
+        if (temPaginacao()){
+            paginacaoView.setVisibility(View.VISIBLE);
+        }
+        resetaCartela();
+        imageQtdNumerosButton.setVisibility(View.VISIBLE);
+        qtdNumerosButton.setVisibility(View.VISIBLE);
     }
 
     private boolean temPaginacao() {
@@ -785,6 +790,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 if (isFragmentCartela()) {
                     cartelaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                     cartelaFragment.atualizaStatusBotaoFinalizar(true);
+                } else if (isFragmentMeses()){
+                    voltaPraEscolhaDeNumeros();
                 } else {
                     if (surpresinhaFragment.getParametroJogo() != null) {
                         surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
@@ -800,6 +807,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             }
         };
+    }
+
+    private boolean isFragmentMeses() {
+        return fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof MesesFragment;
     }
 
     public boolean isFragmentCartela(){
