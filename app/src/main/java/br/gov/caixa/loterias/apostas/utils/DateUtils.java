@@ -24,6 +24,7 @@ public class DateUtils {
     public static final String PATTERN_DD_MMM_YYYY = "dd MMM yyyy";
     public static final String PATTERN_HH_MM_SS = "hh:mm:ss";
     public static final String PATTERN_HH_MM = "hh:mm";
+    public static final String PATTERN_DD_MM_YYYY_HH_MM = "dd/MM/yyyy HH:mm";
     public static String TAG = DateUtils.class.getSimpleName();
 
     public static String[] getAllMonthsOfYear(){

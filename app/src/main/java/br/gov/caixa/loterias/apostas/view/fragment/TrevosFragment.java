@@ -133,9 +133,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         if (dezenaList == null || dezenaList.size() != parametro.getTrevos().getQtdPrognostico()){
             dezenaList = new ArrayList<>();
             for (int numero = 1; numero <= parametro.getTrevos().getQtdPrognostico(); numero++){
-                Dezena dezena = new Dezena();
-                dezena.setValue(String.valueOf(numero));
-                dezena.setSelected(Boolean.FALSE);
+                Dezena dezena = new Dezena(String.valueOf(numero), Boolean.FALSE, String.valueOf(numero));
                 dezenaList.add(dezena);
             }
         }

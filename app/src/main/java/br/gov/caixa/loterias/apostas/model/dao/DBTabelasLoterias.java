@@ -9,6 +9,7 @@ import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLoteca;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLotogol;
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaUltimaCompra;
 
 /**
  * Created by joafilho on 01/02/2018.
@@ -234,6 +235,22 @@ public final class DBTabelasLoterias {
                 " ( " +
                 TabelaMercadoPago.COLUNA_ID + " INTEGER PRIMARY KEY NOT NULL , " +
                 TabelaMercadoPago.COLUNA_PUBLIC_KEY + " TEXT " +
+                " ) ";
+        return sb;
+    }
+
+    /**
+     * Método para criar tabela de ultima compra
+     *
+     * @return sb
+     */
+    public static String criarTabelaUltimaCompra() {
+
+        String sb = (" CREATE TABLE " + TabelaUltimaCompra.NOME_TABELA) +
+                " ( " +
+                TabelaUltimaCompra.COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
+                TabelaUltimaCompra.COLUNA_VALOR + " REAL, " +
+                TabelaUltimaCompra.COLUNA_DATA + " TEXT " +
                 " ) ";
         return sb;
     }
