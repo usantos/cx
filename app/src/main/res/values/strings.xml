@@ -1044,6 +1044,14 @@
     <string name="tutorial_fechar">Fechar</string>
     <string name="tutorial_pular">Pular</string>
     <string name="compra_existente_24_horas">Há uma compra efetivada ou em processamento com o mesmo valor do carrinho atual nas últimas 24 horas. Deseja rever o carrinho atual?</string>
+    <string name="verificamos_compra_demorando_ou_processando">Verificamos que sua compra está em processamento e está demorando mais que o esperado. Aguarde alguns instantes e verifique na área  "Minhas compras" se a compra foi processada antes de tentar novamente.</string>
+
+    <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>
+    <string name="digitar_codigo">Digitar o código</string>
+    <string name="tentar_novamente">Tentar novamente</string>
+    <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
+    <string name="selecione_o_meio_de_pagamento">Selecione o meio de pagamento que irá processar a compra utilizando o cartão de crédito de sua escolha</string>
+    <string name="adicionar_cartao">Adicionar cartão</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
@@ -1058,10 +1066,5 @@
         <item>Novembro</item>
         <item>Dezembro</item>
     </string-array>
-
-    <string name="verificamos_compra_demorando_ou_processando">Verificamos que sua compra está em processamento e está demorando mais que o esperado. Aguarde alguns instantes e verifique na área  "Minhas compras" se a compra foi processada antes de tentar novamente.</string>
-    <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>
-    <string name="digitar_codigo">Digitar o código</string>
-    <string name="tentar_novamente">Tentar novamente</string>
 
 </resources>
