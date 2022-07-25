@@ -5,9 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
+import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,15 +19,13 @@ import br.gov.caixa.loterias.apostas.R;
  * create an instance of this fragment.
  */
 public class MeioPagamentoFragment extends Fragment {
+	private static final String ARG_CONFIG = "ARG_CONFIG";
 
-	// TODO: Rename parameter arguments, choose names that match
-	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-	private static final String ARG_PARAM1 = "param1";
-	private static final String ARG_PARAM2 = "param2";
-
-	// TODO: Rename and change types of parameters
-	private String mParam1;
-	private String mParam2;
+	private MeioPagamentoConfig config;
+	private View view;
+	private View margem;
+	private AppCompatImageView imagem;
+	private ConstraintLayout btnAdd;
 
 	public MeioPagamentoFragment() {
 		// Required empty public constructor
@@ -33,16 +35,16 @@ public class MeioPagamentoFragment extends Fragment {
 	 * Use this factory method to create a new instance of
 	 * this fragment using the provided parameters.
 	 *
-	 * @param param1 Parameter 1.
-	 * @param param2 Parameter 2.
+	 * @param config Parameter 1.
 	 * @return A new instance of fragment MeioPagamentoFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static MeioPagamentoFragment newInstance(String param1, String param2) {
+	public static MeioPagamentoFragment newInstance(MeioPagamentoConfig config) {
 		MeioPagamentoFragment fragment = new MeioPagamentoFragment();
-		Bundle                args     = new Bundle();
-		args.putString(ARG_PARAM1, param1);
-		args.putString(ARG_PARAM2, param2);
+		Bundle                   args     = new Bundle();
+		if(config != null){
+			args.putSerializable(ARG_CONFIG, config);
+		}
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -51,8 +53,7 @@ public class MeioPagamentoFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			mParam1 = getArguments().getString(ARG_PARAM1);
-			mParam2 = getArguments().getString(ARG_PARAM2);
+			config  = (MeioPagamentoConfig) getArguments().getSerializable(ARG_CONFIG);
 		}
 	}
 
@@ -60,6 +61,31 @@ public class MeioPagamentoFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_meio_pagamento, container, false);
+		view = inflater.inflate(R.layout.fragment_meio_pagamento, container, false);
+		margem = view.findViewById(R.id.margem);
+		imagem = view.findViewById(R.id.imagemMeioPagamento);
+		btnAdd = view.findViewById(R.id.addCartao);
+
+		aplicaConfig();
+
+		configButton();
+
+		return view;
+	}
+
+	private void configButton() {
+		btnAdd.setOnClickListener(v -> {
+			TestVisao.toast("Implementar no futuro!");
+		});
+	}
+
+	private void aplicaConfig() {
+		if (config != null){
+			margem.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
+			btnAdd.setBackground(getActivity().getDrawable(config.getIdCorBarra()));
+			btnAdd.getBackground().setAlpha(20);
+			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
+
+		}
 	}
 }

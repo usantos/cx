@@ -19,14 +19,14 @@
             android:id="@+id/margem"
             android:layout_width="5dp"
             android:layout_height="57dp"
-            android:background="@color/azul_mercado_pago"
+            android:background="@color/branco"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imagemMeioPagamento"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_mercado_pago"
             android:layout_marginStart="42dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/margem"
@@ -48,7 +48,7 @@
             android:id="@+id/addCartao"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="#3350B4E9"
+            android:background="@color/branco"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
