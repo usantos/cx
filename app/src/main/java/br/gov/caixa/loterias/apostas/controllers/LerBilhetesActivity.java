@@ -3,11 +3,13 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.zxing.ResultPoint;
@@ -32,19 +34,37 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class LerBilhetesActivity extends AppCompatActivity {
 
+    private static int INTENT_RESULT = 123;
+
     private boolean isActivityRunning;
+    private boolean isScanned;
+    private boolean isRunning10Seg;
+
+    private Handler handler10Sec;
+
     private DecoratedBarcodeView barcodeScannerView;
+
+    private boolean chamouresultado;
 
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
             try {
+                isScanned = true;
                 pause(barcodeScannerView);
-                String code = Crypto.cripfyBarcode(result.getText());
-                if (code.length() >= 23){
-                    ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).start();
+                if (result.getText().length() >= 23){
+                    String code = Crypto.cripfyBarcode(result.getText());
+                    ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).startForResult(INTENT_RESULT);
+                    chamouresultado = true;
+                    if (handler10Sec != null){
+                        handler10Sec.removeCallbacksAndMessages(null);
+                    }
+                    isRunning10Seg = false;
+                    isScanned = false;
                 } else {
+                    isScanned = false;
                     resume(barcodeScannerView);
+                    chamouresultado = false;
                 }
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
@@ -98,31 +118,55 @@ public class LerBilhetesActivity extends AppCompatActivity {
     }
 
     private void startDezSegundos() {
-        new Handler().postDelayed((Runnable) () -> {
-            if(isActivityRunning){
-                pause(barcodeScannerView);
-                showAlert();
-            } else {
-                new Handler().postDelayed((Runnable) () -> {
-                    startDezSegundos();
-                }, 5000);
-            }
+        if (!isRunning10Seg){
+            handler10Sec = new Handler();
+            handler10Sec.postDelayed((Runnable) () -> {
+                isRunning10Seg = false;
+                if (isActivityRunning) {
+                    pause(barcodeScannerView);
+                    showAlert();
+                } else {
+                    new Handler().postDelayed((Runnable) () -> {
+                        isRunning10Seg = false;
+                        startDezSegundos();
+                    }, 5000);
+                    isRunning10Seg = true;
+                }
 
-        }, 10000);
+            }, 10000);
+            isRunning10Seg = true;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        chamouresultado = false;
     }
 
     private void showAlert() {
-        ViewUtils.alertTitleButtonYesOrNotListener(LerBilhetesActivity.this,
-                                                   getString(R.string.nao_foi_possivel_realizar_leitura),
-                                                   getString(R.string.tentar_novamente),
-                                                   (dialog, which) -> {
-                                                       resume(barcodeScannerView);
-                                                       startDezSegundos();
-                                                   },
-                                                   getString(R.string.digitar_codigo),
-                                                   (dialog, which) -> {
-                                                       startBilheteManual();
-                                                   });
+        if (isActivityRunning){
+            if (!isScanned && !chamouresultado){
+                try {
+                    ViewUtils.alertTitleButtonYesOrNotListener(LerBilhetesActivity.this,
+                                                               getString(R.string.nao_foi_possivel_realizar_leitura),
+                                                               getString(R.string.tentar_novamente),
+                                                               (dialog, which) -> {
+                                                                   resume(barcodeScannerView);
+                                                                   startDezSegundos();
+                                                               },
+                                                               getString(R.string.digitar_codigo),
+                                                               (dialog, which) -> {
+                                                                   startBilheteManual();
+                                                               });
+                } catch (Exception e){
+                    Log.e("", e.getLocalizedMessage());
+                }
+            } else {
+                resume(barcodeScannerView);
+                startDezSegundos();
+            }
+        }
     }
 
     private void startBilheteManual() {
@@ -134,7 +178,8 @@ public class LerBilhetesActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startDezSegundos();
-        barcodeScannerView.resume();
+        isScanned = false;
+        resume(barcodeScannerView);
     }
 
     @Override
