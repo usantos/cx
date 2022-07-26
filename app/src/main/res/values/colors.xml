@@ -140,4 +140,7 @@
     <color name="verde_tutorial">#008254</color>
     <color name="cinza_tutorial">#47586C</color>
 
+    <color name="vermelho_dialog">#F60E0E</color>
+    <color name="vermelho_borda_dialog">#D15973</color>
+
 </resources>
