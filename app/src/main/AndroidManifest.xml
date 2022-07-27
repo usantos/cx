@@ -15,9 +15,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.activity.FormaPagamentoActivity"
-            android:exported="false" />
-        <activity
             android:name=".TutorialMaisMilionariaActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -133,6 +130,11 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.FormaPagamentoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"  />
         <activity
             android:name=".controllers.ConfirmacaoPagamentoActivity"
             android:configChanges="orientation"

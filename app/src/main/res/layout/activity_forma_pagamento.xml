@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.FormaPagamentoActivity">
 
-    <include layout="@layout/app_bar_degrade" />
+    <include layout="@layout/app_bar_degrade_pesquisa" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_toolbar"

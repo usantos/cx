@@ -37,6 +37,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -322,7 +323,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                 ocorrendoValidacao = false;
                 AlertDialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
-                startActivity(new Intent(CarrinhoActivity.this, CartoesActivity.class));
+                startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
             }
 
             @Override
