@@ -56,4 +56,32 @@ public class DialogUtils {
         dialog.show();
     }
 
+    public static void showDialogCompraCancelada(Context context, OnDialogListener dialogListener){
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
+
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
+        Button dialogButtonAjuda    = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
+        Button dialogButtonNovamente= dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
+
+        dialogButtonCancelar.setOnClickListener(v -> {
+            //dialogListener.cancelar();
+            dialog.dismiss();
+        });
+
+        dialogButtonAjuda.setOnClickListener(v -> {
+            //dialogListener.cancelar();
+            dialog.dismiss();
+        });
+
+        dialogButtonNovamente.setOnClickListener(v -> {
+            //dialogListener.ok();
+            dialog.dismiss();
+        });
+
+
+        dialog.show();
+    }
+
 }

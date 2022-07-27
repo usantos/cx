@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="17dp"
             android:layout_marginTop="18dp"
-            android:text="@string/titulo"
+            android:text="@string/label_atencao"
             android:textColor="@color/branco"
             android:textSize="15.8sp"
             android:textStyle="bold" />
@@ -55,7 +55,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/dialogButtonCancelar"
+                android:id="@+id/dialogButtonCompraCanceladaCancelar"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
@@ -71,7 +71,7 @@
                 android:gravity="center"/>
 
             <Button
-                android:id="@+id/dialogButtonAjuda"
+                android:id="@+id/dialogButtonCompraCanceladaAjuda"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
@@ -87,7 +87,7 @@
                 android:gravity="center"/>
 
             <Button
-                android:id="@+id/dialogButtonOK"
+                android:id="@+id/dialogButtonCompraCanceladaNovamente"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
