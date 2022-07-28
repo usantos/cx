@@ -140,4 +140,9 @@
     <color name="verde_tutorial">#008254</color>
     <color name="cinza_tutorial">#47586C</color>
 
+    <color name="azul_minhas_compras">#143DA6</color>
+    <color name="vermelho_minhas_compras">#900000</color>
+    <color name="amarelo_minhas_compras">#FDAB01</color>
+    <color name="verde_minhas_compras">#008254</color>
+
 </resources>
