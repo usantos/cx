@@ -1050,7 +1050,7 @@
     <string name="digitar_codigo">Digitar o código</string>
     <string name="tentar_novamente">Tentar novamente</string>
     <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
-    <string name="selecione_o_meio_de_pagamento">Selecione o meio de pagamento que irá processar a compra utilizando o cartão de crédito de sua escolha</string>
+    <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a opção de sua preferênci e preencher os dados do cartão de crédito</string>
     <string name="adicionar_cartao">Adicionar cartão</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
