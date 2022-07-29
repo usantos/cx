@@ -8,8 +8,12 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -60,6 +64,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		frameRecargaPay = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentRecargaPay,
+									null,
 									new MeioPagamentoConfig(R.color.laranja_recarga_pay,R.drawable.recargapay));
 	}
 
@@ -67,6 +72,26 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		frameMercadoPago = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentMercadoPago,
+									getListCartoes(),
 									new MeioPagamentoConfig(R.color.azul_mercado_pago,R.drawable.ic_mercado_pago));
+	}
+
+	private List<RetornoCartao> getListCartoes() {
+		List<RetornoCartao> lista = new ArrayList<>();
+
+		RetornoCartao cartaofav = new RetornoCartao();
+		cartaofav.setFav(true);
+		cartaofav.setUltimosDigitos("1234");
+		cartaofav.setIdMetodoPagamento("master");
+
+		RetornoCartao cartao = new RetornoCartao();
+		cartao.setFav(false);
+		cartao.setUltimosDigitos("6789");
+		cartao.setIdMetodoPagamento("hipercard");
+
+		lista.add(cartaofav);
+		lista.add(cartao);
+
+		return lista;
 	}
 }

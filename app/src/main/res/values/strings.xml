@@ -942,6 +942,7 @@
     <string name="ambos">Ambos</string>
     <string name="carrinho_favorito_titulo">Carrinho Favorito</string>
     <string name="mascara_cartao_sem_ultimos_digitos">**** **** ****</string>
+    <string name="mascara_cartao">**** </string>
     <string name="venc_ponto_dois_pontos">Venc.:</string>
     <string name="evento_efetuou_exclusao_forma_pagamento_sucesso">EFETUOU_EXCLUSAO_FORMA_DE_PAGAMENTO_SUCESSO</string>
     <string name="dia_de_sorte">dia de sorte</string>
