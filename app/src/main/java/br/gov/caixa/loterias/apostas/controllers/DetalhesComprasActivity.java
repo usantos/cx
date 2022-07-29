@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -44,7 +46,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
@@ -76,6 +80,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         setaViews();
         pegaExtras();
         setaMetodos();
+        verificaStatusCancelada();
     }
 
     private void setaViews(){
@@ -116,6 +121,44 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             ordemCompra = bundle.getInt("ordem");
             compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
         }
+    }
+
+    private void verificaStatusCancelada() {
+        //Regra do Negocio
+        showDialogCompraCancelada();
+    }
+
+    private void showDialogCompraCancelada() {
+        // custom dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
+
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
+        Button dialogButtonAjuda    = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
+        Button dialogButtonNovamente= dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
+
+        dialogButtonCancelar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialogButtonAjuda.setOnClickListener(v -> {
+            abrirAjuda();
+            dialog.dismiss();
+        });
+
+        dialogButtonNovamente.setOnClickListener(v -> {
+            TestVisao.toast("Implementar na proxima sprint");
+            dialog.dismiss();
+        });
+
+        dialog.show();
+
+    }
+
+    private void abrirAjuda() {
+        Intent activity = new Intent(DetalhesComprasActivity.this, TermosUsoActivity.class);
+        activity.putExtra(getResources().getString(R.string.extra_ajuda), true);
+        startActivity(activity);
     }
 
     @Override
