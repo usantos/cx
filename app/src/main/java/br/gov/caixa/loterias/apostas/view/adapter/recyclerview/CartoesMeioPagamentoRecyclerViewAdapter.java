@@ -35,9 +35,18 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CartaoMeioPagamentoHolder cartaoMeioPagamentoHolder, int position) {
+    public void onBindViewHolder(@NonNull CartaoMeioPagamentoHolder holder, int position) {
+        if (lista.size() <= 1){
+            holder.showButtonFav(false);
+            if (lista.size() == 1){
+                lista.get(0).setFav(false);
+            }
+        } else {
+            holder.showButtonFav(true);
+        }
+
         RetornoCartao cartao = lista.get(position);
-        cartaoMeioPagamentoHolder.bind(cartao, position);
+        holder.bind(cartao, position);
     }
 
     @Override

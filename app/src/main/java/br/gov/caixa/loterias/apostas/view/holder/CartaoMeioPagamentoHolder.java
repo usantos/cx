@@ -79,6 +79,15 @@ public class CartaoMeioPagamentoHolder extends LoteriasHolder<RetornoCartao> imp
 		}
 	}
 
+
+	public void showButtonFav(boolean show){
+		if (show){
+			this.fav.setVisibility(View.VISIBLE);
+		} else {
+			this.fav.setVisibility(View.GONE);
+		}
+	}
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
