@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +22,10 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesMeioPagamentoRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
+import br.gov.caixa.loterias.apostas.view.holder.CartaoMeioPagamentoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnCartaoMeioPagamentoListener;
 
 /**
@@ -113,21 +116,36 @@ public class MeioPagamentoFragment extends Fragment {
 	}
 
 	@NonNull
-	private OnCartaoMeioPagamentoListener onRecyclerlistener() {
-		return new OnCartaoMeioPagamentoListener() {
+	private OnCartaoMeioPagamentoListener<CartaoMeioPagamentoHolder> onRecyclerlistener() {
+		return new OnCartaoMeioPagamentoListener<CartaoMeioPagamentoHolder>() {
 			@Override
-			public void itemClick(Object holder, int position) {
+			public void itemClick(CartaoMeioPagamentoHolder holder, int position) {
 				TestVisao.toast("Item selecionado");
 			}
 
 			@Override
-			public void favoritar(Object holder, int position) {
+			public void favoritar(CartaoMeioPagamentoHolder holder, int position) {
 				TestVisao.toast("Fav selecionado");
 			}
 
 			@Override
-			public void deletar(Object holder, int position) {
-				TestVisao.toast("Deleta selecionado");
+			public void deletar(CartaoMeioPagamentoHolder holder, int position) {
+				if (cartaos.get(position).isFav()){
+					ViewUtils.alertTitleButton(getContext(),
+											   R.string.excluir_cartao_interrogacao,
+											   getString(R.string.nao_e_possivel_eliminar_cartao_favorito),
+											   getString(R.string.title_entendi));
+				} else {
+					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.excluir_cartao_interrogacao),
+																				getString(R.string.label_nao),
+																				getString(R.string.confirmar),
+																				getString(R.string.deseja_realmente_exluir_cartao),
+																				(dialog, which) -> {
+																					cartaos.remove(position);
+																					adapter.notifyDataSetChanged();
+																				});
+					dialogConfirmacao.show();
+				}
 			}
 		};
 	}

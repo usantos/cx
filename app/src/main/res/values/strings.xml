@@ -1053,6 +1053,9 @@
     <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
     <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a opção de sua preferênci e preencher os dados do cartão de crédito</string>
     <string name="adicionar_cartao">Adicionar cartão</string>
+    <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
+    <string name="nao_e_possivel_eliminar_cartao_favorito">Não é possível eliminar o cartão favorito.</string>
+    <string name="deseja_realmente_exluir_cartao">Deseja realmente exluir o cartão?</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
