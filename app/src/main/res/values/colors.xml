@@ -140,4 +140,8 @@
     <color name="verde_tutorial">#008254</color>
     <color name="cinza_tutorial">#47586C</color>
 
+
+    <color name="azul_efetivada">#143DA6</color>
+    <color name="vermelho_cancelada">#900000</color>
+
 </resources>

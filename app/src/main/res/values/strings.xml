@@ -1063,5 +1063,6 @@
     <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>
     <string name="digitar_codigo">Digitar o código</string>
     <string name="tentar_novamente">Tentar novamente</string>
+    <string name="compra_processada_por">Compra processada por:</string>
 
 </resources>
