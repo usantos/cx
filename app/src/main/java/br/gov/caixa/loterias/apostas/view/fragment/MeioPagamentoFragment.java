@@ -39,6 +39,7 @@ public class MeioPagamentoFragment extends Fragment {
 	private View margem;
 	private AppCompatImageView imagem;
 	private ConstraintLayout btnAdd;
+	private ConstraintLayout cabecalho;
 
 	private RecyclerView listaCartoes;
 	private CartoesMeioPagamentoRecyclerViewAdapter adapter;
@@ -97,6 +98,7 @@ public class MeioPagamentoFragment extends Fragment {
 		margem = view.findViewById(R.id.margem);
 		imagem = view.findViewById(R.id.imagemMeioPagamento);
 		btnAdd = view.findViewById(R.id.addCartao);
+		cabecalho = view.findViewById(R.id.cabecalho);
 		listaCartoes = view.findViewById(R.id.listaCartoes);
 		adapter = new CartoesMeioPagamentoRecyclerViewAdapter(cartaos, getContext(), onRecyclerlistener());
 		RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
@@ -132,8 +134,16 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void configButton() {
 		btnAdd.setOnClickListener(v -> {
-			TestVisao.toast("Implementar no futuro!");
+			goToAddCartao();
 		});
+
+		cabecalho.setOnClickListener(v -> {
+			goToAddCartao();
+		});
+	}
+
+	private void goToAddCartao(){
+		TestVisao.toast("Implementar no futuro!");
 	}
 
 	private void aplicaConfig() {
