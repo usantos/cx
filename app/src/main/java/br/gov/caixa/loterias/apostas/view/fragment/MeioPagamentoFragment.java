@@ -125,7 +125,16 @@ public class MeioPagamentoFragment extends Fragment {
 
 			@Override
 			public void favoritar(CartaoMeioPagamentoHolder holder, int position) {
-				TestVisao.toast("Fav selecionado");
+				if (!cartaos.get(position).isFav()){
+					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.alterar_favorito_interrogacao),
+																						  getString(R.string.cancelar),
+																						  getString(R.string.confirmar),
+																						  getString(R.string.confirmar_alterar_cartao_favorito),
+																						  (dialog, which) -> {
+																							  adapter.atualizaCartaoFavorito(cartaos.get(position));
+																						  });
+					dialogConfirmacao.show();
+				}
 			}
 
 			@Override

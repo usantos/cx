@@ -45,4 +45,14 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
         return lista == null ? 0 : lista.size();
     }
 
+    public void atualizaCartaoFavorito(RetornoCartao retornoCartao) {
+        for (RetornoCartao cartao: lista){
+            if (cartao.getIdCartao() == retornoCartao.getIdCartao()){
+                cartao.setFav(true);
+            } else {
+                cartao.setFav(false);
+            }
+        }
+        notifyDataSetChanged();
+    }
 }

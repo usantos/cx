@@ -35,7 +35,6 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "Forma de _pagamento_"));
 
-
 		configMenu();
 
 		startFragmentMercadoPago();
@@ -83,14 +82,30 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		cartaofav.setFav(true);
 		cartaofav.setUltimosDigitos("1234");
 		cartaofav.setIdMetodoPagamento("master");
+		cartaofav.setIdCartao(1L);
 
 		RetornoCartao cartao = new RetornoCartao();
 		cartao.setFav(false);
-		cartao.setUltimosDigitos("6789");
+		cartao.setUltimosDigitos("3456");
 		cartao.setIdMetodoPagamento("hipercard");
+		cartao.setIdCartao(2L);
+
+		RetornoCartao cartao3 = new RetornoCartao();
+		cartao3.setFav(false);
+		cartao3.setUltimosDigitos("5678");
+		cartao3.setIdMetodoPagamento("visa");
+		cartao3.setIdCartao(3L);
+
+		RetornoCartao cartao4 = new RetornoCartao();
+		cartao4.setFav(false);
+		cartao4.setUltimosDigitos("7890");
+		cartao4.setIdMetodoPagamento("amex");
+		cartao4.setIdCartao(4L);
 
 		lista.add(cartaofav);
 		lista.add(cartao);
+		lista.add(cartao3);
+		lista.add(cartao4);
 
 		return lista;
 	}

@@ -1056,6 +1056,8 @@
     <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
     <string name="nao_e_possivel_eliminar_cartao_favorito">Não é possível eliminar o cartão favorito.</string>
     <string name="deseja_realmente_exluir_cartao">Deseja realmente exluir o cartão?</string>
+    <string name="alterar_favorito_interrogacao">Alterar Favorito?</string>
+    <string name="confirmar_alterar_cartao_favorito">Deseja alterar seu cartão preferido? Confirmar?</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>

@@ -1,6 +1,10 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -39,7 +43,7 @@ public class CartaoMeioPagamentoHolder extends LoteriasHolder<RetornoCartao> imp
 
 	@Override
 	public void bind(RetornoCartao cartao, int position) {
-		this.imagem.setImageDrawable(context.getDrawable(getBandeira(cartao.getIdMetodoPagamento())));
+		this.imagem.setImageDrawable(getBandeira(cartao.getIdMetodoPagamento()));
 		this.numero.setText("  " + context.getResources().getString(R.string.mascara_cartao) + "  " + cartao.getUltimosDigitos());
 		if (cartao.isFav()){
 			this.fav.setBackground(context.getDrawable(R.drawable.ic_vector_fav_full));
@@ -48,22 +52,29 @@ public class CartaoMeioPagamentoHolder extends LoteriasHolder<RetornoCartao> imp
 		}
 	}
 
-	private int getBandeira(String nomeMetodo){
+	private Drawable getBandeira(String nomeMetodo){
+		Drawable drawable = null;
+		PorterDuffColorFilter porterDuffColorFilter = new PorterDuffColorFilter(Color.BLUE,
+																				PorterDuff.Mode.SRC_ATOP);
 		switch (nomeMetodo){
 			case "visa":
-				return R.drawable.ic_visa;
+				drawable = context.getDrawable(R.drawable.ic_visa);
+				drawable.setColorFilter(porterDuffColorFilter);
+				return drawable;
 			case "master":
-				return R.drawable.ic_master_card;
+				return context.getDrawable(R.drawable.ic_master_card);
 			case "hipercard":
-				return R.drawable.ic_hipercard;
+				return context.getDrawable(R.drawable.ic_hipercard);
 			case "diners":
-				return R.drawable.ic_diners;
+				return context.getDrawable(R.drawable.ic_diners);
 			case "elo":
-				return R.drawable.ic_elo;
+				return context.getDrawable(R.drawable.ic_elo);
 			case "amex":
-				return R.drawable.ic_american;
+				drawable = context.getDrawable(R.drawable.ic_american);
+				drawable.setColorFilter(porterDuffColorFilter);
+				return drawable;
 			default:
-				return R.drawable.cartao_cvc;
+				return context.getDrawable(R.drawable.cartao_cvc);
 
 		}
 	}
