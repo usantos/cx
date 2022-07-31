@@ -139,5 +139,8 @@
     <color name="mais_milionaria_escura">#332A62</color>
     <color name="verde_tutorial">#008254</color>
     <color name="cinza_tutorial">#47586C</color>
+    <color name="cinza_borda">#C4C4C4</color>
+    <color name="azul_mercado_pago">#50B4E9</color>
+    <color name="laranja_recarga_pay">#FE8832</color>
 
 </resources>

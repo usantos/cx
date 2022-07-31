@@ -5,7 +5,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.util.List;
+
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
+import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
@@ -23,7 +28,6 @@ public class FragmentUtils {
 			FragmentUtils.startFragment(fm, id, fragment);
 		}
 		return fragment;
-
 	}
 
 	public static PaginacaoFragment startPaginacaoFragment(FragmentManager fm, PaginacaoFragment fragment, int id) {
@@ -32,6 +36,16 @@ public class FragmentUtils {
 			FragmentUtils.startFragment(fm, id, fragment);
 		}
 		return fragment;
-
 	}
+
+	public static MeioPagamentoFragment startMeioPagamento(FragmentManager fm, int id, List<RetornoCartao> cartaos, MeioPagamentoConfig config) {
+		MeioPagamentoFragment fragment = null;
+		if(fragment == null){
+			fragment = MeioPagamentoFragment.newInstance(cartaos, config);
+			FragmentUtils.startFragment(fm, id, fragment);
+		}
+		return fragment;
+	}
+
+
 }
