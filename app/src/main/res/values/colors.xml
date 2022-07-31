@@ -143,4 +143,9 @@
     <color name="azul_mercado_pago">#50B4E9</color>
     <color name="laranja_recarga_pay">#FE8832</color>
 
+
+    <color name="azul_efetivada">#143DA6</color>
+    <color name="vermelho_cancelada">#900000</color>
+    <color name="verde_premio_pago">#008254</color>
+
 </resources>
