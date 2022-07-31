@@ -123,7 +123,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		} else if (SituacaoCompraUtil.isCancelada(aposta.getSituacao())){
 			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.vermelho_cancelada));
 		} else if (SituacaoCompraUtil.isPremioPago(aposta.getSituacao())){
-			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.verdesenatrevo));
+			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.verde_premio_pago));
 		} else {
 			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estilo.getCorEscura()));
 		}
