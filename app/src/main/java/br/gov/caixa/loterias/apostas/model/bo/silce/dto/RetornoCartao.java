@@ -79,6 +79,8 @@ public class RetornoCartao {
     @SerializedName("codigoErro")
     private String codigoErro = null;
 
+    private boolean isFav;
+
     public RetornoCartao statusCodeHttp(Integer statusCodeHttp) {
         this.statusCodeHttp = statusCodeHttp;
         return this;
@@ -325,5 +327,13 @@ public class RetornoCartao {
     @ApiModelProperty(value = "")
     public String getMessage() {
         return message;
+    }
+
+    public boolean isFav() {
+        return this.isFav;
+    }
+
+    public void setFav(boolean isfav){
+        this.isFav = isfav;
     }
 }

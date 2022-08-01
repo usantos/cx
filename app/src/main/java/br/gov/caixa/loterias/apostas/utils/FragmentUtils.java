@@ -28,7 +28,6 @@ public class FragmentUtils {
 			FragmentUtils.startFragment(fm, id, fragment);
 		}
 		return fragment;
-
 	}
 
 	public static MeusCartoesFragment meusCartoesFragment(FragmentManager fm, int id, List<RetornoCartao> cartoes, MeusCartoesConfig config) {
@@ -45,6 +44,16 @@ public class FragmentUtils {
 			FragmentUtils.startFragment(fm, id, fragment);
 		}
 		return fragment;
-
 	}
+
+	public static MeioPagamentoFragment startMeioPagamento(FragmentManager fm, int id, List<RetornoCartao> cartaos, MeioPagamentoConfig config) {
+		MeioPagamentoFragment fragment = null;
+		if(fragment == null){
+			fragment = MeioPagamentoFragment.newInstance(cartaos, config);
+			FragmentUtils.startFragment(fm, id, fragment);
+		}
+		return fragment;
+	}
+
+
 }

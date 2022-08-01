@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
+import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
 
@@ -44,7 +45,15 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 																								ViewUtils.getMoedaFormat(item.getValorTotal()))));
 
 		this.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_situacao,
-																											item.getSituacao().getDescricao())));;
+																											item.getSituacao().getDescricao())));
+		if (SituacaoCompraUtil.isSituacaoPositiva(item.getSituacao())) {
+			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.azul_minhas_compras));
+		} else if (SituacaoCompraUtil.isSituacaoNegativa(item.getSituacao())) {
+			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.vermelho_minhas_compras));
+		} else if (SituacaoCompraUtil.isSituacaoProcessamento(item.getSituacao())) {
+			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.amarelo_minhas_compras));
+		}
+
 
 		this.itemView.setOnClickListener(view -> {
 
