@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.webkit.WebView;
 
 public class WebViewActivity extends AppCompatActivity {
 
@@ -10,5 +11,12 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
+
+        Bundle b = getIntent().getExtras();
+        String url = b.getString("url");
+
+        WebView myWebView = (WebView) findViewById(R.id.webview);
+        myWebView.loadUrl(url);
+
     }
 }

@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.WebViewActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -125,10 +126,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void verificaStatusCancelada() {
         //Regra do Negocio
+
+        //compraDTO.
+
         showDialogCompraCancelada();
     }
 
     private void showDialogCompraCancelada() {
+
         // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
@@ -156,9 +161,15 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void abrirAjuda() {
-        Intent activity = new Intent(DetalhesComprasActivity.this, TermosUsoActivity.class);
-        activity.putExtra(getResources().getString(R.string.extra_ajuda), true);
+//        Intent activity = new Intent(DetalhesComprasActivity.this, TermosUsoActivity.class);
+//        activity.putExtra(getResources().getString(R.string.extra_ajuda), true);
+//        startActivity(activity);
+
+        Intent activity = new Intent(DetalhesComprasActivity.this, WebViewActivity.class);
+        activity.putExtra("url", "https://www.mercadopago.com.br/ajuda#from-section=menu"); //MercadoPago
+        //activity.putExtra("url", "https://recargapay.com.br/ajuda_caixa_form?reason=loterias-caixa&sub_reason=Problemas-com-meu-pagamento&subject=Ajuda%20com%20meu%20pagamento"); //RecargaPay
         startActivity(activity);
+
     }
 
     @Override
