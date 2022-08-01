@@ -55,7 +55,7 @@ public class MeusCartoesActivity extends AppCompatActivity {
     }
 
     private MeusCartoesConfig getConfigMercadoPago() {
-        return new MeusCartoesConfig(R.color.azul_meu_cartao, R.drawable.mercadopago);
+        return new MeusCartoesConfig(R.color.azul_meu_cartao, R.drawable.mercadopago, R.string.confira_cartoes_salvos_mercado_pago);
     }
 
     private void pegaExtras(){

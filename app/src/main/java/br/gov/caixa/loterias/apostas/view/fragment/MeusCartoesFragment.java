@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -37,6 +38,7 @@ public class MeusCartoesFragment extends Fragment {
 	private MeusCartoesConfig config;
 	private View view;
 	private View margemCabecalho, margemConteudo;
+	private TextView subtitulo;
 	private AppCompatImageView imagem;
 	private ConstraintLayout conteudo;
 
@@ -96,6 +98,7 @@ public class MeusCartoesFragment extends Fragment {
 		margemCabecalho = view.findViewById(R.id.margemCabecalho);
 		margemConteudo = view.findViewById(R.id.margemConteudo);
 		imagem = view.findViewById(R.id.imagemMeioPagamento);
+		subtitulo = view.findViewById(R.id.subtitulo_cartoes);
 		conteudo = view.findViewById(R.id.conteudoCartoes);
 		listaCartoes = view.findViewById(R.id.listaCartoes);
 		adapter = new MeusCartoesRecyclerViewAdapter(cartaos, getContext(), onRecyclerlistener());
@@ -153,9 +156,9 @@ public class MeusCartoesFragment extends Fragment {
 			margemCabecalho.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
 			margemConteudo.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
 			conteudo.setBackground(getActivity().getDrawable(config.getIdCorBarra()));
-			conteudo.getBackground().setAlpha(15);
+			conteudo.getBackground().setAlpha(20);
 			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
-
+			subtitulo.setText(getString(config.getIdMensagem()));
 		}
 	}
 }

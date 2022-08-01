@@ -5,10 +5,12 @@ import java.io.Serializable;
 public class MeusCartoesConfig implements Serializable {
 	private int idCorBarra;
 	private int idImagem;
+	private int idMensagem;
 
-	public MeusCartoesConfig(int idCorBarra, int idImagem) {
+	public MeusCartoesConfig(int idCorBarra, int idImagem, int idMensagem) {
 		this.idCorBarra = idCorBarra;
 		this.idImagem = idImagem;
+		this.idMensagem = idMensagem;
 	}
 
 	public int getIdCorBarra() {
@@ -17,5 +19,9 @@ public class MeusCartoesConfig implements Serializable {
 
 	public int getIdImagem() {
 		return idImagem;
+	}
+
+	public int getIdMensagem(){
+		return idMensagem;
 	}
 }
