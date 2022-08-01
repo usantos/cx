@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -14,6 +13,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCartaoMeioPagamentoListener;
 
 public class CartaoMeioPagamentoHolder extends LoteriasHolder<RetornoCartao> implements  View.OnClickListener {
@@ -54,8 +54,7 @@ public class CartaoMeioPagamentoHolder extends LoteriasHolder<RetornoCartao> imp
 
 	private Drawable getBandeira(String nomeMetodo){
 		Drawable drawable = null;
-		PorterDuffColorFilter porterDuffColorFilter = new PorterDuffColorFilter(Color.BLUE,
-																				PorterDuff.Mode.SRC_ATOP);
+		PorterDuffColorFilter porterDuffColorFilter = VectorUtils.getColorFilter(Color.BLUE);
 		switch (nomeMetodo){
 			case "visa":
 				drawable = context.getDrawable(R.drawable.ic_visa);

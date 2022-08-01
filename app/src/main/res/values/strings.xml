@@ -1056,7 +1056,7 @@
     <string name="adicionar_cartao">Adicionar cartão</string>
     <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
     <string name="nao_e_possivel_eliminar_cartao_favorito">Não é possível eliminar o cartão favorito.</string>
-    <string name="deseja_realmente_exluir_cartao">Deseja realmente exluir o cartão?</string>
+    <string name="deseja_realmente_exluir_cartao">Tem certeza que deseja excluir o cartão com final </string>
     <string name="alterar_favorito_interrogacao">Alterar Favorito?</string>
     <string name="confirmar_alterar_cartao_favorito">Deseja alterar seu cartão preferido? Confirmar?</string>
     <string-array name="dia_sorte_meses">
@@ -1075,6 +1075,7 @@
     </string-array>
 
     <string name="confira_cartoes_salvos_mercado_pago">Confira aqui sua lista de cartões salvos no Mercado Pago</string>
+    <string name="confira_cartoes_salvos_recargapa_pay">Confira aqui sua lista de cartões salvos no RecargaPay</string>
     <string name="compra_processada_por">Compra processada por:</string>
 
 
