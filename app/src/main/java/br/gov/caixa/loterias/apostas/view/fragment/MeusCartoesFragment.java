@@ -1,0 +1,161 @@
+package br.gov.caixa.loterias.apostas.view.fragment;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.MeusCartoesRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
+import br.gov.caixa.loterias.apostas.view.holder.MeuCartaoHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnMeusCartoesListener;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link MeusCartoesFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class MeusCartoesFragment extends Fragment {
+	private static final String ARG_CONFIG = "ARG_CONFIG";
+	private static final String ARG_CARTOES = "ARG_CARTOES";
+
+	private MeusCartoesConfig config;
+	private View view;
+	private View margemCabecalho, margemConteudo;
+	private AppCompatImageView imagem;
+	private ConstraintLayout conteudo;
+
+	private RecyclerView listaCartoes;
+	private MeusCartoesRecyclerViewAdapter adapter;
+
+	private List<RetornoCartao> cartaos;
+
+	public MeusCartoesFragment() {
+		// Required empty public constructor
+	}
+
+	/**
+	 * Use this factory method to create a new instance of
+	 * this fragment using the provided parameters.
+	 *
+	 * @param config Parameter 1.
+	 * @return A new instance of fragment MeioPagamentoFragment.
+	 */
+	public static MeusCartoesFragment newInstance(List<RetornoCartao> cartoes, MeusCartoesConfig config) {
+		MeusCartoesFragment fragment = new MeusCartoesFragment();
+		Bundle              args     = new Bundle();
+		if(config != null){
+			args.putSerializable(ARG_CONFIG, config);
+		}
+
+		if (cartoes != null){
+			args.putString(ARG_CARTOES, new Gson().toJson(cartoes));
+		}
+
+		fragment.setArguments(args);
+		return fragment;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			config  = (MeusCartoesConfig) getArguments().getSerializable(ARG_CONFIG);
+
+			TypeToken<List<RetornoCartao>> token = new TypeToken<List<RetornoCartao>>() {};
+			String                         cartoesString = getArguments().getString(ARG_CARTOES);
+			if(cartoesString != null && cartoesString.length() > 0){
+				cartaos = new Gson().fromJson(cartoesString, token.getType());
+			} else {
+				cartaos = new ArrayList<>();
+			}
+
+		}
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		view = inflater.inflate(R.layout.fragment_meus_cartoes, container, false);
+		margemCabecalho = view.findViewById(R.id.margemCabecalho);
+		margemConteudo = view.findViewById(R.id.margemConteudo);
+		imagem = view.findViewById(R.id.imagemMeioPagamento);
+		conteudo = view.findViewById(R.id.conteudoCartoes);
+		listaCartoes = view.findViewById(R.id.listaCartoes);
+		adapter = new MeusCartoesRecyclerViewAdapter(cartaos, getContext(), onRecyclerlistener());
+		RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,
+																false);
+		listaCartoes.setLayoutManager(lm);
+		listaCartoes.setAdapter(adapter);
+
+		aplicaConfig();
+
+		return view;
+	}
+
+	@NonNull
+	private OnMeusCartoesListener<MeuCartaoHolder> onRecyclerlistener() {
+		return new OnMeusCartoesListener<MeuCartaoHolder>() {
+			@Override
+			public void favoritar(MeuCartaoHolder holder, int position) {
+//				if (!cartaos.get(position).isFav()){
+//					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.alterar_favorito_interrogacao),
+//																						  getString(R.string.cancelar),
+//																						  getString(R.string.confirmar),
+//																						  getString(R.string.confirmar_alterar_cartao_favorito),
+//																						  (dialog, which) -> {
+//																							  adapter.atualizaCartaoFavorito(cartaos.get(position));
+//																						  });
+//					dialogConfirmacao.show();
+//				}
+			}
+
+			@Override
+			public void deletar(MeuCartaoHolder holder, int position) {
+//				if (cartaos.get(position).isFav()){
+//					ViewUtils.alertTitleButton(getContext(),
+//											   R.string.excluir_cartao_interrogacao,
+//											   getString(R.string.nao_e_possivel_eliminar_cartao_favorito),
+//											   getString(R.string.title_entendi));
+//				} else {
+//					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.excluir_cartao_interrogacao),
+//																				getString(R.string.label_nao),
+//																				getString(R.string.confirmar),
+//																				getString(R.string.deseja_realmente_exluir_cartao),
+//																				(dialog, which) -> {
+//																					cartaos.remove(position);
+//																					adapter.notifyDataSetChanged();
+//																				});
+//					dialogConfirmacao.show();
+//				}
+			}
+		};
+	}
+
+	private void aplicaConfig() {
+		if (config != null){
+			margemCabecalho.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
+			margemConteudo.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
+			conteudo.setBackground(getActivity().getDrawable(config.getIdCorBarra()));
+			conteudo.getBackground().setAlpha(15);
+			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
+
+		}
+	}
+}
