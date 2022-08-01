@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -42,9 +43,41 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 
 		this.valorCompra.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_valor,
 																								ViewUtils.getMoedaFormat(item.getValorTotal()))));
-
+		/**
+		 * Situação finalizada: #143DA6
+		 * Situação não processado: #900000
+		 * Situação em processamento: #FDAB01
+		 * Situação de pago: #008254
+		 *
+		 * ------AZUL #143DA6 (POSITIVA), DEBITO_REALIZADO(6L), FINALIZADA(8L),
+		 *
+		 * ------VERMELHO #900000 (NEGATIVA), DEBITO_NAO_AUTORIZADO(3L), ESTORNADA(4L), CANCELADA(5L),
+		 *
+		 * ------AMARELO  (INDEFINICAO, ANDAMENTO, CARRINHO(1L), DEBITO_INICIADO(2L), EM_PROCESSAMENTO(7L), EM_PROCESSAMENTO_REPRESADA(9L);
+		 * SITUACAO_COMPRA_ENUM
+		 * */
 		this.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_situacao,
-																											item.getSituacao().getDescricao())));;
+																											item.getSituacao().getDescricao())));
+		if (item.getSituacao().getDescricao().equalsIgnoreCase("POSITIVA") ||
+			item.getSituacao().getDescricao().equalsIgnoreCase("DEBITO_REALIZADO") ||
+			item.getSituacao().getDescricao().equalsIgnoreCase("FINALIZADA")) {
+			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.azul_minhas_compras));
+		}
+		if (item.getSituacao().getDescricao().equalsIgnoreCase("NEGATIVA") ||
+			item.getSituacao().getDescricao().equalsIgnoreCase("DEBITO_NAO_AUTORIZADO") ||
+			item.getSituacao().getDescricao().equalsIgnoreCase("ESTORNADA") ||
+			item.getSituacao().getDescricao().equalsIgnoreCase("CANCELADA")) {
+			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.vermelho_minhas_compras)));
+		}
+		if (item.getSituacao().getDescricao().equalsIgnoreCase("INDEFINICAO") ||
+		    item.getSituacao().getDescricao().equalsIgnoreCase("ANDAMENTO") ||
+			item.getSituacao().getDescricao().equalsIgnoreCase("CARRINHO") ||
+			item.getSituacao().getDescricao().equalsIgnoreCase("DEBITO_INICIADO") ||
+			item.getSituacao().getDescricao().equalsIgnoreCase("EM_PROCESSAMENTO") ||
+			item.getSituacao().getDescricao().equalsIgnoreCase("EM_PROCESSAMENTO_REPRESADA")) {
+			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.amarelo_minhas_compras)));
+		}
+
 
 		this.itemView.setOnClickListener(view -> {
 
