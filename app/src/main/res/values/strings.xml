@@ -1074,7 +1074,11 @@
         <item>Dezembro</item>
     </string-array>
 
-    <string name="compra_processada_por">Compra processada por:</string>
+    <string name="verificamos_compra_demorando_ou_processando">Verificamos que sua compra está em processamento e está demorando mais que o esperado. Aguarde alguns instantes e verifique na área  "Minhas compras" se a compra foi processada antes de tentar novamente.</string>
+    <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>
+    <string name="digitar_codigo">Digitar o código</string>
+    <string name="tentar_novamente">Tentar novamente</string>
+    <string name="confira_cartoes_salvos_mercado_pago">Confira aqui sua lista de cartões salvos no Mercado Pago</string>
 
 
 </resources>
