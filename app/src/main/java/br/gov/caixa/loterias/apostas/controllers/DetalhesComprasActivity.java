@@ -125,11 +125,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void verificaStatusCancelada() {
-        //Regra do Negocio
 
-        //compraDTO.getSituacao().getDescricao()
+        if (compraDTO.getSituacao().getDescricao().equalsIgnoreCase("NEGATIVA") ||
+            compraDTO.getSituacao().getDescricao().equalsIgnoreCase("DEBITO_NAO_AUTORIZADO") ||
+            compraDTO.getSituacao().getDescricao().equalsIgnoreCase("ESTORNADA") ||
+            compraDTO.getSituacao().getDescricao().equalsIgnoreCase("CANCELADA")) {
 
-        showDialogCompraCancelada();
+            showDialogCompraCancelada();
+        }
     }
 
     private void showDialogCompraCancelada() {
