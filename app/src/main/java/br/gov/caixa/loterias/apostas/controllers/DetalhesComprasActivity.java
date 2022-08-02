@@ -127,7 +127,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private void verificaStatusCancelada() {
         //Regra do Negocio
 
-        //compraDTO.
+        //compraDTO.getSituacao().getDescricao()
 
         showDialogCompraCancelada();
     }
