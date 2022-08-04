@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -47,7 +45,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
@@ -164,13 +161,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void abrirAjuda() {
-//        Intent activity = new Intent(DetalhesComprasActivity.this, TermosUsoActivity.class);
-//        activity.putExtra(getResources().getString(R.string.extra_ajuda), true);
-//        startActivity(activity);
-
         Intent activity = new Intent(DetalhesComprasActivity.this, WebViewActivity.class);
-        activity.putExtra("url", "https://www.mercadopago.com.br/ajuda#from-section=menu"); //MercadoPago
-        //activity.putExtra("url", "https://recargapay.com.br/ajuda_caixa_form?reason=loterias-caixa&sub_reason=Problemas-com-meu-pagamento&subject=Ajuda%20com%20meu%20pagamento"); //RecargaPay
+        activity.putExtra(getString(R.string.bundle_key_url), getString(R.string.url_ajuda_mercado_pago)); //MercadoPago
+//        activity.putExtra("url", getString(R.string.url_ajuda_recarga_pay)); //RecargaPay
         startActivity(activity);
 
     }
