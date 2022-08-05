@@ -154,4 +154,6 @@
     <color name="amarelo_minhas_compras">#FDAB01</color>
     <color name="verde_minhas_compras">#008254</color>
 
+    <color name="amarelo_favoritado">#FDB932</color>
+
 </resources>

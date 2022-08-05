@@ -11,7 +11,7 @@
         android:id="@+id/cabecalho"
         android:layout_width="match_parent"
         android:layout_height="57dp"
-        android:background="@color/branco"
+        android:background="@drawable/border_cinza"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -39,7 +39,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/conteudoCartoes"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="270dp"
+        android:background="@drawable/border_cinza"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cabecalho">
@@ -68,6 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
             app:layout_constraintStart_toEndOf="@id/margemConteudo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/subtitulo_cartoes"/>

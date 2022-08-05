@@ -20,6 +20,7 @@ public class MeusCartoesRecyclerViewAdapter extends RecyclerView.Adapter<MeuCart
     public List<RetornoCartao> lista;
     private Context context;
     private OnMeusCartoesListener listener;
+
     public MeusCartoesRecyclerViewAdapter(List<RetornoCartao> cartoes, Context context, OnMeusCartoesListener listener){
         this.context = context;
         this.lista = cartoes;
@@ -35,14 +36,14 @@ public class MeusCartoesRecyclerViewAdapter extends RecyclerView.Adapter<MeuCart
 
     @Override
     public void onBindViewHolder(@NonNull MeuCartaoHolder holder, int position) {
-//        if (lista.size() <= 1){
-//            holder.showButtonFav(false);
-//            if (lista.size() == 1){
-//                lista.get(0).setFav(false);
-//            }
-//        } else {
-//            holder.showButtonFav(true);
-//        }
+        if (lista.size() <= 1){
+            holder.showButtonFav(false);
+            if (lista.size() == 1){
+                lista.get(0).setFav(false);
+            }
+        } else {
+            holder.showButtonFav(true);
+        }
 
         RetornoCartao cartao = lista.get(position);
         holder.bind(cartao, position);
@@ -54,13 +55,13 @@ public class MeusCartoesRecyclerViewAdapter extends RecyclerView.Adapter<MeuCart
     }
 
     public void atualizaCartaoFavorito(RetornoCartao retornoCartao) {
-//        for (RetornoCartao cartao: lista){
-//            if (cartao.getIdCartao() == retornoCartao.getIdCartao()){
-//                cartao.setFav(true);
-//            } else {
-//                cartao.setFav(false);
-//            }
-//        }
-//        notifyDataSetChanged();
+        for (RetornoCartao cartao: lista){
+            if (cartao.getIdCartao() == retornoCartao.getIdCartao()){
+                cartao.setFav(true);
+            } else {
+                cartao.setFav(false);
+            }
+        }
+        notifyDataSetChanged();
     }
 }
