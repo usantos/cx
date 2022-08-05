@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="350dp"
     android:layout_height="fill_parent"
     android:background="@color/branco">
 
@@ -16,9 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="17dp"
             android:layout_marginTop="18dp"
-            android:text="@string/titulo"
+            android:text="@string/label_atencao"
             android:textColor="@color/branco"
-            android:textSize="15.8sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
@@ -29,75 +29,79 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/subtituloDialog"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/valores_para_apostas_com_2_trevos"
-            android:layout_margin="16dp"
+            android:text="@string/mensagem_ccompra_cancelada_dialog"
+            android:textSize="18sp"
+            android:layout_gravity="center"
+            android:padding="14dp"
             />
 
-        <TextView
-            android:id="@+id/subtitulo2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/valores_para_apostas_com_2_trevos"
-            android:layout_margin="16dp"
-            />
 
-        <View
+        <RelativeLayout
             android:id="@+id/linhaDivisaoBotoes"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/listaItensDialog"
-            android:background="@color/cinza2"/>
+            android:background="@color/cinza2"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="65dp"
             android:layout_below="@+id/linhaDivisaoBotoes"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="15dp"
+            >
 
             <Button
-                android:id="@+id/dialogButtonCancelar"
-                android:layout_width="100dp"
-                android:layout_height="55dp"
-                android:layout_weight="0.5"
-                android:background="@color/verde_card"
-                android:text="@string/cancelar"
-                android:layout_margin="8dp"
-                android:textAllCaps="false"
-                android:textColor="@color/cinzaescuro"
-                android:textSize="15.8sp"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"/>
-
-            <Button
-                android:id="@+id/dialogButtonC"
-                android:layout_width="100dp"
-                android:layout_height="55dp"
-                android:layout_weight="0.5"
-                android:background="@color/branco"
-                android:text="@string/cancelar"
-                android:textAllCaps="false"
-                android:textColor="@color/cinzaescuro"
-                android:textSize="15.8sp"
-                android:textStyle="bold"
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"/>
-
-            <Button
-                android:id="@+id/dialogButtonOK"
-                android:layout_width="100dp"
+                android:id="@+id/dialogButtonCompraCanceladaCancelar"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:background="@color/branco"
-                android:text="@string/ok"
-                android:textColor="@color/verdeazul"
-                android:textSize="15.8sp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/button_border_vermelho"
+                android:text="@string/cancelar"
+                android:textAllCaps="false"
+                android:textColor="@color/vermelho_dialog"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:gravity="center_vertical|right"
-                android:paddingRight="24dp"/>
+                android:gravity="center"
+                />
+
+            <Button
+                android:id="@+id/dialogButtonCompraCanceladaAjuda"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/verdeazul"
+                android:text="@string/ajuda_dialog"
+                android:textAllCaps="false"
+                android:textColor="@color/branco"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <Button
+                android:id="@+id/dialogButtonCompraCanceladaNovamente"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/verdeazul"
+                android:text="@string/tenta_novamente_dialog"
+                android:textAllCaps="false"
+                android:textColor="@color/branco"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

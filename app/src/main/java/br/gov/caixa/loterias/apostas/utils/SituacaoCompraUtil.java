@@ -58,6 +58,7 @@ public class SituacaoCompraUtil {
 				situacao.getDescricao().equalsIgnoreCase(CANCELADA);
 	}
 
+
 	public static boolean isSituacaoProcessamento(DTOEnumLong situacao) {
 		return situacao.getDescricao().equalsIgnoreCase(INDEFINICAO) ||
 				situacao.getDescricao().equalsIgnoreCase(ANDAMENTO) ||

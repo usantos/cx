@@ -156,4 +156,7 @@
 
     <color name="amarelo_favoritado">#FDB932</color>
 
+    <color name="vermelho_dialog">#F60E0E</color>
+    <color name="vermelho_borda_dialog">#D15973</color>
+
 </resources>

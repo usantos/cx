@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.WebViewActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -45,6 +46,7 @@ import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -77,6 +79,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         setaViews();
         pegaExtras();
         setaMetodos();
+        verificaStatusCancelada();
     }
 
     private void setaViews(){
@@ -117,6 +120,48 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             ordemCompra = bundle.getInt("ordem");
             compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
         }
+    }
+
+    private void verificaStatusCancelada() {
+        if (SituacaoCompraUtil.isSituacaoNegativa(compraDTO.getSituacao())) {
+            showDialogCompraCancelada();
+        }
+    }
+
+    private void showDialogCompraCancelada() {
+
+        // custom dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
+
+        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
+        Button dialogButtonAjuda    = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
+        Button dialogButtonNovamente= dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
+
+        dialogButtonCancelar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialogButtonAjuda.setOnClickListener(v -> {
+            abrirAjuda();
+            dialog.dismiss();
+        });
+
+        dialogButtonNovamente.setOnClickListener(v -> {
+            TestVisao.toast("Implementar na proxima sprint");
+            dialog.dismiss();
+        });
+
+        dialog.show();
+
+    }
+
+    private void abrirAjuda() {
+        Intent activity = new Intent(DetalhesComprasActivity.this, WebViewActivity.class);
+        activity.putExtra(getString(R.string.bundle_key_url), getString(R.string.url_ajuda_mercado_pago)); //MercadoPago
+//        activity.putExtra("url", getString(R.string.url_ajuda_recarga_pay)); //RecargaPay
+        startActivity(activity);
+
     }
 
     @Override
