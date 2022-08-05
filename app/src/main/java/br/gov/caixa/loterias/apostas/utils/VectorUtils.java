@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -16,5 +18,10 @@ public class VectorUtils {
 		DrawableCompat.setTint(shape, color);
 		DrawableCompat.setTint(shape, ContextCompat.getColor(context, color));
 		return shape;
+	}
+
+	public static PorterDuffColorFilter getColorFilter(int color) {
+		return new PorterDuffColorFilter(color,
+										  PorterDuff.Mode.SRC_ATOP);
 	}
 }

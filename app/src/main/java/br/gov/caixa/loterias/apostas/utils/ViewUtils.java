@@ -78,7 +78,6 @@ public class ViewUtils {
         return fontFutura;
     }
 
-
     public static Typeface getFontFuturaBold(Context context) {
         if (fontFuturaBold == null) {
             fontFuturaBold = Typeface.createFromAsset(context.getAssets(), "fonts/futura_std_bold.otf");
@@ -94,7 +93,6 @@ public class ViewUtils {
 
         return fontAriallMT;
     }
-
 
     public static void configuraStatusBarGradientLayout(Context context, Window window) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -232,6 +230,22 @@ public class ViewUtils {
                                  .setCancelable(false)
                                  .setNegativeButton (R.string.label_nao, listenerNo)
                                  .setPositiveButton(R.string.label_sim, listenerYes)
+                                 .show();
+
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontFuturaBold(context));
+        textMessageView.setTypeface(getFontFutura(context));
+        return dialog;
+    }
+
+    public static Dialog alertTitleButtonYesOrNotListener(Context context, String message,
+                                                          String positiveButton, DialogInterface.OnClickListener listenerYes,
+                                                          String negativeButton, DialogInterface.OnClickListener  listenerNo) {
+        Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
+                                 .setCancelable(false)
+                                 .setNegativeButton (negativeButton, listenerNo)
+                                 .setPositiveButton(positiveButton, listenerYes)
                                  .show();
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
@@ -646,8 +660,6 @@ public class ViewUtils {
         return parametos;
     }
 
-
-
     public static Integer getConcursoAtualPorModalidade(String modalidade) {
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),ModalidadeEnum.toString(modalidade));
         if(param != null) {
@@ -695,9 +707,4 @@ public class ViewUtils {
         return byteArray;
     }
 
-    public interface KeyboardListener {
-        void abriu();
-
-        void fechou();
-    }
 }

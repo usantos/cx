@@ -37,6 +37,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -202,7 +203,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void setaMetodos() {
-        btnAvancaPagamento.setOnClickListener(v -> validarCarrinho());
+        btnAvancaPagamento.setOnClickListener(v -> onClickAvanvaPagamento());
         btnNovaAposta.setOnClickListener(v -> clickBotaoFazerNovaAposta());
         btnLimpar.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
         btnFavoritar.setOnClickListener(v -> dialogFavoritar.show());
@@ -225,6 +226,22 @@ public class CarrinhoActivity extends AppCompatActivity {
                 }, 1);
             }
         });
+    }
+
+    private void onClickAvanvaPagamento() {
+        if (model.existeCompraMesmoValorEm24horas(carrinho.getValorTotal())){
+            //modal
+            ViewUtils.alertTitleButtonYesOrNotListener(CarrinhoActivity.this,
+                                                       getString(R.string.compra_existente_24_horas),
+                                                       (dialog, which) -> {
+                                                            dialog.dismiss();
+                                                       },
+                                                       (dialog, which) -> {
+                                                           validarCarrinho();
+                                                       });
+        } else {
+            validarCarrinho();
+        }
     }
 
     public void deletaAposta(int position, IdentificaoDeUmaApostaDas8Modalidades aposta) {
@@ -306,7 +323,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                 ocorrendoValidacao = false;
                 AlertDialogUtils.dismiss();
                 CarrinhoSingleton.getInstance().setCarrinho(carrinho);
-                startActivity(new Intent(CarrinhoActivity.this, CartoesActivity.class));
+                startActivity(new Intent(CarrinhoActivity.this, FormaPagamentoActivity.class));
             }
 
             @Override

@@ -47,6 +47,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
+import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
@@ -122,12 +123,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void verificaStatusCancelada() {
-
-        if (compraDTO.getSituacao().getDescricao().equalsIgnoreCase("NEGATIVA") ||
-            compraDTO.getSituacao().getDescricao().equalsIgnoreCase("DEBITO_NAO_AUTORIZADO") ||
-            compraDTO.getSituacao().getDescricao().equalsIgnoreCase("ESTORNADA") ||
-            compraDTO.getSituacao().getDescricao().equalsIgnoreCase("CANCELADA")) {
-
+        if (SituacaoCompraUtil.isSituacaoNegativa(compraDTO.getSituacao())) {
             showDialogCompraCancelada();
         }
     }
@@ -195,6 +191,13 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 ViewUtils.getMoedaFormat(compraDTO.getValorTotal()))));
 
         TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
+
+        if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())){
+            situacaoCompraTextView.setTextColor(getResources().getColor(R.color.vermelho_cancelada));
+        } else if (SituacaoCompraUtil.isFinalizada(compraDTO.getSituacao()) || SituacaoCompraUtil.isEfetivada(compraDTO.getSituacao())){
+            situacaoCompraTextView.setTextColor(getResources().getColor(R.color.azul_efetivada));
+        }
+
         situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao,
                 compraDTO.getSituacao().getDescricao())));
         ImageButton ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);

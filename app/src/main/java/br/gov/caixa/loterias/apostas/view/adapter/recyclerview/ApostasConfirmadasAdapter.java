@@ -79,7 +79,6 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
         if (list.size() != 0) {
             ApostaDTO aposta = list.get(position);
             holder.bind(aposta, position);
-
         }
     }
 

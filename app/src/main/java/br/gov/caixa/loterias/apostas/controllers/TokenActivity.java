@@ -128,8 +128,7 @@ public class TokenActivity extends AppCompatActivity {
                 cpf = zeros.toString();
             }
 
-            DadosUsuarioBO.salvarCpfUsuario(cpf);
-            DadosUsuarioBO.salvarNomeUsuairo(jsonObject.getString(getResources().getString(R.string.name)));
+            DadosUsuarioBO.salvarUsuairo(jsonObject.getString(getResources().getString(R.string.name)), cpf);
             KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
             KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_login_sucesso));

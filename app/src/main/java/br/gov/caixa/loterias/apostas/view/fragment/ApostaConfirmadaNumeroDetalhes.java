@@ -104,6 +104,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 			tv_val_premio_tit.setVisibility(View.VISIBLE);
 			if (valorPremio != null) {
 				tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+			} else {
+				getValorPremio(aposta.getId());
 			}
 			if (apostaPremiada()){
 				resultTxt.setText(aposta.getSituacao().getDescricao());
@@ -147,12 +149,27 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		configuraNumeros();
 	}
 
+	private void getValorPremio(Long apostaId) {
+		ApostaBO apostaBO = ApostaBO_.getInstance_(getContext());
+		apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
+			@Override
+			public void onResponse(DetalhesPremioDTOResponse result) {
+				AlertDialogUtils.dismiss();
+				atualizaValorPremio(result.getPayload().getPremio().getValorLiquido());
+			}
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+			}
+		});
+	}
+
 	private boolean apostaPremiada() {
 		return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA;
 	}
 
 	public void atualizaValorPremio(BigDecimal valor){
-		if (valor != null){
+		if (valor != null && tv_val_premio != null){
 			valorPremio = valor;
 			tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
 		}
@@ -203,10 +220,17 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		//frag resultado
 		if(numerosSorteadosPrimeiro != null){
 			if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-
 				numerosSorteadosSegundo = resultadoConcurso.getTrevosSorteadosPrimeiroSorteio();
 			} else {
 				Collections.sort(numerosSorteadosPrimeiro);
+				for (int i = 0; i < numerosSorteadosPrimeiro.size(); i++){
+					if (numerosSorteadosPrimeiro.get(i) == 0 || numerosSorteadosPrimeiro.get(i).equals(0)){
+						Integer num = numerosSorteadosPrimeiro.get(i);
+						numerosSorteadosPrimeiro.remove(i);
+						numerosSorteadosPrimeiro.add(num);
+						break;
+					}
+				}
 			}
 			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
 														numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,
