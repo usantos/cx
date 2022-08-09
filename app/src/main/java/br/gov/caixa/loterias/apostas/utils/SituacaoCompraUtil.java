@@ -6,7 +6,7 @@ public class SituacaoCompraUtil {
 	// Situacoes negativas
 	public static final String CANCELADA = "Cancelada";
 	public static final String ESTORNADA = "ESTORNADA";
-	public static final String DEBITO_NAO_AUTORIZADO = "DEBITO_NAO_AUTORIZADO";
+	public static final String DEBITO_NAO_AUTORIZADO = "DÉBITO NÃO AUTORIZADO";
 	public static final String NEGATIVA = "NEGATIVA";
 
 	// Situacoes positivas
@@ -14,15 +14,15 @@ public class SituacaoCompraUtil {
 	public static final String EFETIVADA = "Efetivada";
 	public static final String PREMIO_PAGO = "Prêmio Pago";
 	public static final String POSITIVA = "POSITIVA";
-	public static final String DEBITO_REALIZADO = "DEBITO_REALIZADO";
+	public static final String DEBITO_REALIZADO = "DÉBITO REALIZADO";
 
 	// Situacao em processamento
-	public static final String INDEFINICAO = "INDEFINICAO";
+	public static final String INDEFINICAO = "INDEFINIÇÃO";
 	public static final String ANDAMENTO = "ANDAMENTO";
 	public static final String CARRINHO = "CARRINHO";
-	public static final String DEBITO_INICIADO = "DEBITO_INICIADO";
-	public static final String EM_PROCESSAMENTO = "EM_PROCESSAMENTO";
-	public static final String EM_PROCESSAMENTO_REPRESADA = "EM_PROCESSAMENTO_REPRESADA";
+	public static final String DEBITO_INICIADO = "Débito Iniciado";
+	public static final String EM_PROCESSAMENTO = "EM PROCESSAMENTO";
+	public static final String EM_PROCESSAMENTO_REPRESADA = "EM PROCESSAMENTO REPRESADA";
 
 	private static final int VALOR_EFETIVADA = 4;
 	private static final int VALOR_FINALIZADA = 8;
