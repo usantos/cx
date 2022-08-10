@@ -34,6 +34,9 @@
 
     <string name="titulo_dialog">Titulo da dialog</string>
     <string name="cancelar">Cancelar</string>
+    <string name="ajuda_dialog">Ajuda</string>
+    <string name="mensagem_ccompra_cancelada_dialog">Não foi possível concluir essa compra\ne sua aposta não foi efetivada.\n\nDeseja realizar uma nova tentativa\nde compra com o mesmo carrinho?</string>
+    <string name="tenta_novamente_dialog">Tenta Novamente</string>
     <string name="ok">OK</string>
     <string name="label_sim">Sim</string>
     <string name="label_nao">Não</string>
@@ -537,6 +540,7 @@
     <string name="cartoes_desc">Escolha um cartão e cruze os dedos</string>
     <string name="cartoes_sem_cartao">Você ainda não possui um cartão de crédito cadastrado. A inclusão de um ou mais cartões de crédito deve ser feita ao realizar uma compra.</string>
     <string name="rsgt_lt_btn_gerar">Gerar\nnovamente</string>
+    <string name="meus_cartoes">Meus Cartões</string>
 
 
     <!-- Resgate Lotérica -->
@@ -942,6 +946,7 @@
     <string name="ambos">Ambos</string>
     <string name="carrinho_favorito_titulo">Carrinho Favorito</string>
     <string name="mascara_cartao_sem_ultimos_digitos">**** **** ****</string>
+    <string name="mascara_cartao">**** </string>
     <string name="venc_ponto_dois_pontos">Venc.:</string>
     <string name="evento_efetuou_exclusao_forma_pagamento_sucesso">EFETUOU_EXCLUSAO_FORMA_DE_PAGAMENTO_SUCESSO</string>
     <string name="dia_de_sorte">dia de sorte</string>
@@ -1043,7 +1048,24 @@
     <string name="vamos_comecar">Vamos começar?</string>
     <string name="tutorial_fechar">Fechar</string>
     <string name="tutorial_pular">Pular</string>
+    <string name="bundle_key_url">url</string>
+    <string name="url_ajuda_mercado_pago">https://www.mercadopago.com.br/ajuda#from-section=menu</string>
+    <string name="url_ajuda_recarga_pay"><![CDATA[https://recargapay.com.br/ajuda_caixa_form?reason=loterias-caixa&sub_reason=Problemas-com-meu-pagamento&subject=Ajuda%20com%20meu%20pagamento]]></string>
     <string name="compra_existente_24_horas">Há uma compra efetivada ou em processamento com o mesmo valor do carrinho atual nas últimas 24 horas. Deseja rever o carrinho atual?</string>
+    <string name="verificamos_compra_demorando_ou_processando">Verificamos que sua compra está em processamento e está demorando mais que o esperado. Aguarde alguns instantes e verifique na área  "Minhas compras" se a compra foi processada antes de tentar novamente.</string>
+
+    <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>
+    <string name="digitar_codigo">Digitar o código</string>
+    <string name="tentar_novamente">Tentar novamente</string>
+    <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
+    <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a opção de sua preferência e preencher os dados do cartão de crédito</string>
+    <string name="adicionar_cartao">Adicionar cartão</string>
+    <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
+    <string name="nao_e_possivel_eliminar_cartao_favorito">Não é possível eliminar o cartão favorito.</string>
+    <string name="deseja_realmente_exluir_cartao">Tem certeza que deseja excluir o cartão com final </string>
+    <string name="alterar_favorito_interrogacao">Alterar Favorito?</string>
+    <string name="confirmar_alterar_cartao_favorito">Deseja alterar seu cartão preferido? Confirmar?</string>
+
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
@@ -1059,9 +1081,9 @@
         <item>Dezembro</item>
     </string-array>
 
-    <string name="verificamos_compra_demorando_ou_processando">Verificamos que sua compra está em processamento e está demorando mais que o esperado. Aguarde alguns instantes e verifique na área  "Minhas compras" se a compra foi processada antes de tentar novamente.</string>
-    <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>
-    <string name="digitar_codigo">Digitar o código</string>
-    <string name="tentar_novamente">Tentar novamente</string>
+    <string name="confira_cartoes_salvos_mercado_pago">Confira aqui sua lista de cartões salvos no Mercado Pago</string>
+    <string name="confira_cartoes_salvos_recargapa_pay">Confira aqui sua lista de cartões salvos no RecargaPay</string>
+    <string name="compra_processada_por">Compra processada por:</string>
+
 
 </resources>
