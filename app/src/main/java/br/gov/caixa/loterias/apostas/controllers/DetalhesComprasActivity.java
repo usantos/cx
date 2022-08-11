@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -204,6 +205,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         ibFavoritar.setOnClickListener(v -> {
                     configuraVisibilidadeMantSurpresinha(listaAposta);
                 });
+
+        if (compraDTO.getMeioPagamento() != null && compraDTO.getMeioPagamento().getValor() == 5L ) {
+            AppCompatImageView imageView =  findViewById(R.id.compraProcessadaImage);
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.recargapay));
+        }
     }
 
     private void abrirTermosUso() {
