@@ -13,10 +13,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
+
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
+import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesMeioPagamentoRecyclerViewAdapter;
@@ -44,6 +50,8 @@ public class MeioPagamentoFragment extends Fragment {
 	private CartoesMeioPagamentoRecyclerViewAdapter adapter;
 
 	private List<RetornoCartao> cartaos;
+
+	private CartoesModel model;
 
 	public MeioPagamentoFragment() {
 		// Required empty public constructor
@@ -74,6 +82,8 @@ public class MeioPagamentoFragment extends Fragment {
 		if (getArguments() != null) {
 			config  = (MeioPagamentoConfig) getArguments().getSerializable(ARG_CONFIG);
 		}
+
+		model = new CartoesModel(getActivity());
 	}
 
 	@Override
@@ -86,16 +96,42 @@ public class MeioPagamentoFragment extends Fragment {
 		btnAdd = view.findViewById(R.id.addCartao);
 		cabecalho = view.findViewById(R.id.cabecalho);
 		listaCartoes = view.findViewById(R.id.listaCartoes);
-		adapter = new CartoesMeioPagamentoRecyclerViewAdapter(cartaos, getContext(), onRecyclerlistener());
-		RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
-		listaCartoes.setLayoutManager(lm);
-		listaCartoes.setAdapter(adapter);
+
+		buscaCartoes();
 
 		aplicaConfig();
 
 		configButton();
 
 		return view;
+	}
+
+	private void buscaCartoes() {
+		AlertDialogUtils.show(getContext());
+		if (MeioPagamentoUtils.isMercadoPago(config.getMeioPagamento().getValor())){
+			model.buscaCartoesMercadoPago(onBuscaMercadoPagoListener());
+		} else if (MeioPagamentoUtils.isRecargaPay(config.getMeioPagamento().getValor())){
+			// model.buscaCartoesRecargaPay(onBuscaRecargaPayListener());
+		}
+	}
+
+	private OnSilceListener<List<RetornoCartao>> onBuscaMercadoPagoListener() {
+		return new OnSilceListener<List<RetornoCartao>>() {
+			@Override
+			public void success(List<RetornoCartao> retornoCartaoList) {
+				AlertDialogUtils.dismiss();
+				cartaos = retornoCartaoList;
+				adapter = new CartoesMeioPagamentoRecyclerViewAdapter(cartaos, getContext(), onRecyclerlistener());
+				RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
+				listaCartoes.setLayoutManager(lm);
+				listaCartoes.setAdapter(adapter);
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
 	}
 
 	@NonNull
