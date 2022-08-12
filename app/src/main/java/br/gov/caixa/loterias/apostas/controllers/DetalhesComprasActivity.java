@@ -40,6 +40,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
@@ -47,6 +48,7 @@ import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
@@ -109,6 +111,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
 
         criarCabecalho();
+        verificaCompraProcessada();
         buscaDetalhesCompras();
         setaDialogFavoritar();
         buscaModalidades();
@@ -149,12 +152,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
 
         dialogButtonNovamente.setOnClickListener(v -> {
-            TestVisao.toast("Implementar na proxima sprint");
+            if (dialogFavoritar != null) {
+                dialogFavoritar.show();
+            } else {
+                setaDialogFavoritar();
+                dialogFavoritar.show();
+            }
             dialog.dismiss();
         });
 
         dialog.show();
-
     }
 
     private void abrirAjuda() {
@@ -206,9 +213,20 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                     configuraVisibilidadeMantSurpresinha(listaAposta);
                 });
 
-        if (compraDTO.getMeioPagamento() != null && compraDTO.getMeioPagamento().getValor() == 5L ) {
-            AppCompatImageView imageView =  findViewById(R.id.compraProcessadaImage);
-            imageView.setImageDrawable(getResources().getDrawable(R.drawable.recargapay));
+    }
+
+    private void verificaCompraProcessada() {
+        if (compraDTO.getMeioPagamento() == null) {
+            ConstraintLayout constraintLayout = findViewById(R.id.compraPossesadaLaout);
+            constraintLayout.setVisibility(View.GONE);
+        } else {
+            AppCompatImageView imageView = findViewById(R.id.compraProcessadaImage);
+            if (MeioPagamentoUtil.isMercadoPago(compraDTO.getMeioPagamento())) {
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.mercadopago));
+            }
+            if (MeioPagamentoUtil.isRecargaPay(compraDTO.getMeioPagamento())) {
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.recargapay));
+            }
         }
     }
 
