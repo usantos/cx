@@ -8,13 +8,9 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -64,7 +60,6 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		frameRecargaPay = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentRecargaPay,
-									null,
 									new MeioPagamentoConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, getRecargaPay()));
 	}
 
@@ -87,42 +82,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		frameMercadoPago = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentMercadoPago,
-									getListCartoes(),
 									new MeioPagamentoConfig(R.color.azul_mercado_pago, R.drawable.ic_mercado_pago, getMercadoPago()));
 	}
 
-	private List<RetornoCartao> getListCartoes() {
-		List<RetornoCartao> lista = new ArrayList<>();
-
-		RetornoCartao cartaofav = new RetornoCartao();
-		cartaofav.setFav(true);
-		cartaofav.setUltimosDigitos("1234");
-		cartaofav.setIdMetodoPagamento("master");
-		cartaofav.setIdCartao(1L);
-
-		RetornoCartao cartao = new RetornoCartao();
-		cartao.setFav(false);
-		cartao.setUltimosDigitos("3456");
-		cartao.setIdMetodoPagamento("hipercard");
-		cartao.setIdCartao(2L);
-
-		RetornoCartao cartao3 = new RetornoCartao();
-		cartao3.setFav(false);
-		cartao3.setUltimosDigitos("5678");
-		cartao3.setIdMetodoPagamento("visa");
-		cartao3.setIdCartao(3L);
-
-		RetornoCartao cartao4 = new RetornoCartao();
-		cartao4.setFav(false);
-		cartao4.setUltimosDigitos("7890");
-		cartao4.setIdMetodoPagamento("amex");
-		cartao4.setIdCartao(4L);
-
-		lista.add(cartaofav);
-		lista.add(cartao);
-		lista.add(cartao3);
-		lista.add(cartao4);
-
-		return lista;
-	}
 }

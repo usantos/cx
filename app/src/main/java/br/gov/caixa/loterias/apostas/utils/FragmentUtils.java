@@ -48,10 +48,10 @@ public class FragmentUtils {
 		return fragment;
 	}
 
-	public static MeioPagamentoFragment startMeioPagamento(FragmentManager fm, int id, List<RetornoCartao> cartaos, MeioPagamentoConfig config) {
+	public static MeioPagamentoFragment startMeioPagamento(FragmentManager fm, int id, MeioPagamentoConfig config) {
 		MeioPagamentoFragment fragment = null;
 		if(fragment == null){
-			fragment = MeioPagamentoFragment.newInstance(cartaos, config);
+			fragment = MeioPagamentoFragment.newInstance(config);
 			FragmentUtils.startFragment(fm, id, fragment);
 		}
 		return fragment;

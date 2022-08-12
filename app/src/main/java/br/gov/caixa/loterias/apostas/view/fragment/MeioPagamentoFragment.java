@@ -13,10 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -61,15 +57,11 @@ public class MeioPagamentoFragment extends Fragment {
 	 * @return A new instance of fragment MeioPagamentoFragment.
 	 */
 	// TODO: Rename and change types and number of parameters
-	public static MeioPagamentoFragment newInstance(List<RetornoCartao> cartoes, MeioPagamentoConfig config) {
+	public static MeioPagamentoFragment newInstance(MeioPagamentoConfig config) {
 		MeioPagamentoFragment fragment = new MeioPagamentoFragment();
 		Bundle                   args     = new Bundle();
 		if(config != null){
 			args.putSerializable(ARG_CONFIG, config);
-		}
-
-		if (cartoes != null){
-			args.putString(ARG_CARTOES, new Gson().toJson(cartoes));
 		}
 
 		fragment.setArguments(args);
@@ -81,15 +73,6 @@ public class MeioPagamentoFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			config  = (MeioPagamentoConfig) getArguments().getSerializable(ARG_CONFIG);
-
-			TypeToken<List<RetornoCartao>> token = new TypeToken<List<RetornoCartao>>() {};
-			String                         cartoesString = getArguments().getString(ARG_CARTOES);
-			if(cartoesString != null && cartoesString.length() > 0){
-				cartaos = new Gson().fromJson(cartoesString, token.getType());
-			} else {
-				cartaos = new ArrayList<>();
-			}
-
 		}
 	}
 
