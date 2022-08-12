@@ -13,6 +13,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -64,7 +65,22 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentRecargaPay,
 									null,
-									new MeioPagamentoConfig(R.color.laranja_recarga_pay,R.drawable.recargapay));
+									new MeioPagamentoConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, getRecargaPay()));
+	}
+
+
+	private DTOEnumLong getRecargaPay() {
+		DTOEnumLong recarga = new DTOEnumLong();
+		recarga.setValor(5L);
+		recarga.setDescricao("RecargaPay");
+		return recarga;
+	}
+
+	private DTOEnumLong getMercadoPago() {
+		DTOEnumLong recarga = new DTOEnumLong();
+		recarga.setValor(1L);
+		recarga.setDescricao("Mercado pago");
+		return recarga;
 	}
 
 	private void startFragmentMercadoPago() {
@@ -72,7 +88,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentMercadoPago,
 									getListCartoes(),
-									new MeioPagamentoConfig(R.color.azul_mercado_pago,R.drawable.ic_mercado_pago));
+									new MeioPagamentoConfig(R.color.azul_mercado_pago, R.drawable.ic_mercado_pago, getMercadoPago()));
 	}
 
 	private List<RetornoCartao> getListCartoes() {
