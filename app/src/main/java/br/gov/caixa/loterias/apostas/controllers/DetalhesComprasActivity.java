@@ -82,7 +82,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         setaViews();
         pegaExtras();
         setaMetodos();
-        verificaStatusCancelada();
+        verificaStatusPopUp();
     }
 
     private void setaViews(){
@@ -126,15 +126,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         }
     }
 
-    private void verificaStatusCancelada() {
-        if (SituacaoCompraUtil.isSituacaoNegativa(compraDTO.getSituacao())) {
+    private void verificaStatusPopUp() {
+        if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
             showDialogCompraCancelada();
         }
     }
 
     private void showDialogCompraCancelada() {
 
-        // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
 
@@ -165,11 +164,18 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void abrirAjuda() {
-        Intent activity = new Intent(DetalhesComprasActivity.this, WebViewActivity.class);
-        activity.putExtra(getString(R.string.bundle_key_url), getString(R.string.url_ajuda_mercado_pago)); //MercadoPago
-//        activity.putExtra("url", getString(R.string.url_ajuda_recarga_pay)); //RecargaPay
-        startActivity(activity);
+        if (compraDTO.getMeioPagamento() != null) {
+            Intent activity = new Intent(DetalhesComprasActivity.this, WebViewActivity.class);
 
+            if (MeioPagamentoUtil.isMercadoPago(compraDTO.getMeioPagamento())) {
+                activity.putExtra(getString(R.string.bundle_key_url), getString(R.string.url_ajuda_mercado_pago)); //MercadoPago
+            }
+            if (MeioPagamentoUtil.isRecargaPay(compraDTO.getMeioPagamento())) {
+                activity.putExtra("url", getString(R.string.url_ajuda_recarga_pay)); //RecargaPay
+            }
+
+            startActivity(activity);
+        }
     }
 
     @Override
