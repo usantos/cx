@@ -40,7 +40,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
@@ -49,7 +48,6 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -130,6 +128,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
             showDialogCompraCancelada();
         }
+        if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
+            showDialogDebitoNaoAutorizado();
+        }
     }
 
     private void showDialogCompraCancelada() {
@@ -137,11 +138,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
 
-        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
+        Button dialogButtonFechar   = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
         Button dialogButtonAjuda    = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
-        Button dialogButtonNovamente= dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
+        Button dialogButtonSalvar   = dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
 
-        dialogButtonCancelar.setOnClickListener(v -> {
+        dialogButtonFechar.setOnClickListener(v -> {
             dialog.dismiss();
         });
 
@@ -150,7 +151,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             dialog.dismiss();
         });
 
-        dialogButtonNovamente.setOnClickListener(v -> {
+        dialogButtonSalvar.setOnClickListener(v -> {
             if (dialogFavoritar != null) {
                 dialogFavoritar.show();
             } else {
@@ -162,6 +163,33 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
+    private void showDialogDebitoNaoAutorizado() {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
+
+        Button dialogButtonFechar  = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
+        Button dialogButtonAjuda    = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
+        Button dialogButtonNovamente= dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
+        dialogButtonNovamente.setText(getResources().getString(R.string.tenta_novamente_dialog));
+
+        dialogButtonFechar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialogButtonAjuda.setOnClickListener(v -> {
+            abrirAjuda();
+            dialog.dismiss();
+        });
+
+        dialogButtonNovamente.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
 
     private void abrirAjuda() {
         if (compraDTO.getMeioPagamento() != null) {

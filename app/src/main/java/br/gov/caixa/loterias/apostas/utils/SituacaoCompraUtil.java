@@ -24,6 +24,7 @@ public class SituacaoCompraUtil {
 	public static final String EM_PROCESSAMENTO = "EM PROCESSAMENTO";
 	public static final String EM_PROCESSAMENTO_REPRESADA = "EM PROCESSAMENTO REPRESADA";
 
+	private static final int VALOR_DEBITO_NAO_AUTORIZADO = 3;
 	private static final int VALOR_EFETIVADA = 4;
 	private static final int VALOR_FINALIZADA = 8;
 	private static final int VALOR_CANCELADA = 5;
@@ -35,6 +36,10 @@ public class SituacaoCompraUtil {
 
 	public static boolean isEfetivada(DTOEnumLong situacao) {
 		return situacao.getValor() == VALOR_EFETIVADA || situacao.getDescricao().equalsIgnoreCase(EFETIVADA);
+	}
+
+	public static boolean isDebitoNaoAutorizado(DTOEnumLong situacao) {
+		return situacao.getValor() == VALOR_DEBITO_NAO_AUTORIZADO || situacao.getDescricao().equalsIgnoreCase(DEBITO_NAO_AUTORIZADO);
 	}
 
 	public static boolean isCancelada(DTOEnumLong situacao) {
