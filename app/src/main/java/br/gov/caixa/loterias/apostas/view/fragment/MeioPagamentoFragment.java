@@ -49,7 +49,7 @@ public class MeioPagamentoFragment extends Fragment {
 	private RecyclerView listaCartoes;
 	private CartoesMeioPagamentoRecyclerViewAdapter adapter;
 
-	private List<RetornoCartao> cartaos;
+	private List<RetornoCartao> cartoes;
 
 	private CartoesModel model;
 
@@ -108,9 +108,9 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void buscaCartoes() {
 		AlertDialogUtils.show(getContext());
-		if (MeioPagamentoUtils.isMercadoPago(config.getMeioPagamento().getValor())){
+		if (isMercadoPago()){
 			model.buscaCartoesMercadoPago(onBuscaMercadoPagoListener());
-		} else if (MeioPagamentoUtils.isRecargaPay(config.getMeioPagamento().getValor())){
+		} else if (isRecargaPay()){
 			// model.buscaCartoesRecargaPay(onBuscaRecargaPayListener());
 		}
 	}
@@ -119,8 +119,8 @@ public class MeioPagamentoFragment extends Fragment {
 		return new OnSilceListener<List<RetornoCartao>>() {
 			@Override
 			public void success(List<RetornoCartao> retornoCartaoList) {
-				cartaos = retornoCartaoList;
-				adapter = new CartoesMeioPagamentoRecyclerViewAdapter(cartaos, getContext(), onRecyclerlistener());
+				cartoes = retornoCartaoList;
+				adapter = new CartoesMeioPagamentoRecyclerViewAdapter(cartoes, getContext(), onRecyclerlistener());
 				RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
 				listaCartoes.setLayoutManager(lm);
 				listaCartoes.setAdapter(adapter);
@@ -144,13 +144,13 @@ public class MeioPagamentoFragment extends Fragment {
 
 			@Override
 			public void favoritar(CartaoMeioPagamentoHolder holder, int position) {
-				if (!cartaos.get(position).isFav()){
+				if (!cartoes.get(position).isFav()){
 					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.alterar_favorito_interrogacao),
 																						  getString(R.string.cancelar),
 																						  getString(R.string.confirmar),
 																						  getString(R.string.confirmar_alterar_cartao_favorito),
 																						  (dialog, which) -> {
-																							  adapter.atualizaCartaoFavorito(cartaos.get(position));
+																							  adapter.atualizaCartaoFavorito(cartoes.get(position));
 																						  });
 					dialogConfirmacao.show();
 				}
@@ -158,25 +158,58 @@ public class MeioPagamentoFragment extends Fragment {
 
 			@Override
 			public void deletar(CartaoMeioPagamentoHolder holder, int position) {
-				if (cartaos.get(position).isFav()){
+				if (cartoes.get(position).isFav()){
 					ViewUtils.alertTitleButton(getContext(),
 											   R.string.excluir_cartao_interrogacao,
 											   getString(R.string.nao_e_possivel_eliminar_cartao_favorito),
 											   getString(R.string.title_entendi));
 				} else {
-					String mensagem = getString(R.string.deseja_realmente_exluir_cartao) + cartaos.get(position).getUltimosDigitos() + "?";
+					String mensagem = getString(R.string.deseja_realmente_exluir_cartao) + cartoes.get(position).getUltimosDigitos() + "?";
 					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.excluir_cartao_interrogacao),
 																				getString(R.string.label_nao),
 																				getString(R.string.confirmar),
 																				mensagem,
 																				(dialog, which) -> {
-																					cartaos.remove(position);
-																					adapter.notifyDataSetChanged();
+																					deletaCartao(cartoes.get(position), position);
 																				});
 					dialogConfirmacao.show();
 				}
 			}
 		};
+	}
+
+	private void deletaCartao(RetornoCartao cartao, int position) {
+		AlertDialogUtils.show(getContext());
+		if (isMercadoPago()){
+			model.deletaCartaoMercadoPago(cartao.getIdCartao(), onDeletaCartao(position));
+		} else if (isRecargaPay()){
+			//model.deletaCartaoRecargaPay();
+		}
+	}
+
+	private OnSilceListener<List<RetornoCartao>> onDeletaCartao(int position) {
+		return new OnSilceListener<List<RetornoCartao>>() {
+			@Override
+			public void success(List<RetornoCartao> payload) {
+				AlertDialogUtils.dismiss();
+
+				cartoes.remove(position);
+				adapter.notifyDataSetChanged();
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
+	}
+
+	private boolean isRecargaPay() {
+		return MeioPagamentoUtils.isRecargaPay(config.getMeioPagamento().getValor());
+	}
+
+	private boolean isMercadoPago() {
+		return MeioPagamentoUtils.isMercadoPago(config.getMeioPagamento().getValor());
 	}
 
 	private void configButton() {
