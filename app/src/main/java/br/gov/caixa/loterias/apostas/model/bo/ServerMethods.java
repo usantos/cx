@@ -25,7 +25,8 @@ class ServerMethods {
      static final String CARRINHO_VERIFICA_COMPRA_PROCESSAMENTO = "/carrinhos/verifica-compra-processamento";
 
      //MEIO PAGAMENTO
-     static final String MEIOS_PAGAMENTOS = "/meios-pagamento/{id}";
+     static final String MEIOS_PAGAMENTOS_ID = "/meios-pagamento/{id}";
+     static final String MEIOS_PAGAMENTOS = "/meios-pagamento";
 
      static final String UFS_PATH = "/ufs";
      static final String TERMO_PATH = "/termos-de-uso/termo-vigente";

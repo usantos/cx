@@ -119,12 +119,12 @@ public class MeioPagamentoFragment extends Fragment {
 		return new OnSilceListener<List<RetornoCartao>>() {
 			@Override
 			public void success(List<RetornoCartao> retornoCartaoList) {
-				AlertDialogUtils.dismiss();
 				cartaos = retornoCartaoList;
 				adapter = new CartoesMeioPagamentoRecyclerViewAdapter(cartaos, getContext(), onRecyclerlistener());
 				RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
 				listaCartoes.setLayoutManager(lm);
 				listaCartoes.setAdapter(adapter);
+				AlertDialogUtils.dismiss();
 			}
 
 			@Override

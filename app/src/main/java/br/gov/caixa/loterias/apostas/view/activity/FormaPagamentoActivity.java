@@ -8,19 +8,30 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.VolleyError;
+
+import java.util.List;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
+import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 
 public class FormaPagamentoActivity extends AppCompatActivity {
 
-	MeioPagamentoFragment frameMercadoPago, frameRecargaPay;
+	private MeioPagamentoFragment frameMercadoPago, frameRecargaPay;
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
+
+	private MeioPagamentoModel model;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +45,42 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 
 		configMenu();
 
+		model = new MeioPagamentoModel(FormaPagamentoActivity.this);
+
+		buscaMeiosPagamentos();
+
 		startFragmentMercadoPago();
 		startFragmentRecargaPay();
 
+	}
+
+	private void buscaMeiosPagamentos() {
+		AlertDialogUtils.show(this);
+		model.buscaMeiosPagamentos(onMeiosPagamentosListener());
+	}
+
+	private OnSilceListener<List<MeioPagamentoDTO>> onMeiosPagamentosListener() {
+		return new OnSilceListener<List<MeioPagamentoDTO>>() {
+			@Override
+			public void success(List<MeioPagamentoDTO> payload) {
+				if (payload != null && !payload.isEmpty()){
+					for (MeioPagamentoDTO meioPagamento: payload){
+						if (MeioPagamentoUtils.isMercadoPago(meioPagamento.getId())){
+							startFragmentMercadoPago();
+						} else if (MeioPagamentoUtils.isRecargaPay(meioPagamento.getId())){
+							startFragmentRecargaPay();
+						}
+					}
+				}
+
+				AlertDialogUtils.dismiss();
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
 	}
 
 	private void configMenu() {
