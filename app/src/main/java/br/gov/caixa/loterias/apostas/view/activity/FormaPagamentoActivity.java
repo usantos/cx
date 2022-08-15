@@ -48,10 +48,6 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		model = new MeioPagamentoModel(FormaPagamentoActivity.this);
 
 		buscaMeiosPagamentos();
-
-		startFragmentMercadoPago();
-		startFragmentRecargaPay();
-
 	}
 
 	private void buscaMeiosPagamentos() {
