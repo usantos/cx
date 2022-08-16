@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewRapidaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -124,7 +125,8 @@ public class ListaRapidaoActivity extends AppCompatActivity {
             @Override
             public void onResponse(ResourceResponse result) {
                 AlertDialogUtils.dismiss();
-                startActivity(new Intent(ListaRapidaoActivity.this, CartoesActivity.class));
+                //startActivity(new Intent(ListaRapidaoActivity.this, CartoesActivity.class));
+                startActivity(new Intent(ListaRapidaoActivity.this, FormaPagamentoActivity.class));
             }
 
             @Override
