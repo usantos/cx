@@ -1,12 +1,16 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -15,56 +19,52 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
+import java.util.Date;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
+import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesMeioPagamentoRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.holder.CartaoMeioPagamentoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnCartaoMeioPagamentoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MeioPagamentoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import static com.microsoft.appcenter.utils.HandlerUtils.runOnUiThread;
+
 public class MeioPagamentoFragment extends Fragment {
 	private static final String ARG_CONFIG = "ARG_CONFIG";
-	private static final String ARG_CARTOES = "ARG_CARTOES";
 
-	private MeioPagamentoConfig config;
 	private View view;
 	private View margem;
 	private AppCompatImageView imagem;
 	private ConstraintLayout btnAdd;
 	private ConstraintLayout cabecalho;
+	private EditText userInput;
 
 	private RecyclerView listaCartoes;
 	private CartoesMeioPagamentoRecyclerViewAdapter adapter;
 
+	private MeioPagamentoConfig config;
 	private List<RetornoCartao> cartoes;
-
 	private CartoesModel model;
+	private String requestBody;
 
-	public MeioPagamentoFragment() {
-		// Required empty public constructor
-	}
+	public MeioPagamentoFragment() {}
 
-	/**
-	 * Use this factory method to create a new instance of
-	 * this fragment using the provided parameters.
-	 *
-	 * @param config Parameter 1.
-	 * @return A new instance of fragment MeioPagamentoFragment.
-	 */
-	// TODO: Rename and change types and number of parameters
 	public static MeioPagamentoFragment newInstance(MeioPagamentoConfig config) {
 		MeioPagamentoFragment fragment = new MeioPagamentoFragment();
 		Bundle                   args     = new Bundle();
@@ -89,7 +89,6 @@ public class MeioPagamentoFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
 		view = inflater.inflate(R.layout.fragment_meio_pagamento, container, false);
 		margem = view.findViewById(R.id.margem);
 		imagem = view.findViewById(R.id.imagemMeioPagamento);
@@ -98,9 +97,7 @@ public class MeioPagamentoFragment extends Fragment {
 		listaCartoes = view.findViewById(R.id.listaCartoes);
 
 		buscaCartoes();
-
 		aplicaConfig();
-
 		configButton();
 
 		return view;
@@ -108,9 +105,9 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void buscaCartoes() {
 		AlertDialogUtils.show(getContext());
-		if (isMercadoPago()){
+		if (model.isMercadoPago(config)){
 			model.buscaCartoesMercadoPago(onBuscaMercadoPagoListener());
-		} else if (isRecargaPay()){
+		} else if (model.isRecargaPay(config)){
 			// model.buscaCartoesRecargaPay(onBuscaRecargaPayListener());
 		}
 	}
@@ -139,7 +136,8 @@ public class MeioPagamentoFragment extends Fragment {
 		return new OnCartaoMeioPagamentoListener<CartaoMeioPagamentoHolder>() {
 			@Override
 			public void itemClick(CartaoMeioPagamentoHolder holder, int position) {
-				TestVisao.toast("Item selecionado");
+				RetornoCartao cartao = cartoes.get(position);
+				showDialogCVV(cartao);
 			}
 
 			@Override
@@ -178,11 +176,46 @@ public class MeioPagamentoFragment extends Fragment {
 		};
 	}
 
+	private void showDialogCVV(RetornoCartao cartao) {
+		LayoutInflater li = LayoutInflater.from(getContext());
+		View promptsView = li.inflate(R.layout.dialog_security_code, null);
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+		alertDialogBuilder.setView(promptsView);
+		userInput = promptsView.findViewById(R.id.cvvCardNumberEditText);
+		alertDialogBuilder
+				.setCancelable(false)
+				.setPositiveButton(getResources().getString(R.string.confirmar),
+								   (DialogInterface dialog, int which) -> {
+									   onPositiveCVV(cartao);
+								   })
+				.setNegativeButton(getResources().getString(R.string.cancelar),
+								   (DialogInterface dialog, int which) -> {
+									   dialog.cancel();
+								   });
+		AlertDialog alertDialog = alertDialogBuilder.create();
+		alertDialog.show();
+	}
+
+	private void onPositiveCVV(RetornoCartao cartao) {
+		int tamanhoCVV = userInput.getText().toString().length();
+		if (tamanhoCVV == 3){
+			if (model.isMercadoPago(config)){
+				requestBody = model.preencheDadosPagamento(cartao, userInput.getText());
+				runOnUiThread(() -> AlertDialogUtils.show(getContext()));
+				model.realizaCompraMercadoPago(cartao, requestBody, onCompraAsyncListener());
+			}
+		} else {
+			ViewUtils.alertTitleButtonPositiveListener(getContext(), R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ), R.string.ok,
+													   (dialog1, which1) -> showDialogCVV(cartao));
+		}
+	}
+
 	private void deletaCartao(RetornoCartao cartao, int position) {
 		AlertDialogUtils.show(getContext());
-		if (isMercadoPago()){
+		if (model.isMercadoPago(config)){
 			model.deletaCartaoMercadoPago(cartao.getIdCartao(), onDeletaCartao(position));
-		} else if (isRecargaPay()){
+		} else if (model.isRecargaPay(config)){
 			//model.deletaCartaoRecargaPay();
 		}
 	}
@@ -204,22 +237,8 @@ public class MeioPagamentoFragment extends Fragment {
 		};
 	}
 
-	private boolean isRecargaPay() {
-		return MeioPagamentoUtils.isRecargaPay(config.getMeioPagamento().getValor());
-	}
-
-	private boolean isMercadoPago() {
-		return MeioPagamentoUtils.isMercadoPago(config.getMeioPagamento().getValor());
-	}
-
 	private void configButton() {
-		btnAdd.setOnClickListener(v -> {
-			goToAddCartao();
-		});
-
-		cabecalho.setOnClickListener(v -> {
-			goToAddCartao();
-		});
+		btnAdd.setOnClickListener(v -> goToAddCartao());
 	}
 
 	private void goToAddCartao(){
@@ -234,5 +253,32 @@ public class MeioPagamentoFragment extends Fragment {
 			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
 
 		}
+	}
+
+	private OnCompraAsync onCompraAsyncListener() {
+		return new OnCompraAsync() {
+			@Override
+			public void successCompra() {
+				new CompraModel(getActivity()).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
+				AlertDialogUtils.dismiss();
+				AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
+				RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
+				startActivity(new Intent(getContext(), ConfirmacaoPagamentoActivity.class));
+				CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+				model.limparCarrinhoFavorito();
+			}
+
+			@Override
+			public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
+				RedirectNetwork.checkRedirectSucesso(compraAsyncResponse.getRedirect(), getActivity());
+				AlertDialogUtils.dismiss();
+			}
+
+			@Override
+			public void errorCompra(VolleyError volleyError) {
+				RedirectNetwork.checkRedirectCompraAsync( volleyError, getActivity() );
+				AlertDialogUtils.dismiss();
+			}
+		};
 	}
 }
