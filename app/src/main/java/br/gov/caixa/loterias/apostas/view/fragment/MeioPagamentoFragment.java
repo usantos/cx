@@ -201,9 +201,9 @@ public class MeioPagamentoFragment extends Fragment {
 		int tamanhoCVV = userInput.getText().toString().length();
 		if (tamanhoCVV == 3){
 			if (model.isMercadoPago(config)){
-				requestBody = model.preencheDadosPagamento(cartao, userInput.getText());
+				requestBody = model.preencheDadosPagamentoCartaoSalvo(cartao, userInput.getText());
 				runOnUiThread(() -> AlertDialogUtils.show(getContext()));
-				model.realizaCompraMercadoPago(cartao, requestBody, onCompraAsyncListener());
+				model.realizaCompraMercadoPago(cartao.getPrimeirosDigitos(), requestBody, onCompraAsyncListener());
 			}
 		} else {
 			ViewUtils.alertTitleButtonPositiveListener(getContext(), R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ), R.string.ok,

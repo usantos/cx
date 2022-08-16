@@ -5,6 +5,7 @@ import android.text.Editable;
 
 import com.android.volley.VolleyError;
 import com.mercadolibre.android.device.sdk.DeviceSDK;
+import com.mercadopago.model.CardToken;
 
 import org.json.JSONObject;
 
@@ -75,7 +76,7 @@ public class CartoesModel extends AppModel {
 		});
 	}
 
-	public String preencheDadosPagamento(RetornoCartao cartao, Editable securityCode) {
+	public String preencheDadosPagamentoCartaoSalvo(RetornoCartao cartao, Editable securityCode) {
 		JSONObject jsonBody       = new JSONObject();
 		JSONObject jsonCardHolder = new JSONObject();
 		JSONObject jsonIdentification = new JSONObject();
@@ -97,9 +98,33 @@ public class CartoesModel extends AppModel {
 		return jsonBody.toString();
 	}
 
-	public void realizaCompraMercadoPago(RetornoCartao cartao, String requestBody, OnCompraAsync listener){
+	public String preencheDadosPagamento(CardToken cardToken){
+		JSONObject jsonBody = new JSONObject();
+		JSONObject jsonCardHolder = new JSONObject();
+		JSONObject jsonIdentification = new JSONObject();
+		try {
+			jsonIdentification.put("type", "CPF");
+			jsonIdentification.put("number", DadosUsuarioBO.obterCpf());
+			jsonCardHolder.put("identification",jsonIdentification);
+			jsonCardHolder.put("name",cardToken.getCardholder().getName());
+
+			jsonBody.put("card_number", cardToken.getCardNumber().replace(getActivity().getResources().getString(R.string.espaco_em_branco), getActivity().getResources().getString(R.string.string_vazia)));
+			jsonBody.put("expiration_year",Integer.valueOf(cardToken.getExpirationYear()));
+			jsonBody.put("expiration_month", Integer.valueOf(cardToken.getExpirationMonth()));
+			jsonBody.put("security_code", cardToken.getSecurityCode());
+			jsonBody.put("cardholder", jsonCardHolder);
+			jsonBody.put("device", DeviceSDK.getInstance().getInfoAsJsonString());
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		//bin = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia)).substring(0, 7);
+		return jsonBody.toString();
+	}
+
+	public void realizaCompraMercadoPago(String bin, String requestBody, OnCompraAsync listener){
 		AppCenterManager.registraEventoDeviceMP(getActivity().getResources().getString(R.string.app_center_mp_cartao_salvo), requestBody);
-		MercadoPagoConnection.callWebServicePayment_method(cartao.getPrimeirosDigitos() , requestBody, getActivity(), onMercadoPagoListener(listener));
+		MercadoPagoConnection.callWebServicePayment_method(bin , requestBody, getActivity(), onMercadoPagoListener(listener));
 	}
 
 	private MercadoPagoConnection.MercadoPagoListener onMercadoPagoListener(OnCompraAsync listener) {
