@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,12 +49,15 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
+import br.gov.caixa.loterias.apostas.utils.ReapostaUtils;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnReapostaListener;
 
 public class DetalhesComprasActivity extends AppCompatActivity {
 
@@ -125,12 +129,12 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void verificaStatusPopUp() {
-        if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
-            showDialogCompraCancelada();
-        }
-        if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
+//        if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
+//            showDialogCompraCancelada();
+//        }
+//        if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
             showDialogDebitoNaoAutorizado();
-        }
+//        }
     }
 
     private void showDialogCompraCancelada() {
@@ -184,12 +188,33 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
 
         dialogButtonNovamente.setOnClickListener(v -> {
+            tentarNovamente();
             dialog.dismiss();
         });
 
         dialog.show();
     }
 
+    private void tentarNovamente() {
+        if (listaAposta != null & !listaAposta.isEmpty()) {
+            ApostaDTO aposta = ReapostaUtils.temDoisConcurosAbertos(listaAposta);
+            if (aposta != null) {
+                ReapostaUtils.showDialogReaposta(this, aposta, onReapostaListener());
+            } else {
+                ReapostaUtils.chamaTransformarCarrinho(0); //	private final static int AMBAS = 0;
+            }
+        }
+    }
+
+    private OnReapostaListener onReapostaListener() {
+        return new OnReapostaListener() {
+
+            @Override
+            public void ok(int opcaoSelecionada) {
+                ReapostaUtils.chamaTransformarCarrinho(opcaoSelecionada);
+            }
+        };
+    }
 
     private void abrirAjuda() {
         if (compraDTO.getMeioPagamento() != null) {
