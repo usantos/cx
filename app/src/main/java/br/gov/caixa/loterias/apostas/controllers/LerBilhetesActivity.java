@@ -29,7 +29,9 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LerQrCodeDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -57,10 +59,12 @@ public class LerBilhetesActivity extends AppCompatActivity {
                 pause(barcodeScannerView);
                 if (result.getText().length() >= 23){
                     try {
-                        LerQrCodeDTO lerQrCodeDTO = new Gson().fromJson(result.getText(), LerQrCodeDTO.class);
+                        LerQrCodeDTO lerQrCodeDTO = new Gson().fromJson(result.getText().replace("APOSTA", ""), LerQrCodeDTO.class);
 
                         //Cria a string com o formato desejado e depois criptografa
-                        //String code = Crypto.cripfyBarcode(result.getText());
+                        String envio = lerQrCodeDTO.getNsb()+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getPro()+"=="+ModalidadeEnum.fromInteger(Integer.parseInt(lerQrCodeDTO.getPro()))+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getCf();
+
+                        String code = Crypto.cripfyBarcode(envio);
 
                         //Chama activity nova para resultados
                     }catch (Exception e){
