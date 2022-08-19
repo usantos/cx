@@ -38,14 +38,17 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
@@ -61,6 +64,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnReapostaListener;
 
 public class DetalhesComprasActivity extends AppCompatActivity {
 
+    public static final String DETALHES_COMPRA_ACTIVITY = "DETALHES_COMPRA_ACTIVITY";
     private CompraDTO compraDTO;
     private ArrayList<ApostaDTO> listaAposta = new ArrayList<>();
     private ArrayList<ApostaDTO> listaFiltrada = new ArrayList<>();;
@@ -325,6 +329,33 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
             }
         });
+    }
+
+    private void realizaReaposta() {
+        ApostaBO_.getInstance_(DetalhesComprasActivity.this).adicionarApostasNoCarrinho(getApostas(listaAposta), new RequestListener<AgrupadorDTOApostaDTOResponse>() {
+            @Override
+            public void onResponse(AgrupadorDTOApostaDTOResponse result) {
+                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, CarrinhoActivity.class);
+                intent.putExtra(CarrinhoActivity.ORIGEM, DETALHES_COMPRA_ACTIVITY);
+
+
+                startActivity(intent);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.toString();
+            }
+        });
+    }
+
+    private List<IdentificaoDeUmaApostaDas8Modalidades> getApostas(ArrayList<ApostaDTO> listaAposta) {
+        List<IdentificaoDeUmaApostaDas8Modalidades> apostas = new ArrayList<>();
+        for (ApostaDTO apostaDTO: listaAposta){
+            apostas.add(ApostaUtils.convertApostaDTOemIdentificaoDeuUmaPostaDas8Modadlidades(apostaDTO));
+        }
+
+        return apostas;
     }
 
     private void configuraVisibilidadeMantSurpresinha(List<ApostaDTO> apostas){
