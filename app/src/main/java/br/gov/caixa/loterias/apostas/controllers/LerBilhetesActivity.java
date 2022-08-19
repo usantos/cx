@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
@@ -28,6 +29,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LerQrCodeDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -53,8 +56,18 @@ public class LerBilhetesActivity extends AppCompatActivity {
                 isScanned = true;
                 pause(barcodeScannerView);
                 if (result.getText().length() >= 23){
-                    String code = Crypto.cripfyBarcode(result.getText());
-                    ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).startForResult(INTENT_RESULT);
+                    try {
+                        LerQrCodeDTO lerQrCodeDTO = new Gson().fromJson(result.getText(), LerQrCodeDTO.class);
+
+                        //Cria a string com o formato desejado e depois criptografa
+                        //String code = Crypto.cripfyBarcode(result.getText());
+
+                        //Chama activity nova para resultados
+                    }catch (Exception e){
+                        String code = Crypto.cripfyBarcode(result.getText());
+                        ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).startForResult(INTENT_RESULT);
+                    }
+
                     chamouresultado = true;
                     if (handler10Sec != null){
                         handler10Sec.removeCallbacksAndMessages(null);
@@ -149,16 +162,16 @@ public class LerBilhetesActivity extends AppCompatActivity {
             if (!isScanned && !chamouresultado){
                 try {
                     ViewUtils.alertTitleButtonYesOrNotListener(LerBilhetesActivity.this,
-                                                               getString(R.string.nao_foi_possivel_realizar_leitura),
-                                                               getString(R.string.tentar_novamente),
-                                                               (dialog, which) -> {
-                                                                   resume(barcodeScannerView);
-                                                                   startDezSegundos();
-                                                               },
-                                                               getString(R.string.digitar_codigo),
-                                                               (dialog, which) -> {
-                                                                   startBilheteManual();
-                                                               });
+                            getString(R.string.nao_foi_possivel_realizar_leitura),
+                            getString(R.string.tentar_novamente),
+                            (dialog, which) -> {
+                                resume(barcodeScannerView);
+                                startDezSegundos();
+                            },
+                            getString(R.string.digitar_codigo),
+                            (dialog, which) -> {
+                                startBilheteManual();
+                            });
                 } catch (Exception e){
                     Log.e("", e.getLocalizedMessage());
                 }
