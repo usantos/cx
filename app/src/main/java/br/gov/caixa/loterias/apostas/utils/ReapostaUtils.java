@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -83,8 +84,8 @@ public class ReapostaUtils {
         return null;
     }
 
-    public static void chamaTransformarCarrinho(int opcaoSelecionada) {
-        AlertDialogUtils.show(Aplicacao.application.getApplicationContext());
+    public static void chamaTransformarCarrinho(Context context, int opcaoSelecionada) {
+        AlertDialogUtils.show(context);
 //        ApostaBO_.getInstance_(context).transformarCarrinho(idCarrinhoAtual, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
 //            @Override
 //            public void onResponse(CarrinhoDTOResponse result) {

@@ -201,7 +201,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             if (aposta != null) {
                 ReapostaUtils.showDialogReaposta(this, aposta, onReapostaListener());
             } else {
-                ReapostaUtils.chamaTransformarCarrinho(0); //	private final static int AMBAS = 0;
+                ReapostaUtils.chamaTransformarCarrinho(this, 0); //	private final static int AMBAS = 0;
             }
         }
     }
@@ -211,7 +211,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
             @Override
             public void ok(int opcaoSelecionada) {
-                ReapostaUtils.chamaTransformarCarrinho(opcaoSelecionada);
+                ReapostaUtils.chamaTransformarCarrinho(DetalhesComprasActivity.this, opcaoSelecionada);
             }
         };
     }
