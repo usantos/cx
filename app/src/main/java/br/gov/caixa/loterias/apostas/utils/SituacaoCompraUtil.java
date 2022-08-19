@@ -3,68 +3,81 @@ package br.gov.caixa.loterias.apostas.utils;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 
 public class SituacaoCompraUtil {
-	// Situacoes negativas
-	public static final String CANCELADA = "Cancelada";
-	public static final String ESTORNADA = "ESTORNADA";
-	public static final String DEBITO_NAO_AUTORIZADO = "DÉBITO NÃO AUTORIZADO";
-	public static final String NEGATIVA = "NEGATIVA";
 
-	// Situacoes positivas
-	public static final String FINALIZADA = "Finalizada";
-	public static final String EFETIVADA = "Efetivada";
-	public static final String PREMIO_PAGO = "Prêmio Pago";
-	public static final String POSITIVA = "POSITIVA";
-	public static final String DEBITO_REALIZADO = "DÉBITO REALIZADO";
+//    AZUL (POSITIVA),
+//        DEBITO_REALIZADO(6L),
+//        FINALIZADA(8L),
+//
+//    VERMELHO (NEGATIVA),
+//        DEBITO_NAO_AUTORIZADO(3L),
+//        ESTORNADA(4L),
+//        CANCELADA(5L),
+//
+//    AMARELO (INDEFINICAO,ANDAMENTO),
+//        CARRINHO(1L),
+//        DEBITO_INICIADO(2L),
+//        EM_PROCESSAMENTO(7L),
+//        EM_PROCESSAMENTO_REPRESADA(9L);
 
-	// Situacao em processamento
-	public static final String INDEFINICAO = "INDEFINIÇÃO";
-	public static final String ANDAMENTO = "ANDAMENTO";
-	public static final String CARRINHO = "CARRINHO";
-	public static final String DEBITO_INICIADO = "Débito Iniciado";
-	public static final String EM_PROCESSAMENTO = "EM PROCESSAMENTO";
-	public static final String EM_PROCESSAMENTO_REPRESADA = "EM PROCESSAMENTO REPRESADA";
+//    CARRINHO(1L),
+//    DEBITO_INICIADO(2L),
+//    DEBITO_NAO_AUTORIZADO(3L),
+//    ESTORNADA(4L),
+//    CANCELADA(5L),
+//    DEBITO_REALIZADO(6L),
+//    EM_PROCESSAMENTO(7L),
+//    FINALIZADA(8L),
+//    EM_PROCESSAMENTO_REPRESADA(9L);
 
-	private static final int VALOR_EFETIVADA = 4;
-	private static final int VALOR_FINALIZADA = 8;
+	private static final int VALOR_CARRINHO = 1;
+	private static final int VALOR_DEBITO_INICIADO = 2;
+	private static final int VALOR_DEBITO_NAO_AUTORIZADO = 3;
+	private static final int VALOR_ESTORNADA = 4;
 	private static final int VALOR_CANCELADA = 5;
-	private static final int VALOR_PREMIO_PAGO = 11;
+	private static final int VALOR_DEBITO_REALIZADO = 6;
+	private static final int VALOR_EM_PROCESSAMENTO = 7;
+	private static final int VALOR_FINALIZADA = 8;
+	private static final int VALOR_EM_PROCESSAMENTO_REPRESADA = 9;
 
-	public static boolean isPremioPago(DTOEnumLong situacao) {
-		return situacao.getValor() == VALOR_PREMIO_PAGO || situacao.getDescricao().equalsIgnoreCase(PREMIO_PAGO);
+	//Confirmar com AJ
+	private static final int VALOR_EFETIVADA = 4;
+	//	private static final int VALOR_PREMIO_PAGO = 11;
+	//	public static boolean isPremioPago(DTOEnumLong situacao) {
+	//		return situacao.getValor() == VALOR_PREMIO_PAGO;
+	//	}
+
+	//Confirmar com AJ - Pois o valor 4 repete para EFETIVADA E ESTORNADA
+	public static boolean isEfetivada(DTOEnumLong situacao) {
+		return situacao.getValor() == VALOR_EFETIVADA;
 	}
 
-	public static boolean isEfetivada(DTOEnumLong situacao) {
-		return situacao.getValor() == VALOR_EFETIVADA || situacao.getDescricao().equalsIgnoreCase(EFETIVADA);
+	public static boolean isDebitoNaoAutorizado(DTOEnumLong situacao) {
+		return situacao.getValor() == VALOR_DEBITO_NAO_AUTORIZADO;
 	}
 
 	public static boolean isCancelada(DTOEnumLong situacao) {
-		return situacao.getValor() == VALOR_CANCELADA || situacao.getDescricao().equalsIgnoreCase(CANCELADA);
+		return situacao.getValor() == VALOR_CANCELADA;
 	}
 
 	public static boolean isFinalizada(DTOEnumLong situacao) {
-		return situacao.getValor() == VALOR_FINALIZADA || situacao.getDescricao().equalsIgnoreCase(FINALIZADA);
+		return situacao.getValor() == VALOR_FINALIZADA;
 	}
 
 	public static boolean isSituacaoPositiva(DTOEnumLong situacao) {
-		return situacao.getDescricao().equalsIgnoreCase(POSITIVA) ||
-				situacao.getDescricao().equalsIgnoreCase(DEBITO_REALIZADO) ||
-				situacao.getDescricao().equalsIgnoreCase(FINALIZADA);
+		return  situacao.getValor() == VALOR_DEBITO_REALIZADO ||
+				situacao.getValor() == VALOR_FINALIZADA;
 	}
 
 	public static boolean isSituacaoNegativa(DTOEnumLong situacao) {
-		return situacao.getDescricao().equalsIgnoreCase(NEGATIVA) ||
-				situacao.getDescricao().equalsIgnoreCase(DEBITO_NAO_AUTORIZADO) ||
-				situacao.getDescricao().equalsIgnoreCase(ESTORNADA) ||
-				situacao.getDescricao().equalsIgnoreCase(CANCELADA);
+		return  situacao.getValor() == VALOR_DEBITO_NAO_AUTORIZADO ||
+				situacao.getValor() == VALOR_ESTORNADA ||
+				situacao.getValor() == VALOR_CANCELADA;
 	}
 
-
 	public static boolean isSituacaoProcessamento(DTOEnumLong situacao) {
-		return situacao.getDescricao().equalsIgnoreCase(INDEFINICAO) ||
-				situacao.getDescricao().equalsIgnoreCase(ANDAMENTO) ||
-				situacao.getDescricao().equalsIgnoreCase(CARRINHO) ||
-				situacao.getDescricao().equalsIgnoreCase(DEBITO_INICIADO) ||
-				situacao.getDescricao().equalsIgnoreCase(EM_PROCESSAMENTO) ||
-				situacao.getDescricao().equalsIgnoreCase(EM_PROCESSAMENTO_REPRESADA);
+		return 	situacao.getValor() == VALOR_CARRINHO ||
+				situacao.getValor() == VALOR_DEBITO_INICIADO ||
+				situacao.getValor() == VALOR_EM_PROCESSAMENTO ||
+				situacao.getValor() == VALOR_EM_PROCESSAMENTO_REPRESADA;
 	}
 }

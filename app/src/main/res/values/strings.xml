@@ -35,8 +35,9 @@
     <string name="titulo_dialog">Titulo da dialog</string>
     <string name="cancelar">Cancelar</string>
     <string name="ajuda_dialog">Ajuda</string>
+    <string name="salvar_carrinho">Salvar Carrinho</string>
     <string name="mensagem_ccompra_cancelada_dialog">Não foi possível concluir essa compra\ne sua aposta não foi efetivada.\n\nDeseja realizar uma nova tentativa\nde compra com o mesmo carrinho?</string>
-    <string name="tenta_novamente_dialog">Tenta Novamente</string>
+    <string name="tenta_novamente_dialog">Tentar Novamente</string>
     <string name="ok">OK</string>
     <string name="label_sim">Sim</string>
     <string name="label_nao">Não</string>

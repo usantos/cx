@@ -15,8 +15,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,14 +51,16 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
+import br.gov.caixa.loterias.apostas.utils.ReapostaUtils;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnReapostaListener;
 
 public class DetalhesComprasActivity extends AppCompatActivity {
 
@@ -84,7 +88,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         setaViews();
         pegaExtras();
         setaMetodos();
-        verificaStatusCancelada();
+        verificaStatusPopUp();
     }
 
     private void setaViews(){
@@ -113,6 +117,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
 
         criarCabecalho();
+        verificaCompraProcessada();
         buscaDetalhesCompras();
         setaDialogFavoritar();
         buscaModalidades();
@@ -127,23 +132,57 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         }
     }
 
-    private void verificaStatusCancelada() {
-        if (SituacaoCompraUtil.isSituacaoNegativa(compraDTO.getSituacao())) {
-            showDialogCompraCancelada();
-        }
+    private void verificaStatusPopUp() {
+//        if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
+//            showDialogCompraCancelada();
+//        }
+//        if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
+            showDialogDebitoNaoAutorizado();
+//        }
     }
 
     private void showDialogCompraCancelada() {
 
-        // custom dialog
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
 
-        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
+        Button dialogButtonFechar   = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
+        Button dialogButtonAjuda    = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
+        Button dialogButtonSalvar   = dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
+
+        dialogButtonFechar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialogButtonAjuda.setOnClickListener(v -> {
+            abrirAjuda();
+            dialog.dismiss();
+        });
+
+        dialogButtonSalvar.setOnClickListener(v -> {
+            if (dialogFavoritar != null) {
+                dialogFavoritar.show();
+            } else {
+                setaDialogFavoritar();
+                dialogFavoritar.show();
+            }
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    private void showDialogDebitoNaoAutorizado() {
+
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
+
+        Button dialogButtonFechar  = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
         Button dialogButtonAjuda    = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
         Button dialogButtonNovamente= dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
+        dialogButtonNovamente.setText(getResources().getString(R.string.tenta_novamente_dialog));
 
-        dialogButtonCancelar.setOnClickListener(v -> {
+        dialogButtonFechar.setOnClickListener(v -> {
             dialog.dismiss();
         });
 
@@ -153,20 +192,47 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
 
         dialogButtonNovamente.setOnClickListener(v -> {
-            TestVisao.toast("Implementar na proxima sprint");
+            tentarNovamente();
             dialog.dismiss();
         });
 
         dialog.show();
+    }
 
+    private void tentarNovamente() {
+        if (listaAposta != null & !listaAposta.isEmpty()) {
+            ApostaDTO aposta = ReapostaUtils.temDoisConcurosAbertos(listaAposta);
+            if (aposta != null) {
+                ReapostaUtils.showDialogReaposta(this, aposta, onReapostaListener());
+            } else {
+                ReapostaUtils.chamaTransformarCarrinho(this, 0); //	private final static int AMBAS = 0;
+            }
+        }
+    }
+
+    private OnReapostaListener onReapostaListener() {
+        return new OnReapostaListener() {
+
+            @Override
+            public void ok(int opcaoSelecionada) {
+                ReapostaUtils.chamaTransformarCarrinho(DetalhesComprasActivity.this, opcaoSelecionada);
+            }
+        };
     }
 
     private void abrirAjuda() {
-        Intent activity = new Intent(DetalhesComprasActivity.this, WebViewActivity.class);
-        activity.putExtra(getString(R.string.bundle_key_url), getString(R.string.url_ajuda_mercado_pago)); //MercadoPago
-//        activity.putExtra("url", getString(R.string.url_ajuda_recarga_pay)); //RecargaPay
-        startActivity(activity);
+        if (compraDTO.getMeioPagamento() != null) {
+            Intent activity = new Intent(DetalhesComprasActivity.this, WebViewActivity.class);
 
+            if (MeioPagamentoUtil.isMercadoPago(compraDTO.getMeioPagamento())) {
+                activity.putExtra(getString(R.string.bundle_key_url), getString(R.string.url_ajuda_mercado_pago)); //MercadoPago
+            }
+            if (MeioPagamentoUtil.isRecargaPay(compraDTO.getMeioPagamento())) {
+                activity.putExtra("url", getString(R.string.url_ajuda_recarga_pay)); //RecargaPay
+            }
+
+            startActivity(activity);
+        }
     }
 
     @Override
@@ -209,6 +275,22 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         ibFavoritar.setOnClickListener(v -> {
                     configuraVisibilidadeMantSurpresinha(listaAposta);
                 });
+
+    }
+
+    private void verificaCompraProcessada() {
+        if (compraDTO.getMeioPagamento() == null) {
+            ConstraintLayout constraintLayout = findViewById(R.id.compraPossesadaLaout);
+            constraintLayout.setVisibility(View.GONE);
+        } else {
+            AppCompatImageView imageView = findViewById(R.id.compraProcessadaImage);
+            if (MeioPagamentoUtil.isMercadoPago(compraDTO.getMeioPagamento())) {
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.mercadopago));
+            }
+            if (MeioPagamentoUtil.isRecargaPay(compraDTO.getMeioPagamento())) {
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.recargapay));
+            }
+        }
     }
 
     private void abrirTermosUso() {
