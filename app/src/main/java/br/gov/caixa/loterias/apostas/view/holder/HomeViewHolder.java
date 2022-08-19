@@ -34,6 +34,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesResultados;
@@ -112,6 +113,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.tvNomeEspeciais.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
 		} else {
 			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
+			if (BuildVersionUtil.isAutomacao() && modalidade.getTipoModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+				this.tvNomeEspeciais.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
+			}
 		}
 
 		this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
