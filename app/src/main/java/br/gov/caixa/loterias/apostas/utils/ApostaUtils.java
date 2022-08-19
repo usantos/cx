@@ -324,37 +324,30 @@ public class ApostaUtils {
 											 apostaDTO.getListaNumerosSelecionados(),
 											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
 											apostaDTO.getTimeDoCoracao());
-				break;
 			case DIA_DE_SORTE:
 				return getApostaDiaDeSorte(parametroJogo,
 											 apostaDTO.getListaNumerosSelecionados(),
 											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
 											 apostaDTO.getMesDeSorte());
-				break;
 			case LOTOGOL:
 				return getApostaLotogol(parametroJogo,
 											 apostaDTO.getListaNumerosSelecionados(),
 											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
 										  (HashSet<ParametroPartida>) apostaDTO.getPartidasLotogol());
-				break;
 			case LOTECA:
 				return getApostaLoteca(parametroJogo,
 											 apostaDTO.getListaNumerosSelecionados(),
 											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
 										 (HashSet<ParametroPartida>) apostaDTO.getPartidasLoteca());
-				break;
 			case SUPER_7:
-				return getApostaSuperSete(parametroJogo,
-											 apostaDTO.getListaNumerosSelecionados(),
+				return getApostaSuperSete(parametroJogo, new ArrayList<>(),
 											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
 											 apostaDTO.getMatrizNumerosSelecionados());
-				break;
 			case MAIS_MILIONARIA:
 				return getApostaMaisMilionaria(parametroJogo,
 											 apostaDTO.getListaNumerosSelecionados(),
 											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
 											 apostaDTO.getListaTrevosSelecionados());
-				break;
 			default:
 				return getApostaPreenchida(parametroJogo,
 												 apostaDTO.getListaNumerosSelecionados(),

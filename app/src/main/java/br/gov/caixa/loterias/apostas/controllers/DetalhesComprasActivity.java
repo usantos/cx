@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,19 +37,20 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
+import br.gov.caixa.loterias.apostas.model.model.DetalhesCompraModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.ReapostaUtils;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
@@ -59,7 +59,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnReapostaListener;
 
 public class DetalhesComprasActivity extends AppCompatActivity {
@@ -133,91 +133,94 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void verificaStatusPopUp() {
-//        if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
-//            showDialogCompraCancelada();
-//        }
-//        if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
+        if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
+            showDialogCompraCancelada();
+        } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
             showDialogDebitoNaoAutorizado();
-//        }
+        }
     }
 
     private void showDialogCompraCancelada() {
+        DialogUtils.showDialogDebitoNaoAutorizado(this,
+                                                  getResources().getString(R.string.salvar_carrinho),
+                                                  onCompraCancelaDialogListener());
+    }
 
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
-
-        Button dialogButtonFechar   = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
-        Button dialogButtonAjuda    = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
-        Button dialogButtonSalvar   = dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
-
-        dialogButtonFechar.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-
-        dialogButtonAjuda.setOnClickListener(v -> {
-            abrirAjuda();
-            dialog.dismiss();
-        });
-
-        dialogButtonSalvar.setOnClickListener(v -> {
-            if (dialogFavoritar != null) {
-                dialogFavoritar.show();
-            } else {
-                setaDialogFavoritar();
-                dialogFavoritar.show();
+    private OnDialogSituacaoCompraListener onCompraCancelaDialogListener() {
+        return new OnDialogSituacaoCompraListener() {
+            @Override
+            public void ajuda() {
+                abrirAjuda();
             }
-            dialog.dismiss();
-        });
 
-        dialog.show();
+            @Override
+            public void ok() {
+                if (dialogFavoritar != null) {
+                    dialogFavoritar.show();
+                } else {
+                    setaDialogFavoritar();
+                    dialogFavoritar.show();
+                }
+            }
+        };
     }
 
     private void showDialogDebitoNaoAutorizado() {
 
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
+        DialogUtils.showDialogDebitoNaoAutorizado(this,
+                                                  getResources().getString(R.string.tenta_novamente_dialog),
+                                                  onDebitaNaoAutorizadoDialogListener());
+    }
 
-        Button dialogButtonFechar  = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
-        Button dialogButtonAjuda    = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
-        Button dialogButtonNovamente= dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
-        dialogButtonNovamente.setText(getResources().getString(R.string.tenta_novamente_dialog));
+    private OnDialogSituacaoCompraListener onDebitaNaoAutorizadoDialogListener() {
+        return new OnDialogSituacaoCompraListener() {
+            @Override
+            public void ajuda() {
+                abrirAjuda();
+            }
 
-        dialogButtonFechar.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-
-        dialogButtonAjuda.setOnClickListener(v -> {
-            abrirAjuda();
-            dialog.dismiss();
-        });
-
-        dialogButtonNovamente.setOnClickListener(v -> {
-            tentarNovamente();
-            dialog.dismiss();
-        });
-
-        dialog.show();
+            @Override
+            public void ok() {
+                tentarNovamente();
+            }
+        };
     }
 
     private void tentarNovamente() {
         if (listaAposta != null & !listaAposta.isEmpty()) {
             ApostaDTO aposta = ReapostaUtils.temDoisConcurosAbertos(listaAposta);
             if (aposta != null) {
-                ReapostaUtils.showDialogReaposta(this, aposta, onReapostaListener());
+                ReapostaUtils.showDialogReaposta(this, aposta, onReapostaDialogListener());
             } else {
-                ReapostaUtils.chamaTransformarCarrinho(this, 0); //	private final static int AMBAS = 0;
+                realizaReaposta();
             }
         }
     }
 
-    private OnReapostaListener onReapostaListener() {
-        return new OnReapostaListener() {
+    private void realizaReaposta() {
+        AlertDialogUtils.show(this);
+        new DetalhesCompraModel(this).realizaReaposta(listaAposta, onReapostaListener());
+    }
+
+    private OnSilceListener<AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades> onReapostaListener() {
+        return new OnSilceListener<AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades>() {
+            @Override
+            public void success(AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades payload) {
+                AlertDialogUtils.dismiss();
+                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, CarrinhoActivity.class);
+                intent.putExtra(CarrinhoActivity.ORIGEM, DETALHES_COMPRA_ACTIVITY);
+                startActivity(intent);
+            }
 
             @Override
-            public void ok(int opcaoSelecionada) {
-                ReapostaUtils.chamaTransformarCarrinho(DetalhesComprasActivity.this, opcaoSelecionada);
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
             }
         };
+    }
+
+    private OnReapostaListener onReapostaDialogListener() {
+        return opcaoSelecionada -> realizaReaposta();
     }
 
     private void abrirAjuda() {
@@ -329,33 +332,6 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 RedirectNetwork.checkRedirect(error, DetalhesComprasActivity.this);
             }
         });
-    }
-
-    private void realizaReaposta() {
-        ApostaBO_.getInstance_(DetalhesComprasActivity.this).adicionarApostasNoCarrinho(getApostas(listaAposta), new RequestListener<AgrupadorDTOApostaDTOResponse>() {
-            @Override
-            public void onResponse(AgrupadorDTOApostaDTOResponse result) {
-                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, CarrinhoActivity.class);
-                intent.putExtra(CarrinhoActivity.ORIGEM, DETALHES_COMPRA_ACTIVITY);
-
-
-                startActivity(intent);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.toString();
-            }
-        });
-    }
-
-    private List<IdentificaoDeUmaApostaDas8Modalidades> getApostas(ArrayList<ApostaDTO> listaAposta) {
-        List<IdentificaoDeUmaApostaDas8Modalidades> apostas = new ArrayList<>();
-        for (ApostaDTO apostaDTO: listaAposta){
-            apostas.add(ApostaUtils.convertApostaDTOemIdentificaoDeuUmaPostaDas8Modadlidades(apostaDTO));
-        }
-
-        return apostas;
     }
 
     private void configuraVisibilidadeMantSurpresinha(List<ApostaDTO> apostas){

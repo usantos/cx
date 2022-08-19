@@ -2,24 +2,15 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.view.listener.OnReapostaListener;
@@ -83,30 +74,5 @@ public class ReapostaUtils {
         }
         return null;
     }
-
-    public static void chamaTransformarCarrinho(Context context, int opcaoSelecionada) {
-        AlertDialogUtils.show(context);
-//        ApostaBO_.getInstance_(context).transformarCarrinho(idCarrinhoAtual, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
-//            @Override
-//            public void onResponse(CarrinhoDTOResponse result) {
-//                salvarCarrinhoFavoritoLocal(idCarrinhoAtual);
-//                AlertDialogUtils.dismiss();
-//                if (result.getRedirect() != null) {
-//                    RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
-//                }
-//                if (dialogSegmented != null && dialogSegmented.isShowing()) {
-//                    dialogSegmented.dismiss();
-//                }
-//                activity.startActivity(new Intent(activity, CarrinhoActivity.class));
-//            }
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                AlertDialogUtils.dismiss();
-//                RedirectNetwork.checkRedirect(error, activity);
-//            }
-//        });
-    }
-
 
 }

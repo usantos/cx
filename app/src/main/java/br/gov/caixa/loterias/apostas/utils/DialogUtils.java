@@ -12,6 +12,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 
 public class DialogUtils {
 
@@ -51,6 +52,33 @@ public class DialogUtils {
         dialogButtonCancelar.setOnClickListener(v -> {
             dialogListener.cancelar();
             dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
+    public static void showDialogDebitoNaoAutorizado(Context context, String nomeBotao, OnDialogSituacaoCompraListener listener) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
+
+        Button dialogButtonFechar    = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
+        Button dialogButtonAjuda     = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
+        dialogButtonOk.setText(nomeBotao);
+
+        dialogButtonFechar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialogButtonAjuda.setOnClickListener(v -> {
+            dialog.dismiss();
+            listener.ajuda();
+        });
+
+        dialogButtonOk.setOnClickListener(v -> {
+            dialog.dismiss();
+            listener.ok();
         });
 
         dialog.show();
