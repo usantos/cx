@@ -45,6 +45,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
 public class CarrinhoActivity extends AppCompatActivity {
 
+    public static final String ORIGEM = "ORIGEM";
     public static String CARRINHO = "CARRINHO";
     public static String LER_CARRINHO_LOCAL = "LER_CARRINHO_LOCAL";
     public static int FIM_SCROLL = 0;
@@ -67,6 +68,8 @@ public class CarrinhoActivity extends AppCompatActivity {
     private List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = new ArrayList<>();
     private LinearLayoutManager layoutManager;
     private ScrollView svCarrinho;
+
+    private String origem;
 
     private CarrinhoModel model;
 
@@ -182,6 +185,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         if (bundle != null) {
             carrinho = (CarrinhoDTO) bundle.getSerializable(CARRINHO);
             lerCarrinhoLocal = bundle.getBoolean(LER_CARRINHO_LOCAL);
+            origem = bundle.getString(ORIGEM);
         }
     }
 
@@ -384,8 +388,12 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     protected void clickBotaoFazerNovaAposta() {
-        setResult(2);
-        finish();
+        if (origem != null && origem.equalsIgnoreCase(DetalhesComprasActivity.DETALHES_COMPRA_ACTIVITY)){
+            PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+        } else {
+            setResult(2);
+            finish();
+        }
     }
 
     protected void clickLimparCarrinhoLinearLayout() {
