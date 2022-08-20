@@ -135,7 +135,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
             showDialogCompraCancelada();
         } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
-            showDialogDebitoNaoAutorizado();
+            showDialogCompraCancelada();
         }
     }
 
