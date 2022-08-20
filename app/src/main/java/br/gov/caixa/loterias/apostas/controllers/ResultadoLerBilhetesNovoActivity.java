@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.apostas.mock.ResultadoLerBilheteMock;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursosNovoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursosNovoNaoPremiadoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTONovoResponse;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -183,33 +184,40 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         for (int i = 0; i < concursos.size(); i++) {
             ConcursosNovoDTO r = concursos.get(i);
 
-            View tableRow = LayoutInflater.from(this).inflate(R.layout.table_item,null,false);
+            for(int f = 0; f < r.getFaixas().size(); f++){
+                FaixasDTO faixasDTO = r.getFaixas().get(f);
 
-            TextView concurso_bilhete  = (TextView) tableRow.findViewById(R.id.concurso_bilhete);
-            TextView situacao_bilhete  = (TextView) tableRow.findViewById(R.id.situacao_bilhete);
-            TextView acertos_bilhete  = (TextView) tableRow.findViewById(R.id.acertos_bilhete);
-            TextView qtde_bilhete  = (TextView) tableRow.findViewById(R.id.qtde_bilhete);
-            TextView valor_bilhete  = (TextView) tableRow.findViewById(R.id.valor_bilhete);
+                View tableRow = LayoutInflater.from(this).inflate(R.layout.table_item,null,false);
 
-            concurso_bilhete.setLayoutParams(param2);
-            situacao_bilhete.setLayoutParams(param2);
+                TextView concurso_bilhete  = (TextView) tableRow.findViewById(R.id.concurso_bilhete);
+                TextView situacao_bilhete  = (TextView) tableRow.findViewById(R.id.situacao_bilhete);
+                TextView acertos_bilhete  = (TextView) tableRow.findViewById(R.id.acertos_bilhete);
+                TextView qtde_bilhete  = (TextView) tableRow.findViewById(R.id.qtde_bilhete);
+                TextView valor_bilhete  = (TextView) tableRow.findViewById(R.id.valor_bilhete);
 
-            acertos_bilhete.setLayoutParams(param);
-            qtde_bilhete.setLayoutParams(param);
-            valor_bilhete.setLayoutParams(param);
+                concurso_bilhete.setLayoutParams(param2);
+                situacao_bilhete.setLayoutParams(param2);
 
-            concurso_bilhete.setText(r.getConcurso().getNumero().toString());
-            situacao_bilhete.setText(r.getSituacao());
-            acertos_bilhete.setText("XXX - XX - XX");
-            qtde_bilhete.setText("XXXXX");
-            valor_bilhete.setText("R$ " + r.getValorLiquido().toString());
+                acertos_bilhete.setLayoutParams(param);
+                qtde_bilhete.setLayoutParams(param);
+                valor_bilhete.setLayoutParams(param);
 
-            if(j % 2 == 0){
-                tableRow.setBackgroundColor(Color.rgb(1, 100, 168));
+                concurso_bilhete.setText(r.getConcurso().getNumero().toString());
+                situacao_bilhete.setText(r.getSituacao());
+                acertos_bilhete.setText(faixasDTO.getNome());
+                qtde_bilhete.setText("XXXXX");
+                valor_bilhete.setText("R$ " + faixasDTO.getValorLiquido().toString());
+
+                if(j % 2 == 0){
+                    tableRow.setBackgroundColor(Color.rgb(1, 100, 168));
+                }
+                j++;
+
+                tableLayout.addView(tableRow);
+
             }
-            j++;
 
-            tableLayout.addView(tableRow);
+
         }
 
         return j;

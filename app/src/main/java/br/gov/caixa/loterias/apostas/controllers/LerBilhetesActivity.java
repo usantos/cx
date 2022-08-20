@@ -65,8 +65,10 @@ public class LerBilhetesActivity extends AppCompatActivity {
                         String envio = lerQrCodeDTO.getNsb()+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getPro()+"=="+ModalidadeEnum.fromInteger(Integer.parseInt(lerQrCodeDTO.getPro()))+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getCf();
 
                         String code = Crypto.cripfyBarcode(envio);
-    
-                        String nsbFormatado = lerQrCodeDTO.getNsb().substring(0,4)+"-"+lerQrCodeDTO.getNsb().substring(4,lerQrCodeDTO.getNsb().length()-2)+"-"+lerQrCodeDTO.getNsb().substring(lerQrCodeDTO.getNsb().length()-2);
+                        String nsbFormatado = "";
+                        try {
+                            nsbFormatado = lerQrCodeDTO.getNsb().substring(0,4)+"-"+lerQrCodeDTO.getNsb().substring(4,lerQrCodeDTO.getNsb().length()-2)+"-"+lerQrCodeDTO.getNsb().substring(lerQrCodeDTO.getNsb().length()-2);
+                        }catch (Exception e){}
 
                         //Chama activity nova para resultados
                         ResultadoLerBilhetesNovoActivity_.intent(LerBilhetesActivity.this).codBarras(code).nsb(nsbFormatado).startForResult(INTENT_RESULT);

@@ -30,7 +30,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
 
-    EditText editTextNumeroBilhete;
+    EditText editTextNumeroBilhete, editTextLoterico;
     Button buttonContinuarInsercaoManualBilhetes;
 
     @Override
@@ -54,6 +54,12 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
 
 
         buttonContinuarInsercaoManualBilhetes = findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
+
+        editTextLoterico = findViewById(R.id.editTextLoterico);
+        editTextLoterico.addTextChangedListener(textWatcher2);
+        editTextLoterico.setFilters(new InputFilter[]{inputFilter});
+
+
         editTextNumeroBilhete = findViewById(R.id.editTextNumeroBilhete);
         editTextNumeroBilhete.addTextChangedListener(textWatcher);
         editTextNumeroBilhete.setFilters(new InputFilter[]{inputFilter});
@@ -62,9 +68,12 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                 Toast.makeText(InsercaoManualCodBarrasActivity.this, getResources().getString(R.string.informe_codigo_bilhete), Toast.LENGTH_SHORT).show();
             }else{
                 try {
+                    String nsb = removerMascara(editTextNumeroBilhete);
+                    String loterico = removerMascaraLoterico(editTextLoterico).replace(".","");
 
-                    //Verificar o novo formato de envio do campo!
-                    String code = Crypto.cripfyBarcode(removerMascara(editTextNumeroBilhete));
+                    String envio = nsb+"=="+loterico;
+
+                    String code = Crypto.cripfyBarcode(envio);
 
                     ResultadoLerBilhetesNovoActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).nsb(editTextNumeroBilhete.getText().toString()).start();
                     //ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
@@ -84,6 +93,7 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
              }
         });
 
+        editTextLoterico.addTextChangedListener(MaskEditUtil.mask(editTextLoterico, MaskEditUtil.FORMAT_LOT));
         editTextNumeroBilhete.addTextChangedListener(MaskEditUtil.mask(editTextNumeroBilhete, MaskEditUtil.FORMAT_NSBI));
     }
 
@@ -133,7 +143,9 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
     private String removerMascara(EditText maskedEditText){
         return maskedEditText.getText().toString().replaceAll(getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia));
     }
-
+    private String removerMascaraLoterico(EditText maskedEditText){
+        return maskedEditText.getText().toString().replaceAll(getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia).replace(getResources().getString(R.string.ponto), getResources().getString(R.string.string_vazia)));
+    }
     private TextWatcher textWatcher = new TextWatcher() {
 
         @Override
@@ -153,10 +165,42 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                 buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.cinzaclaro));
                 editTextNumeroBilhete.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             } else {
-                buttonContinuarInsercaoManualBilhetes.setEnabled(true);
-                buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.branco));
-                buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+                if(!editTextLoterico.getText().toString().equals("") && !editTextNumeroBilhete.getText().toString().equals("")){
+                    buttonContinuarInsercaoManualBilhetes.setEnabled(true);
+                    buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.branco));
+                    buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+
+                }
                 editTextNumeroBilhete.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+            }
+        }
+    };
+
+    private TextWatcher textWatcher2 = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (editTextLoterico.getText().toString().equals("")) {
+                buttonContinuarInsercaoManualBilhetes.setEnabled(false);
+                buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.cinzaDisable));
+                buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.cinzaclaro));
+                editTextLoterico.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            } else {
+                if(!editTextLoterico.getText().toString().equals("") && !editTextNumeroBilhete.getText().toString().equals("")){
+                    buttonContinuarInsercaoManualBilhetes.setEnabled(true);
+                    buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.branco));
+                    buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+                }
+                editTextLoterico.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
             }
         }
     };
