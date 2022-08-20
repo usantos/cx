@@ -40,6 +40,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTONovoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
@@ -788,6 +789,25 @@ public class ApostaBO extends BaseBO {
                                                                      listener.getSilceListener(),
                                                                      listener.getErrorListener(),
                                                                      headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request, listener);
+    }
+
+    public void postConferirBilhetesNovo(final String codigoBilhete,
+                                     final RequestListener<ResultadoConsultaBilheteDTONovoResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        Map<String, String> params = new HashMap<>();
+        params.put("codigo", codigoBilhete);
+        params.put("grecaptchaResponse", "");
+
+        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.BILHETES_CONFERIR_BILHETE_NOVO_PATH,
+                new LinkedHashMap<>(),
+                params,
+                ResultadoConsultaBilheteDTONovoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request, listener);

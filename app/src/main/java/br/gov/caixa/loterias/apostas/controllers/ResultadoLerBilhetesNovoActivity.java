@@ -28,6 +28,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.mock.ResultadoLerBilheteMock;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursosNovoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursosNovoNaoPremiadoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixasDTO;
@@ -53,7 +54,7 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
     protected TextView valorTotalPremiacao, nsbValor;
 
     @ViewById
-    protected ConstraintLayout contentResultadosBilhete;
+    protected ConstraintLayout contentResultadosBilheteResult, contentResultadosBilheteNaoApurado;
 
     @Extra
     String codBarras;
@@ -64,7 +65,8 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
 
     @AfterViews
     public void init() {
-        contentResultadosBilhete.setVisibility(View.GONE);
+        contentResultadosBilheteResult.setVisibility(View.GONE);
+        contentResultadosBilheteNaoApurado.setVisibility(View.GONE);
         createToolBar();
         postLerBilhetes();
     }
@@ -81,32 +83,16 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         //Mockado no ResultadoLerBilheteMock.MOCK
         ResultadoConsultaBilheteDTONovoResponse response = new Gson().fromJson(ResultadoLerBilheteMock.MOCK, ResultadoConsultaBilheteDTONovoResponse.class);
 
-        contentResultadosBilhete.setVisibility(View.VISIBLE);
+        atualizarLayoutPremiado(response);
 
-        int j = 0;
-
-        j = getListConcursos(response.getPayload().getPremio().getConcursos(), j);
-        j = getListConcursosNaoPremiados(response.getPayload().getPremio().getConcursosNaoPremiado(), j);
-
-        nsbValor.setText(nsb);
-
-        valorTotalPremiacao.setText(valorTotalPremiacao.getText() + " R$ " + response.getPayload().getPremio().getValorTotalPremio());
-
-
-
-        /*apostaBO.postConferirBilhetes(codBarras, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
+        /*apostaBO.postConferirBilhetesNovo(codBarras, new RequestListener<ResultadoConsultaBilheteDTONovoResponse>() {
             @Override
-            public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
+            public void onResponse(ResultadoConsultaBilheteDTONovoResponse response) {
                 alert.dismiss();
-                resultadoConsultaBilheteDTO = response.getPayload();
-                if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PREMIADA.getValor())) {
-                    atualizarLayoutPremiado();
-                    RateUtils.avaliarAplicativo(ResultadoLerBilhetesNovoActivity.this, true);
+                if (response != null) {
+                    atualizarLayoutPremiado(response);
                 } else {
                     atualizarLayoutNaoPremiado();
-                }
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ResultadoLerBilhetesNovoActivity.this);
                 }
             }
 
@@ -116,6 +102,24 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
                 RedirectNetwork.checkRedirect( error, ResultadoLerBilhetesNovoActivity.this );
             }
         });*/
+    }
+
+    private void atualizarLayoutPremiado(ResultadoConsultaBilheteDTONovoResponse response) {
+        contentResultadosBilheteNaoApurado.setVisibility(View.GONE);
+        contentResultadosBilheteResult.setVisibility(View.VISIBLE);
+
+        int j = 0;
+
+        j = getListConcursos(response.getPayload().getPremio().getConcursos(), j);
+        j = getListConcursosNaoPremiados(response.getPayload().getPremio().getConcursosNaoPremiado(), j);
+
+        nsbValor.setText(nsb);
+        valorTotalPremiacao.setText(valorTotalPremiacao.getText() + " R$ " + response.getPayload().getPremio().getValorTotalPremio());
+    }
+
+    private void atualizarLayoutNaoPremiado(){
+        contentResultadosBilheteResult.setVisibility(View.GONE);
+        contentResultadosBilheteNaoApurado.setVisibility(View.VISIBLE);
     }
 
     private int getListConcursosNaoPremiados(List<ConcursosNovoDTO> concursosNaoPremiado, int j) {

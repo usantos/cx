@@ -66,6 +66,7 @@ class ServerMethods {
 
      static final String EQUIPES_ESPORTIVAS_ESCUDO_PATH = "/equipes-esportivas/{id}/escudo";
      static final String BILHETES_CONFERIR_BILHETE_PATH = "/bilhetes/conferir-bilhete";
+     static final String BILHETES_CONFERIR_BILHETE_NOVO_PATH = "/bilhetes/conferir-bilhete-QrCode";
 
      static final String COMPRAS_PATH = "/compras";
      static final String COMPRAS_MESES_PATH = "/compras/meses";
