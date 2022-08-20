@@ -62,8 +62,12 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                 Toast.makeText(InsercaoManualCodBarrasActivity.this, getResources().getString(R.string.informe_codigo_bilhete), Toast.LENGTH_SHORT).show();
             }else{
                 try {
+
+                    //Verificar o novo formato de envio do campo!
                     String code = Crypto.cripfyBarcode(removerMascara(editTextNumeroBilhete));
-                    ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
+
+                    ResultadoLerBilhetesNovoActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).nsb(editTextNumeroBilhete.getText().toString()).start();
+                    //ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 } catch (InvalidKeySpecException e) {

@@ -1,0 +1,233 @@
+package br.gov.caixa.loterias.apostas.controllers;
+
+import android.graphics.Color;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.google.gson.Gson;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
+import org.w3c.dom.Text;
+
+import java.util.List;
+
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.mock.ResultadoLerBilheteMock;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursosNovoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursosNovoNaoPremiadoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTONovoResponse;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+
+@EActivity(R.layout.activity_resultado_ler_bilhetes_novo)
+public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
+
+    @Bean
+    protected ApostaBO apostaBO;
+
+    @ViewById
+    protected Toolbar toolbar;
+
+    @ViewById
+    protected ScrollView resultadoApostaNovoScrollView;
+
+    @ViewById
+    protected TableLayout tableLayout;
+
+    @ViewById
+    protected TextView valorTotalPremiacao, nsbValor;
+
+    @ViewById
+    protected ConstraintLayout contentResultadosBilhete;
+
+    @Extra
+    String codBarras;
+
+    @Extra
+    String nsb;
+
+
+    @AfterViews
+    public void init() {
+        contentResultadosBilhete.setVisibility(View.GONE);
+        createToolBar();
+        postLerBilhetes();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
+
+    private void postLerBilhetes() {
+        //final AlertDialog alert = LoadingViewLoterias.show(this);
+
+        //Mockado no ResultadoLerBilheteMock.MOCK
+        ResultadoConsultaBilheteDTONovoResponse response = new Gson().fromJson(ResultadoLerBilheteMock.MOCK, ResultadoConsultaBilheteDTONovoResponse.class);
+
+        contentResultadosBilhete.setVisibility(View.VISIBLE);
+
+        int j = 0;
+
+        j = getListConcursos(response.getPayload().getPremio().getConcursos(), j);
+        j = getListConcursosNaoPremiados(response.getPayload().getPremio().getConcursosNaoPremiado(), j);
+
+        nsbValor.setText(nsb);
+
+        valorTotalPremiacao.setText(valorTotalPremiacao.getText() + " R$ " + response.getPayload().getPremio().getValorTotalPremio());
+
+
+
+        /*apostaBO.postConferirBilhetes(codBarras, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
+                alert.dismiss();
+                resultadoConsultaBilheteDTO = response.getPayload();
+                if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PREMIADA.getValor())) {
+                    atualizarLayoutPremiado();
+                    RateUtils.avaliarAplicativo(ResultadoLerBilhetesNovoActivity.this, true);
+                } else {
+                    atualizarLayoutNaoPremiado();
+                }
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ResultadoLerBilhetesNovoActivity.this);
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                alert.dismiss();
+                RedirectNetwork.checkRedirect( error, ResultadoLerBilhetesNovoActivity.this );
+            }
+        });*/
+    }
+
+    private int getListConcursosNaoPremiados(List<ConcursosNovoDTO> concursosNaoPremiado, int j) {
+        TableRow.LayoutParams param = new TableRow.LayoutParams(
+                0,
+                TableRow.LayoutParams.MATCH_PARENT,
+                0.2f
+        );
+
+        TableRow.LayoutParams param2 = new TableRow.LayoutParams(
+                0,
+                TableRow.LayoutParams.MATCH_PARENT,
+                0.2f
+        );
+
+
+        for (int i = 0; i < concursosNaoPremiado.size(); i++) {
+            ConcursosNovoDTO r = concursosNaoPremiado.get(i);
+
+            View tableRow = LayoutInflater.from(this).inflate(R.layout.table_item,null,false);
+
+            TextView concurso_bilhete  = (TextView) tableRow.findViewById(R.id.concurso_bilhete);
+            TextView situacao_bilhete  = (TextView) tableRow.findViewById(R.id.situacao_bilhete);
+            TextView acertos_bilhete  = (TextView) tableRow.findViewById(R.id.acertos_bilhete);
+            TextView qtde_bilhete  = (TextView) tableRow.findViewById(R.id.qtde_bilhete);
+            TextView valor_bilhete  = (TextView) tableRow.findViewById(R.id.valor_bilhete);
+
+
+            concurso_bilhete.setLayoutParams(param2);
+            situacao_bilhete.setLayoutParams(param2);
+
+            acertos_bilhete.setLayoutParams(param);
+            qtde_bilhete.setLayoutParams(param);
+            valor_bilhete.setLayoutParams(param);
+
+            concurso_bilhete.setText(r.getConcurso().getNumero().toString());
+            situacao_bilhete.setText(r.getSituacao());
+            acertos_bilhete.setText("-");
+            qtde_bilhete.setText("-");
+            valor_bilhete.setText("-");
+
+            if(j % 2 == 0){
+                tableRow.setBackgroundColor(Color.rgb(1, 100, 168));
+            }
+            j++;
+
+            tableLayout.addView(tableRow);
+        }
+
+        return j;
+    }
+
+    private int getListConcursos(List<ConcursosNovoDTO> concursos, int j) {
+        TableRow.LayoutParams param = new TableRow.LayoutParams(
+                0,
+                TableRow.LayoutParams.MATCH_PARENT,
+                0.2f
+        );
+
+        TableRow.LayoutParams param2 = new TableRow.LayoutParams(
+                0,
+                TableRow.LayoutParams.MATCH_PARENT,
+                0.2f
+        );
+
+        for (int i = 0; i < concursos.size(); i++) {
+            ConcursosNovoDTO r = concursos.get(i);
+
+            View tableRow = LayoutInflater.from(this).inflate(R.layout.table_item,null,false);
+
+            TextView concurso_bilhete  = (TextView) tableRow.findViewById(R.id.concurso_bilhete);
+            TextView situacao_bilhete  = (TextView) tableRow.findViewById(R.id.situacao_bilhete);
+            TextView acertos_bilhete  = (TextView) tableRow.findViewById(R.id.acertos_bilhete);
+            TextView qtde_bilhete  = (TextView) tableRow.findViewById(R.id.qtde_bilhete);
+            TextView valor_bilhete  = (TextView) tableRow.findViewById(R.id.valor_bilhete);
+
+            concurso_bilhete.setLayoutParams(param2);
+            situacao_bilhete.setLayoutParams(param2);
+
+            acertos_bilhete.setLayoutParams(param);
+            qtde_bilhete.setLayoutParams(param);
+            valor_bilhete.setLayoutParams(param);
+
+            concurso_bilhete.setText(r.getConcurso().getNumero().toString());
+            situacao_bilhete.setText(r.getSituacao());
+            acertos_bilhete.setText("XXX - XX - XX");
+            qtde_bilhete.setText("XXXXX");
+            valor_bilhete.setText("R$ " + r.getValorLiquido().toString());
+
+            if(j % 2 == 0){
+                tableRow.setBackgroundColor(Color.rgb(1, 100, 168));
+            }
+            j++;
+
+            tableLayout.addView(tableRow);
+        }
+
+        return j;
+    }
+
+    private void createToolBar() {
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    /*private void createListPremiacao() {
+        ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
+
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(resultadoConsultaBilheteDTO.getPremioDTO())));
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }*/
+}
