@@ -52,7 +52,6 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
-import br.gov.caixa.loterias.apostas.utils.ReapostaUtils;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -187,14 +186,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void tentarNovamente() {
-        if (listaAposta != null & !listaAposta.isEmpty()) {
-            ApostaDTO aposta = ReapostaUtils.temDoisConcurosAbertos(listaAposta);
-            if (aposta != null) {
-                ReapostaUtils.showDialogReaposta(this, aposta, onReapostaDialogListener());
-            } else {
-                realizaReaposta();
-            }
-        }
+        startActivity(IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, CarrinhoActivity.class));
     }
 
     private void realizaReaposta() {
