@@ -111,7 +111,7 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
 
         int j = 0;
 
-        j = getListConcursos(response.getPayload().getPremio().getConcursos(), j);
+        j = getListConcursos(response.getPayload().getPremio().getConcursos(), j, response.getPayload().getModalidade().getValor());
         j = getListConcursosNaoPremiados(response.getPayload().getPremio().getConcursosNaoPremiado(), j);
 
         nsbValor.setText(nsb);
@@ -173,7 +173,7 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         return j;
     }
 
-    private int getListConcursos(List<ConcursosNovoDTO> concursos, int j) {
+    private int getListConcursos(List<ConcursosNovoDTO> concursos, int j, Integer numeroModalidade) {
         TableRow.LayoutParams param = new TableRow.LayoutParams(
                 0,
                 TableRow.LayoutParams.MATCH_PARENT,
@@ -189,43 +189,78 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         for (int i = 0; i < concursos.size(); i++) {
             ConcursosNovoDTO r = concursos.get(i);
 
+            List<FaixasDTO> faixasTemp = new ArrayList<>();
+
             for(int f = 0; f < r.getFaixas().size(); f++){
                 FaixasDTO faixasDTO = r.getFaixas().get(f);
 
-                View tableRow = LayoutInflater.from(this).inflate(R.layout.table_item,null,false);
+                if(verificaSeFaixaExiste(faixasTemp, faixasDTO.getNumero())){
+                    View tableRow = LayoutInflater.from(this).inflate(R.layout.table_item,null,false);
 
-                TextView concurso_bilhete  = (TextView) tableRow.findViewById(R.id.concurso_bilhete);
-                TextView situacao_bilhete  = (TextView) tableRow.findViewById(R.id.situacao_bilhete);
-                TextView acertos_bilhete  = (TextView) tableRow.findViewById(R.id.acertos_bilhete);
-                TextView qtde_bilhete  = (TextView) tableRow.findViewById(R.id.qtde_bilhete);
-                TextView valor_bilhete  = (TextView) tableRow.findViewById(R.id.valor_bilhete);
+                    TextView concurso_bilhete  = (TextView) tableRow.findViewById(R.id.concurso_bilhete);
+                    TextView situacao_bilhete  = (TextView) tableRow.findViewById(R.id.situacao_bilhete);
+                    TextView acertos_bilhete  = (TextView) tableRow.findViewById(R.id.acertos_bilhete);
+                    TextView qtde_bilhete  = (TextView) tableRow.findViewById(R.id.qtde_bilhete);
+                    TextView valor_bilhete  = (TextView) tableRow.findViewById(R.id.valor_bilhete);
 
-                concurso_bilhete.setLayoutParams(param2);
-                situacao_bilhete.setLayoutParams(param2);
+                    concurso_bilhete.setLayoutParams(param2);
+                    situacao_bilhete.setLayoutParams(param2);
 
-                acertos_bilhete.setLayoutParams(param);
-                qtde_bilhete.setLayoutParams(param);
-                valor_bilhete.setLayoutParams(param);
+                    acertos_bilhete.setLayoutParams(param);
+                    qtde_bilhete.setLayoutParams(param);
+                    valor_bilhete.setLayoutParams(param);
 
-                concurso_bilhete.setText(r.getConcurso().getNumero().toString());
-                situacao_bilhete.setText(r.getSituacao());
-                acertos_bilhete.setText(faixasDTO.getNome());
-                qtde_bilhete.setText(String.valueOf(r.getFaixas().size()));
-                valor_bilhete.setText("R$ " + faixasDTO.getValorLiquido().toString());
+                    concurso_bilhete.setText(r.getConcurso().getNumero().toString());
+                    situacao_bilhete.setText(r.getSituacao());
 
-                if(j % 2 == 0){
-                    tableRow.setBackgroundColor(Color.rgb(1, 100, 168));
+                    if(numeroModalidade != 9){
+                        acertos_bilhete.setText("FX " + faixasDTO.getNumero());
+                    }else {
+                        acertos_bilhete.setText(faixasDTO.getNome() + " -  FX " + faixasDTO.getNumero());
+                    }
+
+                    qtde_bilhete.setText(String.valueOf(confereQuantasFaixasIguais(faixasTemp, r.getFaixas(), faixasDTO.getNumero())));
+                    valor_bilhete.setText("R$ " + faixasDTO.getValorLiquido().toString());
+
+                    if(j % 2 == 0){
+                        tableRow.setBackgroundColor(Color.rgb(1, 100, 168));
+                    }
+                    j++;
+
+                    tableLayout.addView(tableRow);
+
                 }
-                j++;
-
-                tableLayout.addView(tableRow);
-
             }
 
 
         }
 
         return j;
+    }
+
+    private boolean verificaSeFaixaExiste(List<FaixasDTO> faixasTemp, Long numero) {
+        if(faixasTemp.isEmpty()){
+            return true;
+        }
+
+        for (FaixasDTO f :faixasTemp) {
+            if(f.getNumero() == numero){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int confereQuantasFaixasIguais(List<FaixasDTO> faixasTemp, List<FaixasDTO> faixas, Long numero) {
+        int i = 0;
+        for (FaixasDTO f: faixas) {
+            if(f.getNumero() == numero){
+                faixasTemp.add(f);
+                i++;
+            }
+        }
+
+        return i;
     }
 
     private void createToolBar() {

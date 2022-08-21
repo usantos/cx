@@ -223,7 +223,32 @@ public class ResultadoLerBilheteMock {
             "          \"sorteio\" : 1,\n" +
             "          \"nome\" : \"QUADRA\",\n" +
             "          \"valorLiquido\" : 1195.08\n" +
-            "        } ]\n" +
+            "        }, " +
+            "        {\n" +
+            "          \"numero\" : 3,\n" +
+            "          \"sorteio\" : 1,\n" +
+            "          \"nome\" : \"QUADRA\",\n" +
+            "          \"valorLiquido\" : 1195.08\n" +
+            "        }, " +
+            "        {\n" +
+            "          \"numero\" : 4,\n" +
+            "          \"sorteio\" : 1,\n" +
+            "          \"nome\" : \"QUADRA\",\n" +
+            "          \"valorLiquido\" : 1195.08\n" +
+            "        }, " +
+            "        {\n" +
+            "          \"numero\" : 4,\n" +
+            "          \"sorteio\" : 1,\n" +
+            "          \"nome\" : \"QUADRA\",\n" +
+            "          \"valorLiquido\" : 1195.08\n" +
+            "        }, " +
+            "        {\n" +
+            "          \"numero\" : 5,\n" +
+            "          \"sorteio\" : 1,\n" +
+            "          \"nome\" : \"QUADRA\",\n" +
+            "          \"valorLiquido\" : 1195.08\n" +
+            "        } " +
+            " ]\n" +
             "      }, {\n" +
             "        \"concurso\" : {\n" +
             "          \"numero\" : 5037,\n" +

@@ -61,4 +61,6 @@ public class FaixasDTO implements Serializable {
     public void setValorLiquido(Double valorLiquido) {
         this.valorLiquido = valorLiquido;
     }
+
+
 }
