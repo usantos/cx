@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 import com.mercadolibre.android.device.sdk.DeviceSDK;
@@ -19,7 +22,6 @@ import com.mercadopago.model.CardToken;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -34,16 +36,21 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 public class AdicionaCartaoActivity extends SettingToolbarActivity implements MercadoPagoConnection.MercadoPagoListener {
 
     private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent, editTextAnoValidadeCartaoContent;
-
     private TextView textoInfoSelecioneFormaPagamento;
-
     private CheckBox checkBoxSalvarCartao;
+    private AppCompatImageView imagemMeioPagamento, voltar;
+    private ConstraintLayout backColor;
+    private View margem;
+    private TextView alterarMeioPagamento;
+    private Button btnAvancar;
 
     private ArrayList<String> listaMeses;
 
@@ -53,9 +60,8 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
 
     private String requestBody, bin;
 
-    private TextView valorTotalCarrinho;
-
     private CompraModel model;
+    private MeioPagamentoConfig config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,18 +71,10 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
         model = new CompraModel(AdicionaCartaoActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adiciona_cartao);
+        bindView();
 
-        recebendoInformacoes();
-
-
-        editTextNumeroCartaoContent =  findViewById(R.id.editTextNumeroCartaoContent);
-        editTextNomeClienteCartaoContent = findViewById(R.id.editTextNomeClienteCartaoContent);
-        editTextCodigoSegurancaContent = findViewById(R.id.editTextCodigoSegurancaContent);
-        editTextMesValidadeCartaoContent = findViewById(R.id.editTextMesValidadeCartaooContent);
-        editTextAnoValidadeCartaoContent = findViewById(R.id.editTextAnoValidadeCartaooContent);
-        checkBoxSalvarCartao = findViewById(R.id.checkBoxSalvarCartao);
-        textoInfoSelecioneFormaPagamento = findViewById(R.id.textoInfoSelecioneFormaPagamento);
-
+        pegaExtras();
+        configAparencia();
 
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
 
@@ -90,7 +88,42 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
         configuraSpin();
         apresentaTextCartoes();
 
+        if (MeioPagamentoUtils.isRecargaPay(config.getMeioPagamento().getValor())){
+            findViewById(R.id.containerComboSalvar).setVisibility(View.INVISIBLE);
+        }
     }
+
+    private void bindView() {
+        editTextNumeroCartaoContent      =  findViewById(R.id.editTextNumeroCartaoContent);
+        editTextNomeClienteCartaoContent = findViewById(R.id.editTextNomeClienteCartaoContent);
+        editTextCodigoSegurancaContent   = findViewById(R.id.editTextCodigoSegurancaContent);
+        editTextMesValidadeCartaoContent = findViewById(R.id.editTextMesValidadeCartaooContent);
+        editTextAnoValidadeCartaoContent = findViewById(R.id.editTextAnoValidadeCartaooContent);
+        checkBoxSalvarCartao             = findViewById(R.id.checkBoxSalvarCartao);
+        textoInfoSelecioneFormaPagamento = findViewById(R.id.textoInfoSelecioneFormaPagamento);
+        imagemMeioPagamento              = findViewById(R.id.imagemMeioPagamento);
+        backColor                        = findViewById(R.id.background_dados_cartao);
+        margem                           = findViewById(R.id.margem_cabecalho);
+        btnAvancar                           = findViewById(R.id.botaoAvancarPagamento);
+        alterarMeioPagamento                           = findViewById(R.id.alterarMeioPagamento);
+        voltar                           = findViewById(R.id.iv_voltar);
+    }
+
+    private void configAparencia() {
+        if (config != null){
+            margem.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
+            backColor.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
+            imagemMeioPagamento.setBackground(getDrawable(config.getIdImagem()));
+        }
+    }
+
+    private void pegaExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            config = (MeioPagamentoConfig) bundle.getSerializable(getResources().getString(R.string.bundle_key_config));
+        }
+    }
+
     private void configuraSpin(){
         Spinner spinner = findViewById(R.id.spin_meses);
         listaMeses = new ArrayList<>();
@@ -119,16 +152,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
         });
     }
 
-    private void recebendoInformacoes() {
-        try {
-            String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
-            valorTotalCarrinho = findViewById(R.id.valorTotalCarrinho);
-            valorTotalCarrinho.setText(valor);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void addRightImg(EditText textField) {
         textField.setOnFocusChangeListener((v, hasFocus) -> {
             /* When focus is lost check that the text field
@@ -152,18 +175,9 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
         });
     }
 
-    private ArrayList<String> montaCarrinhoApostaValores(String valores[]) {
-        ArrayList<String> valoresTextoDialog = new ArrayList<>();
-
-        Collections.addAll(valoresTextoDialog, valores);
-
-        return valoresTextoDialog;
-    }
-
     private void configuraBotoesListener() {
-        ((Button) findViewById(R.id.botaoAvancarPagamento)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
-
-        findViewById(R.id.botaoAvancarPagamento).setOnClickListener(view -> {
+        btnAvancar.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
+        btnAvancar.setOnClickListener(view -> {
             if(!camposInvalidos()){
                 showLoading();
                 CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
@@ -178,6 +192,9 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
                 MercadoPagoConnection.callWebServicePayment_method(bin, requestBody, this, listener);
             }
         });
+
+        alterarMeioPagamento.setOnClickListener( v -> finish());
+        voltar.setOnClickListener( v -> finish());
     }
 
     private void preencheDadosPagamento(){
@@ -286,7 +303,13 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
     }
 
     private void apresentaAlertaPreCompra() {
-        ViewUtils.alertTitleCustomPositiveListener(AdicionaCartaoActivity.this, "Cancelar", "Confirmar", AdicionaCartaoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valorTotalCarrinho.getText()), (dialog, which) -> {
+        ViewUtils.alertTitleCustomPositiveListener(AdicionaCartaoActivity.this,
+                                                   "Cancelar", "Confirmar",
+                                                   AdicionaCartaoActivity.this.getResources()
+                                                                              .getString(R.string.label_pre_pagamento)
+                                                                              .replace("{valorCompra}",
+                                                                                       ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal())),
+                                                   (dialog, which) -> {
             AlertDialogUtils.dismiss();
             dialog.dismiss();
         }, (dialog, which) -> {

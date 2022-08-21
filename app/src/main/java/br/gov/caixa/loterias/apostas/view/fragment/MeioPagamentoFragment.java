@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.AdicionaCartaoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -34,8 +35,8 @@ import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesMeioPagamentoRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -242,7 +243,10 @@ public class MeioPagamentoFragment extends Fragment {
 	}
 
 	private void goToAddCartao(){
-		TestVisao.toast("Implementar no futuro!");
+		Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), AdicionaCartaoActivity.class,
+														  getString(R.string.bundle_key_config), config);
+
+		startActivity(intent);
 	}
 
 	private void aplicaConfig() {

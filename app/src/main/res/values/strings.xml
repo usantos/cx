@@ -1087,6 +1087,7 @@
     <string name="confira_cartoes_salvos_recargapa_pay">Confira aqui sua lista de cartões salvos no RecargaPay</string>
     <string name="compra_processada_por">Compra processada por:</string>
     <string name="selecione_o_meio_de_pagamento_que_ira_processar_a_compra">Selecione o meio de pagamento que irá processar a compra utilizando o cartão de crédito de sua escolha</string>
+    <string name="bundle_key_config">CONFIG</string>
 
 
 </resources>
