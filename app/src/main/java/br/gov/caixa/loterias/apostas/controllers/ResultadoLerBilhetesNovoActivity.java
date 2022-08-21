@@ -114,7 +114,7 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         j = getListConcursosNaoPremiados(response.getPayload().getPremio().getConcursosNaoPremiado(), j);
 
         nsbValor.setText(nsb);
-        valorTotalPremiacao.setText(valorTotalPremiacao.getText() + " R$ " + response.getPayload().getPremio().getValorTotalPremio());
+        valorTotalPremiacao.setText(valorTotalPremiacao.getText() + " R$ " + response.getPayload().getPremio().getValorLiquido());
     }
 
     private void atualizarLayoutNaoPremiado(){
@@ -209,7 +209,7 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
                 concurso_bilhete.setText(r.getConcurso().getNumero().toString());
                 situacao_bilhete.setText(r.getSituacao());
                 acertos_bilhete.setText(faixasDTO.getNome());
-                qtde_bilhete.setText("XXXXX");
+                qtde_bilhete.setText(String.valueOf(r.getFaixas().size()));
                 valor_bilhete.setText("R$ " + faixasDTO.getValorLiquido().toString());
 
                 if(j % 2 == 0){

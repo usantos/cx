@@ -30,8 +30,11 @@ public class PremioNovoDTO implements Serializable {
     @SerializedName("concursosNaoPremiado")
     protected List<ConcursosNovoDTO> concursosNaoPremiado;
 
-    @SerializedName("valorTotalPremio")
-    protected Double valorTotalPremio;
+    @SerializedName("valorBruto")
+    protected Double valorBruto;
+
+    @SerializedName("valorLiquido")
+    protected Double valorLiquido;
 
     @SerializedName("localPagamento")
     protected String localPagamento;
@@ -52,12 +55,20 @@ public class PremioNovoDTO implements Serializable {
         this.concursosNaoPremiado = concursosNaoPremiado;
     }
 
-    public Double getValorTotalPremio() {
-        return valorTotalPremio;
+    public Double getValorBruto() {
+        return valorBruto;
     }
 
-    public void setValorTotalPremio(Double valorTotalPremio) {
-        this.valorTotalPremio = valorTotalPremio;
+    public void setValorBruto(Double valorBruto) {
+        this.valorBruto = valorBruto;
+    }
+
+    public Double getValorLiquido() {
+        return valorLiquido;
+    }
+
+    public void setValorLiquido(Double valorLiquido) {
+        this.valorLiquido = valorLiquido;
     }
 
     public String getLocalPagamento() {

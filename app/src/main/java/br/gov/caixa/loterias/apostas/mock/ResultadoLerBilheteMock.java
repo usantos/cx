@@ -206,6 +206,8 @@ public class ResultadoLerBilheteMock {
             "      \"canal\" : \"SIGEL\"\n" +
             "    } ],\n" +
             "    \"premio\" : {\n" +
+            "       \"valorBruto\" : 1195.08, " +
+            "       \"valorLiquido\" : 1195.08, " +
             "      \"concursos\" : [ {\n" +
             "        \"concurso\" : {\n" +
             "          \"numero\" : 5036,\n" +
