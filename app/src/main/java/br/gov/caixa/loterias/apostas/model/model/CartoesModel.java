@@ -122,19 +122,31 @@ public class CartoesModel extends AppModel {
 		return jsonBody.toString();
 	}
 
-	public void realizaCompraMercadoPago(String bin, String requestBody, OnCompraAsync listener){
+	public void realizaCompraMercadoPago(String bin, String requestBody, boolean isCartaoNovo, OnCompraAsync listener){
 		AppCenterManager.registraEventoDeviceMP(getActivity().getResources().getString(R.string.app_center_mp_cartao_salvo), requestBody);
-		MercadoPagoConnection.callWebServicePayment_method(bin , requestBody, getActivity(), onMercadoPagoListener(listener));
+		MercadoPagoConnection.callWebServicePayment_method(bin , requestBody, getActivity(), onMercadoPagoListener(isCartaoNovo, listener));
 	}
 
-	private MercadoPagoConnection.MercadoPagoListener onMercadoPagoListener(OnCompraAsync listener) {
+	private MercadoPagoConnection.MercadoPagoListener onMercadoPagoListener(boolean isCartaoNovo, OnCompraAsync listener) {
 		return new MercadoPagoConnection.MercadoPagoListener() {
 			@Override
 			public void onSucesso(String tokenPagamento, String payment_method_id, boolean luhn_validation) {
-				CompraUtil.registraApostaAsync(tokenPagamento, payment_method_id,
-											   getActivity().getResources().getString(R.string.string_true),
-											   getActivity().getResources().getString(R.string.string_vazia),
-											   listener);
+				if (isCartaoNovo){
+					if (luhn_validation){
+						CompraUtil.registraApostaAsync(tokenPagamento, payment_method_id,
+													   getActivity().getResources().getString(R.string.string_true),
+													   getActivity().getResources().getString(R.string.string_vazia),
+													   listener);
+					} else {
+						AlertDialogUtils.dismiss();
+						apresentaModal(getActivity().getResources().getString(R.string.numero_cartao_invalido));
+					}
+				} else {
+					CompraUtil.registraApostaAsync(tokenPagamento, payment_method_id,
+												   getActivity().getResources().getString(R.string.string_true),
+												   getActivity().getResources().getString(R.string.string_vazia),
+												   listener);
+				}
 			}
 
 			@Override

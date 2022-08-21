@@ -16,32 +16,27 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
-import com.mercadolibre.android.device.sdk.DeviceSDK;
 import com.mercadopago.model.CardToken;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.CompraUtil;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
-import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
-public class AdicionaCartaoActivity extends SettingToolbarActivity implements MercadoPagoConnection.MercadoPagoListener {
+public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
     private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent, editTextAnoValidadeCartaoContent;
     private TextView textoInfoSelecioneFormaPagamento;
@@ -56,21 +51,18 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
 
     private Boolean primeiraSelecao = false;
 
-    private MercadoPagoConnection.MercadoPagoListener listener;
-
-    private String requestBody, bin;
-
-    private CompraModel model;
+    private CartoesModel model;
     private MeioPagamentoConfig config;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         ViewUtils.configuraStatusBarGradientLayout(this, getWindow());
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_adicao_forma_pagamento));
-        listener = this;
-        model = new CompraModel(AdicionaCartaoActivity.this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adiciona_cartao);
+
+        model = new CartoesModel(this);
+
         bindView();
 
         pegaExtras();
@@ -88,7 +80,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
         configuraSpin();
         apresentaTextCartoes();
 
-        if (MeioPagamentoUtils.isRecargaPay(config.getMeioPagamento().getValor())){
+        if (model.isRecargaPay(config)){
             findViewById(R.id.containerComboSalvar).setVisibility(View.INVISIBLE);
         }
     }
@@ -180,16 +172,11 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
         btnAvancar.setOnClickListener(view -> {
             if(!camposInvalidos()){
                 showLoading();
-                CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
-                                                    Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
-                                                    Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()),
-                                                    editTextCodigoSegurancaContent.getText().toString(),
-                                                    editTextNomeClienteCartaoContent.getText().toString(),
-                                                    getResources().getString(R.string.cpf),
-                                                    DadosUsuarioBO.obterCpf());
-                preencheDadosPagamento();
-                AppCenterManager.registraEventoDeviceMP(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
-                MercadoPagoConnection.callWebServicePayment_method(bin, requestBody, this, listener);
+                if (model.isMercadoPago(config)){
+                    realizaCompraMercadoPago();
+                } else {
+                    realizaCompraRecargaPay();
+                }
             }
         });
 
@@ -197,28 +184,54 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
         voltar.setOnClickListener( v -> finish());
     }
 
-    private void preencheDadosPagamento(){
-        JSONObject jsonBody = new JSONObject();
-        JSONObject jsonCardHolder = new JSONObject();
-        JSONObject jsonIdentification = new JSONObject();
-        try {
-            jsonIdentification.put("type", "CPF");
-            jsonIdentification.put("number", DadosUsuarioBO.obterCpf());
-            jsonCardHolder.put("identification",jsonIdentification);
-            jsonCardHolder.put("name",editTextNomeClienteCartaoContent.getText().toString());
+    private void realizaCompraRecargaPay() {
 
-            jsonBody.put("card_number", editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia)));
-            jsonBody.put("expiration_year",Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()));
-            jsonBody.put("expiration_month", Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()));
-            jsonBody.put("security_code", editTextCodigoSegurancaContent.getText().toString());
-            jsonBody.put("cardholder", jsonCardHolder);
-            jsonBody.put("device", DeviceSDK.getInstance().getInfoAsJsonString());
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+    }
 
-        bin = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia)).substring(0, 7);
-        requestBody = jsonBody.toString();
+    private void realizaCompraMercadoPago() {
+        CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
+                                            Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
+                                            Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()),
+                                            editTextCodigoSegurancaContent.getText().toString(),
+                                            editTextNomeClienteCartaoContent.getText().toString(),
+                                            getResources().getString(R.string.cpf),
+                                            DadosUsuarioBO.obterCpf());
+        String requestBody = model.preencheDadosPagamento(cardToken);
+        String bin = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco),
+                                                                              getResources().getString(R.string.string_vazia))
+                                                .substring(0, 7);
+
+        AppCenterManager.registraEventoDeviceMP(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
+        model.realizaCompraMercadoPago(bin, requestBody, true, onMercadoPagoListener());
+    }
+
+    private OnCompraAsync onMercadoPagoListener() {
+        return new OnCompraAsync() {
+            @Override
+            public void successCompra() {
+                new CompraModel(AdicionaCartaoActivity.this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(),new Date());
+                AlertDialogUtils.dismiss();
+                if (checkBoxSalvarCartao.isChecked()) {
+                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
+                }
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_pagamento_sucesso));
+                CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+                Intent activity = new Intent(AdicionaCartaoActivity.this, ConfirmacaoPagamentoActivity.class);
+                startActivity(activity);
+            }
+
+            @Override
+            public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
+                RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), AdicionaCartaoActivity.this);
+                AlertDialogUtils.dismiss();
+            }
+
+            @Override
+            public void errorCompra(VolleyError volleyError) {
+                RedirectNetwork.checkRedirectCompraAsync( volleyError, AdicionaCartaoActivity.this);
+                AlertDialogUtils.dismiss();
+            }
+        };
     }
 
     private boolean camposInvalidos(){
@@ -240,56 +253,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
 									   AdicionaCartaoActivity.this.getResources().getString(R.string.ok));
         }
         return invalido;
-    }
-
-    private void callWebserviceRegistraApostaAsync(String tokenPagamento, String payment_method_id) {
-        if(!AlertDialogUtils.isShow()){
-            showLoading();
-        }
-
-        CompraUtil.registraApostaAsync(tokenPagamento, payment_method_id, getResources().getString(R.string.string_vazia) ,String.valueOf(checkBoxSalvarCartao.isChecked()),onCompraAsyncListener());
-    }
-
-    private OnCompraAsync onCompraAsyncListener() {
-        return new OnCompraAsync() {
-
-            @Override
-            public void successCompra() {
-                model.salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(),new Date());
-                sucessoCompraAsync();
-            }
-
-            @Override
-            public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
-                redirectCompraAsync(compraAsyncResponse);
-            }
-
-            @Override
-            public void errorCompra(VolleyError volleyError) {
-                errorCompraAsync(volleyError);
-            }
-        };
-    }
-
-    private void sucessoCompraAsync() {
-        AlertDialogUtils.dismiss();
-        if (checkBoxSalvarCartao.isChecked()) {
-            AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
-        }
-        AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_pagamento_sucesso));
-        CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
-        Intent activity = new Intent(AdicionaCartaoActivity.this, ConfirmacaoPagamentoActivity.class);
-        startActivity(activity);
-    }
-
-    private void redirectCompraAsync(CompraAsyncResponse compraAsyncResponse) {
-        RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), AdicionaCartaoActivity.this);
-        AlertDialogUtils.dismiss();
-    }
-
-    private void errorCompraAsync(VolleyError error) {
-        RedirectNetwork.checkRedirectCompraAsync( error, AdicionaCartaoActivity.this);
-        AlertDialogUtils.dismiss();
     }
 
     private void apresentaTextCartoes() {
@@ -319,32 +282,5 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity implements Me
 
     private void showLoading(){
         runOnUiThread(() -> AlertDialogUtils.show(AdicionaCartaoActivity.this));
-    }
-
-    @Override
-    public void onSucesso(String cardId, String payment_method_id, boolean luhn_validation) {
-        if (luhn_validation){
-            callWebserviceRegistraApostaAsync(cardId, payment_method_id);
-        } else {
-            AlertDialogUtils.dismiss();
-            apresentaModal(getString(R.string.numero_cartao_invalido));
-        }
-    }
-
-    @Override
-    public void onTokenFailure(String msgError) {
-        AlertDialogUtils.dismiss();
-        apresentaModal(msgError);
-    }
-
-    @Override
-    public void onPaymentFailure(String msgError) {
-        AlertDialogUtils.dismiss();
-        apresentaModal(msgError);
-    }
-
-    private void apresentaModal(String msg) {
-        ViewUtils.alertTitleButton(AdicionaCartaoActivity.this, R.string.label_atencao, msg,
-								   AdicionaCartaoActivity.this.getResources().getString(R.string.ok));
     }
 }
