@@ -24,8 +24,10 @@ import java.util.Date;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
@@ -172,16 +174,31 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         btnAvancar.setOnClickListener(view -> {
             if(!camposInvalidos()){
                 showLoading();
+                model.buscaMeioPagamento(config.getMeioPagamento().getValor(), onMeioPagamentoListener());
+            }
+        });
+
+        alterarMeioPagamento.setOnClickListener( v -> finish());
+        voltar.setOnClickListener(v -> finish());
+    }
+
+    private OnSilceListener<MeioPagamentoDTO> onMeioPagamentoListener() {
+        return new OnSilceListener<MeioPagamentoDTO>() {
+            @Override
+            public void success(MeioPagamentoDTO payload) {
+                AlertDialogUtils.dismiss();
                 if (model.isMercadoPago(config)){
                     realizaCompraMercadoPago();
                 } else {
                     realizaCompraRecargaPay();
                 }
             }
-        });
 
-        alterarMeioPagamento.setOnClickListener( v -> finish());
-        voltar.setOnClickListener( v -> finish());
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        };
     }
 
     private void realizaCompraRecargaPay() {

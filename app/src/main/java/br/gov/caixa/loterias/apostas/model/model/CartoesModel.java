@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -30,9 +31,11 @@ import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 public class CartoesModel extends AppModel {
+	private MeioPagamentoModel model;
 
 	public CartoesModel(Activity activity) {
 		super(activity);
+		model = new MeioPagamentoModel(getActivity());
 	}
 
 	public void buscaCartoesMercadoPago(OnSilceListener<List<RetornoCartao>> listener) {
@@ -180,4 +183,9 @@ public class CartoesModel extends AppModel {
 	public boolean isMercadoPago(MeioPagamentoConfig config) {
 		return MeioPagamentoUtils.isMercadoPago(config.getMeioPagamento().getValor());
 	}
+
+	public void buscaMeioPagamento(Long id, OnSilceListener<MeioPagamentoDTO> listener){
+		model.buscaMeioPagamento(id,listener);
+	}
+
 }
