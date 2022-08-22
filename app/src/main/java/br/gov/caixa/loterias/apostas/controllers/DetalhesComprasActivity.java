@@ -258,10 +258,12 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
         TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
 
-        if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())){
-            situacaoCompraTextView.setTextColor(getResources().getColor(R.color.vermelho_cancelada));
-        } else if (SituacaoCompraUtil.isFinalizada(compraDTO.getSituacao()) || SituacaoCompraUtil.isEfetivada(compraDTO.getSituacao())){
-            situacaoCompraTextView.setTextColor(getResources().getColor(R.color.azul_efetivada));
+        if (SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
+            situacaoCompraTextView.setTextColor(getResources().getColor(R.color.azul_minhas_compras));
+        } else if (SituacaoCompraUtil.isSituacaoNegativa(compraDTO.getSituacao())) {
+            situacaoCompraTextView.setTextColor(getResources().getColor(R.color.vermelho_minhas_compras));
+        } else if (SituacaoCompraUtil.isSituacaoProcessamento(compraDTO.getSituacao())) {
+            situacaoCompraTextView.setTextColor(getResources().getColor(R.color.amarelo_minhas_compras));
         }
 
         situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao,
