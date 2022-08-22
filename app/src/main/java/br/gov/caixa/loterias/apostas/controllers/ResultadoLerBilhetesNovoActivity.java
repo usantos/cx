@@ -194,7 +194,7 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
             for(int f = 0; f < r.getFaixas().size(); f++){
                 FaixasDTO faixasDTO = r.getFaixas().get(f);
 
-                if(verificaSeFaixaExiste(faixasTemp, faixasDTO.getNumero())){
+                if(verificaSeFaixaExiste(faixasTemp, faixasDTO)){
                     View tableRow = LayoutInflater.from(this).inflate(R.layout.table_item,null,false);
 
                     TextView concurso_bilhete  = (TextView) tableRow.findViewById(R.id.concurso_bilhete);
@@ -219,7 +219,7 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
                         acertos_bilhete.setText(faixasDTO.getNome() + " -  FX " + faixasDTO.getNumero());
                     }
 
-                    qtde_bilhete.setText(String.valueOf(confereQuantasFaixasIguais(faixasTemp, r.getFaixas(), faixasDTO.getNumero())));
+                    qtde_bilhete.setText(String.valueOf(confereQuantasFaixasIguais(faixasTemp, r.getFaixas(), faixasDTO)));
                     valor_bilhete.setText("R$ " + faixasDTO.getValorLiquido().toString());
 
                     if(j % 2 == 0){
@@ -238,23 +238,23 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         return j;
     }
 
-    private boolean verificaSeFaixaExiste(List<FaixasDTO> faixasTemp, Long numero) {
+    private boolean verificaSeFaixaExiste(List<FaixasDTO> faixasTemp, FaixasDTO faixasDTO) {
         if(faixasTemp.isEmpty()){
             return true;
         }
 
         for (FaixasDTO f :faixasTemp) {
-            if(f.getNumero() == numero){
+            if(f.getNumero() == faixasDTO.getNumero() && f.getNome().equalsIgnoreCase(faixasDTO.getNome())){
                 return false;
             }
         }
         return true;
     }
 
-    private int confereQuantasFaixasIguais(List<FaixasDTO> faixasTemp, List<FaixasDTO> faixas, Long numero) {
+    private int confereQuantasFaixasIguais(List<FaixasDTO> faixasTemp, List<FaixasDTO> faixas, FaixasDTO faixasDTO) {
         int i = 0;
         for (FaixasDTO f: faixas) {
-            if(f.getNumero() == numero){
+            if(f.getNumero() == faixasDTO.getNumero() && f.getNome().equalsIgnoreCase(faixasDTO.getNome())){
                 faixasTemp.add(f);
                 i++;
             }
