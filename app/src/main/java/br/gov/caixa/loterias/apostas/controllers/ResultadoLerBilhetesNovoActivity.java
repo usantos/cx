@@ -83,30 +83,28 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
     }
 
     private void postLerBilhetes() {
-        //final AlertDialog alert = LoadingViewLoterias.show(this);
+        final AlertDialog alert = LoadingViewLoterias.show(this);
 
         //Mockado no ResultadoLerBilheteMock.MOCK
-        ResultadoConsultaBilheteDTONovoResponse response = new Gson().fromJson(ResultadoLerBilheteMock.MOCK, ResultadoConsultaBilheteDTONovoResponse.class);
+        //ResultadoConsultaBilheteDTONovoResponse response = new Gson().fromJson(ResultadoLerBilheteMock.MOCK, ResultadoConsultaBilheteDTONovoResponse.class);
+        //atualizarLayoutPremiado(response);
 
-        atualizarLayoutPremiado(response);
-
-        /*apostaBO.postConferirBilhetesNovo(codBarras, new RequestListener<ResultadoConsultaBilheteDTONovoResponse>() {
+        apostaBO.postConferirBilhetesNovo(codBarras, new RequestListener<ResultadoConsultaBilheteDTONovoResponse>() {
             @Override
             public void onResponse(ResultadoConsultaBilheteDTONovoResponse response) {
-                //alert.dismiss();
+                alert.dismiss();
                 if (response != null) {
                     atualizarLayoutPremiado(response);
                 } else {
                     atualizarLayoutNaoPremiado();
                 }
             }
-
             @Override
             public void onErrorResponse(VolleyError error) {
                 alert.dismiss();
                 RedirectNetwork.checkRedirect( error, ResultadoLerBilhetesNovoActivity.this );
             }
-        });*/
+        });
     }
 
     private void atualizarLayoutPremiado(ResultadoConsultaBilheteDTONovoResponse response) {
