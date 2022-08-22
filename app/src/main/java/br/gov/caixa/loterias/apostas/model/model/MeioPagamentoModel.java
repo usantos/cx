@@ -63,5 +63,5 @@ public class MeioPagamentoModel extends AppModel{
 			}
 		});
 	}
-	
+
 }
