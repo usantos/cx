@@ -12,15 +12,20 @@ import org.json.JSONObject;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
+import br.gov.caixa.loterias.apostas.model.bo.RecargaPayConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CartaoRecargaPayDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -130,6 +135,10 @@ public class CartoesModel extends AppModel {
 		MercadoPagoConnection.callWebServicePayment_method(bin , requestBody, getActivity(), onMercadoPagoListener(isCartaoNovo, listener));
 	}
 
+	public void realizaCompraRecargaPay(String tokenApostador, CartaoRecargaPayDTO cartao, RecargaPayConnection.RecargaPayListener listener) {
+		RecargaPayConnection.callRecargaPayService(tokenApostador, getActivity(), cartao, listener);
+	}
+
 	private MercadoPagoConnection.MercadoPagoListener onMercadoPagoListener(boolean isCartaoNovo, OnCompraAsync listener) {
 		return new MercadoPagoConnection.MercadoPagoListener() {
 			@Override
@@ -188,4 +197,23 @@ public class CartoesModel extends AppModel {
 		model.buscaMeioPagamento(id,listener);
 	}
 
+	public void recuperaTokenApostadorRecargaPay(OnSilceListener<String> listener) {
+		ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
+		apostaBO.getRecargaPayToken(new RequestListener<StringResponse>() {
+			@Override
+			public void onResponse(StringResponse result) {
+				if (result.getRedirect() != null){
+					RedirectNetwork.checkRedirectSucesso( result.getRedirect(), getActivity());
+				}
+
+				listener.success(result.getPayload());
+			}
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				RedirectNetwork.checkRedirect(error, getActivity());
+				listener.error(error);
+			}
+		});
+	}
 }

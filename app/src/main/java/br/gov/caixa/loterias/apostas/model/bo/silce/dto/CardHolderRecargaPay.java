@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
 import java.util.Objects;
 
 import io.swagger.annotations.ApiModel;
@@ -19,6 +20,8 @@ public class CardHolderRecargaPay {
 	private String document;
 	@SerializedName("birthdate")
 	private String birthdate;
+	@SerializedName("phones")
+	private List<String> phones;
 
 	public String getName() {
 		return name;
@@ -58,6 +61,14 @@ public class CardHolderRecargaPay {
 
 	public void setBirthdate(String birthdate) {
 		this.birthdate = birthdate;
+	}
+
+	public List<String> getPhones() {
+		return phones;
+	}
+
+	public void setPhones(List<String> phones) {
+		this.phones = phones;
 	}
 
 	@Override

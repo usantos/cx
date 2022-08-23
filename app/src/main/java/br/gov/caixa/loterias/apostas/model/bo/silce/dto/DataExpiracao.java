@@ -10,23 +10,23 @@ import io.swagger.annotations.ApiModel;
 public class DataExpiracao {
 
 	@SerializedName("month")
-	private int mes;
+	private Integer mes;
 	@SerializedName("year")
-	private int ano;
+	private Integer ano;
 
-	public int getMes() {
+	public Integer getMes() {
 		return mes;
 	}
 
-	public void setMes(int mes) {
+	public void setMes(Integer mes) {
 		this.mes = mes;
 	}
 
-	public int getAno() {
+	public Integer getAno() {
 		return ano;
 	}
 
-	public void setAno(int ano) {
+	public void setAno(Integer ano) {
 		this.ano = ano;
 	}
 

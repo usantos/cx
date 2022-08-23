@@ -319,7 +319,19 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
+    public void  getRecargaPayToken(final RequestListener<StringResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TOKEN_APOSTADOR_RP_PATH,
+                                                                    queryParams,
+                                                                    StringResponse.class,
+                                                                    listener.getSilceListener(),
+                                                                    listener.getErrorListener(),
+                                                                    getHeader());
+
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
 
 
     public void getDatasApostasConfirmadas(final RequestListener<MesAnoDTOResponse> listener) {

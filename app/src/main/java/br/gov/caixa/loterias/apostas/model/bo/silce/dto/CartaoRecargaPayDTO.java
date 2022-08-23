@@ -20,9 +20,9 @@ public class CartaoRecargaPayDTO {
     @SerializedName("expirationDate")
     private DataExpiracao dataExpiracao;
     @SerializedName("securityCode")
-    private int securityCode;
+    private String securityCode;
     @SerializedName("shouldSave")
-    private boolean shouldSave;
+    private boolean shouldSave = false;
 
     public String getType() {
         return type;
@@ -64,11 +64,11 @@ public class CartaoRecargaPayDTO {
         this.dataExpiracao = dataExpiracao;
     }
 
-    public int getSecurityCode() {
+    public String getSecurityCode() {
         return securityCode;
     }
 
-    public void setSecurityCode(int securityCode) {
+    public void setSecurityCode(String securityCode) {
         this.securityCode = securityCode;
     }
 
@@ -76,9 +76,9 @@ public class CartaoRecargaPayDTO {
         return shouldSave;
     }
 
-    public void setShouldSave(boolean shouldSave) {
-        this.shouldSave = shouldSave;
-    }
+//    public void setShouldSave(boolean shouldSave) {
+//        this.shouldSave = shouldSave;
+//    }
 
     @Override
     public boolean equals(Object o) {

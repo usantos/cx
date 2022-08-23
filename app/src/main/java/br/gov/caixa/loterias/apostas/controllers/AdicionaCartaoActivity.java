@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -20,13 +21,18 @@ import com.mercadopago.model.CardToken;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.model.bo.RecargaPayConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CardHolderRecargaPay;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CartaoRecargaPayDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DataExpiracao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
@@ -202,7 +208,66 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     }
 
     private void realizaCompraRecargaPay() {
+        model.recuperaTokenApostadorRecargaPay(onRecuperaTokenListener());
+    }
 
+    private OnSilceListener<String> onRecuperaTokenListener() {
+        return new OnSilceListener<String>() {
+            @Override
+            public void success(String token) {
+                model.realizaCompraRecargaPay(token, getCartaoRecargaPay(), onRecargaPayListener());
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        };
+    }
+
+    private CartaoRecargaPayDTO getCartaoRecargaPay() {
+        CartaoRecargaPayDTO cartao = new CartaoRecargaPayDTO();
+        cartao.setType("CREDIT");
+        cartao.setBrand(getBrand());
+        cartao.setNumber(editTextNumeroCartaoContent.getText().toString());
+
+        CardHolderRecargaPay cardHolder = new CardHolderRecargaPay();
+        cardHolder.setName(DadosUsuarioBO.obterNome());
+        cardHolder.setType("NATURAL");
+        cardHolder.setEmail("fulano@example.com");
+        cardHolder.setDocument(DadosUsuarioBO.obterCpf());
+        cardHolder.setBirthdate("1978-12-25");
+        List<String> phones = new ArrayList<String>();
+        phones.add("+55999999999");
+        cardHolder.setPhones(phones);
+        cartao.setCardHolder(cardHolder);
+
+        DataExpiracao dataExpiracao = new DataExpiracao();
+        dataExpiracao.setMes(Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()));
+        dataExpiracao.setAno(Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()));
+        cartao.setDataExpiracao(dataExpiracao);
+
+        cartao.setSecurityCode("123");
+        return cartao;
+    }
+
+    @NonNull
+    private String getBrand() {
+        return "VISA";
+    }
+
+    private RecargaPayConnection.RecargaPayListener onRecargaPayListener() {
+        return new RecargaPayConnection.RecargaPayListener() {
+            @Override
+            public void onSucesso(String customerCardToken) {
+                customerCardToken.toString();
+            }
+
+            @Override
+            public void onErro(String msgError) {
+
+            }
+        };
     }
 
     private void realizaCompraMercadoPago() {
