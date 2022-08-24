@@ -33,8 +33,11 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 
 public class RecargaPayConnection {
 
+	public static final String CARTAO_TYPE = "CREDIT";
+	public static final String CARDHOLDER_TYPE = "NATURAL";
+
 	public interface RecargaPayListener {
-		void onSucesso(String customerCardToken);
+		void onSucesso(String customerCardToken, String payment_method_id);
 		void onErro(String msgError);
 	}
 
@@ -51,7 +54,7 @@ public class RecargaPayConnection {
 				@Override
 				public void onResponse(String response) {
 					if (cardResponse != null && cardResponse[0] != null){
-						listener.onSucesso(cardResponse[0].getCustomerCardToken());
+						listener.onSucesso(cardResponse[0].getCustomerCardToken(), cardResponse[0].getBrand().toLowerCase());
 					}
 				}
 			}, error -> {

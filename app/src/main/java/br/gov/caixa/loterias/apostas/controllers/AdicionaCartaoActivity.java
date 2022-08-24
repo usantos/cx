@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RecargaPayConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CardHolderRecargaPay;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CartaoRecargaPayDTO;
@@ -39,6 +40,7 @@ import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DataUtil;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -192,7 +194,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new OnSilceListener<MeioPagamentoDTO>() {
             @Override
             public void success(MeioPagamentoDTO payload) {
-                AlertDialogUtils.dismiss();
                 if (model.isMercadoPago(config)){
                     realizaCompraMercadoPago();
                 } else {
@@ -215,7 +216,8 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new OnSilceListener<String>() {
             @Override
             public void success(String token) {
-                model.realizaCompraRecargaPay(token, getCartaoRecargaPay(), onRecargaPayListener());
+                // chama servico para recuperar informacoes pro recargapay
+                model.buscaDadosPessoais(onDadosPessoaisListener(token));
             }
 
             @Override
@@ -225,49 +227,88 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         };
     }
 
-    private CartaoRecargaPayDTO getCartaoRecargaPay() {
+    private OnSilceListener<ApostadorDTO> onDadosPessoaisListener(String token) {
+        return new OnSilceListener<ApostadorDTO>() {
+            @Override
+            public void success(ApostadorDTO payload) {
+                model.realizaCompraRecargaPay(token, getCartaoRecargaPay(payload), onRecargaPayListener());
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        };
+    }
+
+    private OnCompraAsync onRecargaPayListener() {
+        return new OnCompraAsync() {
+            @Override
+            public void successCompra() {
+                onCompraSuccess();
+            }
+
+            @Override
+            public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
+                onCompraRedirect(compraAsyncResponse);
+            }
+
+            @Override
+            public void errorCompra(VolleyError volleyError) {
+                onCompraError(volleyError);
+            }
+        };
+    }
+
+    private CartaoRecargaPayDTO getCartaoRecargaPay(ApostadorDTO dadosPessoais) {
         CartaoRecargaPayDTO cartao = new CartaoRecargaPayDTO();
-        cartao.setType("CREDIT");
+        cartao.setType(RecargaPayConnection.CARTAO_TYPE);
         cartao.setBrand(getBrand());
         cartao.setNumber(editTextNumeroCartaoContent.getText().toString());
 
-        CardHolderRecargaPay cardHolder = new CardHolderRecargaPay();
-        cardHolder.setName(DadosUsuarioBO.obterNome());
-        cardHolder.setType("NATURAL");
-        cardHolder.setEmail("fulano@example.com");
-        cardHolder.setDocument(DadosUsuarioBO.obterCpf());
-        cardHolder.setBirthdate("1978-12-25");
-        List<String> phones = new ArrayList<String>();
-        phones.add("+55999999999");
-        cardHolder.setPhones(phones);
+        CardHolderRecargaPay cardHolder = getCardHolderRecargaPay(dadosPessoais);
         cartao.setCardHolder(cardHolder);
 
-        DataExpiracao dataExpiracao = new DataExpiracao();
-        dataExpiracao.setMes(Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()));
-        dataExpiracao.setAno(Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()));
+        DataExpiracao dataExpiracao = getDataExpiracao();
         cartao.setDataExpiracao(dataExpiracao);
 
-        cartao.setSecurityCode("123");
+        cartao.setSecurityCode(editTextCodigoSegurancaContent.getText().toString());
         return cartao;
     }
 
     @NonNull
-    private String getBrand() {
-        return "VISA";
+    private DataExpiracao getDataExpiracao() {
+        DataExpiracao dataExpiracao = new DataExpiracao();
+        dataExpiracao.setMes(Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()));
+        dataExpiracao.setAno(Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()));
+        return dataExpiracao;
     }
 
-    private RecargaPayConnection.RecargaPayListener onRecargaPayListener() {
-        return new RecargaPayConnection.RecargaPayListener() {
-            @Override
-            public void onSucesso(String customerCardToken) {
-                customerCardToken.toString();
-            }
+    @NonNull
+    private CardHolderRecargaPay getCardHolderRecargaPay(ApostadorDTO dadosPessoais) {
+        CardHolderRecargaPay cardHolder = new CardHolderRecargaPay();
+        cardHolder.setName(dadosPessoais.getNome());
+        cardHolder.setType(RecargaPayConnection.CARDHOLDER_TYPE);
+        cardHolder.setEmail(dadosPessoais.getEmail());
+        cardHolder.setDocument(dadosPessoais.getCpf());
+        cardHolder.setBirthdate(DataUtil.getStringDataFormatted(DataUtil.YYYY_MM_DD, dadosPessoais.getDataNascimento()));
+        List<String> phones = new ArrayList<>();
+        phones.add("+55999999999");
+        cardHolder.setPhones(phones);
+        return cardHolder;
+    }
 
-            @Override
-            public void onErro(String msgError) {
-
-            }
-        };
+    @NonNull
+    private String getBrand() {
+        String numeroCartao = editTextNumeroCartaoContent.getText().toString();
+        if (numeroCartao.startsWith("4")){
+            return "VISA";
+        } else if (numeroCartao.startsWith("51") || numeroCartao.startsWith("52") ||
+                    numeroCartao.startsWith("53") || numeroCartao.startsWith("54") ||
+                numeroCartao.startsWith("55")){
+            return "MASTERCARD";
+        }
+        return "";
     }
 
     private void realizaCompraMercadoPago() {
@@ -291,29 +332,41 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new OnCompraAsync() {
             @Override
             public void successCompra() {
-                new CompraModel(AdicionaCartaoActivity.this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(),new Date());
-                AlertDialogUtils.dismiss();
-                if (checkBoxSalvarCartao.isChecked()) {
-                    AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
-                }
-                AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_pagamento_sucesso));
-                CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
-                Intent activity = new Intent(AdicionaCartaoActivity.this, ConfirmacaoPagamentoActivity.class);
-                startActivity(activity);
+                onCompraSuccess();
             }
 
             @Override
             public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
-                RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), AdicionaCartaoActivity.this);
-                AlertDialogUtils.dismiss();
+                onCompraRedirect(compraAsyncResponse);
             }
 
             @Override
             public void errorCompra(VolleyError volleyError) {
-                RedirectNetwork.checkRedirectCompraAsync( volleyError, AdicionaCartaoActivity.this);
-                AlertDialogUtils.dismiss();
+                onCompraError(volleyError);
             }
         };
+    }
+
+    private void onCompraError(VolleyError volleyError) {
+        RedirectNetwork.checkRedirectCompraAsync(volleyError, AdicionaCartaoActivity.this);
+        AlertDialogUtils.dismiss();
+    }
+
+    private void onCompraRedirect(CompraAsyncResponse compraAsyncResponse) {
+        RedirectNetwork.checkRedirectSucesso(compraAsyncResponse.getRedirect(), AdicionaCartaoActivity.this);
+        AlertDialogUtils.dismiss();
+    }
+
+    private void onCompraSuccess() {
+        new CompraModel(AdicionaCartaoActivity.this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(),new Date());
+        AlertDialogUtils.dismiss();
+        if (checkBoxSalvarCartao.isChecked()) {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
+        }
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_pagamento_sucesso));
+        CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+        Intent activity = new Intent(AdicionaCartaoActivity.this, ConfirmacaoPagamentoActivity.class);
+        startActivity(activity);
     }
 
     private boolean camposInvalidos(){

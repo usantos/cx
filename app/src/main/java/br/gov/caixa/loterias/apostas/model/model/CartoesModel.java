@@ -21,6 +21,8 @@ import br.gov.caixa.loterias.apostas.model.bo.RecargaPayConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CartaoRecargaPayDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
@@ -135,8 +137,26 @@ public class CartoesModel extends AppModel {
 		MercadoPagoConnection.callWebServicePayment_method(bin , requestBody, getActivity(), onMercadoPagoListener(isCartaoNovo, listener));
 	}
 
-	public void realizaCompraRecargaPay(String tokenApostador, CartaoRecargaPayDTO cartao, RecargaPayConnection.RecargaPayListener listener) {
-		RecargaPayConnection.callRecargaPayService(tokenApostador, getActivity(), cartao, listener);
+	public void realizaCompraRecargaPay(String tokenApostador, CartaoRecargaPayDTO cartao, OnCompraAsync listener) {
+		RecargaPayConnection.callRecargaPayService(tokenApostador, getActivity(), cartao, onRecargaPayListener(listener));
+	}
+
+	private RecargaPayConnection.RecargaPayListener onRecargaPayListener(OnCompraAsync listener) {
+		return new RecargaPayConnection.RecargaPayListener() {
+			@Override
+			public void onSucesso(String customerCardToken, String payment_method_id) {
+				CompraUtil.registraApostaAsync(5, customerCardToken, payment_method_id,
+											   getActivity().getResources().getString(R.string.string_false),
+											   getActivity().getResources().getString(R.string.string_false),
+											   listener);
+			}
+
+			@Override
+			public void onErro(String msgError) {
+				AlertDialogUtils.dismiss();
+				apresentaModal(msgError);
+			}
+		};
 	}
 
 	private MercadoPagoConnection.MercadoPagoListener onMercadoPagoListener(boolean isCartaoNovo, OnCompraAsync listener) {
@@ -145,7 +165,7 @@ public class CartoesModel extends AppModel {
 			public void onSucesso(String tokenPagamento, String payment_method_id, boolean luhn_validation) {
 				if (isCartaoNovo){
 					if (luhn_validation){
-						CompraUtil.registraApostaAsync(tokenPagamento, payment_method_id,
+						CompraUtil.registraApostaAsync(1, tokenPagamento, payment_method_id,
 													   getActivity().getResources().getString(R.string.string_true),
 													   getActivity().getResources().getString(R.string.string_vazia),
 													   listener);
@@ -154,7 +174,7 @@ public class CartoesModel extends AppModel {
 						apresentaModal(getActivity().getResources().getString(R.string.numero_cartao_invalido));
 					}
 				} else {
-					CompraUtil.registraApostaAsync(tokenPagamento, payment_method_id,
+					CompraUtil.registraApostaAsync(1, tokenPagamento, payment_method_id,
 												   getActivity().getResources().getString(R.string.string_true),
 												   getActivity().getResources().getString(R.string.string_vazia),
 												   listener);
@@ -215,5 +235,21 @@ public class CartoesModel extends AppModel {
 				listener.error(error);
 			}
 		});
+	}
+
+	public void buscaDadosPessoais(OnSilceListener<ApostadorDTO> listener) {
+		final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( getActivity() );
+
+		dadosUsuarioBO.getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
+			@Override
+			public void onResponse(ApostadorDTOResponse response) {
+				listener.success(response.getPayload());
+			}
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				listener.error(error);
+			}
+		} );
 	}
 }
