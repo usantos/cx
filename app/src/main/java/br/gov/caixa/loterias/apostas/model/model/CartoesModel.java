@@ -248,6 +248,7 @@ public class CartoesModel extends AppModel {
 
 			@Override
 			public void onErrorResponse(VolleyError error) {
+				RedirectNetwork.checkRedirect(error, getActivity());
 				listener.error(error);
 			}
 		} );

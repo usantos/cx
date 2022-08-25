@@ -163,7 +163,7 @@ public class MeioPagamentoFragment extends Fragment {
 											   getString(R.string.nao_e_possivel_eliminar_cartao_favorito),
 											   getString(R.string.title_entendi));
 				} else {
-					String mensagem = getString(R.string.deseja_realmente_exluir_cartao) + cartoes.get(position).getUltimosDigitos() + "?";
+					String mensagem = getString(R.string.deseja_realmente_exluir_cartao) + " " + cartoes.get(position).getUltimosDigitos() + "?";
 					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.excluir_cartao_interrogacao),
 																				getString(R.string.label_nao),
 																				getString(R.string.confirmar),
