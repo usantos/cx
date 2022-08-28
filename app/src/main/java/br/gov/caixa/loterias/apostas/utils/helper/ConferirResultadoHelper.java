@@ -96,7 +96,7 @@ public class ConferirResultadoHelper  {
                 if(AlertDialogUtils.isShow()){
                     AlertDialogUtils.dismiss();
                 }
-                conferirResultadoHandler.handle(holder,resultCheckFinal);
+                conferirResultadoHandler.handle(holder, resultCheckFinal);
             }
 
             @Override

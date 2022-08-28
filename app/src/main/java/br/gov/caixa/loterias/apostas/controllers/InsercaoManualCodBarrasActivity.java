@@ -56,7 +56,7 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         buttonContinuarInsercaoManualBilhetes = findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
 
         editTextLoterico = findViewById(R.id.editTextLoterico);
-        editTextLoterico.addTextChangedListener(textWatcher2);
+        //editTextLoterico.addTextChangedListener(textWatcher2);
         editTextLoterico.setFilters(new InputFilter[]{inputFilter});
 
 
@@ -71,11 +71,14 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                     String nsb = removerMascara(editTextNumeroBilhete);
                     String loterico = removerMascaraLoterico(editTextLoterico).replace(".","");
 
-                    String envio = nsb+"=="+loterico;
+                    if (loterico != null && !loterico.isEmpty()){
+                        String code = Crypto.cripfyBarcode(nsb+"=="+loterico);
+                        ResultadoLerBilhetesNovoActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).nsb(editTextNumeroBilhete.getText().toString()).start();
+                    } else {
+                        String code = Crypto.cripfyBarcode(removerMascara(editTextNumeroBilhete));
+                        ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
+                    }
 
-                    String code = Crypto.cripfyBarcode(envio);
-
-                    ResultadoLerBilhetesNovoActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).nsb(editTextNumeroBilhete.getText().toString()).start();
                     //ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
@@ -165,12 +168,10 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                 buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.cinzaclaro));
                 editTextNumeroBilhete.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             } else {
-                if(!editTextLoterico.getText().toString().equals("") && !editTextNumeroBilhete.getText().toString().equals("")){
-                    buttonContinuarInsercaoManualBilhetes.setEnabled(true);
-                    buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.branco));
-                    buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+                buttonContinuarInsercaoManualBilhetes.setEnabled(true);
+                buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.branco));
+                buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.verdeazul));
 
-                }
                 editTextNumeroBilhete.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
             }
         }

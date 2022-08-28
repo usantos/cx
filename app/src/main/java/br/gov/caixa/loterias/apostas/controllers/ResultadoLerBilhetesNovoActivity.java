@@ -1,10 +1,8 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.graphics.Color;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -16,25 +14,21 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.mock.ResultadoLerBilheteMock;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursosNovoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursosNovoNaoPremiadoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTONovoResponse;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -93,10 +87,10 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
             @Override
             public void onResponse(ResultadoConsultaBilheteDTONovoResponse response) {
                 alert.dismiss();
-                if (response != null) {
+                if (response != null && response.getPayload() != null && response.getPayload().getSituacao().getValor() == 100) {
                     atualizarLayoutPremiado(response);
                 } else {
-                    atualizarLayoutNaoPremiado();
+                    atualizarLayoutNaoPremiado(response);
                 }
             }
             @Override
@@ -120,9 +114,13 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         valorTotalPremiacao.setText(valorTotalPremiacao.getText() + " R$ " + response.getPayload().getPremio().getValorLiquido());
     }
 
-    private void atualizarLayoutNaoPremiado(){
+    private void atualizarLayoutNaoPremiado(ResultadoConsultaBilheteDTONovoResponse response){
         contentResultadosBilheteResult.setVisibility(View.GONE);
         contentResultadosBilheteNaoApurado.setVisibility(View.VISIBLE);
+        if (response != null && response.getPayload() != null && response.getPayload().getSituacao() != null){
+            TextView situacaoTxt = contentResultadosBilheteNaoApurado.findViewById(R.id.situacao_bilhete);
+            situacaoTxt.setText(response.getPayload().getSituacao().getDescricao());
+        }
     }
 
     private int getListConcursosNaoPremiados(List<ConcursosNovoDTO> concursosNaoPremiado, int j) {
