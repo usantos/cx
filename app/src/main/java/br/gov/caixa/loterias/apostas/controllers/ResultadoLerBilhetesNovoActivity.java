@@ -8,7 +8,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,8 +30,8 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursosNovoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTONovoResponse;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 @EActivity(R.layout.activity_resultado_ler_bilhetes_novo)
 public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
@@ -67,7 +66,6 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         contentResultadosBilheteResult.setVisibility(View.GONE);
         contentResultadosBilheteNaoApurado.setVisibility(View.GONE);
         createToolBar();
-        postLerBilhetes();
     }
 
     @Override
@@ -76,8 +74,14 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        postLerBilhetes();
+    }
+
     private void postLerBilhetes() {
-        final AlertDialog alert = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(this);
 
         //Mockado no ResultadoLerBilheteMock.MOCK
         //ResultadoConsultaBilheteDTONovoResponse response = new Gson().fromJson(ResultadoLerBilheteMock.MOCK, ResultadoConsultaBilheteDTONovoResponse.class);
@@ -86,17 +90,17 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         apostaBO.postConferirBilhetesNovo(codBarras, new RequestListener<ResultadoConsultaBilheteDTONovoResponse>() {
             @Override
             public void onResponse(ResultadoConsultaBilheteDTONovoResponse response) {
-                alert.dismiss();
                 if (response != null && response.getPayload() != null && response.getPayload().getSituacao().getValor() == 100) {
                     atualizarLayoutPremiado(response);
                 } else {
                     atualizarLayoutNaoPremiado(response);
                 }
+                AlertDialogUtils.dismiss();
             }
             @Override
             public void onErrorResponse(VolleyError error) {
-                alert.dismiss();
                 RedirectNetwork.checkRedirect( error, ResultadoLerBilhetesNovoActivity.this );
+                AlertDialogUtils.dismiss();
             }
         });
     }
@@ -176,13 +180,13 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
     private int getListConcursos(List<ConcursosNovoDTO> concursos, int j, Integer numeroModalidade) {
         TableRow.LayoutParams param = new TableRow.LayoutParams(
                 0,
-                TableRow.LayoutParams.MATCH_PARENT,
+                100,
                 0.2f
         );
 
         TableRow.LayoutParams param2 = new TableRow.LayoutParams(
                 0,
-                TableRow.LayoutParams.MATCH_PARENT,
+                100,
                 0.2f
         );
 
@@ -228,11 +232,8 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
                     j++;
 
                     tableLayout.addView(tableRow);
-
                 }
             }
-
-
         }
 
         return j;

@@ -162,7 +162,7 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (editTextNumeroBilhete.getText().toString().equals("")) {
+            if (editTextNumeroBilhete.getText().toString().equals("") || editTextNumeroBilhete.getText().toString().length() < 23) {
                 buttonContinuarInsercaoManualBilhetes.setEnabled(false);
                 buttonContinuarInsercaoManualBilhetes.setTextColor(getResources().getColor(R.color.cinzaDisable));
                 buttonContinuarInsercaoManualBilhetes.setBackgroundColor(getResources().getColor(R.color.cinzaclaro));
