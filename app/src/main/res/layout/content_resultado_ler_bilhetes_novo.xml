@@ -78,63 +78,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:stretchColumns="*"
-                    android:showDividers="middle"
-                    android:divider="@color/mpsdk_warm_grey">
-
-                    <TextView
-                        android:text="Concurso"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:layout_weight="0.20"
-                        android:gravity="center"
-                        android:textColor="@color/black"/>
-
-                    <TextView
-                        android:text="Situação"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:layout_weight="0.20"
-                        android:gravity="center"
-                        android:textColor="@color/black"/>
-
-
-                    <TextView
-                        android:text="Acertos"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:layout_weight="0.20"
-                        android:gravity="center"
-                        android:textColor="@color/black"/>
-
-
-                    <TextView
-                        android:text="Qtde."
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:layout_weight="0.20"
-                        android:gravity="center"
-                        android:textColor="@color/black"/>
-
-
-                    <TextView
-                        android:text="Valor"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:layout_weight="0.20"
-                        android:gravity="center"
-                        android:textColor="@color/black"/>
-
-                </TableRow>
+                <include layout="@layout/table_item_header"/>
 
             </TableLayout>
 

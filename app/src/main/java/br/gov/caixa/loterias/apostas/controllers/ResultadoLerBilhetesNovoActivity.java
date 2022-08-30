@@ -180,13 +180,13 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
     private int getListConcursos(List<ConcursosNovoDTO> concursos, int j, Integer numeroModalidade) {
         TableRow.LayoutParams param = new TableRow.LayoutParams(
                 0,
-                100,
+                120,
                 0.2f
         );
 
         TableRow.LayoutParams param2 = new TableRow.LayoutParams(
                 0,
-                100,
+                120,
                 0.2f
         );
 
@@ -228,6 +228,11 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
 
                     if(j % 2 == 0){
                         tableRow.setBackgroundColor(Color.rgb(1, 100, 168));
+                        concurso_bilhete.setTextColor(getResources().getColor(R.color.branco));
+                        situacao_bilhete.setTextColor(getResources().getColor(R.color.branco));
+                        acertos_bilhete.setTextColor(getResources().getColor(R.color.branco));
+                        qtde_bilhete.setTextColor(getResources().getColor(R.color.branco));
+                        valor_bilhete.setTextColor(getResources().getColor(R.color.branco));
                     }
                     j++;
 
