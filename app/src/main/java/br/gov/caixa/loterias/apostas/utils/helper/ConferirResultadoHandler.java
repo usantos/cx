@@ -13,6 +13,6 @@ import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 
 public interface ConferirResultadoHandler {
     void handle(DTOEnumLong situacao);
-    void handle(ApostaConfirmadaHolder holder, DTOEnumLong situacao);
+    void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao);
     void handleError(ApostaConfirmadaHolder holder, VolleyError error);
 }

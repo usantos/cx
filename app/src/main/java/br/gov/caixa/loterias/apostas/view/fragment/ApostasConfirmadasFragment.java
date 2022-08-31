@@ -46,6 +46,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -60,6 +61,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ApostasConfirmadasAdapter;
@@ -72,7 +74,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
  */
 
 @EFragment(R.layout.fragment_apostas_confirmadas)
-public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener {
+public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener, ConferirResultadoHandler {
 
     private static final int PAGE_SIZE = 30;
 
@@ -317,6 +319,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             }
         }
     }
+
     private void clearItemDecorations() {
         while (apostasConfirmadasRecyclerView.getItemDecorationCount() != 0) {
             apostasConfirmadasRecyclerView.removeItemDecorationAt(0);
@@ -365,7 +368,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     clearItemDecorations();
                     apostasConfirmadasRecyclerView.addItemDecoration(divider);
                 }
-                adapter = new ApostasConfirmadasAdapter(((MinhasApostasActivity)getActivity()), getActivity(), apostasList, isHistorico);
+                adapter = new ApostasConfirmadasAdapter(((MinhasApostasActivity)getActivity()), getActivity(), apostasList, isHistorico, this);
                 adapter.setOnApostasConfirmadasListener(getOnApostasConfirmadasListener(apostasList));
                 apostasConfirmadasRecyclerView.setAdapter(adapter);
             } else {
@@ -395,21 +398,15 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 if (isHistorico) {
                     handleOnItemClickHistorico(apostaDTO);
                 } else {
-                    handleOnClickItemConfirmadas(apostaDTO, holder);
+                    handleOnClickItemConfirmadas(position, apostaDTO, holder);
                 }
             }
         };
     }
 
-    private void conferirResultado (ApostaDTO aposta, ApostaConfirmadaHolder holder) {
-        holder.showProgressBarSituacao(true);
-        ConferirResultadoHelper.conferirResultadoHandler = holder;
-        ConferirResultadoHelper.conferirResultadoWithoutLoading(holder, aposta.getId(), getActivity());
-    }
-
-    private void handleOnClickItemConfirmadas(ApostaDTO apostaDTO, ApostaConfirmadaHolder holder) {
+    private void handleOnClickItemConfirmadas(int position, ApostaDTO apostaDTO, ApostaConfirmadaHolder holder) {
         if (holder.precisaConferirSituacao()){
-            conferirResultado(apostaDTO, holder);
+            conferirResultado(position, apostaDTO, holder);
         }else {
             if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
 
@@ -610,5 +607,27 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     public void setFiltroAdapter(FiltroApostasAdapter adapter){
         this.filtroAdapter = adapter;
+    }
+
+    public void conferirResultado(int position, ApostaDTO aposta, ApostaConfirmadaHolder holder) {
+        holder.showProgressBarSituacao(true);
+        ConferirResultadoHelper.conferirResultadoHandler = this;
+        ConferirResultadoHelper.conferirResultadoWithoutLoading(position, holder, aposta, getActivity());
+    }
+
+    @Override
+    public void handle(DTOEnumLong situacao) {
+
+    }
+
+    @Override
+    public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
+        ((ApostasConfirmadasAdapter)apostasConfirmadasRecyclerView.getAdapter()).atualizaSituacaoAposta(position, situacao);
+        holder.handle(position, holder, situacao);
+    }
+
+    @Override
+    public void handleError(ApostaConfirmadaHolder holder, VolleyError error) {
+        holder.handleError(holder, error);
     }
 }

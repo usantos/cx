@@ -666,7 +666,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     @Override
-    public void handle(ApostaConfirmadaHolder holder, DTOEnumLong situacao) { }
+    public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) { }
 
     @Override
     public void handleError(ApostaConfirmadaHolder holder, VolleyError error) {
