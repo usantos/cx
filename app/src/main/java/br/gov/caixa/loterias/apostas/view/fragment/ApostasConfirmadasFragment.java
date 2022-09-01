@@ -60,6 +60,7 @@ import br.gov.caixa.loterias.apostas.model.model.ApostaConfirmadaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
@@ -108,6 +109,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private int numeroDataSelecionada = 1;
     private boolean chamarApostaNovamente = true;
     private MesAnoDTOResponse resultMesAno;
+    private Long rowCount;
 
     private ApostaPageRequest page;
 
@@ -151,10 +153,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 }
             } else {
                 if (page == null) {
-                    page = new ApostaPageRequest(PAGE_SIZE);
+                    page = new ApostaPageRequest(getPageSize());
                     page.setOffset(0);
                 } else {
-                    page.setSize(PAGE_SIZE);
+                    page.setSize(getPageSize());
                     page.setOffset(0);
                     hasMoreItems = true;
                 }
@@ -162,6 +164,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             }
             isOnCreate = false;
         }
+    }
+
+    private int getPageSize(){
+        return PAGE_SIZE;
     }
 
     @Click
@@ -197,7 +203,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private void filtrarData(){
         MesAnoDTO mesAnoSelecionado =  mesesAnosDisponiveis.get(numeroDataSelecionada);
         if(page == null){
-            page = new ApostaPageRequest(PAGE_SIZE);
+            page = new ApostaPageRequest(getPageSize());
         }
         page.setAno(mesAnoSelecionado.getAno().intValue());
         page.setMes(mesAnoSelecionado.getMes().getValor().intValue());
@@ -270,6 +276,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 for (ApostaDTO aposta: result.getPayload().getLista()){
                     aposta.setValor(new BigDecimal(1));
                 }
+                rowCount = result.getPayload().getRowCount();
                 onApostasConfirmadasResult(result.getPayload().getLista());
             }
 
@@ -297,7 +304,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     public void filtraDados(){
         page.setModalidade(0);
-        page.setSituacao(0);
+        page.setSituacao(1);
         page.setOrdenarPor(ordenacaoDefault);
         if(!isHistorico){
             if(filtroAdapter != null){
@@ -337,16 +344,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         apostasLoading.setVisibility(View.GONE);
 
         if (apostasList != null) {
-            if(ConfiguracaoAppSingleton.getInstance().isMicroServico()){
-                if ((PAGE_SIZE - 1) > apostasList.size()){
-                    hasMoreItems = false;
-                }
-            }else {
-                if (PAGE_SIZE > apostasList.size()) {
-                    hasMoreItems = false;
-                }
-            }
-
             if (page.getOffset() == 0) {
                 reloadingEntireList = true;
             }
@@ -375,6 +372,14 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 int cont = adapter.addApostasList(apostasList) ;
                 adapter.notifyItemRangeInserted(cont, apostasList.size());
             }
+
+            if (apostasConfirmadasRecyclerView.getAdapter().getItemCount() >= rowCount) {
+                hasMoreItems = false;
+            }
+
+        }
+        if (TestVisao.isTeste()){
+            TestVisao.toast("Tamanho carregado: " + apostasConfirmadasRecyclerView.getAdapter().getItemCount() + "\nTotal: " + rowCount);
         }
     }
 
@@ -507,12 +512,13 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             int mes = mesAno.getMes().getValor().intValue();
             int ano = mesAno.getAno().intValue();
             if(page == null){
-                page = new ApostaPageRequest(PAGE_SIZE);
+                page = new ApostaPageRequest(getPageSize());
             }
             page.setAno(ano);
             page.setMes(mes);
             page.setOffset(0);
             page.setOrdenarPor(ordenacaoDefault);
+            page.setSituacao(1);
             setValoresApresentados(mesesAnosDisponiveis);
             setaDialogFiltrar();
 
