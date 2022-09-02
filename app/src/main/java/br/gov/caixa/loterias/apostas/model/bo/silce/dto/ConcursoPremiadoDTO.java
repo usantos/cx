@@ -36,6 +36,8 @@ public class ConcursoPremiadoDTO implements Serializable {
     protected BigDecimal valorIRRF = null;
     @SerializedName("faixas")
     protected List<FaixaPremiadaDTO> faixas = null;
+    @SerializedName("situacao")
+    protected String situacao;
 
     /**
      * Identificação do concurso premiado
@@ -108,6 +110,13 @@ public class ConcursoPremiadoDTO implements Serializable {
         this.faixas = faixas;
     }
 
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -123,7 +132,8 @@ public class ConcursoPremiadoDTO implements Serializable {
                 (this.valorBruto == null ? concursoPremiadoDTO.valorBruto == null : this.valorBruto.equals(concursoPremiadoDTO.valorBruto)) &&
                 (this.valorLiquido == null ? concursoPremiadoDTO.valorLiquido == null : this.valorLiquido.equals(concursoPremiadoDTO.valorLiquido)) &&
                 (this.valorIRRF == null ? concursoPremiadoDTO.valorIRRF == null : this.valorIRRF.equals(concursoPremiadoDTO.valorIRRF)) &&
-                (this.faixas == null ? concursoPremiadoDTO.faixas == null : this.faixas.equals(concursoPremiadoDTO.faixas));
+                (this.faixas == null ? concursoPremiadoDTO.faixas == null : this.faixas.equals(concursoPremiadoDTO.faixas) &&
+                (this.situacao == null ? concursoPremiadoDTO.situacao == null : this.situacao.equals(concursoPremiadoDTO.situacao)));
     }
 
     @Override
@@ -135,6 +145,7 @@ public class ConcursoPremiadoDTO implements Serializable {
         result = 31 * result + (this.valorLiquido == null ? 0 : this.valorLiquido.hashCode());
         result = 31 * result + (this.valorIRRF == null ? 0 : this.valorIRRF.hashCode());
         result = 31 * result + (this.faixas == null ? 0 : this.faixas.hashCode());
+        result = 31 * result + (this.situacao == null ? 0 : this.situacao.hashCode());
         return result;
     }
 
@@ -148,6 +159,7 @@ public class ConcursoPremiadoDTO implements Serializable {
                 "  valorLiquido: " + valorLiquido + "\n" +
                 "  valorIRRF: " + valorIRRF + "\n" +
                 "  faixas: " + faixas + "\n" +
+                "  situacao: " + situacao + "\n" +
                 "}\n";
         return sb;
     }

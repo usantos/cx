@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,11 +30,10 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LerQrCodeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
+import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
@@ -65,16 +65,14 @@ public class LerBilhetesActivity extends AppCompatActivity {
                         String envio = lerQrCodeDTO.getNsb()+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getPro()+"=="+ModalidadeEnum.fromInteger(Integer.parseInt(lerQrCodeDTO.getPro()))+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getCf();
 
                         String code = Crypto.cripfyBarcode(envio);
-                        String nsbFormatado = "";
-                        try {
-                            nsbFormatado = lerQrCodeDTO.getNsb().substring(0,4)+"-"+lerQrCodeDTO.getNsb().substring(4,lerQrCodeDTO.getNsb().length()-2)+"-"+lerQrCodeDTO.getNsb().substring(lerQrCodeDTO.getNsb().length()-2);
-                        }catch (Exception e){}
+                        String nsbFormatado = getNSBFormatado(lerQrCodeDTO.getNsb());
 
                         //Chama activity nova para resultados
-                        ResultadoLerBilhetesNovoActivity_.intent(LerBilhetesActivity.this).codBarras(code).nsb(nsbFormatado).startForResult(INTENT_RESULT);
+                        ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).nsb(nsbFormatado).tipoLeitura(LeituraBilheteEnum.QR_CODE).startForResult(INTENT_RESULT);
                     }catch (Exception e){
+                        String nsbFormatado = getNSBFormatado(result.getText());
                         String code = Crypto.cripfyBarcode(result.getText());
-                        ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).startForResult(INTENT_RESULT);
+                        ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).nsb(nsbFormatado).tipoLeitura(LeituraBilheteEnum.CODIGO_BARRAS).startForResult(INTENT_RESULT);
                     }
 
                     chamouresultado = true;
@@ -107,6 +105,17 @@ public class LerBilhetesActivity extends AppCompatActivity {
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
+
+    @NonNull
+    private String getNSBFormatado(String nsb) {
+        String nsbFormatado = "";
+        try {
+            nsbFormatado = nsb.substring(0, 4) + "-" + nsb.substring(4, nsb.length()-2) + "-" + nsb.substring(nsb.length()-2);
+        }catch (Exception e){
+            return nsb;
+        }
+        return nsbFormatado;
+    }
 
     @Override
     protected void onStart() {

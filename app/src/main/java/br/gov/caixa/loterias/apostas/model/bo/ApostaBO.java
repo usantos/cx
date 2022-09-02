@@ -40,7 +40,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTONovoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
@@ -795,7 +794,7 @@ public class ApostaBO extends BaseBO {
     }
 
     public void postConferirBilhetesNovo(final String codigoBilhete,
-                                     final RequestListener<ResultadoConsultaBilheteDTONovoResponse> listener) {
+                                     final RequestListener<ResultadoConsultaBilheteDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         Map<String, String> params = new HashMap<>();
         params.put("codigo", codigoBilhete);
@@ -804,7 +803,7 @@ public class ApostaBO extends BaseBO {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.BILHETES_CONFERIR_BILHETE_NOVO_PATH,
                 new LinkedHashMap<>(),
                 params,
-                ResultadoConsultaBilheteDTONovoResponse.class,
+                ResultadoConsultaBilheteDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 headers);

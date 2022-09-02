@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursosNovoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTONovoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -87,13 +88,13 @@ public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
         //ResultadoConsultaBilheteDTONovoResponse response = new Gson().fromJson(ResultadoLerBilheteMock.MOCK, ResultadoConsultaBilheteDTONovoResponse.class);
         //atualizarLayoutPremiado(response);
 
-        apostaBO.postConferirBilhetesNovo(codBarras, new RequestListener<ResultadoConsultaBilheteDTONovoResponse>() {
+        apostaBO.postConferirBilhetesNovo(codBarras, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
             @Override
-            public void onResponse(ResultadoConsultaBilheteDTONovoResponse response) {
+            public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
                 if (response != null && response.getPayload() != null && response.getPayload().getSituacao().getValor() == 100) {
-                    atualizarLayoutPremiado(response);
+                    //atualizarLayoutPremiado(response);
                 } else {
-                    atualizarLayoutNaoPremiado(response);
+                    //atualizarLayoutNaoPremiado(response);
                 }
                 AlertDialogUtils.dismiss();
             }

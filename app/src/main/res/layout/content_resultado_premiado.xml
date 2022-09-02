@@ -42,7 +42,7 @@
     <LinearLayout
         android:id="@+id/topoResultadoPremioLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="111dp"
+        android:layout_height="wrap_content"
         android:background="@color/megasenaescuro"
         android:orientation="vertical">
 
@@ -62,12 +62,26 @@
             android:id="@+id/valorPremioTituloTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:lineSpacingExtra="10dp"
             android:text="@string/label_voce_foi_premiado"
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="20.1sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/nsbBilhete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:lineSpacingExtra="10dp"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="16.1sp"
             android:textStyle="bold" />
     </LinearLayout>
 

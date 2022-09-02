@@ -25,6 +25,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
+import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -52,7 +53,6 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
             return stringBuilder.toString();
         };
 
-
         buttonContinuarInsercaoManualBilhetes = findViewById(R.id.buttonContinuarInsercaoManualBilhetes);
 
         editTextLoterico = findViewById(R.id.editTextLoterico);
@@ -68,16 +68,21 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                 Toast.makeText(InsercaoManualCodBarrasActivity.this, getResources().getString(R.string.informe_codigo_bilhete), Toast.LENGTH_SHORT).show();
             }else{
                 try {
-                    String nsb = removerMascara(editTextNumeroBilhete);
                     String loterico = removerMascaraLoterico(editTextLoterico).replace(".","");
 
+                    String code;
+                    LeituraBilheteEnum tipo;
                     if (loterico != null && !loterico.isEmpty()){
-                        String code = Crypto.cripfyBarcode(nsb+"=="+loterico);
-                        ResultadoLerBilhetesNovoActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).nsb(editTextNumeroBilhete.getText().toString()).start();
+                        String nsbSemMascara = removerMascara(editTextNumeroBilhete);
+                        code = Crypto.cripfyBarcode(nsbSemMascara+"=="+loterico);
+                        tipo = LeituraBilheteEnum.QR_CODE;
                     } else {
-                        String code = Crypto.cripfyBarcode(removerMascara(editTextNumeroBilhete));
-                        ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
+                        code = Crypto.cripfyBarcode(removerMascara(editTextNumeroBilhete));
+                        tipo = LeituraBilheteEnum.CODIGO_BARRAS;
                     }
+                    ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this)
+                                                 .codBarras(code).nsb(editTextNumeroBilhete.getText().toString())
+                                                 .tipoLeitura(tipo).start();
 
                     //ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
                 } catch (NoSuchAlgorithmException e) {

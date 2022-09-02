@@ -26,7 +26,7 @@ public class ContentResultadoPremiado extends LinearLayout {
     protected LinearLayout premioInfoLinearLayout,topoModalidadeResultadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout, topoResultadoPremioLinearLayout, premioGanhoLinearLayout;
 
     @ViewById
-    protected TextView valorEstimativaConcursoAtualTextView,valorPremioTituloTextView,tituloModalidadeTextView, proximoSorteioTextView;
+    protected TextView valorEstimativaConcursoAtualTextView,valorPremioTituloTextView,tituloModalidadeTextView, proximoSorteioTextView, nsbBilhete;
 
     @ViewById
     protected ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
@@ -70,6 +70,8 @@ public class ContentResultadoPremiado extends LinearLayout {
     }
 
     public TextView getValorPremioTituloTextView() { return valorPremioTituloTextView; }
+
+    public TextView getNSBTextView() { return nsbBilhete; }
 
     public TextView getValorEstimativaConcursoAtualTextView() { return valorEstimativaConcursoAtualTextView; }
 

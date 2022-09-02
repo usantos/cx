@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -30,21 +28,21 @@ import java.util.Objects;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StatusBilhete;
+import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
+import br.gov.caixa.loterias.apostas.model.model.ConferirBilheteModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 @EActivity(R.layout.activity_resultado_ler_bilhetes)
 public class ResultadoLerBilhetesActivity extends AppCompatActivity {
@@ -69,16 +67,30 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     protected ContentResultadoPremiado contentResultadoPremiado;
 
     @Extra
-    String codBarras;
+    protected String codBarras;
+
+    @Extra
+    protected LeituraBilheteEnum tipoLeitura;
+
+    @Extra
+    protected String nsb;
 
     private ResultadoConsultaBilheteDTO resultadoConsultaBilheteDTO;
     private ModalidadeEnum modalidadeEnum;
+
+    private ConferirBilheteModel model;
 
     @AfterViews
     public void init() {
         contentResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.GONE);
         contentResultadoPremiado.getButtonVerDetalheAposta().setVisibility(View.GONE);
         createToolBar();
+        model = new ConferirBilheteModel(ResultadoLerBilhetesActivity.this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         postLerBilhetes();
     }
 
@@ -122,34 +134,59 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
 
     private void postLerBilhetes() {
-        final AlertDialog alert = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(this);
+        switch (tipoLeitura){
+            case CODIGO_BARRAS:
+                conferirCodBarras();
+                break;
+            case QR_CODE:
+                conferirQrCode();
+                break;
+        }
+    }
 
-        apostaBO.postConferirBilhetes(codBarras, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
+    private void conferirQrCode() {
+        model.conferirBilheteQrCode(codBarras, new OnSilceListener<ResultadoConsultaBilheteDTO>() {
             @Override
-            public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
-                alert.dismiss();
-                resultadoConsultaBilheteDTO = response.getPayload();
+            public void success(ResultadoConsultaBilheteDTO payload) {
+                resultadoConsultaBilheteDTO = payload;
+                if (payload != null && payload.getSituacao().getValor() == 100) {
+                    atualizarLayoutPremiado();
+                } else {
+                    atualizarLayoutNaoPremiado();
+                }
+                AlertDialogUtils.dismiss();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        });
+    }
+
+    private void conferirCodBarras() {
+        model.conferirBilhete(codBarras, new OnSilceListener<ResultadoConsultaBilheteDTO>() {
+            @Override
+            public void success(ResultadoConsultaBilheteDTO payload) {
+                AlertDialogUtils.dismiss();
+                resultadoConsultaBilheteDTO = payload;
                 if (Objects.equals(resultadoConsultaBilheteDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PREMIADA.getValor())) {
                     atualizarLayoutPremiado();
                     RateUtils.avaliarAplicativo(ResultadoLerBilhetesActivity.this, true);
                 } else {
                     atualizarLayoutNaoPremiado();
                 }
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ResultadoLerBilhetesActivity.this);
-                }
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
-                alert.dismiss();
-                RedirectNetwork.checkRedirect( error, ResultadoLerBilhetesActivity.this );
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
             }
         });
     }
 
     private void atualizarLayoutPremiado() {
-
         corpoBilhetePremiadoLinearLayout.setVisibility(View.VISIBLE);
         corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.GONE);
 
@@ -171,7 +208,6 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
         }
 
-
         if (modalidadeEnum == ModalidadeEnum.MAIS_MILIONARIA){
             contentResultadoPremiado.getTituloModalidadeTextView().setText(getResources().getString(R.string.label_mais_milionaria_acentuado));
         } else {
@@ -184,14 +220,18 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             informacoesPremioZeradoLayout.setVisibility(View.GONE);
             informacoesPremioLayout.setVisibility(View.VISIBLE);
 
-            contentResultadoPremiado.getValorPremioTituloTextView().setText( getResources().getString(R.string.label_voce_foi_premiado).replace(getResources().getString(R.string.chave_valor_premio_chave), ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido())));
+            String label = getResources().getString(R.string.label_voce_foi_premiado).replace(getResources().getString(R.string.chave_valor_premio_chave), ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido()));
+            contentResultadoPremiado.getValorPremioTituloTextView().setText(label);
 
             contentResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.VISIBLE);
             createListPremiacao();
         }
         else {
-            contentResultadoPremiado.getValorPremioTituloTextView().setText(R.string.label_voce_foi_premiado_exclamacao);
+            String label = getResources().getString(R.string.label_voce_foi_premiado_exclamacao);
+            contentResultadoPremiado.getValorPremioTituloTextView().setText(label);
         }
+
+        checkNsb();
 
         if (parametroSimulacao != null) {
             if (parametroSimulacao.getProximoConcurso() != null) {
@@ -201,13 +241,21 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }
     }
 
+    private void checkNsb() {
+        if (nsb != null && !nsb.isEmpty()){
+            contentResultadoPremiado.getNSBTextView().setVisibility(View.VISIBLE);
+            contentResultadoPremiado.getNSBTextView().setText("\nNSB " + nsb);
+        } else {
+            contentResultadoPremiado.getNSBTextView().setVisibility(View.GONE);
+        }
+    }
+
     @Click(R.id.botaoAposteAgora)
     protected void clickBotaoAposteAgora() {
         Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity_.class);
         it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
         it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
         startActivity(it);
-
     }
 
     private void atualizarLayoutNaoPremiado() {
