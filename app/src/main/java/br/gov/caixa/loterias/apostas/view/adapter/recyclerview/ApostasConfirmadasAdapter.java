@@ -75,7 +75,7 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
     }
 
     private boolean isListaVazia() {
-        return list.size() == 0;
+        return (list == null) || (list.size() == 0);
     }
 
     @Override

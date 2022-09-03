@@ -109,7 +109,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private int numeroDataSelecionada = 1;
     private boolean chamarApostaNovamente = true;
     private MesAnoDTOResponse resultMesAno;
-    private Long rowCount;
+    private Long rowCount = Long.MAX_VALUE;
 
     private ApostaPageRequest page;
 
@@ -373,13 +373,19 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 adapter.notifyItemRangeInserted(cont, apostasList.size());
             }
 
-            if (apostasConfirmadasRecyclerView.getAdapter().getItemCount() >= rowCount) {
-                hasMoreItems = false;
-            }
+            try {
+                if (apostasConfirmadasRecyclerView != null && apostasConfirmadasRecyclerView.getAdapter() != null){
+                    if (((ApostasConfirmadasAdapter) apostasConfirmadasRecyclerView.getAdapter()).getItemCount() >= rowCount) {
+                        hasMoreItems = false;
+                    }
+                }
+            } catch (Exception e){}
 
         }
         if (TestVisao.isTeste()){
-            TestVisao.toast("Tamanho carregado: " + apostasConfirmadasRecyclerView.getAdapter().getItemCount() + "\nTotal: " + rowCount);
+            try {
+                TestVisao.toast("Tamanho carregado: " + apostasConfirmadasRecyclerView.getAdapter().getItemCount() + "\nTotal: " + rowCount);
+            }catch (Exception e){}
         }
     }
 
