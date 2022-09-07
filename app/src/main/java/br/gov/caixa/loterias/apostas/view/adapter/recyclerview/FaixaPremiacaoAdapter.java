@@ -19,9 +19,11 @@ import br.gov.caixa.loterias.apostas.view.custom.ItemListaFaixaPremiacao_;
 public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAdapter.FaixaPremiacaoHolder> {
 
     private List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList;
+    private int color;
 
-    public FaixaPremiacaoAdapter(List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList) {
+    public FaixaPremiacaoAdapter(List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList, int color) {
         this.itemListaFaixaPremiacaoList = itemListaFaixaPremiacaoList;
+        this.color = color;
     }
 
     @Override
@@ -36,7 +38,11 @@ public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAd
 
     @Override
     public void onBindViewHolder(FaixaPremiacaoHolder holder, int position) {
-        holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position));
+        if (position % 2 == 0){
+            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), color);
+        } else {
+            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), -1);
+        }
     }
 
     @Override

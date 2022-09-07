@@ -79,6 +79,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private ModalidadeEnum modalidadeEnum;
 
     private ConferirBilheteModel model;
+    private EstiloModalidade estiloModalidade;
 
     @AfterViews
     public void init() {
@@ -191,7 +192,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.GONE);
 
         modalidadeEnum = ModalidadeEnum.fromInteger( resultadoConsultaBilheteDTO.getModalidadeDTO().getValor());
-        EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
+        estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
@@ -243,8 +244,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
     private void checkNsb() {
         if (nsb != null && !nsb.isEmpty()){
-            contentResultadoPremiado.getNSBTextView().setVisibility(View.VISIBLE);
-            contentResultadoPremiado.getNSBTextView().setText("\nNSB " + nsb);
+            contentResultadoPremiado.getNSBTextView().setVisibility(View.GONE);
+            contentResultadoPremiado.getNSBTextView().setText("\nNSB\n" + nsb);
         } else {
             contentResultadoPremiado.getNSBTextView().setVisibility(View.GONE);
         }
@@ -294,7 +295,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private void createListPremiacao() {
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
 
-        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(resultadoConsultaBilheteDTO.getPremioDTO())));
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(resultadoConsultaBilheteDTO.getPremioDTO()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -541,11 +541,26 @@ public class ViewUtils {
                 if (concurso.getConcurso() != null && concurso.getFaixas() != null) {
                     for (FaixaPremiadaDTO faixa : concurso.getFaixas()) {
                         faixa.setId(Long.parseLong(concurso.getConcurso().getNumero().toString()));
+                        faixa.setQtd(1);
+                        faixa.setSituacao(concurso.getSituacao());
+
                         faixaPremiadaDTOList.add(faixa);
                     }
                 }
             }
         }
+
+        if(premioDTO != null && premioDTO.getConcursosNaoPremiado() != null){
+            for (ConcursoPremiadoDTO concurso : premioDTO.getConcursosNaoPremiado()) {
+                FaixaPremiadaDTO faixa = new FaixaPremiadaDTO();
+                faixa.setId(Long.parseLong(concurso.getConcurso().getNumero().toString()));
+                faixa.setSituacao(concurso.getSituacao());
+                faixa.setQtd(-1);
+
+                faixaPremiadaDTOList.add(faixa);
+            }
+        }
+
         return faixaPremiadaDTOList;
     }
 

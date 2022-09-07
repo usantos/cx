@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,6 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LerQrCodeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
+import br.gov.caixa.loterias.apostas.utils.BilheteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
@@ -44,6 +44,7 @@ public class LerBilhetesActivity extends AppCompatActivity {
     private boolean isActivityRunning;
     private boolean isScanned;
     private boolean isRunning10Seg;
+    private boolean isPaused;
 
     private Handler handler10Sec;
 
@@ -54,50 +55,56 @@ public class LerBilhetesActivity extends AppCompatActivity {
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-            try {
-                isScanned = true;
-                pause(barcodeScannerView);
-                if (result.getText().length() >= 23){
-                    try {
-                        LerQrCodeDTO lerQrCodeDTO = new Gson().fromJson(result.getText().replace("APOSTA", ""), LerQrCodeDTO.class);
+            if (!isPaused){
+                try {
+                    isScanned = true;
+                    pause(barcodeScannerView);
+                    if (result.getText().length() >= 23){
+                        String             code, nsbFormatado;
+                        LeituraBilheteEnum tipo;
+                        try {
+                            LerQrCodeDTO lerQrCodeDTO = new Gson().fromJson(result.getText().replace("APOSTA", ""), LerQrCodeDTO.class);
 
-                        //Cria a string com o formato desejado e depois criptografa
-                        String envio = lerQrCodeDTO.getNsb()+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getPro()+"=="+ModalidadeEnum.fromInteger(Integer.parseInt(lerQrCodeDTO.getPro()))+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getCf();
+                            //Cria a string com o formato desejado e depois criptografa
+                            String envio = lerQrCodeDTO.getNsb()+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getPro()+"=="+ ModalidadeEnum.fromInteger(Integer.parseInt(lerQrCodeDTO.getPro()))+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getCf();
 
-                        String code = Crypto.cripfyBarcode(envio);
-                        String nsbFormatado = getNSBFormatado(lerQrCodeDTO.getNsb());
+                            code = Crypto.cripfyBarcode(envio);
+                            nsbFormatado = BilheteUtils.getNSBFormatado(lerQrCodeDTO.getNsb());
+                            tipo = LeituraBilheteEnum.QR_CODE;
+                        }catch (Exception e){
+                            nsbFormatado = BilheteUtils.getNSBFormatado(result.getText());
+                            code = Crypto.cripfyBarcode(result.getText());
+                            tipo = LeituraBilheteEnum.CODIGO_BARRAS;
+                        }
 
-                        //Chama activity nova para resultados
-                        ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).nsb(nsbFormatado).tipoLeitura(LeituraBilheteEnum.QR_CODE).startForResult(INTENT_RESULT);
-                    }catch (Exception e){
-                        String nsbFormatado = getNSBFormatado(result.getText());
-                        String code = Crypto.cripfyBarcode(result.getText());
-                        ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).nsb(nsbFormatado).tipoLeitura(LeituraBilheteEnum.CODIGO_BARRAS).startForResult(INTENT_RESULT);
+                        chamouresultado = true;
+                        if (handler10Sec != null){
+                            handler10Sec.removeCallbacksAndMessages(null);
+                        }
+                        isRunning10Seg = false;
+                        isScanned = false;
+                        ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this)
+                                                     .codBarras(code).nsb(nsbFormatado)
+                                                     .tipoLeitura(tipo)
+                                                     .startForResult(INTENT_RESULT);
+                    } else {
+                        isScanned = false;
+                        resume(barcodeScannerView);
+                        chamouresultado = false;
                     }
-
-                    chamouresultado = true;
-                    if (handler10Sec != null){
-                        handler10Sec.removeCallbacksAndMessages(null);
-                    }
-                    isRunning10Seg = false;
-                    isScanned = false;
-                } else {
-                    isScanned = false;
-                    resume(barcodeScannerView);
-                    chamouresultado = false;
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeySpecException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
                 }
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidKeySpecException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
             }
         }
 
@@ -105,17 +112,6 @@ public class LerBilhetesActivity extends AppCompatActivity {
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
-
-    @NonNull
-    private String getNSBFormatado(String nsb) {
-        String nsbFormatado = "";
-        try {
-            nsbFormatado = nsb.substring(0, 4) + "-" + nsb.substring(4, nsb.length()-2) + "-" + nsb.substring(nsb.length()-2);
-        }catch (Exception e){
-            return nsb;
-        }
-        return nsbFormatado;
-    }
 
     @Override
     protected void onStart() {
@@ -208,23 +204,25 @@ public class LerBilhetesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        resume(barcodeScannerView);
         startDezSegundos();
         isScanned = false;
-        resume(barcodeScannerView);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        barcodeScannerView.pause();
+        pause(barcodeScannerView);
     }
 
     public void pause(View view) {
         barcodeScannerView.pause();
+        isPaused = true;
     }
 
     public void resume(View view) {
         barcodeScannerView.resume();
+        isPaused = false;
     }
 
     public void triggerScan(View view) {

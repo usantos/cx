@@ -26,6 +26,7 @@ import javax.crypto.NoSuchPaddingException;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
+import br.gov.caixa.loterias.apostas.utils.BilheteUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -80,8 +81,9 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                         code = Crypto.cripfyBarcode(removerMascara(editTextNumeroBilhete));
                         tipo = LeituraBilheteEnum.CODIGO_BARRAS;
                     }
+                    String nsbFormatado = BilheteUtils.getNSBFormatado(editTextNumeroBilhete.getText().toString());
                     ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this)
-                                                 .codBarras(code).nsb(editTextNumeroBilhete.getText().toString())
+                                                 .codBarras(code).nsb(nsbFormatado)
                                                  .tipoLeitura(tipo).start();
 
                     //ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
