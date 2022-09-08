@@ -65,8 +65,16 @@ public class LerBilhetesActivity extends AppCompatActivity {
                         try {
                             LerQrCodeDTO lerQrCodeDTO = new Gson().fromJson(result.getText().replace("APOSTA", ""), LerQrCodeDTO.class);
 
+                            if (lerQrCodeDTO.getCf() == null || lerQrCodeDTO.getCf().isEmpty()){
+                                lerQrCodeDTO.setCf(lerQrCodeDTO.getCi());
+                            }
+
                             //Cria a string com o formato desejado e depois criptografa
-                            String envio = lerQrCodeDTO.getNsb()+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getPro()+"=="+ ModalidadeEnum.fromInteger(Integer.parseInt(lerQrCodeDTO.getPro()))+"=="+lerQrCodeDTO.getCi()+"=="+lerQrCodeDTO.getCf();
+                            String envio = lerQrCodeDTO.getNsb()+"=="+
+                                    lerQrCodeDTO.getCi()+"=="+
+                                    lerQrCodeDTO.getPro()+"=="+
+                                    ModalidadeEnum.fromInteger(Integer.parseInt(lerQrCodeDTO.getPro()))+"=="
+                                    +lerQrCodeDTO.getCf();
 
                             code = Crypto.cripfyBarcode(envio);
                             nsbFormatado = BilheteUtils.getNSBFormatado(lerQrCodeDTO.getNsb());

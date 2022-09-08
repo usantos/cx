@@ -564,6 +564,55 @@ public class ViewUtils {
         return faixaPremiadaDTOList;
     }
 
+    public static List<FaixaPremiadaDTO> getFaixaNaoPremiadoDTO(PremioDTO premioDTO) {
+        List<FaixaPremiadaDTO> faixaPremiadaDTOList = new ArrayList<>();
+
+        if(premioDTO != null && premioDTO.getConcursosNaoPremiado() != null){
+            for (ConcursoPremiadoDTO concurso : premioDTO.getConcursosNaoPremiado()) {
+                FaixaPremiadaDTO faixa = new FaixaPremiadaDTO();
+                faixa.setId(Long.parseLong(concurso.getConcurso().getNumero().toString()));
+                faixa.setSituacao(concurso.getSituacao());
+                faixa.setQtd(-1);
+
+                faixaPremiadaDTOList.add(faixa);
+            }
+        }
+
+        return faixaPremiadaDTOList;
+    }
+
+    public static List<FaixaPremiadaDTO> getFaixaPremiadoNaoPremiado(PremioDTO premioDTO) {
+        List<FaixaPremiadaDTO> faixaPremiadaDTOList = new ArrayList<>();
+
+        if (premioDTO != null && premioDTO.getConcursos() != null) {
+            for (ConcursoPremiadoDTO concurso : premioDTO.getConcursos()) {
+
+                if (concurso.getConcurso() != null && concurso.getFaixas() != null) {
+                    for (FaixaPremiadaDTO faixa : concurso.getFaixas()) {
+                        faixa.setId(Long.parseLong(concurso.getConcurso().getNumero().toString()));
+                        faixa.setQtd(1);
+                        faixa.setSituacao(concurso.getSituacao());
+
+                        faixaPremiadaDTOList.add(faixa);
+                    }
+                }
+            }
+        }
+
+        if(premioDTO != null && premioDTO.getConcursosNaoPremiado() != null){
+            for (ConcursoPremiadoDTO concurso : premioDTO.getConcursosNaoPremiado()) {
+                FaixaPremiadaDTO faixa = new FaixaPremiadaDTO();
+                faixa.setId(Long.parseLong(concurso.getConcurso().getNumero().toString()));
+                faixa.setSituacao(concurso.getSituacao());
+                faixa.setQtd(-1);
+
+                faixaPremiadaDTOList.add(faixa);
+            }
+        }
+
+        return faixaPremiadaDTOList;
+    }
+
     /**
      * Método reponsável por retornar ParametroSimulacao da SessaoUsuario de uma modalidade
      *

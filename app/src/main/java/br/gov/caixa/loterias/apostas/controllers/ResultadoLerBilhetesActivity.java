@@ -23,12 +23,14 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTO;
@@ -151,8 +153,12 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             @Override
             public void success(ResultadoConsultaBilheteDTO payload) {
                 resultadoConsultaBilheteDTO = payload;
-                if (payload != null && payload.getSituacao().getValor() == 100) {
+                if (isPremiado(payload)) {
                     atualizarLayoutPremiado();
+                } else if (isPreescrito(payload)){
+                    atualizarLayoutApenasMensagem(R.string.label_concurso_prescrito);
+                } else if (isPremioPago(payload)){
+                    atualizarLayoutApenasMensagem(R.string.label_premio_pago);
                 } else {
                     atualizarLayoutNaoPremiado();
                 }
@@ -164,6 +170,18 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                 AlertDialogUtils.dismiss();
             }
         });
+    }
+
+    private boolean isPremioPago(ResultadoConsultaBilheteDTO payload) {
+        return payload != null && payload.getSituacao().getValor() == 11;
+    }
+
+    private boolean isPreescrito(ResultadoConsultaBilheteDTO payload) {
+        return payload != null && payload.getSituacao().getValor() == 10;
+    }
+
+    private boolean isPremiado(ResultadoConsultaBilheteDTO payload) {
+        return payload != null && payload.getSituacao().getValor() == 100;
     }
 
     private void conferirCodBarras() {
@@ -225,7 +243,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             contentResultadoPremiado.getValorPremioTituloTextView().setText(label);
 
             contentResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.VISIBLE);
-            createListPremiacao();
+            List<FaixaPremiadaDTO> faixas = ViewUtils.getFaixaPremiadoNaoPremiado(resultadoConsultaBilheteDTO.getPremioDTO());
+            createListPremiacao(faixas);
         }
         else {
             String label = getResources().getString(R.string.label_voce_foi_premiado_exclamacao);
@@ -259,17 +278,32 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         startActivity(it);
     }
 
-    private void atualizarLayoutNaoPremiado() {
+    private void atualizarLayoutApenasMensagem(int label) {
         corpoBilhetePremiadoLinearLayout.setVisibility(View.GONE);
         corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.VISIBLE);
-        int status = -1;
-        if(resultadoConsultaBilheteDTO != null &&
-                resultadoConsultaBilheteDTO.getSituacao() != null &&
-                resultadoConsultaBilheteDTO.getSituacao().getValor() != null) {
-            status  = resultadoConsultaBilheteDTO.getSituacao().getValor().intValue();
-        }
-        switch (status){
-                case StatusBilhete.PRESCRITO:
+        statusResultadoNaoPremiadTextView.setText(label);
+    }
+
+    private void atualizarLayoutNaoPremiado() {
+        if (resultadoConsultaBilheteDTO != null &&
+                resultadoConsultaBilheteDTO.getPremioDTO() != null &&
+                resultadoConsultaBilheteDTO.getPremioDTO().getConcursosNaoPremiado() != null &&
+                !resultadoConsultaBilheteDTO.getPremioDTO().getConcursosNaoPremiado().isEmpty()){
+
+            contentResultadoPremiado.getTopoResultadoPremioLinearLayout().setVisibility(View.GONE);
+            createListPremiacao(ViewUtils.getFaixaNaoPremiadoDTO(resultadoConsultaBilheteDTO.getPremioDTO()));
+
+        } else {
+            corpoBilhetePremiadoLinearLayout.setVisibility(View.GONE);
+            corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.VISIBLE);
+            int status = -1;
+            if(resultadoConsultaBilheteDTO != null &&
+                    resultadoConsultaBilheteDTO.getSituacao() != null &&
+                    resultadoConsultaBilheteDTO.getSituacao().getValor() != null) {
+                status  = resultadoConsultaBilheteDTO.getSituacao().getValor().intValue();
+            }
+            switch (status){
+                case StatusBilhete.PRESCRITO://10
                     statusResultadoNaoPremiadTextView.setText(R.string.label_concurso_prescrito);
                     break;
                 case StatusBilhete.PREMIO_PAGO:
@@ -279,8 +313,9 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                 case StatusBilhete.NAO_APURADO:
                     statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
                     break;
-                    default:
-                        statusResultadoNaoPremiadTextView.setText(R.string.string_vazia);
+                default:
+                    statusResultadoNaoPremiadTextView.setText(R.string.string_vazia);
+            }
         }
     }
 
@@ -292,12 +327,12 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }
     }
 
-    private void createListPremiacao() {
+    private void createListPremiacao(List<FaixaPremiadaDTO>       faixa) {
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
+        FaixaPremiacaoAdapter adapter = new FaixaPremiacaoAdapter(faixa, ContextCompat.getColor(this, estiloModalidade.getCorClara()),
+                                                                                ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
 
-        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(resultadoConsultaBilheteDTO.getPremioDTO()),
-                                                                                             ContextCompat.getColor(this, estiloModalidade.getCorClara()),
-                                                                                             ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(adapter);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
