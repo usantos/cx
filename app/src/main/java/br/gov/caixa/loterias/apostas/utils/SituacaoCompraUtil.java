@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.utils;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 
 public class SituacaoCompraUtil {
-
 //    AZUL (POSITIVA),
 //        DEBITO_REALIZADO(6L),
 //        FINALIZADA(8L),
@@ -19,16 +18,6 @@ public class SituacaoCompraUtil {
 //        EM_PROCESSAMENTO(7L),
 //        EM_PROCESSAMENTO_REPRESADA(9L);
 
-//    CARRINHO(1L),
-//    DEBITO_INICIADO(2L),
-//    DEBITO_NAO_AUTORIZADO(3L),
-//    ESTORNADA(4L),
-//    CANCELADA(5L),
-//    DEBITO_REALIZADO(6L),
-//    EM_PROCESSAMENTO(7L),
-//    FINALIZADA(8L),
-//    EM_PROCESSAMENTO_REPRESADA(9L);
-
 	private static final int VALOR_CARRINHO = 1;
 	private static final int VALOR_DEBITO_INICIADO = 2;
 	private static final int VALOR_DEBITO_NAO_AUTORIZADO = 3;
@@ -39,28 +28,12 @@ public class SituacaoCompraUtil {
 	private static final int VALOR_FINALIZADA = 8;
 	private static final int VALOR_EM_PROCESSAMENTO_REPRESADA = 9;
 
-	//Confirmar com AJ
-	private static final int VALOR_EFETIVADA = 4;
-	//	private static final int VALOR_PREMIO_PAGO = 11;
-	//	public static boolean isPremioPago(DTOEnumLong situacao) {
-	//		return situacao.getValor() == VALOR_PREMIO_PAGO;
-	//	}
-
-	//Confirmar com AJ - Pois o valor 4 repete para EFETIVADA E ESTORNADA
-	public static boolean isEfetivada(DTOEnumLong situacao) {
-		return situacao.getValor() == VALOR_EFETIVADA;
-	}
-
 	public static boolean isDebitoNaoAutorizado(DTOEnumLong situacao) {
 		return situacao.getValor() == VALOR_DEBITO_NAO_AUTORIZADO;
 	}
 
 	public static boolean isCancelada(DTOEnumLong situacao) {
 		return situacao.getValor() == VALOR_CANCELADA;
-	}
-
-	public static boolean isFinalizada(DTOEnumLong situacao) {
-		return situacao.getValor() == VALOR_FINALIZADA;
 	}
 
 	public static boolean isSituacaoPositiva(DTOEnumLong situacao) {
