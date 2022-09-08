@@ -23,10 +23,12 @@ import br.gov.caixa.loterias.apostas.R;
 public class ContentResultadoPremiado extends LinearLayout {
 
     @ViewById
-    protected LinearLayout premioInfoLinearLayout,topoModalidadeResultadoLinearLayout, fundoBackgroundTrapezeResultadoLinearLayout, topoResultadoPremioLinearLayout, premioGanhoLinearLayout;
+    protected LinearLayout premioInfoLinearLayout,topoModalidadeResultadoLinearLayout,
+            fundoBackgroundTrapezeResultadoLinearLayout, topoResultadoPremioLinearLayout, premioGanhoLinearLayout;
 
     @ViewById
-    protected TextView valorEstimativaConcursoAtualTextView,valorPremioTituloTextView,tituloModalidadeTextView, proximoSorteioTextView, nsbBilhete;
+    protected TextView valorEstimativaConcursoAtualTextView,valorPremioTituloTextView,
+            tituloModalidadeTextView, proximoSorteioTextView, nsbBilhete, idPodeComemorar;
 
     @ViewById
     protected ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
@@ -72,6 +74,8 @@ public class ContentResultadoPremiado extends LinearLayout {
     public TextView getValorPremioTituloTextView() { return valorPremioTituloTextView; }
 
     public TextView getNSBTextView() { return nsbBilhete; }
+
+    public TextView getPodeComemorar() { return idPodeComemorar; }
 
     public TextView getValorEstimativaConcursoAtualTextView() { return valorEstimativaConcursoAtualTextView; }
 
