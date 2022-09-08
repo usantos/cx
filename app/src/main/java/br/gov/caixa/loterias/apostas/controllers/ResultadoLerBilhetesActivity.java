@@ -295,7 +295,9 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private void createListPremiacao() {
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
 
-        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(resultadoConsultaBilheteDTO.getPremioDTO()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(resultadoConsultaBilheteDTO.getPremioDTO()),
+                                                                                             ContextCompat.getColor(this, estiloModalidade.getCorClara()),
+                                                                                             ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

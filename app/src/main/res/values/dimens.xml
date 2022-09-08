@@ -12,4 +12,6 @@
     <dimen name="bottom_padding_120">120dp</dimen>
     <dimen name="image_size_small">20dp</dimen>
     <dimen name="text_margin_12">12dp</dimen>
+    <dimen name="text_size_line">11sp</dimen>
+    <dimen name="text_size_header">12sp</dimen>
 </resources>

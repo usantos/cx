@@ -16,7 +16,7 @@
         android:layout_gravity="center"
         android:textColor="@color/branco"
         android:textAlignment="center"
-        android:textSize="14sp" />
+        android:textSize="@dimen/text_size_line" />
 
     <TextView
         style="@style/ArialMT"
@@ -28,7 +28,7 @@
         android:text="@string/situaco"
         android:textColor="@color/branco"
         android:textAlignment="center"
-        android:textSize="14sp" />
+        android:textSize="@dimen/text_size_line" />
 
     <TextView
         style="@style/ArialMT"
@@ -40,7 +40,7 @@
         android:text="@string/faixa"
         android:textColor="@color/branco"
         android:textAlignment="center"
-        android:textSize="14sp" />
+        android:textSize="@dimen/text_size_line" />
 
     <TextView
         style="@style/ArialMT"
@@ -52,7 +52,7 @@
         android:text="Qtde"
         android:textColor="@color/branco"
         android:textAlignment="center"
-        android:textSize="14sp" />
+        android:textSize="@dimen/text_size_line" />
 
     <TextView
         style="@style/ArialMT"
@@ -64,7 +64,7 @@
         android:text="@string/title_sorteio"
         android:textColor="@color/branco"
         android:textAlignment="center"
-        android:textSize="14sp" />
+        android:textSize="@dimen/text_size_line" />
 
     <TextView
         style="@style/ArialMT"
@@ -76,6 +76,6 @@
         android:text="@string/valor"
         android:textColor="@color/branco"
         android:textAlignment="center"
-        android:textSize="14sp" />
+        android:textSize="@dimen/text_size_line" />
 
 </LinearLayout>

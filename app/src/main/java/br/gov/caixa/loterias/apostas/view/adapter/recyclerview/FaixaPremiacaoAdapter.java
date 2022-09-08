@@ -20,10 +20,12 @@ public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAd
 
     private List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList;
     private int color;
+    private int darkColor;
 
-    public FaixaPremiacaoAdapter(List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList, int color) {
+    public FaixaPremiacaoAdapter(List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList, int color, int darkColor) {
         this.itemListaFaixaPremiacaoList = itemListaFaixaPremiacaoList;
         this.color = color;
+        this.darkColor = darkColor;
     }
 
     @Override
@@ -39,9 +41,9 @@ public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAd
     @Override
     public void onBindViewHolder(FaixaPremiacaoHolder holder, int position) {
         if (position % 2 == 0){
-            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), color);
+            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), darkColor);
         } else {
-            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), -1);
+            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), color);
         }
     }
 

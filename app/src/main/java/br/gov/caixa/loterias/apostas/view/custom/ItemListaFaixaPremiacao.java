@@ -46,17 +46,14 @@ public class ItemListaFaixaPremiacao extends LinearLayout {
     }
 
     public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int color) {
-
-        if (color > 0){
-            conteudoLinha.setBackgroundColor(color);
-        }
+        conteudoLinha.setBackgroundColor(color);
 
         concursoTextView.setText(String.format(Locale.getDefault(), "%d", faixaPremiadaDTO.getId()));
         situacaoTextView.setText(faixaPremiadaDTO.getSituacao());
 
         if (faixaPremiadaDTO.getNome() != null && !faixaPremiadaDTO.getNome().isEmpty()){
             faixaPremiacaoTextView.setText(faixaPremiadaDTO.getNome());
-            faixaPremiacaoTextView.setTextSize(12);
+            faixaPremiacaoTextView.setTextSize(10);
         } else {
             faixaPremiacaoTextView.setText("-");
         }
