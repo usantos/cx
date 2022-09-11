@@ -17,6 +17,7 @@ import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -50,6 +51,19 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		buscaMeiosPagamentos();
 	}
 
+	private void apresentaAlertaPreCompra() {
+		String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
+		ViewUtils.alertTitleCustomPositiveListener(FormaPagamentoActivity.this,
+												   "Cancelar",
+												   "Confirmar",
+												   FormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valor), (dialog, which) -> {
+			AlertDialogUtils.dismiss();
+			dialog.dismiss();
+		}, (dialog, which) -> {
+			finish();
+		} );
+	}
+
 	private void buscaMeiosPagamentos() {
 		AlertDialogUtils.show(this);
 		model.buscaMeiosPagamentos(onMeiosPagamentosListener());
@@ -70,6 +84,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 				}
 
 				AlertDialogUtils.dismiss();
+				apresentaAlertaPreCompra();
 			}
 
 			@Override
