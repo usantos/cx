@@ -90,7 +90,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         configuraSpin();
         apresentaTextCartoes();
 
-        if (model.isRecargaPay(config)){
+        if (model.isRecargaPay(config.getMeioPagamento().getValor())){
             findViewById(R.id.containerComboSalvar).setVisibility(View.INVISIBLE);
         }
     }
@@ -194,7 +194,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new OnSilceListener<MeioPagamentoDTO>() {
             @Override
             public void success(MeioPagamentoDTO payload) {
-                if (model.isMercadoPago(config)){
+                if (model.isMercadoPago(config.getMeioPagamento().getValor())){
                     realizaCompraMercadoPago();
                 } else {
                     realizaCompraRecargaPay();

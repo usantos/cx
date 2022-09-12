@@ -106,9 +106,9 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void buscaCartoes() {
 		AlertDialogUtils.show(getContext());
-		if (model.isMercadoPago(config)){
+		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
 			model.buscaCartoesMercadoPago(onBuscaMercadoPagoListener());
-		} else if (model.isRecargaPay(config)){
+		} else if (model.isRecargaPay(config.getMeioPagamento().getValor())){
 			// model.buscaCartoesRecargaPay(onBuscaRecargaPayListener());
 		}
 	}
@@ -201,7 +201,7 @@ public class MeioPagamentoFragment extends Fragment {
 	private void onPositiveCVV(RetornoCartao cartao) {
 		int tamanhoCVV = userInput.getText().toString().length();
 		if (tamanhoCVV == 3){
-			if (model.isMercadoPago(config)){
+			if (model.isMercadoPago(config.getMeioPagamento().getValor())){
 				requestBody = model.preencheDadosPagamentoCartaoSalvo(cartao, userInput.getText());
 				runOnUiThread(() -> AlertDialogUtils.show(getContext()));
 				model.realizaCompraMercadoPago(cartao.getPrimeirosDigitos(), requestBody, false,onCompraAsyncListener());
@@ -214,9 +214,9 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void deletaCartao(RetornoCartao cartao, int position) {
 		AlertDialogUtils.show(getContext());
-		if (model.isMercadoPago(config)){
+		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
 			model.deletaCartaoMercadoPago(cartao.getIdCartao(), onDeletaCartao(position));
-		} else if (model.isRecargaPay(config)){
+		} else if (model.isRecargaPay(config.getMeioPagamento().getValor())){
 			//model.deletaCartaoRecargaPay();
 		}
 	}

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -21,7 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
+import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.MeusCartoesRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
@@ -47,7 +51,9 @@ public class MeusCartoesFragment extends Fragment {
 	private RecyclerView listaCartoes;
 	private MeusCartoesRecyclerViewAdapter adapter;
 
-	private List<RetornoCartao> cartaos;
+	private List<RetornoCartao> cartoes;
+
+	private CartoesModel model;
 
 	public MeusCartoesFragment() {
 		// Required empty public constructor
@@ -84,11 +90,12 @@ public class MeusCartoesFragment extends Fragment {
 			TypeToken<List<RetornoCartao>> token = new TypeToken<List<RetornoCartao>>() {};
 			String                         cartoesString = getArguments().getString(ARG_CARTOES);
 			if(cartoesString != null && cartoesString.length() > 0){
-				cartaos = new Gson().fromJson(cartoesString, token.getType());
+				cartoes = new Gson().fromJson(cartoesString, token.getType());
 			} else {
-				cartaos = new ArrayList<>();
+				cartoes = new ArrayList<>();
 			}
 
+			model = new CartoesModel(getActivity());
 		}
 	}
 
@@ -104,16 +111,11 @@ public class MeusCartoesFragment extends Fragment {
 		conteudo = view.findViewById(R.id.conteudoCartoes);
 		listaCartoes = view.findViewById(R.id.listaCartoes);
 
-		if (cartaos == null || cartaos.isEmpty()){
-			conteudo.setVisibility(View.GONE);
-		} else {
-			conteudo.setVisibility(View.VISIBLE);
-			adapter = new MeusCartoesRecyclerViewAdapter(cartaos, getContext(), onRecyclerlistener());
-			RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,
-																	false);
-			listaCartoes.setLayoutManager(lm);
-			listaCartoes.setAdapter(adapter);
-		}
+		adapter = new MeusCartoesRecyclerViewAdapter(cartoes, getContext(), onRecyclerlistener());
+		RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL,
+																false);
+		listaCartoes.setLayoutManager(lm);
+		listaCartoes.setAdapter(adapter);
 
 		aplicaConfig();
 
@@ -125,39 +127,38 @@ public class MeusCartoesFragment extends Fragment {
 		return new OnMeusCartoesListener<MeuCartaoHolder>() {
 			@Override
 			public void favoritar(MeuCartaoHolder holder, int position) {
-				RetornoCartao cartao = cartaos.get(position);
-				if (!cartaos.get(position).isFav()){
-					if (contemCartaoFavorito()) {
-						Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.alterar_favorito_interrogacao),
-																							  getString(R.string.cancelar),
-																							  getString(R.string.confirmar),
-																							  getString(R.string.confirmar_alterar_cartao_favorito),
-																							  (dialog, which) -> {
-																								  adapter.atualizaCartaoFavorito(cartao);
-																							  });
-						dialogConfirmacao.show();
-					} else {
-						adapter.atualizaCartaoFavorito(cartao);
-					}
-				}
+//				RetornoCartao cartao = cartoes.get(position);
+//				if (!cartoes.get(position).isFav()){
+//					if (contemCartaoFavorito()) {
+//						Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.alterar_favorito_interrogacao),
+//																							  getString(R.string.cancelar),
+//																							  getString(R.string.confirmar),
+//																							  getString(R.string.confirmar_alterar_cartao_favorito),
+//																							  (dialog, which) -> {
+//																								  adapter.atualizaCartaoFavorito(cartao);
+//																							  });
+//						dialogConfirmacao.show();
+//					} else {
+//						adapter.atualizaCartaoFavorito(cartao);
+//					}
+//				}
 			}
 
 			@Override
 			public void deletar(MeuCartaoHolder holder, int position) {
-				if (cartaos.get(position).isFav()){
+				if (cartoes.get(position).isFav()){
 					ViewUtils.alertTitleButton(getContext(),
 											   R.string.excluir_cartao_interrogacao,
 											   getString(R.string.nao_e_possivel_eliminar_cartao_favorito),
 											   getString(R.string.title_entendi));
 				} else {
-					String mensagem = getString(R.string.deseja_realmente_exluir_cartao) + " " + cartaos.get(position).getUltimosDigitos() + "?";
+					String mensagem = getString(R.string.deseja_realmente_exluir_cartao) + " " + cartoes.get(position).getUltimosDigitos() + "?";
 					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.excluir_cartao_interrogacao),
 																				getString(R.string.label_nao),
 																				getString(R.string.confirmar),
 																						  mensagem,
 																				(dialog, which) -> {
-																					cartaos.remove(position);
-																					adapter.notifyDataSetChanged();
+																					deletaCartao(cartoes.get(position), position);
 																				});
 					dialogConfirmacao.show();
 				}
@@ -165,8 +166,34 @@ public class MeusCartoesFragment extends Fragment {
 		};
 	}
 
+	private void deletaCartao(RetornoCartao cartao, int position) {
+		AlertDialogUtils.show(getContext());
+		if (model.isMercadoPago(config.getValueMeioPagamento())){
+			model.deletaCartaoMercadoPago(cartao.getIdCartao(), onDeletaCartao(position));
+		} else if (model.isRecargaPay(config.getValueMeioPagamento())){
+			//model.deletaCartaoRecargaPay();
+		}
+	}
+
+	private OnSilceListener<List<RetornoCartao>> onDeletaCartao(int position) {
+		return new OnSilceListener<List<RetornoCartao>>() {
+			@Override
+			public void success(List<RetornoCartao> payload) {
+				AlertDialogUtils.dismiss();
+
+				cartoes.remove(position);
+				adapter.notifyDataSetChanged();
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
+	}
+
 	private boolean contemCartaoFavorito() {
-		for (RetornoCartao cartao: cartaos){
+		for (RetornoCartao cartao: cartoes){
 			if (cartao.isFav()){
 				return true;
 			}

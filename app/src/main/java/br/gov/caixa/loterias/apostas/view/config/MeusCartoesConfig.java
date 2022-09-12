@@ -6,11 +6,13 @@ public class MeusCartoesConfig implements Serializable {
 	private int idCorBarra;
 	private int idImagem;
 	private int idMensagem;
+	private Long valueMeioPagamento;
 
-	public MeusCartoesConfig(int idCorBarra, int idImagem, int idMensagem) {
+	public MeusCartoesConfig(int idCorBarra, int idImagem, int idMensagem, Long valueMeioPagamento) {
 		this.idCorBarra = idCorBarra;
 		this.idImagem = idImagem;
 		this.idMensagem = idMensagem;
+		this.valueMeioPagamento = valueMeioPagamento;
 	}
 
 	public int getIdCorBarra() {
@@ -23,5 +25,9 @@ public class MeusCartoesConfig implements Serializable {
 
 	public int getIdMensagem(){
 		return idMensagem;
+	}
+
+	public Long getValueMeioPagamento() {
+		return valueMeioPagamento;
 	}
 }
