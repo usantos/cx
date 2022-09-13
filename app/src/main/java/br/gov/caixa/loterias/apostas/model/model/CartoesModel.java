@@ -132,9 +132,9 @@ public class CartoesModel extends AppModel {
 		return jsonBody.toString();
 	}
 
-	public void realizaCompraMercadoPago(String bin, String requestBody, boolean isCartaoNovo, OnCompraAsync listener){
+	public void realizaCompraMercadoPago(String bin, String requestBody, String salvarCartao, boolean isCartaoNovo, OnCompraAsync listener){
 		AppCenterManager.registraEventoDeviceMP(getActivity().getResources().getString(R.string.app_center_mp_cartao_salvo), requestBody);
-		MercadoPagoConnection.callWebServicePayment_method(bin , requestBody, getActivity(), onMercadoPagoListener(isCartaoNovo, listener));
+		MercadoPagoConnection.callWebServicePayment_method(bin , requestBody, getActivity(), onMercadoPagoListener(salvarCartao, isCartaoNovo, listener));
 	}
 
 	public void realizaCompraRecargaPay(String tokenApostador, CartaoRecargaPayDTO cartao, OnCompraAsync listener) {
@@ -159,15 +159,15 @@ public class CartoesModel extends AppModel {
 		};
 	}
 
-	private MercadoPagoConnection.MercadoPagoListener onMercadoPagoListener(boolean isCartaoNovo, OnCompraAsync listener) {
+	private MercadoPagoConnection.MercadoPagoListener onMercadoPagoListener(String salvarCartao, boolean isCartaoNovo, OnCompraAsync listener) {
 		return new MercadoPagoConnection.MercadoPagoListener() {
 			@Override
 			public void onSucesso(String tokenPagamento, String payment_method_id, boolean luhn_validation) {
 				if (isCartaoNovo){
 					if (luhn_validation){
 						CompraUtil.registraApostaAsync(1, tokenPagamento, payment_method_id,
-													   getActivity().getResources().getString(R.string.string_true),
-													   getActivity().getResources().getString(R.string.string_vazia),
+													   null,
+													   salvarCartao,
 													   listener);
 					} else {
 						AlertDialogUtils.dismiss();
@@ -176,7 +176,7 @@ public class CartoesModel extends AppModel {
 				} else {
 					CompraUtil.registraApostaAsync(1, tokenPagamento, payment_method_id,
 												   getActivity().getResources().getString(R.string.string_true),
-												   getActivity().getResources().getString(R.string.string_vazia),
+												   null,
 												   listener);
 				}
 			}

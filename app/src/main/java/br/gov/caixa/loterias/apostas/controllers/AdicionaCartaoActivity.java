@@ -325,7 +325,8 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
                                                 .substring(0, 7);
 
         AppCenterManager.registraEventoDeviceMP(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
-        model.realizaCompraMercadoPago(bin, requestBody, true, onMercadoPagoListener());
+        String salvarCartao = checkBoxSalvarCartao.isChecked() ? "true" : "false";
+        model.realizaCompraMercadoPago(bin, requestBody, salvarCartao,true, onMercadoPagoListener());
     }
 
     private OnCompraAsync onMercadoPagoListener() {
