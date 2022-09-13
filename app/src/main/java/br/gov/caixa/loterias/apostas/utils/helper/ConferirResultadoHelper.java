@@ -8,6 +8,7 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
@@ -53,37 +54,37 @@ public class ConferirResultadoHelper  {
         });
     }
 
-    public static void conferirResultado(ApostaConfirmadaHolder holder, final Long apostaId, final Activity contextParam) {
-        AlertDialogUtils.show(contextParam);
-        ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
-        apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
-            @Override
-            public void onResponse(DTOEnumIntegerResponse result) {
-                AlertDialogUtils.dismiss();
-                if (result.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), contextParam);
-                }
+//    public static void conferirResultado(ApostaConfirmadaHolder holder, final Long apostaId, final Activity contextParam) {
+//        AlertDialogUtils.show(contextParam);
+//        ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
+//        apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
+//            @Override
+//            public void onResponse(DTOEnumIntegerResponse result) {
+//                AlertDialogUtils.dismiss();
+//                if (result.getRedirect() != null){
+//                    RedirectNetwork.checkRedirectSucesso( result.getRedirect(), contextParam);
+//                }
+//
+//                final DTOEnumLong resultCheckFinal = new DTOEnumLong();
+//                resultCheckFinal.setValor(result.getPayload().getValor().longValue());
+//                resultCheckFinal.setDescricao(result.getPayload().getDescricao());
+//
+//                conferirResultadoHandler.handle(holder,resultCheckFinal);
+//            }
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                onError(error, contextParam);
+//            }
+//        });
+//    }
 
-                final DTOEnumLong resultCheckFinal = new DTOEnumLong();
-                resultCheckFinal.setValor(result.getPayload().getValor().longValue());
-                resultCheckFinal.setDescricao(result.getPayload().getDescricao());
-
-                conferirResultadoHandler.handle(holder,resultCheckFinal);
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                onError(error, contextParam);
-            }
-        });
-    }
-
-    public static void conferirResultadoWithoutLoading(ApostaConfirmadaHolder holder, final Long apostaId, final Activity contextParam) {
+    public static void conferirResultadoWithoutLoading(int position, ApostaConfirmadaHolder holder, final ApostaDTO apostaDTO, final Activity contextParam) {
         if(AlertDialogUtils.isShow()){
             AlertDialogUtils.dismiss();
         }
         ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
-        apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
+        apostaBO.getApostaConferir(apostaDTO.getId(), new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
                 if (result.getRedirect() != null){
@@ -92,11 +93,12 @@ public class ConferirResultadoHelper  {
                 final DTOEnumLong resultCheckFinal = new DTOEnumLong();
                 resultCheckFinal.setValor(result.getPayload().getValor().longValue());
                 resultCheckFinal.setDescricao(result.getPayload().getDescricao());
+                apostaDTO.setSituacao(resultCheckFinal);
 
                 if(AlertDialogUtils.isShow()){
                     AlertDialogUtils.dismiss();
                 }
-                conferirResultadoHandler.handle(holder, resultCheckFinal);
+                conferirResultadoHandler.handle(position, holder,resultCheckFinal);
             }
 
             @Override
