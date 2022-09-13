@@ -156,9 +156,13 @@ public class ApostaConfirmadaPartidaFragment extends Fragment {
     public void atualizaValorPremio(BigDecimal valor){
         if (valor != null){
             valorPremio = valor;
-            tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
-            tv_val_premio.setVisibility(View.VISIBLE);
-            tv_val_premio_tit.setVisibility(View.VISIBLE);
+            if (tv_val_premio != null){
+                tv_val_premio.setText(ViewUtils.getMoedaFormat(valorPremio));
+                tv_val_premio.setVisibility(View.VISIBLE);
+            }
+            if (tv_val_premio_tit != null){
+                tv_val_premio_tit.setVisibility(View.VISIBLE);
+            }
         }
 
     }
