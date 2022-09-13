@@ -35,8 +35,9 @@
     <string name="titulo_dialog">Titulo da dialog</string>
     <string name="cancelar">Cancelar</string>
     <string name="ajuda_dialog">Ajuda</string>
+    <string name="salvar_carrinho">Salvar Carrinho</string>
     <string name="mensagem_ccompra_cancelada_dialog">Não foi possível concluir essa compra\ne sua aposta não foi efetivada.\n\nDeseja realizar uma nova tentativa\nde compra com o mesmo carrinho?</string>
-    <string name="tenta_novamente_dialog">Tenta Novamente</string>
+    <string name="tenta_novamente_dialog">Tentar Novamente</string>
     <string name="ok">OK</string>
     <string name="label_sim">Sim</string>
     <string name="label_nao">Não</string>
@@ -435,6 +436,7 @@
     <string name="title_cvv">Código de segurança</string>
     <string name="title_anoValidade">Ano de validade</string>
     <string name="title_salvarCartao">Salvar este cartão para futuras apostas</string>
+    <string name="label_salvar_Cartao">Salvar cartão para compras futuras</string>
     <string name="title_mesDeValidade">Mês de validade</string>
     <string name="title_sair">Sair</string>
     <string name="title_minhaArea">Minha área</string>
@@ -1084,6 +1086,8 @@
     <string name="confira_cartoes_salvos_mercado_pago">Confira aqui sua lista de cartões salvos no Mercado Pago</string>
     <string name="confira_cartoes_salvos_recargapa_pay">Confira aqui sua lista de cartões salvos no RecargaPay</string>
     <string name="compra_processada_por">Compra processada por:</string>
+    <string name="selecione_o_meio_de_pagamento_que_ira_processar_a_compra">Selecione o meio de pagamento que irá processar a compra utilizando o cartão de crédito de sua escolha</string>
+    <string name="bundle_key_config">CONFIG</string>
 
 
 </resources>

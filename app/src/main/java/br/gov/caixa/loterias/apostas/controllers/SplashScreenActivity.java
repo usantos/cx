@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisD
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -44,13 +45,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        RootBeer rootBeer = new RootBeer(this);
-        if (rootBeer.isRooted() || isRootAvailable()) {
-            ViewUtils.alertTitleButton(this, R.string.label_atencao, "Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.",
-                                       getString(R.string.ok), (DialogInterface.OnDismissListener) dialog -> {
-                                          finish();
-                                       });
-            return;
+        if (BuildVersionUtil.isPRD() || BuildVersionUtil.isTQS()){
+            RootBeer rootBeer = new RootBeer(this);
+            if (rootBeer.isRooted() || isRootAvailable()) {
+                ViewUtils.alertTitleButton(this, R.string.label_atencao, "Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.",
+                                           getString(R.string.ok), (DialogInterface.OnDismissListener) dialog -> {
+                            finish();
+                        });
+                return;
+            }
         }
         
         AppCenter.start(getApplication(), BuildConfig.APP_CENTER_KEY, Analytics.class, Crashes.class);
@@ -111,7 +114,11 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void onResponse(VersionResponse response) {
                 responseVersao = response;
-                trataPermissao();
+                if (BuildVersionUtil.isEmulador()){
+                    trataSucesso(responseVersao);
+                } else {
+                    trataPermissao();
+                }
             }
 
             @Override

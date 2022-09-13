@@ -42,7 +42,7 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
                 lista.get(0).setFav(false);
             }
         } else {
-            holder.showButtonFav(true);
+            holder.showButtonFav(false);
         }
 
         RetornoCartao cartao = lista.get(position);

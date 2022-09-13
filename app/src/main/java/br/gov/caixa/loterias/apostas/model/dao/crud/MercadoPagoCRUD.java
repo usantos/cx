@@ -37,7 +37,7 @@ public class MercadoPagoCRUD extends DBLoteriasCRUD {
 		}
 	}
 
-	public String getPublicKey(){
+	public String getPublicKeyMercadoPago(){
 		this.initDBLoteriasHelper();
 		Cursor cursor = null;
 		String publicKey = "";

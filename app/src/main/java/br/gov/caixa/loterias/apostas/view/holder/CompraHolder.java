@@ -118,14 +118,14 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 	}
 
 	private void aplicaBackgroundPorSituacao(ApostaDTO aposta, EstiloModalidade estilo) {
-		if (SituacaoCompraUtil.isEfetivada(aposta.getSituacao())){
-			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.azul_efetivada));
-		} else if (SituacaoCompraUtil.isCancelada(aposta.getSituacao())){
-			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.vermelho_cancelada));
-		} else if (SituacaoCompraUtil.isPremioPago(aposta.getSituacao())){
-			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.verde_premio_pago));
-		} else {
+//		if (SituacaoCompraUtil.isEfetivada(aposta.getSituacao())){
+//			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.azul_efetivada));
+//		} else if (SituacaoCompraUtil.isCancelada(aposta.getSituacao())){
+//			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.vermelho_cancelada));
+//		} else if (SituacaoCompraUtil.isPremioPago(aposta.getSituacao())){
+//			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.verde_premio_pago));
+//		} else {
 			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estilo.getCorEscura()));
-		}
+//		}
 	}
 }

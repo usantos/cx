@@ -158,5 +158,6 @@
 
     <color name="vermelho_dialog">#F60E0E</color>
     <color name="vermelho_borda_dialog">#D15973</color>
+    <color name="azul_alterar">#004680</color>
 
 </resources>

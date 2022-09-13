@@ -21,16 +21,15 @@ import br.gov.caixa.loterias.apostas.model.dao.crud.UltimaCompraCRUD;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 
-public class CompraModel {
+public class CompraModel extends AppModel{
 
-	private Activity activity;
 
 	public CompraModel(Activity activity) {
-		this.activity = activity;
+		super(activity);
 	}
 
 	public void salvaUltimaCompra(BigDecimal valor, Date date){
-		UltimaCompraCRUD crud            = new UltimaCompraCRUD(activity);
+		UltimaCompraCRUD crud            = new UltimaCompraCRUD(getActivity());
 		String           stringDate      = DateUtils.getDateToString(date, DateUtils.PATTERN_DD_MM_YYYY_HH_MM);
 		List<UltimaCompraDTO>             list = crud.lerUltimaCompraPorValor(valor);
 		if (list != null && !list.isEmpty()){
@@ -42,20 +41,20 @@ public class CompraModel {
 	}
 
 	public void buscaCartoes(OnSilceListener<List<RetornoCartao>> listener){
-		DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(activity);
+		DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getActivity());
 		dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
 			@Override
 			public void onResponse(ListCartaoDTOResponse response) {
-				AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_entrou_formas_pagamento));
+				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_entrou_formas_pagamento));
 				if (response.getRedirect() != null){
-					RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
+					RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
 				}
 				listener.success(response.getPayload());
 			}
 
 			@Override
 			public void onErrorResponse(VolleyError error) {
-				RedirectNetwork.checkRedirect(error, activity);
+				RedirectNetwork.checkRedirect(error, getActivity());
 				listener.error(error);
 			}
 		});
