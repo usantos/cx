@@ -397,7 +397,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         if (isPossiuCartao) {
             textoInfoSelecioneFormaPagamento.setVisibility(View.GONE);
         } else {
-            apresentaAlertaPreCompra();
+            //apresentaAlertaPreCompra();
         }
     }
 
