@@ -2,8 +2,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -43,10 +41,10 @@ public class LerBilhetesActivity extends AppCompatActivity {
 
     private boolean isActivityRunning;
     private boolean isScanned;
-    private boolean isRunning10Seg;
+//    private boolean isRunning10Seg;
     private boolean isPaused;
 
-    private Handler handler10Sec;
+//    private Handler handler10Sec;
 
     private DecoratedBarcodeView barcodeScannerView;
 
@@ -86,10 +84,10 @@ public class LerBilhetesActivity extends AppCompatActivity {
                         }
 
                         chamouresultado = true;
-                        if (handler10Sec != null){
-                            handler10Sec.removeCallbacksAndMessages(null);
-                        }
-                        isRunning10Seg = false;
+//                        if (handler10Sec != null){
+//                            handler10Sec.removeCallbacksAndMessages(null);
+//                        }
+//                        isRunning10Seg = false;
                         isScanned = false;
                         ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this)
                                                      .codBarras(code).nsb(nsbFormatado)
@@ -140,7 +138,7 @@ public class LerBilhetesActivity extends AppCompatActivity {
 
         Button buttonDigitarAposta = findViewById(R.id.buttonDigitarAposta);
         buttonDigitarAposta.setOnClickListener(v -> {
-            startBilheteManual();
+            //startBilheteManual();
         });
 
         barcodeScannerView = findViewById(R.id.DecoratedBarcodeViewBilhetes);
@@ -152,26 +150,26 @@ public class LerBilhetesActivity extends AppCompatActivity {
         buttonDigitarAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_digite_aposta_realizada)));
     }
 
-    private void startDezSegundos() {
-        if (!isRunning10Seg){
-            handler10Sec = new Handler();
-            handler10Sec.postDelayed((Runnable) () -> {
-                isRunning10Seg = false;
-                if (isActivityRunning) {
-                    pause(barcodeScannerView);
-                    showAlert();
-                } else {
-                    new Handler().postDelayed((Runnable) () -> {
-                        isRunning10Seg = false;
-                        startDezSegundos();
-                    }, 5000);
-                    isRunning10Seg = true;
-                }
-
-            }, 10000);
-            isRunning10Seg = true;
-        }
-    }
+//    private void startDezSegundos() {
+//        if (!isRunning10Seg){
+//            handler10Sec = new Handler();
+//            handler10Sec.postDelayed((Runnable) () -> {
+//                isRunning10Seg = false;
+//                if (isActivityRunning) {
+//                    pause(barcodeScannerView);
+//                    showAlert();
+//                } else {
+//                    new Handler().postDelayed((Runnable) () -> {
+//                        isRunning10Seg = false;
+//                        startDezSegundos();
+//                    }, 5000);
+//                    isRunning10Seg = true;
+//                }
+//
+//            }, 10000);
+//            isRunning10Seg = true;
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -179,41 +177,41 @@ public class LerBilhetesActivity extends AppCompatActivity {
         chamouresultado = false;
     }
 
-    private void showAlert() {
-        if (isActivityRunning){
-            if (!isScanned && !chamouresultado){
-                try {
-                    ViewUtils.alertTitleButtonYesOrNotListener(LerBilhetesActivity.this,
-                            getString(R.string.nao_foi_possivel_realizar_leitura),
-                            getString(R.string.tentar_novamente),
-                            (dialog, which) -> {
-                                resume(barcodeScannerView);
-                                startDezSegundos();
-                            },
-                            getString(R.string.digitar_codigo),
-                            (dialog, which) -> {
-                                startBilheteManual();
-                            });
-                } catch (Exception e){
-                    Log.e("", e.getLocalizedMessage());
-                }
-            } else {
-                resume(barcodeScannerView);
-                startDezSegundos();
-            }
-        }
-    }
+//    private void showAlert() {
+//        if (isActivityRunning){
+//            if (!isScanned && !chamouresultado){
+//                try {
+//                    ViewUtils.alertTitleButtonYesOrNotListener(LerBilhetesActivity.this,
+//                            getString(R.string.nao_foi_possivel_realizar_leitura),
+//                            getString(R.string.tentar_novamente),
+//                            (dialog, which) -> {
+//                                resume(barcodeScannerView);
+//                                startDezSegundos();
+//                            },
+//                            getString(R.string.digitar_codigo),
+//                            (dialog, which) -> {
+//                                startBilheteManual();
+//                            });
+//                } catch (Exception e){
+//                    Log.e("", e.getLocalizedMessage());
+//                }
+//            } else {
+//                resume(barcodeScannerView);
+//                startDezSegundos();
+//            }
+//        }
+//    }
 
     private void startBilheteManual() {
-        Intent activity = new Intent(LerBilhetesActivity.this, InsercaoManualCodBarrasActivity.class);
-        startActivity(activity);
+//        Intent activity = new Intent(LerBilhetesActivity.this, InsercaoManualCodBarrasActivity.class);
+//        startActivity(activity);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         resume(barcodeScannerView);
-        startDezSegundos();
+//        startDezSegundos();
         isScanned = false;
     }
 
