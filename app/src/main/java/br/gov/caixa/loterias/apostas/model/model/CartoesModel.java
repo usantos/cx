@@ -34,7 +34,6 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 public class CartoesModel extends AppModel {
@@ -205,12 +204,12 @@ public class CartoesModel extends AppModel {
 		crud.deletaTodos();
 	}
 
-	public boolean isRecargaPay(MeioPagamentoConfig config) {
-		return MeioPagamentoUtils.isRecargaPay(config.getMeioPagamento().getValor());
+	public boolean isRecargaPay(Long value) {
+		return MeioPagamentoUtils.isRecargaPay(value);
 	}
 
-	public boolean isMercadoPago(MeioPagamentoConfig config) {
-		return MeioPagamentoUtils.isMercadoPago(config.getMeioPagamento().getValor());
+	public boolean isMercadoPago(Long value) {
+		return MeioPagamentoUtils.isMercadoPago(value);
 	}
 
 	public void buscaMeioPagamento(Long id, OnSilceListener<MeioPagamentoDTO> listener){

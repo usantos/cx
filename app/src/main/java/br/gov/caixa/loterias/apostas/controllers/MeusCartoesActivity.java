@@ -14,16 +14,17 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
-import br.gov.caixa.loterias.apostas.model.model.CompraModel;
+import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 
 public class MeusCartoesActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
 
-    private CompraModel model;
+    private CartoesModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,17 +32,14 @@ public class MeusCartoesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_meus_cartoes);
         pegaExtras();
         setaViews();
-        model = new CompraModel(MeusCartoesActivity.this);
+        model = new CartoesModel(MeusCartoesActivity.this);
 
-//        model.buscaCartoes(onBuscaCartaoMercadoPago());
+        model.buscaCartoesMercadoPago(onBuscaCartaoMercadoPago());
 
-        FragmentUtils.meusCartoesFragment(getSupportFragmentManager(),
-                                          R.id.frameMercadoPagoFragment,
-                                          getListCartoes(), getConfigMercadoPago());
 
-        FragmentUtils.meusCartoesFragment(getSupportFragmentManager(),
-                                          R.id.frameRecargaPayFragment,
-                                          null, getConfigRecargaPay());
+//        FragmentUtils.meusCartoesFragment(getSupportFragmentManager(),
+//                                          R.id.frameRecargaPayFragment,
+//                                          null, getConfigRecargaPay());
     }
 
     private List<RetornoCartao> getListCartoes() {
@@ -108,11 +106,11 @@ public class MeusCartoesActivity extends AppCompatActivity {
     }
 
     private MeusCartoesConfig getConfigMercadoPago() {
-        return new MeusCartoesConfig(R.color.azul_meu_cartao, R.drawable.ic_mercado_pago, R.string.confira_cartoes_salvos_mercado_pago);
+        return new MeusCartoesConfig(R.color.azul_meu_cartao, R.drawable.ic_mercado_pago, R.string.confira_cartoes_salvos_mercado_pago, MeioPagamentoUtils.MERCADO_PAGO);
     }
 
     private MeusCartoesConfig getConfigRecargaPay() {
-        return new MeusCartoesConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, R.string.confira_cartoes_salvos_recargapa_pay);
+        return new MeusCartoesConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, R.string.confira_cartoes_salvos_recargapa_pay, MeioPagamentoUtils.RECARGAPAY);
     }
 
     private void pegaExtras(){
