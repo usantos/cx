@@ -793,6 +793,25 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
+    public void postConferirBilhetesNovo(final String codigoBilhete,
+                                     final RequestListener<ResultadoConsultaBilheteDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        Map<String, String> params = new HashMap<>();
+        params.put("codigo", codigoBilhete);
+        params.put("grecaptchaResponse", "");
+
+        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.BILHETES_CONFERIR_BILHETE_NOVO_PATH,
+                new LinkedHashMap<>(),
+                params,
+                ResultadoConsultaBilheteDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request, listener);
+    }
+
     public void obterEscudoTime(String id, final RequestListener<EscudoEquipeEsportivaDTOResponse> listener) {
         String url = ServerMethods.EQUIPES_ESPORTIVAS_ESCUDO_PATH.replace("{id}", id);
         final GsonRequest request = silceConnection.buildGetRequest(url,

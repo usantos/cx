@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.google.zxing.ResultPoint;
 import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
@@ -28,7 +29,11 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LerQrCodeDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
+import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
+import br.gov.caixa.loterias.apostas.utils.BilheteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
@@ -39,6 +44,7 @@ public class LerBilhetesActivity extends AppCompatActivity {
     private boolean isActivityRunning;
     private boolean isScanned;
     private boolean isRunning10Seg;
+    private boolean isPaused;
 
     private Handler handler10Sec;
 
@@ -49,35 +55,64 @@ public class LerBilhetesActivity extends AppCompatActivity {
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
-            try {
-                isScanned = true;
-                pause(barcodeScannerView);
-                if (result.getText().length() >= 23){
-                    String code = Crypto.cripfyBarcode(result.getText());
-                    ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this).codBarras(code).startForResult(INTENT_RESULT);
-                    chamouresultado = true;
-                    if (handler10Sec != null){
-                        handler10Sec.removeCallbacksAndMessages(null);
+            if (!isPaused){
+                try {
+                    isScanned = true;
+                    pause(barcodeScannerView);
+                    if (result.getText().length() >= 23){
+                        String             code, nsbFormatado;
+                        LeituraBilheteEnum tipo;
+                        try {
+                            LerQrCodeDTO lerQrCodeDTO = new Gson().fromJson(result.getText().replace("APOSTA", ""), LerQrCodeDTO.class);
+
+                            if (lerQrCodeDTO.getCf() == null || lerQrCodeDTO.getCf().isEmpty()){
+                                lerQrCodeDTO.setCf(lerQrCodeDTO.getCi());
+                            }
+
+                            //Cria a string com o formato desejado e depois criptografa
+                            String envio = lerQrCodeDTO.getNsb()+"=="+
+                                    lerQrCodeDTO.getCi()+"=="+
+                                    lerQrCodeDTO.getPro()+"=="+
+                                    ModalidadeEnum.fromInteger(Integer.parseInt(lerQrCodeDTO.getPro()))+"=="
+                                    +lerQrCodeDTO.getCf();
+
+                            code = Crypto.cripfyBarcode(envio);
+                            nsbFormatado = BilheteUtils.getNSBFormatado(lerQrCodeDTO.getNsb());
+                            tipo = LeituraBilheteEnum.QR_CODE;
+                        }catch (Exception e){
+                            nsbFormatado = BilheteUtils.getNSBFormatado(result.getText());
+                            code = Crypto.cripfyBarcode(result.getText());
+                            tipo = LeituraBilheteEnum.CODIGO_BARRAS;
+                        }
+
+                        chamouresultado = true;
+                        if (handler10Sec != null){
+                            handler10Sec.removeCallbacksAndMessages(null);
+                        }
+                        isRunning10Seg = false;
+                        isScanned = false;
+                        ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this)
+                                                     .codBarras(code).nsb(nsbFormatado)
+                                                     .tipoLeitura(tipo)
+                                                     .startForResult(INTENT_RESULT);
+                    } else {
+                        isScanned = false;
+                        resume(barcodeScannerView);
+                        chamouresultado = false;
                     }
-                    isRunning10Seg = false;
-                    isScanned = false;
-                } else {
-                    isScanned = false;
-                    resume(barcodeScannerView);
-                    chamouresultado = false;
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeySpecException e) {
+                    e.printStackTrace();
+                } catch (NoSuchPaddingException e) {
+                    e.printStackTrace();
+                } catch (BadPaddingException e) {
+                    e.printStackTrace();
+                } catch (IllegalBlockSizeException e) {
+                    e.printStackTrace();
+                } catch (InvalidKeyException e) {
+                    e.printStackTrace();
                 }
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (InvalidKeySpecException e) {
-                e.printStackTrace();
-            } catch (NoSuchPaddingException e) {
-                e.printStackTrace();
-            } catch (BadPaddingException e) {
-                e.printStackTrace();
-            } catch (IllegalBlockSizeException e) {
-                e.printStackTrace();
-            } catch (InvalidKeyException e) {
-                e.printStackTrace();
             }
         }
 
@@ -149,16 +184,16 @@ public class LerBilhetesActivity extends AppCompatActivity {
             if (!isScanned && !chamouresultado){
                 try {
                     ViewUtils.alertTitleButtonYesOrNotListener(LerBilhetesActivity.this,
-                                                               getString(R.string.nao_foi_possivel_realizar_leitura),
-                                                               getString(R.string.tentar_novamente),
-                                                               (dialog, which) -> {
-                                                                   resume(barcodeScannerView);
-                                                                   startDezSegundos();
-                                                               },
-                                                               getString(R.string.digitar_codigo),
-                                                               (dialog, which) -> {
-                                                                   startBilheteManual();
-                                                               });
+                            getString(R.string.nao_foi_possivel_realizar_leitura),
+                            getString(R.string.tentar_novamente),
+                            (dialog, which) -> {
+                                resume(barcodeScannerView);
+                                startDezSegundos();
+                            },
+                            getString(R.string.digitar_codigo),
+                            (dialog, which) -> {
+                                startBilheteManual();
+                            });
                 } catch (Exception e){
                     Log.e("", e.getLocalizedMessage());
                 }
@@ -177,23 +212,25 @@ public class LerBilhetesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        resume(barcodeScannerView);
         startDezSegundos();
         isScanned = false;
-        resume(barcodeScannerView);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        barcodeScannerView.pause();
+        pause(barcodeScannerView);
     }
 
     public void pause(View view) {
         barcodeScannerView.pause();
+        isPaused = true;
     }
 
     public void resume(View view) {
         barcodeScannerView.resume();
+        isPaused = false;
     }
 
     public void triggerScan(View view) {

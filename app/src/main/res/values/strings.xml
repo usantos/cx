@@ -1084,6 +1084,10 @@
     <string name="confira_cartoes_salvos_mercado_pago">Confira aqui sua lista de cartões salvos no Mercado Pago</string>
     <string name="confira_cartoes_salvos_recargapa_pay">Confira aqui sua lista de cartões salvos no RecargaPay</string>
     <string name="compra_processada_por">Compra processada por:</string>
-
+    
+    <string name="abre_chave_nsb_fecha_chave">{nsb}</string>
+    <string name="situaco">Situação</string>
+    <string name="faixa">Faixa</string>
+    <string name="valor">Valor</string>
 
 </resources>

@@ -475,11 +475,29 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     @Click
     protected void comprovanteLayout() {
         if (premioPago && isHistorico) {
-            pdfUtils.createComprovanteHistoricoPremioPdf(detalhesHistoricoPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+            if (detalhesHistoricoPremioDTOResponse != null && detalhesHistoricoPremioDTOResponse.getPayload() != null){
+                pdfUtils.createComprovanteHistoricoPremioPdf(detalhesHistoricoPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+            } else {
+                buscaDetalheComprovanteHistoricoAposta(true);
+            }
         } else if (premioPago) {
-            pdfUtils.createComprovantePremioPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+            if(detalhesPremioDTOResponse != null && detalhesPremioDTOResponse.getPayload() != null){
+                pdfUtils.createComprovantePremioPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+            } else if (detalhesPremioDTO != null){
+                pdfUtils.createComprovantePremioPdf(detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this);
+            } else {
+                buscarDetalheComprovantePremioAposta(true);
+            }
         } else {
-            pdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
+            if (comprovanteParaPdf != null){
+                pdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
+            } else if (comprovanteApostaDTOResponse != null && comprovanteApostaDTOResponse.getPayload() != null){
+                pdfUtils.createComprovanteApostaPdf(comprovanteApostaDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+            } else if (comprovanteApostaDTO != null){
+                pdfUtils.createComprovanteApostaPdf(comprovanteApostaDTO, ApostaConfirmadaDetalhesActivity.this);
+            } else {
+                buscaDetalhesComprovanteAposta(true);
+            }
         }
     }
 
@@ -488,45 +506,68 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             AlertDialogUtils.show(this);
         }
         if (premioPago && isHistorico) {
-            apostaBO.getApostaHistoricoComprovante(aposta.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
-                @Override
-                public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
-                    AlertDialogUtils.dismiss();
-                    detalhesHistoricoPremioDTOResponse = result;
-                }
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    onError(error);
-                }
-            });
+            buscaDetalheComprovanteHistoricoAposta(false);
         } else if (premioPago) {
-            apostaBO.getApostaComprovantePremio(aposta.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
-                @Override
-                public void onResponse(DetalhesPremioDTOResponse result) {
-                    AlertDialogUtils.dismiss();
-                    detalhesPremioDTOResponse = result;
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    onError(error);
-                }
-            });
+            buscarDetalheComprovantePremioAposta(false);
         } else {
-            apostaBO.getApostaDetalheComprovante(aposta.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
-                @Override
-                public void onResponse(ComprovanteApostaDTOResponse result) {
-                    AlertDialogUtils.dismiss();
-                    comprovanteApostaDTOResponse = result;
-                    comprovanteParaPdf = result.getPayload();
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    onError(error);
-                }
-            });
+            buscaDetalhesComprovanteAposta(false);
         }
+    }
+
+    private void buscaDetalheComprovanteHistoricoAposta(boolean geraPDF) {
+        apostaBO.getApostaHistoricoComprovante(aposta.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
+            @Override
+            public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
+                AlertDialogUtils.dismiss();
+                detalhesHistoricoPremioDTOResponse = result;
+                if (geraPDF){
+                    comprovanteLayout();
+                }
+            }
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onError(error);
+            }
+        });
+    }
+
+    private void buscarDetalheComprovantePremioAposta(boolean geraPDF) {
+        apostaBO.getApostaComprovantePremio(aposta.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
+            @Override
+            public void onResponse(DetalhesPremioDTOResponse result) {
+                AlertDialogUtils.dismiss();
+                detalhesPremioDTOResponse = result;
+                detalhesPremioDTO = result.getPayload();
+                if (geraPDF){
+                    comprovanteLayout();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onError(error);
+            }
+        });
+    }
+
+    private void buscaDetalhesComprovanteAposta(boolean geraPDF) {
+        apostaBO.getApostaDetalheComprovante(aposta.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
+            @Override
+            public void onResponse(ComprovanteApostaDTOResponse result) {
+                AlertDialogUtils.dismiss();
+                comprovanteApostaDTOResponse = result;
+                comprovanteParaPdf = result.getPayload();
+                comprovanteApostaDTO = result.getPayload();
+                if (geraPDF){
+                    comprovanteLayout();
+                }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onError(error);
+            }
+        });
     }
 
     @OptionsMenuItem(R.id.action_duvida)
@@ -666,7 +707,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     @Override
-    public void handle(ApostaConfirmadaHolder holder, DTOEnumLong situacao) { }
+    public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) { }
 
     @Override
     public void handleError(ApostaConfirmadaHolder holder, VolleyError error) {
