@@ -762,7 +762,7 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
                 break;
             case 5:
-                //startActivity(new Intent(PrincipalActivity.this, CartoesActivity.class).putExtra(MENU_LATERAL, true));
+//                startActivity(new Intent(PrincipalActivity.this, CartoesActivity.class).putExtra(MENU_LATERAL, true));
                 startActivity(new Intent(PrincipalActivity.this, MeusCartoesActivity.class));
                 break;
             default:
@@ -788,7 +788,7 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
                 break;
             case 4:
-                //startActivity(new Intent(PrincipalActivity.this, CartoesActivity.class).putExtra(MENU_LATERAL, true));
+//                startActivity(new Intent(PrincipalActivity.this, CartoesActivity.class).putExtra(MENU_LATERAL, true));
                 startActivity(new Intent(PrincipalActivity.this, MeusCartoesActivity.class));
                 break;
             default:

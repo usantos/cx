@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
@@ -244,7 +246,6 @@ public class ApostaUtils {
 
 		return aposta;
 	}
-
 	private static void setApostaLotogol(ParametroJogoDTO parametro, IdentificaoDeUmaApostaDas8Modalidades aposta, HashSet<ParametroPartida> partidas) {
 		if (parametro.getConcurso().getModalidade() == ModalidadeEnum.LOTOGOL) {
 			List<ParametroPartida> partidasSelecionadas = ListaUtils.orderAscPartidas(partidas);
@@ -312,5 +313,46 @@ public class ApostaUtils {
 		equipeDTO2.setUf(partida.getEquipe2().getUf());
 		equipeDTO2.setNomeClass(partida.getEquipe2().getNomeClass());
 		equipeDTO2.setNome(partida.getEquipe2().getNome());
+	}
+
+	public static IdentificaoDeUmaApostaDas8Modalidades convertApostaDTOemIdentificaoDeuUmaPostaDas8Modadlidades(ApostaDTO apostaDTO) {
+		ParametroJogoDTO parametroJogo = ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), apostaDTO.getModalidade()).getParametroJogo();
+
+		switch (apostaDTO.getModalidade()){
+			case TIMEMANIA:
+				return getApostaTimemania(parametroJogo,
+											 apostaDTO.getListaNumerosSelecionados(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+											apostaDTO.getTimeDoCoracao());
+			case DIA_DE_SORTE:
+				return getApostaDiaDeSorte(parametroJogo,
+											 apostaDTO.getListaNumerosSelecionados(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+											 apostaDTO.getMesDeSorte());
+			case LOTOGOL:
+				return getApostaLotogol(parametroJogo,
+											 apostaDTO.getListaNumerosSelecionados(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+										  (HashSet<ParametroPartida>) apostaDTO.getPartidasLotogol());
+			case LOTECA:
+				return getApostaLoteca(parametroJogo,
+											 apostaDTO.getListaNumerosSelecionados(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+										 (HashSet<ParametroPartida>) apostaDTO.getPartidasLoteca());
+			case SUPER_7:
+				return getApostaSuperSete(parametroJogo, new ArrayList<>(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+											 apostaDTO.getMatrizNumerosSelecionados());
+			case MAIS_MILIONARIA:
+				return getApostaMaisMilionaria(parametroJogo,
+											 apostaDTO.getListaNumerosSelecionados(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+											 apostaDTO.getListaTrevosSelecionados());
+			default:
+				return getApostaPreenchida(parametroJogo,
+												 apostaDTO.getListaNumerosSelecionados(),
+												 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas());
+
+		}
 	}
 }

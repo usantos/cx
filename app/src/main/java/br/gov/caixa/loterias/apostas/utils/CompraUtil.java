@@ -34,9 +34,9 @@ public class CompraUtil {
         });
     }
 
-    public static void registraApostaAsync(String tokenPagamento, String payment_method_id, String savedCard, String saveCard, final OnCompraAsync listener) {
+    public static void registraApostaAsync(int meioPag, String tokenPagamento, String payment_method_id, String savedCard, String saveCard, final OnCompraAsync listener) {
         ParametrosPagamento parametroPagamento = new ParametrosPagamento( tokenPagamento, savedCard, payment_method_id, saveCard );
-        MeioPagamento meioPagamento = new MeioPagamento(1, parametroPagamento);
+        MeioPagamento meioPagamento = new MeioPagamento(meioPag, parametroPagamento);
 
         Context context = Aplicacao.application.getApplicationContext();
         ApostaBO apostaBO = ApostaBO_.getInstance_(context);

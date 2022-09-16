@@ -158,7 +158,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
     private Boolean isEspecial = false;
-    private final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
+    private DadosCorporativosBO dadosCorporativosBO;
 
     //mocks
     public int qtdDezenasPossiveisSelecionado;
@@ -170,6 +170,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     @AfterViews
     protected void init() {
+        dadosCorporativosBO = DadosCorporativosBO_.getInstance_(SimularApostaActivity.this);
         isEspecial =  getIntent().getBooleanExtra(getResources().getString(R.string.extra_especial), false);
         invalidateOptionsMenu();
         zerarApostas();

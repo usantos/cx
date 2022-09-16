@@ -335,7 +335,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
             showLoading();
         }
 
-        CompraUtil.registraApostaAsync(tokenPagamento, payment_method_id, getResources().getString(R.string.string_true), getResources().getString(R.string.string_vazia), onCompraAsyncListener());
+        CompraUtil.registraApostaAsync(1, tokenPagamento, payment_method_id, getResources().getString(R.string.string_true), getResources().getString(R.string.string_vazia), onCompraAsyncListener());
     }
 
     private OnCompraAsync onCompraAsyncListener() {

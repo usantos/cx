@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.ErrorRecargaPayResponse;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
@@ -27,6 +28,43 @@ public class MensagensNetwork {
     private static final int INTERNAL_SERVER_ERROR = 500;
 
     private MensagensNetwork(){}
+
+    public static String setMensagemRecargaPay(VolleyError error, Context context){
+        NetworkResponse response = error.networkResponse;
+
+        if (response == null){
+            if (error instanceof TimeoutError) {
+                return context.getString(R.string.erro_408);
+            }else if(error instanceof NoConnectionError){
+                Log.e("caixa", "Erro ao conexar com internet MensagensNetwork.setMensagem()");
+                return context.getString(R.string.seminternet);
+            } else if (error instanceof AuthFailureError) {
+                return context.getString(R.string.erro_401);
+            }
+            return context.getString(R.string.sistema_indisponivel);
+        }
+
+        Gson gsonResponse = new Gson();
+
+        ErrorRecargaPayResponse errorResponse = new ErrorRecargaPayResponse();
+
+        String body;
+        //get response body and parse with appropriate encoding
+        if(error.networkResponse.data!=null) {
+            try {
+                body = new String(error.networkResponse.data,"UTF-8");
+                errorResponse = gsonResponse.fromJson(body, ErrorRecargaPayResponse.class);
+            } catch (UnsupportedEncodingException e) {
+                errorResponse = new ErrorRecargaPayResponse();
+                errorResponse.setMessage( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
+            } catch (Exception e){
+                errorResponse = new ErrorRecargaPayResponse();
+                errorResponse.setMessage( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
+            }
+        }
+
+        return errorResponse.getMessage();
+    }
 
     public static String setMensagem(VolleyError error, final Context context){
         NetworkResponse response = error.networkResponse;

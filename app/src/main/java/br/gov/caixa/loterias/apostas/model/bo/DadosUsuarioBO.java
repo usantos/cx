@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.model.bo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -88,7 +87,7 @@ public class DadosUsuarioBO extends BaseBO {
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         GsonRequest request = silceConnection.buildPostRequest(ServerMethods.SAIR_PATH, queryParams,
-                "", NetworkResponse.class,
+                null, NetworkResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 headers);

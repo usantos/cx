@@ -40,6 +40,7 @@
                 android:scaleType="center"
                 android:src="@drawable/ic_vector_fav_full"
                 android:tint="@color/branco"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

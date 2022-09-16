@@ -8,22 +8,31 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.ArrayList;
+import com.android.volley.VolleyError;
+
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 
 public class FormaPagamentoActivity extends AppCompatActivity {
 
-	MeioPagamentoFragment frameMercadoPago, frameRecargaPay;
+	private MeioPagamentoFragment frameMercadoPago, frameRecargaPay;
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
+
+	private MeioPagamentoModel model;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +46,52 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 
 		configMenu();
 
-		startFragmentMercadoPago();
-		startFragmentRecargaPay();
+		model = new MeioPagamentoModel(FormaPagamentoActivity.this);
 
+		buscaMeiosPagamentos();
+	}
+
+	private void apresentaAlertaPreCompra() {
+		String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
+		ViewUtils.alertTitleCustomPositiveListener(FormaPagamentoActivity.this,
+												   "Cancelar",
+												   "Confirmar",
+												   FormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valor), (dialog, which) -> {
+			AlertDialogUtils.dismiss();
+			dialog.dismiss();
+		}, (dialog, which) -> {
+			finish();
+		} );
+	}
+
+	private void buscaMeiosPagamentos() {
+		AlertDialogUtils.show(this);
+		model.buscaMeiosPagamentos(onMeiosPagamentosListener());
+	}
+
+	private OnSilceListener<List<MeioPagamentoDTO>> onMeiosPagamentosListener() {
+		return new OnSilceListener<List<MeioPagamentoDTO>>() {
+			@Override
+			public void success(List<MeioPagamentoDTO> payload) {
+				if (payload != null && !payload.isEmpty()){
+					for (MeioPagamentoDTO meioPagamento: payload){
+						if (MeioPagamentoUtils.isMercadoPago(meioPagamento.getId())){
+							startFragmentMercadoPago();
+						} else if (MeioPagamentoUtils.isRecargaPay(meioPagamento.getId())){
+							startFragmentRecargaPay();
+						}
+					}
+				}
+
+				AlertDialogUtils.dismiss();
+				apresentaAlertaPreCompra();
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
 	}
 
 	private void configMenu() {
@@ -63,50 +115,29 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		frameRecargaPay = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentRecargaPay,
-									null,
-									new MeioPagamentoConfig(R.color.laranja_recarga_pay,R.drawable.recargapay));
+									new MeioPagamentoConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, getRecargaPay()));
+	}
+
+
+	private DTOEnumLong getRecargaPay() {
+		DTOEnumLong recarga = new DTOEnumLong();
+		recarga.setValor(5L);
+		recarga.setDescricao("RecargaPay");
+		return recarga;
+	}
+
+	private DTOEnumLong getMercadoPago() {
+		DTOEnumLong recarga = new DTOEnumLong();
+		recarga.setValor(1L);
+		recarga.setDescricao("Mercado pago");
+		return recarga;
 	}
 
 	private void startFragmentMercadoPago() {
 		frameMercadoPago = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentMercadoPago,
-									getListCartoes(),
-									new MeioPagamentoConfig(R.color.azul_mercado_pago,R.drawable.ic_mercado_pago));
+									new MeioPagamentoConfig(R.color.azul_mercado_pago, R.drawable.ic_mercado_pago, getMercadoPago()));
 	}
 
-	private List<RetornoCartao> getListCartoes() {
-		List<RetornoCartao> lista = new ArrayList<>();
-
-		RetornoCartao cartaofav = new RetornoCartao();
-		cartaofav.setFav(true);
-		cartaofav.setUltimosDigitos("1234");
-		cartaofav.setIdMetodoPagamento("master");
-		cartaofav.setIdCartao(1L);
-
-		RetornoCartao cartao = new RetornoCartao();
-		cartao.setFav(false);
-		cartao.setUltimosDigitos("3456");
-		cartao.setIdMetodoPagamento("hipercard");
-		cartao.setIdCartao(2L);
-
-		RetornoCartao cartao3 = new RetornoCartao();
-		cartao3.setFav(false);
-		cartao3.setUltimosDigitos("5678");
-		cartao3.setIdMetodoPagamento("visa");
-		cartao3.setIdCartao(3L);
-
-		RetornoCartao cartao4 = new RetornoCartao();
-		cartao4.setFav(false);
-		cartao4.setUltimosDigitos("7890");
-		cartao4.setIdMetodoPagamento("amex");
-		cartao4.setIdCartao(4L);
-
-		lista.add(cartaofav);
-		lista.add(cartao);
-		lista.add(cartao3);
-		lista.add(cartao4);
-
-		return lista;
-	}
 }

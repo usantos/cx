@@ -1,7 +1,9 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
 class ServerMethods {
-     static final String COMPLETA_JOGO_PATH = "/apostas/completar-jogo";
+	public static final String CARDS_RECARGAPAY = "/cards";
+	public static final String CARDS_RECARGAPAY_CUSTOMER_CARD_TOKEN = "/cards/{customerCardToken}";
+	static final String COMPLETA_JOGO_PATH = "/apostas/completar-jogo";
      static final String COMPLETA_JOGO_NOVO_PATH = "/apostas/completar-jogo/{modalidade}";
      static final String VALIDAR_FAVORITA_PATH = "/apostas-favoritas/validar";
      static final String INCLUIR_FAVORITA_PATH = "/apostas-favoritas";
@@ -25,7 +27,8 @@ class ServerMethods {
      static final String CARRINHO_VERIFICA_COMPRA_PROCESSAMENTO = "/carrinhos/verifica-compra-processamento";
 
      //MEIO PAGAMENTO
-     static final String MEIOS_PAGAMENTOS = "/meios-pagamento/{id}";
+     static final String MEIOS_PAGAMENTOS_ID = "/meios-pagamento/{id}";
+     static final String MEIOS_PAGAMENTOS = "/meios-pagamento";
 
      static final String UFS_PATH = "/ufs";
      static final String TERMO_PATH = "/termos-de-uso/termo-vigente";
@@ -101,6 +104,8 @@ class ServerMethods {
      static final String APP_VERSAO_ATUALIZACAO_PATH = "app/valida-versao/{versao-app}";
 
      static final String TOKEN_CADASTRO_MP_PATH = "/usuarios/gerar-token-cadastro-mercado-pago";
+
+     static final String TOKEN_APOSTADOR_RP_PATH = "/usuarios/gerar-token-apostador-recarga-pay";
 
      private ServerMethods(){}
 }

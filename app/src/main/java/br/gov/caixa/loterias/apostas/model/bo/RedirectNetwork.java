@@ -78,7 +78,6 @@ public class  RedirectNetwork {
             try {
                 body = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
-
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
                 AppCenterManager.registraEventoErro(AppCenterManager.ERRO_UNSUPPORTED_ENCODING, error, body);
