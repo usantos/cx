@@ -70,7 +70,6 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
                     false);
         }
 
-
         return new ApostaConfirmadaHolder(view, onApostasConfirmadasListener, isListaVazia(), parentActivity, fragment);
     }
 

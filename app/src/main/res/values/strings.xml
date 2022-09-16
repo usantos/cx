@@ -1088,6 +1088,10 @@
     <string name="compra_processada_por">Compra processada por:</string>
     <string name="selecione_o_meio_de_pagamento_que_ira_processar_a_compra">Selecione o meio de pagamento que irá processar a compra utilizando o cartão de crédito de sua escolha</string>
     <string name="bundle_key_config">CONFIG</string>
-
+    
+    <string name="abre_chave_nsb_fecha_chave">{nsb}</string>
+    <string name="situaco">Situação</string>
+    <string name="faixa">Faixa</string>
+    <string name="valor">Valor</string>
 
 </resources>

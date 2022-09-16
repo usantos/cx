@@ -18,6 +18,7 @@ public class MaskEditUtil {
     public static final String FORMAT_CEP = "#####-###";
     public static final String FORMAT_DATE = "##/##/####";
     public static final String FORMAT_NSBI = "####-#################-##";
+    public static final String FORMAT_LOT = "##.######-#";
     public static final String FORMAT_CRED_CARD = "#### #### #### ####";
     public static final String FORMAT_CRED_CARD_AMEX = "#### ###### #####";
 

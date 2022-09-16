@@ -34,6 +34,9 @@ public class FaixaPremiadaDTO implements Serializable {
     @SerializedName("valorLiquido")
     protected BigDecimal valorLiquido = null;
 
+    private String situacao;
+    private int qtd;
+
     /**
      * Identificação do faixa de premiação da modalidade/concurso
      **/
@@ -94,6 +97,21 @@ public class FaixaPremiadaDTO implements Serializable {
         this.valorLiquido = valorLiquido;
     }
 
+    public String getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(String situacao) {
+        this.situacao = situacao;
+    }
+
+    public int getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(int qtd) {
+        this.qtd = qtd;
+    }
 
     @Override
     public boolean equals(Object o) {

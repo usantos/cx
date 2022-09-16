@@ -69,13 +69,14 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Extra
     protected ComprovanteApostaDTO comprovante;
+    private EstiloModalidade estiloModalidade;
 
     @AfterViews
     protected void init() {
         createToolBar();
 
         modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
-        EstiloModalidade estiloModalidade = new EstiloModalidade(modalidadeEnum);
+        estiloModalidade = new EstiloModalidade(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
@@ -212,7 +213,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     private void createListPremiacao() {
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
 
-        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio())));
+        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidade.getCorEscura()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

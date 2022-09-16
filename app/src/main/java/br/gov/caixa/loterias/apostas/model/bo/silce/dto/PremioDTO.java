@@ -41,6 +41,9 @@ public class PremioDTO implements Serializable {
     @SerializedName("nsuPagamento")
     protected Long nsuPagamento = null;
 
+    @SerializedName("concursosNaoPremiado")
+    protected List<ConcursoPremiadoDTO> concursosNaoPremiado;
+
     /**
      * Identificação do prêmio
      **/
@@ -137,6 +140,13 @@ public class PremioDTO implements Serializable {
         this.nsuPagamento = nsuPagamento;
     }
 
+    public List<ConcursoPremiadoDTO> getConcursosNaoPremiado() {
+        return concursosNaoPremiado;
+    }
+
+    public void setConcursosNaoPremiado(List<ConcursoPremiadoDTO> concursosNaoPremiado) {
+        this.concursosNaoPremiado = concursosNaoPremiado;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -151,6 +161,7 @@ public class PremioDTO implements Serializable {
                 (this.valorBruto == null ? premioDTO.valorBruto == null : this.valorBruto.equals(premioDTO.valorBruto)) &&
                 (this.valorLiquido == null ? premioDTO.valorLiquido == null : this.valorLiquido.equals(premioDTO.valorLiquido)) &&
                 (this.concursos == null ? premioDTO.concursos == null : this.concursos.equals(premioDTO.concursos)) &&
+                (this.concursosNaoPremiado == null ? premioDTO.concursosNaoPremiado == null : this.concursosNaoPremiado.equals(premioDTO.concursosNaoPremiado)) &&
                 (this.dataPagamento == null ? premioDTO.dataPagamento == null : this.dataPagamento.equals(premioDTO.dataPagamento)) &&
                 (this.horaPagamento == null ? premioDTO.horaPagamento == null : this.horaPagamento.equals(premioDTO.horaPagamento)) &&
                 (this.localPagamento == null ? premioDTO.localPagamento == null : this.localPagamento.equals(premioDTO.localPagamento)) &&
@@ -164,6 +175,7 @@ public class PremioDTO implements Serializable {
         result = 31 * result + (this.valorBruto == null ? 0 : this.valorBruto.hashCode());
         result = 31 * result + (this.valorLiquido == null ? 0 : this.valorLiquido.hashCode());
         result = 31 * result + (this.concursos == null ? 0 : this.concursos.hashCode());
+        result = 31 * result + (this.concursosNaoPremiado == null ? 0 : this.concursosNaoPremiado.hashCode());
         result = 31 * result + (this.dataPagamento == null ? 0 : this.dataPagamento.hashCode());
         result = 31 * result + (this.horaPagamento == null ? 0 : this.horaPagamento.hashCode());
         result = 31 * result + (this.localPagamento == null ? 0 : this.localPagamento.hashCode());
@@ -179,6 +191,7 @@ public class PremioDTO implements Serializable {
                 "  valorBruto: " + valorBruto + "\n" +
                 "  valorLiquido: " + valorLiquido + "\n" +
                 "  concursos: " + concursos + "\n" +
+                "  concursos: " + concursosNaoPremiado + "\n" +
                 "  dataPagamento: " + dataPagamento + "\n" +
                 "  horaPagamento: " + horaPagamento + "\n" +
                 "  localPagamento: " + localPagamento + "\n" +
