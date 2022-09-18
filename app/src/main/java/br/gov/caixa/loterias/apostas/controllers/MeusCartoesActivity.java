@@ -21,8 +21,9 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
+import br.gov.caixa.loterias.apostas.view.listener.MeusCartoesListener;
 
-public class MeusCartoesActivity extends AppCompatActivity {
+public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoesListener {
 
     private Toolbar toolbar;
 
@@ -112,4 +113,8 @@ public class MeusCartoesActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void semCartao() {
+        configuraTela(null);
+    }
 }
