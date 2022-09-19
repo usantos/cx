@@ -20,6 +20,9 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuperSete;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SuperSeteEnum;
+import br.gov.caixa.loterias.apostas.utils.AutomacaoUtils;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class NumerosSuperSeteAdapter extends BaseAdapter {
@@ -28,6 +31,7 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 	public List<Dezena> dezenas = new ArrayList<>();
 	public List<Integer> dezenasSelecionadas, listaNumerosSelecionados;
 	public ConfiguracaoNumerosSuperSete configuracao;
+	private SuperSeteEnum coluna;
 
 	private int corSuperSete;
 	private Context context;
@@ -54,6 +58,15 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		this.context = parentActivity;
 		this.configuracao = configuracao;
 		this.listaNumerosSelecionados = listaNumerosSelecionados;
+		preencheNumeros();
+	}
+
+	public NumerosSuperSeteAdapter(int typeGameColorDark, Activity parentActivity, List<Integer> dezenasSelecionadas, SuperSeteEnum coluna) {
+		this.dezenasSelecionadas = dezenasSelecionadas;
+		this.context = parentActivity;
+		this.corSuperSete = typeGameColorDark;
+		this.configuracao = null;
+		this.coluna = coluna;
 		preencheNumeros();
 	}
 	//endregion
@@ -108,6 +121,11 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		textView.setText(dezenas.get(i).getValue());
 		textView.setTypeface(ViewUtils.getFontFutura(context));
 		textView.setGravity(Gravity.CENTER);
+
+		// logica apenas para o automatizado
+		if (BuildVersionUtil.isAutomacao() && coluna != null){
+			AutomacaoUtils.aplicaIdViewSuperSete(coluna, i, textView);
+		}
 
 		return textView;
 	}
