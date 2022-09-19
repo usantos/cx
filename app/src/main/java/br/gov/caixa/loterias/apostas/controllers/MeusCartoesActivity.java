@@ -1,14 +1,16 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 
 import com.android.volley.VolleyError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -19,12 +21,16 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
+import br.gov.caixa.loterias.apostas.view.listener.MeusCartoesListener;
 
-public class MeusCartoesActivity extends AppCompatActivity {
+public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoesListener {
 
     private Toolbar toolbar;
 
+
     private CartoesModel model;
+    private TextView tvSemCartao;
+    private NestedScrollView scrollCartoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,56 +39,12 @@ public class MeusCartoesActivity extends AppCompatActivity {
         pegaExtras();
         setaViews();
         model = new CartoesModel(MeusCartoesActivity.this);
-
-        model.buscaCartoesMercadoPago(onBuscaCartaoMercadoPago());
-
-
-//        FragmentUtils.meusCartoesFragment(getSupportFragmentManager(),
-//                                          R.id.frameRecargaPayFragment,
-//                                          null, getConfigRecargaPay());
     }
 
-    private List<RetornoCartao> getListCartoes() {
-        List<RetornoCartao> lista = new ArrayList<>();
-
-        RetornoCartao cartaofav = new RetornoCartao();
-        cartaofav.setFav(false);
-        cartaofav.setUltimosDigitos("1234");
-        cartaofav.setIdMetodoPagamento("master");
-        cartaofav.setMesValidade(2L);
-        cartaofav.setAnoValidade(2025L);
-        cartaofav.setIdCartao(1L);
-
-        RetornoCartao cartao = new RetornoCartao();
-        cartao.setFav(false);
-        cartao.setUltimosDigitos("3456");
-        cartao.setIdMetodoPagamento("hipercard");
-        cartao.setIdCartao(2L);
-        cartao.setMesValidade(2L);
-        cartao.setAnoValidade(2025L);
-
-        RetornoCartao cartao3 = new RetornoCartao();
-        cartao3.setFav(false);
-        cartao3.setUltimosDigitos("5678");
-        cartao3.setIdMetodoPagamento("visa");
-        cartao3.setIdCartao(3L);
-        cartao3.setMesValidade(2L);
-        cartao3.setAnoValidade(2025L);
-
-        RetornoCartao cartao4 = new RetornoCartao();
-        cartao4.setFav(false);
-        cartao4.setUltimosDigitos("7890");
-        cartao4.setIdMetodoPagamento("amex");
-        cartao4.setIdCartao(4L);
-        cartao4.setMesValidade(2L);
-        cartao4.setAnoValidade(2025L);
-
-        lista.add(cartaofav);
-        lista.add(cartao);
-        lista.add(cartao3);
-        lista.add(cartao4);
-
-        return lista;
+    @Override
+    protected void onResume() {
+        super.onResume();
+        model.buscaCartoesMercadoPago(onBuscaCartaoMercadoPago());
     }
 
     @NonNull
@@ -93,16 +55,30 @@ public class MeusCartoesActivity extends AppCompatActivity {
             public void success(List<RetornoCartao> payload) {
                 AlertDialogUtils.dismiss();
 
-                FragmentUtils.meusCartoesFragment(getSupportFragmentManager(),
-                                                  R.id.frameMercadoPagoFragment,
-                                                  payload, getConfigMercadoPago());
+                configuraTela(payload);
+                if (payload != null && !payload.isEmpty()){
+                    FragmentUtils.meusCartoesFragment(getSupportFragmentManager(),
+                                                      R.id.frameMercadoPagoFragment,
+                                                      payload, getConfigMercadoPago());
+                }
             }
 
             @Override
             public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
+                configuraTela(null);
             }
         };
+    }
+
+    private void configuraTela(List<RetornoCartao> payload) {
+        if (payload == null || payload.isEmpty()){
+            tvSemCartao.setVisibility(View.VISIBLE);
+            scrollCartoes.setVisibility(View.GONE);
+        } else {
+            tvSemCartao.setVisibility(View.GONE);
+            scrollCartoes.setVisibility(View.VISIBLE);
+        }
     }
 
     private MeusCartoesConfig getConfigMercadoPago() {
@@ -125,6 +101,9 @@ public class MeusCartoesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        tvSemCartao = findViewById(R.id.tv_sem_cartao);
+        scrollCartoes = findViewById(R.id.nsv_conteudo);
+
         setTitle(getString(R.string.meus_cartoes));
     }
 
@@ -134,4 +113,8 @@ public class MeusCartoesActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void semCartao() {
+        configuraTela(null);
+    }
 }

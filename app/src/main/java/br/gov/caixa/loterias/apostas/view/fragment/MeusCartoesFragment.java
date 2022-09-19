@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.MeusCartoesRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.holder.MeuCartaoHolder;
+import br.gov.caixa.loterias.apostas.view.listener.MeusCartoesListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnMeusCartoesListener;
 
 /**
@@ -54,6 +56,7 @@ public class MeusCartoesFragment extends Fragment {
 	private List<RetornoCartao> cartoes;
 
 	private CartoesModel model;
+	private MeusCartoesListener listener;
 
 	public MeusCartoesFragment() {
 		// Required empty public constructor
@@ -79,6 +82,13 @@ public class MeusCartoesFragment extends Fragment {
 
 		fragment.setArguments(args);
 		return fragment;
+	}
+
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
+		listener = (MeusCartoesListener) context;
+
 	}
 
 	@Override
@@ -183,6 +193,9 @@ public class MeusCartoesFragment extends Fragment {
 
 				cartoes.remove(position);
 				adapter.notifyDataSetChanged();
+				if (cartoes.isEmpty()){
+					listener.semCartao();
+				}
 			}
 
 			@Override
