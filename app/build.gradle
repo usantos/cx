@@ -16,7 +16,7 @@ android {
         targetSdkVersion 30
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211072002
+        versionCode 211073001
         versionName "1.0.72"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
