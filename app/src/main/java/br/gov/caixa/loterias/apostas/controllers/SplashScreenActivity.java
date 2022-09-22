@@ -115,6 +115,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void onResponse(VersionResponse response) {
                 responseVersao = response;
                 if (BuildVersionUtil.isEmulador()){
+                    trataPermissao();
                     trataSucesso(responseVersao);
                 } else {
                     trataPermissao();
