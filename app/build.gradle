@@ -47,16 +47,18 @@ android {
     }
 
     buildTypes {
-        buildTypes {
-            release {
-                shrinkResources true
-                minifyEnabled true
-                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            }
-            debug {
-                debuggable = true
-            }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable = true
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 
         flavorDimensions 'default'
         productFlavors {
@@ -318,4 +320,3 @@ android {
             property "sonar.android.lint.report", "build/outputs/lint-results"
         }
     }
-}
