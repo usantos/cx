@@ -6,19 +6,14 @@ import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Base64;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -94,6 +89,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
@@ -105,6 +101,7 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
@@ -359,43 +356,26 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void trataPopupDeNotificacao() {
-        LayoutInflater li = LayoutInflater.from(PrincipalActivity.this);
-        viewNotification = li.inflate(R.layout.nova_popup_notificacao, null);
-        ImageView img = viewNotification.findViewById(R.id.imagem_notificacao);
-        TextView tituloNotificacao = viewNotification.findViewById(R.id.titulo_notificacao);
-        TextView corpoNotificacao = viewNotification.findViewById(R.id.descricao_notificacao);
-        Button btnNotificacao = viewNotification.findViewById(R.id.fechar_notificacao);
-
-
-        try {
-            final byte[] decodedBytes = Base64.decode(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getImagem(), Base64.DEFAULT);
-            Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-            img.setImageBitmap(decodedBitmap);
-        }catch (Exception e){}
-
-        tituloNotificacao.setText(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getTitulo());
-        corpoNotificacao.setText(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getConteudo());
-        btnNotificacao.setOnClickListener(v -> {
-            removePopup();
-        });
-
-        popupNotification = new PopupWindow(viewNotification, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        popupNotification.showAtLocation(navigationBarListaModalidade, Gravity.CENTER, 0, 0);
+        popupNotification = NotificacaoUtils.showNotificacao(PrincipalActivity.this,
+                                                             viewNotification, navigationBarListaModalidade,
+                                                             onRemovePopup());
     }
 
-    private void removePopup() {
-        dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
-            @Override
-            public void onResponse(RetornoPadraoDTO result) {
-                popupNotification.dismiss();
-                UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
-            }
+    private OnNotificacaoListener onRemovePopup() {
+        return () -> {
+            dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
+                @Override
+                public void onResponse(RetornoPadraoDTO result) {
+                    popupNotification.dismiss();
+                    UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
+                }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
-            }
-        });
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                }
+            });
+        };
     }
 
     private void callRepassesSociais() {
