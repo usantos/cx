@@ -86,7 +86,7 @@ public class DadosUsuarioBO extends BaseBO {
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
 
         GsonRequest request = silceConnection.buildPostRequest(ServerMethods.SAIR_PATH, queryParams,
-                "", NetworkResponse.class,
+                null, NetworkResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 headers);
