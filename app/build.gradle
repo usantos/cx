@@ -16,7 +16,7 @@ android {
         targetSdkVersion 30
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211072004
+        versionCode 211072005
         versionName "1.0.72"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -48,11 +48,14 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
         debug {
             debuggable = true
+            minifyEnabled false
+//            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -251,5 +254,4 @@ sonarqube {
         property "sonar.junit.reportsPath", "build/test-results/debug"
         property "sonar.android.lint.report", "build/outputs/lint-results"
     }
-
 }
