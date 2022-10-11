@@ -17,8 +17,8 @@ android {
 
         //                   21                 1.1.0 = 1100               001
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211100001
-        versionName "1.1.0"
+        versionCode 211073001
+        versionName "1.2.0"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -49,11 +49,14 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+//            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-
         debug {
             debuggable = true
+            minifyEnabled false
+//            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -316,5 +319,4 @@ sonarqube {
         property "sonar.junit.reportsPath", "build/test-results/debug"
         property "sonar.android.lint.report", "build/outputs/lint-results"
     }
-
 }
