@@ -151,8 +151,8 @@ public class DadosUsuarioBO extends BaseBO {
     }
 
     private static String getDecoded(String dado) {
-        byte[] decoded = Base64.decodeBase64(dado);
         try {
+            byte[] decoded = Base64.decodeBase64(dado);
             return new String(decoded, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
