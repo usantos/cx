@@ -17,8 +17,8 @@ android {
 
         //                   21                 1.1.0 = 1100               001
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211100001
-        versionName "1.1.0"
+        versionCode 211074001
+        versionName "1.3.0"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
