@@ -31,6 +31,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
@@ -120,6 +121,13 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         findViewById(R.id.botaoAvancarPagamentoRapidao).setOnClickListener(view -> validarCarrinho());
     }
     private void validarCarrinho() {
+        if(valorTotalCarrinhoRapidao.getText().toString().equals("R$ 0,00")) {
+            DialogUtils.showDialogListaEscolha(ListaRapidaoActivity.this,
+                    getResources().getString(R.string.verCarrinhoVazio), null,
+                    0, onTeimosinhaDialogListener());
+            return;
+        }
+
         AlertDialogUtils.show(ListaRapidaoActivity.this);
         ApostaBO_.getInstance_(ListaRapidaoActivity.this).validarCarrinho(new RequestListener<ResourceResponse>() {
             @Override
