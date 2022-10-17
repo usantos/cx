@@ -438,6 +438,7 @@
     <string name="title_salvarCartao">Salvar este cartão para futuras apostas</string>
     <string name="label_salvar_Cartao">Salvar cartão para compras futuras</string>
     <string name="title_mesDeValidade">Mês de validade</string>
+    <string name="title_anoDeValidade">Ano de validade</string>
     <string name="title_sair">Sair</string>
     <string name="title_minhaArea">Minha área</string>
     <string name="title_lerBilhete">Conferir Bilhete</string>
