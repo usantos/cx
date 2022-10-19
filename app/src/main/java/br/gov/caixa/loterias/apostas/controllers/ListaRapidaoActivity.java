@@ -29,8 +29,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -81,7 +81,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
 
     public void atualizaLayout() {
         if (apostas != null) {
-            configuraRecyclerViewCarrinhoAposta();
+446            configuraRecyclerViewCarrinhoAposta();
             FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA CARRINHO RAPIDAO");
         }
         configuraListeners();
@@ -122,9 +122,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     }
     private void validarCarrinho() {
         if(valorTotalCarrinhoRapidao.getText().toString().equals("R$ 0,00")) {
-            DialogUtils.showDialogListaEscolha(ListaRapidaoActivity.this,
-                    getResources().getString(R.string.verCarrinhoVazio), null,
-                    0, onTeimosinhaDialogListener());
+            DialogUtils.showDialogCarrinhoVazio(ListaRapidaoActivity.this, getResources().getString(R.string.verCarrinhoVazio), this);
             return;
         }
 
