@@ -11,7 +11,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.ListaRapidaoActivity;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 
@@ -85,11 +84,11 @@ public class DialogUtils {
         dialog.show();
     }
 
-    public static void showDialogCarrinhoVazio(Context context, String nomeBotao, ListaRapidaoActivity listener) {
+    public static void showDialogCarrinhoVazio(Context context, String nomeBotao) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_dialog_carrinho_vazio);
 
-        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
+        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonCarrinhoVazio);
         dialogButtonOk.setText(nomeBotao);
 
         dialogButtonOk.setOnClickListener(v -> {

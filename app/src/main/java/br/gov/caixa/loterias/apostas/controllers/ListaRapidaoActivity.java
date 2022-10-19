@@ -81,7 +81,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
 
     public void atualizaLayout() {
         if (apostas != null) {
-446            configuraRecyclerViewCarrinhoAposta();
+            configuraRecyclerViewCarrinhoAposta();
             FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA CARRINHO RAPIDAO");
         }
         configuraListeners();
@@ -122,7 +122,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     }
     private void validarCarrinho() {
         if(valorTotalCarrinhoRapidao.getText().toString().equals("R$ 0,00")) {
-            DialogUtils.showDialogCarrinhoVazio(ListaRapidaoActivity.this, getResources().getString(R.string.verCarrinhoVazio), this);
+            DialogUtils.showDialogCarrinhoVazio(ListaRapidaoActivity.this, getResources().getString(R.string.verCarrinhoVazio));
             return;
         }
 
