@@ -110,8 +110,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
 
-                android:background="@drawable/button_border_amareloqueimado_arredondado"
-                android:drawableLeft="@drawable/ic_qrcode"
+                android:background="@drawable/button_border_amareloqueimado_arredondado_solido"
+                android:drawableLeft="@drawable/ic_qrcode_branco"
                 android:drawablePadding="8dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -119,7 +119,7 @@
                 android:text="@string/title_QrCode"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textColor="@color/amareloQueimado"
+                android:textColor="@color/branco"
                 android:textSize="14.2sp" />
         </LinearLayout>
 
