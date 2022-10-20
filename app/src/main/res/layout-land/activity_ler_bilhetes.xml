@@ -75,73 +75,73 @@
             android:textSize="14.2sp" />
 
 
-        <Button
-            android:id="@+id/buttonBarCode"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
-
-            android:layout_alignParentStart="true"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
             android:layout_alignParentBottom="true"
-
-            android:layout_marginStart="150dp"
             android:layout_marginBottom="26dp"
-            android:background="@drawable/button_border_amareloqueimado_arredondado"
-            android:drawableLeft="@drawable/ic_barcode"
-            android:drawablePadding="8dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            android:text="@string/title_CodigoBarras"
-            android:textAllCaps="false"
-            android:textColor="@color/amareloQueimado"
-            android:textAlignment="center"
-            android:textSize="14.2sp" />
+            <Button
+                android:id="@+id/buttonBarCode"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
 
-        <Button
-            android:id="@+id/buttonQrCode"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
+                android:background="@drawable/button_border_amareloqueimado_arredondado"
+                android:drawableLeft="@drawable/ic_barcode"
+                android:drawablePadding="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
 
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="26dp"
+                android:text="@string/title_CodigoBarras"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/amareloQueimado"
+                android:textSize="14.2sp" />
 
-            android:layout_toEndOf="@+id/buttonBarCode"
-            android:background="@drawable/button_border_amareloqueimado_arredondado"
-            android:drawableLeft="@drawable/ic_qrcode"
-            android:drawablePadding="8dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            <android.widget.Space
+                android:layout_width="32dp"
+                android:layout_height="55dp" />
 
-            android:text="@string/title_QrCode"
-            android:textAllCaps="false"
-            android:textColor="@color/amareloQueimado"
-            android:textAlignment="center"
-            android:textSize="14.2sp" />
+            <Button
+                android:id="@+id/buttonQrCode"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
 
-        <Button
-            android:id="@+id/buttonDigitarAposta"
-            android:layout_width="wrap_content"
-            android:layout_height="55dp"
+                android:background="@drawable/button_border_amareloqueimado_arredondado"
+                android:drawableLeft="@drawable/ic_qrcode"
+                android:drawablePadding="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
 
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="150dp"
+                android:text="@string/title_QrCode"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/amareloQueimado"
+                android:textSize="14.2sp" />
 
-            android:layout_marginBottom="26dp"
-            android:layout_toEndOf="@+id/buttonQrCode"
-            android:background="@drawable/button_border_amareloqueimado_arredondado"
-            android:drawableLeft="@drawable/ic_edit"
-            android:drawablePadding="8dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            <android.widget.Space
+                android:layout_width="32dp"
+                android:layout_height="55dp" />
 
-            android:text="@string/title_digiteSuaAposta"
-            android:textAllCaps="false"
-            android:textColor="@color/amareloQueimado"
-            android:textAlignment="center"
-            android:textSize="14.2sp" />
+            <Button
+                android:id="@+id/buttonDigitarAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+
+                android:background="@drawable/button_border_amareloqueimado_arredondado"
+                android:drawableLeft="@drawable/ic_edit"
+                android:drawablePadding="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+
+                android:text="@string/title_digiteSuaAposta"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/amareloQueimado"
+                android:textSize="14.2sp" />
+        </LinearLayout>
 
     </RelativeLayout>
 </LinearLayout>

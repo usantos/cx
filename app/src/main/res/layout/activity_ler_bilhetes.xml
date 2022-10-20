@@ -101,7 +101,7 @@
                 android:textColor="@color/amareloQueimado"
                 android:textSize="14.2sp" />
 
-            <Space
+            <android.widget.Space
                 android:layout_width="32dp"
                 android:layout_height="55dp" />
 
