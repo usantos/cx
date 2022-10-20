@@ -241,7 +241,7 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.LerBilhetesActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/AppFullScreenTheme" />
         <activity
             android:name=".controllers.LerBilhetesEscolhaJogoActivity"

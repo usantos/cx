@@ -1094,4 +1094,11 @@
     <string name="faixa">Faixa</string>
     <string name="valor">Valor</string>
 
+    <string name="title_orientacaoCodigoBarras2">Posicione a câmera sobre o código de barras e aguarde. A leitura é automática.</string>
+    <string name="title_orientacaoQrCode">Posicione a câmera sobre o QR Code e aguarde. A leitura é automática.</string>
+
+    <string name="title_CodigoBarras">Código de barras</string>
+    <string name="title_QrCode">QR Code</string>
+    <string name="title_digiteSuaAposta">Digite a sua aposta</string>
+
 </resources>

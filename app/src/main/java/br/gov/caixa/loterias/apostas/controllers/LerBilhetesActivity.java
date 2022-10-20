@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -130,8 +131,8 @@ public class LerBilhetesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ler_bilhetes);
 
-        TextView textoLeitorCodBarras = findViewById(R.id.TextoLeitorCodBarras);
-        textoLeitorCodBarras.setText(getResources().getString(R.string.posicione_linha_codigo_barras));
+//        TextView textoLeitorCodBarras = findViewById(R.id.TextoLeitorCodBarras);
+//        textoLeitorCodBarras.setText(getResources().getString(R.string.posicione_linha_codigo_barras));
 
         Button fecharLeitor = findViewById(R.id.fecharLeitorCodBarras);
         fecharLeitor.setOnClickListener(v -> finish());
@@ -141,13 +142,24 @@ public class LerBilhetesActivity extends AppCompatActivity {
             //startBilheteManual();
         });
 
+        Button buttonQrCode = findViewById(R.id.buttonQrCode);
+        buttonQrCode.setOnClickListener(v -> {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        });
+
+        Button buttonBarCode = findViewById(R.id.buttonBarCode);
+        buttonBarCode.setOnClickListener(v -> {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        });
+
+
         barcodeScannerView = findViewById(R.id.DecoratedBarcodeViewBilhetes);
         barcodeScannerView.getViewFinder().setVisibility(View.INVISIBLE);
         barcodeScannerView.getStatusView().setVisibility(View.INVISIBLE);
         barcodeScannerView.getBarcodeView().getCameraSettings().setFocusMode(CameraSettings.FocusMode.CONTINUOUS);
         barcodeScannerView.decodeContinuous(callback);
 
-        buttonDigitarAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_digite_aposta_realizada)));
+//        buttonDigitarAposta.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_digite_aposta_realizada)));
     }
 
 //    private void startDezSegundos() {
