@@ -47,6 +47,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostas.model.model.DetalhesCompraModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
@@ -58,12 +59,17 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnReapostaListener;
 
 public class DetalhesComprasActivity extends AppCompatActivity {
 
     public static final String DETALHES_COMPRA_ACTIVITY = "DETALHES_COMPRA_ACTIVITY";
+
+    public static final int AMBOS = 0;
+    public static final int NORMAL = 1;
+    public static final int ESPECIAL = 2;
+
     private CompraDTO compraDTO;
     private ArrayList<ApostaDTO> listaAposta = new ArrayList<>();
     private ArrayList<ApostaDTO> listaFiltrada = new ArrayList<>();;
@@ -135,13 +141,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
             showDialogCompraCancelada();
         } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
-            showDialogCompraCancelada();
+            showDialogDebitoNaoAutorizado();
         }
     }
 
     private void showDialogCompraCancelada() {
         DialogUtils.showDialogDebitoNaoAutorizado(this,
                                                   getResources().getString(R.string.salvar_carrinho),
+                                                  false,
                                                   onCompraCancelaDialogListener());
     }
 
@@ -149,7 +156,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         return new OnDialogSituacaoCompraListener() {
             @Override
             public void ajuda() {
-                abrirAjuda();
+                //abrirAjuda();
             }
 
             @Override
@@ -168,6 +175,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
         DialogUtils.showDialogDebitoNaoAutorizado(this,
                                                   getResources().getString(R.string.tenta_novamente_dialog),
+                                                  true,
                                                   onDebitaNaoAutorizadoDialogListener());
     }
 
@@ -186,7 +194,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void tentarNovamente() {
-        startActivity(IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, CarrinhoActivity.class));
+        if (ApostaUtils.temModalidadeNormaleEspecialAberta(listaAposta)){
+            DialogUtils.showDialogSegmentedControl(DetalhesComprasActivity.this,
+                                                   ApostaUtils.getNomeModalidadeNormal(listaAposta),
+                                                   ApostaUtils.getNomeModalidadeEspecial(listaAposta),
+                                                   onReapostaDialogListener());
+        } else {
+            realizaReaposta();
+        }
     }
 
     private void realizaReaposta() {
@@ -211,8 +226,17 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         };
     }
 
-    private OnReapostaListener onReapostaDialogListener() {
-        return opcaoSelecionada -> realizaReaposta();
+    private OnDialogSegmentedControlListener onReapostaDialogListener() {
+        return opcaoSelecionada -> {
+            switch (opcaoSelecionada){
+                case AMBOS:
+                    break;
+                case NORMAL:
+                    break;
+                case ESPECIAL:
+                    break;
+            }
+        };
     }
 
     private void abrirAjuda() {

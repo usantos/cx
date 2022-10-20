@@ -1,18 +1,22 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
+import info.hoang8f.android.segmented.SegmentedGroup;
 
 public class DialogUtils {
 
@@ -57,7 +61,7 @@ public class DialogUtils {
         dialog.show();
     }
 
-    public static void showDialogDebitoNaoAutorizado(Context context, String nomeBotao, OnDialogSituacaoCompraListener listener) {
+    public static void showDialogDebitoNaoAutorizado(Context context, String nomeBotao, boolean showButtonAjuda, OnDialogSituacaoCompraListener listener) {
 
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
@@ -71,6 +75,9 @@ public class DialogUtils {
             dialog.dismiss();
         });
 
+        if (!showButtonAjuda){
+            dialogButtonAjuda.setVisibility(View.GONE);
+        }
         dialogButtonAjuda.setOnClickListener(v -> {
             dialog.dismiss();
             listener.ajuda();
@@ -82,6 +89,42 @@ public class DialogUtils {
         });
 
         dialog.show();
+    }
+
+    public static Dialog showDialogSegmentedControl(Activity act, String modalidadeNormal, String modalidadeEspecial, OnDialogSegmentedControlListener listener) {
+        Dialog dialogSegmented = new Dialog(act);
+        dialogSegmented.setContentView(R.layout.custom_dialog_segmented_control);
+
+        TextView tituloDialog    = dialogSegmented.findViewById(R.id.tv_titulo);
+        TextView descricaoDialog = dialogSegmented.findViewById(R.id.tv_descricao);
+
+        SegmentedGroup sgOpcoes = dialogSegmented.findViewById(R.id.sg_opcoes);
+
+        RadioButton opcao1 = dialogSegmented.findViewById(R.id.rb_1);
+        RadioButton opcao2 = dialogSegmented.findViewById(R.id.rb_2);
+        RadioButton opcao3      = dialogSegmented.findViewById(R.id.rb_3);
+        Button      btnOk       = dialogSegmented.findViewById(R.id.btn_ok);
+        Button      btnCancelar = dialogSegmented.findViewById(R.id.btn_cancelar);
+
+        String descricao = act.getString(R.string.carrinho_fav_segmented_desc);
+        descricao = descricao.replace("{modalidade}", modalidadeNormal);
+        descricaoDialog.setText(descricao);
+
+        sgOpcoes.check(R.id.rb_1);
+        opcao1.setText("Ambos");
+
+        opcao2.setText(modalidadeNormal);
+        opcao3.setText(modalidadeEspecial);
+        tituloDialog.setText("Carrinho Favorito");
+
+        btnOk.setOnClickListener(v -> {
+            int opcaoSelecionada = sgOpcoes.indexOfChild(dialogSegmented.findViewById(sgOpcoes.getCheckedRadioButtonId()));
+            listener.ok(opcaoSelecionada);
+        });
+
+        btnCancelar.setOnClickListener(v -> dialogSegmented.dismiss());
+        dialogSegmented.show();
+        return dialogSegmented;
     }
 
 }
