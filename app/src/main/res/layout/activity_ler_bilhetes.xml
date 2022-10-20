@@ -84,7 +84,7 @@
             android:layout_alignParentBottom="true"
 
             android:layout_marginStart="60dp"
-            android:layout_marginBottom="26dp"
+            android:layout_marginBottom="86dp"
             android:background="@drawable/button_border_amareloqueimado_arredondado"
             android:drawableLeft="@drawable/ic_barcode"
             android:drawablePadding="8dp"
@@ -104,7 +104,7 @@
 
             android:layout_alignParentBottom="true"
             android:layout_marginStart="30dp"
-            android:layout_marginBottom="26dp"
+            android:layout_marginBottom="86dp"
 
             android:layout_toEndOf="@+id/buttonBarCode"
             android:background="@drawable/button_border_amareloqueimado_arredondado"
@@ -124,23 +124,22 @@
             android:layout_width="wrap_content"
             android:layout_height="55dp"
 
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="150dp"
 
-            android:layout_marginBottom="26dp"
-            android:layout_toEndOf="@+id/buttonQrCode"
+
+            android:layout_marginStart="120dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/button_border_amareloqueimado_arredondado"
             android:drawableLeft="@drawable/ic_edit"
             android:drawablePadding="8dp"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
 
+            android:paddingRight="10dp"
             android:text="@string/title_digiteSuaAposta"
+            android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@color/amareloQueimado"
-            android:textAlignment="center"
             android:textSize="14.2sp" />
 
     </RelativeLayout>
