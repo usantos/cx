@@ -99,18 +99,4 @@ public class DialogUtils {
         dialog.show();
     }
 
-    public static void showDialogContinuaRapidao(Context context, String nomeBotao) {
-        final Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.custom_dialog_carrinho_vazio);
-
-        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
-        dialogButtonOk.setText(nomeBotao);
-
-        dialogButtonOk.setOnClickListener(v -> {
-            dialog.dismiss();
-//            listener.ok();
-        });
-
-        dialog.show();
-    }
 }
