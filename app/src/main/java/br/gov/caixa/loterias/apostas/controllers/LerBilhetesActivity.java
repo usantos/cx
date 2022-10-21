@@ -139,7 +139,7 @@ public class LerBilhetesActivity extends AppCompatActivity {
 
         Button buttonDigitarAposta = findViewById(R.id.buttonDigitarAposta);
         buttonDigitarAposta.setOnClickListener(v -> {
-            //startBilheteManual();
+            startBilheteManual();
         });
 
         Button buttonQrCode = findViewById(R.id.buttonQrCode);
@@ -215,8 +215,8 @@ public class LerBilhetesActivity extends AppCompatActivity {
 //    }
 
     private void startBilheteManual() {
-//        Intent activity = new Intent(LerBilhetesActivity.this, InsercaoManualCodBarrasActivity.class);
-//        startActivity(activity);
+        Intent activity = new Intent(LerBilhetesActivity.this, InsercaoManualCodBarrasActivity.class);
+        startActivity(activity);
     }
 
     @Override
