@@ -47,7 +47,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostas.model.model.DetalhesCompraModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
@@ -194,14 +193,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void tentarNovamente() {
-        if (ApostaUtils.temModalidadeNormaleEspecialAberta(listaAposta)){
-            DialogUtils.showDialogSegmentedControl(DetalhesComprasActivity.this,
-                                                   ApostaUtils.getNomeModalidadeNormal(listaAposta),
-                                                   ApostaUtils.getNomeModalidadeEspecial(listaAposta),
-                                                   onReapostaDialogListener());
-        } else {
+//        if (ApostaUtils.temModalidadeNormaleEspecialAberta(listaAposta)){
+//            DialogUtils.showDialogSegmentedControl(DetalhesComprasActivity.this,
+//                                                   ApostaUtils.getNomeModalidadeNormal(listaAposta),
+//                                                   ApostaUtils.getNomeModalidadeEspecial(listaAposta),
+//                                                   onReapostaDialogListener());
+//        } else {
             realizaReaposta();
-        }
+//        }
     }
 
     private void realizaReaposta() {
