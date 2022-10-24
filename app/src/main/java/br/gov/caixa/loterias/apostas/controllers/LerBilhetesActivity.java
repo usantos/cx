@@ -137,10 +137,11 @@ public class LerBilhetesActivity extends AppCompatActivity {
         Button fecharLeitor = findViewById(R.id.fecharLeitorCodBarras);
         fecharLeitor.setOnClickListener(v -> finish());
 
-        Button buttonDigitarAposta = findViewById(R.id.buttonDigitarAposta);
-        buttonDigitarAposta.setOnClickListener(v -> {
-            startBilheteManual();
-        });
+//Aguardando a liberacao do SILCE, o LinearLayout onde tem o botão foi passado pra GONE
+//        Button buttonDigitarAposta = findViewById(R.id.buttonDigitarAposta);
+//        buttonDigitarAposta.setOnClickListener(v -> {
+//            startBilheteManual();
+//        });
 
         Button buttonQrCode = findViewById(R.id.buttonQrCode);
         buttonQrCode.setOnClickListener(v -> {
