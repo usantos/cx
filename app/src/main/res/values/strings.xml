@@ -1094,7 +1094,6 @@
     <string name="situaco">Situação</string>
     <string name="faixa">Faixa</string>
     <string name="valor">Valor</string>
-    <string name="mensagem_carrinho_vazio_dialog">Não é permitido fazer o pagamento com o carrinho de compras zerado.</string>
-    <string name="mensagem_rapidao_continua_dialog">Você já tem apostas no seu carrinho. \nAo prosseguir elas serão excluídas. Deseja continuar ?</string>
+    <string name="mensagem_carrinho_vazio_dialog">Você não fez nenhuma aposta, escolha a sua modalidade favorita e boa sorte.</string>
 
 </resources>
