@@ -232,7 +232,7 @@
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <RelativeLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/containerAnoValidadeCartao"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -248,7 +248,8 @@
                                 android:id="@+id/editTextAnoValidadeCartao"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true">
+                                android:layout_alignParentTop="true"
+                                app:layout_constraintTop_toTopOf="parent">
 
                                 <EditText
                                     android:id="@+id/editTextAnoValidadeCartaooContent"
@@ -262,7 +263,16 @@
                                     android:textColorHint="@color/azulFormNovoTipoPagamento"
                                     android:textSize="16sp" />
                             </com.google.android.material.textfield.TextInputLayout>
-                        </RelativeLayout>
+                            <Spinner
+                                android:id="@+id/spin_anos"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="10dp"
+                                android:backgroundTint="@color/colorAccent"
+                                android:dropDownWidth="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                     </LinearLayout>
 
                     <RelativeLayout

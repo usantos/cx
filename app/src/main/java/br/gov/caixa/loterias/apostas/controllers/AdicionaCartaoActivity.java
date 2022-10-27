@@ -19,6 +19,8 @@ import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 import com.mercadopago.model.CardToken;
 
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,7 +50,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
-    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent, editTextAnoValidadeCartaoContent;
+    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent,  editTextAnoValidadeCartaoContent;
     private TextView textoInfoSelecioneFormaPagamento;
     private CheckBox checkBoxSalvarCartao;
     private AppCompatImageView imagemMeioPagamento, voltar;
@@ -58,6 +60,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private Button btnAvancar;
 
     private ArrayList<String> listaMeses;
+    private ArrayList<String> listaAnos;
 
     private Boolean primeiraSelecao = false;
 
@@ -87,7 +90,8 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         addRightImg(findViewById(R.id.editTextNomeClienteCartaoContent));
         addRightImg(findViewById(R.id.editTextCodigoSegurancaContent));
 
-        configuraSpin();
+        configuraSpin(R.id.spin_meses, getListaMeses(), onSpinListener(editTextMesValidadeCartaoContent, this.listaMeses));
+        configuraSpin(R.id.spin_anos, getListaAnos(), onSpinListener(editTextAnoValidadeCartaoContent, this.listaAnos));
         apresentaTextCartoes();
 
         if (model.isRecargaPay(config.getMeioPagamento().getValor())){
@@ -126,32 +130,52 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         }
     }
 
-    private void configuraSpin(){
-        Spinner spinner = findViewById(R.id.spin_meses);
+    private void configuraSpin(int idSprin, ArrayList<String> lista, AdapterView.OnItemSelectedListener listener){
+        Spinner spinner = findViewById(idSprin);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, lista);
+
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(dataAdapter);
+        spinner.setOnItemSelectedListener(listener);
+    }
+
+    private AdapterView.OnItemSelectedListener onSpinListener(EditText editText, ArrayList<String> lista){
+        return new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                if (!primeiraSelecao ){
+//                    editTextMesValidadeCartaoContent.setText("");
+//                } else
+                if(i == 0){
+                    editText.setText("");
+                } else {
+                    editText.setText(lista.get(i));
+                }
+//                primeiraSelecao = true;
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {return;}
+        };
+    }
+
+    private ArrayList<String> getListaMeses() {
         listaMeses = new ArrayList<>();
         listaMeses.add(getString(R.string.title_mesDeValidade));
         for(int x = 1; x <= 12; x++){
             listaMeses.add(x < 10 ? "0" + x: String.valueOf(x));
         }
+        return listaMeses;
+    }
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, listaMeses);
-
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(dataAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (!primeiraSelecao ){
-                    editTextMesValidadeCartaoContent.setText("");
-                } else if(i == 0){
-                    editTextMesValidadeCartaoContent.setText("");
-                } else {
-                    editTextMesValidadeCartaoContent.setText(listaMeses.get(i));
-                }
-                primeiraSelecao = true;
-            }
-
-            public void onNothingSelected(AdapterView<?> adapterView) {return;}
-        });
+    private ArrayList<String> getListaAnos() {
+        listaAnos = new ArrayList<>();
+        listaAnos.add(getString(R.string.title_anoDeValidade));
+        DateTime joda = new DateTime();
+        listaAnos.add("" + joda.getYear());
+        for(int x = 1; x <= 10; x++){
+            listaAnos.add("" + joda.plusYears(x).getYear());
+        }
+        return listaAnos;
     }
 
     private void addRightImg(EditText textField) {
