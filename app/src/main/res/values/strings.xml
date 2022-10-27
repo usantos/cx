@@ -51,6 +51,7 @@
     <string name="label_de_nome">Dê um nome</string>
 
     <string name="verCarrinho">_Ver carrinho_\nde apostas</string>
+    <string name="verCarrinhoVazio">OK</string>
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
@@ -1093,5 +1094,5 @@
     <string name="situaco">Situação</string>
     <string name="faixa">Faixa</string>
     <string name="valor">Valor</string>
-
+    <string name="mensagem_carrinho_vazio_dialog">Você não fez nenhuma aposta, escolha a sua modalidade favorita e boa sorte!</string>
 </resources>
