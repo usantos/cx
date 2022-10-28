@@ -130,8 +130,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
 
-                android:visibility="gone"
-
                 android:background="@drawable/button_border_amareloqueimado_arredondado"
                 android:drawableLeft="@drawable/ic_edit"
                 android:drawablePadding="8dp"

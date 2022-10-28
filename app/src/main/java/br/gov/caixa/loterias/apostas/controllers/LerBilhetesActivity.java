@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 
 import com.google.gson.Gson;
 import com.google.zxing.ResultPoint;
@@ -84,16 +86,20 @@ public class LerBilhetesActivity extends AppCompatActivity {
                             tipo = LeituraBilheteEnum.CODIGO_BARRAS;
                         }
 
-                        chamouresultado = true;
-//                        if (handler10Sec != null){
-//                            handler10Sec.removeCallbacksAndMessages(null);
-//                        }
-//                        isRunning10Seg = false;
-                        isScanned = false;
-                        ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this)
-                                                     .codBarras(code).nsb(nsbFormatado)
-                                                     .tipoLeitura(tipo)
-                                                     .startForResult(INTENT_RESULT);
+                        if (verificaQrCodeBarCodeByOrientation(tipo)) {
+
+                            chamouresultado = true;
+//                          if (handler10Sec != null){
+//                                handler10Sec.removeCallbacksAndMessages(null);
+//                          }
+//                          isRunning10Seg = false;
+                            isScanned = false;
+                            ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this)
+                                                         .codBarras(code).nsb(nsbFormatado)
+                                                         .tipoLeitura(tipo)
+                                                         .startForResult(INTENT_RESULT);
+                        }
+
                     } else {
                         isScanned = false;
                         resume(barcodeScannerView);
@@ -137,11 +143,10 @@ public class LerBilhetesActivity extends AppCompatActivity {
         Button fecharLeitor = findViewById(R.id.fecharLeitorCodBarras);
         fecharLeitor.setOnClickListener(v -> finish());
 
-//Aguardando a liberacao do SILCE, o LinearLayout onde tem o botão foi passado pra GONE
-//        Button buttonDigitarAposta = findViewById(R.id.buttonDigitarAposta);
-//        buttonDigitarAposta.setOnClickListener(v -> {
-//            startBilheteManual();
-//        });
+        Button buttonDigitarAposta = findViewById(R.id.buttonDigitarAposta);
+        buttonDigitarAposta.setOnClickListener(v -> {
+            startBilheteManual();
+        });
 
         Button buttonQrCode = findViewById(R.id.buttonQrCode);
         buttonQrCode.setOnClickListener(v -> {
@@ -218,6 +223,23 @@ public class LerBilhetesActivity extends AppCompatActivity {
     private void startBilheteManual() {
         Intent activity = new Intent(LerBilhetesActivity.this, InsercaoManualCodBarrasActivity.class);
         startActivity(activity);
+    }
+
+    private boolean verificaQrCodeBarCodeByOrientation(LeituraBilheteEnum tipo) {
+
+        if ((tipo == LeituraBilheteEnum.QR_CODE &&
+                getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ||
+                (tipo == LeituraBilheteEnum.CODIGO_BARRAS &&
+                getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)) {
+
+            return true;
+        }
+
+        isScanned = false;
+        resume(barcodeScannerView);
+        chamouresultado = false;
+
+        return false;
     }
 
     @Override
