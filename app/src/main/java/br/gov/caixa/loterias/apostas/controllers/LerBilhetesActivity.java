@@ -230,7 +230,7 @@ public class LerBilhetesActivity extends AppCompatActivity {
         if ((tipo == LeituraBilheteEnum.QR_CODE &&
                 getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) ||
                 (tipo == LeituraBilheteEnum.CODIGO_BARRAS &&
-                getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)) {
+                getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)) {
 
             return true;
         }
