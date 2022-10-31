@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 
 import net.openid.appauth.AuthorizationRequest;
 import net.openid.appauth.AuthorizationService;
@@ -20,6 +21,7 @@ import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
@@ -36,21 +38,31 @@ public class AcessoBO extends BaseBO {
                     Uri.parse(BuildConfig.URL_SSO_TOKEN)
             );
 
-            AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
-                    authorizationServiceConfiguration,
-                    BuildConfig.SSO_CLIENT_ID,
-                    ResponseTypeValues.CODE,
-                    Uri.parse(BuildConfig.SSO_REDIRECT)
-            );
+            AuthorizationRequest.Builder builder = getAuthorizationRequestBuilder(activity, authorizationServiceConfiguration);
 
             AuthorizationRequest authorizationRequest = builder.build();
             Intent intent = new Intent(activity, TokenActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
+
+            PendingIntent pendingIntent = getPendingIntent(intent);
 
             authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
             authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
         }
+    }
+
+    private PendingIntent getPendingIntent(Intent intent) {
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity(context,
+                                                      0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+
+        }else {
+            pendingIntent = PendingIntent.getActivity(context,
+                                                      0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        }
+        return pendingIntent;
     }
 
     public void iniciarLogoutSSO(Activity activity){
@@ -59,6 +71,21 @@ public class AcessoBO extends BaseBO {
                 Uri.parse(BuildConfig.URL_SSO_TOKEN)
         );
 
+        AuthorizationRequest.Builder builder = getAuthorizationRequestBuilder(activity, authorizationServiceConfiguration);
+
+        AuthorizationRequest authorizationRequest = builder.build();
+        Intent intent = new Intent(activity, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = getPendingIntent(intent);
+
+        AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
+        authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
+
+        DadosUsuarioBO.limparRegistros();
+    }
+
+    private AuthorizationRequest.Builder getAuthorizationRequestBuilder(Activity activity, AuthorizationServiceConfiguration authorizationServiceConfiguration) {
         AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
                 authorizationServiceConfiguration,
                 BuildConfig.SSO_CLIENT_ID,
@@ -66,16 +93,12 @@ public class AcessoBO extends BaseBO {
                 Uri.parse(BuildConfig.SSO_REDIRECT)
         );
 
-        AuthorizationRequest authorizationRequest = builder.build();
-        Intent intent = new Intent(activity, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        String devieId = TopazUtil.getDevieId(activity);
+        if (devieId != null && !devieId.isEmpty()){
+            builder.setAdditionalParameters(TopazUtil.getParams(devieId));
+        }
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
-
-        AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
-        authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
-
-        DadosUsuarioBO.limparRegistros();
+        return builder;
     }
 
     public void getVerificaVersao(String versao, final RequestListener<VersionResponse> listener) {
