@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -41,8 +39,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import info.hoang8f.android.segmented.SegmentedGroup;
 
 import static br.gov.caixa.loterias.apostas.controllers.DetalhesCarrinhoFavoritoActivity.ID_CARRINHO;
 
@@ -159,8 +157,10 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 				} else {
 					listaApostasCarrinho = result.getPayload();
 					if (temApostaEspecial()) {
-						setaDialogSegmentedControl();
-						dialogSegmented.show();
+						dialogSegmented = DialogUtils.showDialogSegmentedControl(activity,
+															   modalidadeNormal,
+															   modalidadeEspecial,
+															   opcaoSelecionada -> chamaTransformarCarrinho(opcaoSelecionada));
 					} else {
 						chamaTransformarCarrinho(AMBAS);
 					}
@@ -200,40 +200,6 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 	//endregion
 
 	//region Layout Configuration Methods
-	private void setaDialogSegmentedControl() {
-		dialogSegmented = new Dialog(activity);
-		dialogSegmented.setContentView(R.layout.custom_dialog_segmented_control);
-
-		TextView tituloDialog    = dialogSegmented.findViewById(R.id.tv_titulo);
-		TextView descricaoDialog = dialogSegmented.findViewById(R.id.tv_descricao);
-
-		SegmentedGroup sgOpcoes = dialogSegmented.findViewById(R.id.sg_opcoes);
-
-		RadioButton opcao1      = dialogSegmented.findViewById(R.id.rb_1);
-		RadioButton opcao2      = dialogSegmented.findViewById(R.id.rb_2);
-		RadioButton opcao3      = dialogSegmented.findViewById(R.id.rb_3);
-		Button      btnOk       = dialogSegmented.findViewById(R.id.btn_ok);
-		Button      btnCancelar = dialogSegmented.findViewById(R.id.btn_cancelar);
-
-		String descricao = activity.getString(R.string.carrinho_fav_segmented_desc);
-		descricao = descricao.replace("{modalidade}", modalidadeNormal);
-		descricaoDialog.setText(descricao);
-
-		sgOpcoes.check(R.id.rb_1);
-		opcao1.setText("Ambos");
-
-		opcao2.setText(modalidadeNormal);
-		opcao3.setText(modalidadeEspecial);
-		tituloDialog.setText("Carrinho Favorito");
-
-		btnOk.setOnClickListener(v -> {
-			int opcaoSelecionada = sgOpcoes.indexOfChild(dialogSegmented.findViewById(sgOpcoes.getCheckedRadioButtonId()));
-			chamaTransformarCarrinho(opcaoSelecionada);
-		});
-
-		btnCancelar.setOnClickListener(v -> dialogSegmented.dismiss());
-	}
-
 	public void preencheLayoutApostas(List<ApostaCarrinhoFavoritoDTO> listaApostas, LinearLayout layout) {
 		if (layout.findViewById(R.id.tv_nome_modalidade) == null) {
 			for (ApostaCarrinhoFavoritoDTO aposta : listaApostas) {
