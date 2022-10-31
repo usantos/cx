@@ -339,7 +339,7 @@ public class ApostaUtils {
 				return getApostaLoteca(parametroJogo,
 											 apostaDTO.getListaNumerosSelecionados(),
 											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
-										 (HashSet<ParametroPartida>) apostaDTO.getPartidasLoteca());
+									         new HashSet<>(apostaDTO.getPartidasLoteca()));
 			case SUPER_7:
 				return getApostaSuperSete(parametroJogo, new ArrayList<>(),
 											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),

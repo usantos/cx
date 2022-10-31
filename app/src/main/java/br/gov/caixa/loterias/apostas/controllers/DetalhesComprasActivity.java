@@ -155,7 +155,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         return new OnDialogSituacaoCompraListener() {
             @Override
             public void ajuda() {
-                //abrirAjuda();
+                abrirAjuda();
             }
 
             @Override
@@ -172,10 +172,15 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void showDialogDebitoNaoAutorizado() {
 
+//        DialogUtils.showDialogDebitoNaoAutorizado(this,
+//                                                  getResources().getString(R.string.tenta_novamente_dialog),
+//                                                  true,
+//                                                  onDebitaNaoAutorizadoDialogListener());
+
         DialogUtils.showDialogDebitoNaoAutorizado(this,
-                                                  getResources().getString(R.string.tenta_novamente_dialog),
+                                                  getResources().getString(R.string.salvar_carrinho),
                                                   true,
-                                                  onDebitaNaoAutorizadoDialogListener());
+                                                  onCompraCancelaDialogListener());
     }
 
     private OnDialogSituacaoCompraListener onDebitaNaoAutorizadoDialogListener() {
