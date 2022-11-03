@@ -24,6 +24,7 @@ import java.util.Map;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
@@ -32,6 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTORespons
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ValidacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -96,10 +98,12 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         emailPremioMercadoPagoEditText.setText(KeycloakBO_.getInstance_(this).getFromToken(getResources().getString(R.string.email_minusculo)));
         emailPremioMercadoPagoEditText.setSelection(emailPremioMercadoPagoEditText.getText().length());
         valorPremioTextView.setText(valorPremio);
+
     }
 
     private void setaMetodos() {
         resgatarPremioButton.setOnClickListener(view -> {
+
             if (!ValidacaoUtils.validarEmail(emailPremioMercadoPagoEditText.getText().toString())) {
                 ViewUtils.alertTitleButton(JogosConfirmadosPremioMercadoPagoActivity.this,
                                            R.string.label_atencao,
@@ -110,7 +114,8 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
             callWebserviceResgatarPremio();
         });
 
-        voltarPremioButton.setOnClickListener(view -> finish());
+        //voltarPremioButton.setOnClickListener(view -> finish());
+        voltarPremioButton.setOnClickListener(view -> PrincipalActivity_.intent(JogosConfirmadosPremioMercadoPagoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start());
     }
 
     private void callWebserviceResgatarPremio() {
@@ -135,6 +140,11 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
                 voltarPremioButton.setVisibility(View.VISIBLE);
                 textoPremioConfirmado.setText(getResources().getString(R.string.email_enviado_para) + emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.com_o_passo_a_passo));
                 comprovanteLayout.setVisibility(View.VISIBLE);
+
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                getSupportActionBar().setHomeButtonEnabled(false);
+                ((TextView) findViewById(R.id.voltarPremioButton)).setText(ViewUtils.textFuturaAndFuturaBold(getApplicationContext(), getString(R.string.btn_title_voltarAoInicio)));
+
                 atualizaComprovante();
             }
 

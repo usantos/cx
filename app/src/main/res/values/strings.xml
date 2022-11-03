@@ -37,6 +37,7 @@
     <string name="ajuda_dialog">Ajuda</string>
     <string name="salvar_carrinho">Salvar Carrinho</string>
     <string name="mensagem_ccompra_cancelada_dialog">Não foi possível concluir essa compra\ne sua aposta não foi efetivada.\n\nDeseja realizar uma nova tentativa\nde compra com o mesmo carrinho?</string>
+    <string name="mensagem_compra_cancelada_dialog">Não foi possível concluir essa compra e sua aposta não foi efetivada. Você pode salvar esse mesmo carrinho para tentar novamente.</string>
     <string name="tenta_novamente_dialog">Tentar Novamente</string>
     <string name="ok">OK</string>
     <string name="label_sim">Sim</string>
@@ -51,6 +52,7 @@
     <string name="label_de_nome">Dê um nome</string>
 
     <string name="verCarrinho">_Ver carrinho_\nde apostas</string>
+    <string name="verCarrinhoVazio">OK</string>
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
@@ -438,6 +440,7 @@
     <string name="title_salvarCartao">Salvar este cartão para futuras apostas</string>
     <string name="label_salvar_Cartao">Salvar cartão para compras futuras</string>
     <string name="title_mesDeValidade">Mês de validade</string>
+    <string name="title_anoDeValidade">Ano de validade</string>
     <string name="title_sair">Sair</string>
     <string name="title_minhaArea">Minha área</string>
     <string name="title_lerBilhete">Conferir Bilhete</string>
@@ -1093,5 +1096,13 @@
     <string name="situaco">Situação</string>
     <string name="faixa">Faixa</string>
     <string name="valor">Valor</string>
+    <string name="mensagem_carrinho_vazio_dialog">Você não fez nenhuma aposta. Escolha a sua modalidade favorita e boa sorte!</string>
+
+    <string name="title_orientacaoCodigoBarras2">Posicione a câmera sobre o código de barras e aguarde. A leitura é automática.</string>
+    <string name="title_orientacaoQrCode">Posicione a câmera sobre o QR Code e aguarde. A leitura é automática.</string>
+
+    <string name="title_CodigoBarras">Código de barras</string>
+    <string name="title_QrCode">QR Code</string>
+    <string name="title_digiteSuaAposta">Digite a sua aposta</string>
 
 </resources>

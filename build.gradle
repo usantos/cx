@@ -26,6 +26,13 @@ allprojects {
         maven {
             url 'https://maven.fabric.io/public'
         }
+        maven {
+            url 's3://mobile-artifacts-repo/releases'
+            credentials(AwsCredentials) {
+                accessKey "AKIAXZ36BNOEOOHHXSPJ" // Chave fornecida pelo time da Topaz OFD
+                secretKey "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" // Chave fornecida pelo time da Topaz OFD
+            }
+        }
     }
 }
 

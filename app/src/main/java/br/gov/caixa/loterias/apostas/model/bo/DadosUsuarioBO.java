@@ -11,7 +11,6 @@ import com.android.volley.NetworkResponse;
 import org.androidannotations.annotations.EBean;
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -151,13 +150,9 @@ public class DadosUsuarioBO extends BaseBO {
     }
 
     private static String getDecoded(String dado) {
-        byte[] decoded = Base64.decodeBase64(dado);
-        try {
-            return new String(decoded, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return "";
-        }
+        Base64 ed = new Base64();
+        String decoded = new String(ed.decode(dado.getBytes()));
+        return decoded;
     }
 
     public static void limparRegistros() {

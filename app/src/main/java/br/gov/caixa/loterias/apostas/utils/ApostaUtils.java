@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
@@ -338,7 +339,7 @@ public class ApostaUtils {
 				return getApostaLoteca(parametroJogo,
 											 apostaDTO.getListaNumerosSelecionados(),
 											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
-										 (HashSet<ParametroPartida>) apostaDTO.getPartidasLoteca());
+									         new HashSet<>(apostaDTO.getPartidasLoteca()));
 			case SUPER_7:
 				return getApostaSuperSete(parametroJogo, new ArrayList<>(),
 											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
@@ -355,4 +356,65 @@ public class ApostaUtils {
 
 		}
 	}
+
+	public static boolean temModalidadeNormaleEspecialAberta(ArrayList<ApostaDTO> listaApostas){
+		int                      countModalidade;
+		List<ParametroSimulacao> parametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+		if (listaApostas != null) {
+			for (ApostaDTO aposta : listaApostas) {
+				countModalidade = 0;
+				for (int param = 0; param < parametros.size() - 1; param++) {
+					ModalidadeEnum modalidade = parametros.get(param).getParametroJogo().getConcurso().getModalidade();
+					if (aposta.getModalidade().equals(modalidade)) {
+						countModalidade++;
+					}
+				}
+				if (countModalidade >= 2) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static String getNomeModalidadeNormal(ArrayList<ApostaDTO> listaApostas){
+		int                      countModalidade;
+		List<ParametroSimulacao> parametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+		if (listaApostas != null) {
+			for (ApostaDTO aposta : listaApostas) {
+				countModalidade = 0;
+				for (int param = 0; param < parametros.size() - 1; param++) {
+					ModalidadeEnum modalidade = parametros.get(param).getParametroJogo().getConcurso().getModalidade();
+					if (aposta.getModalidade().equals(modalidade)) {
+						countModalidade++;
+					}
+				}
+				if (countModalidade >= 2) {
+					return ModalidadeEnum.getDescricao(aposta.getModalidade());
+				}
+			}
+		}
+		return "";
+	}
+
+	public static String getNomeModalidadeEspecial(ArrayList<ApostaDTO> listaApostas){
+		int                      countModalidade;
+		List<ParametroSimulacao> parametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+		if (listaApostas != null) {
+			for (ApostaDTO aposta : listaApostas) {
+				countModalidade = 0;
+				for (int param = 0; param < parametros.size() - 1; param++) {
+					ModalidadeEnum modalidade = parametros.get(param).getParametroJogo().getConcurso().getModalidade();
+					if (aposta.getModalidade().equals(modalidade)) {
+						countModalidade++;
+					}
+				}
+				if (countModalidade >= 2) {
+					return ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade());
+				}
+			}
+		}
+		return "";
+	}
+
 }
