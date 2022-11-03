@@ -11,6 +11,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostaLotogolDetalhesComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaComprasAdapter;
@@ -77,7 +78,9 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		this.statusResultadoApostaListaComprasTextView.setTextColor(colorText);
 
 		this.topListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estilo.getCorClara()));
-		this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estilo.getCorEscura()));
+
+		aplicaBackgroundPorSituacao(aposta, estilo);
+
 		this.seusNumerosItemListaComprasTextView.setTextColor(colorText);
 		if(qtdTeimosinhas > 0){
 			this.tvTeimosinhas.setText(teimosinhasTxt);
@@ -112,5 +115,17 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		}
 
 		this.itemComprasContentModalideLinearLayout.addView(child);
+	}
+
+	private void aplicaBackgroundPorSituacao(ApostaDTO aposta, EstiloModalidade estilo) {
+//		if (SituacaoCompraUtil.isEfetivada(aposta.getSituacao())){
+//			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.azul_efetivada));
+//		} else if (SituacaoCompraUtil.isCancelada(aposta.getSituacao())){
+//			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.vermelho_cancelada));
+//		} else if (SituacaoCompraUtil.isPremioPago(aposta.getSituacao())){
+//			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.verde_premio_pago));
+//		} else {
+			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estilo.getCorEscura()));
+//		}
 	}
 }

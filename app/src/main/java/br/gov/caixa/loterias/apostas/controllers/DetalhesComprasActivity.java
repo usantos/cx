@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.WebViewActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -35,23 +37,37 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
+import br.gov.caixa.loterias.apostas.model.model.DetalhesCompraModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
+import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 
 public class DetalhesComprasActivity extends AppCompatActivity {
+
+    public static final String DETALHES_COMPRA_ACTIVITY = "DETALHES_COMPRA_ACTIVITY";
+
+    public static final int AMBOS = 0;
+    public static final int NORMAL = 1;
+    public static final int ESPECIAL = 2;
 
     private CompraDTO compraDTO;
     private ArrayList<ApostaDTO> listaAposta = new ArrayList<>();
@@ -76,6 +92,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         setaViews();
         pegaExtras();
         setaMetodos();
+        verificaStatusPopUp();
     }
 
     private void setaViews(){
@@ -104,6 +121,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
 
         criarCabecalho();
+        verificaCompraProcessada();
         buscaDetalhesCompras();
         setaDialogFavoritar();
         buscaModalidades();
@@ -115,6 +133,128 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             String compraDTOJson = bundle.getString("CompraDTO");
             ordemCompra = bundle.getInt("ordem");
             compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
+        }
+    }
+
+    private void verificaStatusPopUp() {
+        if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
+            showDialogCompraCancelada();
+        } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
+            showDialogDebitoNaoAutorizado();
+        }
+    }
+
+    private void showDialogCompraCancelada() {
+        DialogUtils.showDialogDebitoNaoAutorizado(this,
+                                                  getResources().getString(R.string.salvar_carrinho),
+                                                  false,
+                                                  onCompraCancelaDialogListener());
+    }
+
+    private OnDialogSituacaoCompraListener onCompraCancelaDialogListener() {
+        return new OnDialogSituacaoCompraListener() {
+            @Override
+            public void ajuda() {
+                abrirAjuda();
+            }
+
+            @Override
+            public void ok() {
+                if (dialogFavoritar != null) {
+                    dialogFavoritar.show();
+                } else {
+                    setaDialogFavoritar();
+                    dialogFavoritar.show();
+                }
+            }
+        };
+    }
+
+    private void showDialogDebitoNaoAutorizado() {
+
+//        DialogUtils.showDialogDebitoNaoAutorizado(this,
+//                                                  getResources().getString(R.string.tenta_novamente_dialog),
+//                                                  true,
+//                                                  onDebitaNaoAutorizadoDialogListener());
+
+        DialogUtils.showDialogDebitoNaoAutorizado(this,
+                                                  getResources().getString(R.string.salvar_carrinho),
+                                                  true,
+                                                  onCompraCancelaDialogListener());
+    }
+
+    private OnDialogSituacaoCompraListener onDebitaNaoAutorizadoDialogListener() {
+        return new OnDialogSituacaoCompraListener() {
+            @Override
+            public void ajuda() {
+                abrirAjuda();
+            }
+
+            @Override
+            public void ok() {
+                tentarNovamente();
+            }
+        };
+    }
+
+    private void tentarNovamente() {
+//        if (ApostaUtils.temModalidadeNormaleEspecialAberta(listaAposta)){
+//            DialogUtils.showDialogSegmentedControl(DetalhesComprasActivity.this,
+//                                                   ApostaUtils.getNomeModalidadeNormal(listaAposta),
+//                                                   ApostaUtils.getNomeModalidadeEspecial(listaAposta),
+//                                                   onReapostaDialogListener());
+//        } else {
+            realizaReaposta();
+//        }
+    }
+
+    private void realizaReaposta() {
+        AlertDialogUtils.show(this);
+        new DetalhesCompraModel(this).realizaReaposta(listaAposta, onReapostaListener());
+    }
+
+    private OnSilceListener<AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades> onReapostaListener() {
+        return new OnSilceListener<AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades>() {
+            @Override
+            public void success(AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades payload) {
+                AlertDialogUtils.dismiss();
+                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, CarrinhoActivity.class);
+                intent.putExtra(CarrinhoActivity.ORIGEM, DETALHES_COMPRA_ACTIVITY);
+                startActivity(intent);
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        };
+    }
+
+    private OnDialogSegmentedControlListener onReapostaDialogListener() {
+        return opcaoSelecionada -> {
+            switch (opcaoSelecionada){
+                case AMBOS:
+                    break;
+                case NORMAL:
+                    break;
+                case ESPECIAL:
+                    break;
+            }
+        };
+    }
+
+    private void abrirAjuda() {
+        if (compraDTO.getMeioPagamento() != null) {
+            Intent activity = new Intent(DetalhesComprasActivity.this, WebViewActivity.class);
+
+            if (MeioPagamentoUtil.isMercadoPago(compraDTO.getMeioPagamento())) {
+                activity.putExtra(getString(R.string.bundle_key_url), getString(R.string.url_ajuda_mercado_pago)); //MercadoPago
+            }
+            if (MeioPagamentoUtil.isRecargaPay(compraDTO.getMeioPagamento())) {
+                activity.putExtra("url", getString(R.string.url_ajuda_recarga_pay)); //RecargaPay
+            }
+
+            startActivity(activity);
         }
     }
 
@@ -145,12 +285,37 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 ViewUtils.getMoedaFormat(compraDTO.getValorTotal()))));
 
         TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
+
+        if (SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
+            situacaoCompraTextView.setTextColor(getResources().getColor(R.color.azul_minhas_compras));
+        } else if (SituacaoCompraUtil.isSituacaoNegativa(compraDTO.getSituacao())) {
+            situacaoCompraTextView.setTextColor(getResources().getColor(R.color.vermelho_minhas_compras));
+        } else if (SituacaoCompraUtil.isSituacaoProcessamento(compraDTO.getSituacao())) {
+            situacaoCompraTextView.setTextColor(getResources().getColor(R.color.amarelo_minhas_compras));
+        }
+
         situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao,
                 compraDTO.getSituacao().getDescricao())));
         ImageButton ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
         ibFavoritar.setOnClickListener(v -> {
                     configuraVisibilidadeMantSurpresinha(listaAposta);
                 });
+
+    }
+
+    private void verificaCompraProcessada() {
+        if (compraDTO.getMeioPagamento() == null) {
+            ConstraintLayout constraintLayout = findViewById(R.id.compraPossesadaLaout);
+            constraintLayout.setVisibility(View.GONE);
+        } else {
+            AppCompatImageView imageView = findViewById(R.id.compraProcessadaImage);
+            if (MeioPagamentoUtil.isMercadoPago(compraDTO.getMeioPagamento())) {
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.mercadopago));
+            }
+            if (MeioPagamentoUtil.isRecargaPay(compraDTO.getMeioPagamento())) {
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.recargapay));
+            }
+        }
     }
 
     private void abrirTermosUso() {

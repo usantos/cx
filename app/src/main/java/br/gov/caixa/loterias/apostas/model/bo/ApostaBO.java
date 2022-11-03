@@ -319,7 +319,19 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
+    public void  getRecargaPayToken(final RequestListener<StringResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TOKEN_APOSTADOR_RP_PATH,
+                                                                    queryParams,
+                                                                    StringResponse.class,
+                                                                    listener.getSilceListener(),
+                                                                    listener.getErrorListener(),
+                                                                    getHeader());
+
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
 
 
     public void getDatasApostasConfirmadas(final RequestListener<MesAnoDTOResponse> listener) {
@@ -788,6 +800,25 @@ public class ApostaBO extends BaseBO {
                                                                      listener.getSilceListener(),
                                                                      listener.getErrorListener(),
                                                                      headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request, listener);
+    }
+
+    public void postConferirBilhetesNovo(final String codigoBilhete,
+                                     final RequestListener<ResultadoConsultaBilheteDTOResponse> listener) {
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        Map<String, String> params = new HashMap<>();
+        params.put("codigo", codigoBilhete);
+        params.put("grecaptchaResponse", "");
+
+        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.BILHETES_CONFERIR_BILHETE_NOVO_PATH,
+                new LinkedHashMap<>(),
+                params,
+                ResultadoConsultaBilheteDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request, listener);

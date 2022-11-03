@@ -12,6 +12,8 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
@@ -26,17 +28,19 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
     private boolean isHistorico;
     private OnApostaConfirmadaListener onApostasConfirmadasListener;
     private MinhasApostasActivity parentActivity;
+    private ApostasConfirmadasFragment fragment;
 
-    public ApostasConfirmadasAdapter(MinhasApostasActivity parentActivity, Context context, List<ApostaDTO> list, boolean isHistorico) {
-        this(parentActivity, context, list, null, isHistorico);
+    public ApostasConfirmadasAdapter(MinhasApostasActivity parentActivity, Context context, List<ApostaDTO> list, boolean isHistorico, ApostasConfirmadasFragment fragment) {
+        this(parentActivity, context, list, null, isHistorico, fragment);
     }
 
-    public ApostasConfirmadasAdapter(MinhasApostasActivity parentActivity, Context context, List<ApostaDTO> list, OnApostaConfirmadaListener listener, boolean isHistorico) {
+    public ApostasConfirmadasAdapter(MinhasApostasActivity parentActivity, Context context, List<ApostaDTO> list, OnApostaConfirmadaListener listener, boolean isHistorico, ApostasConfirmadasFragment fragment) {
         this.list = list;
         this.context = context;
         this.onApostasConfirmadasListener = listener;
         this.isHistorico = isHistorico;
         this.parentActivity = parentActivity;
+        this.fragment = fragment;
     }
 
     public void setOnApostasConfirmadasListener(OnApostaConfirmadaListener onApostasConfirmadasListener) {
@@ -66,12 +70,11 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
                     false);
         }
 
-
-        return new ApostaConfirmadaHolder(view, onApostasConfirmadasListener, isListaVazia(), parentActivity);
+        return new ApostaConfirmadaHolder(view, onApostasConfirmadasListener, isListaVazia(), parentActivity, fragment);
     }
 
     private boolean isListaVazia() {
-        return list.size() == 0;
+        return (list == null) || (list.size() == 0);
     }
 
     @Override
@@ -79,7 +82,6 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
         if (list.size() != 0) {
             ApostaDTO aposta = list.get(position);
             holder.bind(aposta, position);
-
         }
     }
 
@@ -89,5 +91,10 @@ public class ApostasConfirmadasAdapter extends RecyclerView.Adapter<ApostaConfir
             return  1;
         }
         return list.size();
+    }
+
+    public void atualizaSituacaoAposta(int position, DTOEnumLong situacao) {
+        ApostaDTO apostaDTO = list.get(position);
+        apostaDTO.setSituacao(situacao);
     }
 }

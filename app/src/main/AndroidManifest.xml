@@ -3,9 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="br.gov.caixa.loterias.apostas">
 
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!--  Permission to Topaz OFD  -->
+    <!--  permissoes ja utilizadas INTERNET, ACCESS_NETWORK_STATE, ACCESS_FINE_LOCATION  -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+        tools:ignore="ProtectedPermissions" />
+
     <application
         android:name=".utils.Aplicacao"
-        android:allowBackup="true"
+        android:allowBackup="false"
+        tools:replace="android:allowBackup"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -13,10 +38,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".TutorialMaisMilionariaActivity"
+        android:usesCleartextTraffic="false">
+        <activity
+            android:name=".WebViewActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".TutorialMaisMilionariaActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".IntroducaoTutorialActivity"
             android:screenOrientation="portrait"
@@ -43,6 +73,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.CartoesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".controllers.MeusCartoesActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
@@ -80,7 +115,8 @@
             android:name=".controllers.SplashScreenActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
+            android:theme="@style/SplashTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -130,6 +166,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".view.activity.FormaPagamentoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"  />
+        <activity
             android:name=".controllers.ConfirmacaoPagamentoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_confirmacao_pagamento"
@@ -137,6 +178,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.NovaFormaPagamentoActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_forma_pagamento"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".controllers.AdicionaCartaoActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_forma_pagamento"
             android:screenOrientation="portrait"
@@ -211,7 +258,7 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.LerBilhetesActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/AppFullScreenTheme" />
         <activity
             android:name=".controllers.LerBilhetesEscolhaJogoActivity"
@@ -223,6 +270,13 @@
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
+
+        <activity
+            android:name=".controllers.ResultadoLerBilhetesNovoActivity_"
+            android:label="@string/title_activity_resultado_ler_bilhetes"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+
         <activity
             android:name=".controllers.DetalhesComprasActivity"
             android:label="@string/title_activity_detalhes_compras"
@@ -295,7 +349,8 @@
         <activity
             android:name=".controllers.TokenActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -345,13 +400,5 @@
             <data android:mimeType="*/*" />
         </intent>
     </queries>
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

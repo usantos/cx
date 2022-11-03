@@ -126,7 +126,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		quantidadeApostadas.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeNumeros, quantidadeApostadasString));
 		quantidadeSorteios.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeTeimosinhas, quantidadeSorteiosString));
 
-		if (aposta.getEspelho()) {
+		if (aposta.getEspelho() != null && aposta.getEspelho()) {
 			buttonApostaEspelho.setVisibility(View.VISIBLE);
 		}
 

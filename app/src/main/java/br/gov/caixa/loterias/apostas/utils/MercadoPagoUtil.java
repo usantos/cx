@@ -168,12 +168,12 @@ public class MercadoPagoUtil {
         }
     }
 
-    public static String getPublicKey(){
+    public static String getPublicKeyMercadoPago(){
         String          publicKey = "";
         MercadoPagoCRUD crud      = new MercadoPagoCRUD(Aplicacao.application.getApplicationContext());
 
         if (crud.existe((long) 1)){
-            publicKey = crud.getPublicKey();
+            publicKey = crud.getPublicKeyMercadoPago();
         }
         return publicKey;
     }

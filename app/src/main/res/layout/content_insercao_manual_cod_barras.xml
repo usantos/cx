@@ -33,7 +33,30 @@
             android:layout_height="wrap_content"
             android:textAllCaps="true"
             android:inputType="text"
+            android:hint="NSB"
             android:ems="25"
+            android:fontFamily="@font/arialmt"
+            android:textColorHint="@color/verdeazul"
+            android:textSize="14sp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_password2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:textColorHint="@color/verdeazul">
+
+        <EditText
+            android:id="@+id/editTextLoterico"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:inputType="text"
+            android:hint="Lotérico"
+            android:ems="11"
             android:fontFamily="@font/arialmt"
             android:textColorHint="@color/verdeazul"
             android:textSize="14sp" />

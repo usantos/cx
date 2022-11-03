@@ -1,0 +1,66 @@
+<resources>
+
+    <!-- SUPER SETE COLUNA 1 -->
+    <item name="idSuperSeteCol1Lin1" type="id"/>
+    <item name="idSuperSeteCol1Lin2" type="id"/>
+    <item name="idSuperSeteCol1Lin3" type="id"/>
+    <item name="idSuperSeteCol1Lin4" type="id"/>
+    <item name="idSuperSeteCol1Lin5" type="id"/>
+    <item name="idSuperSeteCol1Lin6" type="id"/>
+    <item name="idSuperSeteCol1Lin7" type="id"/>
+
+    <!-- SUPER SETE COLUNA 2 -->
+    <item name="idSuperSeteCol2Lin1" type="id"/>
+    <item name="idSuperSeteCol2Lin2" type="id"/>
+    <item name="idSuperSeteCol2Lin3" type="id"/>
+    <item name="idSuperSeteCol2Lin4" type="id"/>
+    <item name="idSuperSeteCol2Lin5" type="id"/>
+    <item name="idSuperSeteCol2Lin6" type="id"/>
+    <item name="idSuperSeteCol2Lin7" type="id"/>
+
+    <!-- SUPER SETE COLUNA 3 -->
+    <item name="idSuperSeteCol3Lin1" type="id"/>
+    <item name="idSuperSeteCol3Lin2" type="id"/>
+    <item name="idSuperSeteCol3Lin3" type="id"/>
+    <item name="idSuperSeteCol3Lin4" type="id"/>
+    <item name="idSuperSeteCol3Lin5" type="id"/>
+    <item name="idSuperSeteCol3Lin6" type="id"/>
+    <item name="idSuperSeteCol3Lin7" type="id"/>
+
+    <!-- SUPER SETE COLUNA 4 -->
+    <item name="idSuperSeteCol4Lin1" type="id"/>
+    <item name="idSuperSeteCol4Lin2" type="id"/>
+    <item name="idSuperSeteCol4Lin3" type="id"/>
+    <item name="idSuperSeteCol4Lin4" type="id"/>
+    <item name="idSuperSeteCol4Lin5" type="id"/>
+    <item name="idSuperSeteCol4Lin6" type="id"/>
+    <item name="idSuperSeteCol4Lin7" type="id"/>
+
+    <!-- SUPER SETE COLUNA 5 -->
+    <item name="idSuperSeteCol5Lin1" type="id"/>
+    <item name="idSuperSeteCol5Lin2" type="id"/>
+    <item name="idSuperSeteCol5Lin3" type="id"/>
+    <item name="idSuperSeteCol5Lin4" type="id"/>
+    <item name="idSuperSeteCol5Lin5" type="id"/>
+    <item name="idSuperSeteCol5Lin6" type="id"/>
+    <item name="idSuperSeteCol5Lin7" type="id"/>
+
+    <!-- SUPER SETE COLUNA 6 -->
+    <item name="idSuperSeteCol6Lin1" type="id"/>
+    <item name="idSuperSeteCol6Lin2" type="id"/>
+    <item name="idSuperSeteCol6Lin3" type="id"/>
+    <item name="idSuperSeteCol6Lin4" type="id"/>
+    <item name="idSuperSeteCol6Lin5" type="id"/>
+    <item name="idSuperSeteCol6Lin6" type="id"/>
+    <item name="idSuperSeteCol6Lin7" type="id"/>
+
+    <!-- SUPER SETE COLUNA 7 -->
+    <item name="idSuperSeteCol7Lin1" type="id"/>
+    <item name="idSuperSeteCol7Lin2" type="id"/>
+    <item name="idSuperSeteCol7Lin3" type="id"/>
+    <item name="idSuperSeteCol7Lin4" type="id"/>
+    <item name="idSuperSeteCol7Lin5" type="id"/>
+    <item name="idSuperSeteCol7Lin6" type="id"/>
+    <item name="idSuperSeteCol7Lin7" type="id"/>
+
+</resources>

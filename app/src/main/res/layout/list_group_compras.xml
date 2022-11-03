@@ -7,6 +7,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/linearSituacao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="16dp"
@@ -15,7 +16,6 @@
         android:layout_marginBottom="8dp"
         android:orientation="vertical"
         android:weightSum="1"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -42,13 +42,14 @@
         android:id="@+id/ib_favoritar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_estrela"
-        android:backgroundTint="@color/transparente"
-        android:tint="@color/azulescuro"
         android:layout_marginRight="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/valorCompra"/>
+        android:backgroundTint="@color/transparente"
+        android:src="@drawable/ic_estrela"
+        android:tint="@color/azulescuro"
+        app:layout_constraintBottom_toBottomOf="@+id/linearSituacao"
+        app:layout_constraintEnd_toStartOf="@+id/valorCompra"
+        app:layout_constraintTop_toTopOf="@+id/linearSituacao"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/valorCompra"
@@ -62,9 +63,9 @@
         android:text="@string/r_4_50"
         android:textColor="@color/cinza"
         android:textSize="14.2sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/linearSituacao"
         app:layout_constraintEnd_toStartOf="@+id/setaComprasGroup"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/linearSituacao" />
 
     <FrameLayout
         android:id="@+id/setaComprasGroup"
@@ -76,9 +77,9 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/seta_direita_cinza"
         android:padding="7dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/linearSituacao"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@+id/linearSituacao">
 
     </FrameLayout>
 

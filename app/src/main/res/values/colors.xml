@@ -104,6 +104,7 @@
     <color name="verdemediotransparente">#66009b63</color>
     <color name="cinzamercadopago">#D7E0E2</color>
     <color name="verdeclaro">#b2fdbb</color>
+    <color name="azul_meu_cartao">#50B4E9</color>
 
     <color name="cinzaApostaConfirmada">#d9e3e6</color>
     <color name="white60">#99ffffff</color>
@@ -139,5 +140,24 @@
     <color name="mais_milionaria_escura">#332A62</color>
     <color name="verde_tutorial">#008254</color>
     <color name="cinza_tutorial">#47586C</color>
+    <color name="cinza_borda">#C4C4C4</color>
+    <color name="azul_mercado_pago">#50B4E9</color>
+    <color name="laranja_recarga_pay">#FE8832</color>
+
+
+    <color name="azul_efetivada">#143DA6</color>
+    <color name="vermelho_cancelada">#900000</color>
+    <color name="verde_premio_pago">#008254</color>
+
+    <color name="azul_minhas_compras">#143DA6</color>
+    <color name="vermelho_minhas_compras">#900000</color>
+    <color name="amarelo_minhas_compras">#FDAB01</color>
+    <color name="verde_minhas_compras">#008254</color>
+
+    <color name="amarelo_favoritado">#FDB932</color>
+
+    <color name="vermelho_dialog">#F60E0E</color>
+    <color name="vermelho_borda_dialog">#D15973</color>
+    <color name="azul_alterar">#004680</color>
 
 </resources>

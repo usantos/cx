@@ -46,7 +46,7 @@ public class MercadoPagoConnection {
 	}
 
 	public static void callWebServicePayment_method(final String bin , String jsonObject, Context ctx, MercadoPagoListener listener) {
-		String publicKey = MercadoPagoUtil.getPublicKey();
+		String publicKey = MercadoPagoUtil.getPublicKeyMercadoPago();
 
 		if (ConfiguracaoAppSingleton.getInstance().isAtualizaPublicKey() || publicKey == null || publicKey.isEmpty()){
 			silceBuscaKeyPublic(onSilceKeyPaymentMethodListener(bin, jsonObject, ctx, listener));
@@ -140,7 +140,7 @@ public class MercadoPagoConnection {
 	}
 
 	private static void callWebServiceCreateToken(String jsonObject, Context ctx, MercadoPagoListener listener, RequestQueue rQueue, String payment_method_id) {
-		String publicKey = MercadoPagoUtil.getPublicKey();
+		String publicKey = MercadoPagoUtil.getPublicKeyMercadoPago();
 
 		final CardTokenResponse[] cardResponse = {null};
 

@@ -51,7 +51,7 @@ public class ApostaEquipeLototgolView extends LinearLayout {
     public void setLayout(EquipeDTO equipeDTO) {
 
         String paisTime = "";
-        if (equipeDTO.getIndicadorSelecao() != null && equipeDTO.getIndicadorSelecao()) {
+        if (equipeDTO != null && equipeDTO.getIndicadorSelecao() != null && equipeDTO.getIndicadorSelecao()) {
             paisTime = equipeDTO.getSiglaPais();
         }
 

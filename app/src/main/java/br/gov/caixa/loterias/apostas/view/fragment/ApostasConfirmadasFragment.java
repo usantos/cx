@@ -46,6 +46,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -59,7 +60,9 @@ import br.gov.caixa.loterias.apostas.model.model.ApostaConfirmadaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ApostasConfirmadasAdapter;
@@ -72,7 +75,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
  */
 
 @EFragment(R.layout.fragment_apostas_confirmadas)
-public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener {
+public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener, ConferirResultadoHandler {
 
     private static final int PAGE_SIZE = 30;
 
@@ -106,6 +109,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private int numeroDataSelecionada = 1;
     private boolean chamarApostaNovamente = true;
     private MesAnoDTOResponse resultMesAno;
+    private Long rowCount = Long.MAX_VALUE;
 
     private ApostaPageRequest page;
 
@@ -149,10 +153,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 }
             } else {
                 if (page == null) {
-                    page = new ApostaPageRequest(PAGE_SIZE);
+                    page = new ApostaPageRequest(getPageSize());
                     page.setOffset(0);
                 } else {
-                    page.setSize(PAGE_SIZE);
+                    page.setSize(getPageSize());
                     page.setOffset(0);
                     hasMoreItems = true;
                 }
@@ -160,6 +164,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             }
             isOnCreate = false;
         }
+    }
+
+    private int getPageSize(){
+        return PAGE_SIZE;
     }
 
     @Click
@@ -195,7 +203,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private void filtrarData(){
         MesAnoDTO mesAnoSelecionado =  mesesAnosDisponiveis.get(numeroDataSelecionada);
         if(page == null){
-            page = new ApostaPageRequest(PAGE_SIZE);
+            page = new ApostaPageRequest(getPageSize());
         }
         page.setAno(mesAnoSelecionado.getAno().intValue());
         page.setMes(mesAnoSelecionado.getMes().getValor().intValue());
@@ -268,6 +276,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 for (ApostaDTO aposta: result.getPayload().getLista()){
                     aposta.setValor(new BigDecimal(1));
                 }
+                rowCount = result.getPayload().getRowCount();
                 onApostasConfirmadasResult(result.getPayload().getLista());
             }
 
@@ -295,7 +304,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     public void filtraDados(){
         page.setModalidade(0);
-        page.setSituacao(0);
+        page.setSituacao(1);
         page.setOrdenarPor(ordenacaoDefault);
         if(!isHistorico){
             if(filtroAdapter != null){
@@ -317,6 +326,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             }
         }
     }
+
     private void clearItemDecorations() {
         while (apostasConfirmadasRecyclerView.getItemDecorationCount() != 0) {
             apostasConfirmadasRecyclerView.removeItemDecorationAt(0);
@@ -334,16 +344,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         apostasLoading.setVisibility(View.GONE);
 
         if (apostasList != null) {
-            if(ConfiguracaoAppSingleton.getInstance().isMicroServico()){
-                if ((PAGE_SIZE - 1) > apostasList.size()){
-                    hasMoreItems = false;
-                }
-            }else {
-                if (PAGE_SIZE > apostasList.size()) {
-                    hasMoreItems = false;
-                }
-            }
-
             if (page.getOffset() == 0) {
                 reloadingEntireList = true;
             }
@@ -365,13 +365,27 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     clearItemDecorations();
                     apostasConfirmadasRecyclerView.addItemDecoration(divider);
                 }
-                adapter = new ApostasConfirmadasAdapter(((MinhasApostasActivity)getActivity()), getActivity(), apostasList, isHistorico);
+                adapter = new ApostasConfirmadasAdapter(((MinhasApostasActivity)getActivity()), getActivity(), apostasList, isHistorico, this);
                 adapter.setOnApostasConfirmadasListener(getOnApostasConfirmadasListener(apostasList));
                 apostasConfirmadasRecyclerView.setAdapter(adapter);
             } else {
                 int cont = adapter.addApostasList(apostasList) ;
                 adapter.notifyItemRangeInserted(cont, apostasList.size());
             }
+
+            try {
+                if (apostasConfirmadasRecyclerView != null && apostasConfirmadasRecyclerView.getAdapter() != null){
+                    if (((ApostasConfirmadasAdapter) apostasConfirmadasRecyclerView.getAdapter()).getItemCount() >= rowCount) {
+                        hasMoreItems = false;
+                    }
+                }
+            } catch (Exception e){}
+
+        }
+        if (TestVisao.isTeste()){
+            try {
+                TestVisao.toast("Tamanho carregado: " + apostasConfirmadasRecyclerView.getAdapter().getItemCount() + "\nTotal: " + rowCount);
+            }catch (Exception e){}
         }
     }
 
@@ -395,21 +409,15 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 if (isHistorico) {
                     handleOnItemClickHistorico(apostaDTO);
                 } else {
-                    handleOnClickItemConfirmadas(apostaDTO, holder);
+                    handleOnClickItemConfirmadas(position, apostaDTO, holder);
                 }
             }
         };
     }
 
-    private void conferirResultado (ApostaDTO aposta, ApostaConfirmadaHolder holder) {
-        holder.showProgressBarSituacao(true);
-        ConferirResultadoHelper.conferirResultadoHandler = holder;
-        ConferirResultadoHelper.conferirResultadoWithoutLoading(holder, aposta.getId(), getActivity());
-    }
-
-    private void handleOnClickItemConfirmadas(ApostaDTO apostaDTO, ApostaConfirmadaHolder holder) {
+    private void handleOnClickItemConfirmadas(int position, ApostaDTO apostaDTO, ApostaConfirmadaHolder holder) {
         if (holder.precisaConferirSituacao()){
-            conferirResultado(apostaDTO, holder);
+            conferirResultado(position, apostaDTO, holder);
         }else {
             if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
 
@@ -510,12 +518,13 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             int mes = mesAno.getMes().getValor().intValue();
             int ano = mesAno.getAno().intValue();
             if(page == null){
-                page = new ApostaPageRequest(PAGE_SIZE);
+                page = new ApostaPageRequest(getPageSize());
             }
             page.setAno(ano);
             page.setMes(mes);
             page.setOffset(0);
             page.setOrdenarPor(ordenacaoDefault);
+            page.setSituacao(1);
             setValoresApresentados(mesesAnosDisponiveis);
             setaDialogFiltrar();
 
@@ -610,5 +619,27 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     public void setFiltroAdapter(FiltroApostasAdapter adapter){
         this.filtroAdapter = adapter;
+    }
+
+    public void conferirResultado(int position, ApostaDTO aposta, ApostaConfirmadaHolder holder) {
+        holder.showProgressBarSituacao(true);
+        ConferirResultadoHelper.conferirResultadoHandler = this;
+        ConferirResultadoHelper.conferirResultadoWithoutLoading(position, holder, aposta, getActivity());
+    }
+
+    @Override
+    public void handle(DTOEnumLong situacao) {
+
+    }
+
+    @Override
+    public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
+        ((ApostasConfirmadasAdapter)apostasConfirmadasRecyclerView.getAdapter()).atualizaSituacaoAposta(position, situacao);
+        holder.handle(position, holder, situacao);
+    }
+
+    @Override
+    public void handleError(ApostaConfirmadaHolder holder, VolleyError error) {
+        holder.handleError(holder, error);
     }
 }

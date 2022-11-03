@@ -239,7 +239,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
             showLoading();
         }
 
-        CompraUtil.registraApostaAsync(tokenPagamento, payment_method_id, getResources().getString(R.string.string_vazia) ,String.valueOf(checkBoxSalvarCartao.isChecked()),onCompraAsyncListener());
+        CompraUtil.registraApostaAsync(1,tokenPagamento, payment_method_id, getResources().getString(R.string.string_vazia) ,String.valueOf(checkBoxSalvarCartao.isChecked()),onCompraAsyncListener());
     }
 
     private OnCompraAsync onCompraAsyncListener() {

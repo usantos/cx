@@ -28,11 +28,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
-import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
-public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements View.OnClickListener, ConferirResultadoHandler {
+public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements View.OnClickListener {
 	private View stripe;
 	private TextView modalidadeTxt;
 	private TextView concursoTxt;
@@ -46,11 +45,13 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private int color;
 	private OnApostaConfirmadaListener onApostasConfirmadasListener;
 	private Activity parentActivity;
+	private ApostasConfirmadasFragment fragment;
 
-	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity) {
+	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity, ApostasConfirmadasFragment fragment) {
 		super(view);
 		this.onApostasConfirmadasListener = listener;
 		this.parentActivity = parentActivity;
+		this.fragment = fragment;
 
 		if (!listaVazia) {
 			stripe = view.findViewById(R.id.stripe);
@@ -73,7 +74,6 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			btnAposteAqui.setOnClickListener(this);
 		}
 
-
 		view.setOnClickListener(this);
 	}
 
@@ -83,7 +83,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
 
-		String descricaoStatus = getDescricaoString(aposta, parentActivity);
+		String descricaoStatus = getDescricaoString(aposta, position);
 
 		this.color = color;
 		this.stripe.setBackgroundColor(color);
@@ -94,9 +94,13 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 		trataStyleSituacao(aposta);
 		preencheTeimosinha(aposta);
+
+		if (precisaConferirSituacaoAutomaticamente(descricaoStatus)){
+			fragment.conferirResultado(position, aposta, this);
+		}
 	}
 
-	private String getDescricaoString(ApostaDTO aposta, Activity parentActivity) {
+	private String getDescricaoString(ApostaDTO aposta, int position) {
 		String descricaoStatus;
 
 		this.showProgressBarSituacao(false);
@@ -120,7 +124,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 				this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
 				descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
 
-				conferirResultado(aposta, parentActivity);
+				conferirResultado(position, aposta);
 				if (parametroJogo != null) {
 					String msgLog = "Chama: true" + " = MP: " + parametroJogo.getParametroJogo().getConcurso().getModalidade() + "-" + parametroJogo.getParametroJogo().getConcurso().getNumero() + " = " + aposta.getModalidade() + "-" + aposta.getConcursoInicial() + " = diff: " + (parametroJogo.getParametroJogo().getConcurso().getNumero() - aposta.getConcursoInicial());
 					Log.d("RESULTADO-APOSTA", msgLog);
@@ -136,12 +140,10 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		return descricaoStatus;
 	}
 
-	private void conferirResultado (ApostaDTO aposta, Activity parentActivity) {
+	private void conferirResultado(int position, ApostaDTO aposta) {
 		this.showProgressBarSituacao(true);
-		ConferirResultadoHelper.conferirResultadoHandler = this;
-		ConferirResultadoHelper.conferirResultadoWithoutLoading(this, aposta.getId(),  parentActivity);
+		fragment.conferirResultado(position, aposta, this);
 	}
-
 
 	private boolean precisaBuscarResultadoNoSilce(ApostaDTO aposta, ParametroSimulacao parametroJogo) {
 		boolean precisaBuscar = false;
@@ -213,13 +215,15 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		return false;
 	}
 
-	@Override
-	public void handle(DTOEnumLong situacao) {
-
+	public boolean precisaConferirSituacaoAutomaticamente(String descricaoStatus){
+		if (ConfiguracaoAppSingleton.getInstance().isMicroServico() && descricaoStatus != null
+				&& descricaoStatus.equalsIgnoreCase(parentActivity.getResources().getString(R.string.label_efetivada))){
+			return true;
+		}
+		return false;
 	}
 
-	@Override
-	public void handle(ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
+	public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
 		holder.stripe.setBackgroundColor(holder.color);
 		holder.modalidadeTxt.setTextColor(holder.color);
 		holder.situacaoTxt.setTextColor(holder.color);
@@ -237,7 +241,6 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		holder.progressBarSituacao.setVisibility(View.INVISIBLE);
 	}
 
-	@Override
 	public void handleError(ApostaConfirmadaHolder holder, VolleyError error) {
 		this.situacaoTxt.setText(itemView.getResources().getString(R.string.nao_foi_possivel_conferir_o_resultado));
 		this.progressBarSituacao.setVisibility(View.INVISIBLE);

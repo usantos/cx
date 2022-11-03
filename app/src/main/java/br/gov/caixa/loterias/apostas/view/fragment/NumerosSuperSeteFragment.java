@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +22,8 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuperSete;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.AutomacaoUtils;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumerosSuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
@@ -139,9 +140,18 @@ public class NumerosSuperSeteFragment extends Fragment {
 	private void setaMetodos (){
 		listaAdaptersSuperSete = new ArrayList<>();
 		if (configuracao == null) {
-			for (List<Integer> lista: matrizInteiros) {
-				listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), lista));
+			if (BuildVersionUtil.isAutomacao()){
+				int index = 0;
+				for (List<Integer> lista: matrizInteiros) {
+					listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), lista, AutomacaoUtils.getSuperSeteEnumPorColuna(index)));
+					index++;
+				}
+			} else {
+				for (List<Integer> lista: matrizInteiros) {
+					listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), lista));
+				}
 			}
+
 		} else {
 			int cont = 0;
 			for (List<Integer> lista: matrizInteiros) {

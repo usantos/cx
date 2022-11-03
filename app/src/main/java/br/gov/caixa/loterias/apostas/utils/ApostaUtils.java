@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
@@ -21,6 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
@@ -244,7 +247,6 @@ public class ApostaUtils {
 
 		return aposta;
 	}
-
 	private static void setApostaLotogol(ParametroJogoDTO parametro, IdentificaoDeUmaApostaDas8Modalidades aposta, HashSet<ParametroPartida> partidas) {
 		if (parametro.getConcurso().getModalidade() == ModalidadeEnum.LOTOGOL) {
 			List<ParametroPartida> partidasSelecionadas = ListaUtils.orderAscPartidas(partidas);
@@ -313,4 +315,106 @@ public class ApostaUtils {
 		equipeDTO2.setNomeClass(partida.getEquipe2().getNomeClass());
 		equipeDTO2.setNome(partida.getEquipe2().getNome());
 	}
+
+	public static IdentificaoDeUmaApostaDas8Modalidades convertApostaDTOemIdentificaoDeuUmaPostaDas8Modadlidades(ApostaDTO apostaDTO) {
+		ParametroJogoDTO parametroJogo = ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), apostaDTO.getModalidade()).getParametroJogo();
+
+		switch (apostaDTO.getModalidade()){
+			case TIMEMANIA:
+				return getApostaTimemania(parametroJogo,
+											 apostaDTO.getListaNumerosSelecionados(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+											apostaDTO.getTimeDoCoracao());
+			case DIA_DE_SORTE:
+				return getApostaDiaDeSorte(parametroJogo,
+											 apostaDTO.getListaNumerosSelecionados(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+											 apostaDTO.getMesDeSorte());
+			case LOTOGOL:
+				return getApostaLotogol(parametroJogo,
+											 apostaDTO.getListaNumerosSelecionados(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+										  (HashSet<ParametroPartida>) apostaDTO.getPartidasLotogol());
+			case LOTECA:
+				return getApostaLoteca(parametroJogo,
+											 apostaDTO.getListaNumerosSelecionados(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+									         new HashSet<>(apostaDTO.getPartidasLoteca()));
+			case SUPER_7:
+				return getApostaSuperSete(parametroJogo, new ArrayList<>(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+											 apostaDTO.getMatrizNumerosSelecionados());
+			case MAIS_MILIONARIA:
+				return getApostaMaisMilionaria(parametroJogo,
+											 apostaDTO.getListaNumerosSelecionados(),
+											 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas(),
+											 apostaDTO.getListaTrevosSelecionados());
+			default:
+				return getApostaPreenchida(parametroJogo,
+												 apostaDTO.getListaNumerosSelecionados(),
+												 apostaDTO.getValor(), apostaDTO.getQuantidadeTeimosinhas());
+
+		}
+	}
+
+	public static boolean temModalidadeNormaleEspecialAberta(ArrayList<ApostaDTO> listaApostas){
+		int                      countModalidade;
+		List<ParametroSimulacao> parametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+		if (listaApostas != null) {
+			for (ApostaDTO aposta : listaApostas) {
+				countModalidade = 0;
+				for (int param = 0; param < parametros.size() - 1; param++) {
+					ModalidadeEnum modalidade = parametros.get(param).getParametroJogo().getConcurso().getModalidade();
+					if (aposta.getModalidade().equals(modalidade)) {
+						countModalidade++;
+					}
+				}
+				if (countModalidade >= 2) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static String getNomeModalidadeNormal(ArrayList<ApostaDTO> listaApostas){
+		int                      countModalidade;
+		List<ParametroSimulacao> parametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+		if (listaApostas != null) {
+			for (ApostaDTO aposta : listaApostas) {
+				countModalidade = 0;
+				for (int param = 0; param < parametros.size() - 1; param++) {
+					ModalidadeEnum modalidade = parametros.get(param).getParametroJogo().getConcurso().getModalidade();
+					if (aposta.getModalidade().equals(modalidade)) {
+						countModalidade++;
+					}
+				}
+				if (countModalidade >= 2) {
+					return ModalidadeEnum.getDescricao(aposta.getModalidade());
+				}
+			}
+		}
+		return "";
+	}
+
+	public static String getNomeModalidadeEspecial(ArrayList<ApostaDTO> listaApostas){
+		int                      countModalidade;
+		List<ParametroSimulacao> parametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+		if (listaApostas != null) {
+			for (ApostaDTO aposta : listaApostas) {
+				countModalidade = 0;
+				for (int param = 0; param < parametros.size() - 1; param++) {
+					ModalidadeEnum modalidade = parametros.get(param).getParametroJogo().getConcurso().getModalidade();
+					if (aposta.getModalidade().equals(modalidade)) {
+						countModalidade++;
+					}
+				}
+				if (countModalidade >= 2) {
+					return ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade());
+				}
+			}
+		}
+		return "";
+	}
+
 }
