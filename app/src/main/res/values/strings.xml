@@ -1096,7 +1096,7 @@
     <string name="situaco">Situação</string>
     <string name="faixa">Faixa</string>
     <string name="valor">Valor</string>
-    <string name="mensagem_carrinho_vazio_dialog">Você não fez nenhuma aposta, escolha a sua modalidade favorita e boa sorte!</string>
+    <string name="mensagem_carrinho_vazio_dialog">Você não fez nenhuma aposta. Escolha a sua modalidade favorita e boa sorte!</string>
 
     <string name="title_orientacaoCodigoBarras2">Posicione a câmera sobre o código de barras e aguarde. A leitura é automática.</string>
     <string name="title_orientacaoQrCode">Posicione a câmera sobre o QR Code e aguarde. A leitura é automática.</string>
