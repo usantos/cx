@@ -93,9 +93,10 @@ public class AcessoBO extends BaseBO {
                 Uri.parse(BuildConfig.SSO_REDIRECT)
         );
 
-        String devieId = TopazUtil.getDevieId(activity);
-        if (devieId != null && !devieId.isEmpty()){
-            builder.setAdditionalParameters(TopazUtil.getParams(devieId));
+        String deviceId = TopazUtil.getDevieId(activity);
+        if (deviceId != null && !deviceId.isEmpty()){
+            deviceId = deviceId.replace("|", "-");
+            builder.setAdditionalParameters(TopazUtil.getParams(deviceId));
         }
 
         return builder;
