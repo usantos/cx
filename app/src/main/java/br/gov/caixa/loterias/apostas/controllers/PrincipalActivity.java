@@ -4,6 +4,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.Manifest;
 import android.animation.AnimatorSet;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -820,10 +821,13 @@ public class PrincipalActivity extends AppCompatActivity
     }
     private void redirecionaMsgDisque180(){
 //        Abrir nova janela com link whatsapp
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "https://wa.me/5561996565008");
-        sendIntent.setType("text/plain");
+        Intent intent = new Intent("android.intent.action.MAIN");
+        intent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
+        intent.putExtra("jid"),
+
+//        sendIntent.setAction(Intent.ACTION_SEND);
+//        sendIntent.putExtra(Intent.EXTRA_TEXT, "https://wa.me/5561996565008");
+//        sendIntent.setType("text/plain");
         startActivity(sendIntent);
     }
 

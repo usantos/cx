@@ -146,9 +146,8 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                trevoToolbar.setEnabled(true);
+                AnimacaoFadeOutMsgDisque180();
             }
-
             @Override
             public void onAnimationCancel(Animator animation) {}
 
@@ -163,7 +162,7 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                AnimacaoFadeOutMsgDisque180();
+                trevoToolbar.setEnabled(true);
             }
 
             @Override
@@ -276,11 +275,7 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(activity.getApplicationContext(), estilo.getCorClara()));
-                buttonHomeBet.setTextColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.branco));
-                buttonHomeBet.setEnabled(true);
-                translatePosicaoConteudoSubir();
+                AnimacaoFadeInMsgDisque180();
             }
 
             @Override
@@ -297,7 +292,10 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                AnimacaoFadeInMsgDisque180();
+                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(activity.getApplicationContext(), estilo.getCorClara()));
+                buttonHomeBet.setTextColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.branco));
+                buttonHomeBet.setEnabled(true);
+                translatePosicaoConteudoSubir();
             }
 
             @Override
