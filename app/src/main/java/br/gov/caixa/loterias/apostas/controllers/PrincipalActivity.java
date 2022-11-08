@@ -125,10 +125,14 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
     @ViewById
-    protected RelativeLayout relativeContentPrincipal,rlJogoResponsavel,
-            relativeBlankView, relativeLayoutContentRapidao,
-            relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas,
-            relativeLayoutContentRepassados;
+    protected RelativeLayout relativeContentPrincipal,
+            rlJogoResponsavel,
+            relativeBlankView,
+            relativeLayoutContentRapidao,
+            relativeLayoutContentLerBilhetes,
+            relativeLayoutContentFavoritas,
+            relativeLayoutContentRepassados,
+            rlMsgDisque180;
     @ViewById
     protected LinearLayout atalhoRapidoLoterias;
     @ViewById
@@ -507,6 +511,7 @@ public class PrincipalActivity extends AppCompatActivity
                 relativeLayoutContentFavoritas,
                 rlJogoResponsavel,
                 relativeLayoutContentRepassados,
+                rlMsgDisque180,
                 relativeBlankView,
                 atalhoRapidoLoterias,
                 buttonHomeBet,
@@ -533,6 +538,7 @@ public class PrincipalActivity extends AppCompatActivity
                 relativeLayoutContentFavoritas,
                 rlJogoResponsavel,
                 relativeLayoutContentRepassados,
+                rlMsgDisque180,
                 relativeBlankView,
                 atalhoRapidoLoterias,
                 buttonHomeBet,
@@ -659,6 +665,11 @@ public class PrincipalActivity extends AppCompatActivity
         redirecionaJogoResponsavel();
     }
 
+    @Click(R.id.rlMsgDisque180)
+    protected void clickrlMsgDisque180() {
+        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        redirecionaMsgDisque180();
+    }
     @Click(R.id.id_fg_somador_carrinho)
     protected void vaiProCarrinho() {
         if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
@@ -807,7 +818,14 @@ public class PrincipalActivity extends AppCompatActivity
     private void redirecionaJogoResponsavel(){
         startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
     }
-
+    private void redirecionaMsgDisque180(){
+//        Abrir nova janela com link whatsapp
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "https://wa.me/5561996565008");
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
