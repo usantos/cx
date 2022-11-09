@@ -85,9 +85,9 @@
     <!-- Bottom Sheet Ajuda -->
     <string name="jr_bs_titulo">ONDE PROCURAR AJUDA?</string>
     <string name="jr_bs_desc">Se você precisa de orientação de profissionais para auxiliar no tratamento de doenças relacionadas aos jogos, relacionamos abaixo os contatos de algumas entidades que podem prestar informações e atendimento. Não deixe de procurar ajuda!</string>
-    <string name="jr_bs_caixa_tel">_CAIXA:_ 0800 726 0207</string>
-    <string name="jr_bs_op_7">Opção 7 (Loterias)</string>
-    <string name="jr_bs_op_3">Opção 3 (Jogo Responsável)</string>
+    <string name="jr_bs_caixa_tel">_CAIXA:_ 4004 0104 - Capitais e Regiões Metropolitanas<br>0800 104 0104 - Demais regiões</br></string>
+    <string name="jr_bs_op_7">Opção 6 (Loterias)</string>
+    <string name="jr_bs_op_3">Opção 2 (Jogo Responsável)</string>
     <string name="jr_caps_titulo">Centros de Atenção Psicossocial do Ministério da Saúde - CAPS</string>
     <string name="jr_caps_url">https://sage.saude.gov.br/paineis/planoCrack/lista_caps.php?output=html&amp;%20-</string>
     <string name="jr_caps_site"><u>Clique aqui e localize uma unidade mais próxima</u></string>
