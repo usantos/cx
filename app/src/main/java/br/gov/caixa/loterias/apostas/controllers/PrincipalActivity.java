@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.PhoneNumberUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -823,12 +824,12 @@ public class PrincipalActivity extends AppCompatActivity
 //        Abrir nova janela com link whatsapp
         Intent intent = new Intent("android.intent.action.MAIN");
         intent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
-        intent.putExtra("jid"),
+        intent.putExtra("jid", (PhoneNumberUtils.stripSeparators("5561996565008@s.whatsapp.net")));
 
 //        sendIntent.setAction(Intent.ACTION_SEND);
 //        sendIntent.putExtra(Intent.EXTRA_TEXT, "https://wa.me/5561996565008");
 //        sendIntent.setType("text/plain");
-        startActivity(sendIntent);
+        startActivity(intent);
     }
 
     @Override
