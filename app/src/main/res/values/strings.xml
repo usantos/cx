@@ -284,7 +284,8 @@
     <string name="label_rapidao">Rapidão</string>
     <string name="label_apostas_fav_rapidao_empty">Você ainda não possui apostas favoritas. É muito fácil! Simule uma aposta e adicione como favorita.</string>
     <string name="label_faca_apostas_apenas_um_clique">Faça várias apostas\nem apenas um clique.</string>
-    <string name="label_ler_bilhestes_bold">Ler _bilhetes_</string>
+    <string name="label_ler_bilhestes">_Conferir bilhetes_</string>
+    <string name="label_ler_bilhestes_bold">_Conferir_ _bilhetes_</string>
     <string name="label_repassados_boas_causas_bold">_repassados_ para boas causas.</string>
     <string name="label_apostou_loterica_confira_resultados">Apostou em uma lotérica?\n Confira aqui os seus resultados.</string>
     <string name="label_favoritas">Favoritas</string>
@@ -1107,5 +1108,5 @@
 
     <!-- Mensagens Disque 180  -->
     <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
-    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência</string>
+    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
 </resources>
