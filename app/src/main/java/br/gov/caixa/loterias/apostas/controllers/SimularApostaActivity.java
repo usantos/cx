@@ -253,6 +253,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             case R.id.qtdConcursosButton: {
                 modalTeimosinhas();
+                textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
+
 
 
                 break;
@@ -642,6 +644,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                     }
                 }
             }
+
         }
     }
 
@@ -824,14 +827,20 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
                                            getResources().getString(R.string.teimosinhas_maiusculo), null,
                                            qtdConcursosList, onTeimosinhaDialogListener());
+
     }
 
     private OnDialogListener onTeimosinhaDialogListener() {
         return new OnDialogListener() {
             @Override
             public void itemSelecionado(int position) {
-                textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
-                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
+                if (position != 1) {
+                    textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
+                    qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
+                }else{
+                    textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
+                }
+
             }
 
             @Override
