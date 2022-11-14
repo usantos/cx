@@ -634,7 +634,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
                     if (numeroTeimosinha == 0) {
-                        qtdConcursosList.add(getString(R.string.label_sem_teimosinha));
+                        qtdConcursosList.add(getString(R.string.teimosinhas_descricao));
                     } else if (numeroTeimosinha == 1) {
                         qtdConcursosList.add("" + numeroTeimosinha + getResources().getString(R.string.espaco_concurso));
                     } else {
