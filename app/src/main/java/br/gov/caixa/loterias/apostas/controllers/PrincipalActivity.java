@@ -821,14 +821,17 @@ public class PrincipalActivity extends AppCompatActivity
         startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
     }
     private void redirecionaMsgDisque180(){
-//        Abrir nova janela com link whatsapp
-        Intent intent = new Intent("android.intent.action.MAIN");
-        intent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
-        intent.putExtra("jid", (PhoneNumberUtils.stripSeparators("5561996565008@s.whatsapp.net")));
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.setPackage("com.whatsapp");
+        intent.putExtra(Intent.EXTRA_TEXT, "https://wa.me/5561996565008");
 
-//        sendIntent.setAction(Intent.ACTION_SEND);
-//        sendIntent.putExtra(Intent.EXTRA_TEXT, "https://wa.me/5561996565008");
-//        sendIntent.setType("text/plain");
+        // Checa se whatsapp está instalado
+        if (intent.resolveActivity(getPackageManager()) == null) {
+            Toast.makeText(this, "Por favor instale o whatsapp primeiro.", Toast.LENGTH_SHORT)
+            .show();
+            return;
+        }
         startActivity(intent);
     }
 
