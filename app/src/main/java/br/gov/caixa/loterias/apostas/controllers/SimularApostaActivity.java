@@ -216,7 +216,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         qtdNumerosButton.setText(format(getResources().getString(R.string.percent_d_numeros), qtdDezenasPossiveisSelecionado));
         textoBotaoPrognosticosSelecionado = qtdNumerosButton.getText().toString();
         if ((qtdConcursosList != null && !qtdConcursosList.isEmpty()) && (qtdConcursosList.size() == 1 || qtdConcursoSelecionado == 0)) {
-            qtdConcursosButton.setText(qtdConcursosList.get(0));
+//            qtdConcursosButton.setText(qtdConcursosList.get(0));
+            qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
         } else {
             qtdConcursosButton.setText(format(getResources().getString(R.string.percent_d_concurso), qtdConcursoSelecionado));
         }
@@ -253,10 +254,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             case R.id.qtdConcursosButton: {
                 modalTeimosinhas();
-                textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
-
-
-
                 break;
             }
         }
@@ -834,11 +831,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return new OnDialogListener() {
             @Override
             public void itemSelecionado(int position) {
-                if (position != 1) {
+                if (position == 0) {
+                    textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
+                }else{
                     textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
                     qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
-                }else{
-                    textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
                 }
 
             }
