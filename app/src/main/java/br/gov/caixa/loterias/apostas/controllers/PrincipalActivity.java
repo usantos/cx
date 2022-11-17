@@ -4,12 +4,10 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.Manifest;
 import android.animation.AnimatorSet;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.telephony.PhoneNumberUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -828,7 +826,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         // Checa se whatsapp está instalado
         if (intent.resolveActivity(getPackageManager()) == null) {
-            Toast.makeText(this, "Por favor instale o whatsapp primeiro.", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "O aplicativo whatsapp nâo foi encontrado em seu celular.", Toast.LENGTH_LONG)
             .show();
             return;
         }
