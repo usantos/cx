@@ -19,6 +19,8 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.net.Uri;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -819,20 +821,33 @@ public class PrincipalActivity extends AppCompatActivity
         startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
     }
     private void redirecionaMsgDisque180(){
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.setPackage("com.whatsapp");
-        intent.putExtra(Intent.EXTRA_TEXT, "https://wa.me/5561996565008");
+        boolean installed = isAppInstalled("com.whatsapp");
 
-        // Checa se whatsapp está instalado
-        if (intent.resolveActivity(getPackageManager()) == null) {
-            Toast.makeText(this, "O aplicativo whatsapp nâo foi encontrado em seu celular.", Toast.LENGTH_LONG)
-            .show();
-            return;
+        if (installed) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=5561996565008&text=Disque180"));
+            startActivity(intent);
         }
-        startActivity(intent);
+        else
+        {
+            Toast.makeText(PrincipalActivity.this, "Whatsapp não está instalado", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
+    private boolean isAppInstalled(String s) {
+        PackageManager packageManager = getPackageManager();
+        boolean is_installed;
+
+        try {
+            packageManager.getPackageInfo(s, PackageManager.GET_ACTIVITIES);
+            is_installed = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            is_installed = false;
+            e.printStackTrace();
+        }
+        return is_installed;
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
