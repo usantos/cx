@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 
 import net.openid.appauth.AuthorizationRequest;
 import net.openid.appauth.AuthorizationService;
@@ -46,11 +47,24 @@ public class AcessoBO extends BaseBO {
             AuthorizationRequest authorizationRequest = builder.build();
             Intent intent = new Intent(activity, TokenActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
+            PendingIntent pendingIntent = getPendingIntent(intent);
 
             authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
             authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
         }
+    }
+
+    private PendingIntent getPendingIntent(Intent intent) {
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity(context,
+                                                      0, intent, PendingIntent.FLAG_UPDATE_CURRENT |
+                                                                                    PendingIntent.FLAG_MUTABLE);
+        }else {
+            pendingIntent = PendingIntent.getActivity(context,
+                                                      0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+        return pendingIntent;
     }
 
     public void iniciarLogoutSSO(Activity activity){
@@ -70,7 +84,7 @@ public class AcessoBO extends BaseBO {
         Intent intent = new Intent(activity, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(activity, authorizationRequest.hashCode(), intent, 0);
+        PendingIntent pendingIntent = getPendingIntent(intent);
 
         AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
         authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
