@@ -830,7 +830,7 @@ public class PrincipalActivity extends AppCompatActivity
         }
         else
         {
-            Toast.makeText(PrincipalActivity.this, "Whatsapp não está instalado", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PrincipalActivity.this, "Whatsapp não está instalado", Toast.LENGTH_LONG).show();
         }
 
     }
