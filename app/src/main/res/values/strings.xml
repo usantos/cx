@@ -982,7 +982,7 @@
     <string name="data_dois_pontos_espaco">Data:&#160;</string>
     <string name="textoInfoSelecioneFormaPagamento">textoInfoSelecioneFormaPagamento</string>
     <string name="como_jogar">Como jogar</string>
-
+    <string name="no_whatsapp">Não existe whatsapp instalado neste celular.</string>
 
     <!-- Tutorial SuperSete -->
     <string name="bem_vindo_super_sete">Bem vindo ao  \n_Super Sete_</string>

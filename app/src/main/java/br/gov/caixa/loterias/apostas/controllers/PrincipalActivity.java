@@ -105,6 +105,8 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
+
+
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
 public class PrincipalActivity extends AppCompatActivity
@@ -817,6 +819,18 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    private AlertDialog myDialog;
+    private void showDialogBairro() {
+        if (myDialog == null) {
+            myDialog = new AlertDialog.Builder(this)
+                    .setTitle(getResources().getString(R.string.label_atencao))
+                    .setMessage(getResources().getString(R.string.selecione_municipio_primeiro))
+                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
+                    .create();
+        }
+        myDialog.show();
+    }
+
     private void redirecionaJogoResponsavel(){
         startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
     }
@@ -830,11 +844,22 @@ public class PrincipalActivity extends AppCompatActivity
         }
         else
         {
-            Toast.makeText(PrincipalActivity.this, "Whatsapp não está instalado", Toast.LENGTH_LONG).show();
+            //mensagem negativa de Whatsapp
+//            Toast.makeText(PrincipalActivity.this, "Whatsapp não está instalado", Toast.LENGTH_LONG).show();
+            showDialogNoWhatsapp();
         }
 
     }
-
+    public void showDialogNoWhatsapp() {
+        if (myDialog == null) {
+            myDialog = new AlertDialog.Builder(this)
+                    .setTitle(getResources().getString(R.string.label_atencao))
+                    .setMessage(getResources().getString(R.string.no_whatsapp))
+                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
+                    .create();
+        }
+        myDialog.show();
+    }
     private boolean isAppInstalled(String s) {
         PackageManager packageManager = getPackageManager();
         boolean is_installed;
