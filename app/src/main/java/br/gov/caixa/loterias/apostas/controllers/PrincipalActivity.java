@@ -819,18 +819,6 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private AlertDialog myDialog;
-    private void showDialogBairro() {
-        if (myDialog == null) {
-            myDialog = new AlertDialog.Builder(this)
-                    .setTitle(getResources().getString(R.string.label_atencao))
-                    .setMessage(getResources().getString(R.string.selecione_municipio_primeiro))
-                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
-                    .create();
-        }
-        myDialog.show();
-    }
-
     private void redirecionaJogoResponsavel(){
         startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
     }
@@ -845,12 +833,12 @@ public class PrincipalActivity extends AppCompatActivity
         else
         {
             //mensagem negativa de Whatsapp
-//            Toast.makeText(PrincipalActivity.this, "Whatsapp não está instalado", Toast.LENGTH_LONG).show();
             showDialogNoWhatsapp();
         }
 
     }
-    public void showDialogNoWhatsapp() {
+    private AlertDialog myDialog;
+    private void showDialogNoWhatsapp() {
         if (myDialog == null) {
             myDialog = new AlertDialog.Builder(this)
                     .setTitle(getResources().getString(R.string.label_atencao))
