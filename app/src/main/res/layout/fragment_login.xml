@@ -19,7 +19,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="53dp"
-            android:src="@drawable/logo" />
+            android:background="@drawable/logo"/>
 
         <Button
             android:id="@+id/buttonAposteAgora"

@@ -7,16 +7,16 @@ android {
         config {
         }
     }
-    compileSdkVersion 31
+    compileSdkVersion 33
     buildToolsVersion '29.0.2'
     defaultConfig {
         resValue "string", "app_name", "Loterias"
         applicationId "br.gov.caixa.loterias.apostas"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 33
 
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 211072009
+        versionCode 211072010
         versionName "1.1.1"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
