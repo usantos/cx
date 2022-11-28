@@ -34,7 +34,7 @@ public class CarrinhoDTO implements Serializable {
      **/
     @ApiModelProperty(value = "Valor total das apostas do carrinho")
     public BigDecimal getValorTotal() {
-        if (valorTotal != null){
+        if (valorTotal != null && valorTotal.compareTo(BigDecimal.ZERO) > 0 ){
             return valorTotal;
         }
 

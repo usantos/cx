@@ -56,11 +56,9 @@ public class AcessoBO extends BaseBO {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             pendingIntent = PendingIntent.getActivity(context,
                                                       0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
-
-        }else {
+        } else {
             pendingIntent = PendingIntent.getActivity(context,
                                                       0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         }
         return pendingIntent;
     }

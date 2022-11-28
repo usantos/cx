@@ -152,6 +152,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 
 	public void atualizaValorTotal(CarrinhoDTO carrinho){
 		this.carrinho = carrinho;
+
 		if(carrinho != null && tvValorTotal != null) {
 			ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), tvValorTotal);
 			Log.d("SOMADOR CARRINHO " + TAG + " -----", tvValorTotal.getText().toString());
