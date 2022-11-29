@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.ViewCompat;
 
 import com.google.gson.Gson;
 import com.google.zxing.ResultPoint;
@@ -35,7 +33,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
 import br.gov.caixa.loterias.apostas.utils.BilheteUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
 public class LerBilhetesActivity extends AppCompatActivity {
@@ -144,6 +141,7 @@ public class LerBilhetesActivity extends AppCompatActivity {
         fecharLeitor.setOnClickListener(v -> finish());
 
         Button buttonDigitarAposta = findViewById(R.id.buttonDigitarAposta);
+        buttonDigitarAposta.setVisibility(View.GONE);
         buttonDigitarAposta.setOnClickListener(v -> {
             startBilheteManual();
         });
