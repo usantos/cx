@@ -182,7 +182,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		try {
 			dataSorteioFormatada = formatterDate.parse(modalidade.getConcurso().getDataHoraSorteio());
 			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
-
+			if (modalidade.getTipoModalidade() == ModalidadeEnum.LOTECA){
+				dataSorteioFormatada = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
