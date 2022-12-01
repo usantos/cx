@@ -309,7 +309,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         if(!isHistorico){
             if(filtroAdapter != null){
                 if(filtroAdapter.getNpSituacao() != null) {
-                    page.setSituacao(filtroAdapter.getNpSituacao().getValue());
+                    //page.setSituacao(filtroAdapter.getNpSituacao().getValue());
+                    page.setSituacao(filtroAdapter.getKeySituacaoSelecionada());
                 }
                 if(filtroAdapter.getAdapterModalidades() != null){
                     if(filtroAdapter.getAdapterModalidades().getModalidadesSelecionadas().size() > 0){
