@@ -19,6 +19,8 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.net.Uri;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -103,6 +105,8 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
+
+
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
 public class PrincipalActivity extends AppCompatActivity
@@ -125,10 +129,14 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
     @ViewById
-    protected RelativeLayout relativeContentPrincipal,rlJogoResponsavel,
-            relativeBlankView, relativeLayoutContentRapidao,
-            relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas,
-            relativeLayoutContentRepassados;
+    protected RelativeLayout relativeContentPrincipal,
+            rlJogoResponsavel,
+            relativeBlankView,
+            relativeLayoutContentRapidao,
+            relativeLayoutContentLerBilhetes,
+            relativeLayoutContentFavoritas,
+            relativeLayoutContentRepassados,
+            rlMsgDisque180;
     @ViewById
     protected LinearLayout atalhoRapidoLoterias;
     @ViewById
@@ -197,6 +205,9 @@ public class PrincipalActivity extends AppCompatActivity
         Bundle extras = intent.getExtras();
         if (extras!= null) {
             if (extras.containsKey(getResources().getString(R.string.extra_modalidade_apostar_agora))) {
+
+                SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+
                 ModalidadeEnum modalidade = (ModalidadeEnum) extras.getSerializable(getResources().getString(R.string.extra_modalidade_apostar_agora));
                 int position =  retornaPosicaoPorModalidade(modalidade);
                 if(position != -1){
@@ -507,6 +518,7 @@ public class PrincipalActivity extends AppCompatActivity
                 relativeLayoutContentFavoritas,
                 rlJogoResponsavel,
                 relativeLayoutContentRepassados,
+                rlMsgDisque180,
                 relativeBlankView,
                 atalhoRapidoLoterias,
                 buttonHomeBet,
@@ -533,6 +545,7 @@ public class PrincipalActivity extends AppCompatActivity
                 relativeLayoutContentFavoritas,
                 rlJogoResponsavel,
                 relativeLayoutContentRepassados,
+                rlMsgDisque180,
                 relativeBlankView,
                 atalhoRapidoLoterias,
                 buttonHomeBet,
@@ -659,6 +672,11 @@ public class PrincipalActivity extends AppCompatActivity
         redirecionaJogoResponsavel();
     }
 
+    @Click(R.id.rlMsgDisque180)
+    protected void clickrlMsgDisque180() {
+        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        redirecionaMsgDisque180();
+    }
     @Click(R.id.id_fg_somador_carrinho)
     protected void vaiProCarrinho() {
         if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
@@ -807,8 +825,45 @@ public class PrincipalActivity extends AppCompatActivity
     private void redirecionaJogoResponsavel(){
         startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
     }
+    private void redirecionaMsgDisque180(){
+        boolean installed = isAppInstalled("com.whatsapp");
 
+        if (installed) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=5561996565008&text=Disque180"));
+            startActivity(intent);
+        }
+        else
+        {
+            //mensagem negativa de Whatsapp
+            showDialogNoWhatsapp();
+        }
 
+    }
+    private AlertDialog myDialog;
+    private void showDialogNoWhatsapp() {
+        if (myDialog == null) {
+            myDialog = new AlertDialog.Builder(this)
+                    .setTitle(getResources().getString(R.string.label_atencao))
+                    .setMessage(getResources().getString(R.string.no_whatsapp))
+                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
+                    .create();
+        }
+        myDialog.show();
+    }
+    private boolean isAppInstalled(String s) {
+        PackageManager packageManager = getPackageManager();
+        boolean is_installed;
+
+        try {
+            packageManager.getPackageInfo(s, PackageManager.GET_ACTIVITIES);
+            is_installed = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            is_installed = false;
+            e.printStackTrace();
+        }
+        return is_installed;
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {

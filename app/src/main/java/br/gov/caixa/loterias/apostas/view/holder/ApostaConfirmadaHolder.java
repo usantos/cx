@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
@@ -115,6 +116,10 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 				descricaoStatus = aposta.getSituacao().getDescricao();
 			}else {
 				descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado);
+
+				if (!BuildVersionUtil.isPRD()){
+					descricaoStatus = "* " +descricaoStatus + " *";
+				}
 			}
 			String msgLog = "Chama: false" + " = MP: " + parametroJogo.getParametroJogo().getConcurso().getModalidade() + "-" + parametroJogo.getParametroJogo().getConcurso().getNumero() + " = " + aposta.getModalidade() + "-" + aposta.getConcursoInicial() + " = diff: " + (parametroJogo.getParametroJogo().getConcurso().getNumero() - aposta.getConcursoInicial());
 			Log.d("RESULTADO-APOSTA", msgLog);

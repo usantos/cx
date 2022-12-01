@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/design_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -62,38 +63,73 @@
             app:layout_constraintTop_toBottomOf="@id/tv_descricao">
 
             <TextView
+                android:id="@+id/tv_caixa_tile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="@string/jr_bs_caixa_titulo"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:id="@+id/tv_caixa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:autoLink="phone"
                 android:padding="1dp"
                 android:text="@string/jr_bs_caixa_tel"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_caixa_tile" />
 
             <TextView
-                android:id="@+id/tv_caixa_op_7"
+                android:id="@+id/tv_caixa_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="phone"
                 android:padding="1dp"
-                android:text="@string/jr_bs_op_7"
+                android:text="@string/jr_bs_caixa_tel_1"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_caixa" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_caixa" />
 
             <TextView
-                android:id="@+id/tv_caixa_op_3"
+                android:id="@+id/tv_caixa_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="phone"
                 android:padding="1dp"
-                android:text="@string/jr_bs_op_3"
+                android:text="@string/jr_bs_caixa_tel_2"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_7" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_caixa_1" />
+
+            <TextView
+                android:id="@+id/tv_caixa_op_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:text="@string/jr_bs_op_6"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_caixa_2" />
+
+            <TextView
+                android:id="@+id/tv_caixa_op_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="1dp"
+                android:text="@string/jr_bs_op_2"
+                android:textColor="@color/jr_cinza_text"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_6" />
 
             <TextView
                 android:id="@+id/tv_caps"
@@ -106,7 +142,7 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_3" />
+                app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_2" />
 
             <TextView
                 android:id="@+id/tv_caps_site"
@@ -158,6 +194,7 @@
                 android:id="@+id/tv_proamjo_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autoLink="email|all"
                 android:padding="2dp"
                 android:text="@string/jr_bs_proamjo_email"
                 android:textColor="@color/jr_email"
@@ -206,6 +243,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
+                android:autoLink="email|all"
                 android:text="@string/jr_bs_avb_email"
                 android:textColor="@color/jr_email"
                 android:textSize="14sp"
@@ -252,6 +290,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
+                android:autoLink="email|all"
                 android:text="@string/jr_bs_proad_email"
                 android:textColor="@color/jr_email"
                 android:textSize="14sp"
@@ -325,6 +364,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="2dp"
+                android:autoLink="email|all"
                 android:text="@string/jr_ja_site"
                 android:textColor="@color/jr_email"
                 android:textSize="14sp"

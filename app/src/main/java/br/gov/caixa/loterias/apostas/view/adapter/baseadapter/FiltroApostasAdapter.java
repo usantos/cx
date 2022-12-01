@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
@@ -351,6 +352,13 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 	public void setNpSituacao(NumberPicker npSituacao) {
 		this.npSituacao = npSituacao;
+	}
+
+
+	public int getKeySituacaoSelecionada() {
+		Set<Integer> keySet = situacoes.keySet();
+		Integer[] keyArray 	= keySet.toArray(new Integer[keySet.size()]);
+		return keyArray[numeroSituacaoSelecionada - 1];
 	}
 
 	public ExpandableHeightGridView getGridModalidades() {
