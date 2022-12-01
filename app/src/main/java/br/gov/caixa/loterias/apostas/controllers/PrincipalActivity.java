@@ -197,6 +197,9 @@ public class PrincipalActivity extends AppCompatActivity
         Bundle extras = intent.getExtras();
         if (extras!= null) {
             if (extras.containsKey(getResources().getString(R.string.extra_modalidade_apostar_agora))) {
+
+                SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+
                 ModalidadeEnum modalidade = (ModalidadeEnum) extras.getSerializable(getResources().getString(R.string.extra_modalidade_apostar_agora));
                 int position =  retornaPosicaoPorModalidade(modalidade);
                 if(position != -1){
