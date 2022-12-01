@@ -132,6 +132,7 @@
             android:orientation="horizontal">
 
             <Button
+
                 android:id="@+id/buttonDigitarAposta"
                 android:layout_width="wrap_content"
                 android:layout_height="55dp"
@@ -140,6 +141,7 @@
                 android:drawableLeft="@drawable/ic_edit"
                 android:drawablePadding="8dp"
                 android:paddingLeft="10dp"
+
 
                 android:paddingRight="10dp"
                 android:text="@string/title_digiteSuaAposta"

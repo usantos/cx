@@ -94,7 +94,7 @@ public class TopazUtil {
 	public static Map<String, String> getParams(String deviceID){
 		Map<String, String> params = new HashMap<>();
 		params.put("deviceid", deviceID);
-		params.put("nivel", "20");
+		params.put("nivel", "10");
 		params.put("app", "br.gov.caixa.loterias.apostas");
 		params.put("origem","tofd");
 
