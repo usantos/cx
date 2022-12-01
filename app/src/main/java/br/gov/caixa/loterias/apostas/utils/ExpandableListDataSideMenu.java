@@ -12,12 +12,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
  */
 
 public class ExpandableListDataSideMenu {
-    public static final String MENU_DADOS_PESSOAIS = "Dados Pessoais";
-    public static final String MENU_MINHAS_APOSTAS = "Minhas Apostas";
-    public static final String MENU_COMPRAS = "Minhas Compras";
-    public static final String MENU_FAVORITAS = "Apostas Favoritas";
-    public static final String MENU_CARRINHOS_FAVORITOS = "Carrinhos Favoritos";
-    public static final String MENU_MEUS_CARTOES = "Meus Cartões";
+    public static final String MENU_DADOS_PESSOAIS = "Dados pessoais";
+    public static final String MENU_MINHAS_APOSTAS = "Minhas apostas";
+    public static final String MENU_COMPRAS = "Minhas compras";
+    public static final String MENU_FAVORITAS = "Apostas favoritas";
+    public static final String MENU_CARRINHOS_FAVORITOS = "Carrinhos favoritos";
+    public static final String MENU_MEUS_CARTOES = "Meus cartões";
 
     public static HashMap<String, List<String>> getData() {
         LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
@@ -44,7 +44,7 @@ public class ExpandableListDataSideMenu {
         expandableListDetail.put("Resultados", Resultados);
         expandableListDetail.put("Rapidão", Rapidao);
         expandableListDetail.put("Conferir bilhetes", bilhetes);
-        expandableListDetail.put("Jogo Responsável", JogoResponsavel);
+        expandableListDetail.put("Jogo responsável", JogoResponsavel);
         expandableListDetail.put("Repasses sociais", sociais);
         return expandableListDetail;
     }
