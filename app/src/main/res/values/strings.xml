@@ -919,6 +919,7 @@
     <string name="espaco_numeros">&#160;números</string>
     <string name="evento_entrou_popup_teimosinha">ENTROU_POPUP_TEIMOSINHA</string>
     <string name="teimosinhas_maiusculo">Teimosinhas</string>
+    <string name="teimosinhas_descricao">Escolha em quantos concursos você quer participar com este mesmo jogo:</string>
     <string name="extra_ajuda">ajuda</string>
     <string name="mailto_dois_pontos">mailto:</string>
     <string name="utf_8">UTF-8</string>
