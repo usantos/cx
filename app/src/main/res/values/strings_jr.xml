@@ -2,7 +2,7 @@
 <resources>
 
     <string name="jr_titulo">Jogo responsável</string>
-    <string name="jr_titulo_maiusculo">Jogo Responsável</string>
+    <string name="jr_titulo_maiusculo">Jogo responsável</string>
     <string name="jr_aprender_regras">Para o Jogo continuar divertido é preciso _aprender as regras_.</string>
     <string name="jr_principios">Princípios do Jogo</string>
     <string name="jr_conheca">Conheça</string>
