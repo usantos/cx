@@ -18,7 +18,9 @@ public class CarrinhoSingleton {
     public  CarrinhoDTO getCarrinho(){
         return carrinho;
     }
+
     public void setCarrinho(CarrinhoDTO carrinho){
         this.carrinho = carrinho;
+        this.carrinho.atualizaValorTotal();
     }
 }

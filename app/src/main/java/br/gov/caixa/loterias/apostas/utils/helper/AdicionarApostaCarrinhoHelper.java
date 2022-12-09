@@ -166,6 +166,7 @@ public class AdicionarApostaCarrinhoHelper {
                     }
                     CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
                 }
+                CarrinhoSingleton.getInstance().getCarrinho().atualizaValorTotal();
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);
             }
 
