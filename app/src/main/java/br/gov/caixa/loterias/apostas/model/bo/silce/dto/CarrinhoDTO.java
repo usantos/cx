@@ -38,13 +38,18 @@ public class CarrinhoDTO implements Serializable {
             return valorTotal;
         }
 
+        atualizaValorTotal();
+        return valorTotal;
+    }
+
+    public void atualizaValorTotal() {
         BigDecimal valorTotalCarrinho = BigDecimal.ZERO;
         if(getApostas() != null) {
             for (IdentificaoDeUmaApostaDas8Modalidades aposta : getApostas()) {
                 valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
             }
         }
-        return valorTotalCarrinho;
+        valorTotal = valorTotalCarrinho;
     }
 
     public void setValorTotal(BigDecimal valorTotal) {
