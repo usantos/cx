@@ -27,8 +27,9 @@
     <color name="megasenaescuro">#008f5b</color>
     <color name="megasenamedio_transparente">#99009b63</color>
 
-    <color name="superseteclaro">#DDE89C</color>
-    <color name="supersetemedio">#a8cf45</color>
+<!--    <color name="superseteclaro">#DDE89C</color>-->
+    <color name="superseteclaro">#80C342</color>
+    <color name="supersetemedio">#A8CF45</color>
     <color name="superseteescuro">#084A08</color>
     <color name="supersete_claro_transparente">#80DDE89C</color>
 
