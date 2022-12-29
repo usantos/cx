@@ -29,7 +29,13 @@ public class NotificacaoUtils {
 		TextView  tituloNotificacao = viewNotification.findViewById(R.id.titulo_notificacao);
 		TextView  corpoNotificacao  = viewNotification.findViewById(R.id.descricao_notificacao);
 		Button    btnNotificacao    = viewNotification.findViewById(R.id.fechar_notificacao);
+		Button    btnAbrirLink    = viewNotification.findViewById(R.id.abrir_link);
 
+		if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null
+				&& UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink() != null
+				&& !UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink().isEmpty()) {
+			btnAbrirLink.setVisibility(View.VISIBLE);
+		}
 
 		try {
 			final byte[] decodedBytes  = Base64.decode(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getImagem(), Base64.DEFAULT);
@@ -40,6 +46,7 @@ public class NotificacaoUtils {
 		tituloNotificacao.setText(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getTitulo());
 		corpoNotificacao.setText(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getConteudo());
 		btnNotificacao.setOnClickListener(v -> listener.removePopup());
+		btnAbrirLink.setOnClickListener(v -> listener.abrirLink());
 
 		PopupWindow popupNotification = new PopupWindow(viewNotification, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 		popupNotification.showAtLocation(navigationBarListaModalidade, Gravity.CENTER, 0, 0);
