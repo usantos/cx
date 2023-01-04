@@ -14,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+
 import com.google.android.material.appbar.AppBarLayout;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -28,13 +31,20 @@ public class NotificacaoUtils {
 		ImageView img               = viewNotification.findViewById(R.id.imagem_notificacao);
 		TextView  tituloNotificacao = viewNotification.findViewById(R.id.titulo_notificacao);
 		TextView  corpoNotificacao  = viewNotification.findViewById(R.id.descricao_notificacao);
-		Button    btnNotificacao    = viewNotification.findViewById(R.id.fechar_notificacao);
+		Button    btnFecharNotificacao    = viewNotification.findViewById(R.id.fechar_notificacao);
 		Button    btnAbrirLink    = viewNotification.findViewById(R.id.abrir_link);
 
 		if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null
 				&& UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink() != null
 				&& !UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink().isEmpty()) {
 			btnAbrirLink.setVisibility(View.VISIBLE);
+		} else {
+			ConstraintLayout constraintLayout = viewNotification.findViewById(R.id.constraintConteudo);
+			ConstraintSet    constraintSet = new ConstraintSet();
+			constraintSet.clone(constraintLayout);
+
+			constraintSet.connect(btnFecharNotificacao.getId(),ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END,0);
+			constraintSet.applyTo(constraintLayout);
 		}
 
 		try {
@@ -45,7 +55,7 @@ public class NotificacaoUtils {
 
 		tituloNotificacao.setText(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getTitulo());
 		corpoNotificacao.setText(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getConteudo());
-		btnNotificacao.setOnClickListener(v -> listener.removePopup());
+		btnFecharNotificacao.setOnClickListener(v -> listener.removePopup());
 		btnAbrirLink.setOnClickListener(v -> listener.abrirLink());
 
 		PopupWindow popupNotification = new PopupWindow(viewNotification, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
