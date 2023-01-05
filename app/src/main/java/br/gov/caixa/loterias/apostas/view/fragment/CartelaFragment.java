@@ -1213,13 +1213,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		listaGridsSuperSete.add(viewLayout.findViewById(R.id.ehgv_super_sete_setimo));
 
 		listaAdaptersSuperSete = new ArrayList<>();
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorLight, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
 
 		listaGridsSuperSete.get(0).setAdapter(listaAdaptersSuperSete.get(0));
 		listaGridsSuperSete.get(1).setAdapter(listaAdaptersSuperSete.get(1));
