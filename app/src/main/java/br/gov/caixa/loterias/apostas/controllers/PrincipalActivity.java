@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -91,6 +92,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
@@ -373,19 +375,35 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private OnNotificacaoListener onRemovePopup() {
-        return () -> {
-            dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
-                @Override
-                public void onResponse(RetornoPadraoDTO result) {
-                    popupNotification.dismiss();
-                    UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
-                }
+        return new OnNotificacaoListener() {
+            @Override
+            public void removePopup() {
+                dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
+                    @Override
+                    public void onResponse(RetornoPadraoDTO result) {
+                        popupNotification.dismiss();
+                        UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
+                    }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                    }
+                });
+            }
+
+            @Override
+            public void abrirLink() {
+                if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null
+                        && UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink() != null
+                        && !UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink().isEmpty()){
+                    try {
+                        startActivity(IntentUtil.getIntentWeb(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink()));
+                    }catch (Exception e ){
+                        Log.d("",e.getLocalizedMessage());
+                    }
                 }
-            });
+            }
         };
     }
 
