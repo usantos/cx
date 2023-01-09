@@ -322,6 +322,26 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/aposteAgoraNaoPremiadoLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/botaoAposteAgora2"
+                    android:layout_width="160dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="17dp"
+                    android:background="@drawable/button_white_with_border_disabled"
+                    android:backgroundTint="#3A485B"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14.2sp"
+                    tools:text="@string/label_aposte_agora" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/mensagemNaoPremiadoLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
