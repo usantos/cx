@@ -128,6 +128,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         StringBuilder numeroStr = new StringBuilder();
 
         if(listaApostaFavorita.get(position).getModalidade().getValor().intValue() == 7) {
+            holder.tituloApostaFavorita.setTextColor(context.getResources().getColor(estilo.getCorEscura()));
             configuraFragment(listaApostaFavorita.get(position),holder);
             holder.containerFragment.setVisibility(View.VISIBLE);
         } else {
