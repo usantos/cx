@@ -278,8 +278,6 @@ public class ListaComprasActivity extends AppCompatActivity {
         startActivity(activity);
     }
 
-
-
     private void addSpinner(){
         Spinner selecaoMesSpinner;
         selecaoMesSpinner = findViewById(R.id.SelecaoMesSpinner);

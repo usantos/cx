@@ -64,7 +64,11 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 		} else {
 			holder.tvModalidade.setText(apostaAtual.getModalidade().getDescricao());
 		}
-		holder.tvModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorClara()));
+		if (apostaAtual.getModalidade().getValor() == 7) {
+			holder.tvModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorEscura()));
+		} else {
+			holder.tvModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorClara()));
+		}
 		holder.tvNumeros.setText(configuraNumeros(apostaAtual, holder));
 
 		if (apostaAtual.getQuantidadeTeimosinhas() > 0) {

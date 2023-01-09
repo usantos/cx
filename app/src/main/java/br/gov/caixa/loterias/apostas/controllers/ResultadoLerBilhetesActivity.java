@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -60,13 +61,16 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
     @ViewById
     protected LinearLayout corpoBilhetePremiadoLinearLayout, corpoBilheteNaoPremiadoLinearLayout, premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout,
-            informacoesPremioZeradoLayout, informacoesPremioLayout, backgroundTopoNaoPremiadoLayout;
+            informacoesPremioZeradoLayout, informacoesPremioLayout, backgroundTopoNaoPremiadoLayout, aposteAgoraNaoPremiadoLinearLayout;
 
     @ViewById
     protected TextView mensagemNaoPremiadoTextView, statusResultadoNaoPremiadTextView;
 
     @ViewById
     protected ContentResultadoPremiado contentResultadoPremiado;
+
+    @ViewById
+    protected Button botaoAposteAgora2 ;
 
     @Extra
     protected String codBarras;
@@ -299,6 +303,14 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         startActivity(it);
     }
 
+    @Click(R.id.botaoAposteAgora2)
+    protected void clickBotaoAposteAgora2() {
+        Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity_.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
+        startActivity(it);
+    }
+
     private void atualizarLayoutApenasMensagem(int label) {
         corpoBilhetePremiadoLinearLayout.setVisibility(View.GONE);
         corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.VISIBLE);
@@ -345,6 +357,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                     break;
                 case StatusBilhete.NAO_PREMIADO:
                 case StatusBilhete.NAO_APURADO:
+                    aposteAgoraNaoPremiadoLinearLayout.setVisibility(View.VISIBLE);
+                    botaoAposteAgora2.setText(ViewUtils.textFuturaAndFuturaBold(this ,getString(R.string.botao_aposte_agora)));
                     statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
                     break;
                 default:
@@ -365,7 +379,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
         initEstiloModalidade();
         FaixaPremiacaoAdapter adapter = new FaixaPremiacaoAdapter(faixa, ContextCompat.getColor(this, estiloModalidade.getCorClara()),
-                                                                                ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+                ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
 
         listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(adapter);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);

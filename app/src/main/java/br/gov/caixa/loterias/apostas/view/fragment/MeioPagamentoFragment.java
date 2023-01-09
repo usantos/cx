@@ -200,7 +200,7 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void onPositiveCVV(RetornoCartao cartao) {
 		int tamanhoCVV = userInput.getText().toString().length();
-		if (tamanhoCVV == 3){
+		if (tamanhoCVV == 3 || tamanhoCVV == 4) {
 			if (model.isMercadoPago(config.getMeioPagamento().getValor())){
 				requestBody = model.preencheDadosPagamentoCartaoSalvo(cartao, userInput.getText());
 				runOnUiThread(() -> AlertDialogUtils.show(getContext()));
