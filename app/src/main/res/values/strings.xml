@@ -194,6 +194,7 @@
     <string name="title_activity_favoritas_bold">_Apostas Favoritas_</string>
     <string name="title_activity_lista_compras">Compras</string>
 
+    <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
     <string name="msg_qtd_max_col_super_sete">Você só pode selecionar 3 números por coluna</string>
     <string name="msg_bloqueio_coluna_super_sete_marcar">Você precisa selecionar {qtdColunas} número(s) em cada coluna antes de selecionar outro nessa</string>

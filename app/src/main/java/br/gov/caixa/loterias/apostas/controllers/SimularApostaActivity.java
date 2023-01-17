@@ -360,10 +360,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
     @Override
     public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
+        //	Verifica condição de aviso caso ultrapasse o numero max por modalidade
         if (qtdDezenasAtual <= parametroSimulacao.getQuantidadeMaxima()) {
             atualizaTextoBotoesQtdSelecionadas();
         }
-
         return qtdDezenasPossiveisSelecionado;
     }
 
