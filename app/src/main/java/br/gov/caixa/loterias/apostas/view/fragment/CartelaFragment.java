@@ -1277,6 +1277,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 									}
 									listaSelecionados.add(valorSelecionado);
 									qtdTotalSelecionadosSuperSete++;
+
+									if 	((qtdTotalSelecionadosSuperSete == (parentActivity.qtdDezenasPossiveisSelecionado)) && (!isAvisou))
+									{
+										ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_ultrapassada));
+										isAvisou = true;
+									}
 								} else {
 									ViewUtils.alert(getActivity(),
 													getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(

@@ -160,6 +160,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private ParametroMesDeSorte mesDeSorteSurpresinha;
     private Boolean isEspecial = false;
     private DadosCorporativosBO dadosCorporativosBO;
+    private boolean isAvisou = false;
 
     //mocks
     public int qtdDezenasPossiveisSelecionado;
@@ -782,6 +783,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 }else {
                     textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
                     qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
+                }
+                if ((position >= 1) && (!isAvisou)) {
+                    ViewUtils.alert(SimularApostaActivity.this, getString(R.string.msg_qtd_max_ultrapassada));
+                    isAvisou = true;
                 }
             }
 
