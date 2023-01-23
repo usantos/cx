@@ -785,7 +785,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                     qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
                 }
                 if ((position >= 1) && (!isAvisou)) {
-                    ViewUtils.alert(SimularApostaActivity.this, getString(R.string.msg_qtd_max_ultrapassada));
+                    ViewUtils.alertTitleButton(SimularApostaActivity.this, R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
                     isAvisou = true;
                 }
             }

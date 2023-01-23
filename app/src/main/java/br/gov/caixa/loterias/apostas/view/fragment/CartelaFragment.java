@@ -1158,7 +1158,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 						dezenasSelecionadas.add(valorSelecionado);
 						if 	((qtdDezenasPossiveisSelecionadoAtual == (parentActivity.qtdDezenasPossiveisSelecionado-1)) && (!isAvisou))
 						{
-							ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_ultrapassada));
+							ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
 							isAvisou = true;
 						}
 					} else {
@@ -1280,7 +1280,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 									if 	((qtdTotalSelecionadosSuperSete == (parentActivity.qtdDezenasPossiveisSelecionado)) && (!isAvisou))
 									{
-										ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_ultrapassada));
+										ViewUtils.alertTitleButton(getActivity(),R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
 										isAvisou = true;
 									}
 								} else {
