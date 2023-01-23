@@ -46,7 +46,9 @@ public class CarrinhoDTO implements Serializable {
         BigDecimal valorTotalCarrinho = BigDecimal.ZERO;
         if(getApostas() != null) {
             for (IdentificaoDeUmaApostaDas8Modalidades aposta : getApostas()) {
-                valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
+                if (aposta.getValor() != null){
+                    valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
+                }
             }
         }
         valorTotal = valorTotalCarrinho;
