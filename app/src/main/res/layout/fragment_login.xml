@@ -73,6 +73,43 @@
             android:textColor="@color/branco"
             android:textSize="14sp" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/textView2"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            >
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/digital" />
+
+            <TextView
+                android:id="@+id/textViewBiometria"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="@string/leitor_digital"
+                android:textAlignment="center"
+                android:textColor="@color/branco"
+                android:textSize="18sp" />
+
+            <Switch
+                android:id="@+id/digitalSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:theme="@style/SwitchTheme"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </LinearLayout>
+
+
+
         <TextView
             android:id="@+id/textVersao"
             android:layout_width="wrap_content"
@@ -85,6 +122,7 @@
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="12sp" />
+
 
 
     </RelativeLayout>

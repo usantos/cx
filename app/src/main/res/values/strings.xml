@@ -1107,6 +1107,9 @@
     <string name="title_QrCode">QR Code</string>
     <string name="title_digiteSuaAposta">Digite a sua aposta</string>
 
+    <string name="leitor_digital">Leitor Digital</string>
+
+
     <!-- Mensagens Disque 180  -->
     <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
     <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
