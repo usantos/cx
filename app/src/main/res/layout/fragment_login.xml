@@ -74,12 +74,14 @@
             android:textSize="14sp" />
 
         <LinearLayout
+            android:id="@+id/biometriaLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_below="@+id/textView2"
             android:layout_marginTop="30dp"
             android:layout_centerHorizontal="true"
+            android:visibility="visible"
             >
 
             <ImageView
@@ -91,7 +93,7 @@
 
             <TextView
                 android:id="@+id/textViewBiometria"
-                android:layout_width="120dp"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:text="@string/leitor_digital"
                 android:textAlignment="center"
@@ -99,7 +101,7 @@
                 android:textSize="18sp" />
 
             <Switch
-                android:id="@+id/digitalSwitch"
+                android:id="@+id/biometriaSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

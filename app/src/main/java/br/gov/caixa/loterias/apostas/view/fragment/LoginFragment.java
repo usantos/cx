@@ -7,13 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
@@ -44,6 +53,13 @@ public class LoginFragment extends Fragment {
     Button buttonLogin;
     TextView txtVersao;
 
+    LinearLayout biometriaLinearLayout;
+    Switch biometriaSwitch;
+    BiometricPrompt biometricPrompt;
+    BiometricPrompt.PromptInfo promptInfo;
+    Boolean temBiometria;
+    Boolean biometriaHabilitada = false;
+
     public LoginFragment() {}
 
     public static LoginFragment newInstance() {
@@ -55,6 +71,21 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
+
+        biometriaLinearLayout = v.findViewById(R.id.biometriaLinearLayout);
+        biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
+
+        setUpBiometria();
+
+        biometriaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    biometriaHabilitada = true;
+                } else {
+                    biometriaHabilitada = false;
+                }
+            }
+        });
 
         Button buttonAposte = v.findViewById(R.id.buttonAposteAgora);
         buttonAposte.setOnClickListener(v1 -> {
@@ -71,10 +102,14 @@ public class LoginFragment extends Fragment {
         txtVersao.setText("v. "+ BuildConfig.VERSION_NAME);
 
         buttonLogin.setOnClickListener(v12 -> {
-            AppCenterManager.registraEvento("ENTROU_LOGIN");
 
-            DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
-            connectKeycloak();
+            if (temBiometria && biometriaHabilitada) {
+                biometricPrompt.authenticate(promptInfo);
+            } else {
+                AppCenterManager.registraEvento("ENTROU_LOGIN");
+                DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
+                connectKeycloak();
+            }
         });
 
         if ((DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())) && LoginSP.isPrimeiraInicializacao()){
@@ -148,6 +183,65 @@ public class LoginFragment extends Fragment {
     private void loginSucess() {
         startActivity(new Intent(getActivity(), CadastrarActivity_.class));
         getActivity().finish();
+    }
+
+
+    private void setUpBiometria() {
+
+        BiometricManager biometricManager = BiometricManager.from(getActivity());
+        //BiometricManager.Authenticators.BIOMETRIC_STRONG | BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL
+        switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+            case BiometricManager.BIOMETRIC_SUCCESS:
+                temBiometria = true;
+                biometriaLinearLayout.setVisibility(View.VISIBLE);
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                temBiometria = false;
+                biometriaLinearLayout.setVisibility(View.GONE);
+                return;
+        }
+
+        Executor executor = ContextCompat.getMainExecutor(getActivity());
+
+        biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+
+                //Chama SSO
+                AppCenterManager.registraEvento("ENTROU_LOGIN");
+                DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
+                connectKeycloak();
+
+                Toast.makeText(getActivity(), "** Erro Autenticando **"+ errString, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                Toast.makeText(getActivity(), "*** Biometria Sucesso ***", Toast.LENGTH_SHORT).show();
+                //Recupera AccessToken e RefreshToken salvos no DB
+                //Atriui AccessToken e RefreshToken
+                //KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
+                //KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
+
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                //Toast.makeText(getActivity(), "** Falhou **", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Loterias")
+                //.setSubtitle("SubTitulo")
+                .setDescription("Desbloqueie seu celular")
+                .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+                .setConfirmationRequired(false)
+                .build();
     }
 
 }
