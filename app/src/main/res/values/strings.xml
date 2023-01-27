@@ -619,6 +619,7 @@
     <string name="placeholder_two">Two</string>
     <string name="placeholder_three">three</string>
     <string name="atualizar">Atualizar</string>
+    <string name="dados_limite_compra">Alteração do limite diário de apostas acima de R$945,00</string>
     <string name="precisamos_que_voc_informe_numa_lot_rica_de_sua_prefer_ncia">Precisamos que você informe uma lotérica de sua preferência.</string>
     <string name="cidade">Cidade</string>
     <string name="bairro">Bairro</string>

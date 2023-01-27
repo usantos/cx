@@ -54,6 +54,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     MaskedEditText editTextCpfContent, editTextCepContent;
     SegmentedButtonGroup segmentedButtonSexo;
     Button updateDadosPesoaisButton;
+    Button updateDadosPessoaisLimiteButton;
     private List<String> listUFString, listMunicipios, listBairros;
     private List<MunicipioDTO> municipioDTOList;
     protected List<UnidadeFederacaoDTO> listUf;
@@ -94,6 +95,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         editTextEmailContent = findViewById( R.id.editTextEmailContent );
         segmentedButtonSexo = findViewById( R.id.segmentedButtonSexo );
         updateDadosPesoaisButton = findViewById( R.id.updateDadosPesoaisButton );
+        updateDadosPessoaisLimiteButton = findViewById( R.id.updateDadosPessoaisLimiteButton );
         Toolbar toolbar = findViewById( R.id.toolbar );
         TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
 
@@ -132,6 +134,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 updateDadosCadastrais( apostadorAlteracaoDTO );
             }
         });
+
     }
 
     private void atualizaLayout() {
