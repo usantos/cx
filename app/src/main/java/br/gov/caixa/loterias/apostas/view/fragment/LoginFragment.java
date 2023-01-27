@@ -31,17 +31,23 @@ import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
+import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -58,7 +64,7 @@ public class LoginFragment extends Fragment {
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
     Boolean temBiometria;
-    Boolean biometriaHabilitada = false;
+    Boolean biometriaHabilitada = true;
 
     public LoginFragment() {}
 
@@ -103,7 +109,9 @@ public class LoginFragment extends Fragment {
 
         buttonLogin.setOnClickListener(v12 -> {
 
-            if (temBiometria && biometriaHabilitada) {
+            BiometriaDTO biometriaDTO = DadosBiometriaBO.obterBiometria();
+
+            if (temBiometria && biometriaHabilitada && biometriaDTO != null) {
                 biometricPrompt.authenticate(promptInfo);
             } else {
                 AppCenterManager.registraEvento("ENTROU_LOGIN");
@@ -210,28 +218,31 @@ public class LoginFragment extends Fragment {
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
 
+                //Toast.makeText(getActivity(), "** Erro Autenticando **"+ errString, Toast.LENGTH_SHORT).show();
                 //Chama SSO
                 AppCenterManager.registraEvento("ENTROU_LOGIN");
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
 
-                Toast.makeText(getActivity(), "** Erro Autenticando **"+ errString, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 Toast.makeText(getActivity(), "*** Biometria Sucesso ***", Toast.LENGTH_SHORT).show();
-                //Recupera AccessToken e RefreshToken salvos no DB
-                //Atriui AccessToken e RefreshToken
-                //KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
-                //KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
 
+                BiometriaDTO biometriaDTO = DadosBiometriaBO.obterBiometria();
+                if (biometriaDTO != null && biometriaDTO.getRefresh() != null) {
+                    //Executa o RefreshToken com o refreshToken Salvo
+                    KeycloakBO keycloakBO = KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext());
+                    keycloakBO.setRefreshToken(biometriaDTO.getRefresh());
+                    keycloakBO.realizaRefreshToken(onRefreshTokenListener());
+                }
             }
 
             @Override
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
-                //Toast.makeText(getActivity(), "** Falhou **", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "** Falhou **", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -242,6 +253,24 @@ public class LoginFragment extends Fragment {
                 .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
                 .setConfirmationRequired(false)
                 .build();
+    }
+
+    private <T> OnRefreshTokenListener onRefreshTokenListener() {
+        return new OnRefreshTokenListener() {
+            @Override
+            public void successRefresh() {
+                Toast.makeText(getActivity(), "** SUCESSO REFRESH **", Toast.LENGTH_SHORT).show();
+
+                DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
+                startActivity(new Intent(getContext(), PrincipalActivity_.class));
+                getActivity().finish();
+            }
+
+            @Override
+            public void errorRefresh(VolleyError volleyError) {
+                Toast.makeText(getActivity(), "** Erro REFRESH **"+ volleyError, Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
 }
