@@ -282,6 +282,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
             ParametroValorApostaDTO valor = parametroJogo.getValorApostaBy(numPrognostico, qtdTrevos);
+
             valorEmReais = valor.getValor();
         }else {
             for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {

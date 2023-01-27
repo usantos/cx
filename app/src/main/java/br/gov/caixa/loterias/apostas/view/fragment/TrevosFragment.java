@@ -62,7 +62,7 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 @EFragment(R.layout.fragment_trevos)
 public class TrevosFragment extends Fragment implements OnItemClickListener<DezenaHolder> {
-
+    private   boolean isAvisou = false;
     private static final int QUANTIDADE_COLUNA_LISTA = 3;
     @ViewById
     protected RecyclerView listaTrevos;
@@ -274,6 +274,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         };
     }
 
+
     private void addApostaCarrinho() {
         BigDecimal valorAposta = BigDecimal.ZERO;
         if (listener.getQtdConcursos() > 0){
@@ -282,7 +283,8 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             valorAposta = valorApostaSelecionado.getValor();
         }
         List<Integer> numerosSelecionadosOrdenados = ListaUtils.orderAscDezenas((List<Integer>) dezenasSelecionadas);
-        trevoSelecionadoList = ListaUtils.orderAscDezenas(trevoSelecionadoList);
+
+     trevoSelecionadoList = ListaUtils.orderAscDezenas(trevoSelecionadoList);
 
 
         IdentificaoDeUmaApostaDas8Modalidades apostaMaisMilionaria = ApostaUtils.getApostaMaisMilionaria(parametro, numerosSelecionadosOrdenados,
@@ -403,6 +405,10 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             Integer numero = Integer.valueOf(dezena.getValue());
             if (!trevoSelecionadoList.contains(numero)) {
                 trevoSelecionadoList.add(numero);
+                if ((trevoSelecionadoList.size() > 2) && (!isAvisou))  {
+                    ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
+                    isAvisou = true;
+                }
             }
         }else {
             Integer numero = Integer.valueOf(dezena.getValue());
