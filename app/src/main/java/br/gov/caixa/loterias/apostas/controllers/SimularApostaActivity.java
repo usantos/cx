@@ -781,6 +781,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                         textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
                         qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
                     }
+                    if ((position >= 1) && (!isAvisou)) {
+                        ViewUtils.alertTitleButton(SimularApostaActivity.this, R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+                        isAvisou = true;
+                    }
                 }else {
                     textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
                     qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
