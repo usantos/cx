@@ -28,9 +28,11 @@ import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
+import br.gov.caixa.loterias.apostas.model.bo.BiometriaLogin;
 import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
@@ -217,32 +219,26 @@ public class LoginFragment extends Fragment {
             @Override
             public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
-
-                //Toast.makeText(getActivity(), "** Erro Autenticando **"+ errString, Toast.LENGTH_SHORT).show();
                 //Chama SSO
                 AppCenterManager.registraEvento("ENTROU_LOGIN");
                 DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
-
             }
 
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                Toast.makeText(getActivity(), "*** Biometria Sucesso ***", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "*** Biometria Sucesso ***", Toast.LENGTH_SHORT).show();
 
-                BiometriaDTO biometriaDTO = DadosBiometriaBO.obterBiometria();
-                if (biometriaDTO != null && biometriaDTO.getRefresh() != null) {
-                    //Executa o RefreshToken com o refreshToken Salvo
-                    KeycloakBO keycloakBO = KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext());
-                    keycloakBO.setRefreshToken(biometriaDTO.getRefresh());
-                    keycloakBO.realizaRefreshToken(onRefreshTokenListener());
-                }
-            }
+//                BiometriaDTO biometriaDTO = DadosBiometriaBO.obterBiometria();
+//                if (biometriaDTO != null && biometriaDTO.getRefresh() != null) {
+//                    //Executa o RefreshToken com o refreshToken Salvo
+//                    KeycloakBO keycloakBO = KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext());
+//                    keycloakBO.setRefreshToken(biometriaDTO.getRefresh());
+//                    keycloakBO.realizaRefreshToken(onRefreshTokenListener());
+//                }
 
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-                Toast.makeText(getActivity(), "** Falhou **", Toast.LENGTH_SHORT).show();
+                BiometriaLogin biometriaLogin = new BiometriaLogin();
+                biometriaLogin.loginBiometria(getActivity(), onRefreshTokenListener());
             }
         });
 
@@ -255,20 +251,24 @@ public class LoginFragment extends Fragment {
                 .build();
     }
 
+
     private <T> OnRefreshTokenListener onRefreshTokenListener() {
         return new OnRefreshTokenListener() {
             @Override
             public void successRefresh() {
-                Toast.makeText(getActivity(), "** SUCESSO REFRESH **", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "** SUCESSO REFRESH **", Toast.LENGTH_SHORT).show();
 
-                DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 startActivity(new Intent(getContext(), PrincipalActivity_.class));
                 getActivity().finish();
             }
 
             @Override
             public void errorRefresh(VolleyError volleyError) {
-                Toast.makeText(getActivity(), "** Erro REFRESH **"+ volleyError, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "** Erro REFRESH **"+ volleyError, Toast.LENGTH_SHORT).show();
+                //Chama SSO
+                AppCenterManager.registraEvento("ENTROU_LOGIN");
+                //DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
+                connectKeycloak();
             }
         };
     }
