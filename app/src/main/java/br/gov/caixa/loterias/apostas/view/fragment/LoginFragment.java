@@ -124,7 +124,8 @@ public class LoginFragment extends Fragment {
 
         if ((DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())) && LoginSP.isPrimeiraInicializacao()){
             LoginSP.primeiraInicializacao(false);
-            connectKeycloak();
+            //Bloqueado para NAO entrar direto no SSO
+            //connectKeycloak();
         }
 
         return v;
@@ -221,21 +222,12 @@ public class LoginFragment extends Fragment {
                 super.onAuthenticationError(errorCode, errString);
                 //Chama SSO
                 AppCenterManager.registraEvento("ENTROU_LOGIN");
-                DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
             }
 
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 //Toast.makeText(getActivity(), "*** Biometria Sucesso ***", Toast.LENGTH_SHORT).show();
-
-//                BiometriaDTO biometriaDTO = DadosBiometriaBO.obterBiometria();
-//                if (biometriaDTO != null && biometriaDTO.getRefresh() != null) {
-//                    //Executa o RefreshToken com o refreshToken Salvo
-//                    KeycloakBO keycloakBO = KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext());
-//                    keycloakBO.setRefreshToken(biometriaDTO.getRefresh());
-//                    keycloakBO.realizaRefreshToken(onRefreshTokenListener());
-//                }
 
                 BiometriaLogin biometriaLogin = new BiometriaLogin();
                 biometriaLogin.loginBiometria(getActivity(), onRefreshTokenListener());
@@ -267,7 +259,6 @@ public class LoginFragment extends Fragment {
                 //Toast.makeText(getActivity(), "** Erro REFRESH **"+ volleyError, Toast.LENGTH_SHORT).show();
                 //Chama SSO
                 AppCenterManager.registraEvento("ENTROU_LOGIN");
-                //DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
             }
         };

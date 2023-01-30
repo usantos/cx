@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.model.bo;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.util.Base64;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -9,7 +10,12 @@ import com.android.volley.VolleyError;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
+import net.openid.appauth.TokenResponse;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.Charset;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
@@ -28,6 +34,7 @@ import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 
 public class BiometriaLogin {
@@ -65,7 +72,9 @@ public class BiometriaLogin {
             String separar[] = response.accessToken.split(activity.getString(R.string.barra_barra_ponto));
             if (separar.length > 0) {
                 String tokenCorpo = separar[1];
-                // ** Verificar salvaDadosUsuario(response, tokenCorpo);
+                if (! salvaDadosUsuario(activity, response, tokenCorpo)) {
+                    listener.errorRefresh(setErrorUnauthorized());
+                }
             }
             DadosUsuarioBO.updateUsuarioLogado(activity, true);
             if (AcessoBO.PRIMEIRO_LOGIN) {
@@ -107,6 +116,34 @@ public class BiometriaLogin {
     private VolleyError setErrorUnauthorized() {
         AlertDialogUtils.dismiss();
         return new VolleyError(new NetworkResponse(401, null, false, 0L, null));
+    }
+
+    private Boolean salvaDadosUsuario(Activity activity, TokenResponse response, String tokenCorpo) {
+        byte bytes[] = Base64.decode(tokenCorpo, Base64.URL_SAFE);
+        tokenCorpo = new String(bytes, Charset.forName(activity.getString(R.string.utf_8)));
+        try {
+            JSONObject jsonObject = new JSONObject(tokenCorpo);
+
+            String cpf = jsonObject.getString(activity.getString(R.string.cpf_minusculo));
+            if (cpf.length() < 11) {
+                StringBuilder zeros = new StringBuilder();
+                int totalIncluirZero = 11 - cpf.length();
+                for (int contador = 0; contador < totalIncluirZero; contador++) {
+                    zeros.append(activity.getString(R.string.zero));
+                }
+                zeros.append(cpf);
+                cpf = zeros.toString();
+            }
+
+            DadosUsuarioBO.salvarUsuairo(jsonObject.getString(activity.getString(R.string.name)), cpf);
+//            DadosBiometriaBO.salvarBiometria(response.refreshToken);
+//            KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
+//            KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
+            AppCenterManager.registraEvento(activity.getString(R.string.evento_efetuou_login_sucesso));
+            return true;
+        } catch (JSONException e) {
+            return false;
+        }
     }
 
 }
