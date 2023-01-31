@@ -284,7 +284,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
         if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
             ParametroValorApostaDTO valor = parametroJogo.getValorApostaBy(numPrognostico, qtdTrevos);
-
             valorEmReais = valor.getValor();
         }else {
             for (ParametroValorApostaDTO parametro : parametroJogo.getValoresAposta()) {
@@ -411,12 +410,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
         btnMenosSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
-        if 	((qtdSurpresinhas == (parentActivity.qtdDezenasPossiveisSelecionado-1)) && (!isAvisouS))
-        {
-            ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
-            isAvisouS = true;
-        }
-
 
     }
 
@@ -428,7 +421,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
         }
-        if 	((qtdTrevos == (parentActivity.qtdDezenasPossiveisSelecionado-1)) && (!isAvisouT))
+        if 	((qtdTrevos > (2)) && (!isAvisouT))
         {
             ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
             isAvisouT = true;
@@ -457,9 +450,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizarButtonColor();
         parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
         parentActivity.atualizaTextoBotoesQtdSelecionadas();
-        if 	((getQtdNumeros == (parentActivity.qtdDezenasPossiveisSelecionado-1)) && (!isAvisouN))
+        if 	((getQtdNumeros > (6)) && (!isAvisouN))
         {
-            ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
+            ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
             isAvisouN = true;
         }
 
