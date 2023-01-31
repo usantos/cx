@@ -56,8 +56,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     Button updateDadosPesoaisButton;
     Button updateDadosPessoaisLimiteButton;
 
-    SeekBar seekBar;
-
     private List<String> listUFString, listMunicipios, listBairros;
     private List<MunicipioDTO> municipioDTOList;
     protected List<UnidadeFederacaoDTO> listUf;
@@ -99,6 +97,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         segmentedButtonSexo = findViewById( R.id.segmentedButtonSexo );
         updateDadosPesoaisButton = findViewById( R.id.updateDadosPesoaisButton );
         updateDadosPessoaisLimiteButton = findViewById( R.id.updateDadosPessoaisLimiteButton );
+        sBar = (SeekBar) findViewById(R.id.seekBar);
+
         
 
         Toolbar toolbar = findViewById( R.id.toolbar );
@@ -157,6 +157,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             segmentedButtonSexo.setPosition( 0 );
         }
         editTextCepContent.addTextChangedListener(getTextWatcher(editTextCepContent));
+
     }
 
     @Override
