@@ -67,7 +67,8 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
                 this.textTimeCoracao.setText(R.string.label_tres_interrogacoes);
             }
         } else {
-            this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome());
+            this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome() + "/" +
+                    modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getUf());
         }
         this.tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
         NumerosResultadosAdapter numerosResultadosAdapter;
