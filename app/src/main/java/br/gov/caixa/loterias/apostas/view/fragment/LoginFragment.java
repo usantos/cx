@@ -66,7 +66,8 @@ public class LoginFragment extends Fragment {
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
     Boolean temBiometria;
-    Boolean biometriaHabilitada = true;
+    Boolean biometriaHabilitada = false;
+    BiometriaDTO biometriaDTO;
 
     public LoginFragment() {}
 
@@ -109,11 +110,20 @@ public class LoginFragment extends Fragment {
         txtVersao = v.findViewById(R.id.textVersao);
         txtVersao.setText("v. "+ BuildConfig.VERSION_NAME);
 
+        biometriaDTO = DadosBiometriaBO.obterBiometria();
+        if (temBiometria && biometriaDTO != null && biometriaDTO.getRefresh().length() > 0 ) {
+            biometriaSwitch.setChecked(true);
+            buttonLogin.setText(R.string.entrar);
+        } else {
+            buttonLogin.setText(R.string.label_faca_login_cadastre);
+        }
+
         buttonLogin.setOnClickListener(v12 -> {
 
-            BiometriaDTO biometriaDTO = DadosBiometriaBO.obterBiometria();
+            biometriaDTO = DadosBiometriaBO.obterBiometria();
 
-            if (temBiometria && biometriaHabilitada && biometriaDTO != null) {
+            if (temBiometria && biometriaHabilitada &&
+                    biometriaDTO != null && biometriaDTO.getRefresh().length() > 0 ) {
                 biometricPrompt.authenticate(promptInfo);
             } else {
                 AppCenterManager.registraEvento("ENTROU_LOGIN");

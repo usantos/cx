@@ -88,6 +88,7 @@ public class AcessoBO extends BaseBO {
         authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
 
         DadosUsuarioBO.limparRegistros();
+        DadosBiometriaBO.limparRegistros();
     }
 
     private AuthorizationRequest.Builder getAuthorizationRequestBuilder(Activity activity, AuthorizationServiceConfiguration authorizationServiceConfiguration) {
