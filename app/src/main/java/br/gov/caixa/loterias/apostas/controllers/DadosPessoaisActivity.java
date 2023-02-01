@@ -99,8 +99,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         updateDadosPessoaisLimiteButton = findViewById( R.id.updateDadosPessoaisLimiteButton );
         sBar = (SeekBar) findViewById(R.id.seekBar);
 
-        
-
         Toolbar toolbar = findViewById( R.id.toolbar );
         TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
 
