@@ -77,7 +77,8 @@ public class ResultadoTimemaniaDiaDeSorteFragment extends Fragment {
                 tvDescricao.setText(R.string.label_tres_interrogacoes);
             }
         } else {
-            tvDescricao.setText(resultado.getPremiacaoTimeDoCoracao().getEquipe().getNome());
+            tvDescricao.setText(resultado.getPremiacaoTimeDoCoracao().getEquipe().getNome() + "/" +
+                    resultado.getPremiacaoTimeDoCoracao().getEquipe().getUf());
         }
 
         NumerosResultadosAdapter numerosResultadosAdapter;

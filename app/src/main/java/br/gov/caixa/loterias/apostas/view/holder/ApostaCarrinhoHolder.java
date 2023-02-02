@@ -161,7 +161,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		if (ModalidadeEnum.TIMEMANIA == aposta.getModalidade()) {
 			layoutTimeCoracao.setVisibility(View.VISIBLE);
 			if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
-				textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome());
+				textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome() + "/" +
+						aposta.getTimeDoCoracao().getUf());
 				if (aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
 					textViewTimeCoracao.setText(context.getResources().getString(R.string.tres_interrogacoes));
 				}
