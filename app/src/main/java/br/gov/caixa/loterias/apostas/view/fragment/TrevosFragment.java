@@ -182,7 +182,6 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                             MensagensNetwork.getErrorMessage(error),
                             (dialogInterface, i) ->
                                     salvarAposta(apostaFavorita)
-
                     );
                 } else {
                     RedirectNetwork.checkRedirect(error, getActivity());
@@ -334,7 +333,12 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             @Override
             public void itemSelecionado(int position) {
                 valorApostaSelecionado = valoresApostas.get(position);
-                textoBotaoTrevosSelecionado = valorApostaSelecionado.getNumeroTrevos() + getString(R.string.espaco_em_branco) +getString(R.string.trevos);
+                textoBotaoTrevosSelecionado = valorApostaSelecionado.getNumeroTrevos() + getString(R.string.espaco_em_branco) + getString(R.string.trevos);
+                if 	((position) > 0 && (!isAvisou))
+                {
+                    ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
+                    isAvisou = true;
+                }
             }
 
             @Override
@@ -345,10 +349,10 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                     trevoSelecionadoList = new ArrayList<>();
                     for (int numero = 1; numero <= parametro.getTrevos().getQtdPrognostico(); numero++){
                         trevoSelecionadoList.add(numero);
-                    }
+                     }
                     adappter.atualizaSelecionados(trevoSelecionadoList);
                     listaTrevos.setAdapter(adappter);
-                }
+                 }
                 listener.atualizaValorAposta(valorApostaSelecionado);
                 atualizaStatusBotao();
                 checaMostraBotaoLimpar();
