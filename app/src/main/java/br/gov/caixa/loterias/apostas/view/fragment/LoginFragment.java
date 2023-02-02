@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +30,7 @@ import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
@@ -53,7 +56,10 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 
 
 public class LoginFragment extends Fragment {
@@ -68,6 +74,7 @@ public class LoginFragment extends Fragment {
     Boolean temBiometria;
     Boolean biometriaHabilitada = false;
     BiometriaDTO biometriaDTO;
+    AlertDialog alertDialogBio;
 
     public LoginFragment() {}
 
@@ -92,6 +99,7 @@ public class LoginFragment extends Fragment {
                     biometriaHabilitada = true;
                 } else {
                     biometriaHabilitada = false;
+                    alertDialogBio();
                 }
             }
         });
@@ -274,4 +282,18 @@ public class LoginFragment extends Fragment {
         };
     }
 
+    private void alertDialogBio() {
+        DialogUtils.showDialogNaoSim(getActivity(),
+                getString(R.string.desativar_biometria), getString(R.string.desativar_biometria_mensagem),
+                new OnDialogListenerLeftRight() {
+                    @Override
+                    public void left() {
+                        biometriaSwitch.setChecked(true);
+                        biometriaHabilitada = false;
+                    }
+                    @Override
+                    public void right() {
+                    }
+                });
+    }
 }

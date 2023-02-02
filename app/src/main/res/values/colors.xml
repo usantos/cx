@@ -169,4 +169,6 @@
 
     <color name="laranja_fundo_switch">#FFB647</color>
 
+    <color name="label_nao_sim">#007AFF</color>
+
 </resources>
