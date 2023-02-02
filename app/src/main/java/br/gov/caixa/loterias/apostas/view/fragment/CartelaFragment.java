@@ -119,7 +119,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private boolean isEcolhaTimeBtnAtivado;
 	private boolean isTelaSelecaoTimeAtivado;
 	private boolean isEscolhaTimeCoracaoSurpresinha;
-
+	private boolean isAvisou = false;
 	public BigDecimal valorTotalAposta;
 	public int typeGameColorLight, typeGameColorDark, numeroConcursoAtual;
 	public Button botaoFinalizar, botaoLimparAposta;
@@ -1156,6 +1156,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 							voltaSalvarApostaParaLayoutInicial();
 						}
 						dezenasSelecionadas.add(valorSelecionado);
+						if 	((qtdDezenasPossiveisSelecionadoAtual == (parentActivity.qtdDezenasPossiveisSelecionado-1)) && (!isAvisou))
+						{
+							ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+							isAvisou = true;
+						}
 					} else {
 						ViewUtils.alert(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
 					}
@@ -1272,6 +1277,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 									}
 									listaSelecionados.add(valorSelecionado);
 									qtdTotalSelecionadosSuperSete++;
+
+									if 	((qtdTotalSelecionadosSuperSete == (parentActivity.qtdDezenasPossiveisSelecionado)) && (!isAvisou))
+									{
+										ViewUtils.alertTitleButton(getActivity(),R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+										isAvisou = true;
+									}
 								} else {
 									ViewUtils.alert(getActivity(),
 													getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(

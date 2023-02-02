@@ -58,7 +58,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private int typeGameColorLight, qtdSurpresinhas = 1, qtdTrevos, getQtdNumeros;
     private SurpresinhaGridViewAdapter simularDezenasAdapter;
     private BigDecimal valorTotalAposta;
-
+    private boolean isAvisouS = false;
+    private boolean isAvisouT = false;
+    private boolean isAvisouN = false;
     @ViewById
     protected ImageView escolhaItemImageView;
 
@@ -408,6 +410,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         qtdSurpresinhasSelecionadas.setText(String.format(Locale.getDefault(), "%d", qtdSurpresinhas));
         btnMenosSurpresinha.setBackgroundTintList(getCor(typeGameColorLight));
+
     }
 
     @Click
@@ -418,6 +421,12 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
             atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
             qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
         }
+        if 	((qtdTrevos > (2)) && (!isAvisouT))
+        {
+            ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
+            isAvisouT = true;
+        }
+
     }
 
     @Click
@@ -441,6 +450,12 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizarButtonColor();
         parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
         parentActivity.atualizaTextoBotoesQtdSelecionadas();
+        if 	((getQtdNumeros > (6)) && (!isAvisouN))
+        {
+            ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+            isAvisouN = true;
+        }
+
     }
 
     @Click

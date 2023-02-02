@@ -62,7 +62,7 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 @EFragment(R.layout.fragment_trevos)
 public class TrevosFragment extends Fragment implements OnItemClickListener<DezenaHolder> {
-
+    private   boolean isAvisou = false;
     private static final int QUANTIDADE_COLUNA_LISTA = 3;
     @ViewById
     protected RecyclerView listaTrevos;
@@ -182,7 +182,6 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                             MensagensNetwork.getErrorMessage(error),
                             (dialogInterface, i) ->
                                     salvarAposta(apostaFavorita)
-
                     );
                 } else {
                     RedirectNetwork.checkRedirect(error, getActivity());
@@ -274,6 +273,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         };
     }
 
+
     private void addApostaCarrinho() {
         BigDecimal valorAposta = BigDecimal.ZERO;
         if (listener.getQtdConcursos() > 0){
@@ -282,7 +282,8 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             valorAposta = valorApostaSelecionado.getValor();
         }
         List<Integer> numerosSelecionadosOrdenados = ListaUtils.orderAscDezenas((List<Integer>) dezenasSelecionadas);
-        trevoSelecionadoList = ListaUtils.orderAscDezenas(trevoSelecionadoList);
+
+     trevoSelecionadoList = ListaUtils.orderAscDezenas(trevoSelecionadoList);
 
 
         IdentificaoDeUmaApostaDas8Modalidades apostaMaisMilionaria = ApostaUtils.getApostaMaisMilionaria(parametro, numerosSelecionadosOrdenados,
@@ -332,7 +333,12 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             @Override
             public void itemSelecionado(int position) {
                 valorApostaSelecionado = valoresApostas.get(position);
-                textoBotaoTrevosSelecionado = valorApostaSelecionado.getNumeroTrevos() + getString(R.string.espaco_em_branco) +getString(R.string.trevos);
+                textoBotaoTrevosSelecionado = valorApostaSelecionado.getNumeroTrevos() + getString(R.string.espaco_em_branco) + getString(R.string.trevos);
+                if 	((position) > 0 && (!isAvisou))
+                {
+                    ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
+                    isAvisou = true;
+                }
             }
 
             @Override
@@ -343,10 +349,10 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                     trevoSelecionadoList = new ArrayList<>();
                     for (int numero = 1; numero <= parametro.getTrevos().getQtdPrognostico(); numero++){
                         trevoSelecionadoList.add(numero);
-                    }
+                     }
                     adappter.atualizaSelecionados(trevoSelecionadoList);
                     listaTrevos.setAdapter(adappter);
-                }
+                 }
                 listener.atualizaValorAposta(valorApostaSelecionado);
                 atualizaStatusBotao();
                 checaMostraBotaoLimpar();
@@ -403,6 +409,10 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             Integer numero = Integer.valueOf(dezena.getValue());
             if (!trevoSelecionadoList.contains(numero)) {
                 trevoSelecionadoList.add(numero);
+                if ((trevoSelecionadoList.size() > 2) && (!isAvisou))  {
+                    ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
+                    isAvisou = true;
+                }
             }
         }else {
             Integer numero = Integer.valueOf(dezena.getValue());

@@ -160,6 +160,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private ParametroMesDeSorte mesDeSorteSurpresinha;
     private Boolean isEspecial = false;
     private DadosCorporativosBO dadosCorporativosBO;
+    private boolean isAvisou = false;
 
     //mocks
     public int qtdDezenasPossiveisSelecionado;
@@ -360,10 +361,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
     @Override
     public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
+        //	Verifica condição de aviso caso ultrapasse o numero max por modalidade
         if (qtdDezenasAtual <= parametroSimulacao.getQuantidadeMaxima()) {
             atualizaTextoBotoesQtdSelecionadas();
         }
-
         return qtdDezenasPossiveisSelecionado;
     }
 
@@ -775,13 +776,22 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                         stringNumero = itemValue.substring(0, 1);
                     }
                     ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(new Integer(stringNumero), 2);
+                    
                     if (valorAposta != null){
                         textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
                         qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
                     }
+                    if ((position >= 1) && (!isAvisou)) {
+                        ViewUtils.alertTitleButton(SimularApostaActivity.this, R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+                        isAvisou = true;
+                    }
                 }else {
                     textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
                     qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
+                }
+                if ((position >= 1) && (!isAvisou)) {
+                    ViewUtils.alertTitleButton(SimularApostaActivity.this, R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+                    isAvisou = true;
                 }
             }
 
