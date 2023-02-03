@@ -52,7 +52,8 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 public class DadosPessoaisActivity extends AppCompatActivity {
 
-    EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent, editValMaximoCompraContent, editValMinCompraContent;
+    EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent;
+    TextView editValMaximoCompraContent, editValMinCompraContent;
     MaskedEditText editTextCpfContent, editTextCepContent;
     SegmentedButtonGroup segmentedButtonSexo;
     Button updateDadosPesoaisButton;
@@ -106,16 +107,15 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
         TextView seekBarValor = (TextView) findViewById(R.id.seekbar_valor);
 
-        TextView editValMinCompraContent =  (TextView) findViewById(R.id.seekbar_valor_min);
-        TextView editValMaximoCompraContent =  (TextView) findViewById(R.id.seekbar_valor_max);
-
+        editValMinCompraContent =  findViewById(R.id.seekbar_valor_min);
+        editValMaximoCompraContent = findViewById(R.id.seekbar_valor_max);
 
         seekbarLimite = (SeekBar) findViewById(R.id.seekBar);
-        seekbarLimite.setMax(945);
+        seekbarLimite.setMax(SessaoUsuario.getInstance().getValorMaximoAposta().intValue());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            seekbarLimite.setMin(30);
+            seekbarLimite.setMin(SessaoUsuario.getInstance().getValorMinimimoAposta().intValue());
         }
-        seekbarLimite.setProgress(450);
+        seekbarLimite.setProgress(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario().intValue());
 
         seekbarLimite.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChangedValue = 0;
@@ -194,14 +194,17 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 //        BigDecimal valMaxAutorizado, valMinDiario;
 //        valMaxAutorizado = apostadorDTO.getLimiteDiarioAutorizado();
 //        valMinDiario = apostadorDTO.getLimiteMinimoDiario();
-//        editValMaximoCompraContent.setText(valMaxAutorizado.toString());
-//        editValMinCompraContent.setText(valMinDiario.toString());
+//
+        editValMaximoCompraContent.setText(SessaoUsuario.getInstance().getValorMaximoAposta().toString());
+        editValMinCompraContent.setText(SessaoUsuario.getInstance().getValorMinimimoAposta().toString());
 
-        seekbarLimite.setMax(apostadorDTO.getLimiteDiarioAutorizado().intValue());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            seekbarLimite.setMin(apostadorDTO.getLimiteMinimoDiario().intValue());
-        }
-        seekbarLimite.setProgress(apostadorDTO.getLimiteDiario().intValue());
+//        seekbarLimite.setMax(apostadorDTO.getLimiteDiarioAutorizado().intValue());
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            seekbarLimite.setMin(apostadorDTO.getLimiteMinimoDiario().intValue());
+//        }
+//        seekbarLimite.setProgress(apostadorDTO.getLimiteDiario().intValue());
+
+
 
         editTextCpfContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextNomeContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
