@@ -64,7 +64,9 @@ public class BiometriaLogin {
             if (response == null || response.accessToken == null || response.refreshToken == null) {
                 listener.errorRefresh(setErrorUnauthorized());
             }
-            DadosBiometriaBO.salvarBiometria(response.refreshToken);
+            if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
+                DadosBiometriaBO.salvarBiometria(response.refreshToken);
+            }
             KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext()).setAccessToken(response.accessToken);
             KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext()).setRefreshToken(response.refreshToken);
 

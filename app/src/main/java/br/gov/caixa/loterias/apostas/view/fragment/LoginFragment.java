@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
+import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.BiometriaLogin;
 import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
@@ -72,7 +73,6 @@ public class LoginFragment extends Fragment {
     BiometricPrompt biometricPrompt;
     BiometricPrompt.PromptInfo promptInfo;
     Boolean temBiometria;
-    Boolean biometriaHabilitada = false;
     BiometriaDTO biometriaDTO;
     AlertDialog alertDialogBio;
 
@@ -96,14 +96,15 @@ public class LoginFragment extends Fragment {
         biometriaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    biometriaHabilitada = true;
+                    BiometriaBO.getInstance().setBiometriaHabilitada(true);
                 } else {
                     DialogUtils.showDialogNaoSim(getActivity(),
                             getString(R.string.desativar_biometria), getString(R.string.desativar_biometria_mensagem),
                             new OnDialogListenerLeftRight() {
                                 @Override
                                 public void left() {
-                                    biometriaHabilitada = true;
+                                    BiometriaBO.getInstance().setBiometriaHabilitada(true);
+
                                     if (temBiometria && biometriaDTO != null && biometriaDTO.getRefresh().length() > 0 ) {
                                         biometriaSwitch.setChecked(true);
                                         buttonLogin.setText(R.string.entrar);
@@ -112,7 +113,7 @@ public class LoginFragment extends Fragment {
                                 @Override
                                 public void right() {
                                     DadosBiometriaBO.limparRegistros(); //Apaga RefreshToken
-                                    biometriaHabilitada = false;
+                                    BiometriaBO.getInstance().setBiometriaHabilitada(false);
                                     buttonLogin.setText(R.string.label_faca_login_cadastre);
                                 }
                             });
@@ -146,7 +147,7 @@ public class LoginFragment extends Fragment {
 
             biometriaDTO = DadosBiometriaBO.obterBiometria();
 
-            if (temBiometria && biometriaHabilitada &&
+            if (temBiometria && BiometriaBO.getInstance().getBiometriaHabilitada() &&
                     biometriaDTO != null && biometriaDTO.getRefresh().length() > 0 ) {
                 biometricPrompt.authenticate(promptInfo);
             } else {
@@ -262,7 +263,6 @@ public class LoginFragment extends Fragment {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 //Toast.makeText(getActivity(), "*** Biometria Sucesso ***", Toast.LENGTH_SHORT).show();
-
                 BiometriaLogin biometriaLogin = new BiometriaLogin();
                 biometriaLogin.loginBiometria(getActivity(), onRefreshTokenListener());
             }
@@ -270,7 +270,6 @@ public class LoginFragment extends Fragment {
 
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle(getString(R.string.biometria_popup_titulo))
-                //.setSubtitle("SubTitulo")
                 .setDescription(getString(R.string.biometria_popup_descricao))
                 .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
                 .setConfirmationRequired(false)
@@ -282,15 +281,12 @@ public class LoginFragment extends Fragment {
         return new OnRefreshTokenListener() {
             @Override
             public void successRefresh() {
-                //Toast.makeText(getActivity(), "** SUCESSO REFRESH **", Toast.LENGTH_SHORT).show();
-
                 startActivity(new Intent(getContext(), PrincipalActivity_.class));
                 getActivity().finish();
             }
 
             @Override
             public void errorRefresh(VolleyError volleyError) {
-                //Toast.makeText(getActivity(), "** Erro REFRESH **"+ volleyError, Toast.LENGTH_SHORT).show();
                 //Chama SSO
                 AppCenterManager.registraEvento("ENTROU_LOGIN");
                 connectKeycloak();
