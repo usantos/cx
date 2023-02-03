@@ -105,8 +105,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
         TextView seekBarValor = (TextView) findViewById(R.id.seekbar_valor);
 
-        TextView editValMinCompraContent = findViewById(R.id.seekbar_valor_min);
-        TextView editValMaximoCompraContent = findViewById(R.id.seekbar_valor_max);
+//        TextView editValMinCompraContent = findViewById(R.id.seekbar_valor_min);
+//        TextView editValMaximoCompraContent = findViewById(R.id.seekbar_valor_max);
 
 
         SeekBar seekbarLimite = (SeekBar) findViewById(R.id.seekBar);
@@ -190,8 +190,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         editTextCepContent.setMaskedText( apostadorDTO.getCep() );
         editTextEmailContent.setText( apostadorDTO.getEmail() );
 
-        editValMaximoCompraContent.setText("R$ "+apostadorDTO.getLimiteDiario()+",00");
-        editValMinCompraContent.setText("R$ "+ apostadorDTO.getLimiteMinimoDiario()+ ",00");
+//        editValMaximoCompraContent.setText("R$ "+apostadorDTO.getLimiteDiario()+",00");
+//        editValMinCompraContent.setText("R$ "+ apostadorDTO.getLimiteMinimoDiario()+ ",00");
 
         editTextCpfContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextNomeContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
