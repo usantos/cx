@@ -150,6 +150,8 @@ public class DialogUtils {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_dialog_nao_sim);
 
+        dialog.setCanceledOnTouchOutside(false);
+
         TextView txtTitulo = dialog.findViewById(R.id.titulo_nao_sim);
         txtTitulo.setText(titulo);
 

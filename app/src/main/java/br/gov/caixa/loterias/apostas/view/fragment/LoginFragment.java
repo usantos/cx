@@ -98,8 +98,24 @@ public class LoginFragment extends Fragment {
                 if (isChecked) {
                     biometriaHabilitada = true;
                 } else {
-                    biometriaHabilitada = false;
-                    alertDialogBio();
+                    DialogUtils.showDialogNaoSim(getActivity(),
+                            getString(R.string.desativar_biometria), getString(R.string.desativar_biometria_mensagem),
+                            new OnDialogListenerLeftRight() {
+                                @Override
+                                public void left() {
+                                    biometriaHabilitada = true;
+                                    if (temBiometria && biometriaDTO != null && biometriaDTO.getRefresh().length() > 0 ) {
+                                        biometriaSwitch.setChecked(true);
+                                        buttonLogin.setText(R.string.entrar);
+                                    }
+                                }
+                                @Override
+                                public void right() {
+                                    DadosBiometriaBO.limparRegistros(); //Apaga RefreshToken
+                                    biometriaHabilitada = false;
+                                    buttonLogin.setText(R.string.label_faca_login_cadastre);
+                                }
+                            });
                 }
             }
         });
@@ -282,18 +298,4 @@ public class LoginFragment extends Fragment {
         };
     }
 
-    private void alertDialogBio() {
-        DialogUtils.showDialogNaoSim(getActivity(),
-                getString(R.string.desativar_biometria), getString(R.string.desativar_biometria_mensagem),
-                new OnDialogListenerLeftRight() {
-                    @Override
-                    public void left() {
-                        biometriaSwitch.setChecked(true);
-                        biometriaHabilitada = false;
-                    }
-                    @Override
-                    public void right() {
-                    }
-                });
-    }
 }
