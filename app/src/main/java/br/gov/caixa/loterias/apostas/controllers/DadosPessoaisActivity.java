@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +22,7 @@ import com.github.pinball83.maskededittext.MaskedEditText;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 public class DadosPessoaisActivity extends AppCompatActivity {
 
-    EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent;
+    EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent, editValMaximoCompraContent, editValMinCompraContent;
     MaskedEditText editTextCpfContent, editTextCepContent;
     SegmentedButtonGroup segmentedButtonSexo;
     Button updateDadosPesoaisButton;
@@ -97,10 +99,39 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         segmentedButtonSexo = findViewById( R.id.segmentedButtonSexo );
         updateDadosPesoaisButton = findViewById( R.id.updateDadosPesoaisButton );
         updateDadosPessoaisLimiteButton = findViewById( R.id.updateDadosPessoaisLimiteButton );
-        sBar = (SeekBar) findViewById(R.id.seekBar);
 
         Toolbar toolbar = findViewById( R.id.toolbar );
         TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
+        TextView seekBarValor = (TextView) findViewById(R.id.seekbar_valor);
+        TextView editValMinCompraContent = findViewById(R.id.seekbar_valor_min);
+        TextView editValMaximoCompraContent = findViewById(R.id.seekbar_valor_max);
+
+
+        SeekBar seekbarLimite = (SeekBar) findViewById(R.id.seekBar);
+        seekbarLimite.setMax(945);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            seekbarLimite.setMin(30);
+        }
+        seekbarLimite.setProgress(50);
+
+        seekbarLimite.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChangedValue = 0;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChangedValue = progress;
+                seekBarValor.setText ("R$ " + progress + ",00");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+//                Toast.makeText(activity_dados_pessoais.this, progressChangedValue, Toast.LENGTH_SHORT);
+            }
+        });
 
         ufSelect  = getResources().getString(R.string.string_vazia);
         municipioSelect = getResources().getString(R.string.string_vazia);
@@ -132,12 +163,22 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 apostadorAlteracaoDTO.setSexo( sexoEnum);
                 apostadorAlteracaoDTO.setAlterandoLoterica( false );
                 apostadorAlteracaoDTO.setMunicipioId( municipioIdDTOSelect );
+                apostadorAlteracaoDTO.set
                 SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+
                 apostadorAlteracaoDTO.setLimiteDiario( sessaoUsuario.getValorMaximoAposta() );
                 updateDadosCadastrais( apostadorAlteracaoDTO );
             }
-        });
+        }
+        );
+        updateDadosPessoaisLimiteButton.setOnClickListener(view -> {
+            if() {
+                    apostadorDTO.setLimiteDiarioAutorizado(new BigDecimal(editValMaximoCompraContent.findViewById(R.id.seekbar_valor).toString()));
+                }
+            else {
 
+            }
+        );
     }
 
     private void atualizaLayout() {
@@ -145,10 +186,16 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         editTextNomeContent.setText( apostadorDTO.getNome() );
         editTextCepContent.setMaskedText( apostadorDTO.getCep() );
         editTextEmailContent.setText( apostadorDTO.getEmail() );
+
+        editValMaximoCompraContent.setText("R$ "+apostadorDTO.getLimiteDiario()+",00");
+        editValMinCompraContent.setText("R$ "+ apostadorDTO.getLimiteMinimoDiario()+ ",00");
+
         editTextCpfContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextNomeContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextCepContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextEmailContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
+
+
         if (apostadorDTO.getSexo().equals( ApostadorDTO.SexoEnum.F )){
             segmentedButtonSexo.setPosition( 1 );
         }else{
