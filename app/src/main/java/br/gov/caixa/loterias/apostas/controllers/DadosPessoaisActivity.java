@@ -22,7 +22,6 @@ import com.github.pinball83.maskededittext.MaskedEditText;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +52,7 @@ import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 public class DadosPessoaisActivity extends AppCompatActivity {
 
     EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent;
-    TextView editValMaximoCompraContent, editValMinCompraContent;
+    TextView editValMaximoCompraContent, editValMinCompraContent, seekBarValor;
     MaskedEditText editTextCpfContent, editTextCepContent;
     SegmentedButtonGroup segmentedButtonSexo;
     Button updateDadosPesoaisButton;
@@ -105,7 +104,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById( R.id.toolbar );
         TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
 
-        TextView seekBarValor = (TextView) findViewById(R.id.seekbar_valor);
+        seekBarValor = (TextView) findViewById(R.id.seekbar_valor);
 
         editValMinCompraContent =  findViewById(R.id.seekbar_valor_min);
         editValMaximoCompraContent = findViewById(R.id.seekbar_valor_max);
@@ -175,11 +174,15 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         }
         );
         updateDadosPessoaisLimiteButton.setOnClickListener(view -> {
+
+// chamar usuarios/recuperar-dados
+//                    USUARIO_RECALCULAR_LIMITE
+//                    SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+//                    updateDadosCadastrais( apostadorAlteracaoDTO )
+//                    SessaoUsuario.getInstance().setValorMaximoAposta(new BigDecimal(seekBarValor.getText().toString()));
 //            if () {
-                apostadorDTO.setLimiteDiario(new BigDecimal(editValMaximoCompraContent.findViewById(R.id.seekbar_valor).toString()));
-//            } else {
-//
-//            }
+ //               apostadorDTO.setLimiteDiario(new BigDecimal(editValMaximoCompraContent.findViewById(R.id.seekbar_valor).toString()));
+
         }
         );
     }
