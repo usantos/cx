@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
@@ -103,6 +104,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById( R.id.toolbar );
         TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
         TextView seekBarValor = (TextView) findViewById(R.id.seekbar_valor);
+
         TextView editValMinCompraContent = findViewById(R.id.seekbar_valor_min);
         TextView editValMaximoCompraContent = findViewById(R.id.seekbar_valor_max);
 
@@ -163,7 +165,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 apostadorAlteracaoDTO.setSexo( sexoEnum);
                 apostadorAlteracaoDTO.setAlterandoLoterica( false );
                 apostadorAlteracaoDTO.setMunicipioId( municipioIdDTOSelect );
-                apostadorAlteracaoDTO.set
+//                apostadorAlteracaoDTO.set
                 SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
 
                 apostadorAlteracaoDTO.setLimiteDiario( sessaoUsuario.getValorMaximoAposta() );
@@ -172,15 +174,16 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         }
         );
         updateDadosPessoaisLimiteButton.setOnClickListener(view -> {
-            if() {
-                    apostadorDTO.setLimiteDiarioAutorizado(new BigDecimal(editValMaximoCompraContent.findViewById(R.id.seekbar_valor).toString()));
-                }
-            else {
-
-            }
+//            if () {
+                apostadorDTO.setLimiteDiario(new BigDecimal(editValMaximoCompraContent.findViewById(R.id.seekbar_valor).toString()));
+//            } else {
+//
+//            }
+        }
         );
     }
 
+    @SuppressLint("SetTextI18n")
     private void atualizaLayout() {
         editTextCpfContent.setMaskedText( apostadorDTO.getCpf() );
         editTextNomeContent.setText( apostadorDTO.getNome() );
