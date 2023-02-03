@@ -269,9 +269,9 @@ public class LoginFragment extends Fragment {
         });
 
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Loterias")
+                .setTitle(getString(R.string.biometria_popup_titulo))
                 //.setSubtitle("SubTitulo")
-                .setDescription("Desbloqueie seu celular")
+                .setDescription(getString(R.string.biometria_popup_descricao))
                 .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
                 .setConfirmationRequired(false)
                 .build();
