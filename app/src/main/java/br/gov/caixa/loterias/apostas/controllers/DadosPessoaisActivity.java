@@ -22,8 +22,12 @@ import com.github.pinball83.maskededittext.MaskedEditText;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -105,28 +109,21 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
 
         seekBarValor = (TextView) findViewById(R.id.seekbar_valor);
-
         editValMinCompraContent =  findViewById(R.id.seekbar_valor_min);
         editValMaximoCompraContent = findViewById(R.id.seekbar_valor_max);
 
         seekbarLimite = (SeekBar) findViewById(R.id.seekBar);
-        seekbarLimite.setMax(SessaoUsuario.getInstance().getValorMaximoAposta().intValue());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            seekbarLimite.setMin(SessaoUsuario.getInstance().getValorMinimimoAposta().intValue());
-        }
-        seekbarLimite.setProgress(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario().intValue());
 
         seekbarLimite.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progressChangedValue = 0;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChangedValue = progress;
-                seekBarValor.setText ("R$ " + progress + ",00");
+                seekBarValor.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(progress));
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
@@ -173,18 +170,33 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             }
         }
         );
+
         updateDadosPessoaisLimiteButton.setOnClickListener(view -> {
 
-// chamar usuarios/recuperar-dados
-//                    USUARIO_RECALCULAR_LIMITE
-//                    SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-//                    updateDadosCadastrais( apostadorAlteracaoDTO )
-//                    SessaoUsuario.getInstance().setValorMaximoAposta(new BigDecimal(seekBarValor.getText().toString()));
-//            if () {
- //               apostadorDTO.setLimiteDiario(new BigDecimal(editValMaximoCompraContent.findViewById(R.id.seekbar_valor).toString()));
+            AlertDialogUtils.show(DadosPessoaisActivity.this);
+            final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
 
-        }
-        );
+            dadosUsuarioBO.recalcularLimite( new RequestListener<ApostadorDTOResponse>() {
+                @Override
+                public void onResponse(ApostadorDTOResponse response) {
+                    apostadorDTO = response.getPayload();
+
+                    editValMaximoCompraContent.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado()));
+                    updateDadosPessoaisLimiteButton.setText(getString(R.string.dados_limite_compra) +
+                            NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado())
+                    );
+
+                    AppCenterManager.registraEvento("ENTROU_RECALCULAR_LIMITE_AUTORIZADO");
+                    AlertDialogUtils.dismiss();
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    AlertDialogUtils.dismiss();
+                    RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
+                }
+            });
+        });
     }
 
 //    @SuppressLint("SetTextI18n")
@@ -194,20 +206,13 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         editTextCepContent.setMaskedText( apostadorDTO.getCep() );
         editTextEmailContent.setText( apostadorDTO.getEmail() );
 
-//        BigDecimal valMaxAutorizado, valMinDiario;
-//        valMaxAutorizado = apostadorDTO.getLimiteDiarioAutorizado();
-//        valMinDiario = apostadorDTO.getLimiteMinimoDiario();
-//
-        editValMaximoCompraContent.setText(SessaoUsuario.getInstance().getValorMaximoAposta().toString());
-        editValMinCompraContent.setText(SessaoUsuario.getInstance().getValorMinimimoAposta().toString());
+        seekBarValor.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiario()));
+        editValMinCompraContent.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteMinimoDiario()));
+        editValMaximoCompraContent.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado()));
 
-//        seekbarLimite.setMax(apostadorDTO.getLimiteDiarioAutorizado().intValue());
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            seekbarLimite.setMin(apostadorDTO.getLimiteMinimoDiario().intValue());
-//        }
-//        seekbarLimite.setProgress(apostadorDTO.getLimiteDiario().intValue());
-
-
+        updateDadosPessoaisLimiteButton.setText(getString(R.string.dados_limite_compra) +
+                NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado())
+        );
 
         editTextCpfContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextNomeContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
@@ -240,6 +245,14 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 apostadorDTO = response.getPayload();
                 municipioIdDTOSelect = apostadorDTO.getMunicipioId();
                 getUfeMunicipio();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    seekbarLimite.setMin(apostadorDTO.getLimiteMinimoDiario().intValue());
+                }
+                seekbarLimite.setProgress(apostadorDTO.getLimiteDiario().intValue());
+                seekbarLimite.setMax(apostadorDTO.getLimiteDiarioAutorizado().intValue());
+
+
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }

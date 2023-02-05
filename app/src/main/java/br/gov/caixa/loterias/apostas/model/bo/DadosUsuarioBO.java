@@ -246,6 +246,22 @@ public class DadosUsuarioBO extends BaseBO {
         return status;
     }
 
+    public void recalcularLimite(final RequestListener<ApostadorDTOResponse> listener) {
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        GsonRequest request = silceConnection.buildPostRequest(ServerMethods.USUARIOS_RECALCULAR_LIMITE_AUTORIZADO_PATH, queryParams,
+                null, ApostadorDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request, listener);
+    }
+
     public void getDadosUsuario(final RequestListener<ApostadorDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
