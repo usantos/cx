@@ -562,8 +562,8 @@
     <string name="label_digite_cpf">Digite seu CPF</string>
 
     <!-- Avaliar Aplicativo -->
-    <string name="aval_titulo">Curtindo o Loterias?</string>
-    <string name="aval_desc">Toque em uma estrela para classificar na play store.</string>
+    <string name="aval_titulo">Gostando do App Loterias CAIXA?</string>
+    <string name="aval_desc">Avalie e nos ajude a melhorar sua experiência</string>
     <string name="aval_positivo">Agora</string>
     <string name="aval_negativo">Deixar para depois</string>
     <string name="conf_rapd_selecione_limites">Selecione os limites da sua compra e suas modalidades favoritas.</string>
