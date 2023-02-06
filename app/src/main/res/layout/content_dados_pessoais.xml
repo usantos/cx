@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="106dp"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginHorizontal="10dp"
         android:id="@+id/scrollViewDadosPessoais">
         <LinearLayout
             android:layout_width="match_parent"
@@ -209,7 +209,7 @@
             <SeekBar
                 android:id="@+id/seekBar"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="29dp"
                 android:layout_below="@id/seekbar_valor"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp" />
@@ -253,6 +253,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_height="84dp"
                 android:layout_marginLeft="98dp"
+                android:layout_centerHorizontal="true"
                 android:background="@color/verdeazul"
                 android:text="@string/dados_limite_compra"
                 android:textAllCaps="false"
@@ -279,16 +280,16 @@
         </View>
 
         <Button
+            android:id="@+id/updateDadosPesoaisButton"
             android:layout_width="184dp"
             android:layout_height="84dp"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="108dp"
             android:background="@color/verdeazul"
             android:fontFamily="@font/futura_std_bold"
             android:text="@string/atualizar"
             android:textAllCaps="false"
             android:textColor="@color/branco"
-            android:textSize="17.7sp"
-            android:id="@+id/updateDadosPesoaisButton"/>
+            android:textSize="17.7sp" />
     </RelativeLayout>
 
 
