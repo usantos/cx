@@ -23,7 +23,6 @@ import com.github.pinball83.maskededittext.MaskedEditText;
 import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +108,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
 
         seekBarValor = (TextView) findViewById(R.id.seekbar_valor);
+
         editValMinCompraContent =  findViewById(R.id.seekbar_valor_min);
         editValMaximoCompraContent = findViewById(R.id.seekbar_valor_max);
 
@@ -120,6 +120,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChangedValue = progress;
                 seekBarValor.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(progress));
+
             }
 
             @Override
@@ -128,7 +129,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-//                Toast.makeText(activity_dados_pessoais.this, progressChangedValue, Toast.LENGTH_SHORT);
+
             }
         });
 
@@ -163,10 +164,11 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 apostadorAlteracaoDTO.setAlterandoLoterica( false );
                 apostadorAlteracaoDTO.setMunicipioId( municipioIdDTOSelect );
 
-                SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
 
-                apostadorAlteracaoDTO.setLimiteDiario( sessaoUsuario.getValorMaximoAposta() );
+//                SessaoUsuario sessaoUsuario = (SessaoUsuario) seekBarValor.getText();
+                apostadorAlteracaoDTO.setLimiteDiario(new BigDecimal(seekBarValor.toString()));
                 updateDadosCadastrais( apostadorAlteracaoDTO );
+                SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
             }
         }
         );
