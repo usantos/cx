@@ -225,7 +225,7 @@
 
                     <TextView
                         android:id="@+id/seekbar_valor_min"
-                        android:layout_width="112dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/seekBar"
                         android:layout_marginLeft="20dp"
@@ -239,7 +239,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/seekBar"
-                        android:layout_marginLeft="150dp"
+                        android:layout_marginLeft="120dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/seekbar_val_max"
