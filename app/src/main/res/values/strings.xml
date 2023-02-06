@@ -563,10 +563,10 @@
     <string name="label_apresente_qr_code_acima">Mostre o QR Code ao atendente</string>
     <string name="label_aproveite_premio">Aproveite seu prêmio</string>
     <string name="label_digite_cpf">Digite seu CPF</string>
-    <string name="aval_titulo">Ei, tudo Jóia?</string>
 
     <!-- Avaliar Aplicativo -->
-    <string name="aval_desc">O que você tem achado do nosso app? \nQue tal nos deixar uma avaliação? Ficaremos felizes.</string>
+    <string name="aval_titulo">Gostando do App Loterias CAIXA?</string>
+    <string name="aval_desc">Avalie e nos ajude a melhorar sua experiência</string>
     <string name="aval_positivo">Agora</string>
     <string name="aval_negativo">Deixar para depois</string>
     <string name="conf_rapd_selecione_limites">Selecione os limites da sua compra e suas modalidades favoritas.</string>
