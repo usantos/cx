@@ -286,4 +286,12 @@
         <item name="colorControlNormal">@color/cinza_total</item>
     </style>
 
+    <style name="SwitchTheme" parent="AppTheme">
+        <item name="colorControlActivated">@color/laranjacaixa</item>
+        <!-- Bloqueado
+        <item name="android:colorForeground">@color/laranja_fundo_switch</item>
+        <item name="thumbTint">@color/laranjacaixa</item>
+        <item name="trackTint">@color/laranja_fundo_switch</item>
+        -->
+    </style>
 </resources>

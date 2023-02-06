@@ -303,6 +303,9 @@ android {
         //Topaz OFD
         implementation 'br.com.topaz:heartbeat:4.+'
 
+        //Biometria
+        implementation 'androidx.biometric:biometric:1.1.0'
+
         //Work Manager dependency
         implementation 'androidx.work:work-runtime:2.7.1'
 

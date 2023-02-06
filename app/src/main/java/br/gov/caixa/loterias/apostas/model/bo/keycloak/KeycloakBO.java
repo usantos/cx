@@ -35,6 +35,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
@@ -182,6 +184,9 @@ public class KeycloakBO {
                     if (response.accessToken == null || response.refreshToken == null) {
                         listener.errorRefresh(setErrorUnauthorized());
                     } else {
+                        if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
+                            DadosBiometriaBO.salvarBiometria(response.refreshToken);
+                        }
                         KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
                         KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
 
