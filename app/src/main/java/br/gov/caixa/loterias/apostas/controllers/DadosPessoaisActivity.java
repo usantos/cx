@@ -118,6 +118,9 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(apostadorDTO != null && apostadorDTO.getLimiteMinimoDiario() != null && progress <= apostadorDTO.getLimiteMinimoDiario().intValue()) {
+                    progress = apostadorDTO.getLimiteMinimoDiario().intValue();
+                }
                 progressChangedValue = progress;
                 seekBarValor.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(progress));
 
