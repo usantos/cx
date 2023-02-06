@@ -233,13 +233,11 @@
         <item name="actionMenuTextColor">@color/superseteescuro</item>
     </style>
 
-
     <style name="fontForTitle1Premiados">
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/arialmt</item>
         <item name="android:textColor">@color/branco</item>
         <item name="android:textSize">14.2sp</item>
-
     </style>
 
     <style name="fontForTitle2Premiados">
@@ -249,7 +247,6 @@
         <item name="android:textSize">14.2sp</item>
         <item name="android:lines">2</item>
     </style>
-
 
     <style name="fontForTitleTopoPremiados">
         <item name="android:textStyle">bold</item>
@@ -288,4 +285,5 @@
         <item name="android:fontFamily">@font/font_family_futura</item>
         <item name="colorControlNormal">@color/cinza_total</item>
     </style>
+
 </resources>

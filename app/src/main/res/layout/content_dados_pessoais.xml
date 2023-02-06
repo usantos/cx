@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="106dp"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginHorizontal="10dp"
         android:id="@+id/scrollViewDadosPessoais">
         <LinearLayout
             android:layout_width="match_parent"
@@ -89,7 +90,8 @@
                     app:sb_textColor_onSelection="@color/branco"
                     app:sb_textStyle="bold"
                     app:sb_textGravity="center"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    tools:ignore="RtlCompat" />
 
                 <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
                     android:layout_width="0dp"
@@ -183,6 +185,82 @@
                     android:alpha="0.3"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/seekbar_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="@string/seekbar_titulo"
+                android:layout_below="@id/editTextEmailContent"
+                android:textSize="15.7sp"
+                android:fontFamily="@font/futura_std_bold"
+                />
+
+            <TextView
+                android:id="@+id/seekbar_valor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/seekbar_titulo"
+                android:layout_marginLeft="120dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="15.7sp" />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="fill_parent"
+                android:layout_height="29dp"
+                android:layout_below="@id/seekbar_valor"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+            <TableLayout
+                android:id="@+id/tableLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TableRow
+                    android:id="@+id/tablerow1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/seekbar_valor_min"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/seekBar"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/seekbar_val_min"
+                        android:textSize="15.7sp" />
+
+                    <TextView
+                        android:id="@+id/seekbar_valor_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/seekBar"
+                        android:layout_marginLeft="120dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/seekbar_val_max"
+                        android:textSize="15.7sp" />
+                </TableRow>
+            </TableLayout>
+            <Button
+                android:id="@+id/updateDadosPessoaisLimiteButton"
+                android:layout_below="@id/seekBar"
+                android:layout_width="184dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="98dp"
+                android:layout_height="84dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/verdeazul"
+                android:text="@string/dados_limite_compra"
+                android:textAllCaps="false"
+                android:textColor="@color/branco"
+                android:textSize="15.7sp"
+                android:layout_marginBottom="30dp"/>
+
         </LinearLayout>
     </ScrollView>
 
@@ -202,16 +280,16 @@
         </View>
 
         <Button
+            android:id="@+id/updateDadosPesoaisButton"
             android:layout_width="184dp"
             android:layout_height="84dp"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="108dp"
             android:background="@color/verdeazul"
             android:fontFamily="@font/futura_std_bold"
             android:text="@string/atualizar"
             android:textAllCaps="false"
             android:textColor="@color/branco"
-            android:textSize="17.7sp"
-            android:id="@+id/updateDadosPesoaisButton"/>
+            android:textSize="17.7sp" />
     </RelativeLayout>
 
 
