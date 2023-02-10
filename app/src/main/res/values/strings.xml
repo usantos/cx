@@ -194,6 +194,9 @@
     <string name="title_activity_favoritas_bold">_Apostas Favoritas_</string>
     <string name="title_activity_lista_compras">Compras</string>
 
+    <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
+    <string name="btn_entendi">entendi</string>
+    <string name="msg_qtd_max_ultrapassada_milionaria">Você aumentou a quantidade de trevos, o valor será alterado. Fique atento ao valor final da sua aposta."</string>
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
     <string name="msg_qtd_max_col_super_sete">Você só pode selecionar 3 números por coluna</string>
     <string name="msg_bloqueio_coluna_super_sete_marcar">Você precisa selecionar {qtdColunas} número(s) em cada coluna antes de selecionar outro nessa</string>
@@ -560,10 +563,10 @@
     <string name="label_apresente_qr_code_acima">Mostre o QR Code ao atendente</string>
     <string name="label_aproveite_premio">Aproveite seu prêmio</string>
     <string name="label_digite_cpf">Digite seu CPF</string>
-    <string name="aval_titulo">Ei, tudo Jóia?</string>
 
     <!-- Avaliar Aplicativo -->
-    <string name="aval_desc">O que você tem achado do nosso app? \nQue tal nos deixar uma avaliação? Ficaremos felizes.</string>
+    <string name="aval_titulo">Gostando do App Loterias CAIXA?</string>
+    <string name="aval_desc">Avalie e nos ajude a melhorar sua experiência</string>
     <string name="aval_positivo">Agora</string>
     <string name="aval_negativo">Deixar para depois</string>
     <string name="conf_rapd_selecione_limites">Selecione os limites da sua compra e suas modalidades favoritas.</string>
@@ -619,6 +622,10 @@
     <string name="placeholder_two">Two</string>
     <string name="placeholder_three">three</string>
     <string name="atualizar">Atualizar</string>
+    <string name="seekbar_titulo">Limite Diário de Apostas</string>
+    <string name="seekbar_val_min">R$ 30,00</string>
+    <string name="seekbar_val_max">R$ 945,00</string>
+    <string name="dados_limite_compra">Solicitar limite \n acima de \n</string>
     <string name="precisamos_que_voc_informe_numa_lot_rica_de_sua_prefer_ncia">Precisamos que você informe uma lotérica de sua preferência.</string>
     <string name="cidade">Cidade</string>
     <string name="bairro">Bairro</string>
@@ -1106,6 +1113,14 @@
     <string name="title_CodigoBarras">Código de barras</string>
     <string name="title_QrCode">QR Code</string>
     <string name="title_digiteSuaAposta">Digite a sua aposta</string>
+
+    <string name="leitor_digital">Leitor Digital</string>
+    <string name="entrar">Entrar</string>
+    <string name="desativar_biometria">Desativar biometria</string>
+    <string name="desativar_biometria_mensagem">Desaja desativar a biometria e acessar apenas com o Login Caixa?</string>
+    <string name="biometria_popup_titulo">Loterias Caixa</string>
+    <string name="biometria_popup_descricao">Desbloqueie seu celular</string>
+
 
     <!-- Mensagens Disque 180  -->
     <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>

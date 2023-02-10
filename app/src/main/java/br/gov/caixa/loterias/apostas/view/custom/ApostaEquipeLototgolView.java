@@ -55,10 +55,19 @@ public class ApostaEquipeLototgolView extends LinearLayout {
             paisTime = equipeDTO.getSiglaPais();
         }
 
-        String descricao = String.format("%s%n%s", equipeDTO.getNome(), paisTime);
-        EscudoEquipeUtil.setEscudo(this.getContext(), equipeDTO.getParametroEquipe(), imagemEscudoApostaPartidaLotogol);
-        this.imagemPlacarApostaPartidaLotogol.setImageResource(placarImagem(equipeDTO.getPlacar()));
-        this.textoApostaPartidaLotogol.setText(descricao);
+        if (equipeDTO != null) {
+            String descricao = "";
+            if (equipeDTO.getNome() != null) {
+                descricao = String.format("%s%n%s", equipeDTO.getNome(), paisTime);
+            }
+            if (equipeDTO.getParametroEquipe() != null){
+                EscudoEquipeUtil.setEscudo(this.getContext(), equipeDTO.getParametroEquipe(), imagemEscudoApostaPartidaLotogol);
+            }
+            if (equipeDTO.getPlacar() != null){
+                this.imagemPlacarApostaPartidaLotogol.setImageResource(placarImagem(equipeDTO.getPlacar()));
+            }
+            this.textoApostaPartidaLotogol.setText(descricao);
+        }
     }
 
     private int placarImagem(String placar) {
