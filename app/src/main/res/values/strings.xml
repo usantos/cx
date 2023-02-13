@@ -812,8 +812,8 @@
     <string name="cadastro_atualizado">_Seu cadastro_ foi atualizado com sucesso.</string>
     <string name="aguarde_redirecionamento_tela_inicial">Aguarde apenas um instante enquanto te redirecionamos para a tela inicial. :)</string>
     <string name="evento_entrou_lista_favoritos">ENTROU_LISTA_FAVORITOS</string>
-    <string name="numeros_da_sorte_no_mesmo_lugar">Os seus números da sorte no mesmo lugar</string>
-    <string name="nesta_area_estao_todas_suas_apostas">Nesta área estão todas as suas apostas da sorte. É só escolher e apostar. Boa Sorte!</string>
+    <string name="numeros_da_sorte_no_mesmo_lugar"> </string>
+    <string name="nesta_area_estao_todas_suas_apostas">Seus números da sorte organizados para você escolher e repetir sempre que quiser.</string>
     <string name="informe_codigo_bilhete">Informe o código do bilhete!</string>
     <string name="evento_entrou_tour_tela_1">ENTROU_TOUR_TELA1</string>
     <string name="evento_entrou_tour_tela_2">ENTROU_TOUR_TELA2</string>
