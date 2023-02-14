@@ -79,7 +79,7 @@ android {
                 buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
                 buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
-                buildConfigField "String", "RP_CREATE_TOKEN_URL", "\"https://secure-sandbox.recargapay.com\""
+                buildConfigField "String", "RP_CREATE_TOKEN_URL", "\"https://secure.recarga.com\""
                 buildConfigField "String", "APP_CENTER_KEY", "\"a4640b29-34da-4726-9224-b48a68e920d9\""
                 buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
                 buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasprd\""
