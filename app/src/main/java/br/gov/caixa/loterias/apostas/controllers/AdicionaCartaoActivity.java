@@ -93,10 +93,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         configuraSpin(R.id.spin_meses, getListaMeses(), onSpinListener(editTextMesValidadeCartaoContent, this.listaMeses));
         configuraSpin(R.id.spin_anos, getListaAnos(), onSpinListener(editTextAnoValidadeCartaoContent, this.listaAnos));
         apresentaTextCartoes();
-
-        if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-            findViewById(R.id.containerComboSalvar).setVisibility(View.INVISIBLE);
-        }
     }
 
     private void bindView() {
