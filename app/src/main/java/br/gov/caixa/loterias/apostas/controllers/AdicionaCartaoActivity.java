@@ -317,7 +317,11 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         cardHolder.setDocument(dadosPessoais.getCpf());
         cardHolder.setBirthdate(DataUtil.getStringDataFormatted(DataUtil.YYYY_MM_DD, dadosPessoais.getDataNascimento()));
         List<String> phones = new ArrayList<>();
-        phones.add("+55999999999");
+        if (dadosPessoais.getTelefone() != null) {
+            phones.add(dadosPessoais.getTelefone().getDdd()+dadosPessoais.getTelefone().getNumero());}
+        else {
+            phones.add("+55999999999");
+        }
         cardHolder.setPhones(phones);
         return cardHolder;
     }
@@ -341,6 +345,9 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
                 numeroCartao.startsWith("651770") || numeroCartao.startsWith("655050")
         ){
             return "ELO";
+        } else if ((numeroCartao.compareTo("51") >= 0 && numeroCartao.compareTo("55") <= 0) ||
+                (numeroCartao.compareTo("2221") >= 0 && numeroCartao.compareTo("2720") <= 0)){
+            return "MASTERCARD";
         } else if (numeroCartao.startsWith("605032")){
             return "GRANDCARD";
         } else if (numeroCartao.startsWith("9792")){
@@ -365,8 +372,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
             return "DINERS";
         } else if (numeroCartao.startsWith("35")){
             return "JCB";
-        } else if (numeroCartao.startsWith("5")){
-            return "MASTERCARD";
         } else if (numeroCartao.startsWith("6")){
             return "DISCOVER";
         } else if (numeroCartao.startsWith("4")){
