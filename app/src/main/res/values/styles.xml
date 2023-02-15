@@ -294,4 +294,21 @@
         <item name="trackTint">@color/laranja_fundo_switch</item>
         -->
     </style>
+    <style name="cef_titulo">
+        <item name="android:textSize">
+            16sp
+        </item>
+        <item name="android:textColor">
+            @color/azulTitcaixa
+        </item>
+    </style>
+    <style name="cef_subtitulo">
+        <item name="android:textSize">
+            12sp
+        </item>
+        <item name="android:textColor">
+            @color/cinzaIdcaixa
+        </item>
+
+    </style>
 </resources>
