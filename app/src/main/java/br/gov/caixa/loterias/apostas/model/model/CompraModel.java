@@ -42,7 +42,7 @@ public class CompraModel extends AppModel{
 
 	public void buscaCartoes(OnSilceListener<List<RetornoCartao>> listener){
 		DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getActivity());
-		dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
+		dadosUsuarioBO.cartoes("1", new RequestListener<ListCartaoDTOResponse>() {
 			@Override
 			public void onResponse(ListCartaoDTOResponse response) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_entrou_formas_pagamento));

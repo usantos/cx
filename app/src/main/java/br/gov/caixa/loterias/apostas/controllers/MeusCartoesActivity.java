@@ -44,7 +44,7 @@ public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoe
     @Override
     protected void onResume() {
         super.onResume();
-        model.buscaCartoesMercadoPago(onBuscaCartaoMercadoPago());
+        model.buscaCartoesPorMeioPagamento("1", onBuscaCartaoMercadoPago());
     }
 
     @NonNull

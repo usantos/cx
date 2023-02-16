@@ -44,9 +44,9 @@ public class CartoesModel extends AppModel {
 		model = new MeioPagamentoModel(getActivity());
 	}
 
-	public void buscaCartoesMercadoPago(OnSilceListener<List<RetornoCartao>> listener) {
+	public void buscaCartoesPorMeioPagamento(String meioPagamento, OnSilceListener<List<RetornoCartao>> listener) {
 		DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getActivity());
-		dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
+		dadosUsuarioBO.cartoes(meioPagamento, new RequestListener<ListCartaoDTOResponse>() {
 			@Override
 			public void onResponse(ListCartaoDTOResponse response) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_entrou_formas_pagamento));

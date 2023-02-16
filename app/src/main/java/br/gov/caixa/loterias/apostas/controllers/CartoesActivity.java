@@ -251,7 +251,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
        showLoading();
 
         DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CartoesActivity.this);
-        dadosUsuarioBO.cartoes(new RequestListener<ListCartaoDTOResponse>() {
+        dadosUsuarioBO.cartoes("1", new RequestListener<ListCartaoDTOResponse>() {
             @Override
             public void onResponse(ListCartaoDTOResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_formas_pagamento));

@@ -51,9 +51,9 @@ public class DadosUsuarioBO extends BaseBO {
     private static final String alphabetString = "abcdefghijklmnopqrstuvwxyz";
     private static final String numberString = "0123456789";
 
-    public void cartoes(final RequestListener<ListCartaoDTOResponse> listener) {
+    public void cartoes(String meioPagamento, final RequestListener<ListCartaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        queryParams.put("meioPagamento", "1");
+        queryParams.put("meioPagamento", meioPagamento);
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());

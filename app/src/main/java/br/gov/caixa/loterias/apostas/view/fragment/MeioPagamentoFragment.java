@@ -107,13 +107,13 @@ public class MeioPagamentoFragment extends Fragment {
 	private void buscaCartoes() {
 		AlertDialogUtils.show(getContext());
 		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-			model.buscaCartoesMercadoPago(onBuscaMercadoPagoListener());
+			model.buscaCartoesPorMeioPagamento("1", onBuscaCartoesListener());
 		} else if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-			// model.buscaCartoesRecargaPay(onBuscaRecargaPayListener());
+			model.buscaCartoesPorMeioPagamento("5", onBuscaCartoesListener());
 		}
 	}
 
-	private OnSilceListener<List<RetornoCartao>> onBuscaMercadoPagoListener() {
+	private OnSilceListener<List<RetornoCartao>> onBuscaCartoesListener() {
 		return new OnSilceListener<List<RetornoCartao>>() {
 			@Override
 			public void success(List<RetornoCartao> retornoCartaoList) {
