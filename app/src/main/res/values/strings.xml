@@ -1116,6 +1116,8 @@
 
     <string name="leitor_digital">Leitor Digital</string>
     <string name="entrar">Entrar</string>
+    <string name="ativar_biometria">Necessário habilitar biometria</string>
+    <string name="habilitar">Habilitar</string>
     <string name="desativar_biometria">Desativar biometria</string>
     <string name="desativar_biometria_mensagem">Desaja desativar a biometria e acessar apenas com o Login Caixa?</string>
     <string name="biometria_popup_titulo">Loterias Caixa</string>
