@@ -136,18 +136,25 @@ public class CartoesModel extends AppModel {
 		MercadoPagoConnection.callWebServicePayment_method(bin , requestBody, getActivity(), onMercadoPagoListener(salvarCartao, isCartaoNovo, listener));
 	}
 
-	public void realizaCompraRecargaPay(String tokenApostador, CartaoRecargaPayDTO cartao, OnCompraAsync listener) {
-		RecargaPayConnection.callRecargaPayService(tokenApostador, getActivity(), cartao, onRecargaPayListener(listener));
+	public void realizaCompraRecargaPay(String tokenApostador, String salvarCartao, boolean isCartaoNovo, CartaoRecargaPayDTO cartao, OnCompraAsync listener) {
+		RecargaPayConnection.callRecargaPayService(tokenApostador, getActivity(), cartao, onRecargaPayListener(salvarCartao, isCartaoNovo, listener));
 	}
 
-	private RecargaPayConnection.RecargaPayListener onRecargaPayListener(OnCompraAsync listener) {
+	private RecargaPayConnection.RecargaPayListener onRecargaPayListener(String salvarCartao, boolean isCartaoNovo, OnCompraAsync listener) {
 		return new RecargaPayConnection.RecargaPayListener() {
 			@Override
 			public void onSucesso(String customerCardToken, String payment_method_id) {
-				CompraUtil.registraApostaAsync(5, customerCardToken, payment_method_id,
-											   getActivity().getResources().getString(R.string.string_false),
-											   getActivity().getResources().getString(R.string.string_false),
-											   listener);
+				if (isCartaoNovo){
+					CompraUtil.registraApostaAsync(5, customerCardToken, payment_method_id,
+												   null,
+												   salvarCartao,
+												   listener);
+				} else {
+					CompraUtil.registraApostaAsync(5, customerCardToken, payment_method_id,
+												   getActivity().getResources().getString(R.string.string_true),
+												   null,
+												   listener);
+				}
 			}
 
 			@Override

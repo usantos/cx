@@ -93,10 +93,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         configuraSpin(R.id.spin_meses, getListaMeses(), onSpinListener(editTextMesValidadeCartaoContent, this.listaMeses));
         configuraSpin(R.id.spin_anos, getListaAnos(), onSpinListener(editTextAnoValidadeCartaoContent, this.listaAnos));
         apresentaTextCartoes();
-
-        if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-            findViewById(R.id.containerComboSalvar).setVisibility(View.INVISIBLE);
-        }
     }
 
     private void bindView() {
@@ -255,7 +251,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new OnSilceListener<ApostadorDTO>() {
             @Override
             public void success(ApostadorDTO payload) {
-                model.realizaCompraRecargaPay(token, getCartaoRecargaPay(payload), onRecargaPayListener());
+                model.realizaCompraRecargaPay(token, getSalvarCartao(), true, getCartaoRecargaPay(payload), onRecargaPayListener());
             }
 
             @Override
@@ -349,8 +345,13 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
                                                 .substring(0, 7);
 
         AppCenterManager.registraEventoDeviceMP(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
-        String salvarCartao = checkBoxSalvarCartao.isChecked() ? "true" : "false";
+        String salvarCartao = getSalvarCartao();
         model.realizaCompraMercadoPago(bin, requestBody, salvarCartao,true, onMercadoPagoListener());
+    }
+
+    @NonNull
+    private String getSalvarCartao() {
+        return checkBoxSalvarCartao.isChecked() ? "true" : "false";
     }
 
     private OnCompraAsync onMercadoPagoListener() {
