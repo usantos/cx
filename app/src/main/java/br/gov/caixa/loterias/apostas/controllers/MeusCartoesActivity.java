@@ -31,6 +31,7 @@ public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoe
     private CartoesModel model;
     private TextView tvSemCartao;
     private NestedScrollView scrollCartoes;
+    private List<RetornoCartao> payloadMp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,35 +45,67 @@ public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoe
     @Override
     protected void onResume() {
         super.onResume();
+        buscaCartoesMercadoPago();
+    }
+
+    private void buscaCartoesMercadoPago(){
+        AlertDialogUtils.show(MeusCartoesActivity.this);
         model.buscaCartoesPorMeioPagamento("1", onBuscaCartaoMercadoPago());
     }
 
     @NonNull
     private OnSilceListener<List<RetornoCartao>> onBuscaCartaoMercadoPago() {
-        AlertDialogUtils.show(MeusCartoesActivity.this);
         return new OnSilceListener<List<RetornoCartao>>() {
             @Override
             public void success(List<RetornoCartao> payload) {
-                AlertDialogUtils.dismiss();
-
-                configuraTela(payload);
+                payloadMp = payload;
                 if (payload != null && !payload.isEmpty()){
                     FragmentUtils.meusCartoesFragment(getSupportFragmentManager(),
                                                       R.id.frameMercadoPagoFragment,
                                                       payload, getConfigMercadoPago());
+                }
+
+                buscaCartoesRecargaPay();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                buscaCartoesRecargaPay();
+            }
+        };
+    }
+
+    private void buscaCartoesRecargaPay(){
+        if (!AlertDialogUtils.isShow()){
+            AlertDialogUtils.show(MeusCartoesActivity.this);
+        }
+        model.buscaCartoesPorMeioPagamento("5", onBuscaCartaoRecargaPay());
+    }
+
+    private OnSilceListener<List<RetornoCartao>> onBuscaCartaoRecargaPay() {
+        return new OnSilceListener<List<RetornoCartao>>() {
+            @Override
+            public void success(List<RetornoCartao> payload) {
+                AlertDialogUtils.dismiss();
+                configuraTela(payloadMp, payload);
+
+                if (payload != null && !payload.isEmpty()){
+                    FragmentUtils.meusCartoesFragment(getSupportFragmentManager(),
+                                                      R.id.frameRecargaPayFragment,
+                                                      payload, getConfigRecargaPay());
                 }
             }
 
             @Override
             public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                configuraTela(null);
+                configuraTela(null, null);
             }
         };
     }
 
-    private void configuraTela(List<RetornoCartao> payload) {
-        if (payload == null || payload.isEmpty()){
+    private void configuraTela(List<RetornoCartao> payloadMP, List<RetornoCartao> payloadRP) {
+        if ((payloadMP == null || payloadMP.isEmpty()) && (payloadRP == null || payloadRP.isEmpty())){
             tvSemCartao.setVisibility(View.VISIBLE);
             scrollCartoes.setVisibility(View.GONE);
         } else {
@@ -115,6 +148,6 @@ public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoe
 
     @Override
     public void semCartao() {
-        configuraTela(null);
+        //configuraTela(null, null);
     }
 }
