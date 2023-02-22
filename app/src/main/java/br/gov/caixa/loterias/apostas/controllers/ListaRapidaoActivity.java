@@ -75,8 +75,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        callWebservice(0);
+//        callWebservice(0);
     }
 
     public void atualizaLayout() {
