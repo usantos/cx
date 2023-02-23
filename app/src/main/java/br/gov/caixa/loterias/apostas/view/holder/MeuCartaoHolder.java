@@ -65,7 +65,6 @@ public class MeuCartaoHolder extends LoteriasHolder<RetornoCartao> implements  V
 			case "visa":
 				return context.getDrawable(R.drawable.ic_visa);
 			case "master":
-				return context.getDrawable(R.drawable.ic_master_card);
 			case "mastercard":
 				return context.getDrawable(R.drawable.ic_master_card);
 			case "hipercard":
@@ -75,7 +74,6 @@ public class MeuCartaoHolder extends LoteriasHolder<RetornoCartao> implements  V
 			case "elo":
 				return context.getDrawable(R.drawable.ic_elo);
 			case "amex":
-				return context.getDrawable(R.drawable.ic_american);
 			case "american express":
 				return context.getDrawable(R.drawable.ic_american);
 			default:
