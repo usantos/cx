@@ -31,6 +31,8 @@ public class BiometriaCRUD extends DBLoteriasCRUD {
 				ContentValues values = new ContentValues();
 
 				values.put(TabelaBiometria.COLUNA_REFRESH, biometriaDTO.getRefresh());
+				values.put(TabelaBiometria.COLUNA_NOME, biometriaDTO.getNome());
+				values.put(TabelaBiometria.COLUNA_CPF, biometriaDTO.getCpf());
 
 				return getDb().insert(TabelaBiometria.NOME_TABELA, null, values);
 			} catch (Exception e) {
@@ -75,7 +77,9 @@ public class BiometriaCRUD extends DBLoteriasCRUD {
 			setDb(getDbLoteriasHelper().getWritableDatabase());
 			String[] projection = {
 					TabelaBiometria.COLUNA_ID,
-					TabelaBiometria.COLUNA_REFRESH
+					TabelaBiometria.COLUNA_REFRESH,
+					TabelaBiometria.COLUNA_NOME,
+					TabelaBiometria.COLUNA_CPF
 			};
 			cursor = getDb().query(
 					TabelaBiometria.NOME_TABELA,
@@ -90,8 +94,10 @@ public class BiometriaCRUD extends DBLoteriasCRUD {
 			while (cursor.moveToNext()) {
 				Long id = cursor.getLong(cursor.getColumnIndexOrThrow(TabelaBiometria.COLUNA_ID));
 				String refresh = cursor.getString(cursor.getColumnIndexOrThrow(TabelaBiometria.COLUNA_REFRESH));
+				String nome = cursor.getString(cursor.getColumnIndexOrThrow(TabelaBiometria.COLUNA_NOME));
+				String cpf = cursor.getString(cursor.getColumnIndexOrThrow(TabelaBiometria.COLUNA_CPF));
 
-				biometria = new BiometriaDTO(refresh);
+				biometria = new BiometriaDTO(refresh, nome, cpf);
 				biometria.setId(id);
 			}
 

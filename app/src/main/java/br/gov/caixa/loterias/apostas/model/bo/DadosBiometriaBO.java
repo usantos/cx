@@ -43,14 +43,14 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 @EBean(scope = Singleton)
 public class DadosBiometriaBO extends BaseBO {
 
-    public static void salvarBiometria(String refresh) {
+    public static void salvarBiometria(String refresh, String nome, String cpf) {
         Context context = Aplicacao.application.getApplicationContext();
         if (context != null) {
             BiometriaCRUD crud = new BiometriaCRUD(context);
             if (crud.lerBiometria() != null){
                 crud.deletaBiometria();
             }
-            crud.inserirBiometria(new BiometriaDTO(getEncoded(refresh)));
+            crud.inserirBiometria(new BiometriaDTO(getEncoded(refresh), getEncoded(nome), getEncoded(cpf)));
         }
     }
 
@@ -74,6 +74,8 @@ public class DadosBiometriaBO extends BaseBO {
 
             if (biometriaDTO != null){
                 biometriaDTO.setRefresh(getDecoded(biometriaDTO.getRefresh()));
+                biometriaDTO.setNome(getDecoded(biometriaDTO.getNome()));
+                biometriaDTO.setCpf(getDecoded(biometriaDTO.getCpf()));
             }
         }
 
@@ -81,6 +83,6 @@ public class DadosBiometriaBO extends BaseBO {
     }
 
     public static void limparRegistros() {
-        salvarBiometria("");
+        salvarBiometria("","","");
     }
 }

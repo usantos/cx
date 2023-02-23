@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
@@ -138,7 +139,8 @@ public class LoginFragment extends Fragment {
         biometriaDTO = DadosBiometriaBO.obterBiometria();
         if (temBiometria && biometriaDTO != null && biometriaDTO.getRefresh().length() > 0 ) {
             biometriaSwitch.setChecked(true);
-            buttonLogin.setText(R.string.entrar);
+            buttonLogin.setText(getString(R.string.entrar) + " "
+                    + StringUtils.firstWord(StringUtils.capitalizer(biometriaDTO.getNome())));
         } else {
             buttonLogin.setText(R.string.label_faca_login_cadastre);
         }

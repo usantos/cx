@@ -26,4 +26,8 @@ public class StringUtils {
     public static String formatDouble(Double valor){
         return String.format("%.2f", valor);
     }
+
+    public static String firstWord(String texto) {
+        return texto.substring(0, texto.indexOf(" "));
+    }
 }
