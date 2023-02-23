@@ -44,6 +44,7 @@ public class BiometriaLogin {
         BiometriaDTO biometriaDTO = DadosBiometriaBO.obterBiometria();
         if (biometriaDTO == null || biometriaDTO.getRefresh() == null) {
             listener.errorRefresh(setErrorUnauthorized());
+            return;
         }
 
         AlertDialogUtils.show(activity);
@@ -63,6 +64,7 @@ public class BiometriaLogin {
         authorizationService.performTokenRequest(tokenRequest, (response, ex) -> {
             if (response == null || response.accessToken == null || response.refreshToken == null) {
                 listener.errorRefresh(setErrorUnauthorized());
+                return;
             }
             if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
                 DadosBiometriaBO.salvarBiometria(response.refreshToken);
@@ -76,6 +78,7 @@ public class BiometriaLogin {
                 String tokenCorpo = separar[1];
                 if (! salvaDadosUsuario(activity, response, tokenCorpo)) {
                     listener.errorRefresh(setErrorUnauthorized());
+                    return;
                 }
             }
             DadosUsuarioBO.updateUsuarioLogado(activity, true);
@@ -92,6 +95,7 @@ public class BiometriaLogin {
                 public void onResponse(UsuarioLogadoResponse response) {
                     if (response.getRedirect() != null) {
                         listener.errorRefresh(setErrorUnauthorized());
+                        return;
                     }
                     SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
                     if (response != null && response.getPayload() != null && response.getPayload().getLimiteDiario() != null) {
