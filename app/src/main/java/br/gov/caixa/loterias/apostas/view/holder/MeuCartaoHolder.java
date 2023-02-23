@@ -47,7 +47,7 @@ public class MeuCartaoHolder extends LoteriasHolder<RetornoCartao> implements  V
 
 	@Override
 	public void bind(RetornoCartao cartao, int position) {
-		this.imagem.setImageDrawable(getBandeira(cartao.getIdMetodoPagamento()));
+		this.imagem.setImageDrawable(getBandeira(cartao.getNomeMetodoPagamento()));
 		this.numero.setText(context.getResources().getString(R.string.mascara_cartao_sem_ultimos_digitos) + "  " + cartao.getUltimosDigitos());
 		this.data.setText(context.getResources().getString(R.string.venc_ponto_dois_pontos) + cartao.getMesValidade() + context.getResources().getString(R.string.barra)  + cartao.getAnoValidade());
 
@@ -61,10 +61,12 @@ public class MeuCartaoHolder extends LoteriasHolder<RetornoCartao> implements  V
 	}
 
 	private Drawable getBandeira(String nomeMetodo){
-		switch (nomeMetodo){
+		switch (nomeMetodo.toLowerCase()){
 			case "visa":
 				return context.getDrawable(R.drawable.ic_visa);
 			case "master":
+				return context.getDrawable(R.drawable.ic_master_card);
+			case "mastercard":
 				return context.getDrawable(R.drawable.ic_master_card);
 			case "hipercard":
 				return context.getDrawable(R.drawable.ic_hipercard);
@@ -73,6 +75,8 @@ public class MeuCartaoHolder extends LoteriasHolder<RetornoCartao> implements  V
 			case "elo":
 				return context.getDrawable(R.drawable.ic_elo);
 			case "amex":
+				return context.getDrawable(R.drawable.ic_american);
+			case "american express":
 				return context.getDrawable(R.drawable.ic_american);
 			default:
 				return context.getDrawable(R.drawable.cartao_cvc);

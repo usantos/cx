@@ -99,7 +99,7 @@ public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoe
             @Override
             public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                configuraTela(null, null);
+                configuraTela(payloadMp, null);
             }
         };
     }
