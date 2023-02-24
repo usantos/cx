@@ -33,6 +33,8 @@
             android:paddingTop="8dp"
             android:paddingBottom="0dp"
             android:text="@string/cef_id_tit"
+            android:autoSizeTextType="uniform"
+            android:autoSizePresetSizes="@array/autosize_text_sizes"
             android:textAppearance="@style/cef_titulo" />
 
         <TextView
@@ -49,7 +51,10 @@
             android:text="@string/cef_id1"
             android:textAlignment="gravity"
             android:textColor="@color/cinzaIdcaixa"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizePresetSizes="@array/autosize_text_sizes"
+            />
     </GridLayout>
 
 
