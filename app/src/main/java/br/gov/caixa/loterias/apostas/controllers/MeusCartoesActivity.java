@@ -50,7 +50,7 @@ public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoe
 
     private void buscaCartoesMercadoPago(){
         AlertDialogUtils.show(MeusCartoesActivity.this);
-        model.buscaCartoesPorMeioPagamento("1", onBuscaCartaoMercadoPago());
+        model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_MERCADO_PAGO, onBuscaCartaoMercadoPago());
     }
 
     @NonNull
@@ -79,7 +79,7 @@ public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoe
         if (!AlertDialogUtils.isShow()){
             AlertDialogUtils.show(MeusCartoesActivity.this);
         }
-        model.buscaCartoesPorMeioPagamento("5", onBuscaCartaoRecargaPay());
+        model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_RECARGA_PAY, onBuscaCartaoRecargaPay());
     }
 
     private OnSilceListener<List<RetornoCartao>> onBuscaCartaoRecargaPay() {

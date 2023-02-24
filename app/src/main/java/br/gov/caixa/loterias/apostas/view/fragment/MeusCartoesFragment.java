@@ -181,7 +181,7 @@ public class MeusCartoesFragment extends Fragment {
 		if (model.isMercadoPago(config.getValueMeioPagamento())){
 			model.deletaCartaoMercadoPago(cartao.getIdCartao(), onDeletaCartao(position));
 		} else if (model.isRecargaPay(config.getValueMeioPagamento())){
-			//model.deletaCartaoRecargaPay();
+			model.deletaCartaoRecargaPay(cartao.getTokenCartao(), onDeletaCartao(position));
 		}
 	}
 

@@ -76,9 +76,9 @@ public class CartaoRecargaPayDTO {
         return shouldSave;
     }
 
-//    public void setShouldSave(boolean shouldSave) {
-//        this.shouldSave = shouldSave;
-//    }
+    public void setShouldSave(boolean shouldSave) {
+        this.shouldSave = shouldSave;
+    }
 
     @Override
     public boolean equals(Object o) {

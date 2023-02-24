@@ -50,12 +50,9 @@ public class RecargaPayConnection {
 			JSONObject   jsonBody     = getJsonObject(cartao);
 			final String requestBody = jsonBody.toString();
 
-			StringRequest stringRequest = new StringRequest(Request.Method.PUT, URL, new Response.Listener<String>() {
-				@Override
-				public void onResponse(String response) {
-					if (cardResponse != null && cardResponse[0] != null){
-						listener.onSucesso(cardResponse[0].getCustomerCardToken(), cardResponse[0].getBrand().toLowerCase());
-					}
+			StringRequest stringRequest = new StringRequest(Request.Method.PUT, URL, response -> {
+				if (cardResponse != null && cardResponse[0] != null){
+					listener.onSucesso(cardResponse[0].getCustomerCardToken(), cardResponse[0].getBrand().toLowerCase());
 				}
 			}, error -> {
 				listener.onErro(onCheckError(error));
@@ -66,7 +63,7 @@ public class RecargaPayConnection {
 				}
 
 				@Override
-				public byte[] getBody() throws AuthFailureError {
+				public byte[] getBody() {
 					try {
 						return requestBody == null ? null : requestBody.getBytes("utf-8");
 					} catch (UnsupportedEncodingException uee) {

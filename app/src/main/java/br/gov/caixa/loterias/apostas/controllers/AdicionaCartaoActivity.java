@@ -251,7 +251,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new OnSilceListener<ApostadorDTO>() {
             @Override
             public void success(ApostadorDTO payload) {
-                model.realizaCompraRecargaPay(token, getSalvarCartao(), true, getCartaoRecargaPay(payload), onRecargaPayListener());
+                model.realizaCompraRecargaPay(token, true, getCartaoRecargaPay(payload), onRecargaPayListener());
             }
 
             @Override
@@ -293,6 +293,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         cartao.setDataExpiracao(dataExpiracao);
 
         cartao.setSecurityCode(editTextCodigoSegurancaContent.getText().toString());
+        cartao.setShouldSave(checkBoxSalvarCartao.isChecked());
         return cartao;
     }
 

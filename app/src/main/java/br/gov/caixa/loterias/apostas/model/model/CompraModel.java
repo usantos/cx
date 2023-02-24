@@ -20,6 +20,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UltimaCompraDTO;
 import br.gov.caixa.loterias.apostas.model.dao.crud.UltimaCompraCRUD;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 
 public class CompraModel extends AppModel{
 
@@ -42,7 +43,7 @@ public class CompraModel extends AppModel{
 
 	public void buscaCartoes(OnSilceListener<List<RetornoCartao>> listener){
 		DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getActivity());
-		dadosUsuarioBO.cartoes("1", new RequestListener<ListCartaoDTOResponse>() {
+		dadosUsuarioBO.cartoes(MeioPagamentoUtils.MP_MERCADO_PAGO, new RequestListener<ListCartaoDTOResponse>() {
 			@Override
 			public void onResponse(ListCartaoDTOResponse response) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_entrou_formas_pagamento));

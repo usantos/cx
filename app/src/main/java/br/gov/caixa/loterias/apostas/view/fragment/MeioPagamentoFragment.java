@@ -36,6 +36,7 @@ import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesMeioPagamentoRecyclerViewAdapter;
@@ -107,9 +108,9 @@ public class MeioPagamentoFragment extends Fragment {
 	private void buscaCartoes() {
 		AlertDialogUtils.show(getContext());
 		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-			model.buscaCartoesPorMeioPagamento("1", onBuscaCartoesListener());
+			model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_MERCADO_PAGO, onBuscaCartoesListener());
 		} else if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-			model.buscaCartoesPorMeioPagamento("5", onBuscaCartoesListener());
+			model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_RECARGA_PAY, onBuscaCartoesListener());
 		}
 	}
 
@@ -217,7 +218,7 @@ public class MeioPagamentoFragment extends Fragment {
 		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
 			model.deletaCartaoMercadoPago(cartao.getIdCartao(), onDeletaCartao(position));
 		} else if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-			//model.deletaCartaoRecargaPay();
+			model.deletaCartaoRecargaPay(cartao.getTokenCartao(), onDeletaCartao(position));
 		}
 	}
 

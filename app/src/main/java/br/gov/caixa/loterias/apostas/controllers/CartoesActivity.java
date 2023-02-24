@@ -42,6 +42,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraUtil;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesRecyclerViewAdapter;
@@ -251,7 +252,7 @@ public class CartoesActivity extends AppCompatActivity implements FormaDePagamen
        showLoading();
 
         DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CartoesActivity.this);
-        dadosUsuarioBO.cartoes("1", new RequestListener<ListCartaoDTOResponse>() {
+        dadosUsuarioBO.cartoes(MeioPagamentoUtils.MP_MERCADO_PAGO, new RequestListener<ListCartaoDTOResponse>() {
             @Override
             public void onResponse(ListCartaoDTOResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_formas_pagamento));
