@@ -21,13 +21,15 @@
 
         <TextView
             android:id="@+id/subTituloFavoritas"
-            android:layout_width="wrap_content"
+            android:layout_width="358dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="17dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/arialmt"
             android:text="@string/nesta_rea_est_o_todas_as_suas_apostas_da_sorte_s_escolher_e_apostar_boa_sorte"
             android:textColor="@color/cinza"
+            android:autoSizeTextType="uniform"
+            android:autoSizePresetSizes="@array/autosize_text_sizes"
             android:textSize="14.2sp" />
 
         <TextView
@@ -44,8 +46,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerFavoritas"
-            android:layout_width="match_parent"
-            android:layout_height="564dp"
+            android:layout_width="398dp"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="0dp"
             android:layout_marginTop="1dp"
             android:descendantFocusability="afterDescendants"
