@@ -44,6 +44,8 @@ public class ApostadorDTO {
     private String nome = null;
     @SerializedName("dataNascimento")
     private String dataNascimento = null;
+    @SerializedName("telefone")
+    private TelefoneDTO telefone = null;
     @SerializedName("cep")
     private String cep = null;
     @SerializedName("aceitaTermosUso")
@@ -112,6 +114,15 @@ public class ApostadorDTO {
     }
     public void setDataNascimento(String dataNascimento) {
         this.dataNascimento = dataNascimento;
+    }
+
+    /** **/
+    @ApiModelProperty(required = true, value = "")
+    public TelefoneDTO getTelefone() {
+        return telefone;
+    }
+    public void setTelefone(TelefoneDTO telefone) {
+        this.telefone = telefone;
     }
 
     /**
@@ -248,6 +259,7 @@ public class ApostadorDTO {
                 (this.email == null ? apostadorDTO.email == null : this.email.equals(apostadorDTO.email)) &&
                 (this.nome == null ? apostadorDTO.nome == null : this.nome.equals(apostadorDTO.nome)) &&
                 (this.dataNascimento == null ? apostadorDTO.dataNascimento == null : this.dataNascimento.equals(apostadorDTO.dataNascimento)) &&
+                (this.telefone == null ? apostadorDTO.telefone == null : this.telefone.equals(apostadorDTO.telefone)) &&
                 (this.cep == null ? apostadorDTO.cep == null : this.cep.equals(apostadorDTO.cep)) &&
                 (this.aceitaTermosUso == null ? apostadorDTO.aceitaTermosUso == null : this.aceitaTermosUso.equals(apostadorDTO.aceitaTermosUso)) &&
                 (this.aceitaReceberNoticias == null ? apostadorDTO.aceitaReceberNoticias == null : this.aceitaReceberNoticias.equals(apostadorDTO.aceitaReceberNoticias)) &&
@@ -268,6 +280,7 @@ public class ApostadorDTO {
         result = 31 * result + (this.email == null ? 0: this.email.hashCode());
         result = 31 * result + (this.nome == null ? 0: this.nome.hashCode());
         result = 31 * result + (this.dataNascimento == null ? 0: this.dataNascimento.hashCode());
+        result = 31 * result + (this.telefone == null ? 0: this.telefone.hashCode());
         result = 31 * result + (this.cep == null ? 0: this.cep.hashCode());
         result = 31 * result + (this.aceitaTermosUso == null ? 0: this.aceitaTermosUso.hashCode());
         result = 31 * result + (this.aceitaReceberNoticias == null ? 0: this.aceitaReceberNoticias.hashCode());
@@ -290,6 +303,7 @@ public class ApostadorDTO {
                 "  email: " + email + "\n" +
                 "  nome: " + nome + "\n" +
                 "  dataNascimento: " + dataNascimento + "\n" +
+                "  telefone: " + telefone + "\n" +
                 "  cep: " + cep + "\n" +
                 "  aceitaTermosUso: " + aceitaTermosUso + "\n" +
                 "  aceitaReceberNoticias: " + aceitaReceberNoticias + "\n" +
