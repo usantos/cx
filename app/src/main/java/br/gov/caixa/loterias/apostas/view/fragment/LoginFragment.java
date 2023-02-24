@@ -3,7 +3,11 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +80,9 @@ public class LoginFragment extends Fragment {
     Boolean temBiometria;
     BiometriaDTO biometriaDTO;
     AlertDialog alertDialogBio;
+    TextView txtSSO;
+    TextView txtTrocaUsuario;
+
 
     public LoginFragment() {}
 
@@ -133,17 +140,23 @@ public class LoginFragment extends Fragment {
         });
 
         buttonLogin  = v.findViewById(R.id.buttonFacaLogin);
+        txtSSO = v.findViewById(R.id.textViewSSO);
+        txtTrocaUsuario = v.findViewById(R.id.textViewTrocar);
         txtVersao = v.findViewById(R.id.textVersao);
         txtVersao.setText("v. "+ BuildConfig.VERSION_NAME);
 
         biometriaDTO = DadosBiometriaBO.obterBiometria();
         if (temBiometria && biometriaDTO != null && biometriaDTO.getRefresh().length() > 0 ) {
             biometriaSwitch.setChecked(true);
-            buttonLogin.setText(getString(R.string.entrar) + " "
-                    + StringUtils.firstWord(StringUtils.capitalizer(biometriaDTO.getNome())));
+            setBotoesParaToken();
         } else {
-            buttonLogin.setText(R.string.label_faca_login_cadastre);
+            setBotoesParaSSO();
         }
+
+        txtTrocaUsuario.setOnClickListener(v13 -> {
+            AppCenterManager.registraEvento("ENTROU_LOGIN");
+            connectKeycloak();
+        });
 
         buttonLogin.setOnClickListener(v12 -> {
 
@@ -233,6 +246,18 @@ public class LoginFragment extends Fragment {
         getActivity().finish();
     }
 
+    private void setBotoesParaSSO() {
+        buttonLogin.setText(R.string.label_faca_login_cadastre);
+        txtSSO.setVisibility(View.VISIBLE);
+        txtTrocaUsuario.setVisibility(View.INVISIBLE);
+    }
+
+    private void setBotoesParaToken() {
+        buttonLogin.setText(getString(R.string.entrar) + " "
+                + StringUtils.firstWord(StringUtils.capitalizer(biometriaDTO.getNome())));
+        txtSSO.setVisibility(View.INVISIBLE);
+        txtTrocaUsuario.setVisibility(View.VISIBLE);
+    }
 
     private void setUpBiometria() {
 

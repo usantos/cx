@@ -62,7 +62,7 @@
             android:outlineProvider="none"/>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textViewSSO"
             android:layout_width="181dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/buttonFacaLogin"
@@ -71,15 +71,32 @@
             android:text="@string/voc_utilizar_o_sistema_nico_de_cadastro_da_caixa"
             android:textAlignment="center"
             android:textColor="@color/branco"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/textViewTrocar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonFacaLogin"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            android:text="@string/trocar_de_usuario"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="15sp"
+            android:background="@drawable/drawer_underline"
+            android:onClick="onClick"
+            android:clickable="true"
+            android:visibility="visible"/>
 
         <LinearLayout
             android:id="@+id/biometriaLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@+id/textView2"
-            android:layout_marginTop="30dp"
+            android:layout_below="@+id/textViewSSO"
+            android:layout_marginTop="35dp"
             android:layout_centerHorizontal="true"
             android:visibility="visible"
             >
