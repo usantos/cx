@@ -23,7 +23,6 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
@@ -42,7 +41,6 @@ import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DataUtil;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -251,7 +249,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new OnSilceListener<ApostadorDTO>() {
             @Override
             public void success(ApostadorDTO payload) {
-                model.realizaCompraRecargaPay(token, true, getCartaoRecargaPay(payload), onRecargaPayListener());
+                model.realizaCompraRecargaPayNovoCartao(token, true, getCartaoRecargaPay(payload), onRecargaPayListener());
             }
 
             @Override
@@ -283,98 +281,18 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private CartaoRecargaPayDTO getCartaoRecargaPay(ApostadorDTO dadosPessoais) {
         CartaoRecargaPayDTO cartao = new CartaoRecargaPayDTO();
         cartao.setType(RecargaPayConnection.CARTAO_TYPE);
-        cartao.setBrand(getBrand());
+        cartao.setBrand(model.getBrand(editTextNumeroCartaoContent.getText().toString()));
         cartao.setNumber(editTextNumeroCartaoContent.getText().toString());
 
-        CardHolderRecargaPay cardHolder = getCardHolderRecargaPay(dadosPessoais);
+        CardHolderRecargaPay cardHolder = model.getCardHolderRecargaPay(dadosPessoais);
         cartao.setCardHolder(cardHolder);
 
-        DataExpiracao dataExpiracao = getDataExpiracao();
+        DataExpiracao dataExpiracao = model.getDataExpiracao(editTextMesValidadeCartaoContent.getText().toString(), editTextAnoValidadeCartaoContent.getText().toString());
         cartao.setDataExpiracao(dataExpiracao);
 
         cartao.setSecurityCode(editTextCodigoSegurancaContent.getText().toString());
         cartao.setShouldSave(checkBoxSalvarCartao.isChecked());
         return cartao;
-    }
-
-    @NonNull
-    private DataExpiracao getDataExpiracao() {
-        DataExpiracao dataExpiracao = new DataExpiracao();
-        dataExpiracao.setMes(Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()));
-        dataExpiracao.setAno(Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()));
-        return dataExpiracao;
-    }
-
-    @NonNull
-    private CardHolderRecargaPay getCardHolderRecargaPay(ApostadorDTO dadosPessoais) {
-        CardHolderRecargaPay cardHolder = new CardHolderRecargaPay();
-        cardHolder.setName(dadosPessoais.getNome());
-        cardHolder.setType(RecargaPayConnection.CARDHOLDER_TYPE);
-        cardHolder.setEmail(dadosPessoais.getEmail());
-        cardHolder.setDocument(dadosPessoais.getCpf());
-        cardHolder.setBirthdate(DataUtil.getStringDataFormatted(DataUtil.YYYY_MM_DD, dadosPessoais.getDataNascimento()));
-        List<String> phones = new ArrayList<>();
-        if (dadosPessoais.getTelefone() != null) {
-            phones.add(dadosPessoais.getTelefone().getDdd()+dadosPessoais.getTelefone().getNumero());}
-        else {
-            phones.add("+55999999999");
-        }
-        cardHolder.setPhones(phones);
-        return cardHolder;
-    }
-
-    @NonNull
-    private String getBrand() {
-        String numeroCartao = editTextNumeroCartaoContent.getText().toString();
-        numeroCartao = numeroCartao.replace(" ", "");
-        if (numeroCartao.startsWith("4011") || numeroCartao.startsWith("4576") ||
-                numeroCartao.startsWith("431274") || numeroCartao.startsWith("438935") ||
-                numeroCartao.startsWith("451416") || numeroCartao.startsWith("457393") ||
-                numeroCartao.startsWith("504175") || numeroCartao.startsWith("506699") ||
-                numeroCartao.startsWith("506700") || numeroCartao.startsWith("506779") ||
-                numeroCartao.startsWith("506788") || numeroCartao.startsWith("509876") ||
-                numeroCartao.startsWith("509998") || numeroCartao.startsWith("509999") ||
-                numeroCartao.startsWith("627780") || numeroCartao.startsWith("636297") ||
-                numeroCartao.startsWith("636368") || numeroCartao.startsWith("636369") ||
-                numeroCartao.startsWith("65003") || numeroCartao.startsWith("650049") ||
-                numeroCartao.startsWith("650411") || numeroCartao.startsWith("6509") ||
-                numeroCartao.startsWith("651770") || numeroCartao.startsWith("6550") ||
-                numeroCartao.startsWith("5016") || numeroCartao.startsWith("50672") ||
-                numeroCartao.startsWith("509") || numeroCartao.startsWith("6505")
-                || numeroCartao.startsWith("6507")
-        ){
-            return "ELO";
-        } else if ((numeroCartao.compareTo("51") >= 0 && numeroCartao.compareTo("55") <= 0) ||
-                (numeroCartao.compareTo("2221") >= 0 && numeroCartao.compareTo("2720") <= 0) ||
-                numeroCartao.startsWith("5031") || numeroCartao.startsWith("5081") ||
-                numeroCartao.startsWith("5021") || numeroCartao.startsWith("5899") ||
-                numeroCartao.startsWith("5063")
-        ) {
-            return "MASTERCARD";
-        } else if (numeroCartao.startsWith("605032")){
-            return "GRANDCARD";
-        } else if (numeroCartao.startsWith("9792")){
-            return "TROY";
-        } else if (numeroCartao.startsWith("5067")){
-            return "VERVE";
-        } else if (numeroCartao.startsWith("604") || numeroCartao.startsWith("637")){
-            return "CABAL";
-        } else if (numeroCartao.startsWith("6062") || numeroCartao.startsWith("384")){
-            return "HIPERCARD";
-        } else if (numeroCartao.startsWith("34") || numeroCartao.startsWith("37")){
-            return "AMERICANEXPRESS";
-        } else if (numeroCartao.startsWith("30") || numeroCartao.startsWith("36") ||
-                numeroCartao.startsWith("38") || numeroCartao.startsWith("39")){
-            return "DINERS";
-        } else if (numeroCartao.startsWith("35")){
-            return "JCB";
-        } else if (numeroCartao.startsWith("6011") || numeroCartao.startsWith("65")){
-            return "DISCOVER";
-        } else if (numeroCartao.startsWith("4")){
-            return "VISA";
-        } else {
-            return "VISA";
-        }
     }
 
     private void realizaCompraMercadoPago() {
