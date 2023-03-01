@@ -69,8 +69,8 @@ public class CartoesModel extends AppModel {
 		});
 	}
 
-	public void deletaCartao(String idCartao, OnSilceListener<List<RetornoCartao>> listener) {
-		DadosUsuarioBO_.getInstance_(getActivity().getApplicationContext()).deleteCartao(idCartao, new RequestListener<ListCartaoDTOResponse>() {
+	public void deletaCartao(String idCartao, String meioPagamento, OnSilceListener<List<RetornoCartao>> listener) {
+		DadosUsuarioBO_.getInstance_(getActivity().getApplicationContext()).deleteCartao(idCartao, meioPagamento, new RequestListener<ListCartaoDTOResponse>() {
 			@Override
 			public void onResponse(ListCartaoDTOResponse result) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_efetuou_exclusao_forma_pagamento_sucesso));

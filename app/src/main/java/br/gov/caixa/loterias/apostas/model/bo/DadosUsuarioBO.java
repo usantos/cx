@@ -319,9 +319,9 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
-    public void deleteCartao(String idCartao, RequestListener<ListCartaoDTOResponse> listener) {
+    public void deleteCartao(String idCartao, String meioPagamento, RequestListener<ListCartaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        queryParams.put("meioPagamento", "1");
+        queryParams.put("meioPagamento", meioPagamento);
 
         HashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
