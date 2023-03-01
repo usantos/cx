@@ -274,9 +274,9 @@ public class MeioPagamentoFragment extends Fragment {
 	private void deletaCartao(RetornoCartao cartao, int position) {
 		AlertDialogUtils.show(getContext());
 		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-			model.deletaCartaoMercadoPago(cartao.getIdCartao(), onDeletaCartao(position));
+			model.deletaCartao(cartao.getIdCartao().toString(), onDeletaCartao(position));
 		} else if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-			model.deletaCartaoRecargaPay(cartao.getTokenCartao(), onDeletaCartao(position));
+			model.deletaCartao(cartao.getTokenCartao(), onDeletaCartao(position));
 		}
 	}
 

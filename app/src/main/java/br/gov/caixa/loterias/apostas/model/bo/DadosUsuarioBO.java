@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoS
 import br.gov.caixa.loterias.apostas.model.dao.crud.UsuarioCRUD;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.Criptografia;
-import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
@@ -320,39 +319,13 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
-    public void deleteCartaoMercadoPago(Long idCartao, RequestListener<ListCartaoDTOResponse> listener) {
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        queryParams.put("meioPagamento", MeioPagamentoUtils.MP_MERCADO_PAGO);
-
-        HashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-        GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH + idCartao.toString(), queryParams, ListCartaoDTOResponse.class,
-                listener.getSilceListener(), listener.getErrorListener(), headers);
-
-        request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request, listener);
-    }
-
-    public void deleteCartaoRecargaPay(String tokenCartao, RequestListener<ListCartaoDTOResponse> listener) {
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        queryParams.put("meioPagamento", MeioPagamentoUtils.MP_RECARGA_PAY);
-
-        HashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-        GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH + tokenCartao, queryParams, ListCartaoDTOResponse.class,
-                                                                 listener.getSilceListener(), listener.getErrorListener(), headers);
-
-        request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request, listener);
-    }
-
-    public void deleteCartao(Long idCartao, RequestListener<ListCartaoDTOResponse> listener) {
+    public void deleteCartao(String idCartao, RequestListener<ListCartaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("meioPagamento", "1");
 
         HashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-        GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH + idCartao.toString(), queryParams, ListCartaoDTOResponse.class,
+        GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH + idCartao, queryParams, ListCartaoDTOResponse.class,
                                                                  listener.getSilceListener(), listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));

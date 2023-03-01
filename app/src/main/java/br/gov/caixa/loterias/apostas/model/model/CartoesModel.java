@@ -69,28 +69,8 @@ public class CartoesModel extends AppModel {
 		});
 	}
 
-	public void deletaCartaoMercadoPago(Long idCartao, OnSilceListener<List<RetornoCartao>> listener) {
-		DadosUsuarioBO_.getInstance_(getActivity().getApplicationContext()).deleteCartaoMercadoPago(idCartao, new RequestListener<ListCartaoDTOResponse>() {
-			@Override
-			public void onResponse(ListCartaoDTOResponse result) {
-				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_efetuou_exclusao_forma_pagamento_sucesso));
-				if(result != null && result.getRedirect() != null){
-					RedirectNetwork.checkRedirectSucesso(result.getRedirect(), getActivity());
-				}
-
-				listener.success(result.getPayload());
-			}
-
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				RedirectNetwork.checkRedirect(error, getActivity());
-				listener.error(error);
-			}
-		});
-	}
-
-	public void deletaCartaoRecargaPay(String tokenCartao, OnSilceListener<List<RetornoCartao>> listener) {
-		DadosUsuarioBO_.getInstance_(getActivity().getApplicationContext()).deleteCartaoRecargaPay(tokenCartao, new RequestListener<ListCartaoDTOResponse>() {
+	public void deletaCartao(String idCartao, OnSilceListener<List<RetornoCartao>> listener) {
+		DadosUsuarioBO_.getInstance_(getActivity().getApplicationContext()).deleteCartao(idCartao, new RequestListener<ListCartaoDTOResponse>() {
 			@Override
 			public void onResponse(ListCartaoDTOResponse result) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_efetuou_exclusao_forma_pagamento_sucesso));
