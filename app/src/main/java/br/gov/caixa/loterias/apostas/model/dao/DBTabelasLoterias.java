@@ -283,7 +283,9 @@ public final class DBTabelasLoterias {
         String sb = (" CREATE TABLE " + TabelaBiometria.NOME_TABELA) +
                 " ( " +
                 TabelaBiometria.COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
-                TabelaBiometria.COLUNA_REFRESH + " TEXT " +
+                TabelaBiometria.COLUNA_REFRESH + " TEXT, " +
+                TabelaBiometria.COLUNA_NOME + " TEXT, " +
+                TabelaBiometria.COLUNA_CPF + " TEXT " +
                 " ) ";
         return sb;
     }

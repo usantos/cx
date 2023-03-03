@@ -132,7 +132,7 @@ public class TokenActivity extends AppCompatActivity {
 
             DadosUsuarioBO.salvarUsuairo(jsonObject.getString(getResources().getString(R.string.name)), cpf);
             if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
-                DadosBiometriaBO.salvarBiometria(response.refreshToken);
+                DadosBiometriaBO.salvarBiometria(response.refreshToken, jsonObject.getString(getResources().getString(R.string.name)), cpf);
             }
             KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
             KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);

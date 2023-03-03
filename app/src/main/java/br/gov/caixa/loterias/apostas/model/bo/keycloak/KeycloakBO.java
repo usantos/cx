@@ -185,7 +185,7 @@ public class KeycloakBO {
                         listener.errorRefresh(setErrorUnauthorized());
                     } else {
                         if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
-                            DadosBiometriaBO.salvarBiometria(response.refreshToken);
+                            DadosBiometriaBO.salvarBiometria(response.refreshToken, DadosUsuarioBO.obterNome(), DadosUsuarioBO.obterCpf());
                         }
                         KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
                         KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
