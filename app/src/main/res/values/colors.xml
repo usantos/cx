@@ -81,6 +81,7 @@
     <color name="azulescuro">#3964a4</color>
     <color name="azulTexto">#004c8c</color>
     <color name="azulFormNovoTipoPagamento">#005cad</color>
+    <color name="azulTitcaixa">#3864A3</color>
     <color name="pretoLinhaFormNovoTipoPagamento">#3e576d</color>
     <color name="verdeagua">#00bcac</color>
     <color name="laranjacaixa">#f39200</color>
@@ -102,6 +103,7 @@
     <color name="cinzaHeaderTelaAjuda">#3a4859</color>
     <color name="cinzaGloboLotogol">#d2d4da</color>
     <color name="cinzaDisable">#d7e0e2</color>
+    <color name="cinzaIdcaixa">#616971</color>
     <color name="edittextlinecinza">#5f758f</color>
     <color name="verdemusgo">#afca0b</color>
     <color name="roxoclaro">#b26f9b</color>

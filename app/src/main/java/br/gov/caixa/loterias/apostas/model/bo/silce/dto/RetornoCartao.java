@@ -79,6 +79,9 @@ public class RetornoCartao {
     @SerializedName("codigoErro")
     private String codigoErro = null;
 
+    @SerializedName("tokenCartao")
+    private String tokenCartao = null;
+
     private boolean isFav;
 
     public RetornoCartao statusCodeHttp(Integer statusCodeHttp) {
@@ -335,5 +338,13 @@ public class RetornoCartao {
 
     public void setFav(boolean isfav){
         this.isFav = isfav;
+    }
+
+    public String getTokenCartao() {
+        return tokenCartao;
+    }
+
+    public void setTokenCartao(String tokenCartao) {
+        this.tokenCartao = tokenCartao;
     }
 }

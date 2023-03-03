@@ -812,8 +812,8 @@
     <string name="cadastro_atualizado">_Seu cadastro_ foi atualizado com sucesso.</string>
     <string name="aguarde_redirecionamento_tela_inicial">Aguarde apenas um instante enquanto te redirecionamos para a tela inicial. :)</string>
     <string name="evento_entrou_lista_favoritos">ENTROU_LISTA_FAVORITOS</string>
-    <string name="numeros_da_sorte_no_mesmo_lugar">Os seus números da sorte no mesmo lugar</string>
-    <string name="nesta_area_estao_todas_suas_apostas">Nesta área estão todas as suas apostas da sorte. É só escolher e apostar. Boa Sorte!</string>
+    <string name="numeros_da_sorte_no_mesmo_lugar"> </string>
+    <string name="nesta_area_estao_todas_suas_apostas">Seus números da sorte organizados para você escolher e repetir sempre que quiser.</string>
     <string name="informe_codigo_bilhete">Informe o código do bilhete!</string>
     <string name="evento_entrou_tour_tela_1">ENTROU_TOUR_TELA1</string>
     <string name="evento_entrou_tour_tela_2">ENTROU_TOUR_TELA2</string>
@@ -991,6 +991,8 @@
     <string name="textoInfoSelecioneFormaPagamento">textoInfoSelecioneFormaPagamento</string>
     <string name="como_jogar">Como jogar</string>
     <string name="no_whatsapp">Não existe whatsapp instalado neste celular.</string>
+    <string name="cef_id_tit">Caixa Econômica Federal</string>
+    <string name="cef_id1">CNPJ 00.360.305/0001-04\nSBS QUADRA 4 LT 3/4 - ASA SUL\nCEP 70.070-140 BRASILIA - DF</string>
 
     <!-- Tutorial SuperSete -->
     <string name="bem_vindo_super_sete">Bem vindo ao  \n_Super Sete_</string>
@@ -1114,12 +1116,15 @@
     <string name="title_QrCode">QR Code</string>
     <string name="title_digiteSuaAposta">Digite a sua aposta</string>
 
-    <string name="leitor_digital">Leitor Digital</string>
-    <string name="entrar">Entrar</string>
+    <string name="leitor_digital">Acessar com biometria</string>
+    <string name="entrar">Entrar como</string>
+    <string name="ativar_biometria">Necessário habilitar biometria</string>
+    <string name="habilitar">Habilitar</string>
     <string name="desativar_biometria">Desativar biometria</string>
     <string name="desativar_biometria_mensagem">Desaja desativar a biometria e acessar apenas com o Login Caixa?</string>
     <string name="biometria_popup_titulo">Loterias Caixa</string>
     <string name="biometria_popup_descricao">Desbloqueie seu celular</string>
+    <string name="trocar_de_usuario"><u>Trocar de usuário</u></string>
 
 
     <!-- Mensagens Disque 180  -->
