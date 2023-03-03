@@ -36,6 +36,7 @@ import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesMeioPagamentoRecyclerViewAdapter;
@@ -107,13 +108,13 @@ public class MeioPagamentoFragment extends Fragment {
 	private void buscaCartoes() {
 		AlertDialogUtils.show(getContext());
 		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-			model.buscaCartoesMercadoPago(onBuscaMercadoPagoListener());
+			model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_MERCADO_PAGO, onBuscaCartoesListener());
 		} else if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-			// model.buscaCartoesRecargaPay(onBuscaRecargaPayListener());
+			model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_RECARGA_PAY, onBuscaCartoesListener());
 		}
 	}
 
-	private OnSilceListener<List<RetornoCartao>> onBuscaMercadoPagoListener() {
+	private OnSilceListener<List<RetornoCartao>> onBuscaCartoesListener() {
 		return new OnSilceListener<List<RetornoCartao>>() {
 			@Override
 			public void success(List<RetornoCartao> retornoCartaoList) {
@@ -202,9 +203,13 @@ public class MeioPagamentoFragment extends Fragment {
 		int tamanhoCVV = userInput.getText().toString().length();
 		if (tamanhoCVV == 3 || tamanhoCVV == 4) {
 			if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-				requestBody = model.preencheDadosPagamentoCartaoSalvo(cartao, userInput.getText());
+				requestBody = model.preencheDadosPagamentoCartaoSalvoMP(cartao, userInput.getText());
 				runOnUiThread(() -> AlertDialogUtils.show(getContext()));
 				model.realizaCompraMercadoPago(cartao.getPrimeirosDigitos(), requestBody, "false", false, onCompraAsyncListener());
+			} else {
+				runOnUiThread(() -> AlertDialogUtils.show(getContext()));
+				String cvv = userInput.getText().toString();
+				model.recuperaTokenApostadorRecargaPay(onRecuperaTokenListener(cartao, cvv));
 			}
 		} else {
 			ViewUtils.alertTitleButtonPositiveListener(getContext(), R.string.label_atencao, getResources().getString( R.string.label_informa_cvv ), R.string.ok,
@@ -212,12 +217,66 @@ public class MeioPagamentoFragment extends Fragment {
 		}
 	}
 
+	private OnSilceListener<String> onRecuperaTokenListener(RetornoCartao retornoCartao, String cvv) {
+		return new OnSilceListener<String>() {
+			@Override
+			public void success(String token) {
+
+				model.realizaCompraRecargaPayCartaoSalvo(token,retornoCartao.getTokenCartao(), cvv, onRecargaPayListener());
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
+	}
+
+	private OnCompraAsync onRecargaPayListener() {
+		return new OnCompraAsync() {
+			@Override
+			public void successCompra() {
+				onCompraSuccess();
+			}
+
+			@Override
+			public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
+				onCompraRedirect(compraAsyncResponse);
+			}
+
+			@Override
+			public void errorCompra(VolleyError volleyError) {
+				onCompraError(volleyError);
+			}
+		};
+	}
+
+	private void onCompraError(VolleyError volleyError) {
+		RedirectNetwork.checkRedirectCompraAsync( volleyError, getActivity() );
+		AlertDialogUtils.dismiss();
+	}
+
+	private void onCompraRedirect(CompraAsyncResponse compraAsyncResponse) {
+		RedirectNetwork.checkRedirectSucesso(compraAsyncResponse.getRedirect(), getActivity());
+		AlertDialogUtils.dismiss();
+	}
+
+	private void onCompraSuccess() {
+		new CompraModel(getActivity()).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
+		AlertDialogUtils.dismiss();
+		AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
+		RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
+		startActivity(new Intent(getContext(), ConfirmacaoPagamentoActivity.class));
+		CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+		model.limparCarrinhoFavorito();
+	}
+
 	private void deletaCartao(RetornoCartao cartao, int position) {
 		AlertDialogUtils.show(getContext());
 		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-			model.deletaCartaoMercadoPago(cartao.getIdCartao(), onDeletaCartao(position));
+			model.deletaCartao(cartao.getIdCartao().toString(), MeioPagamentoUtils.MP_MERCADO_PAGO, onDeletaCartao(position));
 		} else if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-			//model.deletaCartaoRecargaPay();
+			model.deletaCartao(cartao.getTokenCartao(), MeioPagamentoUtils.MP_RECARGA_PAY, onDeletaCartao(position));
 		}
 	}
 
@@ -263,25 +322,17 @@ public class MeioPagamentoFragment extends Fragment {
 		return new OnCompraAsync() {
 			@Override
 			public void successCompra() {
-				new CompraModel(getActivity()).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
-				AlertDialogUtils.dismiss();
-				AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
-				RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
-				startActivity(new Intent(getContext(), ConfirmacaoPagamentoActivity.class));
-				CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
-				model.limparCarrinhoFavorito();
+				onCompraSuccess();
 			}
 
 			@Override
 			public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
-				RedirectNetwork.checkRedirectSucesso(compraAsyncResponse.getRedirect(), getActivity());
-				AlertDialogUtils.dismiss();
+				onCompraRedirect(compraAsyncResponse);
 			}
 
 			@Override
 			public void errorCompra(VolleyError volleyError) {
-				RedirectNetwork.checkRedirectCompraAsync( volleyError, getActivity() );
-				AlertDialogUtils.dismiss();
+				onCompraError(volleyError);
 			}
 		};
 	}
