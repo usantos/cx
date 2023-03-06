@@ -1,14 +1,11 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
-
 public class BiometriaBO {
 
     private static BiometriaBO instance;
 
     private Boolean biometriaHabilitada = false;
-
+    private Boolean isTrocandoUsuario = false;
 
     private BiometriaBO(){
     }
@@ -26,6 +23,14 @@ public class BiometriaBO {
 
     public void setBiometriaHabilitada(Boolean biometriaHabilitada) {
         this.biometriaHabilitada = biometriaHabilitada;
+    }
+
+    public Boolean isTrocandoUsuario(){
+        return isTrocandoUsuario;
+    }
+
+    public void setIsTrocandoUsuario(boolean isTrocandoUsuario){
+        this.isTrocandoUsuario = isTrocandoUsuario;
     }
 
 }

@@ -47,6 +47,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -132,7 +133,9 @@ public class LoginFragment extends Fragment {
 
         txtTrocaUsuario.setOnClickListener(v13 -> {
             AppCenterManager.registraEvento("ENTROU_LOGIN");
-            connectKeycloak();
+            AlertDialogUtils.show(getContext());
+            BiometriaBO.getInstance().setIsTrocandoUsuario(true);
+            new LoginSSOModel(getActivity()).sair(() -> {});
         });
 
         buttonLogin.setOnClickListener(v12 -> {
@@ -161,7 +164,13 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(LoginSP.isLoginRealizado()) {
+
+        if (BiometriaBO.getInstance().isTrocandoUsuario()){
+            biometriaDesligada();
+            AlertDialogUtils.dismiss();
+            BiometriaBO.getInstance().setIsTrocandoUsuario(false);
+            connectKeycloak();
+        } else if(LoginSP.isLoginRealizado()) {
             if(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() == null){
                 verificarCadastroWebservice();
             }else {
@@ -240,6 +249,7 @@ public class LoginFragment extends Fragment {
         buttonLogin.setText(R.string.label_faca_login_cadastre);
         txtSSO.setVisibility(View.VISIBLE);
         txtTrocaUsuario.setVisibility(View.INVISIBLE);
+        biometriaSwitch.setChecked(false);
     }
 
     private void setBotoesParaToken() {
@@ -337,11 +347,15 @@ public class LoginFragment extends Fragment {
                     }
                     @Override
                     public void right() {
-                        DadosBiometriaBO.limparRegistros(); //Apaga RefreshToken
-                        BiometriaBO.getInstance().setBiometriaHabilitada(false);
-                        setBotoesParaSSO();
+                        biometriaDesligada();
                     }
                 });
+    }
+
+    private void biometriaDesligada() {
+        DadosBiometriaBO.limparRegistros(); //Apaga RefreshToken
+        BiometriaBO.getInstance().setBiometriaHabilitada(false);
+        setBotoesParaSSO();
     }
 
     private <T> OnRefreshTokenListener onRefreshTokenListener() {
