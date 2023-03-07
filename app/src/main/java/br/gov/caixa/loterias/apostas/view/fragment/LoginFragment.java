@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -27,7 +26,6 @@ import java.util.concurrent.Executor;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
@@ -94,16 +92,14 @@ public class LoginFragment extends Fragment {
 
         setUpBiometria();
 
-        biometriaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    BiometriaBO.getInstance().setBiometriaHabilitada(true);
-                    if (!temMatriculaBiometria) {
-                        ligaBiometria();
-                    }
-                } else {
-                    desligaBiometria();
+        biometriaSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                BiometriaBO.getInstance().setBiometriaHabilitada(true);
+                if (!temMatriculaBiometria) {
+                    ligaBiometria();
                 }
+            } else {
+                desligaBiometria();
             }
         });
 
@@ -177,7 +173,6 @@ public class LoginFragment extends Fragment {
                 PrincipalActivity_.intent(getActivity()).start();
                 getActivity().finish();
             }
-
         }
     }
 
@@ -238,11 +233,6 @@ public class LoginFragment extends Fragment {
             Log.e("caixa", "Erro ao conexar com internet LoginFragment.connectKeycloak()");
             ViewUtils.alert(getActivity(), getString(R.string.seminternet));
         }
-    }
-
-    private void loginSucess() {
-        startActivity(new Intent(getActivity(), CadastrarActivity_.class));
-        getActivity().finish();
     }
 
     private void setBotoesParaSSO() {
