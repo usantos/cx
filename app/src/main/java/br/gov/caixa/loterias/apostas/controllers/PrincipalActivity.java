@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -64,12 +63,10 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -85,8 +82,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
+import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
-import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
@@ -102,7 +99,6 @@ import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAd
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
@@ -264,7 +260,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void listenerSair() {
         viewSair.setOnClickListener((View v) -> {
-            sairLogin(this);
+            sairLogin();
         });
     }
 
@@ -592,28 +588,22 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private void sairLogin(Activity activity) {
+    private void sairLogin() {
 
         ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), (dialog, which) -> {
             if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
-                final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
+                AlertDialogUtils.show(PrincipalActivity.this);
 
-                DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
-                dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
+                new LoginSilceModel(PrincipalActivity.this).sair(new OnSilceListener<NetworkResponse>() {
                     @Override
-                    public void onResponse(NetworkResponse response) {
-                        AppCenterManager.registraEvento(getResources().getString(R.string.evento_logout_sucesso));
-
-                        AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO(activity);
-                        LoginSP.loginRealizado(false);
+                    public void success(NetworkResponse payload) {
                         realizandoLogin = true;
-                        loadViewProgress.dismiss();
+                        AlertDialogUtils.dismiss();
                     }
 
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        loadViewProgress.dismiss();
-                        RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                    public void error(VolleyError error) {
+                        AlertDialogUtils.dismiss();
                     }
                 });
             } else {

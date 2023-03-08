@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -27,7 +26,6 @@ import java.util.concurrent.Executor;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
@@ -47,6 +45,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -93,16 +92,14 @@ public class LoginFragment extends Fragment {
 
         setUpBiometria();
 
-        biometriaSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    BiometriaBO.getInstance().setBiometriaHabilitada(true);
-                    if (!temMatriculaBiometria) {
-                        ligaBiometria();
-                    }
-                } else {
-                    desligaBiometria();
+        biometriaSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                BiometriaBO.getInstance().setBiometriaHabilitada(true);
+                if (!temMatriculaBiometria) {
+                    ligaBiometria();
                 }
+            } else {
+                desligaBiometria();
             }
         });
 
@@ -132,7 +129,9 @@ public class LoginFragment extends Fragment {
 
         txtTrocaUsuario.setOnClickListener(v13 -> {
             AppCenterManager.registraEvento("ENTROU_LOGIN");
-            connectKeycloak();
+            AlertDialogUtils.show(getContext());
+            BiometriaBO.getInstance().setIsTrocandoUsuario(true);
+            new LoginSSOModel(getActivity()).sair(() -> {});
         });
 
         buttonLogin.setOnClickListener(v12 -> {
@@ -161,14 +160,19 @@ public class LoginFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(LoginSP.isLoginRealizado()) {
+
+        if (BiometriaBO.getInstance().isTrocandoUsuario()){
+            biometriaDesligada();
+            AlertDialogUtils.dismiss();
+            BiometriaBO.getInstance().setIsTrocandoUsuario(false);
+            connectKeycloak();
+        } else if(LoginSP.isLoginRealizado()) {
             if(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() == null){
                 verificarCadastroWebservice();
             }else {
                 PrincipalActivity_.intent(getActivity()).start();
                 getActivity().finish();
             }
-
         }
     }
 
@@ -231,15 +235,11 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void loginSucess() {
-        startActivity(new Intent(getActivity(), CadastrarActivity_.class));
-        getActivity().finish();
-    }
-
     private void setBotoesParaSSO() {
         buttonLogin.setText(R.string.label_faca_login_cadastre);
         txtSSO.setVisibility(View.VISIBLE);
         txtTrocaUsuario.setVisibility(View.INVISIBLE);
+        biometriaSwitch.setChecked(false);
     }
 
     private void setBotoesParaToken() {
@@ -337,11 +337,15 @@ public class LoginFragment extends Fragment {
                     }
                     @Override
                     public void right() {
-                        DadosBiometriaBO.limparRegistros(); //Apaga RefreshToken
-                        BiometriaBO.getInstance().setBiometriaHabilitada(false);
-                        setBotoesParaSSO();
+                        biometriaDesligada();
                     }
                 });
+    }
+
+    private void biometriaDesligada() {
+        DadosBiometriaBO.limparRegistros(); //Apaga RefreshToken
+        BiometriaBO.getInstance().setBiometriaHabilitada(false);
+        setBotoesParaSSO();
     }
 
     private <T> OnRefreshTokenListener onRefreshTokenListener() {
