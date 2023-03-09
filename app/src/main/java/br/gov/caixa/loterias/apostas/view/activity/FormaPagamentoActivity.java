@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -74,12 +75,17 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 			@Override
 			public void success(List<MeioPagamentoDTO> payload) {
 				if (payload != null && !payload.isEmpty()){
+					if(retornoServicoContemPix(payload)){
+
+					}
+					boolean primeiroMeioPagamentoCartao = true;
 					for (MeioPagamentoDTO meioPagamento: payload){
 						if (MeioPagamentoUtils.isMercadoPago(meioPagamento.getId())){
-							startFragmentMercadoPago();
+							startFragmentMercadoPago(primeiroMeioPagamentoCartao);
 						} else if (MeioPagamentoUtils.isRecargaPay(meioPagamento.getId())){
-							startFragmentRecargaPay();
+							startFragmentRecargaPay(primeiroMeioPagamentoCartao);
 						}
+						primeiroMeioPagamentoCartao = false;
 					}
 				}
 
@@ -92,6 +98,10 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 				AlertDialogUtils.dismiss();
 			}
 		};
+	}
+
+	private boolean retornoServicoContemPix(List<MeioPagamentoDTO> payload) {
+		return true;
 	}
 
 	private void configMenu() {
@@ -111,11 +121,11 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		return true;
 	}
 
-	private void startFragmentRecargaPay() {
+	private void startFragmentRecargaPay(boolean primeiroMeioPagamentoCartao) {
 		frameRecargaPay = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentRecargaPay,
-									new MeioPagamentoConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, getRecargaPay()));
+									new MeioPagamentoConfig(getTituloCartaoDeCredito(primeiroMeioPagamentoCartao), R.color.laranja_recarga_pay, R.drawable.recargapay, getRecargaPay()));
 	}
 
 
@@ -133,11 +143,20 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		return recarga;
 	}
 
-	private void startFragmentMercadoPago() {
+	private void startFragmentMercadoPago(boolean primeiroMeioPagamentoCartao) {
 		frameMercadoPago = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentMercadoPago,
-									new MeioPagamentoConfig(R.color.azul_mercado_pago, R.drawable.ic_mercado_pago, getMercadoPago()));
+									new MeioPagamentoConfig(getTituloCartaoDeCredito(primeiroMeioPagamentoCartao), R.color.azul_mercado_pago, R.drawable.ic_mercado_pago, getMercadoPago()));
+	}
+
+	@NonNull
+	private String getTituloCartaoDeCredito(boolean primeiroMeioPagamentoCartao) {
+		String titulo = "";
+		if (primeiroMeioPagamentoCartao){
+			titulo = getString(R.string.cartao_de_credito);
+		}
+		return titulo;
 	}
 
 }

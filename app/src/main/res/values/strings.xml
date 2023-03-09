@@ -1074,7 +1074,7 @@
     <string name="digitar_codigo">Digitar o código</string>
     <string name="tentar_novamente">Tentar novamente</string>
     <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
-    <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a opção de sua preferência e preencher os dados do cartão de crédito</string>
+    <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a forma de pagamento de sua preferencia.</string>
     <string name="adicionar_cartao">Adicionar cartão</string>
     <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
     <string name="nao_e_possivel_eliminar_cartao_favorito">Não é possível eliminar o cartão favorito.</string>
@@ -1130,4 +1130,5 @@
     <!-- Mensagens Disque 180  -->
     <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
     <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
+    <string name="cartao_de_credito">Cartão de Crédito</string>
 </resources>

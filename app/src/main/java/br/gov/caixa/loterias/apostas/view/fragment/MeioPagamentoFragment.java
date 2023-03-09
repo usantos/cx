@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -56,6 +57,7 @@ public class MeioPagamentoFragment extends Fragment {
 	private ConstraintLayout btnAdd;
 	private ConstraintLayout cabecalho;
 	private EditText userInput;
+	private TextView titulo;
 
 	private RecyclerView listaCartoes;
 	private CartoesMeioPagamentoRecyclerViewAdapter adapter;
@@ -97,6 +99,7 @@ public class MeioPagamentoFragment extends Fragment {
 		btnAdd = view.findViewById(R.id.addCartao);
 		cabecalho = view.findViewById(R.id.cabecalho);
 		listaCartoes = view.findViewById(R.id.listaCartoes);
+		titulo = view.findViewById(R.id.titulo);
 
 		buscaCartoes();
 		aplicaConfig();
@@ -314,7 +317,10 @@ public class MeioPagamentoFragment extends Fragment {
 			btnAdd.setBackground(getActivity().getDrawable(config.getIdCorBarra()));
 			btnAdd.getBackground().setAlpha(20);
 			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
-
+			if (config.getTitulo() != null && !config.getTitulo().isEmpty()){
+				titulo.setText(config.getTitulo());
+				titulo.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 

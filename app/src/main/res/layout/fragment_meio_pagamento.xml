@@ -4,8 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:layout_constraintHeight_max="400dp"
+    android:paddingBottom="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragment.MeioPagamentoFragment">
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Título"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:textColor="@color/azul_alterar"
+        android:layout_marginStart="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cabecalho"
@@ -13,7 +28,7 @@
         android:layout_height="wrap_content"
         android:background="@color/branco"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/titulo">
 
         <View
             android:id="@+id/margem"
