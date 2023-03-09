@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import java.util.Date;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.AdicionaCartaoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
@@ -305,6 +306,13 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void configButton() {
 		btnAdd.setOnClickListener(v -> goToAddCartao());
+		if (configIsPix()){
+			cabecalho.setOnClickListener(v -> goToPagamentoPix());
+		}
+	}
+
+	private void goToPagamentoPix() {
+		startActivity(IntentUtil.getIntentOrigemDestino(getActivity(), OrientacaoPixActivity.class));
 	}
 
 	private void goToAddCartao(){

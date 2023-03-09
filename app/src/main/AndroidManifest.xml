@@ -38,6 +38,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
         <activity
+            android:name=".OrientacaoPixActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="false" />
