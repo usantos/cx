@@ -9,18 +9,14 @@ public class MeioPagamentoConfig implements Serializable {
 	private int idCorBarra;
 	private int idImagem;
 	private DTOEnumLong meioPagamento;
+	private boolean showSeta = false;
 
-	public MeioPagamentoConfig(String titulo, int idCorBarra, int idImagem, DTOEnumLong meioPagamento) {
+	public MeioPagamentoConfig(String titulo, int idCorBarra, int idImagem, DTOEnumLong meioPagamento, boolean showSeta) {
 		this.titulo = titulo;
 		this.idCorBarra = idCorBarra;
 		this.idImagem = idImagem;
 		this.meioPagamento = meioPagamento;
-	}
-
-	public MeioPagamentoConfig( int idCorBarra, int idImagem, DTOEnumLong meioPagamento) {
-		this.idCorBarra = idCorBarra;
-		this.idImagem = idImagem;
-		this.meioPagamento = meioPagamento;
+		this.showSeta = showSeta;
 	}
 
 	public int getIdCorBarra() {
@@ -36,4 +32,8 @@ public class MeioPagamentoConfig implements Serializable {
 	}
 
 	public String getTitulo(){ return titulo;}
+
+	public boolean isShowSeta(){
+		return showSeta;
+	}
 }

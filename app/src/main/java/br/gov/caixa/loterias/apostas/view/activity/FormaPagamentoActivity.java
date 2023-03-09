@@ -29,11 +29,12 @@ import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 
 public class FormaPagamentoActivity extends AppCompatActivity {
 
-	private MeioPagamentoFragment frameMercadoPago, frameRecargaPay;
+	private MeioPagamentoFragment frameMercadoPago, frameRecargaPay, framePix;
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
 
 	private MeioPagamentoModel model;
+	private boolean carregouConteudo = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +49,14 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		configMenu();
 
 		model = new MeioPagamentoModel(FormaPagamentoActivity.this);
+	}
 
-		buscaMeiosPagamentos();
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (!carregouConteudo){
+			buscaMeiosPagamentos();
+		}
 	}
 
 	private void apresentaAlertaPreCompra() {
@@ -76,7 +83,8 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 			public void success(List<MeioPagamentoDTO> payload) {
 				if (payload != null && !payload.isEmpty()){
 					if(retornoServicoContemPix(payload)){
-
+						startFragmentPix();
+						carregouConteudo = true;
 					}
 					boolean primeiroMeioPagamentoCartao = true;
 					for (MeioPagamentoDTO meioPagamento: payload){
@@ -86,6 +94,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 							startFragmentRecargaPay(primeiroMeioPagamentoCartao);
 						}
 						primeiroMeioPagamentoCartao = false;
+						carregouConteudo = true;
 					}
 				}
 
@@ -125,29 +134,45 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		frameRecargaPay = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentRecargaPay,
-									new MeioPagamentoConfig(getTituloCartaoDeCredito(primeiroMeioPagamentoCartao), R.color.laranja_recarga_pay, R.drawable.recargapay, getRecargaPay()));
-	}
-
-
-	private DTOEnumLong getRecargaPay() {
-		DTOEnumLong recarga = new DTOEnumLong();
-		recarga.setValor(5L);
-		recarga.setDescricao("RecargaPay");
-		return recarga;
-	}
-
-	private DTOEnumLong getMercadoPago() {
-		DTOEnumLong recarga = new DTOEnumLong();
-		recarga.setValor(1L);
-		recarga.setDescricao("Mercado pago");
-		return recarga;
+									getConfigRecarga(primeiroMeioPagamentoCartao));
 	}
 
 	private void startFragmentMercadoPago(boolean primeiroMeioPagamentoCartao) {
 		frameMercadoPago = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentMercadoPago,
-									new MeioPagamentoConfig(getTituloCartaoDeCredito(primeiroMeioPagamentoCartao), R.color.azul_mercado_pago, R.drawable.ic_mercado_pago, getMercadoPago()));
+									getConfigMercadoPago(primeiroMeioPagamentoCartao));
+	}
+
+	private void startFragmentPix() {
+		framePix = FragmentUtils.startMeioPagamento(getSupportFragmentManager(),
+													R.id.fragmentPix,
+													getConfigPix());
+	}
+
+	private MeioPagamentoConfig getConfigPix() {
+		return new MeioPagamentoConfig("Pix",
+									   R.color.verde_pix,R.drawable.ic_pix,
+									   getDTOENUM(2L,"Pix"), true);
+	}
+
+	private MeioPagamentoConfig getConfigRecarga(boolean primeiroMeioPagamentoCartao) {
+		return new MeioPagamentoConfig(getTituloCartaoDeCredito(primeiroMeioPagamentoCartao),
+									   R.color.laranja_recarga_pay, R.drawable.recargapay,
+									   getDTOENUM(5L,"RecargaPay"), false);
+	}
+
+	private MeioPagamentoConfig getConfigMercadoPago(boolean primeiroMeioPagamentoCartao) {
+		return new MeioPagamentoConfig(getTituloCartaoDeCredito(primeiroMeioPagamentoCartao),
+									   R.color.azul_mercado_pago, R.drawable.ic_mercado_pago,
+									   getDTOENUM(1L,"Mercado pago"), false);
+	}
+
+	private DTOEnumLong getDTOENUM(Long valor, String descricao) {
+		DTOEnumLong recarga = new DTOEnumLong();
+		recarga.setValor(valor);
+		recarga.setDescricao(descricao);
+		return recarga;
 	}
 
 	@NonNull

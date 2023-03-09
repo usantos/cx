@@ -39,6 +39,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesMeioPagamentoRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -58,6 +59,7 @@ public class MeioPagamentoFragment extends Fragment {
 	private ConstraintLayout cabecalho;
 	private EditText userInput;
 	private TextView titulo;
+	private AppCompatImageView seta;
 
 	private RecyclerView listaCartoes;
 	private CartoesMeioPagamentoRecyclerViewAdapter adapter;
@@ -100,6 +102,7 @@ public class MeioPagamentoFragment extends Fragment {
 		cabecalho = view.findViewById(R.id.cabecalho);
 		listaCartoes = view.findViewById(R.id.listaCartoes);
 		titulo = view.findViewById(R.id.titulo);
+		seta = view.findViewById(R.id.seta);
 
 		buscaCartoes();
 		aplicaConfig();
@@ -316,12 +319,29 @@ public class MeioPagamentoFragment extends Fragment {
 			margem.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
 			btnAdd.setBackground(getActivity().getDrawable(config.getIdCorBarra()));
 			btnAdd.getBackground().setAlpha(20);
+			seta.setImageDrawable(VectorUtils.getShape(R.drawable.ic_chevron_right, config.getIdCorBarra()));
 			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
 			if (config.getTitulo() != null && !config.getTitulo().isEmpty()){
 				titulo.setText(config.getTitulo());
 				titulo.setVisibility(View.VISIBLE);
 			}
+			if (configIsPix()){
+				view.findViewById(R.id.backgroundAddCartao).setVisibility(View.GONE);
+			}
+			if (config.isShowSeta()){
+				seta.setVisibility(View.VISIBLE);
+			} else {
+				seta.setVisibility(View.GONE);
+			}
 		}
+	}
+
+	private boolean configIsPix() {
+		return  config != null &&
+				config.getMeioPagamento() != null &&
+				config.getMeioPagamento().getValor() != null &&
+				config.getMeioPagamento().getValor() == 2L;
+
 	}
 
 	private OnCompraAsync onCompraAsyncListener() {
