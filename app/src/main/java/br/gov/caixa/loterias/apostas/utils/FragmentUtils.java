@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.OrientacaoPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
@@ -57,5 +58,12 @@ public class FragmentUtils {
 		return fragment;
 	}
 
-
+	public static OrientacaoPixFragment startOrientacaoPix(FragmentManager fm, int id) {
+		OrientacaoPixFragment fragment = null;
+		if(fragment == null){
+			fragment = OrientacaoPixFragment.newInstance();
+			FragmentUtils.startFragment(fm, id, fragment);
+		}
+		return fragment;
+	}
 }

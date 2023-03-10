@@ -9,12 +9,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.fragment.OrientacaoPixFragment;
 
 public class OrientacaoPixActivity extends AppCompatActivity {
 
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
+
+	private OrientacaoPixFragment orientacaoPixFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,11 @@ public class OrientacaoPixActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_orientacao_pix);
 
 		configToolbar();
+		startFragment();
+	}
+
+	private void startFragment() {
+		orientacaoPixFragment = FragmentUtils.startOrientacaoPix(getSupportFragmentManager(),R.id.fragmentOrientacaoPix);
 	}
 
 	private void configToolbar() {
@@ -42,4 +51,6 @@ public class OrientacaoPixActivity extends AppCompatActivity {
 		Intent intent = new Intent(getBaseContext(), TermosUsoActivity.class);
 		startActivity(intent);
 	}
+
+
 }

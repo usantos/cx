@@ -113,10 +113,11 @@ public class MeioPagamentoFragment extends Fragment {
 	}
 
 	private void buscaCartoes() {
-		AlertDialogUtils.show(getContext());
 		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
+			AlertDialogUtils.show(getContext());
 			model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_MERCADO_PAGO, onBuscaCartoesListener());
 		} else if (model.isRecargaPay(config.getMeioPagamento().getValor())){
+			AlertDialogUtils.show(getContext());
 			model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_RECARGA_PAY, onBuscaCartoesListener());
 		}
 	}
