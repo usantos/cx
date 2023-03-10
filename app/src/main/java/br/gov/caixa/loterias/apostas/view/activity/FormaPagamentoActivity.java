@@ -16,7 +16,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
@@ -147,32 +146,15 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 	private void startFragmentPix() {
 		framePix = FragmentUtils.startMeioPagamento(getSupportFragmentManager(),
 													R.id.fragmentPix,
-													getConfigPix());
-	}
-
-	private MeioPagamentoConfig getConfigPix() {
-		return new MeioPagamentoConfig("Pix",
-									   R.color.verde_pix,R.drawable.ic_pix,
-									   getDTOENUM(2L,"Pix"), true);
+													MeioPagamentoUtils.getConfigPix(true));
 	}
 
 	private MeioPagamentoConfig getConfigRecarga(boolean primeiroMeioPagamentoCartao) {
-		return new MeioPagamentoConfig(getTituloCartaoDeCredito(primeiroMeioPagamentoCartao),
-									   R.color.laranja_recarga_pay, R.drawable.recargapay,
-									   getDTOENUM(5L,"RecargaPay"), false);
+		return MeioPagamentoUtils.getConfigRecarga(getTituloCartaoDeCredito(primeiroMeioPagamentoCartao), false);
 	}
 
 	private MeioPagamentoConfig getConfigMercadoPago(boolean primeiroMeioPagamentoCartao) {
-		return new MeioPagamentoConfig(getTituloCartaoDeCredito(primeiroMeioPagamentoCartao),
-									   R.color.azul_mercado_pago, R.drawable.ic_mercado_pago,
-									   getDTOENUM(1L,"Mercado pago"), false);
-	}
-
-	private DTOEnumLong getDTOENUM(Long valor, String descricao) {
-		DTOEnumLong recarga = new DTOEnumLong();
-		recarga.setValor(valor);
-		recarga.setDescricao(descricao);
-		return recarga;
+		return MeioPagamentoUtils.getConfigMercadoPago(getTituloCartaoDeCredito(primeiroMeioPagamentoCartao), false);
 	}
 
 	@NonNull
