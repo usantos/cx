@@ -49,6 +49,7 @@
     <string name="label_compra_lista_situacao_descricao">Situação: _%s_</string>
     <string name="label_compra_lista_processada_por">Compra processada por: _%s_</string>
     <string name="label_compra_lista_alterar_compra">Alterar Compra</string>
+    <string name="label_compra_lista_tentar_novamente">Tentar Novamente</string>
 
     <string name="label_atencao">Atenção</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>

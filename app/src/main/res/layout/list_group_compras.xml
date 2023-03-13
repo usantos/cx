@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:gravity="start"
-                tools:text="TextView" />
+                tools:text="" />
 
             <TextView
                 android:id="@+id/valorCompra"
@@ -128,7 +128,7 @@
     <Button
         android:id="@+id/btnMinhasCompras"
         android:layout_width="match_parent"
-        android:layout_height="25.5dp"
+        android:layout_height="30dp"
         android:text="@string/label_compra_lista_alterar_compra"
         android:textColor="@color/branco"
         android:textAllCaps="false"
@@ -148,7 +148,7 @@
         android:layout_width="11dp"
         android:layout_height="20dp"
         android:layout_gravity="end"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/seta_direita_cinza"
         android:padding="7dp"

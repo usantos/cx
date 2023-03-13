@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -57,8 +58,14 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 
 		//*** Mock - APAGAR ***
 		if (ordemLista == 1 || ordemLista == 3 || ordemLista == 4) {
-			item.getMeioPagamento().setValor(6l); //PIX
 			contagem_regressiva_incial = ordemLista * 60;
+			item.getMeioPagamento().setValor(6l); //PIX
+			item.getSituacao().setValor(7l);
+			item.getSituacao().setDescricao("Aguardando pagamento");
+			if (ordemLista == 4) {
+				item.getSituacao().setValor(3l);
+				item.getSituacao().setDescricao("Pagamento não realizado");
+			}
 		}
 
 		this.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_situacao_descricao,
@@ -92,14 +99,27 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		if (item.getMeioPagamento().getValor() == MeioPagamentoUtil.PIX) {
 
 			if (SituacaoCompraUtil.isSituacaoProcessamento(item.getSituacao())) {
-				ContagemRegressiva contagemRegressiva = new ContagemRegressiva(contadorDown, contagem_regressiva_incial * 1000, 1 * 1000);
-				contagemRegressiva.start();
+				imageViewRelogio.setVisibility(View.VISIBLE);
+				contadorDown.setVisibility(View.VISIBLE);
+				btnMinhasCompras.setVisibility(View.VISIBLE);
 
+				ContagemRegressiva contagemRegressiva = new ContagemRegressiva(contadorDown,contagem_regressiva_incial * 1000, 1 * 1000) {
+					@Override
+					public void onFinish() {
+						btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
+								context.getString(R.string.label_compra_lista_tentar_novamente)));
+					}
+				};
+				contagemRegressiva.start();
+				btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
+						context.getString(R.string.label_compra_lista_alterar_compra)));
 			}
 
-
-			btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
-					context.getString(R.string.label_compra_lista_alterar_compra)));
+			if (SituacaoCompraUtil.isSituacaoNegativa(item.getSituacao())) {
+				btnMinhasCompras.setVisibility(View.VISIBLE);
+				btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
+						context.getString(R.string.label_compra_lista_tentar_novamente)));
+			}
 		}
 
 		this.itemView.setOnClickListener(view -> {
