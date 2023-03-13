@@ -1132,4 +1132,15 @@
         <item>Novembro</item>
         <item>Dezembro</item>
     </string-array>
+
+    <string name="como_pagar_pix">Como pagar com pix</string>
+    <string-array name="orientacao_pix_list">
+        <item>Copie o código gerado e pague em até 10 minutos;</item>
+        <item>Entre no aplicativo da sua instituição financeira e acesse o ambiente Pix;</item>
+        <item>Escolha a opção Pix Copia e Cola;</item>
+        <item>Cole o código Pix;</item>
+        <item>Confirme as informações e realize o pagamento.</item>
+    </string-array>
+    <string name="orientacao_pix_checkbox">Estou ciente que somente será aceito o pagamento realizado em conta de titularidade do apostador.</string>
+    <string name="pagar_agora">Pagar agora!</string>
 </resources>

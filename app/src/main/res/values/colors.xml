@@ -151,6 +151,7 @@
     <color name="azul_mercado_pago">#50B4E9</color>
     <color name="laranja_recarga_pay">#FE8832</color>
     <color name="verde_pix">#32BCAD</color>
+    <color name="cinza_pix_disabled">#757575</color>
 
 
     <color name="azul_efetivada">#143DA6</color>
