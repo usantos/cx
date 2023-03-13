@@ -44,8 +44,11 @@
     <string name="label_nao">Não</string>
     <string name="label_compra_valor">Compra %d</string>
 
-    <string name="label_compra_lista_valor">_Total:_\n %s</string>
-    <string name="label_compra_lista_situacao">_Situação:_ %s</string>
+    <string name="label_compra_lista_valor">_Total:_</string>
+    <string name="label_compra_lista_situacao">Situação:</string>
+    <string name="label_compra_lista_situacao_descricao">Situação: _%s_</string>
+    <string name="label_compra_lista_processada_por">Compra processada por: _%s_</string>
+    <string name="label_compra_lista_alterar_compra">Alterar Compra</string>
 
     <string name="label_atencao">Atenção</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
