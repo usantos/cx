@@ -1076,6 +1076,7 @@
     <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
     <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a forma de pagamento de sua preferencia.</string>
     <string name="leia_instrucoes_pix">Antes de prosseguir, leia atentamente as instruções abaixo.</string>
+    <string name="copia_codigo_instrucoes_pix">Copie o código abaixo e utilize o Pix Copia e Cola no aplicativo que você fará o pagamento.</string>
     <string name="adicionar_cartao">Adicionar cartão</string>
     <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
     <string name="nao_e_possivel_eliminar_cartao_favorito">Não é possível eliminar o cartão favorito.</string>
@@ -1118,6 +1119,10 @@
     <!-- Mensagens Disque 180  -->
     <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
     <string name="cartao_de_credito">Cartão de Crédito</string>
+    <string name="como_pagar_pix">Como pagar com pix</string>
+
+    <string name="orientacao_pix_checkbox">Estou ciente que somente será aceito o pagamento realizado em conta de titularidade do apostador.</string>
+    <string name="pagar_agora">Pagar agora!</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
@@ -1132,8 +1137,6 @@
         <item>Novembro</item>
         <item>Dezembro</item>
     </string-array>
-
-    <string name="como_pagar_pix">Como pagar com pix</string>
     <string-array name="orientacao_pix_list">
         <item>Copie o código gerado e pague em até 10 minutos;</item>
         <item>Entre no aplicativo da sua instituição financeira e acesse o ambiente Pix;</item>
@@ -1141,6 +1144,4 @@
         <item>Cole o código Pix;</item>
         <item>Confirme as informações e realize o pagamento.</item>
     </string-array>
-    <string name="orientacao_pix_checkbox">Estou ciente que somente será aceito o pagamento realizado em conta de titularidade do apostador.</string>
-    <string name="pagar_agora">Pagar agora!</string>
 </resources>
