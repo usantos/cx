@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -273,6 +274,13 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void criarCabecalho() {
+        //Desabilita componentes
+        ImageView imageViewRelogio = findViewById(R.id.imageViewRelogio);
+        imageViewRelogio.setVisibility(View.GONE);
+        TextView contadorDown = findViewById(R.id.contadorDown);
+        contadorDown.setVisibility(View.GONE);
+        Button btnMinhasCompras = findViewById(R.id.btnMinhasCompras);
+        btnMinhasCompras.setVisibility(View.GONE);
         FrameLayout setaIndicador = findViewById(R.id.setaComprasGroup);
         setaIndicador.setVisibility(View.INVISIBLE);
 
@@ -280,11 +288,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         if(compraDTO.getDataFinalizacaoCompra() != null){
             dataCompra.setText("Data: " + compraDTO.getDataFinalizacaoCompra());
         }
+
+        TextView textTotal = findViewById(R.id.txtTotal);
+        textTotal.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_valor)));
+
         TextView valorCompra = findViewById(R.id.valorCompra);
-        valorCompra.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_valor,
-                ViewUtils.getMoedaFormat(compraDTO.getValorTotal()))));
+        valorCompra.setText(ViewUtils.getMoedaFormat(compraDTO.getValorTotal()));
 
         TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
+        situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao_descricao,
+                compraDTO.getSituacao().getDescricao())));
 
         if (SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
             situacaoCompraTextView.setTextColor(getResources().getColor(R.color.azul_minhas_compras));
@@ -294,13 +307,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             situacaoCompraTextView.setTextColor(getResources().getColor(R.color.amarelo_minhas_compras));
         }
 
-        situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao,
-                compraDTO.getSituacao().getDescricao())));
         ImageButton ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
+        ibFavoritar.setVisibility(View.VISIBLE);
         ibFavoritar.setOnClickListener(v -> {
                     configuraVisibilidadeMantSurpresinha(listaAposta);
                 });
-
     }
 
     private void verificaCompraProcessada() {
@@ -314,6 +325,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             }
             if (MeioPagamentoUtil.isRecargaPay(compraDTO.getMeioPagamento())) {
                 imageView.setImageDrawable(getResources().getDrawable(R.drawable.recargapay));
+            }
+            if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())) {
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_pix));
             }
         }
     }
