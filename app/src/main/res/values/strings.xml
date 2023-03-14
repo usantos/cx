@@ -59,6 +59,7 @@
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
     <string name="confirmacao">Confirmação</string>
     <string name="label_acompanhe_suas_compras">_Ir para_\ncompras</string>
+    <string name="label_acompanhe_suas_compras_Pix">_Acompanhe_\nsuas compras</string>
     <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
 
@@ -70,8 +71,10 @@
 
     <string name="total">Total</string>
 
+    <string name="confirmacaoPagamentoInfoApostasPIX">Acompanhe a situação \ne detalhamento da compra. \nVocê estará concorrendo quando \na APOSTA aparececer como EFETIVADA.</string>
     <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
+    <string name="confirmacaopagamentoParabensPix">SUA COMPRA ESTÁ EM PROCESSAMENTO</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
