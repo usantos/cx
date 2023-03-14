@@ -196,7 +196,7 @@
     <string name="label_quantidade_gols_cada_time">a quantidade de gols de cada time.</string>
     <string name="title_activity_favoritas">Favoritas</string>
     <string name="title_activity_favoritas_bold">_Apostas Favoritas_</string>
-    <string name="title_activity_lista_compras">Compras</string>
+    <string name="title_activity_lista_compras">Minhas Compras</string>
 
     <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
     <string name="btn_entendi">entendi</string>
