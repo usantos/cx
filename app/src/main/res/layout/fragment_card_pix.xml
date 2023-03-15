@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.fragment.MeioPagamentoFragment">
+    tools:context=".view.fragment.CardPixFragment">
 
     <TextView
         android:id="@+id/titulo"
@@ -64,6 +64,7 @@
                 android:text="R$ 40,00"
                 android:textStyle="bold"
                 android:textSize="15sp"
+                android:textColor="@color/cinzaescuro"
                 android:layout_marginEnd="28dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

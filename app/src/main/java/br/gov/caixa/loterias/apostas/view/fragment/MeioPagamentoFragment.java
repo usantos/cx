@@ -349,7 +349,7 @@ public class MeioPagamentoFragment extends Fragment {
 		return  config != null &&
 				config.getMeioPagamento() != null &&
 				config.getMeioPagamento().getValor() != null &&
-				config.getMeioPagamento().getValor() == 2L;
+				config.getMeioPagamento().getValor() == MeioPagamentoUtils.PIX;
 
 	}
 

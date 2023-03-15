@@ -43,6 +43,8 @@ public class CardPixFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_card_pix, container, false);
 
+		view.findViewById(R.id.contuedo).setBackgroundColor(getResources().getColor(R.color.verde_pix));
+
 		startFragment();
 
 		return view;
