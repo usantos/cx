@@ -1146,7 +1146,7 @@
     </string-array>
     <string-array name="orientacao_pix_list">
         <item>Copie o código gerado e pague em até 10 minutos;</item>
-        <item>Entre no aplicativo da sua instituição financeira e acesse o ambiente Pix;</item>
+        <item>Entre no aplicativo da sua instituição financeira e \nacesse o ambiente Pix;</item>
         <item>Escolha a opção Pix Copia e Cola;</item>
         <item>Cole o código Pix;</item>
         <item>Confirme as informações e realize o pagamento.</item>
