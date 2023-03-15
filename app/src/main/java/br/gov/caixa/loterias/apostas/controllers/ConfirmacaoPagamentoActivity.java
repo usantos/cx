@@ -26,6 +26,29 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
     public void onBackPressed() { }
 
     private void configuraBotoes(){
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            int pix = bundle.getInt("Pix");
+
+            if (pix == 6) {
+                ((Button) findViewById(R.id.botaoVoltarInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
+                ((Button) findViewById(R.id.botaoAcompanheSuasCompras)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_acompanhe_suas_compras_Pix)));
+
+                findViewById(R.id.botaoVoltarInicio).setOnClickListener(view -> PrincipalActivity_.intent(ConfirmacaoPagamentoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start());
+
+                findViewById(R.id.botaoAcompanheSuasCompras).setOnClickListener(view ->
+                        startActivity(new Intent(ConfirmacaoPagamentoActivity.this, ListaComprasActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |  Intent.FLAG_ACTIVITY_SINGLE_TOP)));
+
+                findViewById(R.id.botao_termo).setOnClickListener(v -> {
+                    Intent activity = new Intent(this, TermosUsoActivity.class);
+                    startActivity(activity);
+                });
+                return;
+            }
+
+        }
+
         ((Button) findViewById(R.id.botaoVoltarInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
         ((Button) findViewById(R.id.botaoAcompanheSuasCompras)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_acompanhe_suas_compras)));
 

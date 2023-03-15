@@ -79,7 +79,6 @@
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
     <string name="label_concurso_atual">Informações do concurso atual</string>
-
     <string name="novaFormaPagamentoTitulo">Cadastrar cartão</string>
     <string name="novaFormaPagamentoNenhumCartaoCadastrado">Notamos que você ainda não possui nenhum cartão de crédito cadastrado. Para continuar, informe:</string>
     <string name="title_activity_main_teste">MainTesteActivity</string>
