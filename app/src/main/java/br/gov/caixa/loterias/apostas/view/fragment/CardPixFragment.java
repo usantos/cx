@@ -53,7 +53,7 @@ public class CardPixFragment extends Fragment {
 			view.findViewById(R.id.valor_pix).setVisibility(View.GONE);
 			FragmentUtils.startOrientacaoPix(getActivity().getSupportFragmentManager(),R.id.corpo);
 		} else if (numeroTela == 2){
-
+			FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(),R.id.corpo);
 		}
 	}
 

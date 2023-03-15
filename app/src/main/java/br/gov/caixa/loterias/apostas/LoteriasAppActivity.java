@@ -32,4 +32,10 @@ public class LoteriasAppActivity extends AppCompatActivity {
 		startActivity(intent);
 	}
 
+	@Override
+	public boolean onSupportNavigateUp() {
+		finish();
+		return true;
+	}
+
 }

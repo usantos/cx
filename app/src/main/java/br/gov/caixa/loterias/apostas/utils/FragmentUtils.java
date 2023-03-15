@@ -11,6 +11,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
+import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
@@ -37,7 +38,6 @@ public class FragmentUtils {
 	public static MeusCartoesFragment meusCartoesFragment(FragmentManager fm, int id, List<RetornoCartao> cartoes, MeusCartoesConfig config) {
 		MeusCartoesFragment fragment = MeusCartoesFragment.newInstance(cartoes, config);
 		FragmentUtils.startFragment(fm, id, fragment);
-
 		return fragment;
 
 	}
@@ -51,29 +51,26 @@ public class FragmentUtils {
 	}
 
 	public static MeioPagamentoFragment startMeioPagamento(FragmentManager fm, int id, MeioPagamentoConfig config) {
-		MeioPagamentoFragment fragment = null;
-		if(fragment == null){
-			fragment = MeioPagamentoFragment.newInstance(config);
-			FragmentUtils.startFragment(fm, id, fragment);
-		}
+		MeioPagamentoFragment fragment = MeioPagamentoFragment.newInstance(config);
+		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
 	}
 
-	public static CardPixFragment startCardOrientacaoPix(FragmentManager fm, int id) {
-		CardPixFragment fragment = null;
-		if(fragment == null){
-			fragment = CardPixFragment.newInstance(PixUtils.TELA_ORIENTACAO_PIX);
-			FragmentUtils.startFragment(fm, id, fragment);
-		}
+	public static CardPixFragment startCardPix(FragmentManager fm, int id, int tela) {
+		CardPixFragment fragment = CardPixFragment.newInstance(tela);
+		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
 	}
 
 	public static OrientacaoPixFragment startOrientacaoPix(FragmentManager fm, int id) {
-		OrientacaoPixFragment fragment = null;
-		if(fragment == null){
-			fragment = OrientacaoPixFragment.newInstance();
-			FragmentUtils.startFragment(fm, id, fragment);
-		}
+		OrientacaoPixFragment fragment = OrientacaoPixFragment.newInstance();
+		FragmentUtils.startFragment(fm, id, fragment);
+		return fragment;
+	}
+
+	public static CopiaColaPixFragment startCopiaColaPix(FragmentManager fm, int id) {
+		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance();
+		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
 	}
 }

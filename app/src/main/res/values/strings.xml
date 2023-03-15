@@ -1123,6 +1123,11 @@
 
     <string name="orientacao_pix_checkbox">Estou ciente que somente será aceito o pagamento realizado em conta de titularidade do apostador.</string>
     <string name="pagar_agora">Pagar agora!</string>
+    <string name="pix_copia_cola">Pix Copia e Cola</string>
+    <string name="pix_codigo_pago_unica_vez">*O código poderá ser pago somente 1 vez.</string>
+    <string name="pix_voce_tem">Você tem</string>
+    <string name="pix_contador">9m 59seg</string>
+    <string name="pix_para_efetuar_pagamento">Para efetuar o pagamento</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>

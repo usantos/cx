@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.CopiaColaPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.OrientacaoPix;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.OrientacaoPixRecyclerView;
 
 public class OrientacaoPixFragment extends Fragment {
@@ -65,9 +67,10 @@ public class OrientacaoPixFragment extends Fragment {
 	private View.OnClickListener onPagarAgoraListener() {
 		return v -> {
 			if (checkBox.isChecked()){
-				TestVisao.toast("Agora, bora fazer a proxima tela");
+				Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), CopiaColaPixActivity.class);
+				startActivity(intent);
 			} else {
-				TestVisao.toast("Sinto muito! Ta desabilitado.");
+				//TestVisao.toast("Sinto muito! Ta desabilitado.");
 			}
 		};
 	}
