@@ -6,12 +6,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 
-    private int origem;
+    public static final String ARG_ORIGEM = "ARG_ORIGEM";
+
+    private Long origem;
     private TextView titulo;
     private TextView infoApostas;
     private Button btnVoltarInicio;
@@ -42,17 +45,18 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
     }
 
     private void configLayout() {
-        if (origem == 6) {
+        if (origem.equals(MeioPagamentoUtils.PIX)) {
             titulo.setText(R.string.confirmacaopagamentoParabensPix);
             infoApostas.setText(R.string.confirmacaoPagamentoInfoApostasPIX);
             btnVoltarInicio.setBackgroundColor(getResources().getColor(R.color.branco));
+            btnVoltarInicio.setTextColor(getResources().getColor(R.color.verde_acompanha_compras));
             btnAcompanheCompras.setBackgroundColor(getResources().getColor(R.color.verde_acompanha_compras));
          }
     }
 
     private void getExtras() {
         if (getIntent() != null && getIntent().getExtras() != null)  {
-            origem = getIntent().getExtras().getInt("ARG_ORIGEM");
+            origem = getIntent().getExtras().getLong(ARG_ORIGEM);
         }
     }
 

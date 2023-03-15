@@ -8,7 +8,7 @@ import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 public class MeioPagamentoUtils {
 	public static final Long MERCADO_PAGO_VALUE = 1L;
 	public static final Long RECARGAPAY_VALUE = 5L;
-	public static final Long PIX = 2L;
+	public static final Long PIX = 6L;
 	public static final String MP_MERCADO_PAGO = "1";
 	public static final String MP_RECARGA_PAY = "5";
 

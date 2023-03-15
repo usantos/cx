@@ -39,7 +39,6 @@ public class FragmentUtils {
 		MeusCartoesFragment fragment = MeusCartoesFragment.newInstance(cartoes, config);
 		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
-
 	}
 
 	public static PaginacaoFragment startPaginacaoFragment(FragmentManager fm, PaginacaoFragment fragment, int id) {
