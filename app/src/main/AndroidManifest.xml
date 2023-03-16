@@ -38,10 +38,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
         <activity
-            android:name=".OrientacaoPixActivity"
-            android:exported="false"
+            android:name=".CopiaColaPixActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".OrientacaoPixActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -273,13 +276,11 @@
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
-
         <activity
             android:name=".controllers.ResultadoLerBilhetesNovoActivity_"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
-
         <activity
             android:name=".controllers.DetalhesComprasActivity"
             android:label="@string/title_activity_detalhes_compras"
