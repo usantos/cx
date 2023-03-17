@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="0dp"
                     android:layout_weight="1"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -78,7 +78,7 @@
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="modalidade"
+                        tools:text="Modalidade"
                         tools:textColor="#642475" />
 
                     <TextView
@@ -108,8 +108,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="#642475"
+                        android:layout_marginTop="5dp"
                         android:layout_marginStart="16dp"
-                        android:layout_marginBottom="15dp"
+                        android:layout_marginBottom="10dp"
                         android:textSize="14sp"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/label_data_aposta" />
