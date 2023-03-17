@@ -1,8 +1,10 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 
+import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
+
 public class PixUtils {
-	public static final int TELA_ORIENTACAO_PIX = 1;
-	public static final int TELA_COPIA_COLA_PIX = 2;
+	public static final int TELA_ORIENTACAO_PIX = CardPixFragment.TELA_ORIENTACAO;
+	public static final int TELA_COPIA_COLA_PIX = CardPixFragment.TELA_COPIA_COLA;
 
 }

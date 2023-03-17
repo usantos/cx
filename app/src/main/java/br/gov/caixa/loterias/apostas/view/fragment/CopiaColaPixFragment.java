@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import android.content.Intent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
-import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 
 public class CopiaColaPixFragment extends Fragment {
@@ -32,6 +30,9 @@ public class CopiaColaPixFragment extends Fragment {
 	private ImageView iconTimer;
 
 	private String numeroPix;
+
+	private boolean saiuParaPagar = false;
+	private boolean copiouText = false;
 
 	public CopiaColaPixFragment() {}
 
@@ -70,13 +71,23 @@ public class CopiaColaPixFragment extends Fragment {
 		return view;
 	}
 
+	public boolean concluiuCompra(){
+		return saiuParaPagar && copiouText;
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		saiuParaPagar = true;
+	}
+
 	private void startTimer() {
 		ContagemRegressiva contDown = new ContagemRegressiva(timerView, 125 * 1000, 1000) {
 			@Override
 			public void onFinish() {
 				edtNumeroPix.setText("Tempo esgotado!");
 				edtNumeroPix.setBackground(VectorUtils.getShape(R.drawable.shape_input_pix_copia_cola, R.color.cinza_borda));
-				edtNumeroPix.setTextColor(getResources().getColor(R.color.branco));
+				edtNumeroPix.setTextColor(getActivity().getResources().getColor(R.color.branco));
 				numeroPix = "";
 				btnCopia.setEnabled(false);
 			}
@@ -102,16 +113,17 @@ public class CopiaColaPixFragment extends Fragment {
 	private void configListeners() {
 		btnCopia.setOnClickListener(v -> {
 			if (!numeroPix.isEmpty()) {
+				copiaTesto();
 				TestVisao.toast("Pix copiado.");
-				Utils.delay(5, () -> {
-					Bundle bundle = new Bundle();
-					bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
-
-					Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ConfirmacaoPagamentoActivity.class, bundle);
-					startActivity(intent);
-				});
 			}
 		});
+	}
+
+	private void copiaTesto() {
+		ClipData         clip      = ClipData.newPlainText("label", numeroPix);
+		ClipboardManager clipBoard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+		clipBoard.setPrimaryClip(clip);
+		copiouText = true;
 	}
 
 }
