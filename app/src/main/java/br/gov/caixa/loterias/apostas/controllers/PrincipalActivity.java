@@ -486,7 +486,7 @@ public class PrincipalActivity extends AppCompatActivity
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC-3"));
         Date ano = new Date(repassesSociais.getDataBase());
         textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this,
-                String.format(getString(R.string.label_repassados_boas_causas_bold).replace("{ano_repassometro}", i))));
+                String.format(getString(R.string.label_repassados_boas_causas_bold).replace("{ano_repassometro}", ano.toString()))));
         AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, repassesSociais);
     }
 
