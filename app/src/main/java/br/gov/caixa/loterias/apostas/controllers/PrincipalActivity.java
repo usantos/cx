@@ -51,13 +51,14 @@ import org.androidannotations.annotations.ViewById;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
@@ -168,6 +169,8 @@ public class PrincipalActivity extends AppCompatActivity
     private Handler handlerDelayNotificacao;
     private boolean precisaBuscarRepasses = true;
     private static int contRegressivo = 1;
+    private int anInt;
+    private int ano;
 
     @AfterViews
     public void init() {
@@ -482,11 +485,20 @@ public class PrincipalActivity extends AppCompatActivity
         valorRepassesPrincipal.setText(getResources().getString(R.string.zero));
 
         tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
-        SimpleDateFormat dateFormat = new SimpleDateFormat(getResources().getString(R.string.yyyy));
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC-3"));
-        Date ano = new Date(repassesSociais.getDataBase());
+        Date data = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        try {
+            date = dateFormat.parse(repassesSociais.getDataBase());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        ano = calendar.get(Calendar.YEAR);
+
         textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this,
-                String.format(getString(R.string.label_repassados_boas_causas_bold).replace("{ano_repassometro}", ano.toString()))));
+                String.format(getString(R.string.label_repassados_boas_causas_bold).replace("{ano_repassometro}", String.valueOf(ano)))));
         AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, repassesSociais);
     }
 
