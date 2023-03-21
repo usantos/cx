@@ -28,11 +28,18 @@
                 layout="@layout/list_group_compras" />
 
             <include
+                android:id="@+id/fragmentCopiaColaPix"
+                layout="@layout/fragment_copia_cola_pix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/list_group_compras" />
+
+            <include
                 android:id="@+id/compraPossesadaLaout"
                 layout="@layout/compra_processada_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/list_group_compras" />
+                android:layout_below="@+id/fragmentCopiaColaPix" />
 
             <include
                 layout="@layout/content_detalhes_compras"

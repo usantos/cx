@@ -122,6 +122,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
 
         criarCabecalho();
+        verificaPixCopiaCola();
         verificaCompraProcessada();
         buscaDetalhesCompras();
         setaDialogFavoritar();
@@ -307,11 +308,26 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             situacaoCompraTextView.setTextColor(getResources().getColor(R.color.amarelo_minhas_compras));
         }
 
+        if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) &&
+                SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
+            TextView processadaPor = findViewById(R.id.processadaPor);
+            processadaPor.setText("ID: mock12314415256464");
+        }
+
         ImageButton ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
         ibFavoritar.setVisibility(View.VISIBLE);
         ibFavoritar.setOnClickListener(v -> {
                     configuraVisibilidadeMantSurpresinha(listaAposta);
                 });
+    }
+
+    private void verificaPixCopiaCola() {
+        if (! MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) ||
+            ! SituacaoCompraUtil.isSituacaoProcessamento(compraDTO.getSituacao())) {
+
+            ConstraintLayout constraintLayoutCopiaCola = findViewById(R.id.fragmentCopiaColaPix);
+            constraintLayoutCopiaCola.setVisibility(View.GONE);
+        }
     }
 
     private void verificaCompraProcessada() {

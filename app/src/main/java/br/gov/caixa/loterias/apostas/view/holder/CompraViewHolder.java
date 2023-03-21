@@ -57,11 +57,15 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		int contagem_regressiva_incial = 60;
 
 		//*** Mock - APAGAR ***
-		if (ordemLista == 1 || ordemLista == 3 || ordemLista == 4) {
+		if (ordemLista >= 1 && ordemLista <= 4) {
 			contagem_regressiva_incial = ordemLista * 60;
 			item.getMeioPagamento().setValor(6l); //PIX
 			item.getSituacao().setValor(7l);
 			item.getSituacao().setDescricao("Aguardando pagamento");
+			if (ordemLista == 2) {
+				item.getSituacao().setValor(8l); //Finalizada
+				item.getSituacao().setDescricao("Finalizada");
+			}
 			if (ordemLista == 4) {
 				item.getSituacao().setValor(3l);
 				item.getSituacao().setDescricao("Pagamento não realizado");
