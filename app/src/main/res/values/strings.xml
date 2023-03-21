@@ -289,7 +289,7 @@
     <string name="label_faca_apostas_apenas_um_clique">Faça várias apostas\nem apenas um clique.</string>
     <string name="label_ler_bilhestes">_Conferir bilhetes_</string>
     <string name="label_ler_bilhestes_bold">_Conferir_ _bilhetes_</string>
-    <string name="label_repassados_boas_causas_bold">_repassados_ para boas causas em 2023.</string>
+    <string name="label_repassados_boas_causas_bold">_repassados_ para boas causas em {ano_repassometro}.</string>
     <string name="label_apostou_loterica_confira_resultados">Apostou em uma lotérica?\n Confira aqui os seus resultados.</string>
     <string name="label_favoritas">Favoritas</string>
     <string name="label_suas_apostas_sorte_apenas_clique">Suas apostas da sorte\n em apenas um clique. :)</string>
@@ -797,6 +797,7 @@
     <string name="modalidade">modalidade</string>
     <string name="tipoAposta">tipoAposta</string>
     <string name="valorAposta">valorAposta</string>
+    <string name="yyyy">yyyy</string>
     <string name="underline_com_espaco">&#160;_&#160;</string>
     <string name="dd_mm">dd/MM</string>
     <string name="dd_mm_yyyy_hh_mm_ss">dd/MM/yyyy HH:mm:ss</string>

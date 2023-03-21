@@ -5,11 +5,11 @@ import android.Manifest;
 import android.animation.AnimatorSet;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
@@ -19,8 +19,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.net.Uri;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,10 +51,13 @@ import org.androidannotations.annotations.ViewById;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
@@ -481,7 +482,11 @@ public class PrincipalActivity extends AppCompatActivity
         valorRepassesPrincipal.setText(getResources().getString(R.string.zero));
 
         tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
-        textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_repassados_boas_causas_bold)));
+        SimpleDateFormat dateFormat = new SimpleDateFormat(getResources().getString(R.string.yyyy));
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC-3"));
+        Date ano = new Date(repassesSociais.getDataBase());
+        textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this,
+                String.format(getString(R.string.label_repassados_boas_causas_bold).replace("{ano_repassometro}", i))));
         AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, repassesSociais);
     }
 
@@ -744,7 +749,7 @@ public class PrincipalActivity extends AppCompatActivity
             trataMenuSemMinhasApostas(itemPosition);       }
 
         sideMenuExpandableListView.collapseGroup(0);
-        drawerLayout.closeDrawer(Gravity.START, false);
+        drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
     private void tratarMenuCompleto(int itemPosition) {
