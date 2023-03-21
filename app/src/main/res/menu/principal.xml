@@ -12,6 +12,7 @@
         android:id="@+id/action_settings"
         android:icon="@drawable/status_toolbar_icon"
         android:orderInCategory="100"
+        android:visible="false"
         android:title="@string/action_settings"
         app:showAsAction="always" />
 </menu>
