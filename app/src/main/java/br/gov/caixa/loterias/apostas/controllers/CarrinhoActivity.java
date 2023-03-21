@@ -233,19 +233,21 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void onClickAvanvaPagamento() {
-        if (model.existeCompraMesmoValorEm24horas(carrinho.getValorTotal())){
-            //modal
-            ViewUtils.alertTitleButtonYesOrNotListener(CarrinhoActivity.this,
-                                                       getString(R.string.compra_existente_24_horas),
-                                                       (dialog, which) -> {
-                                                            dialog.dismiss();
-                                                       },
-                                                       (dialog, which) -> {
-                                                           validarCarrinho();
-                                                       });
-        } else {
-            validarCarrinho();
-        }
+        try {
+            if (model.existeCompraMesmoValorEm24horas(carrinho.getValorTotal())){
+                //modal
+                ViewUtils.alertTitleButtonYesOrNotListener(CarrinhoActivity.this,
+                                                           getString(R.string.compra_existente_24_horas),
+                                                           (dialog, which) -> {
+                                                               dialog.dismiss();
+                                                           },
+                                                           (dialog, which) -> {
+                                                               validarCarrinho();
+                                                           });
+            } else {
+                validarCarrinho();
+            }
+        } catch (Exception e){}
     }
 
     public void deletaAposta(int position, IdentificaoDeUmaApostaDas8Modalidades aposta) {

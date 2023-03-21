@@ -19,6 +19,8 @@
     <color name="cinza_divisoria">#B3C6CA</color>
     <color name="verdeazul">#54bbab</color>
     <color name="amarelo">#feb21e</color>
+    <color name="azul_salvar_cartao">#1F5C8F</color>
+    <color name="cinza_salvar_cartao_desabilitado">#939598</color>
 
     <color name="verdesenaclaro">#60a96b</color>
     <color name="verdesenatrevo">#579a66</color>
