@@ -732,7 +732,7 @@ public class PrincipalActivity extends AppCompatActivity
                 break;
             case 5: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
                 break;
-            case 6: startActivity(new Intent(PrincipalActivity.this, TermosUsoActivity.class));
+            case 6: startActivity(new Intent(PrincipalActivity.this, TermosAceiteActivity.class));
                 break;
             case 7: startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
                 break;
