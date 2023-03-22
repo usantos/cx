@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -22,6 +23,7 @@ import com.android.volley.VolleyError;
 import java.util.Date;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.AdicionaCartaoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
@@ -38,6 +40,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesMeioPagamentoRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -56,6 +59,8 @@ public class MeioPagamentoFragment extends Fragment {
 	private ConstraintLayout btnAdd;
 	private ConstraintLayout cabecalho;
 	private EditText userInput;
+	private TextView titulo;
+	private AppCompatImageView seta;
 
 	private RecyclerView listaCartoes;
 	private CartoesMeioPagamentoRecyclerViewAdapter adapter;
@@ -97,6 +102,8 @@ public class MeioPagamentoFragment extends Fragment {
 		btnAdd = view.findViewById(R.id.addCartao);
 		cabecalho = view.findViewById(R.id.cabecalho);
 		listaCartoes = view.findViewById(R.id.listaCartoes);
+		titulo = view.findViewById(R.id.titulo);
+		seta = view.findViewById(R.id.seta);
 
 		buscaCartoes();
 		aplicaConfig();
@@ -106,10 +113,11 @@ public class MeioPagamentoFragment extends Fragment {
 	}
 
 	private void buscaCartoes() {
-		AlertDialogUtils.show(getContext());
 		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
+			AlertDialogUtils.show(getContext());
 			model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_MERCADO_PAGO, onBuscaCartoesListener());
 		} else if (model.isRecargaPay(config.getMeioPagamento().getValor())){
+			AlertDialogUtils.show(getContext());
 			model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_RECARGA_PAY, onBuscaCartoesListener());
 		}
 	}
@@ -299,6 +307,13 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void configButton() {
 		btnAdd.setOnClickListener(v -> goToAddCartao());
+		if (configIsPix()){
+			cabecalho.setOnClickListener(v -> goToPagamentoPix());
+		}
+	}
+
+	private void goToPagamentoPix() {
+		startActivity(IntentUtil.getIntentOrigemDestino(getActivity(), OrientacaoPixActivity.class));
 	}
 
 	private void goToAddCartao(){
@@ -313,9 +328,29 @@ public class MeioPagamentoFragment extends Fragment {
 			margem.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
 			btnAdd.setBackground(getActivity().getDrawable(config.getIdCorBarra()));
 			btnAdd.getBackground().setAlpha(20);
+			seta.setImageDrawable(VectorUtils.getShape(R.drawable.ic_chevron_right, config.getIdCorBarra()));
 			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
-
+			if (config.getTitulo() != null && !config.getTitulo().isEmpty()){
+				titulo.setText(config.getTitulo());
+				titulo.setVisibility(View.VISIBLE);
+			}
+			if (configIsPix()){
+				view.findViewById(R.id.backgroundAddCartao).setVisibility(View.GONE);
+			}
+			if (config.isShowSeta()){
+				seta.setVisibility(View.VISIBLE);
+			} else {
+				seta.setVisibility(View.GONE);
+			}
 		}
+	}
+
+	private boolean configIsPix() {
+		return  config != null &&
+				config.getMeioPagamento() != null &&
+				config.getMeioPagamento().getValor() != null &&
+				config.getMeioPagamento().getValor() == MeioPagamentoUtils.PIX;
+
 	}
 
 	private OnCompraAsync onCompraAsyncListener() {

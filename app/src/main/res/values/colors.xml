@@ -12,12 +12,14 @@
     <color name="cinza">#48586c</color>
     <color name="linhaDivisa">#d0e0e3</color>
     <color name="cinza2">#d4dfe2</color>
+    <color name="cinzaClaro">#EBF2F4</color>
     <color name="cinzaclaro">#eff5f6</color>
     <color name="cinzaescuro">#4e596b</color>
     <color name="cinza_button">#a5aab6</color>
     <color name="cinza_total">#929ea0</color>
     <color name="cinza_divisoria">#B3C6CA</color>
     <color name="verdeazul">#54bbab</color>
+    <color name="verde_acompanha_compras">#52BBAA</color>
     <color name="amarelo">#feb21e</color>
 
     <color name="verdesenaclaro">#60a96b</color>
@@ -149,6 +151,8 @@
     <color name="cinza_borda">#C4C4C4</color>
     <color name="azul_mercado_pago">#50B4E9</color>
     <color name="laranja_recarga_pay">#FE8832</color>
+    <color name="verde_pix">#32BCAD</color>
+    <color name="cinza_pix_disabled">#757575</color>
 
 
     <color name="azul_efetivada">#143DA6</color>

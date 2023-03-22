@@ -271,6 +271,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_pagamento_sucesso));
         CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
         Intent activity = new Intent(NovaFormaPagamentoActivity.this, ConfirmacaoPagamentoActivity.class);
+        activity.putExtra("Pix", 6);
         startActivity(activity);
     }
 
