@@ -51,6 +51,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
@@ -59,6 +60,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 
@@ -84,7 +86,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private RecyclerView recyclerDetalhesApostas;
     private Boolean mantemSurpresinhas = true;
     private TextView tvBadge;
+    private CopiaColaPixFragment fragCopiaCola;
     int ordemCompra;
+    long tempo_acabar_pix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +116,6 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_detalhes_compras))));
     }
 
-
     private void setaMetodos(){
         btnFiltro.setOnClickListener(view -> {
             dialogFiltrar.show();
@@ -135,6 +138,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             String compraDTOJson = bundle.getString("CompraDTO");
             ordemCompra = bundle.getInt("ordem");
             compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
+            tempo_acabar_pix = bundle.getLong("tempoPix", 0l);
         }
     }
 
@@ -322,12 +326,15 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void verificaPixCopiaCola() {
-        if (! MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) ||
-            ! SituacaoCompraUtil.isSituacaoProcessamento(compraDTO.getSituacao())) {
+        if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) &&
+            SituacaoCompraUtil.isSituacaoProcessamento(compraDTO.getSituacao())) {
 
-            ConstraintLayout constraintLayoutCopiaCola = findViewById(R.id.fragmentCopiaColaPix);
-            constraintLayoutCopiaCola.setVisibility(View.GONE);
+            startFragment();
         }
+    }
+
+    private void startFragment() {
+        fragCopiaCola = FragmentUtils.startCopiaColaPix(getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe, tempo_acabar_pix);
     }
 
     private void verificaCompraProcessada() {

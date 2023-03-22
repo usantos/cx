@@ -993,6 +993,7 @@
     <string name="espaco_teimosinha">&#160;Teimosinha</string>
     <string name="extra_compra_dto">CompraDTO</string>
     <string name="extra_ordem">ordem</string>
+    <string name="extra_tempo_pix">tempoPix</string>
     <string name="data_dois_pontos_espaco">Data:&#160;</string>
     <string name="textoInfoSelecioneFormaPagamento">textoInfoSelecioneFormaPagamento</string>
     <string name="como_jogar">Como jogar</string>

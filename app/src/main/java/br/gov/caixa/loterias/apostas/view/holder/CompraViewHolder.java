@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -31,7 +30,6 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 	protected ImageView imageViewRelogio;
 	protected Button btnMinhasCompras;
 
-
 	private Context context;
 	private OnFavoritarClickListener listener;
 
@@ -54,11 +52,12 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 	public void bind(CompraDTO item, int position) {
 		final int ordemLista = position + 1;
 
-		int contagem_regressiva_incial = 60;
+		ContagemRegressiva contagemRegressiva = null;
+		int tempo_inicial_pix = 60;
 
 		//*** Mock - APAGAR ***
 		if (ordemLista >= 1 && ordemLista <= 4) {
-			contagem_regressiva_incial = ordemLista * 60;
+			tempo_inicial_pix = ordemLista * 60;
 			item.getMeioPagamento().setValor(6l); //PIX
 			item.getSituacao().setValor(7l);
 			item.getSituacao().setDescricao("Aguardando pagamento");
@@ -107,7 +106,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 				contadorDown.setVisibility(View.VISIBLE);
 				btnMinhasCompras.setVisibility(View.VISIBLE);
 
-				ContagemRegressiva contagemRegressiva = new ContagemRegressiva(contadorDown,contagem_regressiva_incial * 1000, 1 * 1000) {
+				contagemRegressiva = new ContagemRegressiva(contadorDown,tempo_inicial_pix * 1000, 1 * 1000) {
 					@Override
 					public void onFinish() {
 						btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
@@ -126,11 +125,15 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 			}
 		}
 
+		ContagemRegressiva finalContagemRegressiva = contagemRegressiva;
 		this.itemView.setOnClickListener(view -> {
 			Intent activity      = new Intent(context, DetalhesComprasActivity.class);
 			String arrayAsString = new Gson().toJson(item);
 			activity.putExtra(context.getResources().getString(R.string.extra_compra_dto), arrayAsString);
 			activity.putExtra(context.getResources().getString(R.string.extra_ordem), ordemLista);
+			if (finalContagemRegressiva != null) {
+				activity.putExtra(context.getResources().getString(R.string.extra_tempo_pix), finalContagemRegressiva.getMillisUntilFinish());
+			}
 			context.startActivity(activity);
 		});
 
