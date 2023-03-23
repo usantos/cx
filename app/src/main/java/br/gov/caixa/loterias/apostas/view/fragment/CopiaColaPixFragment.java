@@ -31,9 +31,6 @@ public class CopiaColaPixFragment extends Fragment {
 
 	private String numeroPix;
 
-	private boolean saiuParaPagar = false;
-	private boolean copiouText = false;
-
 	public CopiaColaPixFragment() {}
 
 	public static CopiaColaPixFragment newInstance() {
@@ -69,16 +66,6 @@ public class CopiaColaPixFragment extends Fragment {
 		startTimer();
 
 		return view;
-	}
-
-	public boolean concluiuCompra(){
-		return saiuParaPagar && copiouText;
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		saiuParaPagar = true;
 	}
 
 	private void startTimer() {
@@ -123,7 +110,6 @@ public class CopiaColaPixFragment extends Fragment {
 		ClipData         clip      = ClipData.newPlainText("label", numeroPix);
 		ClipboardManager clipBoard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
 		clipBoard.setPrimaryClip(clip);
-		copiouText = true;
 	}
 
 }

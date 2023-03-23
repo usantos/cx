@@ -41,4 +41,78 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titulo"/>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutSimular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnSimularCompra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:backgroundTint="@color/colorAccent"
+            android:text="Simular Compra"
+            android:textColor="@color/branco"
+            app:icon="@drawable/ic_simular"
+            android:theme="@style/MyMaterialTheme"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnCompraCPFDivergente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/vermelho_cancelada"
+            app:fabSize="normal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/btnSimularCompra"
+            app:layout_constraintEnd_toEndOf="@+id/btnSimularCompra"
+            app:srcCompat="@drawable/ic_x" />
+
+        <TextView
+            android:id="@+id/txtCompraDivergente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="CPF divergente"
+            android:textColor="@color/vermelho_cancelada"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCompraCPFDivergente"
+            app:layout_constraintEnd_toStartOf="@+id/btnCompraCPFDivergente"
+            app:layout_constraintTop_toTopOf="@+id/btnCompraCPFDivergente" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnCompraSucesso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/verde_pix"
+            app:fabSize="normal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/btnCompraCPFDivergente"
+            app:layout_constraintEnd_toEndOf="@+id/btnCompraCPFDivergente"
+            app:layout_constraintStart_toStartOf="@+id/btnCompraCPFDivergente"
+            app:srcCompat="@drawable/ic_sucesso" />
+
+        <TextView
+            android:id="@+id/txtCompraSucesso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Sucesso"
+            android:textColor="@color/verde_pix"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCompraSucesso"
+            app:layout_constraintEnd_toStartOf="@+id/btnCompraSucesso"
+            app:layout_constraintTop_toTopOf="@+id/btnCompraSucesso" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

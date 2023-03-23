@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
-import br.gov.caixa.loterias.apostas.utils.Utils;
 
 public class CardPixFragment extends Fragment {
 	private static final String ARG_TELA= "ARG_TELA";
@@ -23,7 +18,6 @@ public class CardPixFragment extends Fragment {
 	private View view;
 
 	private int numeroTela = 0;
-	private CopiaColaPixFragment fragCopiaCola;
 
 	public CardPixFragment() {}
 
@@ -63,26 +57,11 @@ public class CardPixFragment extends Fragment {
 			view.findViewById(R.id.valor_pix).setVisibility(View.GONE);
 			FragmentUtils.startOrientacaoPix(getActivity().getSupportFragmentManager(),R.id.corpo);
 		} else if (isTela(TELA_COPIA_COLA)){
-			fragCopiaCola = FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo);
+			FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo);
 		}
 	}
 
 	private boolean isTela(int tela) {
 		return numeroTela == tela;
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		// logica para simular uma compra de sucesso
-		if (isTela(TELA_COPIA_COLA) && fragCopiaCola != null && fragCopiaCola.concluiuCompra()){
-			Utils.delay(10, () -> {
-				Bundle bundle = new Bundle();
-				bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
-
-				Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ConfirmacaoPagamentoActivity.class, bundle);
-				startActivity(intent);
-			});
-		}
 	}
 }
