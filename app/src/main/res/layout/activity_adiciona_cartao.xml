@@ -401,7 +401,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/label_ciente_cpf_titularidadeo"
-                                android:textColor="@color/cinzaescuro"
+                                android:textColor="@color/azul_salvar_cartao"
                                 android:textSize="16sp" />
 
                         </LinearLayout>
