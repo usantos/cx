@@ -20,16 +20,18 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 
 public class CopiaColaPixFragment extends Fragment {
 
 	private View view;
 	private Button btnCopia;
 	private EditText edtNumeroPix;
-	private TextView timerView;
+	private TextView timerView, voceTemView, txtEfetuarPagamento;
 	private ImageView iconTimer;
 
 	private String numeroPix;
+	private OnCopiaColaListener listener;
 
 	public CopiaColaPixFragment() {}
 
@@ -39,6 +41,16 @@ public class CopiaColaPixFragment extends Fragment {
 
 		fragment.setArguments(args);
 		return fragment;
+	}
+
+	@Override
+	public void onAttach(@NonNull Context context) {
+		super.onAttach(context);
+		try {
+			listener = (OnCopiaColaListener) context;
+		}catch (Exception e){
+
+		}
 	}
 
 	@Override
@@ -56,6 +68,8 @@ public class CopiaColaPixFragment extends Fragment {
 		btnCopia = view.findViewById(R.id.btn_copiar_colar);
 		edtNumeroPix = view.findViewById(R.id.numero_copiar);
 		timerView = view.findViewById(R.id.txt_contador);
+		voceTemView = view.findViewById(R.id.txt_voce_tem);
+		txtEfetuarPagamento = view.findViewById(R.id.txt_para_efetuar_pagamento);
 		iconTimer = view.findViewById(R.id.img_timer);
 
 		numeroPix = "91872361973561823675127365128371238767642";
@@ -69,14 +83,21 @@ public class CopiaColaPixFragment extends Fragment {
 	}
 
 	private void startTimer() {
-		ContagemRegressiva contDown = new ContagemRegressiva(timerView, 125 * 1000, 1000) {
+		ContagemRegressiva contDown = new ContagemRegressiva(timerView, 5 * 1000, 1000) {
 			@Override
 			public void onFinish() {
-				edtNumeroPix.setText("Tempo esgotado!");
+				edtNumeroPix.setText("");
 				edtNumeroPix.setBackground(VectorUtils.getShape(R.drawable.shape_input_pix_copia_cola, R.color.cinza_borda));
 				edtNumeroPix.setTextColor(getActivity().getResources().getColor(R.color.branco));
 				numeroPix = "";
 				btnCopia.setEnabled(false);
+				btnCopia.setVisibility(View.GONE);
+				voceTemView.setVisibility(View.INVISIBLE);
+				txtEfetuarPagamento.setText("Tempo esgotado, o pagamento não foi confirmado");
+				txtEfetuarPagamento.setTextColor(getResources().getColor(R.color.vermelho_dialog));
+				if (listener != null){
+					listener.onFinish();
+				}
 			}
 		};
 
@@ -86,10 +107,10 @@ public class CopiaColaPixFragment extends Fragment {
 
 	@NonNull
 	private ContagemRegressiva.ContagemRegressivaListener onContagemListener(ContagemRegressiva contDown) {
-		return (millisUntilFinish) -> {
+		return millisUntilFinish -> {
 			if (contDown.estaFaltandoXMin(millisUntilFinish, 1)){
-				timerView.setTextColor(Aplicacao.application.getResources().getColor(R.color.vermelho_cancelada));
-				iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.vermelho_cancelada));
+				timerView.setTextColor(Aplicacao.application.getResources().getColor(R.color.vermelho_dialog));
+				iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.vermelho_dialog));
 			} else if (contDown.estaFaltandoXMin(millisUntilFinish, 2)){
 				timerView.setTextColor(Aplicacao.application.getResources().getColor(R.color.jr_amarelo));
 				iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.jr_amarelo));

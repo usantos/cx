@@ -10,9 +10,13 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
@@ -192,5 +196,36 @@ public class DialogUtils {
 
         dialog.show();
     }
+
+    public static void showDialog3Botoes(Context context, int layoutlitulo, String titulo, String descricao,
+                                         String botao1, String botao2, String botao3, OnDialog3ButtonsListener listener) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_tres_botoes);
+
+        ConstraintLayout layoutTitulo       = dialog.findViewById(R.id.layoutTitulo);
+        TextView tituloView                 = dialog.findViewById(R.id.tituloDialogCustom);
+        TextView descricaoView              = dialog.findViewById(R.id.descricaoDialog);
+        Button close                        = dialog.findViewById(R.id.closePopup);
+        Button buttonLeft                   = dialog.findViewById(R.id.dialogButton1);
+        Button buttonCenter                 = dialog.findViewById(R.id.dialogButton2);
+        Button buttonRigth                  = dialog.findViewById(R.id.dialogButton3);
+
+        layoutTitulo.setBackground(AppCompatResources.getDrawable(context, layoutlitulo));
+        tituloView.setText(titulo);
+        descricaoView.setText(descricao);
+
+        buttonLeft.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao1));
+        buttonCenter.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao2));
+        buttonRigth.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao3));
+
+        close.setOnClickListener(v -> dialog.dismiss());
+        buttonLeft.setOnClickListener(v -> listener.leftButtom());
+        buttonCenter.setOnClickListener(v -> listener.centerButtom());
+        buttonRigth.setOnClickListener(v -> listener.rightButtom());
+
+        dialog.show();
+    }
+
 
 }

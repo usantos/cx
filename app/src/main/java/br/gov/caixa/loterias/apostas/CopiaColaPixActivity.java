@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -11,17 +12,22 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 
-public class CopiaColaPixActivity extends LoteriasAppActivity {
+public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopiaColaListener {
 
 	private ConstraintLayout layoutSimular;
+	private Button btnGerar;
 
 	FloatingActionButton btnCompraSucesso, btnCompraCPFDivergente;
 	ExtendedFloatingActionButton btnSimularCompra;
@@ -36,9 +42,9 @@ public class CopiaColaPixActivity extends LoteriasAppActivity {
 		configToolbar(R.id.toolbar);
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "Forma de _pagamento_"));
 
-		aplicaLogicaSimulacao();
+		btnGerar = findViewById(R.id.botaoGerarPix);
 
-		checaVersao();
+		aplicaLogicaSimulacao();
 
 		startFragment();
 	}
@@ -81,17 +87,57 @@ public class CopiaColaPixActivity extends LoteriasAppActivity {
 		});
 
 		btnCompraCPFDivergente.setOnClickListener(v -> {
-			TestVisao.toast("Implementando o popup");
+			DialogUtils.showDialog3Botoes(CopiaColaPixActivity.this,R.drawable.vermelho,
+										  getString(R.string.popup_pix_nao_autorizado),
+										  getString(R.string.popup_pix_nao_autorizado_descricao),
+										  getString(R.string.gerar_novo_codigo),
+										  getString(R.string.alterar_forma_pagamento),
+										  getString(R.string.btn_title_voltarAoInicio), onDialogListener());
 		});
-	}
 
-	private void checaVersao() {
 		if (BuildVersionUtil.isTQS()){
 			layoutSimular.setVisibility(View.VISIBLE);
+		} else {
+			layoutSimular.setVisibility(View.GONE);
 		}
+	}
+
+	private OnDialog3ButtonsListener onDialogListener() {
+		return new OnDialog3ButtonsListener() {
+			@Override
+			public void leftButtom() {
+				Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, OrientacaoPixActivity.class);
+				startActivity(intent);
+				finish();
+			}
+
+			@Override
+			public void centerButtom() {
+				Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, FormaPagamentoActivity.class);
+				startActivity(intent);
+				finish();
+			}
+
+			@Override
+			public void rightButtom() {
+				PrincipalActivity_.intent(CopiaColaPixActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+				finish();
+			}
+		};
 	}
 
 	private void startFragment() {
 		FragmentUtils.startCardPix(getSupportFragmentManager(), R.id.fragmentCopiaColaPix, CardPixFragment.TELA_COPIA_COLA);
+	}
+
+	@Override
+	public void onFinish() {
+		btnGerar.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.gerar_novo_codigo_pix)));
+		btnGerar.setVisibility(View.VISIBLE);
+		btnGerar.setOnClickListener(v -> {
+			Intent intent = IntentUtil.getIntentOrigemDestino(this, CopiaColaPixActivity.class);
+			startActivity(intent);
+			finish();
+		});
 	}
 }

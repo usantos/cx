@@ -1151,4 +1151,11 @@
         <item>Cole o código Pix;</item>
         <item>Confirme as informações e realize o pagamento.</item>
     </string-array>
+
+    <!-- Popup Pix nao autorizado -->
+    <string name="popup_pix_nao_autorizado">Pagamento não autorizado</string>
+    <string name="gerar_novo_codigo">_Gerar_ \nnovo Código</string>
+    <string name="gerar_novo_codigo_pix">_Gerar_ \nnovo Código Pix</string>
+    <string name="alterar_forma_pagamento">_Alterar_ \nPagamento</string>
+    <string name="popup_pix_nao_autorizado_descricao">CPF do pagamento diferente do CPF do apostador. Não se preocupe, o Pix foi devolvido para a conta de pagamento \n\nVocê pode gerar novo código Pix ou alterar a forma de pagamento para concluir sua compra.</string>
 </resources>
