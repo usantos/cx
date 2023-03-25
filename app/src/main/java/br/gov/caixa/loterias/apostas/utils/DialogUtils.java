@@ -6,6 +6,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogInputIntTestListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
@@ -228,4 +230,29 @@ public class DialogUtils {
     }
 
 
+    public static void showDialogGetIntTest(Context context, String titulo, String orientacao, OnDialogInputIntTestListener listener) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_edittext_teste_simulacao);
+
+        TextView tituloView                 = dialog.findViewById(R.id.tituloDialogCustom);
+        TextView descricaoView              = dialog.findViewById(R.id.descricaoDialog);
+        EditText edtNumero                  = dialog.findViewById(R.id.edtNumero);
+        Button btnOk                        = dialog.findViewById(R.id.btnOk);
+
+        tituloView.setText(titulo);
+        descricaoView.setText(orientacao);
+
+
+        btnOk.setOnClickListener(v -> {
+            try {
+                Integer integer = Integer.valueOf(edtNumero.getText().toString());
+                listener.onResult(integer.intValue() * 1000);
+                dialog.dismiss();
+            } catch (Exception e){
+                TestVisao.toast("O número precisa ser um número interio válido!");
+            }
+        });
+
+        dialog.show();
+    }
 }

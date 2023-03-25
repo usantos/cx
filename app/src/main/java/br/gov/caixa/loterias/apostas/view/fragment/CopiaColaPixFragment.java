@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
@@ -23,6 +24,8 @@ import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 
 public class CopiaColaPixFragment extends Fragment {
+
+	public static int SEGUNDOS = 30000;
 
 	private View view;
 	private Button btnCopia;
@@ -83,7 +86,7 @@ public class CopiaColaPixFragment extends Fragment {
 	}
 
 	private void startTimer() {
-		ContagemRegressiva contDown = new ContagemRegressiva(timerView, 5 * 1000, 1000) {
+		ContagemRegressiva contDown = new ContagemRegressiva(timerView, SEGUNDOS, 1000) {
 			@Override
 			public void onFinish() {
 				edtNumeroPix.setText("");
@@ -103,6 +106,7 @@ public class CopiaColaPixFragment extends Fragment {
 
 		contDown.setListener(onContagemListener(contDown));
 		contDown.start();
+		TimerSingleton.getInstance().setContagemRegressiva(contDown);
 	}
 
 	@NonNull

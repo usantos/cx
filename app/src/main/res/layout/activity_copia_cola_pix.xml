@@ -105,8 +105,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="CPF divergente"
-            android:textColor="@color/vermelho_cancelada"
+            android:textColor="@color/branco"
+            android:background="@color/vermelho_cancelada"
             android:visibility="gone"
+            android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/btnCompraCPFDivergente"
             app:layout_constraintEnd_toStartOf="@+id/btnCompraCPFDivergente"
             app:layout_constraintTop_toTopOf="@+id/btnCompraCPFDivergente" />
@@ -130,11 +132,40 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="Sucesso"
-            android:textColor="@color/verde_pix"
+            android:textColor="@color/branco"
+            android:background="@color/verde_pix"
             android:visibility="gone"
+            android:padding="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/btnCompraSucesso"
             app:layout_constraintEnd_toStartOf="@+id/btnCompraSucesso"
             app:layout_constraintTop_toTopOf="@+id/btnCompraSucesso" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnAlterarContagem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/btnCompraSucesso"
+            app:layout_constraintEnd_toEndOf="@+id/btnCompraSucesso"
+            app:layout_constraintStart_toStartOf="@+id/btnCompraSucesso"
+            app:srcCompat="@drawable/ic_change" />
+
+        <TextView
+            android:id="@+id/txtAlterarContagem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Alterar contagem"
+            android:textColor="@color/branco"
+            android:background="@color/colorPrimary"
+            android:visibility="gone"
+            android:padding="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnAlterarContagem"
+            app:layout_constraintEnd_toStartOf="@+id/btnAlterarContagem"
+            app:layout_constraintTop_toTopOf="@+id/btnAlterarContagem" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

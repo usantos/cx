@@ -95,7 +95,7 @@
             android:id="@+id/txt_contador"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pix_contador"
+            android:text=""
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/azul_alterar"

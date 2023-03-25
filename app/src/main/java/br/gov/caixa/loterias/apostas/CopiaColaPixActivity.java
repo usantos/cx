@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -21,6 +22,7 @@ import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 
@@ -29,9 +31,9 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	private ConstraintLayout layoutSimular;
 	private Button btnGerar;
 
-	FloatingActionButton btnCompraSucesso, btnCompraCPFDivergente;
+	FloatingActionButton btnCompraSucesso, btnCompraCPFDivergente, btnAlterarContagem;
 	ExtendedFloatingActionButton btnSimularCompra;
-	TextView txtCompraSucesso, txtCompraCPFDivergente;
+	TextView txtCompraSucesso, txtCompraCPFDivergente, txtAlterarContagem;
 
 	private boolean isAllFabsVisible = false;
 
@@ -54,28 +56,42 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		btnSimularCompra = findViewById(R.id.btnSimularCompra);
 		btnCompraSucesso = findViewById(R.id.btnCompraSucesso);
 		btnCompraCPFDivergente = findViewById(R.id.btnCompraCPFDivergente);
+		btnAlterarContagem = findViewById(R.id.btnAlterarContagem);
 		txtCompraSucesso = findViewById(R.id.txtCompraSucesso);
 		txtCompraCPFDivergente = findViewById(R.id.txtCompraDivergente);
+		txtAlterarContagem = findViewById(R.id.txtAlterarContagem);
 
 		btnSimularCompra.shrink();
 		btnSimularCompra.setOnClickListener(v -> {
 			if (!isAllFabsVisible) {
 				btnCompraSucesso.show();
 				btnCompraCPFDivergente.show();
+				btnAlterarContagem.show();
 				txtCompraSucesso.setVisibility(View.VISIBLE);
 				txtCompraCPFDivergente.setVisibility(View.VISIBLE);
+				txtAlterarContagem.setVisibility(View.VISIBLE);
 
 				btnSimularCompra.extend();
 				isAllFabsVisible = true;
 			} else {
 				btnCompraSucesso.hide();
 				btnCompraCPFDivergente.hide();
+				btnAlterarContagem.hide();
 				txtCompraSucesso.setVisibility(View.GONE);
 				txtCompraCPFDivergente.setVisibility(View.GONE);
+				txtAlterarContagem.setVisibility(View.GONE);
 
 				btnSimularCompra.shrink();
 				isAllFabsVisible = false;
 			}
+		});
+
+		btnAlterarContagem.setOnClickListener(v->{
+			DialogUtils.showDialogGetIntTest(CopiaColaPixActivity.this, "Quantos segundos?", "Informe um valor interiro válido em segundos: (1 = 1 seg 10, = 10 seg)", valor -> {
+				CopiaColaPixFragment.SEGUNDOS = valor;
+				restart();
+				TimerSingleton.getInstance().cancel();
+			});
 		});
 
 		btnCompraSucesso.setOnClickListener(v -> {
@@ -135,9 +151,13 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		btnGerar.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.gerar_novo_codigo_pix)));
 		btnGerar.setVisibility(View.VISIBLE);
 		btnGerar.setOnClickListener(v -> {
-			Intent intent = IntentUtil.getIntentOrigemDestino(this, CopiaColaPixActivity.class);
-			startActivity(intent);
-			finish();
+			restart();
 		});
+	}
+
+	private void restart() {
+		Intent intent = IntentUtil.getIntentOrigemDestino(this, CopiaColaPixActivity.class);
+		startActivity(intent);
+		finish();
 	}
 }
