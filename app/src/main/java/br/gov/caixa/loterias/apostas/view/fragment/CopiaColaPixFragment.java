@@ -89,18 +89,20 @@ public class CopiaColaPixFragment extends Fragment {
 		ContagemRegressiva contDown = new ContagemRegressiva(timerView, SEGUNDOS, 1000) {
 			@Override
 			public void onFinish() {
-				edtNumeroPix.setText("");
-				edtNumeroPix.setBackground(VectorUtils.getShape(R.drawable.shape_input_pix_copia_cola, R.color.cinza_borda));
-				edtNumeroPix.setTextColor(getActivity().getResources().getColor(R.color.branco));
-				numeroPix = "";
-				btnCopia.setEnabled(false);
-				btnCopia.setVisibility(View.GONE);
-				voceTemView.setVisibility(View.INVISIBLE);
-				txtEfetuarPagamento.setText("Tempo esgotado, o pagamento não foi confirmado");
-				txtEfetuarPagamento.setTextColor(getResources().getColor(R.color.vermelho_dialog));
-				if (listener != null){
-					listener.onFinish();
-				}
+				try {
+					edtNumeroPix.setText("");
+					edtNumeroPix.setBackground(VectorUtils.getShape(R.drawable.shape_input_pix_copia_cola, R.color.cinza_borda));
+					edtNumeroPix.setTextColor(getActivity().getResources().getColor(R.color.branco));
+					numeroPix = "";
+					btnCopia.setEnabled(false);
+					btnCopia.setVisibility(View.GONE);
+					voceTemView.setVisibility(View.INVISIBLE);
+					txtEfetuarPagamento.setText("Tempo esgotado, o pagamento não foi confirmado");
+					txtEfetuarPagamento.setTextColor(getResources().getColor(R.color.vermelho_dialog));
+					if (listener != null){
+						listener.onFinish();
+					}
+				} catch (Exception e){}
 			}
 		};
 

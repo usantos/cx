@@ -87,7 +87,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		});
 
 		btnAlterarContagem.setOnClickListener(v->{
-			DialogUtils.showDialogGetIntTest(CopiaColaPixActivity.this, "Quantos segundos?", "Informe um valor interiro válido em segundos: (1 = 1 seg 10, = 10 seg)", valor -> {
+			DialogUtils.showDialogGetIntTest(CopiaColaPixActivity.this, "Quantos segundos?", "Informe um valor interiro válido em segundos: (1 = 1 seg, 10 = 10 seg)", valor -> {
 				CopiaColaPixFragment.SEGUNDOS = valor;
 				restart();
 				TimerSingleton.getInstance().cancel();
@@ -122,6 +122,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		return new OnDialog3ButtonsListener() {
 			@Override
 			public void leftButtom() {
+				cancelContagem();
 				Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, OrientacaoPixActivity.class);
 				startActivity(intent);
 				finish();
@@ -129,6 +130,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 
 			@Override
 			public void centerButtom() {
+				cancelContagem();
 				Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, FormaPagamentoActivity.class);
 				startActivity(intent);
 				finish();
@@ -136,10 +138,15 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 
 			@Override
 			public void rightButtom() {
+				cancelContagem();
 				PrincipalActivity_.intent(CopiaColaPixActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
 				finish();
 			}
 		};
+	}
+
+	private void cancelContagem(){
+		TimerSingleton.getInstance().cancel();
 	}
 
 	private void startFragment() {
