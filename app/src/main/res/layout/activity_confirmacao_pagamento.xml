@@ -25,9 +25,9 @@
         android:id="@+id/textInfoApostas"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="57dp"
+        android:layout_marginLeft="67dp"
         android:layout_marginStart="57dp"
-        android:layout_marginRight="41dp"
+        android:layout_marginRight="51dp"
         android:layout_marginEnd="41dp"
         android:layout_marginTop="10dp"
         android:text="@string/confirmacaoPagamentoInfoApostas"
@@ -68,7 +68,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTitulo"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/rectangle_5_copy" />
 
     <TextView
