@@ -8,7 +8,7 @@ import java.util.Calendar;
 public class ContagemRegressiva extends CountDownTimer {
 
     public interface ContagemRegressivaListener {
-        public void onTick(long millisUntilFinish);
+        void onTick(long millisUntilFinish);
     }
 
     private TextView textView;

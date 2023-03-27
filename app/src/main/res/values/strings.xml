@@ -78,7 +78,7 @@
     <string name="confirmacaoPagamentoInfoApostasPIX">Acompanhe a situação \ne detalhamento da compra. \nVocê estará concorrendo quando \na APOSTA aparececer como EFETIVADA.</string>
     <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
-    <string name="confirmacaopagamentoParabensPix">SUA COMPRA ESTÁ EM PROCESSAMENTO</string>
+    <string name="confirmacaopagamentoParabensPix">SUA COMPRA ESTÁ EM \nPROCESSAMENTO.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -1156,4 +1156,11 @@
         <item>Cole o código Pix;</item>
         <item>Confirme as informações e realize o pagamento.</item>
     </string-array>
+
+    <!-- Popup Pix nao autorizado -->
+    <string name="popup_pix_nao_autorizado">Pagamento não autorizado</string>
+    <string name="gerar_novo_codigo">_Gerar_ \nnovo Código</string>
+    <string name="gerar_novo_codigo_pix">_Gerar_ \nnovo Código Pix</string>
+    <string name="alterar_forma_pagamento">_Alterar_ \nPagamento</string>
+    <string name="popup_pix_nao_autorizado_descricao">CPF do pagamento diferente do CPF do apostador. Não se preocupe, o Pix foi devolvido para a conta de pagamento \n\nVocê pode gerar novo código Pix ou alterar a forma de pagamento para concluir sua compra.</string>
 </resources>
