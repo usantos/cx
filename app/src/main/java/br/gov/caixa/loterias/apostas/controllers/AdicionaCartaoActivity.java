@@ -19,22 +19,16 @@ import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 import com.mercadopago.model.CardToken;
 
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.RecargaPayConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CardHolderRecargaPay;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CartaoRecargaPayDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DataExpiracao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
@@ -49,18 +43,12 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
     private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent,  editTextAnoValidadeCartaoContent;
-    private TextView textoInfoSelecioneFormaPagamento;
-    private CheckBox checkBoxSalvarCartao;
+    private TextView textoInfoSelecioneFormaPagamento, alterarMeioPagamento;
+    private CheckBox checkBoxSalvarCartao, checkBoxCiente;
     private AppCompatImageView imagemMeioPagamento, voltar;
     private ConstraintLayout backColor;
     private View margem;
-    private TextView alterarMeioPagamento;
     private Button btnAvancar;
-
-    private ArrayList<String> listaMeses;
-    private ArrayList<String> listaAnos;
-
-    private Boolean primeiraSelecao = false;
 
     private CartoesModel model;
     private MeioPagamentoConfig config;
@@ -88,8 +76,8 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         addRightImg(findViewById(R.id.editTextNomeClienteCartaoContent));
         addRightImg(findViewById(R.id.editTextCodigoSegurancaContent));
 
-        configuraSpin(R.id.spin_meses, getListaMeses(), onSpinListener(editTextMesValidadeCartaoContent, this.listaMeses));
-        configuraSpin(R.id.spin_anos, getListaAnos(), onSpinListener(editTextAnoValidadeCartaoContent, this.listaAnos));
+        configuraSpin(R.id.spin_meses, model.getListaMeses(), onSpinListener(editTextMesValidadeCartaoContent, model.getListaMeses()));
+        configuraSpin(R.id.spin_anos, model.getListaAnos(), onSpinListener(editTextAnoValidadeCartaoContent, model.getListaAnos()));
         apresentaTextCartoes();
     }
 
@@ -100,13 +88,16 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         editTextMesValidadeCartaoContent = findViewById(R.id.editTextMesValidadeCartaooContent);
         editTextAnoValidadeCartaoContent = findViewById(R.id.editTextAnoValidadeCartaooContent);
         checkBoxSalvarCartao             = findViewById(R.id.checkBoxSalvarCartao);
+        checkBoxCiente                   = findViewById(R.id.checkBoxCiente);
         textoInfoSelecioneFormaPagamento = findViewById(R.id.textoInfoSelecioneFormaPagamento);
         imagemMeioPagamento              = findViewById(R.id.imagemMeioPagamento);
         backColor                        = findViewById(R.id.background_dados_cartao);
         margem                           = findViewById(R.id.margem_cabecalho);
-        btnAvancar                           = findViewById(R.id.botaoAvancarPagamento);
-        alterarMeioPagamento                           = findViewById(R.id.alterarMeioPagamento);
+        btnAvancar                       = findViewById(R.id.botaoAvancarPagamento);
+        alterarMeioPagamento             = findViewById(R.id.alterarMeioPagamento);
         voltar                           = findViewById(R.id.iv_voltar);
+
+        btnAvancar.setEnabled(false);
     }
 
     private void configAparencia() {
@@ -126,9 +117,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
     private void configuraSpin(int idSprin, ArrayList<String> lista, AdapterView.OnItemSelectedListener listener){
         Spinner spinner = findViewById(idSprin);
-
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, lista);
-
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(listener);
@@ -137,39 +126,15 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private AdapterView.OnItemSelectedListener onSpinListener(EditText editText, ArrayList<String> lista){
         return new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                if (!primeiraSelecao ){
-//                    editTextMesValidadeCartaoContent.setText("");
-//                } else
                 if(i == 0){
                     editText.setText("");
                 } else {
                     editText.setText(lista.get(i));
                 }
-//                primeiraSelecao = true;
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {return;}
         };
-    }
-
-    private ArrayList<String> getListaMeses() {
-        listaMeses = new ArrayList<>();
-        listaMeses.add(getString(R.string.title_mesDeValidade));
-        for(int x = 1; x <= 12; x++){
-            listaMeses.add(x < 10 ? "0" + x: String.valueOf(x));
-        }
-        return listaMeses;
-    }
-
-    private ArrayList<String> getListaAnos() {
-        listaAnos = new ArrayList<>();
-        listaAnos.add(getString(R.string.title_anoDeValidade));
-        DateTime joda = new DateTime();
-        listaAnos.add("" + joda.getYear());
-        for(int x = 1; x <= 10; x++){
-            listaAnos.add("" + joda.plusYears(x).getYear());
-        }
-        return listaAnos;
     }
 
     private void addRightImg(EditText textField) {
@@ -196,16 +161,27 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     }
 
     private void configuraBotoesListener() {
-        btnAvancar.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
+        btnAvancar.setText(ViewUtils.textFuturaAndFuturaBold(this, "_Pagar agora_"));
         btnAvancar.setOnClickListener(view -> {
-            if(!camposInvalidos()){
-                showLoading();
-                model.buscaMeioPagamento(config.getMeioPagamento().getValor(), onMeioPagamentoListener());
+            if (checkBoxCiente.isChecked()){
+                if(!camposInvalidos()){
+                    showLoading();
+                    model.buscaMeioPagamento(config.getMeioPagamento().getValor(), onMeioPagamentoListener());
+                }
             }
         });
 
         alterarMeioPagamento.setOnClickListener( v -> finish());
         voltar.setOnClickListener(v -> finish());
+        checkBoxCiente.setOnClickListener(v -> {
+            if (checkBoxCiente.isChecked()){
+                btnAvancar.setEnabled(true);
+                btnAvancar.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+            } else {
+                btnAvancar.setEnabled(false);
+                btnAvancar.setBackgroundColor(getResources().getColor(R.color.cinza_salvar_cartao_desabilitado));
+            }
+        });
     }
 
     private OnSilceListener<MeioPagamentoDTO> onMeioPagamentoListener() {
@@ -249,7 +225,14 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new OnSilceListener<ApostadorDTO>() {
             @Override
             public void success(ApostadorDTO payload) {
-                model.realizaCompraRecargaPayNovoCartao(token, true, getCartaoRecargaPay(payload), onRecargaPayListener());
+                model.realizaCompraRecargaPayNovoCartao(token, true,
+                                                        model.getCartaoRecargaPay(payload,
+                                                                                  editTextNumeroCartaoContent.getText().toString(),
+                                                                                  editTextMesValidadeCartaoContent.getText().toString(),
+                                                                                  editTextAnoValidadeCartaoContent.getText().toString(),
+                                                                                  editTextCodigoSegurancaContent.getText().toString(),
+                                                                                  checkBoxSalvarCartao.isChecked()),
+                                                        onRecargaPayListener());
             }
 
             @Override
@@ -276,23 +259,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
                 onCompraError(volleyError);
             }
         };
-    }
-
-    private CartaoRecargaPayDTO getCartaoRecargaPay(ApostadorDTO dadosPessoais) {
-        CartaoRecargaPayDTO cartao = new CartaoRecargaPayDTO();
-        cartao.setType(RecargaPayConnection.CARTAO_TYPE);
-        cartao.setBrand(model.getBrand(editTextNumeroCartaoContent.getText().toString()));
-        cartao.setNumber(editTextNumeroCartaoContent.getText().toString());
-
-        CardHolderRecargaPay cardHolder = model.getCardHolderRecargaPay(dadosPessoais);
-        cartao.setCardHolder(cardHolder);
-
-        DataExpiracao dataExpiracao = model.getDataExpiracao(editTextMesValidadeCartaoContent.getText().toString(), editTextAnoValidadeCartaoContent.getText().toString());
-        cartao.setDataExpiracao(dataExpiracao);
-
-        cartao.setSecurityCode(editTextCodigoSegurancaContent.getText().toString());
-        cartao.setShouldSave(checkBoxSalvarCartao.isChecked());
-        return cartao;
     }
 
     private void realizaCompraMercadoPago() {
@@ -374,8 +340,8 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         }
         if(invalido){
             ViewUtils.alertTitleButton(AdicionaCartaoActivity.this,
-									   R.string.label_atencao, errorMessage,
-									   AdicionaCartaoActivity.this.getResources().getString(R.string.ok));
+                                       R.string.label_atencao, errorMessage,
+                                       AdicionaCartaoActivity.this.getResources().getString(R.string.ok));
         }
         return invalido;
     }
@@ -385,24 +351,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         Boolean isPossiuCartao = bundle.getBoolean(getResources().getString(R.string.textoInfoSelecioneFormaPagamento));
         if (isPossiuCartao) {
             textoInfoSelecioneFormaPagamento.setVisibility(View.GONE);
-        } else {
-            //apresentaAlertaPreCompra();
         }
-    }
-
-    private void apresentaAlertaPreCompra() {
-        ViewUtils.alertTitleCustomPositiveListener(AdicionaCartaoActivity.this,
-                                                   "Cancelar", "Confirmar",
-                                                   AdicionaCartaoActivity.this.getResources()
-                                                                              .getString(R.string.label_pre_pagamento)
-                                                                              .replace("{valorCompra}",
-                                                                                       ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal())),
-                                                   (dialog, which) -> {
-            AlertDialogUtils.dismiss();
-            dialog.dismiss();
-        }, (dialog, which) -> {
-            finish();
-        } );
     }
 
     private void showLoading(){

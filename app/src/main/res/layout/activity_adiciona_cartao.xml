@@ -120,161 +120,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <Button
-                        android:id="@+id/botaoAvancarPagamento"
-                        android:layout_width="184dp"
-                        android:layout_height="84dp"
-                        android:background="@color/verdeazul"
-                        android:text="@string/apostarAutorizarCobranca"
-                        android:textAlignment="center"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
-                        android:textColor="@color/branco"
-                        android:textSize="17sp"
-                        android:layout_marginBottom="24dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/containerComboSalvar" />
-
-                    <LinearLayout
-                        android:id="@+id/containerComboSalvar"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/containerValidadeCartao">
-
-                        <CheckBox
-                            android:id="@+id/checkBoxSalvarCartao"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginLeft="20dp"
-                            android:background="@drawable/check_box_selected"
-                            android:button="@color/transparente50"
-                            android:checked="false"
-                            android:layout_gravity="center"
-                            android:textColor="@color/pretoLinhaFormNovoTipoPagamento" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                style="@style/editTextArialMTTheme"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/label_salvar_Cartao"
-                                android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
-                                android:textSize="16sp" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/containerValidadeCartao"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
-                        android:baselineAligned="false"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/containerCodigoSeguranca">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/containerMesValidadeCartao"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_weight="1"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/containerNumeroCartao">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/editTextMesValidadeCartao"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <EditText
-                                    android:id="@+id/editTextMesValidadeCartaooContent"
-                                    style="@style/editTextRegisterTheme"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:focusable="false"
-                                    android:focusableInTouchMode="false"
-                                    android:hint="@string/title_mesDeValidade"
-                                    android:inputType="number"
-                                    android:maxLength="2"
-                                    android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
-                                    android:textColorHint="@color/azulFormNovoTipoPagamento"
-                                    android:textSize="16sp" />
-                            </com.google.android.material.textfield.TextInputLayout>
-                            <Spinner
-                                android:id="@+id/spin_meses"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_marginTop="10dp"
-                                android:backgroundTint="@color/colorAccent"
-                                android:dropDownWidth="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/containerAnoValidadeCartao"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/containerNumeroCartao">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/editTextAnoValidadeCartao"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <EditText
-                                    android:id="@+id/editTextAnoValidadeCartaooContent"
-                                    style="@style/editTextRegisterTheme"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="@string/title_anoValidade"
-                                    android:inputType="number"
-                                    android:maxLength="4"
-                                    android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
-                                    android:textColorHint="@color/azulFormNovoTipoPagamento"
-                                    android:textSize="16sp" />
-                            </com.google.android.material.textfield.TextInputLayout>
-                            <Spinner
-                                android:id="@+id/spin_anos"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_marginTop="10dp"
-                                android:backgroundTint="@color/colorAccent"
-                                android:dropDownWidth="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-                    </LinearLayout>
-
                     <RelativeLayout
                         android:id="@+id/containerNumeroCartao"
                         android:layout_width="0dp"
@@ -385,6 +230,200 @@
                                 android:textSize="16sp" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/containerValidadeCartao"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginRight="16dp"
+                        android:baselineAligned="false"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/containerCodigoSeguranca">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/containerMesValidadeCartao"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/containerNumeroCartao">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/editTextMesValidadeCartao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <EditText
+                                    android:id="@+id/editTextMesValidadeCartaooContent"
+                                    style="@style/editTextRegisterTheme"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:hint="@string/title_mesDeValidade"
+                                    android:inputType="number"
+                                    android:maxLength="2"
+                                    android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+                                    android:textColorHint="@color/azulFormNovoTipoPagamento"
+                                    android:textSize="16sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <Spinner
+                                android:id="@+id/spin_meses"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="10dp"
+                                android:backgroundTint="@color/colorAccent"
+                                android:dropDownWidth="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/containerAnoValidadeCartao"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/containerNumeroCartao">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/editTextAnoValidadeCartao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <EditText
+                                    android:id="@+id/editTextAnoValidadeCartaooContent"
+                                    style="@style/editTextRegisterTheme"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/title_anoValidade"
+                                    android:inputType="number"
+                                    android:maxLength="4"
+                                    android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+                                    android:textColorHint="@color/azulFormNovoTipoPagamento"
+                                    android:textSize="16sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <Spinner
+                                android:id="@+id/spin_anos"
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_marginTop="10dp"
+                                android:backgroundTint="@color/colorAccent"
+                                android:dropDownWidth="wrap_content"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/containerComboSalvar"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/containerValidadeCartao">
+
+                        <CheckBox
+                            android:id="@+id/checkBoxSalvarCartao"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:background="@drawable/check_box_selected"
+                            android:button="@color/transparente50"
+                            android:checked="false"
+                            android:layout_gravity="center"
+                            android:textColor="@color/azul_salvar_cartao" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/editTextArialMTTheme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_salvar_Cartao"
+                                android:textColor="@color/azul_salvar_cartao"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/containerComboCiente"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/containerComboSalvar">
+
+                        <CheckBox
+                            android:id="@+id/checkBoxCiente"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginLeft="20dp"
+                            android:background="@drawable/check_box_selected"
+                            android:button="@color/transparente50"
+                            android:checked="false"
+                            android:layout_gravity="center"
+                            android:textColor="@color/pretoLinhaFormNovoTipoPagamento" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                style="@style/editTextArialMTTheme"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/label_ciente_cpf_titularidadeo"
+                                android:textColor="@color/azul_salvar_cartao"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/botaoAvancarPagamento"
+                        android:layout_width="184dp"
+                        android:layout_height="84dp"
+                        android:background="@color/cinza_salvar_cartao_desabilitado"
+                        android:text="_Pagar agora_"
+                        android:textAlignment="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                        android:textColor="@color/branco"
+                        android:textSize="17sp"
+                        android:layout_marginBottom="24dp"
+                        android:layout_marginTop="24dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/containerComboCiente" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -445,6 +445,7 @@
     <string name="title_anoValidade">Ano de validade</string>
     <string name="title_salvarCartao">Salvar este cartão para futuras apostas</string>
     <string name="label_salvar_Cartao">Salvar cartão para compras futuras</string>
+    <string name="label_ciente_cpf_titularidadeo">Estou ciente que o cartão utilizado para pagar a aposta deve ser de minha titularidade.</string>
     <string name="title_mesDeValidade">Mês de validade</string>
     <string name="title_anoDeValidade">Ano de validade</string>
     <string name="title_sair">Sair</string>

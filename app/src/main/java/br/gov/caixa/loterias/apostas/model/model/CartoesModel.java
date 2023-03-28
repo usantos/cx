@@ -7,6 +7,7 @@ import com.android.volley.VolleyError;
 import com.mercadolibre.android.device.sdk.DeviceSDK;
 import com.mercadopago.model.CardToken;
 
+import org.joda.time.DateTime;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -342,5 +343,43 @@ public class CartoesModel extends AppModel {
 		dataExpiracao.setMes(Integer.valueOf(mes));
 		dataExpiracao.setAno(Integer.valueOf(ano));
 		return dataExpiracao;
+	}
+
+	public ArrayList<String> getListaMeses() {
+		ArrayList<String> listaMeses = new ArrayList<>();
+		listaMeses.add(getActivity().getString(R.string.title_mesDeValidade));
+		for(int x = 1; x <= 12; x++){
+			listaMeses.add(x < 10 ? "0" + x: String.valueOf(x));
+		}
+		return listaMeses;
+	}
+
+	public ArrayList<String> getListaAnos() {
+		ArrayList<String> listaAnos = new ArrayList<>();
+		listaAnos.add(getActivity().getString(R.string.title_anoDeValidade));
+		DateTime joda = new DateTime();
+		listaAnos.add("" + joda.getYear());
+		for(int x = 1; x <= 10; x++){
+			listaAnos.add("" + joda.plusYears(x).getYear());
+		}
+		return listaAnos;
+	}
+
+	public CartaoRecargaPayDTO getCartaoRecargaPay(ApostadorDTO dadosPessoais, String numeroCartao, String mes, String ano,
+												  String codSeguranca, boolean shouldSave) {
+		CartaoRecargaPayDTO cartao = new CartaoRecargaPayDTO();
+		cartao.setType(RecargaPayConnection.CARTAO_TYPE);
+		cartao.setBrand(this.getBrand(numeroCartao));
+		cartao.setNumber(numeroCartao);
+
+		CardHolderRecargaPay cardHolder = this.getCardHolderRecargaPay(dadosPessoais);
+		cartao.setCardHolder(cardHolder);
+
+		DataExpiracao dataExpiracao = this.getDataExpiracao(mes, ano);
+		cartao.setDataExpiracao(dataExpiracao);
+
+		cartao.setSecurityCode(codSeguranca);
+		cartao.setShouldSave(shouldSave);
+		return cartao;
 	}
 }
