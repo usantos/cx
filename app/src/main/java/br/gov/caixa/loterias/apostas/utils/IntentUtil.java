@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.utils;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 
 import java.io.Serializable;
 
@@ -22,6 +23,12 @@ public class IntentUtil {
 	public static Intent getIntentOrigemDestino(Activity activity, Class clazz, String key, Serializable extra){
 		Intent intent = getIntentOrigemDestino(activity, clazz);
 		intent.putExtra(key, extra);
+
+		return intent;
+	}
+	public static Intent getIntentOrigemDestino(Activity activity, Class clazz, Bundle bundle){
+		Intent intent = getIntentOrigemDestino(activity, clazz);
+		intent.putExtras(bundle);
 
 		return intent;
 	}

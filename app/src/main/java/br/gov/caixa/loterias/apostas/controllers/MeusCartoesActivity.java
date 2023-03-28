@@ -115,11 +115,11 @@ public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoe
     }
 
     private MeusCartoesConfig getConfigMercadoPago() {
-        return new MeusCartoesConfig(R.color.azul_meu_cartao, R.drawable.ic_mercado_pago, R.string.confira_cartoes_salvos_mercado_pago, MeioPagamentoUtils.MERCADO_PAGO);
+        return new MeusCartoesConfig(R.color.azul_meu_cartao, R.drawable.ic_mercado_pago, R.string.confira_cartoes_salvos_mercado_pago, MeioPagamentoUtils.MERCADO_PAGO_VALUE);
     }
 
     private MeusCartoesConfig getConfigRecargaPay() {
-        return new MeusCartoesConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, R.string.confira_cartoes_salvos_recargapa_pay, MeioPagamentoUtils.RECARGAPAY);
+        return new MeusCartoesConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, R.string.confira_cartoes_salvos_recargapa_pay, MeioPagamentoUtils.RECARGAPAY_VALUE);
     }
 
     private void pegaExtras(){

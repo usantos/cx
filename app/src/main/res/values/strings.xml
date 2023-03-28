@@ -59,6 +59,7 @@
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
     <string name="confirmacao">Confirmação</string>
     <string name="label_acompanhe_suas_compras">_Ir para_\ncompras</string>
+    <string name="label_acompanhe_suas_compras_pix">_Acompanhe_\nsuas compras</string>
     <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
 
@@ -70,13 +71,14 @@
 
     <string name="total">Total</string>
 
+    <string name="confirmacaoPagamentoInfoApostasPIX">Acompanhe a situação \ne detalhamento da compra. \nVocê estará concorrendo quando \na APOSTA aparececer como EFETIVADA.</string>
     <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
+    <string name="confirmacaopagamentoParabensPix">Sua compra está em \nprocessamento.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
     <string name="label_concurso_atual">Informações do concurso atual</string>
-
     <string name="novaFormaPagamentoTitulo">Cadastrar cartão</string>
     <string name="novaFormaPagamentoNenhumCartaoCadastrado">Notamos que você ainda não possui nenhum cartão de crédito cadastrado. Para continuar, informe:</string>
     <string name="title_activity_main_teste">MainTesteActivity</string>
@@ -1074,7 +1076,9 @@
     <string name="digitar_codigo">Digitar o código</string>
     <string name="tentar_novamente">Tentar novamente</string>
     <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
-    <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a opção de sua preferência e preencher os dados do cartão de crédito</string>
+    <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a forma de pagamento de sua preferencia.</string>
+    <string name="leia_instrucoes_pix">Antes de prosseguir, leia atentamente as instruções abaixo.</string>
+    <string name="copia_codigo_instrucoes_pix">Copie o código abaixo e utilize o Pix Copia e Cola no aplicativo que você fará o pagamento.</string>
     <string name="adicionar_cartao">Adicionar cartão</string>
     <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
     <string name="nao_e_possivel_eliminar_cartao_favorito">Não é possível eliminar o cartão favorito.</string>
@@ -1082,6 +1086,50 @@
     <string name="alterar_favorito_interrogacao">Alterar Favorito?</string>
     <string name="confirmar_alterar_cartao_favorito">Deseja alterar seu cartão preferido? Confirmar?</string>
 
+    <string name="confira_cartoes_salvos_mercado_pago">Confira aqui sua lista de cartões salvos no Mercado Pago</string>
+
+    <string name="confira_cartoes_salvos_recargapa_pay">Confira aqui sua lista de cartões salvos no RecargaPay</string>
+    <string name="compra_processada_por">Compra processada por:</string>
+    <string name="selecione_o_meio_de_pagamento_que_ira_processar_a_compra">Selecione o meio de pagamento que irá processar a compra utilizando o cartão de crédito de sua escolha</string>
+    <string name="bundle_key_config">CONFIG</string>
+    <string name="abre_chave_nsb_fecha_chave">{nsb}</string>
+
+    <string name="situaco">Situação</string>
+    <string name="faixa">Faixa</string>
+    <string name="valor">Valor</string>
+    <string name="mensagem_carrinho_vazio_dialog">Você não fez nenhuma aposta. Escolha a sua modalidade favorita e boa sorte!</string>
+    <string name="title_orientacaoCodigoBarras2">Posicione a câmera sobre o código de barras e aguarde. A leitura é automática.</string>
+
+    <string name="title_orientacaoQrCode">Posicione a câmera sobre o QR Code e aguarde. A leitura é automática.</string>
+    <string name="title_CodigoBarras">Código de barras</string>
+
+    <string name="title_QrCode">QR Code</string>
+    <string name="title_digiteSuaAposta">Digite a sua aposta</string>
+    <string name="leitor_digital">Acessar com biometria</string>
+
+    <string name="entrar">Entrar como</string>
+    <string name="ativar_biometria">Necessário habilitar biometria</string>
+    <string name="habilitar">Habilitar</string>
+    <string name="desativar_biometria">Desativar biometria</string>
+    <string name="desativar_biometria_mensagem">Desaja desativar a biometria e acessar apenas com o Login Caixa?</string>
+    <string name="biometria_popup_titulo">Loterias Caixa</string>
+    <string name="biometria_popup_descricao">Desbloqueie seu celular</string>
+    <string name="trocar_de_usuario"><u>Trocar de usuário</u></string>
+    <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
+
+
+    <!-- Mensagens Disque 180  -->
+    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
+    <string name="cartao_de_credito">Cartão de Crédito</string>
+    <string name="como_pagar_pix">Como pagar com pix</string>
+
+    <string name="orientacao_pix_checkbox">Estou ciente que somente será aceito o pagamento realizado em conta de titularidade do apostador.</string>
+    <string name="pagar_agora">Pagar agora!</string>
+    <string name="pix_copia_cola">Pix Copia e Cola</string>
+    <string name="pix_codigo_pago_unica_vez">*O código poderá ser pago somente 1 vez.</string>
+    <string name="pix_voce_tem">Você tem</string>
+    <string name="pix_contador">9m 59seg</string>
+    <string name="pix_para_efetuar_pagamento">Para efetuar o pagamento</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
@@ -1096,38 +1144,18 @@
         <item>Novembro</item>
         <item>Dezembro</item>
     </string-array>
+    <string-array name="orientacao_pix_list">
+        <item>Copie o código gerado e pague em até 10 minutos;</item>
+        <item>Entre no aplicativo da sua instituição financeira e \nacesse o ambiente Pix;</item>
+        <item>Escolha a opção Pix Copia e Cola;</item>
+        <item>Cole o código Pix;</item>
+        <item>Confirme as informações e realize o pagamento.</item>
+    </string-array>
 
-    <string name="confira_cartoes_salvos_mercado_pago">Confira aqui sua lista de cartões salvos no Mercado Pago</string>
-    <string name="confira_cartoes_salvos_recargapa_pay">Confira aqui sua lista de cartões salvos no RecargaPay</string>
-    <string name="compra_processada_por">Compra processada por:</string>
-    <string name="selecione_o_meio_de_pagamento_que_ira_processar_a_compra">Selecione o meio de pagamento que irá processar a compra utilizando o cartão de crédito de sua escolha</string>
-    <string name="bundle_key_config">CONFIG</string>
-    
-    <string name="abre_chave_nsb_fecha_chave">{nsb}</string>
-    <string name="situaco">Situação</string>
-    <string name="faixa">Faixa</string>
-    <string name="valor">Valor</string>
-    <string name="mensagem_carrinho_vazio_dialog">Você não fez nenhuma aposta. Escolha a sua modalidade favorita e boa sorte!</string>
-
-    <string name="title_orientacaoCodigoBarras2">Posicione a câmera sobre o código de barras e aguarde. A leitura é automática.</string>
-    <string name="title_orientacaoQrCode">Posicione a câmera sobre o QR Code e aguarde. A leitura é automática.</string>
-
-    <string name="title_CodigoBarras">Código de barras</string>
-    <string name="title_QrCode">QR Code</string>
-    <string name="title_digiteSuaAposta">Digite a sua aposta</string>
-
-    <string name="leitor_digital">Acessar com biometria</string>
-    <string name="entrar">Entrar como</string>
-    <string name="ativar_biometria">Necessário habilitar biometria</string>
-    <string name="habilitar">Habilitar</string>
-    <string name="desativar_biometria">Desativar biometria</string>
-    <string name="desativar_biometria_mensagem">Desaja desativar a biometria e acessar apenas com o Login Caixa?</string>
-    <string name="biometria_popup_titulo">Loterias Caixa</string>
-    <string name="biometria_popup_descricao">Desbloqueie seu celular</string>
-    <string name="trocar_de_usuario"><u>Trocar de usuário</u></string>
-
-
-    <!-- Mensagens Disque 180  -->
-    <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
-    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
+    <!-- Popup Pix nao autorizado -->
+    <string name="popup_pix_nao_autorizado">Pagamento não autorizado</string>
+    <string name="gerar_novo_codigo">_Gerar_ \nnovo Código</string>
+    <string name="gerar_novo_codigo_pix">_Gerar_ \nnovo Código Pix</string>
+    <string name="alterar_forma_pagamento">_Alterar_ \nPagamento</string>
+    <string name="popup_pix_nao_autorizado_descricao">CPF do pagamento diferente do CPF do apostador. Não se preocupe, o Pix foi devolvido para a conta de pagamento \n\nVocê pode gerar novo código Pix ou alterar a forma de pagamento para concluir sua compra.</string>
 </resources>
