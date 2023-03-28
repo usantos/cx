@@ -15,7 +15,7 @@ public class ContagemRegressiva extends CountDownTimer {
     private Calendar calendar = Calendar.getInstance();
 
     private ContagemRegressivaListener listener;
-
+    private long millisUntilFinish = 0l;
 
     public ContagemRegressiva(TextView textView, long timeInFurure, long interval) {
         super(timeInFurure, interval);
@@ -24,6 +24,7 @@ public class ContagemRegressiva extends CountDownTimer {
 
     @Override
     public void onTick(long millisUntilFinish) {
+        this.millisUntilFinish = millisUntilFinish;
         textView.setText(millisToMinute(millisUntilFinish)+"m "+millisToSecond(millisUntilFinish)+"seg");
         if (listener != null){
             listener.onTick(millisUntilFinish);
@@ -38,6 +39,10 @@ public class ContagemRegressiva extends CountDownTimer {
     @Override
     public void onFinish() {
         //textView.setText(millisToMinute(timeInFurure)+":"+millisToSecond(timeInFurure));
+    }
+
+    public long getMillisUntilFinish(){
+        return millisUntilFinish;
     }
 
     private String millisToMinute(long millisUntilFinish) {

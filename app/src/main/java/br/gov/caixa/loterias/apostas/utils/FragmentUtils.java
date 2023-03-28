@@ -67,8 +67,8 @@ public class FragmentUtils {
 		return fragment;
 	}
 
-	public static CopiaColaPixFragment startCopiaColaPix(FragmentManager fm, int id) {
-		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance();
+	public static CopiaColaPixFragment startCopiaColaPix(FragmentManager fm, int id, long millisUntilFinish) {
+		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance(millisUntilFinish);
 		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
 	}

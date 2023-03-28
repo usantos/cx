@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.CopiaColaPixActivity;
+import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.WebViewActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
@@ -50,14 +53,18 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 
@@ -83,7 +90,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private RecyclerView recyclerDetalhesApostas;
     private Boolean mantemSurpresinhas = true;
     private TextView tvBadge;
+    private CopiaColaPixFragment fragCopiaCola;
     int ordemCompra;
+    long tempo_acabar_pix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +120,6 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_detalhes_compras))));
     }
 
-
     private void setaMetodos(){
         btnFiltro.setOnClickListener(view -> {
             dialogFiltrar.show();
@@ -121,6 +129,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
 
         criarCabecalho();
+        verificaPixCopiaCola();
         verificaCompraProcessada();
         buscaDetalhesCompras();
         setaDialogFavoritar();
@@ -133,6 +142,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             String compraDTOJson = bundle.getString("CompraDTO");
             ordemCompra = bundle.getInt("ordem");
             compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
+            tempo_acabar_pix = bundle.getLong("tempoPix", 0l);
         }
     }
 
@@ -141,6 +151,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             showDialogCompraCancelada();
         } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
             showDialogDebitoNaoAutorizado();
+        } else if (SituacaoCompraUtil.isEstornada(compraDTO.getSituacao())) {
+            showDialogEstornada();
         }
     }
 
@@ -170,6 +182,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         };
     }
 
+    private void showDialogEstornada() {
+        DialogUtils.showDialog3Botoes(DetalhesComprasActivity.this,R.drawable.vermelho,
+                getString(R.string.popup_pix_nao_autorizado),
+                getString(R.string.popup_pix_nao_autorizado_descricao),
+                getString(R.string.gerar_novo_codigo),
+                getString(R.string.alterar_forma_pagamento),
+                getString(R.string.btn_title_voltarAoInicio), onDialogListener());
+
+    }
+
     private void showDialogDebitoNaoAutorizado() {
 
 //        DialogUtils.showDialogDebitoNaoAutorizado(this,
@@ -177,11 +199,46 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 //                                                  true,
 //                                                  onDebitaNaoAutorizadoDialogListener());
 
-        DialogUtils.showDialogDebitoNaoAutorizado(this,
-                                                  getResources().getString(R.string.salvar_carrinho),
-                                                  true,
-                                                  onCompraCancelaDialogListener());
+//        DialogUtils.showDialogDebitoNaoAutorizado(this,
+//                                                  getResources().getString(R.string.salvar_carrinho),
+//                                                  true,
+//                                                  onCompraCancelaDialogListener());
+
+        DialogUtils.showDialog3Botoes(this, R.drawable.vermelho,
+                getString(R.string.popup_pix_nao_realizado),
+                getString(R.string.popup_pix_nao_realizado_descricao),
+                getString(R.string.gerar_novo_codigo),
+                getString(R.string.alterar_forma_pagamento),
+                getString(R.string.btn_title_voltarAoInicio), onDialogListener());
     }
+
+    private OnDialog3ButtonsListener onDialogListener() {
+        return new OnDialog3ButtonsListener() {
+            @Override
+            public void leftButtom() {
+                //cancelContagem();
+                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, OrientacaoPixActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void centerButtom() {
+                //cancelContagem();
+                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, FormaPagamentoActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void rightButtom() {
+                //cancelContagem();
+                PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                finish();
+            }
+        };
+    }
+
 
     private OnDialogSituacaoCompraListener onDebitaNaoAutorizadoDialogListener() {
         return new OnDialogSituacaoCompraListener() {
@@ -273,6 +330,13 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void criarCabecalho() {
+        //Desabilita componentes
+        ImageView imageViewRelogio = findViewById(R.id.imageViewRelogio);
+        imageViewRelogio.setVisibility(View.GONE);
+        TextView contadorDown = findViewById(R.id.contadorDown);
+        contadorDown.setVisibility(View.GONE);
+        Button btnMinhasCompras = findViewById(R.id.btnMinhasCompras);
+        btnMinhasCompras.setVisibility(View.GONE);
         FrameLayout setaIndicador = findViewById(R.id.setaComprasGroup);
         setaIndicador.setVisibility(View.INVISIBLE);
 
@@ -280,11 +344,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         if(compraDTO.getDataFinalizacaoCompra() != null){
             dataCompra.setText("Data: " + compraDTO.getDataFinalizacaoCompra());
         }
+
+        TextView textTotal = findViewById(R.id.txtTotal);
+        textTotal.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_valor)));
+
         TextView valorCompra = findViewById(R.id.valorCompra);
-        valorCompra.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_valor,
-                ViewUtils.getMoedaFormat(compraDTO.getValorTotal()))));
+        valorCompra.setText(ViewUtils.getMoedaFormat(compraDTO.getValorTotal()));
 
         TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
+        situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao_descricao,
+                compraDTO.getSituacao().getDescricao())));
 
         if (SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
             situacaoCompraTextView.setTextColor(getResources().getColor(R.color.azul_minhas_compras));
@@ -294,13 +363,29 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             situacaoCompraTextView.setTextColor(getResources().getColor(R.color.amarelo_minhas_compras));
         }
 
-        situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao,
-                compraDTO.getSituacao().getDescricao())));
+        if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) &&
+                SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
+            TextView processadaPor = findViewById(R.id.processadaPor);
+            processadaPor.setText("ID: mock12314415256464");
+        }
+
         ImageButton ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
+        ibFavoritar.setVisibility(View.VISIBLE);
         ibFavoritar.setOnClickListener(v -> {
                     configuraVisibilidadeMantSurpresinha(listaAposta);
                 });
+    }
 
+    private void verificaPixCopiaCola() {
+        if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) &&
+            SituacaoCompraUtil.isSituacaoProcessamento(compraDTO.getSituacao())) {
+
+            startFragment();
+        }
+    }
+
+    private void startFragment() {
+        fragCopiaCola = FragmentUtils.startCopiaColaPix(getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe, tempo_acabar_pix);
     }
 
     private void verificaCompraProcessada() {
@@ -314,6 +399,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             }
             if (MeioPagamentoUtil.isRecargaPay(compraDTO.getMeioPagamento())) {
                 imageView.setImageDrawable(getResources().getDrawable(R.drawable.recargapay));
+            }
+            if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())) {
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_pix));
             }
         }
     }

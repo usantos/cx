@@ -57,7 +57,9 @@ public class CardPixFragment extends Fragment {
 			view.findViewById(R.id.valor_pix).setVisibility(View.GONE);
 			FragmentUtils.startOrientacaoPix(getActivity().getSupportFragmentManager(),R.id.corpo);
 		} else if (isTela(TELA_COPIA_COLA)){
-			FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo);
+			//fragCopiaCola = FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo);
+			FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo, 125 * 1000);
+			//FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo);
 		}
 	}
 

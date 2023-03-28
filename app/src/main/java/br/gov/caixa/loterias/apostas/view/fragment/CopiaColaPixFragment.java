@@ -25,6 +25,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 
 public class CopiaColaPixFragment extends Fragment {
 
+	private static final String ARG_MILLIS_FIM = "ARG_MILLIS_FIM";
 	public static int SEGUNDOS = 30000;
 
 	private View view;
@@ -34,14 +35,18 @@ public class CopiaColaPixFragment extends Fragment {
 	private ImageView iconTimer;
 
 	private String numeroPix;
+
+	private boolean saiuParaPagar = false;
+	private boolean copiouText = false;
+	private long millisUntilFinish;
 	private OnCopiaColaListener listener;
 
 	public CopiaColaPixFragment() {}
 
-	public static CopiaColaPixFragment newInstance() {
+	public static CopiaColaPixFragment newInstance(long millisUntilFinish) {
 		CopiaColaPixFragment fragment = new CopiaColaPixFragment();
 		Bundle               args     = new Bundle();
-
+		args.putLong(ARG_MILLIS_FIM, millisUntilFinish);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -60,6 +65,7 @@ public class CopiaColaPixFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
+			millisUntilFinish = getArguments().getLong(ARG_MILLIS_FIM, 0l);
 		}
 
 	}
@@ -86,7 +92,8 @@ public class CopiaColaPixFragment extends Fragment {
 	}
 
 	private void startTimer() {
-		ContagemRegressiva contDown = new ContagemRegressiva(timerView, SEGUNDOS, 1000) {
+		ContagemRegressiva contDown = new ContagemRegressiva(timerView, millisUntilFinish, 1000) {
+		//ContagemRegressiva contDown = new ContagemRegressiva(timerView, SEGUNDOS, 1000) {
 			@Override
 			public void onFinish() {
 				try {

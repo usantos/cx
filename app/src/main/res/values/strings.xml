@@ -44,8 +44,12 @@
     <string name="label_nao">Não</string>
     <string name="label_compra_valor">Compra %d</string>
 
-    <string name="label_compra_lista_valor">_Total:_\n %s</string>
-    <string name="label_compra_lista_situacao">_Situação:_ %s</string>
+    <string name="label_compra_lista_valor">_Total:_</string>
+    <string name="label_compra_lista_situacao">Situação:</string>
+    <string name="label_compra_lista_situacao_descricao">Situação: _%s_</string>
+    <string name="label_compra_lista_processada_por">Compra processada por: _%s_</string>
+    <string name="label_compra_lista_alterar_compra">Alterar Compra</string>
+    <string name="label_compra_lista_tentar_novamente">Tentar Novamente</string>
 
     <string name="label_atencao">Atenção</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
@@ -194,7 +198,7 @@
     <string name="label_quantidade_gols_cada_time">a quantidade de gols de cada time.</string>
     <string name="title_activity_favoritas">Favoritas</string>
     <string name="title_activity_favoritas_bold">_Apostas Favoritas_</string>
-    <string name="title_activity_lista_compras">Compras</string>
+    <string name="title_activity_lista_compras">Minhas Compras</string>
 
     <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
     <string name="btn_entendi">entendi</string>
@@ -991,6 +995,7 @@
     <string name="espaco_teimosinha">&#160;Teimosinha</string>
     <string name="extra_compra_dto">CompraDTO</string>
     <string name="extra_ordem">ordem</string>
+    <string name="extra_tempo_pix">tempoPix</string>
     <string name="data_dois_pontos_espaco">Data:&#160;</string>
     <string name="textoInfoSelecioneFormaPagamento">textoInfoSelecioneFormaPagamento</string>
     <string name="como_jogar">Como jogar</string>
@@ -1160,4 +1165,9 @@
     <string name="gerar_novo_codigo_pix">_Gerar_ \nnovo Código Pix</string>
     <string name="alterar_forma_pagamento">_Alterar_ \nPagamento</string>
     <string name="popup_pix_nao_autorizado_descricao">CPF do pagamento diferente do CPF do apostador. Não se preocupe, o Pix foi devolvido para a conta de pagamento \n\nVocê pode gerar novo código Pix ou alterar a forma de pagamento para concluir sua compra.</string>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
+    <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
+
 </resources>
