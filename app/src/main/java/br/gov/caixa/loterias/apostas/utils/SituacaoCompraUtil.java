@@ -32,6 +32,10 @@ public class SituacaoCompraUtil {
 		return situacao.getValor() == VALOR_DEBITO_NAO_AUTORIZADO;
 	}
 
+	public static boolean isEstornada(DTOEnumLong situacao) {
+		return situacao.getValor() == VALOR_ESTORNADA;
+	}
+
 	public static boolean isCancelada(DTOEnumLong situacao) {
 		return situacao.getValor() == VALOR_CANCELADA;
 	}

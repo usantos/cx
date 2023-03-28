@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.CopiaColaPixActivity;
+import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.WebViewActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
@@ -57,10 +59,12 @@ import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 
@@ -147,6 +151,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             showDialogCompraCancelada();
         } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
             showDialogDebitoNaoAutorizado();
+        } else if (SituacaoCompraUtil.isEstornada(compraDTO.getSituacao())) {
+            showDialogEstornada();
         }
     }
 
@@ -176,6 +182,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         };
     }
 
+    private void showDialogEstornada() {
+        DialogUtils.showDialog3Botoes(DetalhesComprasActivity.this,R.drawable.vermelho,
+                getString(R.string.popup_pix_nao_autorizado),
+                getString(R.string.popup_pix_nao_autorizado_descricao),
+                getString(R.string.gerar_novo_codigo),
+                getString(R.string.alterar_forma_pagamento),
+                getString(R.string.btn_title_voltarAoInicio), onDialogListener());
+
+    }
+
     private void showDialogDebitoNaoAutorizado() {
 
 //        DialogUtils.showDialogDebitoNaoAutorizado(this,
@@ -183,11 +199,46 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 //                                                  true,
 //                                                  onDebitaNaoAutorizadoDialogListener());
 
-        DialogUtils.showDialogDebitoNaoAutorizado(this,
-                                                  getResources().getString(R.string.salvar_carrinho),
-                                                  true,
-                                                  onCompraCancelaDialogListener());
+//        DialogUtils.showDialogDebitoNaoAutorizado(this,
+//                                                  getResources().getString(R.string.salvar_carrinho),
+//                                                  true,
+//                                                  onCompraCancelaDialogListener());
+
+        DialogUtils.showDialog3Botoes(this, R.drawable.vermelho,
+                getString(R.string.popup_pix_nao_realizado),
+                getString(R.string.popup_pix_nao_realizado_descricao),
+                getString(R.string.gerar_novo_codigo),
+                getString(R.string.alterar_forma_pagamento),
+                getString(R.string.btn_title_voltarAoInicio), onDialogListener());
     }
+
+    private OnDialog3ButtonsListener onDialogListener() {
+        return new OnDialog3ButtonsListener() {
+            @Override
+            public void leftButtom() {
+                //cancelContagem();
+                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, OrientacaoPixActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void centerButtom() {
+                //cancelContagem();
+                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, FormaPagamentoActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void rightButtom() {
+                //cancelContagem();
+                PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                finish();
+            }
+        };
+    }
+
 
     private OnDialogSituacaoCompraListener onDebitaNaoAutorizadoDialogListener() {
         return new OnDialogSituacaoCompraListener() {

@@ -26,7 +26,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 	protected TextView textTotal;
 	protected ImageButton ibFavoritar;
 	protected TextView processadaPor;
-	protected TextView contadorDown;
+	protected TextView textContadorDown;
 	protected ImageView imageViewRelogio;
 	protected Button btnMinhasCompras;
 
@@ -39,7 +39,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		textTotal = itemView.findViewById(R.id.txtTotal);
 		dataCompra = itemView.findViewById(R.id.dataCompraTextView);
 		processadaPor = itemView.findViewById(R.id.processadaPor);
-		contadorDown = itemView.findViewById(R.id.contadorDown);
+		textContadorDown = itemView.findViewById(R.id.contadorDown);
 		valorCompra = itemView.findViewById(R.id.valorCompra);
 		ibFavoritar = itemView.findViewById(R.id.ib_favoritar);
 		imageViewRelogio = itemView.findViewById(R.id.imageViewRelogio);
@@ -53,10 +53,10 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		final int ordemLista = position + 1;
 
 		ContagemRegressiva contagemRegressiva = null;
-		int tempo_inicial_pix = 60;
+		long tempo_inicial_pix = 60;
 
 		//*** Mock - APAGAR ***
-		if (ordemLista >= 1 && ordemLista <= 4) {
+		if (ordemLista >= 1 && ordemLista <= 5) {
 			tempo_inicial_pix = ordemLista * 60;
 			item.getMeioPagamento().setValor(6l); //PIX
 			item.getSituacao().setValor(7l);
@@ -66,8 +66,12 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 				item.getSituacao().setDescricao("Finalizada");
 			}
 			if (ordemLista == 4) {
-				item.getSituacao().setValor(3l);
+				item.getSituacao().setValor(3l); //VALOR_DEBITO_NAO_AUTORIZADO
 				item.getSituacao().setDescricao("Pagamento não realizado");
+			}
+			if (ordemLista == 5) {
+				item.getSituacao().setValor(4l); //VALOR_ESTORNADA
+				item.getSituacao().setDescricao("Pagamento devolvido");
 			}
 		}
 
@@ -97,16 +101,16 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 
 		//PIX
 		imageViewRelogio.setVisibility(View.GONE);
-		contadorDown.setVisibility(View.GONE);
+		textContadorDown.setVisibility(View.GONE);
 		btnMinhasCompras.setVisibility(View.GONE);
 		if (item.getMeioPagamento().getValor() == MeioPagamentoUtil.PIX) {
 
 			if (SituacaoCompraUtil.isSituacaoProcessamento(item.getSituacao())) {
 				imageViewRelogio.setVisibility(View.VISIBLE);
-				contadorDown.setVisibility(View.VISIBLE);
+				textContadorDown.setVisibility(View.VISIBLE);
 				btnMinhasCompras.setVisibility(View.VISIBLE);
 
-				contagemRegressiva = new ContagemRegressiva(contadorDown,tempo_inicial_pix * 1000, 1 * 1000) {
+				contagemRegressiva = new ContagemRegressiva(textContadorDown,tempo_inicial_pix * 1000, 1 * 1000) {
 					@Override
 					public void onFinish() {
 						btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
@@ -114,6 +118,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 					}
 				};
 				contagemRegressiva.start();
+
 				btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
 						context.getString(R.string.label_compra_lista_alterar_compra)));
 			}
