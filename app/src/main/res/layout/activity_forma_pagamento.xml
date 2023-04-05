@@ -40,7 +40,7 @@
             android:id="@+id/subtitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/selecione_o_meio_de_pagamento"
+            android:text="Escolha a forma de pagamento para realizar sua compra"
             android:textColor="#004680"
             android:textSize="16sp"
             android:fontFamily="@font/font_family_futura"
