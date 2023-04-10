@@ -109,7 +109,18 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 	}
 
 	private boolean retornoServicoContemPix(List<MeioPagamentoDTO> payload) {
-		return true;
+		Boolean temPix = Boolean.FALSE;
+
+		if (payload != null && !payload.isEmpty()){
+			for (MeioPagamentoDTO meioPagamento: payload){
+				if (meioPagamento.getId() == MeioPagamentoUtils.PIX){
+					temPix = true;
+					break;
+				}
+			}
+		}
+
+		return temPix;
 	}
 
 	private void configMenu() {
@@ -130,16 +141,25 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 	}
 
 	private void startFragmentRecargaPay(boolean primeiroMeioPagamentoCartao) {
+		if (primeiroMeioPagamentoCartao){}
 		frameRecargaPay = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
-									R.id.fragmentRecargaPay,
+									getIdFrameLayout(primeiroMeioPagamentoCartao),
 									getConfigRecarga(primeiroMeioPagamentoCartao));
+	}
+
+	private int getIdFrameLayout(boolean primeiroMeioPagamentoCartao){
+		if (primeiroMeioPagamentoCartao){
+			return R.id.fragmentCartao1;
+		}
+
+		return R.id.fragmentCartao2;
 	}
 
 	private void startFragmentMercadoPago(boolean primeiroMeioPagamentoCartao) {
 		frameMercadoPago = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
-									R.id.fragmentMercadoPago,
+									getIdFrameLayout(primeiroMeioPagamentoCartao),
 									getConfigMercadoPago(primeiroMeioPagamentoCartao));
 	}
 
