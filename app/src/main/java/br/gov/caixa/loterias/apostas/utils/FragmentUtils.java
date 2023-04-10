@@ -7,14 +7,15 @@ import androidx.fragment.app.FragmentTransaction;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
+import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.OrientacaoPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -55,8 +56,14 @@ public class FragmentUtils {
 		return fragment;
 	}
 
-	public static CardPixFragment startCardPix(FragmentManager fm, int id, int tela) {
-		CardPixFragment fragment = CardPixFragment.newInstance(tela);
+	public static CardPixFragment startCardOrientacaoPix(FragmentManager fm, int id) {
+		CardPixFragment fragment = CardPixFragment.newOrientacaoInstance(CardPixFragment.TELA_ORIENTACAO);
+		FragmentUtils.startFragment(fm, id, fragment);
+		return fragment;
+	}
+
+	public static CardPixFragment startCardCopiaColaPix(GerarPixDTO pixDTO, FragmentManager fm, int id) {
+		CardPixFragment fragment = CardPixFragment.newCopiaColaInstance(pixDTO, CardPixFragment.TELA_COPIA_COLA);
 		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
 	}
@@ -67,8 +74,8 @@ public class FragmentUtils {
 		return fragment;
 	}
 
-	public static CopiaColaPixFragment startCopiaColaPix(FragmentManager fm, int id, long millisUntilFinish) {
-		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance(millisUntilFinish);
+	public static CopiaColaPixFragment startCopiaColaPix(GerarPixDTO pixDTO, FragmentManager fm, int id) {
+		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance(pixDTO);
 		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
 	}

@@ -13,40 +13,45 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 
 public class CopiaColaPixFragment extends Fragment {
 
-	private static final String ARG_MILLIS_FIM = "ARG_MILLIS_FIM";
-	public static int SEGUNDOS = 30000;
+	private static final String ARG_PIX_COPIA_COLA = "ARG_MILLIS_FIM";
 
 	private View view;
 	private Button btnCopia;
 	private EditText edtNumeroPix;
-	private TextView timerView, voceTemView, txtEfetuarPagamento;
+	private TextView timerView, voceTemView, txtEfetuarPagamento, txtAlerta;
 	private ImageView iconTimer;
 
 	private String numeroPix;
 
-	private boolean saiuParaPagar = false;
-	private boolean copiouText = false;
-	private long millisUntilFinish;
+	private GerarPixDTO pixDTO;
 	private OnCopiaColaListener listener;
 
 	public CopiaColaPixFragment() {}
 
-	public static CopiaColaPixFragment newInstance(long millisUntilFinish) {
+	public static CopiaColaPixFragment newInstance(GerarPixDTO pixDTO) {
 		CopiaColaPixFragment fragment = new CopiaColaPixFragment();
 		Bundle               args     = new Bundle();
-		args.putLong(ARG_MILLIS_FIM, millisUntilFinish);
+		args.putSerializable(ARG_PIX_COPIA_COLA, new Gson().toJson(pixDTO));
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -65,7 +70,10 @@ public class CopiaColaPixFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			millisUntilFinish = getArguments().getLong(ARG_MILLIS_FIM, 0l);
+			String stringJson = getArguments().getString(ARG_PIX_COPIA_COLA);
+			if (stringJson != null && !stringJson.isEmpty()){
+				pixDTO = new Gson().fromJson(stringJson, GerarPixDTO.class);
+			}
 		}
 
 	}
@@ -80,9 +88,10 @@ public class CopiaColaPixFragment extends Fragment {
 		voceTemView = view.findViewById(R.id.txt_voce_tem);
 		txtEfetuarPagamento = view.findViewById(R.id.txt_para_efetuar_pagamento);
 		iconTimer = view.findViewById(R.id.img_timer);
+		txtAlerta = view.findViewById(R.id.txt_alerta_codigo);
 
-		numeroPix = "91872361973561823675127365128371238767642";
-		edtNumeroPix.setText(numeroPix.substring(0,24) + "...");
+		numeroPix = pixDTO.getPixCopiaECola();
+		edtNumeroPix.setText(numeroPix.substring(0,19) + "...");
 		edtNumeroPix.setFocusable(false);
 
 		configListeners();
@@ -92,8 +101,7 @@ public class CopiaColaPixFragment extends Fragment {
 	}
 
 	private void startTimer() {
-		ContagemRegressiva contDown = new ContagemRegressiva(timerView, millisUntilFinish, 1000) {
-		//ContagemRegressiva contDown = new ContagemRegressiva(timerView, SEGUNDOS, 1000) {
+		ContagemRegressiva contDown = new ContagemRegressiva(timerView, getTimer(), 1000) {
 			@Override
 			public void onFinish() {
 				try {
@@ -104,8 +112,8 @@ public class CopiaColaPixFragment extends Fragment {
 					btnCopia.setEnabled(false);
 					btnCopia.setVisibility(View.GONE);
 					voceTemView.setVisibility(View.INVISIBLE);
-					txtEfetuarPagamento.setText("Tempo esgotado, o pagamento não foi confirmado");
-					txtEfetuarPagamento.setTextColor(getResources().getColor(R.color.vermelho_dialog));
+					txtAlerta.setText("Código Expirado");
+					txtAlerta.setTextColor(getResources().getColor(R.color.vermelho_dialog));
 					if (listener != null){
 						listener.onFinish();
 					}
@@ -116,6 +124,16 @@ public class CopiaColaPixFragment extends Fragment {
 		contDown.setListener(onContagemListener(contDown));
 		contDown.start();
 		TimerSingleton.getInstance().setContagemRegressiva(contDown);
+	}
+
+	private int getTimer() {
+
+		DateTime  agora  = new DateTime();
+		DateTime  expiracao = DateTime.parse(pixDTO.getDataHoraExpiracao());
+
+		int millis = new Period(agora, expiracao).getMillis();
+
+		return millis;
 	}
 
 	@NonNull
@@ -136,6 +154,12 @@ public class CopiaColaPixFragment extends Fragment {
 			if (!numeroPix.isEmpty()) {
 				copiaTesto();
 				TestVisao.toast("Pix copiado.");
+				btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_pix_copiado, null));
+				btnCopia.setEnabled(false);
+				Utils.delay(2, () -> {
+					btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_button_copia, null));
+					btnCopia.setEnabled(true);
+				});
 			}
 		});
 	}

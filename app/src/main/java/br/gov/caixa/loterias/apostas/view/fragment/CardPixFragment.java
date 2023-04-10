@@ -4,28 +4,47 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class CardPixFragment extends Fragment {
-	private static final String ARG_TELA= "ARG_TELA";
+	private static final String ARG_TELA = "ARG_TELA";
+	private static final String ARG_VALOR = "ARG_VALOR";
 	public static final int TELA_ORIENTACAO = 1;
 	public static final int TELA_COPIA_COLA = 2;
 
 	private View view;
+	private TextView txtValor;
 
 	private int numeroTela = 0;
+	private GerarPixDTO pixDTO;
 
 	public CardPixFragment() {}
 
-	public static CardPixFragment newInstance(int tela) {
+	public static CardPixFragment newOrientacaoInstance(int tela) {
 		CardPixFragment fragment = new CardPixFragment();
 		Bundle          args     = new Bundle();
 
 		args.putInt(ARG_TELA, tela);
+
+		fragment.setArguments(args);
+		return fragment;
+	}
+
+	public static CardPixFragment newCopiaColaInstance(GerarPixDTO pix, int tela) {
+		CardPixFragment fragment = new CardPixFragment();
+		Bundle          args     = new Bundle();
+
+		args.putInt(ARG_TELA, tela);
+		args.putString(ARG_VALOR, new Gson().toJson(pix));
 
 		fragment.setArguments(args);
 		return fragment;
@@ -36,6 +55,10 @@ public class CardPixFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			numeroTela = getArguments().getInt(ARG_TELA);
+			String stringPix = getArguments().getString(ARG_VALOR);
+			if (stringPix != null && !stringPix.isEmpty()){
+				pixDTO = new Gson().fromJson(stringPix,GerarPixDTO.class);
+			}
 		}
 
 	}
@@ -46,6 +69,11 @@ public class CardPixFragment extends Fragment {
 		view = inflater.inflate(R.layout.fragment_card_pix, container, false);
 
 		view.findViewById(R.id.contuedo).setBackgroundColor(getResources().getColor(R.color.verde_pix));
+		txtValor = view.findViewById(R.id.valor_pix);
+
+		if (isTela(TELA_COPIA_COLA)){
+			ViewUtils.setMoedaFormatHtml(pixDTO.getValorTotal(), txtValor);
+		}
 
 		startFragment();
 
@@ -58,7 +86,7 @@ public class CardPixFragment extends Fragment {
 			FragmentUtils.startOrientacaoPix(getActivity().getSupportFragmentManager(),R.id.corpo);
 		} else if (isTela(TELA_COPIA_COLA)){
 			//fragCopiaCola = FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo);
-			FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo, 125 * 1000);
+			FragmentUtils.startCopiaColaPix(pixDTO, getActivity().getSupportFragmentManager(), R.id.corpo);
 			//FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo);
 		}
 	}
