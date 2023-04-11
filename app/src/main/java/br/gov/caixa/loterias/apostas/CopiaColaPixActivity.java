@@ -21,6 +21,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 
 public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopiaColaListener {
+	public static Boolean isRunning = false;
 
 	private Button btnGerar;
 
@@ -52,6 +53,18 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		model = new PixModel(this);
 		AlertDialogUtils.show(this);
 		model.gerarCodigoPix(onGerarPixListener());
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		isRunning = true;
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		isRunning = false;
 	}
 
 	private OnSilceListener<GerarPixDTO> onGerarPixListener() {

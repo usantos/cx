@@ -14,6 +14,8 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixResponse;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.CompraPixUtil;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 public class PixModel extends AppModel {
 
@@ -42,5 +44,9 @@ public class PixModel extends AppModel {
 				listener.error(error);
 			}
 		});
+	}
+
+	public void verificaStatusPix(GerarPixDTO pix, OnCompraAsync listener){
+		CompraPixUtil.checkStatusCompra(getActivity(), pix, pix.getIdCompra(), listener);
 	}
 }

@@ -1169,5 +1169,7 @@
     <!-- Popup Pix Pagamento Não Realizado -->
     <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
     <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
+    <string name="tempo_zerado">00m 00s</string>
+    <string name="codigo_expirado">Código Expirado</string>
 
 </resources>

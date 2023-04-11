@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,19 +17,30 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.joda.time.DateTime;
-import org.joda.time.Period;
+import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
+import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.model.model.CompraModel;
+import br.gov.caixa.loterias.apostas.model.model.PixModel;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
+import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 
 public class CopiaColaPixFragment extends Fragment {
@@ -45,6 +57,9 @@ public class CopiaColaPixFragment extends Fragment {
 
 	private GerarPixDTO pixDTO;
 	private OnCopiaColaListener listener;
+
+	private PixModel model;
+	private boolean jaCopiou = false;
 
 	public CopiaColaPixFragment() {}
 
@@ -76,6 +91,8 @@ public class CopiaColaPixFragment extends Fragment {
 			}
 		}
 
+		model = new PixModel(getActivity());
+
 	}
 
 	@Override
@@ -101,10 +118,14 @@ public class CopiaColaPixFragment extends Fragment {
 	}
 
 	private void startTimer() {
-		ContagemRegressiva contDown = new ContagemRegressiva(timerView, getTimer(), 1000) {
+		ContagemRegressiva contDown = new ContagemRegressiva(timerView, pixDTO.getTimerSeconds(), 1000) {
 			@Override
 			public void onFinish() {
 				try {
+
+					timerView.setTextColor(Aplicacao.application.getResources().getColor(R.color.vermelho_dialog));
+					timerView.setText(R.string.tempo_zerado);
+					iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.vermelho_dialog));
 					edtNumeroPix.setText("");
 					edtNumeroPix.setBackground(VectorUtils.getShape(R.drawable.shape_input_pix_copia_cola, R.color.cinza_borda));
 					edtNumeroPix.setTextColor(getActivity().getResources().getColor(R.color.branco));
@@ -112,7 +133,8 @@ public class CopiaColaPixFragment extends Fragment {
 					btnCopia.setEnabled(false);
 					btnCopia.setVisibility(View.GONE);
 					voceTemView.setVisibility(View.INVISIBLE);
-					txtAlerta.setText("Código Expirado");
+					txtAlerta.setText(R.string.codigo_expirado);
+					copiaTesto(getString(R.string.codigo_expirado));
 					txtAlerta.setTextColor(getResources().getColor(R.color.vermelho_dialog));
 					if (listener != null){
 						listener.onFinish();
@@ -124,16 +146,6 @@ public class CopiaColaPixFragment extends Fragment {
 		contDown.setListener(onContagemListener(contDown));
 		contDown.start();
 		TimerSingleton.getInstance().setContagemRegressiva(contDown);
-	}
-
-	private int getTimer() {
-
-		DateTime  agora  = new DateTime();
-		DateTime  expiracao = DateTime.parse(pixDTO.getDataHoraExpiracao());
-
-		int millis = new Period(agora, expiracao).getMillis();
-
-		return millis;
 	}
 
 	@NonNull
@@ -152,7 +164,7 @@ public class CopiaColaPixFragment extends Fragment {
 	private void configListeners() {
 		btnCopia.setOnClickListener(v -> {
 			if (!numeroPix.isEmpty()) {
-				copiaTesto();
+				copiaTesto(numeroPix);
 				TestVisao.toast("Pix copiado.");
 				btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_pix_copiado, null));
 				btnCopia.setEnabled(false);
@@ -160,14 +172,53 @@ public class CopiaColaPixFragment extends Fragment {
 					btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_button_copia, null));
 					btnCopia.setEnabled(true);
 				});
+				Utils.delay(10,() -> {
+					model.verificaStatusPix(pixDTO,onCheckPixPagoListener());
+				});
+				jaCopiou = true;
 			}
 		});
 	}
 
-	private void copiaTesto() {
-		ClipData         clip      = ClipData.newPlainText("label", numeroPix);
+	private OnCompraAsync onCheckPixPagoListener() {
+		return new OnCompraAsync() {
+			@Override
+			public void successCompra() {
+				new CompraModel(getActivity()).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
+
+				AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
+				RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
+				Intent activity = new Intent(getActivity(), ConfirmacaoPagamentoActivity.class);
+				startActivity(activity);
+				CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+
+				CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(getActivity());
+				crud.deletaTodos();
+			}
+
+			@Override
+			public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
+				RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+			}
+
+			@Override
+			public void errorCompra(VolleyError volleyError) {
+				RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+			}
+		};
+	}
+
+	private void copiaTesto(String value) {
+		ClipData         clip      = ClipData.newPlainText("label", value);
 		ClipboardManager clipBoard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
 		clipBoard.setPrimaryClip(clip);
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (jaCopiou){
+			model.verificaStatusPix(pixDTO, onCheckPixPagoListener());
+		}
+	}
 }

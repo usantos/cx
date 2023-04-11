@@ -14,6 +14,9 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
+import org.joda.time.Seconds;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -61,6 +64,21 @@ public class GerarPixDTO {
 
     public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
+    }
+
+    public int getTimerSeconds() {
+        DateTime agora     = new DateTime();
+        DateTime expiracao = DateTime.parse(this.getDataHoraExpiracao());
+
+        Seconds seconds = Seconds.secondsBetween(agora, expiracao);
+        int     sec     = seconds.getSeconds();
+
+        return sec * 1000;
+    }
+
+    public Boolean estaNoPrazo(){
+        DateTime agora = new DateTime();
+        return agora.isBefore(DateTime.parse(this.getDataHoraExpiracao()));
     }
 
     @Override
