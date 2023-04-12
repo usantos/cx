@@ -46,6 +46,8 @@ public class CompraDTO {
     private DTOEnumLong meioPagamento = null;
     @SerializedName("codigoMensageErro")
     private String codigoMensageErro = null;
+    @SerializedName("e2eId")
+    private String e2eId = null;
 
     /**
      **/
@@ -179,6 +181,16 @@ public class CompraDTO {
         this.codigoMensageErro = codigoMensageErro;
     }
 
+    /**
+     **/
+    @ApiModelProperty(value = "")
+    public String getE2eId() {
+        return e2eId;
+    }
+
+    public void setE2eId(String e2eId) {
+        this.e2eId = e2eId;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -200,7 +212,8 @@ public class CompraDTO {
                 (this.valorTotal == null ? compraDTO.valorTotal == null : this.valorTotal.equals(compraDTO.valorTotal)) &&
                 (this.timestampUltimaAlteracao == null ? compraDTO.timestampUltimaAlteracao == null : this.timestampUltimaAlteracao.equals(compraDTO.timestampUltimaAlteracao)) &&
                 (this.meioPagamento == null ? compraDTO.meioPagamento == null : this.meioPagamento.equals(compraDTO.meioPagamento)) &&
-                (this.codigoMensageErro == null ? compraDTO.codigoMensageErro == null : this.codigoMensageErro.equals(compraDTO.codigoMensageErro));
+                (this.codigoMensageErro == null ? compraDTO.codigoMensageErro == null : this.codigoMensageErro.equals(compraDTO.codigoMensageErro)) &&
+                (this.e2eId == null ? compraDTO.e2eId == null : this.e2eId.equals(compraDTO.e2eId));
     }
 
     @Override
@@ -218,6 +231,7 @@ public class CompraDTO {
         result = 31 * result + (this.timestampUltimaAlteracao == null ? 0 : this.timestampUltimaAlteracao.hashCode());
         result = 31 * result + (this.meioPagamento == null ? 0 : this.meioPagamento.hashCode());
         result = 31 * result + (this.codigoMensageErro == null ? 0 : this.codigoMensageErro.hashCode());
+        result = 31 * result + (this.e2eId == null ? 0 : this.e2eId.hashCode());
         return result;
     }
 
@@ -237,6 +251,7 @@ public class CompraDTO {
                 "  timestampUltimaAlteracao: " + timestampUltimaAlteracao + "\n" +
                 "  meioPagamento: " + meioPagamento + "\n" +
                 "  codigoMensageErro: " + codigoMensageErro + "\n" +
+                "  e2eId: " + e2eId + "\n" +
                 "}\n";
         return sb;
     }

@@ -366,7 +366,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) &&
                 SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
             TextView processadaPor = findViewById(R.id.processadaPor);
-            processadaPor.setText("ID: mock12314415256464");
+            processadaPor.setText("ID: "+compraDTO.getE2eId());
         }
 
         ImageButton ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
