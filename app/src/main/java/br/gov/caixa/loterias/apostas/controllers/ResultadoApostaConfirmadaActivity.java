@@ -23,6 +23,7 @@ import org.androidannotations.annotations.ViewById;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.ResgatePixActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -181,11 +182,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.pixLayout)
     protected void clickPixLayout() {
-        //Chamando o Mercado Pago Pois ainda NAO existe a Tela do PIX
-        Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
-        intent.putExtra( getResources().getString(R.string.extra_valor_premio), ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
-        intent.putExtra( getResources().getString(R.string.extra_id_aposta), detalhesPremioDTO.getAposta().getId() );
-        startActivityForResult(intent,RESGATOU_MERCADO_PAGO);
+        Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);
+        startActivity(intent);
     }
 
     @Click(R.id.mercadoPagoLayout)

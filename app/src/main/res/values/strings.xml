@@ -1086,6 +1086,7 @@
     <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
     <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a forma de pagamento de sua preferencia.</string>
     <string name="leia_instrucoes_pix">Antes de prosseguir, leia atentamente as instruções abaixo.</string>
+    <string name="resgate_seleciona_chave_pix">Para resgatar o seu prêmio escolha o tipo de Chave Pix a ser utilizado</string>
     <string name="copia_codigo_instrucoes_pix">Copie o código abaixo e utilize o Pix Copia e Cola no aplicativo que você fará o pagamento.</string>
     <string name="adicionar_cartao">Adicionar cartão</string>
     <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
@@ -1170,5 +1171,8 @@
     <!-- Popup Pix Pagamento Não Realizado -->
     <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
     <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
+
+    <string name="title_activity_resgate_pix">_Resultado_</string>
+
 
 </resources>

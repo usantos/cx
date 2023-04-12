@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 
 public class CardPixFragment extends Fragment {
 	private static final String ARG_TELA= "ARG_TELA";
+	public static final int TELA_RESGATE = 0;
 	public static final int TELA_ORIENTACAO = 1;
 	public static final int TELA_COPIA_COLA = 2;
 
@@ -57,9 +58,9 @@ public class CardPixFragment extends Fragment {
 			view.findViewById(R.id.valor_pix).setVisibility(View.GONE);
 			FragmentUtils.startOrientacaoPix(getActivity().getSupportFragmentManager(),R.id.corpo);
 		} else if (isTela(TELA_COPIA_COLA)){
-			//fragCopiaCola = FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo);
 			FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo, 125 * 1000);
-			//FragmentUtils.startCopiaColaPix(getActivity().getSupportFragmentManager(), R.id.corpo);
+		} else if (isTela(TELA_RESGATE)){
+			view.findViewById(R.id.valor_pix).setVisibility(View.GONE);
 		}
 	}
 

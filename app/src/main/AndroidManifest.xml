@@ -46,6 +46,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
+            android:name=".ResgatePixActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
             android:name=".WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="false" />
