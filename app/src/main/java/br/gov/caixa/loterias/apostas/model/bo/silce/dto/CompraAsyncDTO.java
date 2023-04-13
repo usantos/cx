@@ -20,6 +20,9 @@ public class CompraAsyncDTO implements Serializable {
     @SerializedName("repeticoes")
     protected Long repeticoes = null;
 
+    @SerializedName("idSituacaoCompra")
+    private Integer idSituacaoCompra = null;
+
     /**
      **/
     @ApiModelProperty(value = "")
@@ -51,6 +54,14 @@ public class CompraAsyncDTO implements Serializable {
 
     public void setRepeticoes(Long repeticoes) {
         this.repeticoes = repeticoes;
+    }
+
+    public Integer getIdSituacaoCompra() {
+        return idSituacaoCompra;
+    }
+
+    public void setIdSituacaoCompra(Integer idSituacaoCompra) {
+        this.idSituacaoCompra = idSituacaoCompra;
     }
 
     @Override

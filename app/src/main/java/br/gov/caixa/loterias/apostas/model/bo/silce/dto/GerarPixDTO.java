@@ -35,7 +35,7 @@ public class GerarPixDTO {
     private String dataHoraExpiracao;
     @SerializedName("idCompra")
     private Long idCompra = null;
-
+    @SerializedName("valorCobranca")
     private BigDecimal valorTotal;
 
     public String getPixCopiaECola() {

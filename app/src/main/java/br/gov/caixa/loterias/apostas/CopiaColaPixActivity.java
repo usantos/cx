@@ -7,11 +7,8 @@ import android.widget.Button;
 
 import com.android.volley.VolleyError;
 
-import java.math.BigDecimal;
-
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
 import br.gov.caixa.loterias.apostas.model.model.PixModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -181,8 +178,6 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	}
 
 	private void startFragment(GerarPixDTO payload) {
-		BigDecimal valorTotal = CarrinhoSingleton.getInstance().getCarrinho().getValorTotal();
-		payload.setValorTotal(valorTotal);
 		FragmentUtils.startCardCopiaColaPix(payload ,getSupportFragmentManager(), R.id.fragmentCopiaColaPix);
 	}
 
