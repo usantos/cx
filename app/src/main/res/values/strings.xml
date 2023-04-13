@@ -1170,4 +1170,6 @@
     <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
     <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
 
+    <string name="id_pagamento">ID do Pagamento:</string>
+
 </resources>
