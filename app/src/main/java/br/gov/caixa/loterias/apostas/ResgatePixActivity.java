@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas;
 
 import android.os.Bundle;
 
+import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
@@ -21,10 +22,10 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 
 	private void startFragments() {
 		FragmentUtils.startCardPix(getSupportFragmentManager(), R.id.fragmentResgatePix, CardPixFragment.TELA_RESGATE);
-		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChavePix2, ChavePixFragment.TEXTO_CPF);
-		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveEmail, ChavePixFragment.TEXTO_EMAIL);
-		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveCelular, ChavePixFragment.TEXTO_CELULAR);
-		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveAleatoria, ChavePixFragment.TEXTO_CHAVE_ALEATORIA);
+		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChavePix2, ChavePixEnum.CPF.getTexto());
+		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveEmail, ChavePixEnum.EMAIL.getTexto());
+		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveCelular, ChavePixEnum.CELULAR.getTexto());
+		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveAleatoria, ChavePixEnum.CHAVE_ALEATORIA.getTexto());
 	}
 
 }

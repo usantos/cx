@@ -11,16 +11,13 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 
 public class ChavePixFragment extends Fragment {
 	private static final String ARG_TELA= "ARG_TELA";
-	public static final String TEXTO_CPF = "CPF";
-	public static final String TEXTO_EMAIL = "E-mail";
-	public static final String TEXTO_CELULAR = "Celular";
-	public static final String TEXTO_CHAVE_ALEATORIA = "Chave Aleatória";
 
 	private View view;
 
@@ -67,7 +64,7 @@ public class ChavePixFragment extends Fragment {
 	private void configClick() {
 		view.setOnClickListener(view -> {
 
-			if (texto.equals(TEXTO_CPF)) {
+			if (texto.equals(ChavePixEnum.CPF.getTexto())) {
 				dialogIsCPF = DialogUtils.showDialogCustom(getContext(),
 						getString(R.string.pix_chave_invalida),
 						getString(R.string.popup_pix_cpf_nao_vinculado),
@@ -76,7 +73,7 @@ public class ChavePixFragment extends Fragment {
 						null,
 						onDialogListenerIsCpf());
 			}
-			if (!texto.equals(TEXTO_CPF)) {
+			if (!texto.equals(ChavePixEnum.CPF.getTexto())) {
 				dialogNaoCPF = DialogUtils.showDialogCustom(getContext(),
 					getString(R.string.label_atencao),
 					getString(R.string.popup_pix_cpf_vinculado),
