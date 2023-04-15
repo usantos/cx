@@ -1139,6 +1139,26 @@
     <string name="pix_voce_tem">Você tem</string>
     <string name="pix_contador">9m 59seg</string>
     <string name="pix_para_efetuar_pagamento">Para efetuar o pagamento</string>
+    <string name="popup_pix_nao_autorizado">Pagamento não autorizado</string>
+    <string name="gerar_novo_codigo">_Gerar_ \nnovo Código</string>
+
+    <!-- Popup Pix nao autorizado -->
+    <string name="gerar_novo_codigo_pix">_Gerar_ \nnovo Código Pix</string>
+    <string name="alterar_forma_pagamento">_Alterar_ \nPagamento</string>
+    <string name="popup_pix_nao_autorizado_descricao">CPF do pagamento diferente do CPF do apostador. Não se preocupe, o Pix foi devolvido para a conta de pagamento \n\nVocê pode gerar novo código Pix ou alterar a forma de pagamento para concluir sua compra.</string>
+    <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
+    <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="title_activity_resgate_pix">_Resgate de Prêmio_</string>
+    <string name="popup_pix_cpf_vinculado">Somente será realizado resgate em Chave Pix vinculada ao CPF do apostador.</string>
+
+    <!-- Pix Resgate Prêmio -->
+    <string name="trocar_tipo_chave">Trocar Tipo de\n Chave</string>
+    <string name="trocar_forma_resgate">Trocar Forma\n de Resgate</string>
+    <string name="pix_continuar">Continuar</string>
+    <string name="pix_chave_invalida">Chave Inválida</string>
+    <string name="popup_pix_cpf_nao_vinculado">Não existe Chave Pix vinculada a este CPF</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
@@ -1160,27 +1180,6 @@
         <item>Cole o código Pix;</item>
         <item>Confirme as informações e realize o pagamento.</item>
     </string-array>
-
-    <!-- Popup Pix nao autorizado -->
-    <string name="popup_pix_nao_autorizado">Pagamento não autorizado</string>
-    <string name="gerar_novo_codigo">_Gerar_ \nnovo Código</string>
-    <string name="gerar_novo_codigo_pix">_Gerar_ \nnovo Código Pix</string>
-    <string name="alterar_forma_pagamento">_Alterar_ \nPagamento</string>
-    <string name="popup_pix_nao_autorizado_descricao">CPF do pagamento diferente do CPF do apostador. Não se preocupe, o Pix foi devolvido para a conta de pagamento \n\nVocê pode gerar novo código Pix ou alterar a forma de pagamento para concluir sua compra.</string>
-
-    <!-- Popup Pix Pagamento Não Realizado -->
-    <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
-    <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
-
-    <!-- Pix Resgate Prêmio -->
-    <string name="title_activity_resgate_pix">_Resgate de Prêmio_</string>
-    <string name="popup_pix_cpf_vinculado">Somente será realizado resgate em Chave Pix vinculada ao CPF do apostador.</string>
-    <string name="trocar_tipo_chave">Trocar Tipo de\n Chave</string>
-    <string name="trocar_forma_resgate">Trocar Forma\n de Resgate</string>
-    <string name="pix_continuar">Continuar</string>
-    <string name="pix_chave_invalida">Chave Inválida</string>
-    <string name="popup_pix_cpf_nao_vinculado">Não existe Chave Pix vinculada a este CPF</string>
-
 
 
 </resources>

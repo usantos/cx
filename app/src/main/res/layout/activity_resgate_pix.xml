@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/titulo"/>
 
     <FrameLayout
-        android:id="@+id/fragmentChavePix2"
+        android:id="@+id/fragmentChaveCPF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
@@ -57,7 +57,7 @@
         android:layout_marginTop="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentChavePix2"/>
+        app:layout_constraintTop_toBottomOf="@+id/fragmentChaveCPF"/>
 
     <FrameLayout
         android:id="@+id/fragmentChaveCelular"

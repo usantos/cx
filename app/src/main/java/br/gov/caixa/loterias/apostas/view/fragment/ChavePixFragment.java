@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
+import br.gov.caixa.loterias.apostas.view.activity.DigitaChaveActivity;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 
 public class ChavePixFragment extends Fragment {
@@ -21,18 +23,18 @@ public class ChavePixFragment extends Fragment {
 
 	private View view;
 
-	private String texto = "";
+	private ChavePixEnum chave;
 
 	public ChavePixFragment() {}
 
 	private Dialog dialogNaoCPF;
 	private Dialog dialogIsCPF;
 
-	public static ChavePixFragment newInstance(String texto) {
+	public static ChavePixFragment newInstance(ChavePixEnum chave) {
 		ChavePixFragment fragment = new ChavePixFragment();
 		Bundle          args     = new Bundle();
 
-		args.putString(ARG_TELA, texto);
+		args.putSerializable(ARG_TELA, chave);
 
 		fragment.setArguments(args);
 		return fragment;
@@ -42,7 +44,7 @@ public class ChavePixFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
-			texto = getArguments().getString(ARG_TELA);
+			chave = (ChavePixEnum) getArguments().getSerializable(ARG_TELA);
 		}
 	}
 
@@ -52,7 +54,7 @@ public class ChavePixFragment extends Fragment {
 		view = inflater.inflate(R.layout.fragment_chave_pix, container, false);
 
 		TextView tvTexto = view.findViewById(R.id.chavePix);
-		tvTexto.setText(texto);
+		tvTexto.setText(chave.getTexto());
 
 		configClick();
 
@@ -64,16 +66,16 @@ public class ChavePixFragment extends Fragment {
 	private void configClick() {
 		view.setOnClickListener(view -> {
 
-			if (texto.equals(ChavePixEnum.CPF.getTexto())) {
-				dialogIsCPF = DialogUtils.showDialogCustom(getContext(),
-						getString(R.string.pix_chave_invalida),
-						getString(R.string.popup_pix_cpf_nao_vinculado),
-						getString(R.string.trocar_tipo_chave),
-						getString(R.string.trocar_forma_resgate),
-						null,
-						onDialogListenerIsCpf());
-			}
-			if (!texto.equals(ChavePixEnum.CPF.getTexto())) {
+			if (chave.getTexto().equals(ChavePixEnum.CPF.getTexto())) {
+//				dialogIsCPF = DialogUtils.showDialogCustom(getContext(),
+//						getString(R.string.pix_chave_invalida),
+//						getString(R.string.popup_pix_cpf_nao_vinculado),
+//						getString(R.string.trocar_tipo_chave),
+//						getString(R.string.trocar_forma_resgate),
+//						null,
+//						onDialogListenerIsCpf());
+				startNextActivity();
+			} else {
 				dialogNaoCPF = DialogUtils.showDialogCustom(getContext(),
 					getString(R.string.label_atencao),
 					getString(R.string.popup_pix_cpf_vinculado),
@@ -100,12 +102,17 @@ public class ChavePixFragment extends Fragment {
 
 			@Override
 			public void rightButtom() {
-				TestVisao.toast("Aguardando a criação das próximas telas...");
-				//PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
-				//Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, FormaPagamentoActivity.class);
-				//startActivity(intent);
+				dialogNaoCPF.dismiss();
+				startNextActivity();
 			}
 		};
+	}
+
+	private void startNextActivity() {
+		Intent intent = new Intent(getActivity(), DigitaChaveActivity.class);
+		intent.putExtra(DigitaChaveActivity.VALOR_ARG,"36");
+		intent.putExtra(DigitaChaveActivity.CHAVE_ARG, chave);
+		startActivity(intent);
 	}
 
 	private OnDialog3ButtonsListener onDialogListenerIsCpf() {

@@ -22,10 +22,10 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 
 	private void startFragments() {
 		FragmentUtils.startCardPix(getSupportFragmentManager(), R.id.fragmentResgatePix, CardPixFragment.TELA_RESGATE);
-		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChavePix2, ChavePixEnum.CPF.getTexto());
-		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveEmail, ChavePixEnum.EMAIL.getTexto());
-		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveCelular, ChavePixEnum.CELULAR.getTexto());
-		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveAleatoria, ChavePixEnum.CHAVE_ALEATORIA.getTexto());
+		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveCPF, ChavePixEnum.CPF);
+		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveEmail, ChavePixEnum.EMAIL);
+		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveCelular, ChavePixEnum.CELULAR);
+		FragmentUtils.startChavePix(getSupportFragmentManager(), R.id.fragmentChaveAleatoria, ChavePixEnum.CHAVE_ALEATORIA);
 	}
 
 }

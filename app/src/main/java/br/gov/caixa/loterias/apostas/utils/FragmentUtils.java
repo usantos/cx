@@ -74,8 +74,8 @@ public class FragmentUtils {
 		return fragment;
 	}
 
-	public static ChavePixFragment startChavePix(FragmentManager fm, int id, String texto) {
-		ChavePixFragment fragment = ChavePixFragment.newInstance(texto);
+	public static ChavePixFragment startChavePix(FragmentManager fm, int id, ChavePixEnum chave) {
+		ChavePixFragment fragment = ChavePixFragment.newInstance(chave);
 		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
 	}
