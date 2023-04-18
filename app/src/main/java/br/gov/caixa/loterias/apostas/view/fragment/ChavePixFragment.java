@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,17 +10,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
+import br.gov.caixa.loterias.apostas.view.activity.ConfirmaDadosPixActivity;
 import br.gov.caixa.loterias.apostas.view.activity.DigitaChaveActivity;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 
 public class ChavePixFragment extends Fragment {
+	public static final String ARG_TROCAR_RESGATE = "ARG_TROCAR_RESGATE";
 	private static final String ARG_TELA= "ARG_TELA";
+	private static final int RESGATE_PIX = 123;
 
 	private View view;
 
@@ -74,7 +80,7 @@ public class ChavePixFragment extends Fragment {
 //						getString(R.string.trocar_forma_resgate),
 //						null,
 //						onDialogListenerIsCpf());
-				startNextActivity();
+				starConfirmaCPFActivity();
 			} else {
 				dialogNaoCPF = DialogUtils.showDialogCustom(getContext(),
 					getString(R.string.label_atencao),
@@ -85,6 +91,27 @@ public class ChavePixFragment extends Fragment {
 					onDialogListenerNaoCpf());
 			}
 		});
+	}
+
+	private void starConfirmaCPFActivity() {
+		Intent intent = new Intent(getActivity(), ConfirmaDadosPixActivity.class);
+		intent.putExtra(ConfirmaDadosPixActivity.NOME_ARG, DadosUsuarioBO.obterNome());
+		intent.putExtra(ConfirmaDadosPixActivity.CPF_ARG, "***.345.678-***");
+		intent.putExtra(ConfirmaDadosPixActivity.INSTITUICAO_ARG, "Caixa Econômica Federal");
+		startActivityForResult(intent, RESGATE_PIX);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == RESGATE_PIX) {
+			if (resultCode == Activity.RESULT_CANCELED ) {
+				if (data != null){
+					getActivity().finish();
+				}
+			}
+		}
 	}
 
 	private OnDialog3ButtonsListener onDialogListenerNaoCpf() {
@@ -112,7 +139,7 @@ public class ChavePixFragment extends Fragment {
 		Intent intent = new Intent(getActivity(), DigitaChaveActivity.class);
 		intent.putExtra(DigitaChaveActivity.VALOR_ARG,"36");
 		intent.putExtra(DigitaChaveActivity.CHAVE_ARG, chave);
-		startActivity(intent);
+		startActivityForResult(intent, RESGATE_PIX);
 	}
 
 	private OnDialog3ButtonsListener onDialogListenerIsCpf() {

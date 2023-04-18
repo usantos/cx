@@ -298,4 +298,33 @@ public class DialogUtils {
         return dialog;
     }
 
+
+    public static void showDialogDefault(Context context, int layoutlitulo, String titulo, String descricao,
+                                         String botao1, String botao2, OnDialogListenerLeftRight listener) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_padrao);
+
+        ConstraintLayout layoutTitulo       = dialog.findViewById(R.id.layoutTitulo);
+        TextView tituloView                 = dialog.findViewById(R.id.tituloDialogCustom);
+        TextView descricaoView              = dialog.findViewById(R.id.descricaoDialog);
+        Button buttonLeft                   = dialog.findViewById(R.id.leftButton);
+        Button buttonRigth                  = dialog.findViewById(R.id.rightButton);
+
+        if (layoutlitulo != 0){
+            layoutTitulo.setBackground(AppCompatResources.getDrawable(context, layoutlitulo));
+        }
+        tituloView.setText(titulo);
+        descricaoView.setText(descricao);
+
+        buttonLeft.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao1));
+        buttonRigth.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao2));
+
+        buttonLeft.setOnClickListener(v -> listener.left());
+        buttonRigth.setOnClickListener(v -> listener.right());
+
+        dialog.show();
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -17,12 +19,16 @@ import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.CelularMaskTextWatcher;
 import br.gov.caixa.loterias.apostas.view.custom.ChaveAleatoriaMaskTextWatcher;
 import br.gov.caixa.loterias.apostas.view.custom.EmailMaskTextWatcher;
+import br.gov.caixa.loterias.apostas.view.fragment.ChavePixFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import br.gov.caixa.loterias.apostas.view.listener.TextWatcherListener;
 
 public class DigitaChaveActivity extends LoteriasAppActivity {
@@ -36,6 +42,8 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 	private TextView txtValor, txtDescricao;
 	private EditText edtChave;
 	private Button btnConfirmar, btnTrocarChave;
+
+	private static boolean isValid = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +69,37 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 	private void setListeners() {
 		btnTrocarChave.setOnClickListener((v) -> { finish();});
 		btnConfirmar.setOnClickListener((v) -> {
-			TestVisao.toast("Vamos fazer a tela de confirmacao ainda!");
+			if (isValid){
+				Intent intent = new Intent(DigitaChaveActivity.this, ConfirmaDadosPixActivity.class);
+				intent.putExtra(ConfirmaDadosPixActivity.NOME_ARG, DadosUsuarioBO.obterNome());
+				intent.putExtra(ConfirmaDadosPixActivity.CPF_ARG, "***.345.678-***");
+				intent.putExtra(ConfirmaDadosPixActivity.INSTITUICAO_ARG, "Caixa Econômica Federal");
+				startActivity(intent);
+			} else {
+				isValid = true;
+				DialogUtils.showDialogDefault(DigitaChaveActivity.this, 0,"Chave Inválida",
+											  "A cahve digitada não está vinculada a uma conta ativa",
+											  "Trocar Chave","Trocar forma de resgate", onChaveInvalidaListener());
+			}
 		});
 		desabiliaBotaoConfirmar();
+	}
+
+	private OnDialogListenerLeftRight onChaveInvalidaListener() {
+		return new OnDialogListenerLeftRight() {
+			@Override
+			public void left() {
+				finish();
+			}
+
+			@Override
+			public void right() {
+				Intent returnIntent = new Intent();
+				returnIntent.putExtra(ChavePixFragment.ARG_TROCAR_RESGATE, "");
+				setResult(Activity.RESULT_CANCELED, returnIntent);
+				finish();
+			}
+		};
 	}
 
 	private void desabiliaBotaoConfirmar() {
