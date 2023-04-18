@@ -79,7 +79,7 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 				isValid = true;
 				DialogUtils.showDialogDefault(DigitaChaveActivity.this, 0,"Chave Inválida",
 											  "A cahve digitada não está vinculada a uma conta ativa",
-											  "Trocar Chave","Trocar forma de resgate", onChaveInvalidaListener());
+											  getString(R.string.trocar_chave), getString(R.string.trocar_forma_resgate), onChaveInvalidaListener());
 			}
 		});
 		desabiliaBotaoConfirmar();

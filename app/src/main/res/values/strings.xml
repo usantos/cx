@@ -78,7 +78,7 @@
     <string name="confirmacaoPagamentoInfoApostasPIX">Acompanhe a situação \ne detalhamento da compra. \nVocê estará concorrendo quando \na APOSTA aparececer como EFETIVADA.</string>
     <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
-    <string name="confirmacaopagamentoParabensPix">Sua compra está em \nprocessamento.</string>
+    <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -1156,6 +1156,7 @@
     <!-- Pix Resgate Prêmio -->
     <string name="trocar_tipo_chave">Trocar Tipo de\n Chave</string>
     <string name="trocar_forma_resgate">Trocar Forma\n de Resgate</string>
+    <string name="trocar_chave">Trocar Chave</string>
     <string name="pix_continuar">Continuar</string>
     <string name="pix_chave_invalida">Chave Inválida</string>
     <string name="popup_pix_cpf_nao_vinculado">Não existe Chave Pix vinculada a este CPF</string>
@@ -1183,6 +1184,8 @@
 
 
     <string name="pix_comprovante_em_breve">Em breve seu prêmio estará disponível em sua conta</string>
+    <string name="chave_sem_vinculo">A chave digitada não está vinculada ao seu CPF</string>
+    <string name="resgate_nao_autorizado">Resgate não autorizado</string>
 
 
 </resources>

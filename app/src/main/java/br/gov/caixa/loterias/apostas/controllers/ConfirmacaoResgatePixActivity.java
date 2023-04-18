@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -80,18 +81,19 @@ public class ConfirmacaoResgatePixActivity extends AppCompatActivity {
 
 
     private void atualizaComprovante(){
+        AlertDialogUtils.show(this);
         ApostaBO apostaBO = ApostaBO_.getInstance_(this);
         apostaBO.getApostaComprovantePremio(idAposta, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 detalhesPremioDTO = result.getPayload();
                 comprovanteLayoutPix.setOnClickListener(view -> PdfUtils.createComprovantePremioPdf(detalhesPremioDTO, ConfirmacaoResgatePixActivity.this));
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, ConfirmacaoResgatePixActivity.this);
             }
         });

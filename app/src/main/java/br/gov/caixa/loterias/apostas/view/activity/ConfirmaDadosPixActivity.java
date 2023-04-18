@@ -12,8 +12,10 @@ import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoResgatePixActivity;
 import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -56,12 +58,13 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 		btnTrocar.setOnClickListener((v) -> finish());
 		btnConfirmar.setOnClickListener((v) -> {
 			if (isValid){
-				TestVisao.toast("Vamos fazer a tela de confirmacao ainda!");
+				startActivity(IntentUtil.getIntentOrigemDestino(ConfirmaDadosPixActivity.this,
+																ConfirmacaoResgatePixActivity.class));
 			} else {
 				isValid = true;
-				DialogUtils.showDialogDefault(ConfirmaDadosPixActivity.this, 0, "Resgate não autorizado",
-											  "A cahve digitada não está vinculada ao seu CPF",
-											  "Trocar Chave", "Trocar forma de resgate", onChaveInvalidaListener());
+				DialogUtils.showDialogDefault(ConfirmaDadosPixActivity.this, 0, getString(R.string.resgate_nao_autorizado),
+											  getString(R.string.chave_sem_vinculo),
+											  getString(R.string.trocar_chave), getString(R.string.trocar_forma_resgate), onChaveInvalidaListener());
 			}
 		});
 	}
