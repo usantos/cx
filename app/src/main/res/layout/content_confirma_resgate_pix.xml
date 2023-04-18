@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.ConfirmacaoResgatePixActivity"
+    tools:showIn="@layout/activity_confirma_resgate_pix">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="177dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:src="@drawable/ic_pix" />
+
+                <LinearLayout
+                    android:id="@+id/excelente"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="35dp"
+                    android:background="@drawable/background_gradient_verde"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="29dp"
+                        android:fontFamily="@font/futura_std_bold"
+                        android:text="@string/excelente"
+                        android:textAlignment="center"
+                        android:textColor="@color/branco"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/contentConfirmarLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="202dp"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="60dp"
+                        android:fontFamily="@font/futura_std_book"
+                        android:gravity="center"
+                        android:text="@string/pix_comprovante_em_breve"
+                        android:textColor="@color/cinzaescuro"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/comprovanteLayoutPix"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/background_gradient_verde"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/comprovanteImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:padding="20dp"
+                        android:alpha="0.6"
+                        android:src="@drawable/ic_codigo"
+                        app:tint="@color/branco" />
+
+                    <TextView
+                        android:id="@+id/tv_num_bilhete"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/comprovanteImage"
+                        app:layout_constraintEnd_toStartOf="@+id/comprovanteImpressaoImage"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:gravity="center"
+                        android:textColor="@color/branco"
+                        android:fontFamily="@font/futura_std_bold"
+                        android:text="@string/label_visualizar_comprovante_premio"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/comprovanteImpressaoImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:padding="20dp"
+                        android:alpha="0.4"
+                        android:src="@drawable/ic_icon_imprime_branco" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/contentConfirmadoLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="252dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/textoTituloPremioConfirmado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="40dp"
+                        android:fontFamily="@font/futura_std_book"
+                        android:text="@string/em_breve_seu_pr_mio_estar_dispon_vel_em_sua_conta_no_mercado_pago"
+                        android:textAlignment="center"
+                        android:textColor="@color/cinza"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/visualizarLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/background_gradient_verde"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/comprovanteImagePix"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:padding="20dp"
+                        android:alpha="0.6"
+                        android:src="@drawable/ic_codigo"
+                        app:tint="@color/branco" />
+
+                    <TextView
+                        android:id="@+id/textVisualizar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/comprovanteImagePix"
+                        app:layout_constraintEnd_toStartOf="@+id/imageImpressora"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:gravity="center"
+                        android:textColor="@color/branco"
+                        android:fontFamily="@font/futura_std_bold"
+                        android:text="@string/label_visualizar_comprovante_premio"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/imageImpressora"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:padding="20dp"
+                        android:alpha="0.4"
+                        android:src="@drawable/ic_icon_imprime_branco" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="106dp"
+                    android:layout_marginTop="40dp"
+                    >
+
+                    <Button
+                        android:id="@+id/voltarConfirmacaoResgate"
+                        android:layout_width="184dp"
+                        android:layout_height="84dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/verdeazul"
+                        android:fontFamily="@font/futura_std_bold"
+                        android:text="@string/voltar"
+                        android:textAllCaps="false"
+                        android:textColor="@color/branco"
+                        android:textSize="17.7sp"
+                        android:visibility="visible" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
