@@ -343,6 +343,12 @@
             android:theme="@style/AppTheme.DegradeActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".controllers.ConfirmacaoResgatePixActivity"
+            android:label="@string/title_activity_resultado_ler_bilhetes"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".controllers.RestritoDezoitoAnosActivity"
             android:label="@string/title_activity_termos_uso"
             android:screenOrientation="portrait"
