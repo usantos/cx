@@ -1191,5 +1191,8 @@
     <string name="resgate_nao_autorizado">Resgate não autorizado</string>
 
     <string name="id_pagamento">ID do Pagamento:</string>
+    <string name="resgate_pix_concluido">Resgate concluído!</string>
+    <string name="premio_pix_ja_creditado">Seu prêmio já foi creditado na conta vinculada à Chave informada.</string>
+    <string name="visualizar_comprovante">_Visualizar_\ncomprovante</string>
 
 </resources>

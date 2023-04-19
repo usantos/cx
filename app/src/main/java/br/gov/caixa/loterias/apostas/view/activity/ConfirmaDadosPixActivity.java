@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
+import br.gov.caixa.loterias.apostas.utils.PixUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -62,8 +63,10 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 			if (isValid){
 				Bundle bundle = new Bundle();
 				bundle.putLong(getResources().getString(R.string.id_aposta), 16399l);
+				bundle.putLong(ConfirmacaoPagamentoActivity.ARG_FLUXO, PixUtils.FLUXO_RESGATE);
+				bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
 				startActivity(IntentUtil.getIntentOrigemDestino(ConfirmaDadosPixActivity.this,
-																ConfirmacaoResgatePixActivity.class, bundle));
+																ConfirmacaoPagamentoActivity.class, bundle));
 			} else {
 				isValid = true;
 				DialogUtils.showDialogDefault(ConfirmaDadosPixActivity.this, 0, getString(R.string.resgate_nao_autorizado),
