@@ -366,7 +366,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) &&
                 SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
             TextView processadaPor = findViewById(R.id.processadaPor);
-            processadaPor.setText("ID: mock12314415256464");
+            processadaPor.setText(getString(R.string.id_pagamento)+"\n"+compraDTO.getE2eId());
         }
 
         ImageButton ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
@@ -393,16 +393,20 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             ConstraintLayout constraintLayout = findViewById(R.id.compraPossesadaLaout);
             constraintLayout.setVisibility(View.GONE);
         } else {
-            AppCompatImageView imageView = findViewById(R.id.compraProcessadaImage);
-            if (MeioPagamentoUtil.isMercadoPago(compraDTO.getMeioPagamento())) {
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.mercadopago));
-            }
-            if (MeioPagamentoUtil.isRecargaPay(compraDTO.getMeioPagamento())) {
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.recargapay));
-            }
-            if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())) {
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_pix));
-            }
+//            AppCompatImageView imageView = findViewById(R.id.compraProcessadaImage);
+//            if (MeioPagamentoUtil.isMercadoPago(compraDTO.getMeioPagamento())) {
+//                imageView.setImageDrawable(getResources().getDrawable(R.drawable.mercadopago));
+//            }
+//            if (MeioPagamentoUtil.isRecargaPay(compraDTO.getMeioPagamento())) {
+//                imageView.setImageDrawable(getResources().getDrawable(R.drawable.recargapay));
+//            }
+//            if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())) {
+//                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_pix));
+//            }
+            TextView txtProcessadaPor = findViewById(R.id.compraPossesada);
+            txtProcessadaPor.setText(ViewUtils.textFuturaAndFuturaBold(this,
+                    getString(R.string.label_compra_lista_processada_por,
+                            MeioPagamentoUtil.getDescricao(compraDTO.getMeioPagamento()))));
         }
     }
 

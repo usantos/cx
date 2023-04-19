@@ -10,12 +10,13 @@
         android:id="@+id/compraPossesada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/compra_processada_por"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/label_compra_lista_processada_por"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/compraProcessadaImage"
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:src="@drawable/mercadopago"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/compraPossesada"
         app:layout_constraintTop_toTopOf="parent" />

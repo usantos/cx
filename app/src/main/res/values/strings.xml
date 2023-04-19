@@ -1190,4 +1190,6 @@
     <string name="chave_sem_vinculo">A chave digitada não está vinculada ao seu CPF</string>
     <string name="resgate_nao_autorizado">Resgate não autorizado</string>
 
+    <string name="id_pagamento">ID do Pagamento:</string>
+
 </resources>

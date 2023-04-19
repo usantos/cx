@@ -56,24 +56,24 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		long tempo_inicial_pix = 60;
 
 		//*** Mock - APAGAR ***
-		if (ordemLista >= 1 && ordemLista <= 5) {
-			tempo_inicial_pix = ordemLista * 60;
-			item.getMeioPagamento().setValor(6l); //PIX
-			item.getSituacao().setValor(7l);
-			item.getSituacao().setDescricao("Aguardando pagamento");
-			if (ordemLista == 2) {
-				item.getSituacao().setValor(8l); //Finalizada
-				item.getSituacao().setDescricao("Finalizada");
-			}
-			if (ordemLista == 4) {
-				item.getSituacao().setValor(3l); //VALOR_DEBITO_NAO_AUTORIZADO
-				item.getSituacao().setDescricao("Pagamento não realizado");
-			}
-			if (ordemLista == 5) {
-				item.getSituacao().setValor(4l); //VALOR_ESTORNADA
-				item.getSituacao().setDescricao("Pagamento devolvido");
-			}
-		}
+//		if (ordemLista >= 1 && ordemLista <= 5) {
+//			tempo_inicial_pix = ordemLista * 60;
+//			item.getMeioPagamento().setValor(6l); //PIX
+//			item.getSituacao().setValor(7l);
+//			item.getSituacao().setDescricao("Aguardando pagamento");
+//			if (ordemLista == 2) {
+//				item.getSituacao().setValor(8l); //Finalizada
+//				item.getSituacao().setDescricao("Finalizada");
+//			}
+//			if (ordemLista == 4) {
+//				item.getSituacao().setValor(3l); //VALOR_DEBITO_NAO_AUTORIZADO
+//				item.getSituacao().setDescricao("Pagamento não realizado");
+//			}
+//			if (ordemLista == 5) {
+//				item.getSituacao().setValor(4l); //VALOR_ESTORNADA
+//				item.getSituacao().setDescricao("Pagamento devolvido");
+//			}
+//		}
 
 		this.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_situacao_descricao,
 				item.getSituacao().getDescricao())));

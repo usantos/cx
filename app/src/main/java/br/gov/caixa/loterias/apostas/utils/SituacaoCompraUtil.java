@@ -27,6 +27,8 @@ public class SituacaoCompraUtil {
 	private static final int VALOR_EM_PROCESSAMENTO = 7;
 	private static final int VALOR_FINALIZADA = 8;
 	private static final int VALOR_EM_PROCESSAMENTO_REPRESADA = 9;
+	private static final int VALOR_AGUARDANDO_PAGAMENTO_PIX = 10;
+	private static final int VALOR_DEVOLUCAO_PIX = 11;
 
 	public static boolean isDebitoNaoAutorizado(DTOEnumLong situacao) {
 		return situacao.getValor() == VALOR_DEBITO_NAO_AUTORIZADO;
@@ -48,13 +50,15 @@ public class SituacaoCompraUtil {
 	public static boolean isSituacaoNegativa(DTOEnumLong situacao) {
 		return  situacao.getValor() == VALOR_DEBITO_NAO_AUTORIZADO ||
 				situacao.getValor() == VALOR_ESTORNADA ||
-				situacao.getValor() == VALOR_CANCELADA;
+				situacao.getValor() == VALOR_CANCELADA ||
+				situacao.getValor() == VALOR_DEVOLUCAO_PIX;
 	}
 
 	public static boolean isSituacaoProcessamento(DTOEnumLong situacao) {
 		return 	situacao.getValor() == VALOR_CARRINHO ||
 				situacao.getValor() == VALOR_DEBITO_INICIADO ||
 				situacao.getValor() == VALOR_EM_PROCESSAMENTO ||
-				situacao.getValor() == VALOR_EM_PROCESSAMENTO_REPRESADA;
+				situacao.getValor() == VALOR_EM_PROCESSAMENTO_REPRESADA ||
+				situacao.getValor() == VALOR_AGUARDANDO_PAGAMENTO_PIX;
 	}
 }
