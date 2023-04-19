@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.CopiaColaPixActivity;
 import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.WebViewActivity;
@@ -44,6 +43,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOIdentificaoD
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
@@ -385,7 +385,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void startFragment() {
-        fragCopiaCola = FragmentUtils.startCopiaColaPix(getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe, tempo_acabar_pix);
+        fragCopiaCola = FragmentUtils.startCopiaColaPix(new GerarPixDTO(), getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe);
     }
 
     private void verificaCompraProcessada() {

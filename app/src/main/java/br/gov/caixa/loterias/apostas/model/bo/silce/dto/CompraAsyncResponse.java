@@ -99,8 +99,4 @@ public class CompraAsyncResponse implements Serializable {
         this.versao = versao;
     }
 
-
-
-
-
 }

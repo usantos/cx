@@ -26,6 +26,9 @@ class ServerMethods {
      static final String CARRINHO_FAVORITO_DELETAR_APOSTA = "/carrinhos-favoritos/{id}/apostas/{idAposta}";
      static final String CARRINHO_VERIFICA_COMPRA_PROCESSAMENTO = "/carrinhos/verifica-compra-processamento";
 
+     // PIX
+     static final String GERAR_CODIGO_PIX = "/carrinhos/gerar-cobranca-pix";
+
      //MEIO PAGAMENTO
      static final String MEIOS_PAGAMENTOS_ID = "/meios-pagamento/{id}";
      static final String MEIOS_PAGAMENTOS = "/meios-pagamento";

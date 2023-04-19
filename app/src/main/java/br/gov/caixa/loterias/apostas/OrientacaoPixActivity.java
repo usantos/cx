@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 
 public class OrientacaoPixActivity extends LoteriasAppActivity {
 
@@ -19,7 +18,7 @@ public class OrientacaoPixActivity extends LoteriasAppActivity {
 	}
 
 	private void startFragment() {
-		 FragmentUtils.startCardPix(getSupportFragmentManager(), R.id.fragmentOrientacaoPix, CardPixFragment.TELA_ORIENTACAO);
+		 FragmentUtils.startCardOrientacaoPix(getSupportFragmentManager(), R.id.fragmentOrientacaoPix);
 	}
 
 }

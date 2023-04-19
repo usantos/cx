@@ -1152,7 +1152,7 @@
         <item>Dezembro</item>
     </string-array>
     <string-array name="orientacao_pix_list">
-        <item>Copie o código gerado e pague em até 10 minutos;</item>
+        <item>Copie o código gerado e pague dentro do prazo que será apresentado;</item>
         <item>Entre no aplicativo da sua instituição financeira e \nacesse o ambiente Pix;</item>
         <item>Escolha a opção Pix Copia e Cola;</item>
         <item>Cole o código Pix;</item>
@@ -1169,5 +1169,7 @@
     <!-- Popup Pix Pagamento Não Realizado -->
     <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
     <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
+    <string name="tempo_zerado">00m 00s</string>
+    <string name="codigo_expirado">Código Expirado</string>
 
 </resources>
