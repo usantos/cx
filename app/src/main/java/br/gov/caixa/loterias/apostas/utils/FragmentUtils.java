@@ -57,6 +57,12 @@ public class FragmentUtils {
 		return fragment;
 	}
 
+	public static CardPixFragment startCardPix(FragmentManager fm, int id, int tela) {
+		CardPixFragment fragment = CardPixFragment.newOrientacaoInstance(tela);
+		FragmentUtils.startFragment(fm, id, fragment);
+		return fragment;
+	}
+
 	public static CardPixFragment startCardOrientacaoPix(FragmentManager fm, int id) {
 		CardPixFragment fragment = CardPixFragment.newOrientacaoInstance(CardPixFragment.TELA_ORIENTACAO);
 		FragmentUtils.startFragment(fm, id, fragment);
