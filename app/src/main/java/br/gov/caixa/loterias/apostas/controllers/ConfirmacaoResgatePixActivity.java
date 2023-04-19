@@ -39,8 +39,6 @@ public class ConfirmacaoResgatePixActivity extends AppCompatActivity {
     private Long idAposta;
     private Button voltarConfirmacaoResgate;
     private ConstraintLayout comprovanteLayoutPix;
-    private AlertDialog loadViewProgress;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +73,15 @@ public class ConfirmacaoResgatePixActivity extends AppCompatActivity {
         //atualizaComprovante();
 
         //voltarConfirmacaoResgate.setOnClickListener(view -> finish());
+        comprovanteLayoutPix.setOnClickListener(view -> {
+            if (detalhesPremioDTO != null){
+                PdfUtils.createComprovantePremioPdf(detalhesPremioDTO, ConfirmacaoResgatePixActivity.this);
+            }  else {
+                atualizaComprovante();
+            }
+        });
         voltarConfirmacaoResgate.setOnClickListener(view -> PrincipalActivity_.intent(ConfirmacaoResgatePixActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start());
     }
-
-
 
     private void atualizaComprovante(){
         AlertDialogUtils.show(this);
@@ -88,7 +91,7 @@ public class ConfirmacaoResgatePixActivity extends AppCompatActivity {
             public void onResponse(DetalhesPremioDTOResponse result) {
                 AlertDialogUtils.dismiss();
                 detalhesPremioDTO = result.getPayload();
-                comprovanteLayoutPix.setOnClickListener(view -> PdfUtils.createComprovantePremioPdf(detalhesPremioDTO, ConfirmacaoResgatePixActivity.this));
+                PdfUtils.createComprovantePremioPdf(detalhesPremioDTO, ConfirmacaoResgatePixActivity.this);
             }
 
             @Override
