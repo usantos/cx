@@ -46,6 +46,20 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
+            android:name=".ResgatePixActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".view.activity.DigitaChaveActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.ConfirmaDadosPixActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="false" />
@@ -175,7 +189,7 @@
             android:name=".view.activity.FormaPagamentoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"  />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.ConfirmacaoPagamentoActivity"
             android:configChanges="orientation"
@@ -324,6 +338,12 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.JogosConfirmadosPremioMercadoPagoActivity"
+            android:label="@string/title_activity_resultado_ler_bilhetes"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".controllers.ConfirmacaoResgatePixActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"

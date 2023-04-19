@@ -255,4 +255,76 @@ public class DialogUtils {
 
         dialog.show();
     }
+
+    public static Dialog showDialogCustom(Context context, String titulo, String descricao,
+                                          String textBotao1, String textBotao2, String textBotao3,
+                                          OnDialog3ButtonsListener listener) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_show);
+
+        TextView tvTitulo    = dialog.findViewById(R.id.tituloCustom);
+        tvTitulo.setText(titulo);
+
+        TextView tvDescricao = dialog.findViewById(R.id.textCustom);
+        tvDescricao.setText(descricao);
+
+        Button button1       = dialog.findViewById(R.id.btnCustom1);
+        if (textBotao1 == null) {
+            button1.setVisibility(View.GONE);
+        } else {
+            button1.setText(textBotao1);
+            button1.setOnClickListener(v -> listener.leftButtom());
+        }
+
+        Button button2       = dialog.findViewById(R.id.btnCustom2);
+        if (textBotao2 == null) {
+            button1.setVisibility(View.GONE);
+        } else {
+            button2.setText(textBotao2);
+            button2.setOnClickListener(v -> listener.centerButtom());
+        }
+
+        Button button3 = dialog.findViewById(R.id.btnCustom3);
+        if (textBotao3 == null) {
+            button3.setVisibility(View.GONE);
+        } else {
+            button3.setText(textBotao3);
+            button3.setOnClickListener(v -> listener.rightButtom());
+        }
+
+        dialog.show();
+
+        return dialog;
+    }
+
+
+    public static void showDialogDefault(Context context, int layoutlitulo, String titulo, String descricao,
+                                         String botao1, String botao2, OnDialogListenerLeftRight listener) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_padrao);
+
+        ConstraintLayout layoutTitulo       = dialog.findViewById(R.id.layoutTitulo);
+        TextView tituloView                 = dialog.findViewById(R.id.tituloDialogCustom);
+        TextView descricaoView              = dialog.findViewById(R.id.descricaoDialog);
+        Button buttonLeft                   = dialog.findViewById(R.id.leftButton);
+        Button buttonRigth                  = dialog.findViewById(R.id.rightButton);
+
+        if (layoutlitulo != 0){
+            layoutTitulo.setBackground(AppCompatResources.getDrawable(context, layoutlitulo));
+        }
+        tituloView.setText(titulo);
+        descricaoView.setText(descricao);
+
+        buttonLeft.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao1));
+        buttonRigth.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao2));
+
+        buttonLeft.setOnClickListener(v -> listener.left());
+        buttonRigth.setOnClickListener(v -> listener.right());
+
+        dialog.show();
+    }
+
+
 }

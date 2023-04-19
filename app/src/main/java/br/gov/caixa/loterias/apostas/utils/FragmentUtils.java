@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.ChavePixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
@@ -76,6 +77,12 @@ public class FragmentUtils {
 
 	public static CopiaColaPixFragment startCopiaColaPix(GerarPixDTO pixDTO, FragmentManager fm, int id) {
 		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance(pixDTO);
+		FragmentUtils.startFragment(fm, id, fragment);
+		return fragment;
+	}
+
+	public static ChavePixFragment startChavePix(FragmentManager fm, int id, ChavePixEnum chave) {
+		ChavePixFragment fragment = ChavePixFragment.newInstance(chave);
 		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
 	}

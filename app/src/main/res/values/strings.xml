@@ -78,7 +78,7 @@
     <string name="confirmacaoPagamentoInfoApostasPIX">Acompanhe a situação \ne detalhamento da compra. \nVocê estará concorrendo quando \na APOSTA aparececer como EFETIVADA.</string>
     <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
-    <string name="confirmacaopagamentoParabensPix">Sua compra está em \nprocessamento.</string>
+    <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -318,6 +318,7 @@
     <string name="label_loterica">Lotérica</string>
     <string name="label_agencia_caixa">Agência CAIXA</string>
     <string name="label_mercado_pago">Mercado Pago</string>
+    <string name="label_pix">Pix</string>
     <string name="label_premio_pago">O prêmio deste bilhete já foi pago. Parabéns :)</string>
     <string name="tit_premio_pago">Prêmio Pago</string>
     <string name="label_emitir_comprovante">Emita o seu comprovante da aposta</string>
@@ -1085,6 +1086,7 @@
     <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
     <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a forma de pagamento de sua preferencia.</string>
     <string name="leia_instrucoes_pix">Antes de prosseguir, leia atentamente as instruções abaixo.</string>
+    <string name="resgate_seleciona_chave_pix">Para resgatar o seu prêmio escolha o tipo de Chave Pix a ser utilizado</string>
     <string name="copia_codigo_instrucoes_pix">Copie o código abaixo e utilize o Pix Copia e Cola no aplicativo que você fará o pagamento.</string>
     <string name="adicionar_cartao">Adicionar cartão</string>
     <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
@@ -1137,6 +1139,27 @@
     <string name="pix_voce_tem">Você tem</string>
     <string name="pix_contador">9m 59seg</string>
     <string name="pix_para_efetuar_pagamento">Para efetuar o pagamento</string>
+    <string name="popup_pix_nao_autorizado">Pagamento não autorizado</string>
+    <string name="gerar_novo_codigo">_Gerar_ \nnovo Código</string>
+
+    <!-- Popup Pix nao autorizado -->
+    <string name="gerar_novo_codigo_pix">_Gerar_ \nnovo Código Pix</string>
+    <string name="alterar_forma_pagamento">_Alterar_ \nPagamento</string>
+    <string name="popup_pix_nao_autorizado_descricao">CPF do pagamento diferente do CPF do apostador. Não se preocupe, o Pix foi devolvido para a conta de pagamento \n\nVocê pode gerar novo código Pix ou alterar a forma de pagamento para concluir sua compra.</string>
+    <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
+    <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="title_activity_resgate_pix">_Resgate de Prêmio_</string>
+    <string name="popup_pix_cpf_vinculado">Somente será realizado resgate em Chave Pix vinculada ao CPF do apostador.</string>
+
+    <!-- Pix Resgate Prêmio -->
+    <string name="trocar_tipo_chave">Trocar Tipo de\n Chave</string>
+    <string name="trocar_forma_resgate">Trocar Forma\n de Resgate</string>
+    <string name="trocar_chave">Trocar Chave</string>
+    <string name="pix_continuar">Continuar</string>
+    <string name="pix_chave_invalida">Chave Inválida</string>
+    <string name="popup_pix_cpf_nao_vinculado">Não existe Chave Pix vinculada a este CPF</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
@@ -1159,17 +1182,12 @@
         <item>Confirme as informações e realize o pagamento.</item>
     </string-array>
 
-    <!-- Popup Pix nao autorizado -->
-    <string name="popup_pix_nao_autorizado">Pagamento não autorizado</string>
-    <string name="gerar_novo_codigo">_Gerar_ \nnovo Código</string>
-    <string name="gerar_novo_codigo_pix">_Gerar_ \nnovo Código Pix</string>
-    <string name="alterar_forma_pagamento">_Alterar_ \nPagamento</string>
-    <string name="popup_pix_nao_autorizado_descricao">CPF do pagamento diferente do CPF do apostador. Não se preocupe, o Pix foi devolvido para a conta de pagamento \n\nVocê pode gerar novo código Pix ou alterar a forma de pagamento para concluir sua compra.</string>
 
     <!-- Popup Pix Pagamento Não Realizado -->
-    <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
-    <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
     <string name="tempo_zerado">00m 00s</string>
     <string name="codigo_expirado">Código Expirado</string>
+    <string name="pix_comprovante_em_breve">Em breve seu prêmio estará disponível em sua conta</string>
+    <string name="chave_sem_vinculo">A chave digitada não está vinculada ao seu CPF</string>
+    <string name="resgate_nao_autorizado">Resgate não autorizado</string>
 
 </resources>
