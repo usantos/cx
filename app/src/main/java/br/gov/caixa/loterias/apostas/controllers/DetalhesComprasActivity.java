@@ -385,7 +385,10 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void startFragment() {
-        fragCopiaCola = FragmentUtils.startCopiaColaPix(new GerarPixDTO(), getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe);
+        GerarPixDTO gerarPixDTO = new GerarPixDTO();
+        gerarPixDTO.setPixCopiaECola(compraDTO.getQrcodeString());
+        gerarPixDTO.setDataHoraExpiracao(compraDTO.getDataHoraExpiracaoPagamento());
+        fragCopiaCola = FragmentUtils.startCopiaColaPix(gerarPixDTO, getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe);
     }
 
     private void verificaCompraProcessada() {

@@ -108,7 +108,9 @@ public class CopiaColaPixFragment extends Fragment {
 		txtAlerta = view.findViewById(R.id.txt_alerta_codigo);
 
 		numeroPix = pixDTO.getPixCopiaECola();
-		edtNumeroPix.setText(numeroPix.substring(0,19) + "...");
+		if (numeroPix != null) {
+			edtNumeroPix.setText(numeroPix.substring(0, 19) + "...");
+		}
 		edtNumeroPix.setFocusable(false);
 
 		configListeners();

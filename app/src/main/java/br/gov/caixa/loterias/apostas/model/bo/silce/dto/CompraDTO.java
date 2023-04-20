@@ -48,6 +48,12 @@ public class CompraDTO {
     private String codigoMensageErro = null;
     @SerializedName("e2eId")
     private String e2eId = null;
+    @SerializedName("dataHoraExpiracaoPagamento")
+    private String dataHoraExpiracaoPagamento = null;
+    @SerializedName("qrcodeString")
+    private String qrcodeString = null;
+    @SerializedName("qrcodeArrByte")
+    private String qrcodeArrByte = null;
 
     /**
      **/
@@ -192,6 +198,33 @@ public class CompraDTO {
         this.e2eId = e2eId;
     }
 
+    @ApiModelProperty(value = "")
+    public String getDataHoraExpiracaoPagamento() {
+        return dataHoraExpiracaoPagamento;
+    }
+
+    public void setDataHoraExpiracaoPagamento(String dataHoraExpiracaoPagamento) {
+        this.dataHoraExpiracaoPagamento = dataHoraExpiracaoPagamento;
+    }
+
+    @ApiModelProperty(value = "")
+    public String getQrcodeString() {
+        return qrcodeString;
+    }
+
+    public void setQrcodeString(String qrcodeString) {
+        this.qrcodeString = qrcodeString;
+    }
+
+    @ApiModelProperty(value = "")
+    public String getQrcodeArrByte() {
+        return qrcodeArrByte;
+    }
+
+    public void setQrcodeArrByte(String qrcodeArrByte) {
+        this.qrcodeArrByte = qrcodeArrByte;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -213,7 +246,10 @@ public class CompraDTO {
                 (this.timestampUltimaAlteracao == null ? compraDTO.timestampUltimaAlteracao == null : this.timestampUltimaAlteracao.equals(compraDTO.timestampUltimaAlteracao)) &&
                 (this.meioPagamento == null ? compraDTO.meioPagamento == null : this.meioPagamento.equals(compraDTO.meioPagamento)) &&
                 (this.codigoMensageErro == null ? compraDTO.codigoMensageErro == null : this.codigoMensageErro.equals(compraDTO.codigoMensageErro)) &&
-                (this.e2eId == null ? compraDTO.e2eId == null : this.e2eId.equals(compraDTO.e2eId));
+                (this.e2eId == null ? compraDTO.e2eId == null : this.e2eId.equals(compraDTO.e2eId)) &&
+                (this.dataHoraExpiracaoPagamento == null ? compraDTO.dataHoraExpiracaoPagamento == null : this.dataHoraExpiracaoPagamento.equals(compraDTO.dataHoraExpiracaoPagamento)) &&
+                (this.qrcodeString == null ? compraDTO.qrcodeString == null : this.qrcodeString.equals(compraDTO.qrcodeString)) &&
+                (this.qrcodeArrByte == null ? compraDTO.qrcodeArrByte == null : this.qrcodeArrByte.equals(compraDTO.qrcodeArrByte));
     }
 
     @Override
@@ -232,6 +268,9 @@ public class CompraDTO {
         result = 31 * result + (this.meioPagamento == null ? 0 : this.meioPagamento.hashCode());
         result = 31 * result + (this.codigoMensageErro == null ? 0 : this.codigoMensageErro.hashCode());
         result = 31 * result + (this.e2eId == null ? 0 : this.e2eId.hashCode());
+        result = 31 * result + (this.dataHoraExpiracaoPagamento == null ? 0 : this.dataHoraExpiracaoPagamento.hashCode());
+        result = 31 * result + (this.qrcodeString == null ? 0 : this.qrcodeString.hashCode());
+        result = 31 * result + (this.qrcodeArrByte == null ? 0 : this.qrcodeArrByte.hashCode());
         return result;
     }
 
@@ -252,6 +291,9 @@ public class CompraDTO {
                 "  meioPagamento: " + meioPagamento + "\n" +
                 "  codigoMensageErro: " + codigoMensageErro + "\n" +
                 "  e2eId: " + e2eId + "\n" +
+                "  e2eId: " + dataHoraExpiracaoPagamento + "\n" +
+                "  e2eId: " + qrcodeString + "\n" +
+                "  e2eId: " + qrcodeArrByte + "\n" +
                 "}\n";
         return sb;
     }

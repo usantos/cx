@@ -42,6 +42,10 @@ public class GerarPixDTO {
         return pixCopiaECola;
     }
 
+    public void setPixCopiaECola(String pixCopiaECola) {
+        this.pixCopiaECola = pixCopiaECola;
+    }
+
     public String getTxId() {
         return txId;
     }
@@ -52,6 +56,10 @@ public class GerarPixDTO {
 
     public String getDataHoraExpiracao() {
         return dataHoraExpiracao;
+    }
+
+    public void setDataHoraExpiracao(String dataHoraExpiracao) {
+        this.dataHoraExpiracao = dataHoraExpiracao;
     }
 
     public Long getIdCompra() {
