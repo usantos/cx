@@ -65,7 +65,6 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
             if (fluxo.equals(PixUtils.FLUXO_RESGATE)){
                 titulo.setText(R.string.resgate_pix_concluido);
                 infoApostas.setText(R.string.premio_pix_ja_creditado);
-                ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.visualizar_comprovante));
                 btnVoltarInicio.setBackgroundColor(getResources().getColor(R.color.branco));
                 btnVoltarInicio.setTextColor(getResources().getColor(R.color.verde_acompanha_compras));
                 btnAcompanheCompras.setBackgroundColor(getResources().getColor(R.color.verde_acompanha_compras));
@@ -93,11 +92,15 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
     private void configuraBotoes(){
 
         btnVoltarInicio.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
-        btnAcompanheCompras.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_acompanhe_suas_compras_pix)));
+        if (isPixResgate()){
+            btnAcompanheCompras.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.visualizar_comprovante)));
+        } else {
+            btnAcompanheCompras.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_acompanhe_suas_compras_pix)));
+        }
 
         btnVoltarInicio.setOnClickListener(view -> PrincipalActivity_.intent(ConfirmacaoPagamentoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start());
 
-        if (fluxo.equals(PixUtils.FLUXO_RESGATE)){
+        if (isPixResgate()){
             btnAcompanheCompras.setOnClickListener(view -> {
                 if (detalhesPremioDTO != null){
                     PdfUtils.createComprovantePremioPdf(detalhesPremioDTO, ConfirmacaoPagamentoActivity.this);
@@ -105,7 +108,6 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
                     atualizaComprovante();
                 }
             });
-
         } else {
             btnAcompanheCompras.setOnClickListener(view ->
                                                            startActivity(new Intent(ConfirmacaoPagamentoActivity.this, ListaComprasActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |  Intent.FLAG_ACTIVITY_SINGLE_TOP)));
@@ -116,6 +118,10 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
             Intent activity = new Intent(this, TermosUsoActivity.class);
             startActivity(activity);
         });
+    }
+
+    private boolean isPixResgate() {
+        return origem.equals(MeioPagamentoUtils.PIX) && fluxo.equals(PixUtils.FLUXO_RESGATE);
     }
 
     private void atualizaComprovante(){
