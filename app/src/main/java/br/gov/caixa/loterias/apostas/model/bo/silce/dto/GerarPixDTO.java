@@ -15,7 +15,11 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 import com.google.gson.annotations.SerializedName;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
 import org.joda.time.Seconds;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -82,6 +86,19 @@ public class GerarPixDTO {
         int     sec     = seconds.getSeconds();
 
         return sec * 1000;
+    }
+
+    public int getTimerZoneMilleSeconds() {
+        DateTimeZone timeZone = DateTimeZone.forID("America/Sao_Paulo");
+        DateTime agora = DateTime.now(timeZone);
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").withZone(timeZone);
+        DateTime expiracao = formatter.parseDateTime(this.getDataHoraExpiracao());
+
+        Duration duration = new Duration(agora, expiracao);
+        long diffInSeconds = duration.getStandardSeconds();
+
+        return (int) diffInSeconds * 1000;
     }
 
     public Boolean estaNoPrazo(){

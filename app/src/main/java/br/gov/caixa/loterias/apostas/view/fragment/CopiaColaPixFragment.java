@@ -120,7 +120,8 @@ public class CopiaColaPixFragment extends Fragment {
 	}
 
 	private void startTimer() {
-		ContagemRegressiva contDown = new ContagemRegressiva(timerView, pixDTO.getTimerSeconds(), 1000) {
+		//ContagemRegressiva contDown = new ContagemRegressiva(timerView, pixDTO.getTimerSeconds(), 1000) {
+		ContagemRegressiva contDown = new ContagemRegressiva(timerView, pixDTO.getTimerZoneMilleSeconds(), 1000) {
 			@Override
 			public void onFinish() {
 				try {

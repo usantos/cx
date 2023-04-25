@@ -14,7 +14,15 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
+import org.joda.time.Seconds;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.math.BigDecimal;
+
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -224,6 +232,20 @@ public class CompraDTO {
     public void setQrcodeArrByte(String qrcodeArrByte) {
         this.qrcodeArrByte = qrcodeArrByte;
     }
+
+    public int getTimerSeconds() {
+        DateTimeZone timeZone = DateTimeZone.forID("America/Sao_Paulo");
+        DateTime agora = DateTime.now(timeZone);
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").withZone(timeZone);
+        DateTime expiracao = formatter.parseDateTime(getDataHoraExpiracaoPagamento());
+
+        Duration duration = new Duration(agora, expiracao);
+        long diffInSeconds = duration.getStandardSeconds();
+
+        return (int) diffInSeconds;
+    }
+
 
     @Override
     public boolean equals(Object o) {

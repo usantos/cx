@@ -53,7 +53,8 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		final int ordemLista = position + 1;
 
 		ContagemRegressiva contagemRegressiva = null;
-		long tempo_inicial_pix = 60;
+		//long tempo_inicial_pix = 60;
+		long tempo_inicial_pix = item.getTimerSeconds();
 
 		//*** Mock - APAGAR ***
 //		if (ordemLista >= 1 && ordemLista <= 5) {
