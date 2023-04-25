@@ -1,22 +1,27 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
+import android.app.Activity;
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import br.gov.caixa.loterias.apostas.utils.MascaraUtil;
 import br.gov.caixa.loterias.apostas.view.listener.TextWatcherListener;
 
 public class CelularMaskTextWatcher implements TextWatcher {
+	private Activity activity;
 	private EditText editText;
 	private int maxLength;
 	private TextWatcherListener listener;
 
 	private boolean isDeleting = false;
 
-	public CelularMaskTextWatcher(EditText editText, int maxLength, TextWatcherListener listener) {
+	public CelularMaskTextWatcher(Activity activity, EditText editText, int maxLength, TextWatcherListener listener) {
+		this.activity = activity;
 		this.editText = editText;
 		this.maxLength = maxLength;
 		this.listener = listener;
@@ -79,6 +84,7 @@ public class CelularMaskTextWatcher implements TextWatcher {
 		if (editText.getText().toString().isEmpty() || editText.getText().toString().length() < maxLength){
 			listener.isValid(false);
 		} else {
+			closeKeyboard();
 			listener.isValid(true);
 		}
 	}
@@ -86,5 +92,15 @@ public class CelularMaskTextWatcher implements TextWatcher {
 	@Override
 	public void afterTextChanged(Editable s) {
 
+	}
+
+	private void closeKeyboard()
+	{
+		View view = activity.getCurrentFocus();
+		if (view != null) {
+
+			InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+			manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
 	}
 }

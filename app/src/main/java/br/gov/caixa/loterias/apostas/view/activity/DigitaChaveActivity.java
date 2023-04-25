@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,9 +10,12 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -34,6 +38,10 @@ import br.gov.caixa.loterias.apostas.view.listener.TextWatcherListener;
 public class DigitaChaveActivity extends LoteriasAppActivity {
 	public static final String CHAVE_ARG = "CHAVE_ARG";
 	public static final String VALOR_ARG = "VALOR_ARG";
+
+	public static final String ARG_TROCAR_CHAVE = "ARG_TROCAR_CHAVE";
+	private static final int TROCA_CHAVE_PIX = 321;
+
 	private static final int CELULAR_LENGTH = 16;
 
 	private ChavePixEnum chave;
@@ -67,14 +75,14 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 	}
 
 	private void setListeners() {
-		btnTrocarChave.setOnClickListener((v) -> { finish();});
+		btnTrocarChave.setOnClickListener((v) ->  finish() );
 		btnConfirmar.setOnClickListener((v) -> {
 			if (isValid){
 				Intent intent = new Intent(DigitaChaveActivity.this, ConfirmaDadosPixActivity.class);
 				intent.putExtra(ConfirmaDadosPixActivity.NOME_ARG, DadosUsuarioBO.obterNome());
 				intent.putExtra(ConfirmaDadosPixActivity.CPF_ARG, "***.345.678-***");
 				intent.putExtra(ConfirmaDadosPixActivity.INSTITUICAO_ARG, "Caixa Econômica Federal");
-				startActivity(intent);
+				startActivityForResult(intent, TROCA_CHAVE_PIX);
 			} else {
 				isValid = true;
 				DialogUtils.showDialogDefault(DigitaChaveActivity.this, 0,"Chave Inválida",
@@ -113,7 +121,7 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 				edtChave.addTextChangedListener(new EmailMaskTextWatcher(edtChave, onTextWatchListener()));
 				break;
 			case CELULAR:
-				edtChave.addTextChangedListener(new CelularMaskTextWatcher(edtChave, CELULAR_LENGTH, onTextWatchListener()));
+				edtChave.addTextChangedListener(new CelularMaskTextWatcher(this, edtChave, CELULAR_LENGTH, onTextWatchListener()));
 				break;
 			case CHAVE_ALEATORIA:
 				edtChave.addTextChangedListener(new ChaveAleatoriaMaskTextWatcher(edtChave, onTextWatchListener()));
@@ -171,6 +179,19 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 		if(getIntent() != null){
 			chave = (ChavePixEnum) getIntent().getSerializableExtra(CHAVE_ARG);
 			valor = new BigDecimal(getIntent().getStringExtra(VALOR_ARG));
+		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == TROCA_CHAVE_PIX) {
+			if (resultCode == Activity.RESULT_CANCELED ) {
+				if (data != null){
+					finish();
+				}
+			}
 		}
 	}
 }

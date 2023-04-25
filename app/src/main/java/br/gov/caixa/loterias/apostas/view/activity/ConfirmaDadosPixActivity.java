@@ -58,7 +58,12 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 	}
 
 	private void setListeners() {
-		btnTrocar.setOnClickListener((v) -> finish());
+		btnTrocar.setOnClickListener((v) -> {
+			Intent returnIntent = new Intent();
+			returnIntent.putExtra(DigitaChaveActivity.ARG_TROCAR_CHAVE, "");
+			setResult(Activity.RESULT_CANCELED, returnIntent);
+			finish();
+		});
 		btnConfirmar.setOnClickListener((v) -> {
 			if (isValid){
 				Bundle bundle = new Bundle();
