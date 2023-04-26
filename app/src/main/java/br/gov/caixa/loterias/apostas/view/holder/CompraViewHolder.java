@@ -54,7 +54,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 
 		ContagemRegressiva contagemRegressiva = null;
 		//long tempo_inicial_pix = 60;
-		long tempo_inicial_pix = item.getTimerSeconds();
+		//long tempo_inicial_pix = item.getTimerSeconds();
 
 		//*** Mock - APAGAR ***
 //		if (ordemLista >= 1 && ordemLista <= 5) {
@@ -111,6 +111,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 				textContadorDown.setVisibility(View.VISIBLE);
 				btnMinhasCompras.setVisibility(View.VISIBLE);
 
+				long tempo_inicial_pix = item.getTimerSeconds();
 				contagemRegressiva = new ContagemRegressiva(textContadorDown,tempo_inicial_pix * 1000, 1 * 1000) {
 					@Override
 					public void onFinish() {

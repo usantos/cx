@@ -129,7 +129,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         });
 
         criarCabecalho();
-        verificaPixCopiaCola();
+        //verificaPixCopiaCola();//Chamado de dentro do buscaDetalhesCompras pois nele atualiza o compraDTO
         verificaCompraProcessada();
         buscaDetalhesCompras();
         setaDialogFavoritar();
@@ -386,7 +386,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void startFragment() {
         GerarPixDTO gerarPixDTO = new GerarPixDTO();
-        gerarPixDTO.setPixCopiaECola(compraDTO.getQrcodeString());
+        gerarPixDTO.setPixCopiaECola(compraDTO.getPixCopiaECola());
         gerarPixDTO.setDataHoraExpiracao(compraDTO.getDataHoraExpiracaoPagamento());
         fragCopiaCola = FragmentUtils.startCopiaColaPix(gerarPixDTO, getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe);
     }
@@ -428,6 +428,10 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 loadViewProgress.dismiss();
                 AppCenterManager.registraEvento("ENTROU_COMPRAS_DETALHE");
+
+                //Atualizando pois quando recebeu os parametros nao recebeu o pixCopiaECola
+                compraDTO = response.getPayload().getCompra();
+                verificaPixCopiaCola();
 
                 listaAposta = (ArrayList<ApostaDTO>) response.getPayload().getApostas();
 

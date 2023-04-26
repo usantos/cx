@@ -62,6 +62,8 @@ public class CompraDTO {
     private String qrcodeString = null;
     @SerializedName("qrcodeArrByte")
     private String qrcodeArrByte = null;
+    @SerializedName("pixCopiaECola")
+    private String pixCopiaECola = null;
 
     /**
      **/
@@ -233,6 +235,15 @@ public class CompraDTO {
         this.qrcodeArrByte = qrcodeArrByte;
     }
 
+    @ApiModelProperty(value = "")
+    public String getPixCopiaECola() {
+        return pixCopiaECola;
+    }
+
+    public void setPixCopiaECola(String pixCopiaECola) {
+        this.pixCopiaECola = pixCopiaECola;
+    }
+
     public int getTimerSeconds() {
         DateTimeZone timeZone = DateTimeZone.forID("America/Sao_Paulo");
         DateTime agora = DateTime.now(timeZone);
@@ -271,7 +282,8 @@ public class CompraDTO {
                 (this.e2eId == null ? compraDTO.e2eId == null : this.e2eId.equals(compraDTO.e2eId)) &&
                 (this.dataHoraExpiracaoPagamento == null ? compraDTO.dataHoraExpiracaoPagamento == null : this.dataHoraExpiracaoPagamento.equals(compraDTO.dataHoraExpiracaoPagamento)) &&
                 (this.qrcodeString == null ? compraDTO.qrcodeString == null : this.qrcodeString.equals(compraDTO.qrcodeString)) &&
-                (this.qrcodeArrByte == null ? compraDTO.qrcodeArrByte == null : this.qrcodeArrByte.equals(compraDTO.qrcodeArrByte));
+                (this.qrcodeArrByte == null ? compraDTO.qrcodeArrByte == null : this.qrcodeArrByte.equals(compraDTO.qrcodeArrByte)) &&
+                (this.pixCopiaECola == null ? compraDTO.pixCopiaECola == null : this.pixCopiaECola.equals(compraDTO.pixCopiaECola));
     }
 
     @Override
@@ -293,6 +305,7 @@ public class CompraDTO {
         result = 31 * result + (this.dataHoraExpiracaoPagamento == null ? 0 : this.dataHoraExpiracaoPagamento.hashCode());
         result = 31 * result + (this.qrcodeString == null ? 0 : this.qrcodeString.hashCode());
         result = 31 * result + (this.qrcodeArrByte == null ? 0 : this.qrcodeArrByte.hashCode());
+        result = 31 * result + (this.pixCopiaECola == null ? 0 : this.pixCopiaECola.hashCode());
         return result;
     }
 
@@ -313,9 +326,10 @@ public class CompraDTO {
                 "  meioPagamento: " + meioPagamento + "\n" +
                 "  codigoMensageErro: " + codigoMensageErro + "\n" +
                 "  e2eId: " + e2eId + "\n" +
-                "  e2eId: " + dataHoraExpiracaoPagamento + "\n" +
-                "  e2eId: " + qrcodeString + "\n" +
-                "  e2eId: " + qrcodeArrByte + "\n" +
+                "  dataHoraExpiracaoPagamento: " + dataHoraExpiracaoPagamento + "\n" +
+                "  qrcodeString: " + qrcodeString + "\n" +
+                "  qrcodeArrByte: " + qrcodeArrByte + "\n" +
+                "  pixCopiaECola: " + pixCopiaECola + "\n" +
                 "}\n";
         return sb;
     }
