@@ -55,14 +55,12 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 
 		setTextViews();
 		setListeners();
+		isValid = false;
 	}
 
 	private void setListeners() {
 		btnTrocar.setOnClickListener((v) -> {
-			Intent returnIntent = new Intent();
-			returnIntent.putExtra(DigitaChaveActivity.ARG_TROCAR_CHAVE, "");
-			setResult(Activity.RESULT_CANCELED, returnIntent);
-			finish();
+			trocarChave();
 		});
 		btnConfirmar.setOnClickListener((v) -> {
 			if (isValid){
@@ -81,19 +79,30 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 		});
 	}
 
+	private void trocarChave() {
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra(DigitaChaveActivity.ARG_TROCAR_CHAVE, "");
+		setResult(Activity.RESULT_CANCELED, returnIntent);
+		finish();
+	}
+
+	private void trocarResgate(){
+		Intent returnIntent = new Intent();
+		returnIntent.putExtra(ChavePixFragment.ARG_TROCAR_RESGATE, "");
+		setResult(Activity.RESULT_CANCELED, returnIntent);
+		finish();
+	}
+
 	private OnDialogListenerLeftRight onChaveInvalidaListener() {
 		return new OnDialogListenerLeftRight() {
 			@Override
 			public void left() {
-				finish();
+				trocarChave();
 			}
 
 			@Override
 			public void right() {
-				Intent returnIntent = new Intent();
-				returnIntent.putExtra(ChavePixFragment.ARG_TROCAR_RESGATE, "");
-				setResult(Activity.RESULT_CANCELED, returnIntent);
-				finish();
+				trocarResgate();
 			}
 		};
 	}

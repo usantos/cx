@@ -25,7 +25,11 @@ public class ContagemRegressiva extends CountDownTimer {
     @Override
     public void onTick(long millisUntilFinish) {
         this.millisUntilFinish = millisUntilFinish;
-        textView.setText(millisToMinute(millisUntilFinish)+"m "+millisToSecond(millisUntilFinish)+"seg");
+        String min = millisToMinute(millisUntilFinish);
+        if (new Integer(min).intValue() < 10){
+            min = "0" + min;
+        }
+        textView.setText(min + ":" + millisToSecond(millisUntilFinish));
         if (listener != null){
             listener.onTick(millisUntilFinish);
         }

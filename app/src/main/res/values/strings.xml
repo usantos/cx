@@ -1184,7 +1184,7 @@
 
 
     <!-- Popup Pix Pagamento Não Realizado -->
-    <string name="tempo_zerado">00m 00s</string>
+    <string name="tempo_zerado">00:00</string>
     <string name="codigo_expirado">Código Expirado</string>
     <string name="pix_comprovante_em_breve">Em breve seu prêmio estará disponível em sua conta</string>
     <string name="chave_sem_vinculo">A chave digitada não está vinculada ao seu CPF</string>
