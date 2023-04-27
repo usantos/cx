@@ -143,7 +143,7 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 		}
 		if (aposta.getTimeDoCoracao() != null) {
 			informacaoAdicionalLayout.setVisibility(View.VISIBLE);
-			informacaoAdicionalTxt.setText(aposta.getTimeDoCoracao().getNome());
+			informacaoAdicionalTxt.setText(aposta.getTimeDoCoracao().getNome() + "/" + aposta.getTimeDoCoracao().getUf());
 		} else if (aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNumero() != null) {
 			informacaoAdicionalLayout.setVisibility(View.VISIBLE);
 			labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
@@ -253,7 +253,8 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 					informacaoAdicionalTxt.setBackgroundColor(corBranco);
 					labelInformacaoAdicionalTxt.setBackgroundColor(corBranco);
 				}
-				tv_time_mes.setText(resultadoConcurso.getPremiacaoTimeDoCoracao().getEquipe().getNome());
+				tv_time_mes.setText(resultadoConcurso.getPremiacaoTimeDoCoracao().getEquipe().getNome() +
+						"/" + resultadoConcurso.getPremiacaoTimeDoCoracao().getEquipe().getUf());
 				rl_time_mes.setVisibility(View.VISIBLE);
 			}
 
