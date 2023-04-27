@@ -120,7 +120,6 @@ public class CopiaColaPixFragment extends Fragment {
 	}
 
 	private void startTimer() {
-		//ContagemRegressiva contDown = new ContagemRegressiva(timerView, pixDTO.getTimerSeconds(), 1000) {
 		ContagemRegressiva contDown = new ContagemRegressiva(timerView, pixDTO.getTimerZoneMilleSeconds(), 1000) {
 			@Override
 			public void onFinish() {
@@ -129,16 +128,13 @@ public class CopiaColaPixFragment extends Fragment {
 					timerView.setTextColor(Aplicacao.application.getResources().getColor(R.color.vermelho_dialog));
 					timerView.setText(R.string.tempo_zerado);
 					iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.vermelho_dialog));
-					edtNumeroPix.setText("");
+					edtNumeroPix.setText(R.string.codigo_expirado);
 					edtNumeroPix.setBackground(VectorUtils.getShape(R.drawable.shape_input_pix_copia_cola, R.color.cinza_borda));
 					edtNumeroPix.setTextColor(getActivity().getResources().getColor(R.color.branco));
 					numeroPix = "";
 					btnCopia.setEnabled(false);
 					btnCopia.setVisibility(View.GONE);
-					voceTemView.setVisibility(View.INVISIBLE);
-					txtAlerta.setText(R.string.codigo_expirado);
 					copiaTesto(getString(R.string.codigo_expirado));
-					txtAlerta.setTextColor(getResources().getColor(R.color.vermelho_dialog));
 					if (listener != null){
 						listener.onFinish();
 					}

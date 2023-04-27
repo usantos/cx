@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/futura_std_bold"
                 android:gravity="end"
-                android:text="0m 00seg"
+                android:text="00:00"
                 android:textColor="@color/amarelo_minhas_compras"
                 android:textSize="14.2dp"
                 />

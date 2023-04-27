@@ -72,6 +72,7 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 		setEditType();
 		setValidacao();
 		setListeners();
+		isValid = false;
 	}
 
 	private void setListeners() {
@@ -189,7 +190,14 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 		if (requestCode == TROCA_CHAVE_PIX) {
 			if (resultCode == Activity.RESULT_CANCELED ) {
 				if (data != null){
-					finish();
+					if (data.getStringExtra(ChavePixFragment.ARG_TROCAR_RESGATE) != null){
+						Intent returnIntent = new Intent();
+						returnIntent.putExtra(ChavePixFragment.ARG_TROCAR_RESGATE, "");
+						setResult(Activity.RESULT_CANCELED, returnIntent);
+						finish();
+					} else {
+						finish();
+					}
 				}
 			}
 		}
