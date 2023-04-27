@@ -53,28 +53,9 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		final int ordemLista = position + 1;
 
 		ContagemRegressiva contagemRegressiva = null;
-		//long tempo_inicial_pix = 60;
-		//long tempo_inicial_pix = item.getTimerSeconds();
+		//Nao pode ser inicializado abaixo
+		long tempo_inicial_pix = 0;
 
-		//*** Mock - APAGAR ***
-//		if (ordemLista >= 1 && ordemLista <= 5) {
-//			tempo_inicial_pix = ordemLista * 60;
-//			item.getMeioPagamento().setValor(6l); //PIX
-//			item.getSituacao().setValor(7l);
-//			item.getSituacao().setDescricao("Aguardando pagamento");
-//			if (ordemLista == 2) {
-//				item.getSituacao().setValor(8l); //Finalizada
-//				item.getSituacao().setDescricao("Finalizada");
-//			}
-//			if (ordemLista == 4) {
-//				item.getSituacao().setValor(3l); //VALOR_DEBITO_NAO_AUTORIZADO
-//				item.getSituacao().setDescricao("Pagamento não realizado");
-//			}
-//			if (ordemLista == 5) {
-//				item.getSituacao().setValor(4l); //VALOR_ESTORNADA
-//				item.getSituacao().setDescricao("Pagamento devolvido");
-//			}
-//		}
 
 		this.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_situacao_descricao,
 				item.getSituacao().getDescricao())));
@@ -111,7 +92,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 				textContadorDown.setVisibility(View.VISIBLE);
 				btnMinhasCompras.setVisibility(View.VISIBLE);
 
-				long tempo_inicial_pix = item.getTimerSeconds();
+				tempo_inicial_pix = item.getTimerSeconds();
 				contagemRegressiva = new ContagemRegressiva(textContadorDown,tempo_inicial_pix * 1000, 1 * 1000) {
 					@Override
 					public void onFinish() {
