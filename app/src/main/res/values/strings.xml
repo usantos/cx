@@ -194,6 +194,9 @@
     <string name="title_activity_favoritas_bold">_Apostas Favoritas_</string>
     <string name="title_activity_lista_compras">Compras</string>
 
+    <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
+    <string name="btn_entendi">entendi</string>
+    <string name="msg_qtd_max_ultrapassada_milionaria">Você aumentou a quantidade de trevos, o valor será alterado. Fique atento ao valor final da sua aposta."</string>
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
     <string name="msg_qtd_max_col_super_sete">Você só pode selecionar 3 números por coluna</string>
     <string name="msg_bloqueio_coluna_super_sete_marcar">Você precisa selecionar {qtdColunas} número(s) em cada coluna antes de selecionar outro nessa</string>
@@ -284,7 +287,8 @@
     <string name="label_rapidao">Rapidão</string>
     <string name="label_apostas_fav_rapidao_empty">Você ainda não possui apostas favoritas. É muito fácil! Simule uma aposta e adicione como favorita.</string>
     <string name="label_faca_apostas_apenas_um_clique">Faça várias apostas\nem apenas um clique.</string>
-    <string name="label_ler_bilhestes_bold">Ler _bilhetes_</string>
+    <string name="label_ler_bilhestes">_Conferir bilhetes_</string>
+    <string name="label_ler_bilhestes_bold">_Conferir_ _bilhetes_</string>
     <string name="label_repassados_boas_causas_bold">_repassados_ para boas causas.</string>
     <string name="label_apostou_loterica_confira_resultados">Apostou em uma lotérica?\n Confira aqui os seus resultados.</string>
     <string name="label_favoritas">Favoritas</string>
@@ -559,10 +563,10 @@
     <string name="label_apresente_qr_code_acima">Mostre o QR Code ao atendente</string>
     <string name="label_aproveite_premio">Aproveite seu prêmio</string>
     <string name="label_digite_cpf">Digite seu CPF</string>
-    <string name="aval_titulo">Ei, tudo Jóia?</string>
 
     <!-- Avaliar Aplicativo -->
-    <string name="aval_desc">O que você tem achado do nosso app? \nQue tal nos deixar uma avaliação? Ficaremos felizes.</string>
+    <string name="aval_titulo">Gostando do App Loterias CAIXA?</string>
+    <string name="aval_desc">Avalie e nos ajude a melhorar sua experiência</string>
     <string name="aval_positivo">Agora</string>
     <string name="aval_negativo">Deixar para depois</string>
     <string name="conf_rapd_selecione_limites">Selecione os limites da sua compra e suas modalidades favoritas.</string>
@@ -618,6 +622,10 @@
     <string name="placeholder_two">Two</string>
     <string name="placeholder_three">three</string>
     <string name="atualizar">Atualizar</string>
+    <string name="seekbar_titulo">Limite Diário de Apostas</string>
+    <string name="seekbar_val_min">R$ 30,00</string>
+    <string name="seekbar_val_max">R$ 945,00</string>
+    <string name="dados_limite_compra">Solicitar limite \n acima de \n</string>
     <string name="precisamos_que_voc_informe_numa_lot_rica_de_sua_prefer_ncia">Precisamos que você informe uma lotérica de sua preferência.</string>
     <string name="cidade">Cidade</string>
     <string name="bairro">Bairro</string>
@@ -804,8 +812,8 @@
     <string name="cadastro_atualizado">_Seu cadastro_ foi atualizado com sucesso.</string>
     <string name="aguarde_redirecionamento_tela_inicial">Aguarde apenas um instante enquanto te redirecionamos para a tela inicial. :)</string>
     <string name="evento_entrou_lista_favoritos">ENTROU_LISTA_FAVORITOS</string>
-    <string name="numeros_da_sorte_no_mesmo_lugar">Os seus números da sorte no mesmo lugar</string>
-    <string name="nesta_area_estao_todas_suas_apostas">Nesta área estão todas as suas apostas da sorte. É só escolher e apostar. Boa Sorte!</string>
+    <string name="numeros_da_sorte_no_mesmo_lugar"> </string>
+    <string name="nesta_area_estao_todas_suas_apostas">Seus números da sorte organizados para você escolher e repetir sempre que quiser.</string>
     <string name="informe_codigo_bilhete">Informe o código do bilhete!</string>
     <string name="evento_entrou_tour_tela_1">ENTROU_TOUR_TELA1</string>
     <string name="evento_entrou_tour_tela_2">ENTROU_TOUR_TELA2</string>
@@ -918,6 +926,7 @@
     <string name="espaco_numeros">&#160;números</string>
     <string name="evento_entrou_popup_teimosinha">ENTROU_POPUP_TEIMOSINHA</string>
     <string name="teimosinhas_maiusculo">Teimosinhas</string>
+    <string name="teimosinhas_descricao">Escolha em quantos concursos você quer participar com este mesmo jogo:</string>
     <string name="extra_ajuda">ajuda</string>
     <string name="mailto_dois_pontos">mailto:</string>
     <string name="utf_8">UTF-8</string>
@@ -981,7 +990,9 @@
     <string name="data_dois_pontos_espaco">Data:&#160;</string>
     <string name="textoInfoSelecioneFormaPagamento">textoInfoSelecioneFormaPagamento</string>
     <string name="como_jogar">Como jogar</string>
-
+    <string name="no_whatsapp">Não existe whatsapp instalado neste celular.</string>
+    <string name="cef_id_tit">Caixa Econômica Federal</string>
+    <string name="cef_id1">CNPJ 00.360.305/0001-04\nSBS QUADRA 4 LT 3/4 - ASA SUL\nCEP 70.070-140 BRASILIA - DF</string>
 
     <!-- Tutorial SuperSete -->
     <string name="bem_vindo_super_sete">Bem vindo ao  \n_Super Sete_</string>
@@ -1105,4 +1116,18 @@
     <string name="title_QrCode">QR Code</string>
     <string name="title_digiteSuaAposta">Digite a sua aposta</string>
 
+    <string name="leitor_digital">Acessar com biometria</string>
+    <string name="entrar">Entrar como</string>
+    <string name="ativar_biometria">Necessário habilitar biometria</string>
+    <string name="habilitar">Habilitar</string>
+    <string name="desativar_biometria">Desativar biometria</string>
+    <string name="desativar_biometria_mensagem">Desaja desativar a biometria e acessar apenas com o Login Caixa?</string>
+    <string name="biometria_popup_titulo">Loterias Caixa</string>
+    <string name="biometria_popup_descricao">Desbloqueie seu celular</string>
+    <string name="trocar_de_usuario"><u>Trocar de usuário</u></string>
+
+
+    <!-- Mensagens Disque 180  -->
+    <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
+    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
 </resources>

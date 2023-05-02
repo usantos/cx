@@ -27,8 +27,12 @@
     <color name="megasenaescuro">#008f5b</color>
     <color name="megasenamedio_transparente">#99009b63</color>
 
-    <color name="superseteclaro">#DDE89C</color>
-    <color name="supersetemedio">#a8cf45</color>
+<!--    <color name="superseteclaro">#DDE89C</color>-->
+<!--    <color name="superseteclaro">#80C342</color>-->
+<!--    <color name="supersetemedio">#A8CF45</color>-->
+    <color name="supersetemedio">#80C342</color>
+    <color name="superseteclaro">#A8CF45</color>
+
     <color name="superseteescuro">#084A08</color>
     <color name="supersete_claro_transparente">#80DDE89C</color>
 
@@ -77,6 +81,7 @@
     <color name="azulescuro">#3964a4</color>
     <color name="azulTexto">#004c8c</color>
     <color name="azulFormNovoTipoPagamento">#005cad</color>
+    <color name="azulTitcaixa">#3864A3</color>
     <color name="pretoLinhaFormNovoTipoPagamento">#3e576d</color>
     <color name="verdeagua">#00bcac</color>
     <color name="laranjacaixa">#f39200</color>
@@ -98,6 +103,7 @@
     <color name="cinzaHeaderTelaAjuda">#3a4859</color>
     <color name="cinzaGloboLotogol">#d2d4da</color>
     <color name="cinzaDisable">#d7e0e2</color>
+    <color name="cinzaIdcaixa">#616971</color>
     <color name="edittextlinecinza">#5f758f</color>
     <color name="verdemusgo">#afca0b</color>
     <color name="roxoclaro">#b26f9b</color>
@@ -159,5 +165,12 @@
     <color name="vermelho_dialog">#F60E0E</color>
     <color name="vermelho_borda_dialog">#D15973</color>
     <color name="azul_alterar">#004680</color>
+
+    <!--Disque 180 -->
+    <color name="rosa_radio_text">#E781A6</color>
+
+    <color name="laranja_fundo_switch">#FFB647</color>
+
+    <color name="label_nao_sim">#007AFF</color>
 
 </resources>

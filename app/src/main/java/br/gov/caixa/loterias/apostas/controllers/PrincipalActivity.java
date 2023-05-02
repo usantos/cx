@@ -3,11 +3,11 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -19,6 +19,8 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.net.Uri;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,12 +63,10 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -82,13 +82,14 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
+import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
-import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
@@ -98,10 +99,11 @@ import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAd
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
+
+
 
 @OptionsMenu(R.menu.principal)
 @EActivity(R.layout.activity_principal)
@@ -125,10 +127,14 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
     @ViewById
-    protected RelativeLayout relativeContentPrincipal,rlJogoResponsavel,
-            relativeBlankView, relativeLayoutContentRapidao,
-            relativeLayoutContentLerBilhetes, relativeLayoutContentFavoritas,
-            relativeLayoutContentRepassados;
+    protected RelativeLayout relativeContentPrincipal,
+            rlJogoResponsavel,
+            relativeBlankView,
+            relativeLayoutContentRapidao,
+            relativeLayoutContentLerBilhetes,
+            relativeLayoutContentFavoritas,
+            relativeLayoutContentRepassados,
+            rlMsgDisque180;
     @ViewById
     protected LinearLayout atalhoRapidoLoterias;
     @ViewById
@@ -197,6 +203,9 @@ public class PrincipalActivity extends AppCompatActivity
         Bundle extras = intent.getExtras();
         if (extras!= null) {
             if (extras.containsKey(getResources().getString(R.string.extra_modalidade_apostar_agora))) {
+
+                SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+
                 ModalidadeEnum modalidade = (ModalidadeEnum) extras.getSerializable(getResources().getString(R.string.extra_modalidade_apostar_agora));
                 int position =  retornaPosicaoPorModalidade(modalidade);
                 if(position != -1){
@@ -251,7 +260,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void listenerSair() {
         viewSair.setOnClickListener((View v) -> {
-            sairLogin(this);
+            sairLogin();
         });
     }
 
@@ -362,19 +371,35 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private OnNotificacaoListener onRemovePopup() {
-        return () -> {
-            dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
-                @Override
-                public void onResponse(RetornoPadraoDTO result) {
-                    popupNotification.dismiss();
-                    UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
-                }
+        return new OnNotificacaoListener() {
+            @Override
+            public void removePopup() {
+                dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
+                    @Override
+                    public void onResponse(RetornoPadraoDTO result) {
+                        popupNotification.dismiss();
+                        UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
+                    }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                    }
+                });
+            }
+
+            @Override
+            public void abrirLink() {
+                if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null
+                        && UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink() != null
+                        && !UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink().isEmpty()){
+                    try {
+                        startActivity(IntentUtil.getIntentWeb(UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink()));
+                    }catch (Exception e ){
+                        Log.d("",e.getLocalizedMessage());
+                    }
                 }
-            });
+            }
         };
     }
 
@@ -507,6 +532,7 @@ public class PrincipalActivity extends AppCompatActivity
                 relativeLayoutContentFavoritas,
                 rlJogoResponsavel,
                 relativeLayoutContentRepassados,
+                rlMsgDisque180,
                 relativeBlankView,
                 atalhoRapidoLoterias,
                 buttonHomeBet,
@@ -533,6 +559,7 @@ public class PrincipalActivity extends AppCompatActivity
                 relativeLayoutContentFavoritas,
                 rlJogoResponsavel,
                 relativeLayoutContentRepassados,
+                rlMsgDisque180,
                 relativeBlankView,
                 atalhoRapidoLoterias,
                 buttonHomeBet,
@@ -561,28 +588,22 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private void sairLogin(Activity activity) {
+    private void sairLogin() {
 
         ViewUtils.alertTitleButtonYesOrNotListener(this, getResources().getString(R.string.MA008), (dialog, which) -> {
             if (DadosUsuarioBO.checarUsuarioLogado(PrincipalActivity.this)) {
-                final AlertDialog loadViewProgress = LoadingViewLoterias.show(PrincipalActivity.this);
+                AlertDialogUtils.show(PrincipalActivity.this);
 
-                DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(PrincipalActivity.this);
-                dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
+                new LoginSilceModel(PrincipalActivity.this).sair(new OnSilceListener<NetworkResponse>() {
                     @Override
-                    public void onResponse(NetworkResponse response) {
-                        AppCenterManager.registraEvento(getResources().getString(R.string.evento_logout_sucesso));
-
-                        AcessoBO_.getInstance_(PrincipalActivity.this).iniciarLogoutSSO(activity);
-                        LoginSP.loginRealizado(false);
+                    public void success(NetworkResponse payload) {
                         realizandoLogin = true;
-                        loadViewProgress.dismiss();
+                        AlertDialogUtils.dismiss();
                     }
 
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        loadViewProgress.dismiss();
-                        RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                    public void error(VolleyError error) {
+                        AlertDialogUtils.dismiss();
                     }
                 });
             } else {
@@ -659,6 +680,11 @@ public class PrincipalActivity extends AppCompatActivity
         redirecionaJogoResponsavel();
     }
 
+    @Click(R.id.rlMsgDisque180)
+    protected void clickrlMsgDisque180() {
+        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        redirecionaMsgDisque180();
+    }
     @Click(R.id.id_fg_somador_carrinho)
     protected void vaiProCarrinho() {
         if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
@@ -807,8 +833,45 @@ public class PrincipalActivity extends AppCompatActivity
     private void redirecionaJogoResponsavel(){
         startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
     }
+    private void redirecionaMsgDisque180(){
+        boolean installed = isAppInstalled("com.whatsapp");
 
+        if (installed) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=5561996565008&text=Disque180"));
+            startActivity(intent);
+        }
+        else
+        {
+            //mensagem negativa de Whatsapp
+            showDialogNoWhatsapp();
+        }
 
+    }
+    private AlertDialog myDialog;
+    private void showDialogNoWhatsapp() {
+        if (myDialog == null) {
+            myDialog = new AlertDialog.Builder(this)
+                    .setTitle(getResources().getString(R.string.label_atencao))
+                    .setMessage(getResources().getString(R.string.no_whatsapp))
+                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
+                    .create();
+        }
+        myDialog.show();
+    }
+    private boolean isAppInstalled(String s) {
+        PackageManager packageManager = getPackageManager();
+        boolean is_installed;
+
+        try {
+            packageManager.getPackageInfo(s, PackageManager.GET_ACTIVITIES);
+            is_installed = true;
+        } catch (PackageManager.NameNotFoundException e) {
+            is_installed = false;
+            e.printStackTrace();
+        }
+        return is_installed;
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {

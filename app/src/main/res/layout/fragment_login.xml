@@ -62,7 +62,7 @@
             android:outlineProvider="none"/>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textViewSSO"
             android:layout_width="181dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/buttonFacaLogin"
@@ -71,7 +71,81 @@
             android:text="@string/voc_utilizar_o_sistema_nico_de_cadastro_da_caixa"
             android:textAlignment="center"
             android:textColor="@color/branco"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/textViewTrocar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonFacaLogin"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp"
+            android:text="@string/trocar_de_usuario"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="15sp"
+            android:background="@drawable/drawer_underline"
+            android:onClick="onClick"
+            android:clickable="true"
+            android:visibility="visible"/>
+
+        <LinearLayout
+            android:id="@+id/biometriaLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/textViewSSO"
+            android:layout_marginTop="35dp"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible"
+            >
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/digital2" />
+
+            <ImageView
+                android:id="@+id/imageViewPipe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/pipe"
+                android:layout_below="@+id/digital2"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="9dp"
+                />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/iface" />
+
+
+            <TextView
+                android:id="@+id/textViewBiometria"
+                android:layout_width="207dp"
+                android:layout_height="wrap_content"
+                android:text="@string/leitor_digital"
+                android:textAlignment="center"
+                android:textColor="@color/branco"
+                android:textSize="18dp" />
+
+            <Switch
+                android:id="@+id/biometriaSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="false"
+                android:theme="@style/SwitchTheme"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/textVersao"
@@ -85,6 +159,7 @@
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="12sp" />
+
 
 
     </RelativeLayout>

@@ -28,6 +28,7 @@ public class AnimacoesAcessoRapido {
     //private RelativeLayout relativeLayoutContentFavoritas;
     private RelativeLayout rlJogoResponsavel;
     private RelativeLayout relativeLayoutContentRepassados;
+    private RelativeLayout rlMsgDisque180;
     private RelativeLayout relativeBlankView;
     private LinearLayout linearAtalhoRapidoLoterias;
     private Button buttonHomeBet;
@@ -44,6 +45,7 @@ public class AnimacoesAcessoRapido {
                                  RelativeLayout relativeLayoutContentFavoritas,
                                  RelativeLayout rlJogoResponsavel,
                                  RelativeLayout relativeLayoutContentRepassados,
+                                 RelativeLayout rlMsgDisque180,
                                  RelativeLayout relativeBlankView,
                                  LinearLayout linearAtalhoRapidoLoterias,
                                  Button buttonHomeBet,
@@ -56,6 +58,7 @@ public class AnimacoesAcessoRapido {
         //this.relativeLayoutContentFavoritas = relativeLayoutContentFavoritas;
         this.rlJogoResponsavel = rlJogoResponsavel;
         this.relativeLayoutContentRepassados = relativeLayoutContentRepassados;
+        this.rlMsgDisque180 = rlMsgDisque180;
         this.linearAtalhoRapidoLoterias = linearAtalhoRapidoLoterias;
         this.relativeBlankView = relativeBlankView;
         this.buttonHomeBet = buttonHomeBet;
@@ -143,6 +146,22 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                AnimacaoFadeOutMsgDisque180();
+            }
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {}
+        });
+    }
+    private void AnimacaoFadeOutMsgDisque180(){
+        rlMsgDisque180.animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {}
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
                 trevoToolbar.setEnabled(true);
             }
 
@@ -153,7 +172,6 @@ public class AnimacoesAcessoRapido {
             public void onAnimationRepeat(Animator animation) {}
         });
     }
-
 
 
     // animacoes fade in
@@ -230,6 +248,7 @@ public class AnimacoesAcessoRapido {
         });
     }*/
 
+
     private void AnimacaoFadeInLerBilhetes(){
         relativeLayoutContentLerBilhetes.animate().alpha(0.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
             @Override
@@ -256,7 +275,23 @@ public class AnimacoesAcessoRapido {
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                AnimacaoFadeInMsgDisque180();
+            }
 
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {}
+        });
+    }
+    private void AnimacaoFadeInMsgDisque180(){
+        rlMsgDisque180.animate().alpha(0.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {}
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(activity.getApplicationContext(), estilo.getCorClara()));
                 buttonHomeBet.setTextColor(ContextCompat.getColor(activity.getApplicationContext(), R.color.branco));
                 buttonHomeBet.setEnabled(true);
@@ -270,6 +305,8 @@ public class AnimacoesAcessoRapido {
             public void onAnimationRepeat(Animator animation) {}
         });
     }
+
+
 
     //mudar conteudo de posicao
 

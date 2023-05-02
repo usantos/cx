@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 
 import java.io.Serializable;
 
@@ -23,5 +24,9 @@ public class IntentUtil {
 		intent.putExtra(key, extra);
 
 		return intent;
+	}
+
+	public static Intent getIntentWeb(String url){
+		return new Intent(Intent.ACTION_VIEW).setData(Uri.parse(url));
 	}
 }

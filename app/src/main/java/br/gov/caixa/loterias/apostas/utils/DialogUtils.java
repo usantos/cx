@@ -14,6 +14,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 import info.hoang8f.android.segmented.SegmentedGroup;
@@ -140,6 +141,56 @@ public class DialogUtils {
         btnCancelar.setOnClickListener(v -> dialogSegmented.dismiss());
         dialogSegmented.show();
         return dialogSegmented;
+    }
+
+
+    public static void showDialogLeftRight(Context context, String titulo, String subtitulo,
+                                           String legendaBtnLeft, String legendaBtnRight,
+                                           OnDialogListenerLeftRight listenerLeftRight) {
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.custom_dialog_nao_sim);
+
+        dialog.setCanceledOnTouchOutside(false);
+
+        TextView txtTitulo = dialog.findViewById(R.id.titulo_left_right);
+        if (titulo == null) {
+            txtTitulo.setVisibility(View.GONE);
+        } else {
+            txtTitulo.setVisibility(View.VISIBLE);
+            txtTitulo.setText(titulo);
+        }
+
+        TextView txtSubtitulo = dialog.findViewById(R.id.mensagem_left_right);
+        if (subtitulo == null) {
+            txtSubtitulo.setVisibility(View.GONE);
+        } else {
+            txtSubtitulo.setVisibility(View.VISIBLE);
+            txtSubtitulo.setText(subtitulo);
+        }
+
+        Button btnLeft  = dialog.findViewById(R.id.btn_left);
+        Button btnRight = dialog.findViewById(R.id.btn_right);
+
+        if (legendaBtnLeft != null) {
+            btnLeft.setText(legendaBtnLeft);
+        }
+
+        if (legendaBtnRight != null) {
+            btnRight.setText(legendaBtnRight);
+        }
+
+        btnLeft.setOnClickListener(v -> {
+            listenerLeftRight.left();
+            dialog.dismiss();
+        });
+
+        btnRight.setOnClickListener(v -> {
+            listenerLeftRight.right();
+            dialog.dismiss();
+        });
+
+        dialog.show();
     }
 
 }

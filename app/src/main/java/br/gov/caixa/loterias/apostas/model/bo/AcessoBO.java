@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
+import androidx.biometric.BiometricManager;
+
 import net.openid.appauth.AuthorizationRequest;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
@@ -18,6 +20,7 @@ import java.util.LinkedHashMap;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
@@ -27,6 +30,10 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 @EBean(scope = Singleton)
 public class AcessoBO extends BaseBO {
+
+    private static String OPENID  = "openid";
+    private static String PROFILE = "profile";
+    private static String OFFLINE = "offline_access";
 
     public static Boolean PRIMEIRO_LOGIN = false;
     AuthorizationService authorizationService;
@@ -81,6 +88,7 @@ public class AcessoBO extends BaseBO {
         authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
 
         DadosUsuarioBO.limparRegistros();
+        DadosBiometriaBO.limparRegistros();
     }
 
     private AuthorizationRequest.Builder getAuthorizationRequestBuilder(Activity activity, AuthorizationServiceConfiguration authorizationServiceConfiguration) {
@@ -90,6 +98,13 @@ public class AcessoBO extends BaseBO {
                 ResponseTypeValues.CODE,
                 Uri.parse(BuildConfig.SSO_REDIRECT)
         );
+
+        //Verifica se tem biometria para passar os parametros de RefreshToken com tempo Estendido
+        BiometricManager biometricManager = BiometricManager.from(activity);
+        if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
+                == BiometricManager.BIOMETRIC_SUCCESS) {
+            builder.setScopes(OPENID,PROFILE,OFFLINE);
+        }
 
         String deviceId = TopazUtil.getDevieId(activity);
         if (deviceId != null && !deviceId.isEmpty()){

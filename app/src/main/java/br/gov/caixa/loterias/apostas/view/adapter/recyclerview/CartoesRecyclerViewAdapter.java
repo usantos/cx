@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.FormaDePagamentoListener;
 
@@ -101,7 +102,8 @@ public class CartoesRecyclerViewAdapter extends RecyclerView.Adapter<CartoesRecy
                 case R.id.ib_excluir_cartao: {
                     ViewUtils.alertTitleButtonYesOrNotListener(context, context.getString(R.string.exclusao_cartao), (dialog, which) -> {
                         AlertDialogUtils.show(context);
-                        DadosUsuarioBO_.getInstance_(context).deleteCartao(valoresList.get(getAdapterPosition()).getIdCartao(), new RequestListener<ListCartaoDTOResponse>() {
+                        DadosUsuarioBO_.getInstance_(context)
+                                       .deleteCartao(valoresList.get(getAdapterPosition()).getIdCartao().toString(), MeioPagamentoUtils.MP_MERCADO_PAGO, new RequestListener<ListCartaoDTOResponse>() {
                             @Override
                             public void onResponse(ListCartaoDTOResponse result) {
                                 AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_efetuou_exclusao_forma_pagamento_sucesso));

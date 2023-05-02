@@ -161,7 +161,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		if (ModalidadeEnum.TIMEMANIA == aposta.getModalidade()) {
 			layoutTimeCoracao.setVisibility(View.VISIBLE);
 			if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
-				textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome());
+				textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome() + "/" +
+						aposta.getTimeDoCoracao().getUf());
 				if (aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
 					textViewTimeCoracao.setText(context.getResources().getString(R.string.tres_interrogacoes));
 				}
@@ -232,6 +233,12 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 					break;
 				case IndicadorSurpresinha.SURPRESINHA:
 				case IndicadorSurpresinha.SURPRESINHA_NUMERICA:
+					this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+					this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+					this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+					this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+					this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+
 					for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
 						if (i == aposta.getQuantidadeNumeros() - 1) {
 							numeroStr.append(context.getResources().getString(R.string.x_x));

@@ -233,13 +233,11 @@
         <item name="actionMenuTextColor">@color/superseteescuro</item>
     </style>
 
-
     <style name="fontForTitle1Premiados">
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/arialmt</item>
         <item name="android:textColor">@color/branco</item>
         <item name="android:textSize">14.2sp</item>
-
     </style>
 
     <style name="fontForTitle2Premiados">
@@ -249,7 +247,6 @@
         <item name="android:textSize">14.2sp</item>
         <item name="android:lines">2</item>
     </style>
-
 
     <style name="fontForTitleTopoPremiados">
         <item name="android:textStyle">bold</item>
@@ -287,5 +284,34 @@
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/font_family_futura</item>
         <item name="colorControlNormal">@color/cinza_total</item>
+    </style>
+
+    <style name="SwitchTheme" parent="AppTheme">
+        <item name="colorControlActivated">@color/laranjacaixa</item>
+        <!-- Bloqueado
+        <item name="android:colorForeground">@color/laranja_fundo_switch</item>
+        <item name="thumbTint">@color/laranjacaixa</item>
+        <item name="trackTint">@color/laranja_fundo_switch</item>
+        -->
+    </style>
+    <style name="cef_titulo">
+        <item name="android:textSize">
+            15sp
+        </item>
+        <item name="android:textColor">
+            @color/azulTitcaixa
+        </item>
+        <item name="android:textStyle">
+            bold
+        </item>
+    </style>
+    <style name="cef_subtitulo">
+        <item name="android:textSize">
+            12sp
+        </item>
+        <item name="android:textColor">
+            @color/cinzaIdcaixa
+        </item>
+
     </style>
 </resources>

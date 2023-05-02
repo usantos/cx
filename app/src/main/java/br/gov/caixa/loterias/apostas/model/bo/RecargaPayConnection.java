@@ -4,7 +4,6 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -41,73 +40,91 @@ public class RecargaPayConnection {
 		void onErro(String msgError);
 	}
 
-	public static void callRecargaPayService(String tokenApostador, Context ctx, CartaoRecargaPayDTO cartao, RecargaPayListener listener){
+	private static void callRecargaPayService(String URL, int method, String tokenApostador, Context ctx, JSONObject jsonBody, RecargaPayListener listener){
+		CartaoRecargaPayResponse[] cardResponse = {null};
+		RequestQueue requestQueue = Volley.newRequestQueue(ctx);
+		final String requestBody = jsonBody.toString();
+
+		StringRequest stringRequest = new StringRequest(method, URL, response -> {
+			if (cardResponse != null && cardResponse[0] != null){
+				listener.onSucesso(cardResponse[0].getCustomerCardToken(), cardResponse[0].getBrand().toLowerCase());
+			}
+		}, error -> {
+			listener.onErro(onCheckError(error));
+		}) {
+			@Override
+			public String getBodyContentType() {
+				return "application/json; charset=utf-8";
+			}
+
+			@Override
+			public byte[] getBody() {
+				try {
+					return requestBody == null ? null : requestBody.getBytes("utf-8");
+				} catch (UnsupportedEncodingException uee) {
+					VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+					return null;
+				}
+			}
+
+			@Override
+			protected Response<String> parseNetworkResponse(NetworkResponse response) {
+				String responseString = "";
+				if (response != null) {
+					String body = null;
+					try {
+						body = new String(response.data,"UTF-8");
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+
+					cardResponse[0] = new Gson().fromJson(body, CartaoRecargaPayResponse.class);
+				}
+				return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+			}
+
+			@Override
+			public Map<String, String> getHeaders() {
+				Map<String, String> params = new HashMap<String, String>();
+
+				params.put("accept", "application/json");
+				params.put("x-api-version", "20220405");
+				params.put("Content-Type", "application/json");
+				params.put("Authorization", "Bearer " + tokenApostador);
+
+				return params;
+			}
+		};
+
+		requestQueue.add(stringRequest);
+	}
+
+	public static void callRecargaPayNovoCartao(String tokenApostador, Context ctx, CartaoRecargaPayDTO cartao, RecargaPayListener listener){
 		String URL = BuildConfig.RP_CREATE_TOKEN_URL + ServerMethods.CARDS_RECARGAPAY;
 
-		CartaoRecargaPayResponse[] cardResponse = {null};
+		JSONObject   jsonBody     = null;
 		try {
-			RequestQueue requestQueue = Volley.newRequestQueue(ctx);
-			JSONObject   jsonBody     = getJsonObject(cartao);
-			final String requestBody = jsonBody.toString();
-
-			StringRequest stringRequest = new StringRequest(Request.Method.PUT, URL, new Response.Listener<String>() {
-				@Override
-				public void onResponse(String response) {
-					if (cardResponse != null && cardResponse[0] != null){
-						listener.onSucesso(cardResponse[0].getCustomerCardToken(), cardResponse[0].getBrand().toLowerCase());
-					}
-				}
-			}, error -> {
-				listener.onErro(onCheckError(error));
-			}) {
-				@Override
-				public String getBodyContentType() {
-					return "application/json; charset=utf-8";
-				}
-
-				@Override
-				public byte[] getBody() throws AuthFailureError {
-					try {
-						return requestBody == null ? null : requestBody.getBytes("utf-8");
-					} catch (UnsupportedEncodingException uee) {
-						VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-						return null;
-					}
-				}
-
-				@Override
-				protected Response<String> parseNetworkResponse(NetworkResponse response) {
-					String responseString = "";
-					if (response != null) {
-						String body = null;
-						try {
-							body = new String(response.data,"UTF-8");
-						} catch (UnsupportedEncodingException e) {
-							e.printStackTrace();
-						}
-
-						cardResponse[0] = new Gson().fromJson(body, CartaoRecargaPayResponse.class);
-					}
-					return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
-				}
-
-				@Override
-				public Map<String, String> getHeaders() throws AuthFailureError {
-					Map<String, String> params = new HashMap<String, String>();
-
-					params.put("accept", "application/json");
-					params.put("x-api-version", "20220405");
-					params.put("Content-Type", "application/json");
-					params.put("Authorization", "Bearer " + tokenApostador);
-
-					return params;
-				}
-			};
-
-			requestQueue.add(stringRequest);
+			jsonBody = getJsonObject(cartao);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+
+		callRecargaPayService(URL, Request.Method.PUT, tokenApostador, ctx, jsonBody, listener);
+	}
+
+	public static void callRecargaPayCartaoSalvo(String tokenApostador, Context ctx,
+												 String cardToken, String securityCode,
+												 RecargaPayListener listener){
+
+		String URL = BuildConfig.RP_CREATE_TOKEN_URL + ServerMethods.CARDS_RECARGAPAY + "/" + cardToken;
+		JSONObject jsonBody = new JSONObject();
+		try {
+			jsonBody.put("securityCode", securityCode);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		callRecargaPayService(URL, Request.Method.PATCH, tokenApostador, ctx, jsonBody, listener);
 	}
 
 	private static String onCheckError(VolleyError error) {

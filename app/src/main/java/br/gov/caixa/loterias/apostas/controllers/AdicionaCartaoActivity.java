@@ -23,7 +23,6 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
@@ -42,7 +41,6 @@ import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DataUtil;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -93,10 +91,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         configuraSpin(R.id.spin_meses, getListaMeses(), onSpinListener(editTextMesValidadeCartaoContent, this.listaMeses));
         configuraSpin(R.id.spin_anos, getListaAnos(), onSpinListener(editTextAnoValidadeCartaoContent, this.listaAnos));
         apresentaTextCartoes();
-
-        if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-            findViewById(R.id.containerComboSalvar).setVisibility(View.INVISIBLE);
-        }
     }
 
     private void bindView() {
@@ -255,7 +249,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new OnSilceListener<ApostadorDTO>() {
             @Override
             public void success(ApostadorDTO payload) {
-                model.realizaCompraRecargaPay(token, getCartaoRecargaPay(payload), onRecargaPayListener());
+                model.realizaCompraRecargaPayNovoCartao(token, true, getCartaoRecargaPay(payload), onRecargaPayListener());
             }
 
             @Override
@@ -287,52 +281,18 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private CartaoRecargaPayDTO getCartaoRecargaPay(ApostadorDTO dadosPessoais) {
         CartaoRecargaPayDTO cartao = new CartaoRecargaPayDTO();
         cartao.setType(RecargaPayConnection.CARTAO_TYPE);
-        cartao.setBrand(getBrand());
+        cartao.setBrand(model.getBrand(editTextNumeroCartaoContent.getText().toString()));
         cartao.setNumber(editTextNumeroCartaoContent.getText().toString());
 
-        CardHolderRecargaPay cardHolder = getCardHolderRecargaPay(dadosPessoais);
+        CardHolderRecargaPay cardHolder = model.getCardHolderRecargaPay(dadosPessoais);
         cartao.setCardHolder(cardHolder);
 
-        DataExpiracao dataExpiracao = getDataExpiracao();
+        DataExpiracao dataExpiracao = model.getDataExpiracao(editTextMesValidadeCartaoContent.getText().toString(), editTextAnoValidadeCartaoContent.getText().toString());
         cartao.setDataExpiracao(dataExpiracao);
 
         cartao.setSecurityCode(editTextCodigoSegurancaContent.getText().toString());
+        cartao.setShouldSave(checkBoxSalvarCartao.isChecked());
         return cartao;
-    }
-
-    @NonNull
-    private DataExpiracao getDataExpiracao() {
-        DataExpiracao dataExpiracao = new DataExpiracao();
-        dataExpiracao.setMes(Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()));
-        dataExpiracao.setAno(Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()));
-        return dataExpiracao;
-    }
-
-    @NonNull
-    private CardHolderRecargaPay getCardHolderRecargaPay(ApostadorDTO dadosPessoais) {
-        CardHolderRecargaPay cardHolder = new CardHolderRecargaPay();
-        cardHolder.setName(dadosPessoais.getNome());
-        cardHolder.setType(RecargaPayConnection.CARDHOLDER_TYPE);
-        cardHolder.setEmail(dadosPessoais.getEmail());
-        cardHolder.setDocument(dadosPessoais.getCpf());
-        cardHolder.setBirthdate(DataUtil.getStringDataFormatted(DataUtil.YYYY_MM_DD, dadosPessoais.getDataNascimento()));
-        List<String> phones = new ArrayList<>();
-        phones.add("+55999999999");
-        cardHolder.setPhones(phones);
-        return cardHolder;
-    }
-
-    @NonNull
-    private String getBrand() {
-        String numeroCartao = editTextNumeroCartaoContent.getText().toString();
-        if (numeroCartao.startsWith("4")){
-            return "VISA";
-        } else if (numeroCartao.startsWith("51") || numeroCartao.startsWith("52") ||
-                    numeroCartao.startsWith("53") || numeroCartao.startsWith("54") ||
-                numeroCartao.startsWith("55")){
-            return "MASTERCARD";
-        }
-        return "";
     }
 
     private void realizaCompraMercadoPago() {
@@ -349,8 +309,13 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
                                                 .substring(0, 7);
 
         AppCenterManager.registraEventoDeviceMP(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
-        String salvarCartao = checkBoxSalvarCartao.isChecked() ? "true" : "false";
+        String salvarCartao = getSalvarCartao();
         model.realizaCompraMercadoPago(bin, requestBody, salvarCartao,true, onMercadoPagoListener());
+    }
+
+    @NonNull
+    private String getSalvarCartao() {
+        return checkBoxSalvarCartao.isChecked() ? "true" : "false";
     }
 
     private OnCompraAsync onMercadoPagoListener() {

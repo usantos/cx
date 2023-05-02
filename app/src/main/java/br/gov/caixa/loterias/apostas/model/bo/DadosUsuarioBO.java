@@ -51,9 +51,9 @@ public class DadosUsuarioBO extends BaseBO {
     private static final String alphabetString = "abcdefghijklmnopqrstuvwxyz";
     private static final String numberString = "0123456789";
 
-    public void cartoes(final RequestListener<ListCartaoDTOResponse> listener) {
+    public void cartoes(String meioPagamento, final RequestListener<ListCartaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        queryParams.put("meioPagamento", "1");
+        queryParams.put("meioPagamento", meioPagamento);
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
@@ -246,6 +246,22 @@ public class DadosUsuarioBO extends BaseBO {
         return status;
     }
 
+    public void recalcularLimite(final RequestListener<ApostadorDTOResponse> listener) {
+
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        GsonRequest request = silceConnection.buildPostRequest(ServerMethods.USUARIOS_RECALCULAR_LIMITE_AUTORIZADO_PATH, queryParams,
+                null, ApostadorDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        silceConnection.request(request, listener);
+    }
+
     public void getDadosUsuario(final RequestListener<ApostadorDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
@@ -303,14 +319,14 @@ public class DadosUsuarioBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
-    public void deleteCartao(Long idCartao, RequestListener<ListCartaoDTOResponse> listener) {
+    public void deleteCartao(String idCartao, String meioPagamento, RequestListener<ListCartaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        queryParams.put("meioPagamento", "1");
+        queryParams.put("meioPagamento", meioPagamento);
 
         HashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-        GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH + idCartao.toString(), queryParams, ListCartaoDTOResponse.class,
-                listener.getSilceListener(), listener.getErrorListener(), headers);
+        GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH + idCartao, queryParams, ListCartaoDTOResponse.class,
+                                                                 listener.getSilceListener(), listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request, listener);

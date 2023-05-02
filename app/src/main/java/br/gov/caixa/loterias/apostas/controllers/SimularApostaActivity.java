@@ -68,6 +68,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -159,6 +160,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private ParametroMesDeSorte mesDeSorteSurpresinha;
     private Boolean isEspecial = false;
     private DadosCorporativosBO dadosCorporativosBO;
+    private boolean isAvisou = false;
 
     //mocks
     public int qtdDezenasPossiveisSelecionado;
@@ -216,7 +218,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         qtdNumerosButton.setText(format(getResources().getString(R.string.percent_d_numeros), qtdDezenasPossiveisSelecionado));
         textoBotaoPrognosticosSelecionado = qtdNumerosButton.getText().toString();
         if ((qtdConcursosList != null && !qtdConcursosList.isEmpty()) && (qtdConcursosList.size() == 1 || qtdConcursoSelecionado == 0)) {
-            qtdConcursosButton.setText(qtdConcursosList.get(0));
+//            qtdConcursosButton.setText(qtdConcursosList.get(0));
+            qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
         } else {
             qtdConcursosButton.setText(format(getResources().getString(R.string.percent_d_concurso), qtdConcursoSelecionado));
         }
@@ -253,8 +256,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
             case R.id.qtdConcursosButton: {
                 modalTeimosinhas();
-
-
                 break;
             }
         }
@@ -360,10 +361,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
     @Override
     public int verificaNovoQtdDezenasMax(int qtdDezenasAtual) {
+        //	Verifica condição de aviso caso ultrapasse o numero max por modalidade
         if (qtdDezenasAtual <= parametroSimulacao.getQuantidadeMaxima()) {
             atualizaTextoBotoesQtdSelecionadas();
         }
-
         return qtdDezenasPossiveisSelecionado;
     }
 
@@ -634,7 +635,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             if (parametroSimulacao.getTeimosinhas() != null) {
                 for (Integer numeroTeimosinha : parametroSimulacao.getTeimosinhas()) {
                     if (numeroTeimosinha == 0) {
-                        qtdConcursosList.add(getString(R.string.label_sem_teimosinha));
+                        qtdConcursosList.add(getString(R.string.teimosinhas_descricao));
                     } else if (numeroTeimosinha == 1) {
                         qtdConcursosList.add("" + numeroTeimosinha + getResources().getString(R.string.espaco_concurso));
                     } else {
@@ -642,6 +643,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                     }
                 }
             }
+
         }
     }
 
@@ -774,13 +776,22 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                         stringNumero = itemValue.substring(0, 1);
                     }
                     ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(new Integer(stringNumero), 2);
+                    
                     if (valorAposta != null){
                         textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
                         qtdDezenasPossiveisSelecionado = valorAposta.getNumeroPrognosticos();
                     }
+                    if ((position >= 1) && (!isAvisou)) {
+                        ViewUtils.alertTitleButton(SimularApostaActivity.this, R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+                        isAvisou = true;
+                    }
                 }else {
                     textoBotaoPrognosticosSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
                     qtdDezenasPossiveisSelecionado = parametroSimulacao.getValoresAposta().get(position).getNumeroPrognosticos();
+                }
+                if ((position >= 1) && (!isAvisou)) {
+                    ViewUtils.alertTitleButton(SimularApostaActivity.this, R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+                    isAvisou = true;
                 }
             }
 
@@ -824,14 +835,20 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
                                            getResources().getString(R.string.teimosinhas_maiusculo), null,
                                            qtdConcursosList, onTeimosinhaDialogListener());
+
     }
 
     private OnDialogListener onTeimosinhaDialogListener() {
         return new OnDialogListener() {
             @Override
             public void itemSelecionado(int position) {
-                textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
-                qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
+                if (position == 0) {
+                    textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
+                }else{
+                    textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
+                    qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
+                }
+
             }
 
             @Override
@@ -876,6 +893,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, titleActivity));
+
+        if (BuildVersionUtil.isAutomacao() && tipoJogo == ModalidadeEnum.DUPLA_SENA){
+            setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "dupla-sena"));
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, darkColor));

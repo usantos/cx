@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.MeusCartoesRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
@@ -179,9 +180,9 @@ public class MeusCartoesFragment extends Fragment {
 	private void deletaCartao(RetornoCartao cartao, int position) {
 		AlertDialogUtils.show(getContext());
 		if (model.isMercadoPago(config.getValueMeioPagamento())){
-			model.deletaCartaoMercadoPago(cartao.getIdCartao(), onDeletaCartao(position));
+			model.deletaCartao(cartao.getIdCartao().toString(), MeioPagamentoUtils.MP_MERCADO_PAGO, onDeletaCartao(position));
 		} else if (model.isRecargaPay(config.getValueMeioPagamento())){
-			//model.deletaCartaoRecargaPay();
+			model.deletaCartao(cartao.getTokenCartao(), MeioPagamentoUtils.MP_RECARGA_PAY, onDeletaCartao(position));
 		}
 	}
 

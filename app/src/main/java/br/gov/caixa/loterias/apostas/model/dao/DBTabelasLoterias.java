@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.model.dao;
 
+import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaBiometria;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaCarrinhoFavorito;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaIdentificaoDeUmaApostaDas8Modalidades;
@@ -268,6 +269,23 @@ public final class DBTabelasLoterias {
                 TabelaUsuario.COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
                 TabelaUsuario.COLUNA_NOME + " TEXT, " +
                 TabelaUsuario.COLUNA_CPF + " TEXT " +
+                " ) ";
+        return sb;
+    }
+
+    /**
+     * Método para criar tabela de usuario
+     *
+     * @return sb
+     */
+    public static String criarTabelaBiometria() {
+
+        String sb = (" CREATE TABLE " + TabelaBiometria.NOME_TABELA) +
+                " ( " +
+                TabelaBiometria.COLUNA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL , " +
+                TabelaBiometria.COLUNA_REFRESH + " TEXT, " +
+                TabelaBiometria.COLUNA_NOME + " TEXT, " +
+                TabelaBiometria.COLUNA_CPF + " TEXT " +
                 " ) ";
         return sb;
     }

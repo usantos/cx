@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginTop="110dp"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="2"
+        android:orientation="vertical"
+        android:rowCount="2">
+
+        <ImageView
+            android:id="@+id/iconCef"
+            android:layout_width="30dp"
+            android:layout_column="0"
+            android:src="@drawable/caixa_logo" />
+
+        <TextView
+            android:id="@+id/nav_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="0dp"
+            android:text="@string/cef_id_tit"
+            android:autoSizeTextType="uniform"
+            android:autoSizePresetSizes="@array/autosize_text_sizes"
+            android:textAppearance="@style/cef_titulo" />
+
+        <TextView
+            android:id="@+id/nav_user_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:gravity="left"
+            android:paddingTop="3dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="5dp"
+            android:lineSpacingExtra="5dp"
+            android:text="@string/cef_id1"
+            android:textAlignment="gravity"
+            android:textColor="@color/cinzaIdcaixa"
+            android:textSize="12dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizePresetSizes="@array/autosize_text_sizes"
+            />
+    </GridLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

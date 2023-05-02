@@ -330,7 +330,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	/**
 	 * Horário emque foi efetivada a aposta
 	 **/
-	@ApiModelProperty(value = "Horário emque foi efetivada a aposta")
+	@ApiModelProperty(value = "Horário em que foi efetivada a aposta")
 	public String getHoraEfetivacao() {
 		return horaEfetivacao;
 	}

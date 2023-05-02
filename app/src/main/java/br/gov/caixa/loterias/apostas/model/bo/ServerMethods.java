@@ -89,6 +89,8 @@ class ServerMethods {
 
      static final String USUARIOS_RECUPERAR_DADOS_PATH = "/usuarios/recuperar-dados";
 
+     static final String USUARIOS_RECALCULAR_LIMITE_AUTORIZADO_PATH = "/usuarios/recalcular-limite-autorizado";
+
 
      static final String USUARIOS_PATH = "/usuarios";
      static final String LER_NOTIFICACAO = "historico-notificacoes/{idNotificacao}/visualiza";

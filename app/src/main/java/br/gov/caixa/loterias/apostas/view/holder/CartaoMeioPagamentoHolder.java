@@ -43,7 +43,7 @@ public class CartaoMeioPagamentoHolder extends LoteriasHolder<RetornoCartao> imp
 
 	@Override
 	public void bind(RetornoCartao cartao, int position) {
-		this.imagem.setImageDrawable(getBandeira(cartao.getIdMetodoPagamento()));
+		this.imagem.setImageDrawable(getBandeira(cartao.getNomeMetodoPagamento()));
 		this.numero.setText("  " + context.getResources().getString(R.string.mascara_cartao) + "  " + cartao.getUltimosDigitos());
 		if (cartao.isFav()){
 			this.fav.setBackground(context.getDrawable(R.drawable.ic_vector_fav_full));
@@ -55,12 +55,13 @@ public class CartaoMeioPagamentoHolder extends LoteriasHolder<RetornoCartao> imp
 	private Drawable getBandeira(String nomeMetodo){
 		Drawable drawable = null;
 		PorterDuffColorFilter porterDuffColorFilter = VectorUtils.getColorFilter(Color.BLUE);
-		switch (nomeMetodo){
+		switch (nomeMetodo.toLowerCase()){
 			case "visa":
 				drawable = context.getDrawable(R.drawable.ic_visa);
 				drawable.setColorFilter(porterDuffColorFilter);
 				return drawable;
 			case "master":
+			case "mastercard":
 				return context.getDrawable(R.drawable.ic_master_card);
 			case "hipercard":
 				return context.getDrawable(R.drawable.ic_hipercard);
@@ -69,6 +70,7 @@ public class CartaoMeioPagamentoHolder extends LoteriasHolder<RetornoCartao> imp
 			case "elo":
 				return context.getDrawable(R.drawable.ic_elo);
 			case "amex":
+			case "american express":
 				drawable = context.getDrawable(R.drawable.ic_american);
 				drawable.setColorFilter(porterDuffColorFilter);
 				return drawable;
