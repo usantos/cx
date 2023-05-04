@@ -1,26 +1,23 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
-
-import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
-import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoResgatePixActivity;
+import br.gov.caixa.loterias.apostas.mock.ChaveFavoritaMockSingleton;
+import br.gov.caixa.loterias.apostas.model.bean.ChavePix;
 import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.PixUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.ChavePixFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
@@ -29,15 +26,20 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 	public static final String NOME_ARG = "NOME_ARG";
 	public static final String CPF_ARG = "CPF_ARG";
 	public static final String INSTITUICAO_ARG = "INSTITUICAO_ARG";
+	public static final String TIPO_CHAVE_ARG = "TIPO_CHAVE_ARG";
+	public static final String VALOR_CHAVE_ARG = "VALOR_CHAVE_ARG";
 
 	private TextView txtNome, txtCPF, txtInstituicao;
 	private Button btnConfirmar, btnTrocar;
+	private CheckBox checkBox;
 
 	private String instituicao;
 	private String cpf;
 	private String nome;
 
 	private static boolean isValid = false;
+	private ChavePixEnum tipoChave;
+	private String valueChave;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 		txtInstituicao 	= findViewById(R.id.txt_intituicao);
 		btnConfirmar	= findViewById(R.id.btn_confimar);
 		btnTrocar		= findViewById(R.id.btn_trocar_chave);
+		checkBox		= findViewById(R.id.checkBoxSalvar);
 
 		setTextViews();
 		setListeners();
@@ -64,6 +67,12 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 		});
 		btnConfirmar.setOnClickListener((v) -> {
 			if (isValid){
+				if (checkBox.isChecked()){
+					if (tipoChave != null && valueChave != null){
+						ChaveFavoritaMockSingleton.getInstance().addChave(new ChavePix(tipoChave, valueChave));
+					}
+				}
+
 				Bundle bundle = new Bundle();
 				bundle.putLong(getResources().getString(R.string.id_aposta), 16399l);
 				bundle.putLong(ConfirmacaoPagamentoActivity.ARG_FLUXO, PixUtils.FLUXO_RESGATE);
@@ -118,6 +127,8 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 			nome =  getIntent().getStringExtra(NOME_ARG);
 			cpf = getIntent().getStringExtra(CPF_ARG);
 			instituicao = getIntent().getStringExtra(INSTITUICAO_ARG);
+			tipoChave = (ChavePixEnum) getIntent().getSerializableExtra(TIPO_CHAVE_ARG);
+			valueChave = getIntent().getStringExtra(VALOR_CHAVE_ARG);
 		}
 	}
 }

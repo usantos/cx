@@ -118,6 +118,43 @@
         app:layout_constraintTop_toTopOf="@id/label_instituicao"
         app:layout_constraintStart_toEndOf="@id/label_instituicao"/>
 
+    <LinearLayout
+        android:id="@+id/containerSalvarChave"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_intituicao">
+
+        <CheckBox
+            android:id="@+id/checkBoxSalvar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="20dp"
+            android:button="@color/transparente50"
+            android:background="@drawable/check_box_tutorial"
+            android:checked="false"
+            android:layout_gravity="center"
+            android:textColor="@color/pretoLinhaFormNovoTipoPagamento" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/salvar_chave_pix_para_resgates_futuros"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_confimar"
         android:layout_width="184dp"
