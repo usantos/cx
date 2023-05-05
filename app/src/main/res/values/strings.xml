@@ -1160,6 +1160,20 @@
     <string name="pix_continuar">Continuar</string>
     <string name="pix_chave_invalida">Chave Inválida</string>
     <string name="popup_pix_cpf_nao_vinculado">Não existe Chave Pix vinculada a este CPF</string>
+    <string name="tempo_zerado">00:00</string>
+    <string name="codigo_expirado">Código Expirado</string>
+
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="pix_comprovante_em_breve">Em breve seu prêmio estará disponível em sua conta</string>
+    <string name="chave_sem_vinculo">A chave digitada não está vinculada ao seu CPF</string>
+    <string name="resgate_nao_autorizado">Resgate não autorizado</string>
+    <string name="id_pagamento">ID do Pagamento:</string>
+    <string name="resgate_pix_concluido">Resgate concluído!</string>
+
+    <string name="premio_pix_ja_creditado">Seu prêmio já foi creditado na conta vinculada à Chave informada.</string>
+    <string name="visualizar_comprovante">_Visualizar_\ncomprovante</string>
+    <string name="msg_acima30ganhadores"><a href="https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx?" target="_blank">Consulte aqui o restante da lista de municípios com ganhadores.</a></string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
@@ -1174,6 +1188,7 @@
         <item>Novembro</item>
         <item>Dezembro</item>
     </string-array>
+
     <string-array name="orientacao_pix_list">
         <item>Copie o código gerado e pague dentro do prazo que será apresentado;</item>
         <item>Entre no aplicativo da sua instituição financeira e \nacesse o ambiente Pix;</item>
@@ -1181,18 +1196,5 @@
         <item>Cole o código Pix;</item>
         <item>Confirme as informações e realize o pagamento.</item>
     </string-array>
-
-
-    <!-- Popup Pix Pagamento Não Realizado -->
-    <string name="tempo_zerado">00:00</string>
-    <string name="codigo_expirado">Código Expirado</string>
-    <string name="pix_comprovante_em_breve">Em breve seu prêmio estará disponível em sua conta</string>
-    <string name="chave_sem_vinculo">A chave digitada não está vinculada ao seu CPF</string>
-    <string name="resgate_nao_autorizado">Resgate não autorizado</string>
-
-    <string name="id_pagamento">ID do Pagamento:</string>
-    <string name="resgate_pix_concluido">Resgate concluído!</string>
-    <string name="premio_pix_ja_creditado">Seu prêmio já foi creditado na conta vinculada à Chave informada.</string>
-    <string name="visualizar_comprovante">_Visualizar_\ncomprovante</string>
 
 </resources>

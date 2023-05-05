@@ -34,8 +34,138 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     @ViewById
     LinearLayout contentResuldadoDetalhesPremiacaoLinearLayout;
 
+    public PartidaViewDetalhesResultado(Context context) {
+        super(context);
+    }
+
+    public PartidaViewDetalhesResultado(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public PartidaViewDetalhesResultado(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public static LinkedHashMap<String, String> obterMapFaixa(Modalidade modalidade) {
+        LinkedHashMap<String, String> mapFaixa = new LinkedHashMap<>();
+        String modalidadeTratada = modalidade.getNome()
+                .toUpperCase()
+                .replace(" ", "")
+                .replace("_", "")
+                .replace("-", "");
+
+        String numerosAcertados = " números acertados";
+
+        switch (modalidadeTratada) {
+            case "DIADESORTE":
+                mapFaixa.put("0001", "7" + numerosAcertados);
+                mapFaixa.put("0002", "6" + numerosAcertados);
+                mapFaixa.put("0003", "5" + numerosAcertados);
+                mapFaixa.put("0004", "4" + numerosAcertados);
+                mapFaixa.put("0005", "Mês da Sorte\n" +
+                        (modalidade.getResultadoConcursoDTO() == null ? "" :
+                                modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome()));
+                break;
+            case "DUPLASENA":
+                mapFaixa.put("0001", "Sena - 6" + numerosAcertados);
+                mapFaixa.put("0002", "Quina - 5" + numerosAcertados);
+                mapFaixa.put("0003", "Quadra - 4" + numerosAcertados);
+                mapFaixa.put("0004", "Terno - 3" + numerosAcertados);
+                mapFaixa.put("0005", "Sena - 6" + numerosAcertados);
+                mapFaixa.put("0006", "Quina - 5" + numerosAcertados);
+                mapFaixa.put("0007", "Quadra - 4" + numerosAcertados);
+                mapFaixa.put("0008", "Terno - 3" + numerosAcertados);
+                break;
+            case "LOTECA":
+                mapFaixa.put("0001", "1º (14 jogos acertados)");
+                mapFaixa.put("0002", "2º (13 jogos acertados)");
+                break;
+            case "LOTOFACIL":
+            case "LOTOFÁCIL":
+                mapFaixa.put("0001", "15" + numerosAcertados);
+                mapFaixa.put("0002", "14" + numerosAcertados);
+                mapFaixa.put("0003", "13" + numerosAcertados);
+                mapFaixa.put("0004", "12" + numerosAcertados);
+                mapFaixa.put("0005", "11" + numerosAcertados);
+                break;
+            case "LOTOGOL":
+                mapFaixa.put("0001", "1º (5 acertos)");
+                mapFaixa.put("0002", "2º (4 acertos)");
+                mapFaixa.put("0003", "3º (3 acertos)");
+                break;
+            case "LOTOMANIA":
+                mapFaixa.put("0001", "20" + numerosAcertados);
+                mapFaixa.put("0002", "19" + numerosAcertados);
+                mapFaixa.put("0003", "18" + numerosAcertados);
+                mapFaixa.put("0004", "17" + numerosAcertados);
+                mapFaixa.put("0005", "16" + numerosAcertados);
+                mapFaixa.put("0006", "15" + numerosAcertados);
+                mapFaixa.put("0007", "0" + " acertos");
+                break;
+            case "MEGASENA":
+                mapFaixa.put("0001", "Sena - 6" + numerosAcertados);
+                mapFaixa.put("0002", "Quina - 5" + numerosAcertados);
+                mapFaixa.put("0003", "Quadra - 4" + numerosAcertados);
+                break;
+            case "QUINA":
+                mapFaixa.put("0001", "Quina - 5" + numerosAcertados);
+                mapFaixa.put("0002", "Quadra - 4" + numerosAcertados);
+                mapFaixa.put("0003", "Terno - 3" + numerosAcertados);
+                mapFaixa.put("0004", "Duque - 2" + numerosAcertados);
+                break;
+            case "TIMEMANIA":
+                mapFaixa.put("0001", "7" + numerosAcertados);
+                mapFaixa.put("0002", "6" + numerosAcertados);
+                mapFaixa.put("0003", "5" + numerosAcertados);
+                mapFaixa.put("0004", "4" + numerosAcertados);
+                mapFaixa.put("0005", "3" + numerosAcertados);
+                mapFaixa.put("0006", "Time do Coração\n" +
+                        (modalidade.getResultadoConcursoDTO() == null ? "" :
+                                modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome()));
+                break;
+            case "SUPERSETE":
+            case "SUPER7":
+                mapFaixa.put("0001", "7" + numerosAcertados);
+                mapFaixa.put("0002", "6" + numerosAcertados);
+                mapFaixa.put("0003", "5" + numerosAcertados);
+                mapFaixa.put("0004", "4" + numerosAcertados);
+                mapFaixa.put("0005", "3" + numerosAcertados);
+                mapFaixa.put("1", "7" + numerosAcertados);
+                mapFaixa.put("2", "6" + numerosAcertados);
+                mapFaixa.put("3", "5" + numerosAcertados);
+                mapFaixa.put("4", "4" + numerosAcertados);
+                mapFaixa.put("5", "3" + numerosAcertados);
+                break;
+            case "MAISMILIONARIA":
+            case "MAISMILIONÁRIA":
+                mapFaixa.put("1", "6 números +2 trevos acertados");
+                mapFaixa.put("2", "6 números +1 ou 6 +0 trevos acertados");
+                mapFaixa.put("3", "5 números +2 trevos acertados");
+                mapFaixa.put("4", "5 números e 1 ou 0 trevos acertados");
+                mapFaixa.put("5", "4 números e 2 trevos acertados");
+                mapFaixa.put("6", "4 números e 1 ou 0 trevos acertados");
+                mapFaixa.put("7", "3 números e 2 trevos acertados");
+                mapFaixa.put("8", "3 números e 1 trevo acertados");
+                mapFaixa.put("9", "2 números e 2 trevos acertados");
+                mapFaixa.put("10", "2 números e 1 trevo acertados");
+                mapFaixa.put("0001", "6 números +2 trevos acertados");
+                mapFaixa.put("0002", "6 números +1 ou 6 +0 trevos acertados");
+                mapFaixa.put("0003", "5 números +2 trevos acertados");
+                mapFaixa.put("0004", "5 números e 1 ou 0 trevos acertados");
+                mapFaixa.put("0005", "4 números e 2 trevos acertados");
+                mapFaixa.put("0006", "4 números e 1 ou 0 trevos acertados");
+                mapFaixa.put("0007", "3 números e 2 trevos acertados");
+                mapFaixa.put("0008", "3 números e 1 trevo acertados");
+                mapFaixa.put("0009", "2 números e 2 trevos acertados");
+                mapFaixa.put("00010", "2 números e 1 trevo acertados");
+                break;
+        }
+        return mapFaixa;
+    }
+
     @AfterViews
-    protected void init() {}
+    protected void init() {
+    }
 
     public void setLayout(Modalidade modalidade) {
         if (modalidade.getTipoModalidade() != ModalidadeEnum.DUPLA_SENA) {
@@ -59,10 +189,10 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             layoutParamsGanhadores.setMargins(0, 20, 0, 0);
             titleGanhadores.setLayoutParams(layoutParamsGanhadores);
             titleGanhadores.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-            if(modalidade!= null &&
+            if (modalidade != null &&
                     modalidade.getResultadoConcursoDTO() != null &&
                     modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio() != null &&
-                    modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio().size() > 0){
+                    modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio().size() > 0) {
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(titleGanhadores);
                 adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio());
             }
@@ -91,8 +221,8 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             List<PremiacaoConcursoDTO> listaPremiados = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
             int n = listaPremiados.size();
 
-            List<PremiacaoConcursoDTO> premiadosPrimeiro  = listaPremiados.subList(0,(n + 1)/2);
-            List<PremiacaoConcursoDTO> premiadosSegundo = listaPremiados.subList(((n + 1)/2), n);
+            List<PremiacaoConcursoDTO> premiadosPrimeiro = listaPremiados.subList(0, (n + 1) / 2);
+            List<PremiacaoConcursoDTO> premiadosSegundo = listaPremiados.subList(((n + 1) / 2), n);
 
             adicionarPremiados(premiadosPrimeiro, modalidade);
 
@@ -105,9 +235,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
 
-            if(premiadosSegundo != null){
+            if (premiadosSegundo != null) {
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
-                adicionarPremiados(premiadosSegundo ,modalidade);
+                adicionarPremiados(premiadosSegundo, modalidade);
             }
 
             TextView title3 = new TextView(getContext());
@@ -119,35 +249,23 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             title3.setLayoutParams(layoutParams3);
             title3.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
 
-            if(modalidade!= null &&
+            if (modalidade != null &&
                     modalidade.getResultadoConcursoDTO() != null &&
                     modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio() != null &&
-                    modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio().size() > 0){
+                    modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio().size() > 0) {
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
                 adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio());
             }
 
-            if(modalidade!= null &&
+            if (modalidade != null &&
                     modalidade.getResultadoConcursoDTO() != null &&
                     modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio() != null &&
-                    modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio().size() > 0){
+                    modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio().size() > 0) {
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title4);
                 adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio());
             }
         }
         adicionarArrecadacaoTotal(modalidade.getResultadoConcursoDTO().getArrecadacaoTotal());
-    }
-
-    public PartidaViewDetalhesResultado(Context context) {
-        super(context);
-    }
-
-    public PartidaViewDetalhesResultado(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public PartidaViewDetalhesResultado(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
     }
 
     public void mostrarDetalhes(boolean mostrarDetalhes, LinearLayout item_resultado_content_view, PartidaViewDetalhesResultado partidaViewDetalhesResultadoView) {
@@ -181,7 +299,6 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         });
     }
 
-
     private void animacaoFadeOutDetalhes(final View view, final View view2) {
         view.animate().alpha(0.0f).setDuration(300).setListener(new Animator.AnimatorListener() {
             @Override
@@ -203,7 +320,6 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             }
         });
     }
-
 
     private void animacaoFadeInResultado(View view) {
         view.setAlpha(0.0f);
@@ -228,7 +344,6 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         });
     }
 
-
     private void animacaoFadeOutResultado(final View view, final View view2) {
         view.animate().alpha(0.0f).setDuration(300).setListener(new Animator.AnimatorListener() {
             @Override
@@ -251,123 +366,6 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         });
     }
 
-    public static LinkedHashMap<String,String> obterMapFaixa(Modalidade  modalidade){
-        LinkedHashMap<String,String> mapFaixa = new LinkedHashMap<>();
-        String modalidadeTratada = modalidade.getNome()
-                .toUpperCase()
-                .replace(" ", "")
-                .replace("_", "")
-                .replace("-", "");
-
-        String numerosAcertados = " números acertados";
-
-        switch (modalidadeTratada ){
-            case "DIADESORTE":
-                mapFaixa.put("0001","7" + numerosAcertados);
-                mapFaixa.put("0002","6" + numerosAcertados);
-                mapFaixa.put("0003","5" + numerosAcertados);
-                mapFaixa.put("0004","4" + numerosAcertados);
-                mapFaixa.put("0005","Mês da Sorte\n"+
-                        (modalidade.getResultadoConcursoDTO() == null ? "":
-                                modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome()));
-                break;
-            case "DUPLASENA":
-                mapFaixa.put("0001","Sena - 6" + numerosAcertados);
-                mapFaixa.put("0002","Quina - 5" + numerosAcertados);
-                mapFaixa.put("0003","Quadra - 4" + numerosAcertados);
-                mapFaixa.put("0004","Terno - 3" + numerosAcertados);
-                mapFaixa.put("0005","Sena - 6" + numerosAcertados);
-                mapFaixa.put("0006","Quina - 5" + numerosAcertados);
-                mapFaixa.put("0007","Quadra - 4" + numerosAcertados);
-                mapFaixa.put("0008","Terno - 3" + numerosAcertados);
-                break;
-            case "LOTECA":
-                mapFaixa.put("0001","1º (14 jogos acertados)");
-                mapFaixa.put("0002","2º (13 jogos acertados)");
-                break;
-            case "LOTOFACIL":
-            case "LOTOFÁCIL":
-                mapFaixa.put("0001","15" + numerosAcertados);
-                mapFaixa.put("0002","14" + numerosAcertados);
-                mapFaixa.put("0003","13" + numerosAcertados);
-                mapFaixa.put("0004","12" + numerosAcertados);
-                mapFaixa.put("0005","11" + numerosAcertados);
-                break;
-            case "LOTOGOL":
-                mapFaixa.put("0001","1º (5 acertos)");
-                mapFaixa.put("0002","2º (4 acertos)");
-                mapFaixa.put("0003","3º (3 acertos)");
-                break;
-            case "LOTOMANIA":
-                mapFaixa.put("0001","20" + numerosAcertados);
-                mapFaixa.put("0002","19" + numerosAcertados);
-                mapFaixa.put("0003","18" + numerosAcertados);
-                mapFaixa.put("0004","17" + numerosAcertados);
-                mapFaixa.put("0005","16" + numerosAcertados);
-                mapFaixa.put("0006","15" + numerosAcertados);
-                mapFaixa.put("0007","0"  + " acertos");
-                break;
-            case "MEGASENA":
-                mapFaixa.put("0001","Sena - 6" + numerosAcertados);
-                mapFaixa.put("0002","Quina - 5" + numerosAcertados);
-                mapFaixa.put("0003","Quadra - 4" + numerosAcertados);
-                break;
-            case "QUINA":
-                mapFaixa.put("0001","Quina - 5" + numerosAcertados);
-                mapFaixa.put("0002","Quadra - 4" + numerosAcertados);
-                mapFaixa.put("0003","Terno - 3" + numerosAcertados);
-                mapFaixa.put("0004","Duque - 2" + numerosAcertados);
-                break;
-            case "TIMEMANIA":
-                mapFaixa.put("0001","7" + numerosAcertados);
-                mapFaixa.put("0002","6" + numerosAcertados);
-                mapFaixa.put("0003","5" + numerosAcertados);
-                mapFaixa.put("0004","4" + numerosAcertados);
-                mapFaixa.put("0005","3" + numerosAcertados);
-                mapFaixa.put("0006","Time do Coração\n"+
-                        (modalidade.getResultadoConcursoDTO() == null ? "":
-                                modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome()));
-                break;
-            case "SUPERSETE":
-            case "SUPER7":
-                mapFaixa.put("0001","7" + numerosAcertados);
-                mapFaixa.put("0002","6" + numerosAcertados);
-                mapFaixa.put("0003","5" + numerosAcertados);
-                mapFaixa.put("0004","4" + numerosAcertados);
-                mapFaixa.put("0005","3" + numerosAcertados);
-                mapFaixa.put("1","7" + numerosAcertados);
-                mapFaixa.put("2","6" + numerosAcertados);
-                mapFaixa.put("3","5" + numerosAcertados);
-                mapFaixa.put("4","4" + numerosAcertados);
-                mapFaixa.put("5","3" + numerosAcertados);
-                break;
-            case "MAISMILIONARIA":
-            case "MAISMILIONÁRIA":
-                mapFaixa.put("1","6 números +2 trevos acertados");
-                mapFaixa.put("2","6 números +1 ou 6 +0 trevos acertados");
-                mapFaixa.put("3","5 números +2 trevos acertados");
-                mapFaixa.put("4","5 números e 1 ou 0 trevos acertados");
-                mapFaixa.put("5","4 números e 2 trevos acertados");
-                mapFaixa.put("6","4 números e 1 ou 0 trevos acertados");
-                mapFaixa.put("7","3 números e 2 trevos acertados");
-                mapFaixa.put("8","3 números e 1 trevo acertados");
-                mapFaixa.put("9","2 números e 2 trevos acertados");
-                mapFaixa.put("10","2 números e 1 trevo acertados");
-                mapFaixa.put("0001","6 números +2 trevos acertados");
-                mapFaixa.put("0002","6 números +1 ou 6 +0 trevos acertados");
-                mapFaixa.put("0003","5 números +2 trevos acertados");
-                mapFaixa.put("0004","5 números e 1 ou 0 trevos acertados");
-                mapFaixa.put("0005","4 números e 2 trevos acertados");
-                mapFaixa.put("0006","4 números e 1 ou 0 trevos acertados");
-                mapFaixa.put("0007","3 números e 2 trevos acertados");
-                mapFaixa.put("0008","3 números e 1 trevo acertados");
-                mapFaixa.put("0009","2 números e 2 trevos acertados");
-                mapFaixa.put("00010","2 números e 1 trevo acertados");
-                break;
-        }
-        return mapFaixa;
-    }
-
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, Modalidade modalidade) {
         for (PremiacaoConcursoDTO premiacaoConcurso : listaPremiados) {
 
@@ -375,7 +373,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             TextView title2 = new TextView(getContext());
             TextView title3 = new TextView(getContext());
 
-            String faixa  = obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
+            String faixa = obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
 
             title1.setText(faixa);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -404,7 +402,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
 
 
-            title3.setText("Prêmio: "+ViewUtils.getMoedaFormat(premiacaoConcurso.getValor()));
+            title3.setText("Prêmio: " + ViewUtils.getMoedaFormat(premiacaoConcurso.getValor()));
             LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -418,18 +416,20 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
     private void adicionarGanhadoresRegiao(List<GanhadoresPorRegiaoDTO> listaGanhadores) {
         if (listaGanhadores != null) {
+            int count = 0;
             for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO : listaGanhadores) {
+                count += 1;
                 TextView title1 = new TextView(getContext());
                 title1.setText(getResources().getString(R.string.label_texto_barra_texto,
                         ganhadoresPorRegiaoDTO.getMunicipioSorteio().getNome(),
-                        ganhadoresPorRegiaoDTO.getUfSorteio().getSigla())
-                );
+                        ganhadoresPorRegiaoDTO.getUfSorteio().getSigla()));
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                 layoutParams.setMargins(0, 18, 0, 0);
                 title1.setLayoutParams(layoutParams);
                 title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
+
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
                 TextView title2 = new TextView(getContext());
@@ -441,7 +441,28 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 title2.setLayoutParams(layoutParams2);
                 title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
+
+                if (count == 4) {
+                    TextView title3 = new TextView(getContext());
+                    // https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx?modalidade=LOTOFACIL&concurso=2034&titulo=Lotof%C3%A1cil
+                    String strLink = "https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx?modalidade=";
+                    title3.setText(R.string.msg_acima30ganhadores);
+                    LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    title3.setLayoutParams(layoutParams3);
+                    title3.setTextAppearance(getContext(), R.style.fontForTitle3Premiados);
+                    title3.setClickable(true);
+                    title3.setPadding(0, 10, 0, 0);
+                    this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
+
+//                    FrameLayout webViewContainer = findViewById("Consulte aqui o restante da lista de municípios com ganhadores.");
+//                    WebView webView = new WebView(this);
+//                    webViewContainer.addView(webView);
+//                    webView.LoadUrl("https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx?");
+                    break;
+                }
             }
+
         }
 
     }
