@@ -61,8 +61,8 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
     }
 
     private void configLayout() {
-        if (origem.equals(MeioPagamentoUtils.PIX)) {
-            if (fluxo.equals(PixUtils.FLUXO_RESGATE)){
+        if (origem != null && origem.equals(MeioPagamentoUtils.PIX)) {
+            if (fluxo != null && fluxo.equals(PixUtils.FLUXO_RESGATE)){
                 titulo.setText(R.string.resgate_pix_concluido);
                 infoApostas.setText(R.string.premio_pix_ja_creditado);
                 btnVoltarInicio.setBackgroundColor(getResources().getColor(R.color.branco));
@@ -121,7 +121,7 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
     }
 
     private boolean isPixResgate() {
-        return origem.equals(MeioPagamentoUtils.PIX) && fluxo.equals(PixUtils.FLUXO_RESGATE);
+        return origem != null && origem.equals(MeioPagamentoUtils.PIX) && fluxo.equals(PixUtils.FLUXO_RESGATE);
     }
 
     private void atualizaComprovante(){

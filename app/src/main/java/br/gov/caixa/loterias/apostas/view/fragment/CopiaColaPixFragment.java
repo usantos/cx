@@ -36,6 +36,9 @@ import br.gov.caixa.loterias.apostas.model.model.PixModel;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
+import br.gov.caixa.loterias.apostas.utils.PixUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.Utils;
@@ -187,12 +190,15 @@ public class CopiaColaPixFragment extends Fragment {
 
 				AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
 				RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
-				Intent activity = new Intent(getActivity(), ConfirmacaoPagamentoActivity.class);
-				startActivity(activity);
-				CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
 
+				CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
 				CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(getActivity());
 				crud.deletaTodos();
+
+				Bundle bundle   = new Bundle();
+				bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
+				Intent activity = IntentUtil.getIntentOrigemDestino(getActivity(), ConfirmacaoPagamentoActivity.class, bundle);
+				startActivity(activity);
 			}
 
 			@Override
