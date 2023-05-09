@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GanhadoresPorRegiaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PremiacaoConcursoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 /**
@@ -33,6 +35,10 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
     @ViewById
     LinearLayout contentResuldadoDetalhesPremiacaoLinearLayout;
+    private ModalidadeEnum modalidade;
+    private TipoConcursoEnum concurso;
+    private String modalidadeDescricao;
+    private TipoConcursoEnum concurso1;
 
     public PartidaViewDetalhesResultado(Context context) {
         super(context);
@@ -194,7 +200,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                     modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio() != null &&
                     modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio().size() > 0) {
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(titleGanhadores);
-                adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio());
+                adicionarGanhadoresRegiao(modalidade);
             }
         } else {
             TextView title1 = new TextView(getContext());
@@ -254,7 +260,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                     modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio() != null &&
                     modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio().size() > 0) {
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
-                adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio());
+                adicionarGanhadoresRegiao(modalidade);
             }
 
             if (modalidade != null &&
@@ -262,7 +268,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                     modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio() != null &&
                     modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio().size() > 0) {
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title4);
-                adicionarGanhadoresRegiao(modalidade.getResultadoConcursoDTO().getGanhadoresSegundoSorteio());
+                adicionarGanhadoresRegiao(modalidade);
             }
         }
         adicionarArrecadacaoTotal(modalidade.getResultadoConcursoDTO().getArrecadacaoTotal());
@@ -414,7 +420,9 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     }
 
 
-    private void adicionarGanhadoresRegiao(List<GanhadoresPorRegiaoDTO> listaGanhadores) {
+    private void adicionarGanhadoresRegiao(Modalidade modalidade) {
+//        ResultadoConcursoDTO resultadoConcursoDTO = modalidade.getResultadoConcursoDTO();
+        List<GanhadoresPorRegiaoDTO> listaGanhadores = modalidade.getResultadoConcursoDTO().getGanhadoresPrimeiroSorteio();
         if (listaGanhadores != null) {
             int count = 0;
             for (GanhadoresPorRegiaoDTO ganhadoresPorRegiaoDTO : listaGanhadores) {
@@ -442,30 +450,38 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
 
-                if (count == 4) {
+                if (count == 30) {
                     TextView title3 = new TextView(getContext());
                     // https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx?modalidade=LOTOFACIL&concurso=2034&titulo=Lotof%C3%A1cil
-                    String strLink = "https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx?modalidade=";
-                    title3.setText(R.string.msg_acima30ganhadores);
+                    String strUrl = "https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx" +
+                            "?modalidade=" + modalidade.getResultadoConcursoDTO().getConcurso().getModalidade() +
+                            "?concurso=" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() +
+                            "?titulo=" + modalidade.getResultadoConcursoDTO().getConcurso().getModalidadeDetalhada().getDescricao();
+
                     LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     title3.setLayoutParams(layoutParams3);
                     title3.setTextAppearance(getContext(), R.style.fontForTitle3Premiados);
-                    title3.setClickable(true);
                     title3.setPadding(0, 10, 0, 0);
+                    title3.setText(Html.fromHtml("<a href=" + strUrl.toString() + "://a\"" + " target= " + "\"_blank\"" +
+                            ">Consulte aqui o restante da lista de municipios com ganhadores." + "</a>"));
+//                    Linkify.addLinks(title3, Linkify.WEB_URLS);
+
                     this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
 
-//                    FrameLayout webViewContainer = findViewById("Consulte aqui o restante da lista de municípios com ganhadores.");
-//                    WebView webView = new WebView(this);
-//                    webViewContainer.addView(webView);
-//                    webView.LoadUrl("https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx?");
+//                    Intent activity = new Intent(MainActivity.this, WebViewActivity.class);
+//                    activity.putExtra("Consulte aqui o restante da lista de municipios com ganhadores.", getString(strUrl));
+//                    startActivity(activity);
+//                    webView = findViewById(R.id.WebView);
+//                    webView.setWebViewClient(new WebViewClient());
+//                    webView.loadUrl(strUrl);
+
                     break;
                 }
             }
-
         }
-
     }
+
 
     private void adicionarArrecadacaoTotal(BigDecimal valor) {
         TextView title = new TextView(getContext());
