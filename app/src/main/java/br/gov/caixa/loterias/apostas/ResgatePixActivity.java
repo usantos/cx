@@ -4,22 +4,24 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.model.model.ResgatePixModel;
 import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.ConfirmaDadosPixActivity;
 import br.gov.caixa.loterias.apostas.view.activity.DigitaChaveActivity;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaChavePixFavoritaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaChavePixRecyclerView;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnChaveFavoritaClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class ResgatePixActivity extends LoteriasAppActivity {
@@ -29,6 +31,8 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 	private RecyclerView listaChaves, listaChavesFavoritas;
 	private Dialog dialogNaoCPF;
 
+	private ResgatePixModel model;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,14 +40,45 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 		configToolbar(R.id.toolbar);
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resgate_pix)));
 
+		model = new ResgatePixModel(this);
+
 		listaChaves = findViewById(R.id.listaChaves);
 		listaChavesFavoritas = findViewById(R.id.listaChavesFavoritas);
 
 		configListaChave();
+		configListaChaveFavoritas();
+	}
+
+	private void configListaChaveFavoritas() {
+		if (temChaveFavoristas()){
+			listaChavesFavoritas.setVisibility(View.VISIBLE);
+			listaChavesFavoritas.setAdapter(new ListaChavePixFavoritaRecyclerView(model.getListaChaveFavorita(), onListaChaveFavoritaListener()));
+			listaChavesFavoritas.setLayoutManager(new LinearLayoutManager(this));
+		} else {
+			listaChavesFavoritas.setVisibility(View.GONE);
+		}
+	}
+
+	private boolean temChaveFavoristas() {
+		return model.temChaveFavorita();
+	}
+
+	private OnChaveFavoritaClickListener onListaChaveFavoritaListener() {
+		return new OnChaveFavoritaClickListener() {
+			@Override
+			public void itemClick(int position) {
+				TestVisao.toast("item selecionado");
+			}
+
+			@Override
+			public void excluir(int position) {
+				TestVisao.toast("exclusao selecionada");
+			}
+		};
 	}
 
 	private void configListaChave() {
-		listaChaves.setAdapter(new ListaChavePixRecyclerView(getListaChave(), onListaChaveListener()));
+		listaChaves.setAdapter(new ListaChavePixRecyclerView(model.getListaChave(), onListaChaveListener()));
 		listaChaves.setLayoutManager(new LinearLayoutManager(this));
 	}
 
@@ -67,17 +102,7 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 	}
 
 	private boolean isCPF(int position) {
-		return getListaChave().get(position).equalsIgnoreCase(ChavePixEnum.CPF.getTexto()) ;
-	}
-
-	private List<String> getListaChave() {
-		List<String> chaves = new ArrayList<>();
-		chaves.add("Escolha o tipo de chave");
-		chaves.add(ChavePixEnum.CPF.getTexto());
-		chaves.add(ChavePixEnum.EMAIL.getTexto());
-		chaves.add(ChavePixEnum.CELULAR.getTexto());
-		chaves.add(ChavePixEnum.CHAVE_ALEATORIA.getTexto());
-		return chaves;
+		return model.getListaChave().get(position).equalsIgnoreCase(ChavePixEnum.CPF.getTexto()) ;
 	}
 
 	private void starConfirmaCPFActivity() {

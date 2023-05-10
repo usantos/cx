@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.mock;
 import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.model.bean.ChavePix;
+import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
 
 public class ChaveFavoritaMockSingleton {
 
@@ -11,6 +12,7 @@ public class ChaveFavoritaMockSingleton {
 
 	private ChaveFavoritaMockSingleton(){
 		this.chaves = new ArrayList<>();
+		this.chaves.add(new ChavePix(ChavePixEnum.CELULAR, "(61) 9 9876-5432"));
 	}
 
 	public static ChaveFavoritaMockSingleton getInstance(){
