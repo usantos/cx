@@ -34,17 +34,8 @@ public class ListaChavePixRecyclerView extends RecyclerView.Adapter<ChavePixHold
 	@Override
 	public void onBindViewHolder(@NonNull ChavePixHolder holder, int position) {
 		String chave = chaves.get(position);
-		if (isTitulo(position)){
-			holder.configTitulo(chave);
-		} else {
-			holder.bind(chave, position);
-		}
+		holder.bind(chave, position);
 	}
-
-	private boolean isTitulo(int position) {
-		return position == 0;
-	}
-
 	@Override
 	public int getItemCount() {
 		return chaves.size();

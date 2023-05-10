@@ -38,16 +38,6 @@ public class ChavePixFavoritaHolder extends LoteriasHolder<ChavePix> implements 
 		txtValorrChave.setText(chave.getValue());
 	}
 
-	public void configTitulo(String titulo) {
-		txtValorrChave.setText(titulo);
-		txtValorrChave.setTextColor(context.getResources().getColor(R.color.azul_alterar));
-
-		Typeface typeface = ResourcesCompat.getFont(context, R.font.futura_std_bold);
-		txtValorrChave.setTypeface(typeface);
-		txtTipoChave.setVisibility(View.GONE);
-		lixeira.setVisibility(View.GONE);
-	}
-
 	@Override
 	public void onClick(View v) {
 		if (v.getId() == R.id.lixeira){

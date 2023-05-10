@@ -20,15 +20,17 @@
 
     <TextView
         android:id="@+id/valueChavePix"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         tools:text="***.345.678.***"
         android:textColor="#4E596B"
         app:layout_constraintTop_toBottomOf="@id/tipoChavePix"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/lixeira"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="20dp"/>
 
     <androidx.appcompat.widget.AppCompatImageView

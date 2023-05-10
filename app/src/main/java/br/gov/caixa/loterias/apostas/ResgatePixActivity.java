@@ -7,9 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
+import br.gov.caixa.loterias.apostas.mock.ChaveFavoritaMockSingleton;
+import br.gov.caixa.loterias.apostas.model.bean.ChavePix;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.model.ResgatePixModel;
 import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
@@ -22,6 +27,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaChavePixFavo
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaChavePixRecyclerView;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnChaveFavoritaClickListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class ResgatePixActivity extends LoteriasAppActivity {
@@ -29,9 +35,12 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 	private static final int RESGATE_PIX = 123;
 
 	private RecyclerView listaChaves, listaChavesFavoritas;
+	private ConstraintLayout containerFav;
 	private Dialog dialogNaoCPF;
 
 	private ResgatePixModel model;
+	private ListaChavePixFavoritaRecyclerView chavesFavAdapter;
+	private ArrayList<ChavePix> listaChaveFavorita;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,7 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 
 		listaChaves = findViewById(R.id.listaChaves);
 		listaChavesFavoritas = findViewById(R.id.listaChavesFavoritas);
+		containerFav = findViewById(R.id.containerFavoritas);
 
 		configListaChave();
 		configListaChaveFavoritas();
@@ -51,11 +61,13 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 
 	private void configListaChaveFavoritas() {
 		if (temChaveFavoristas()){
-			listaChavesFavoritas.setVisibility(View.VISIBLE);
-			listaChavesFavoritas.setAdapter(new ListaChavePixFavoritaRecyclerView(model.getListaChaveFavorita(), onListaChaveFavoritaListener()));
+			containerFav.setVisibility(View.VISIBLE);
+			listaChaveFavorita = model.getListaChaveFavorita();
+			chavesFavAdapter = new ListaChavePixFavoritaRecyclerView(listaChaveFavorita, onListaChaveFavoritaListener());
+			listaChavesFavoritas.setAdapter(chavesFavAdapter);
 			listaChavesFavoritas.setLayoutManager(new LinearLayoutManager(this));
 		} else {
-			listaChavesFavoritas.setVisibility(View.GONE);
+			containerFav.setVisibility(View.GONE);
 		}
 	}
 
@@ -67,12 +79,37 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 		return new OnChaveFavoritaClickListener() {
 			@Override
 			public void itemClick(int position) {
-				TestVisao.toast("item selecionado");
+				if (position > 0){
+					TestVisao.toast("item selecionado");
+				}
 			}
 
 			@Override
 			public void excluir(int position) {
-				TestVisao.toast("exclusao selecionada");
+				if (position > 0){
+					ChavePix chavePix = listaChaveFavorita.get(position);
+					DialogUtils.showDialogLeftRight(ResgatePixActivity.this, getString(R.string.label_atencao),
+													getString(R.string.tem_certeza_excluir_chave_favorita_xxxx).replace("xxxx", chavePix.getValue()),
+													getString(R.string.label_sim),
+													getString(R.string.desistir),
+													onExcluirFavoritaPopupListener(chavePix));
+				}
+			}
+		};
+	}
+
+	private OnDialogListenerLeftRight onExcluirFavoritaPopupListener(ChavePix chavePix) {
+		return new OnDialogListenerLeftRight() {
+			@Override
+			public void left() {
+				listaChaveFavorita = model.excluirChaveFavorita(chavePix);
+				chavesFavAdapter.atualizaLista(ChaveFavoritaMockSingleton.getInstance().getChaves());
+
+			}
+
+			@Override
+			public void right() {
+
 			}
 		};
 	}
@@ -84,19 +121,16 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 
 	private OnItemClickListener onListaChaveListener() {
 		return (holder, position) -> {
-			if (position != 0){
-				if (isCPF(position)){
-					starConfirmaCPFActivity();
-				} else {
-
-					dialogNaoCPF = DialogUtils.showDialogCustom(ResgatePixActivity.this,
-																getString(R.string.label_atencao),
-																getString(R.string.popup_pix_cpf_vinculado),
-																getString(R.string.trocar_tipo_chave),
-																getString(R.string.trocar_forma_resgate),
-																getString(R.string.pix_continuar),
-																onDialogListenerNaoCpf(position));
-				}
+			if (isCPF(position)){
+				starConfirmaCPFActivity();
+			} else {
+				dialogNaoCPF = DialogUtils.showDialogCustom(ResgatePixActivity.this,
+															getString(R.string.label_atencao),
+															getString(R.string.popup_pix_cpf_vinculado),
+															getString(R.string.trocar_tipo_chave),
+															getString(R.string.trocar_forma_resgate),
+															getString(R.string.pix_continuar),
+															onDialogListenerNaoCpf(position));
 			}
 		};
 	}
@@ -142,9 +176,9 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 			}
 
 			private ChavePixEnum getChaveEnumByPosition(int position) {
-				if(position == 2){
+				if(position == 1){
 					return ChavePixEnum.EMAIL;
-				} else if (position == 3){
+				} else if (position == 2){
 					return ChavePixEnum.CELULAR;
 				} else {
 					return ChavePixEnum.CHAVE_ALEATORIA;

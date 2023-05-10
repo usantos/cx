@@ -36,9 +36,4 @@ public class ChavePixHolder extends LoteriasHolder<String> implements  View.OnCl
 		listener.itemClick(this, getAdapterPosition());
 	}
 
-	public void configTitulo(String titulo) {
-		bind(titulo,0);
-		txtChave.setTextColor(context.getResources().getColor(R.color.azul_alterar));
-		seta.setVisibility(View.GONE);
-	}
 }

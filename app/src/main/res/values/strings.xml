@@ -1195,5 +1195,9 @@
     <string name="premio_pix_ja_creditado">Seu prêmio já foi creditado na conta vinculada à Chave informada.</string>
     <string name="visualizar_comprovante">_Visualizar_\ncomprovante</string>
     <string name="salvar_chave_pix_para_resgates_futuros">Salvar Chave Pix para resgates futuros</string>
+    <string name="tem_certeza_excluir_chave_favorita_xxxx">Tem certeza que deseja excluir dos favoritos a chave xxxx?</string>
+    <string name="desistir">Desistir</string>
+    <string name="escolha_o_tipo_de_chave">Escolha o tipo de chave</string>
+    <string name="chaves_favoritas">Chaves Favoritas</string>
 
 </resources>

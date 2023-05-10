@@ -35,15 +35,7 @@ public class ListaChavePixFavoritaRecyclerView extends RecyclerView.Adapter<Chav
 	@Override
 	public void onBindViewHolder(@NonNull ChavePixFavoritaHolder holder, int position) {
 		ChavePix chave = chaves.get(position);
-		if (isTitulo(position)){
-			holder.configTitulo("Chaves Favoritas");
-		} else {
-			holder.bind(chave, position);
-		}
-	}
-
-	private boolean isTitulo(int position) {
-		return position == 0;
+		holder.bind(chave, position);
 	}
 
 	@Override
@@ -51,4 +43,8 @@ public class ListaChavePixFavoritaRecyclerView extends RecyclerView.Adapter<Chav
 		return chaves.size();
 	}
 
+	public void atualizaLista(ArrayList<ChavePix> chaves) {
+		this.chaves = chaves;
+		notifyDataSetChanged();
+	}
 }

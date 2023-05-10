@@ -17,7 +17,6 @@ public class ResgatePixModel extends AppModel {
 
 	public List<String> getListaChave() {
 		List<String> chaves = new ArrayList<>();
-		chaves.add("Escolha o tipo de chave");
 		chaves.add(ChavePixEnum.CPF.getTexto());
 		chaves.add(ChavePixEnum.EMAIL.getTexto());
 		chaves.add(ChavePixEnum.CELULAR.getTexto());
@@ -26,13 +25,15 @@ public class ResgatePixModel extends AppModel {
 	}
 
 	public ArrayList<ChavePix> getListaChaveFavorita(){
-		ArrayList<ChavePix> chaves = new ArrayList<>();
-		chaves.add(null);
-		chaves.addAll(ChaveFavoritaMockSingleton.getInstance().getChaves());
-		return chaves;
+		return ChaveFavoritaMockSingleton.getInstance().getChaves();
 	}
 
 	public boolean temChaveFavorita() {
 		return !ChaveFavoritaMockSingleton.getInstance().getChaves().isEmpty();
+	}
+
+	public ArrayList<ChavePix> excluirChaveFavorita(ChavePix chavePix) {
+		ChaveFavoritaMockSingleton.getInstance().excluirPorId(chavePix.getId());
+		return ChaveFavoritaMockSingleton.getInstance().getChaves();
 	}
 }

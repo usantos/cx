@@ -12,7 +12,12 @@ public class ChaveFavoritaMockSingleton {
 
 	private ChaveFavoritaMockSingleton(){
 		this.chaves = new ArrayList<>();
-		this.chaves.add(new ChavePix(ChavePixEnum.CELULAR, "(61) 9 9876-5432"));
+		this.chaves.add(new ChavePix(ChavePixEnum.CELULAR, "(61) 1 9876-5432"));
+		this.chaves.add(new ChavePix(ChavePixEnum.CELULAR, "(61) 2 9876-5432"));
+		this.chaves.add(new ChavePix(ChavePixEnum.CELULAR, "(61) 3 9876-5432"));
+		this.chaves.add(new ChavePix(ChavePixEnum.CELULAR, "(61) 4 9876-5432"));
+		this.chaves.add(new ChavePix(ChavePixEnum.CELULAR, "(61) 5 9876-5432"));
+		this.chaves.add(new ChavePix(ChavePixEnum.CELULAR, "(61) 6 9876-5432"));
 	}
 
 	public static ChaveFavoritaMockSingleton getInstance(){
@@ -30,4 +35,12 @@ public class ChaveFavoritaMockSingleton {
 		this.chaves.add(chave);
 	}
 
+	public void excluirPorId(Long id) {
+		for(int i = 0; i < chaves.size(); i++){
+			if (id.equals(chaves.get(i).getId())){
+				chaves.remove(i);
+				break;
+			}
+		}
+	}
 }
