@@ -56,6 +56,11 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 		containerFav = findViewById(R.id.containerFavoritas);
 
 		configListaChave();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 		configListaChaveFavoritas();
 	}
 
@@ -86,14 +91,12 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 
 			@Override
 			public void excluir(int position) {
-				if (position > 0){
-					ChavePix chavePix = listaChaveFavorita.get(position);
-					DialogUtils.showDialogLeftRight(ResgatePixActivity.this, getString(R.string.label_atencao),
-													getString(R.string.tem_certeza_excluir_chave_favorita_xxxx).replace("xxxx", chavePix.getValue()),
-													getString(R.string.label_sim),
-													getString(R.string.desistir),
-													onExcluirFavoritaPopupListener(chavePix));
-				}
+				ChavePix chavePix = listaChaveFavorita.get(position);
+				DialogUtils.showDialogLeftRight(ResgatePixActivity.this, getString(R.string.label_atencao),
+												getString(R.string.tem_certeza_excluir_chave_favorita_xxxx).replace("xxxx", chavePix.getValue()),
+												getString(R.string.label_sim),
+												getString(R.string.desistir),
+												onExcluirFavoritaPopupListener(chavePix));
 			}
 		};
 	}
@@ -102,9 +105,11 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 		return new OnDialogListenerLeftRight() {
 			@Override
 			public void left() {
-				listaChaveFavorita = model.excluirChaveFavorita(chavePix);
+				model.excluirChaveFavorita(chavePix);
 				chavesFavAdapter.atualizaLista(ChaveFavoritaMockSingleton.getInstance().getChaves());
-
+				if(ChaveFavoritaMockSingleton.getInstance().getChaves().isEmpty()){
+					containerFav.setVisibility(View.GONE);
+				}
 			}
 
 			@Override
