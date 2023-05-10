@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
+import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.ICallbackQueueIT;
@@ -82,6 +83,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
                 sessaoUser.setPassouPelaQueueIT(true);
                 verificaVersao();
+                MessagingUtils.verificaPermissaoNotificacao(SplashScreenActivity.this);
             }
 
             @Override
