@@ -3,8 +3,10 @@ package br.gov.caixa.loterias.apostas.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppActivity;
@@ -28,14 +30,17 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 	public static final String INSTITUICAO_ARG = "INSTITUICAO_ARG";
 	public static final String TIPO_CHAVE_ARG = "TIPO_CHAVE_ARG";
 	public static final String VALOR_CHAVE_ARG = "VALOR_CHAVE_ARG";
+	public static final String SALVAR_CHAVE_ARG = "VALOR_CHAVE_ARG";
 
 	private TextView txtNome, txtCPF, txtInstituicao;
 	private Button btnConfirmar, btnTrocar;
 	private CheckBox checkBox;
+	private LinearLayout containerSalvar;
 
 	private String instituicao;
 	private String cpf;
 	private String nome;
+	private Boolean showSalvarChave = false;
 
 	private static boolean isValid = false;
 	private ChavePixEnum tipoChave;
@@ -49,16 +54,24 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "Resgate Loteria"));
 		getExtras();
 
-		txtNome 		= findViewById(R.id.txt_nome);
-		txtCPF 			= findViewById(R.id.txt_cpf);
-		txtInstituicao 	= findViewById(R.id.txt_intituicao);
-		btnConfirmar	= findViewById(R.id.btn_confimar);
-		btnTrocar		= findViewById(R.id.btn_trocar_chave);
-		checkBox		= findViewById(R.id.checkBoxSalvar);
+		txtNome 			= findViewById(R.id.txt_nome);
+		txtCPF 				= findViewById(R.id.txt_cpf);
+		txtInstituicao 		= findViewById(R.id.txt_intituicao);
+		btnConfirmar		= findViewById(R.id.btn_confimar);
+		btnTrocar			= findViewById(R.id.btn_trocar_chave);
+		checkBox			= findViewById(R.id.checkBoxSalvar);
+		containerSalvar		= findViewById(R.id.containerSalvarChave);
 
 		setTextViews();
 		setListeners();
 		isValid = false;
+		showCheckBox();
+	}
+
+	private void showCheckBox() {
+		if (showSalvarChave){
+			containerSalvar.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private void setListeners() {
@@ -120,6 +133,9 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 		txtNome.setText(StringUtils.capitalizer(nome));
 		txtCPF.setText(cpf);
 		txtInstituicao.setText(instituicao);
+		if (showSalvarChave){
+
+		}
 	}
 
 	private void getExtras() {
@@ -129,6 +145,7 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 			instituicao = getIntent().getStringExtra(INSTITUICAO_ARG);
 			tipoChave = (ChavePixEnum) getIntent().getSerializableExtra(TIPO_CHAVE_ARG);
 			valueChave = getIntent().getStringExtra(VALOR_CHAVE_ARG);
+			showSalvarChave = getIntent().getBooleanExtra(SALVAR_CHAVE_ARG, false);
 		}
 	}
 }

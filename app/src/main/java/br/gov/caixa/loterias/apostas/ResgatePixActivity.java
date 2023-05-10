@@ -84,9 +84,7 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 		return new OnChaveFavoritaClickListener() {
 			@Override
 			public void itemClick(int position) {
-				if (position > 0){
-					TestVisao.toast("item selecionado");
-				}
+				starConfirmaCPFActivity(false);
 			}
 
 			@Override
@@ -127,7 +125,7 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 	private OnItemClickListener onListaChaveListener() {
 		return (holder, position) -> {
 			if (isCPF(position)){
-				starConfirmaCPFActivity();
+				starConfirmaCPFActivity(true);
 			} else {
 				dialogNaoCPF = DialogUtils.showDialogCustom(ResgatePixActivity.this,
 															getString(R.string.label_atencao),
@@ -144,13 +142,16 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 		return model.getListaChave().get(position).equalsIgnoreCase(ChavePixEnum.CPF.getTexto()) ;
 	}
 
-	private void starConfirmaCPFActivity() {
+	private void starConfirmaCPFActivity(Boolean showSalvar) {
 		Intent intent = new Intent(this, ConfirmaDadosPixActivity.class);
 		intent.putExtra(ConfirmaDadosPixActivity.NOME_ARG, DadosUsuarioBO.obterNome());
 		intent.putExtra(ConfirmaDadosPixActivity.CPF_ARG, "***.345.678-***");
 		intent.putExtra(ConfirmaDadosPixActivity.INSTITUICAO_ARG, "Caixa Econômica Federal");
 		intent.putExtra(ConfirmaDadosPixActivity.TIPO_CHAVE_ARG, ChavePixEnum.CPF);
 		intent.putExtra(ConfirmaDadosPixActivity.VALOR_CHAVE_ARG, DadosUsuarioBO.obterCpf());
+		if (showSalvar){
+			intent.putExtra(ConfirmaDadosPixActivity.SALVAR_CHAVE_ARG, true);
+		}
 		startActivityForResult(intent, RESGATE_PIX);
 	}
 
