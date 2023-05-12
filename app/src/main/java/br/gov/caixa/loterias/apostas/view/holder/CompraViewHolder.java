@@ -56,6 +56,12 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		//Nao pode ser inicializado abaixo
 		long tempo_inicial_pix = 0;
 
+		//*** Mock - APAGAR - Utilizado para testar a feature/pagamantoDevolvido ***
+//		if (ordemLista == 1) {
+//			item.getMeioPagamento().setValor(6l); //PIX
+//			item.getSituacao().setValor(4l);
+//			item.getSituacao().setDescricao("Cancelada");
+//		}
 
 		this.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_situacao_descricao,
 				item.getSituacao().getDescricao())));

@@ -93,6 +93,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private CopiaColaPixFragment fragCopiaCola;
     int ordemCompra;
     long tempo_acabar_pix;
+    private Dialog dialogEstornadaPix;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +154,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
             showDialogDebitoNaoAutorizado();
         } else if (SituacaoCompraUtil.isEstornada(compraDTO.getSituacao())) {
-            showDialogEstornada();
+            if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())) {
+                showDialogEstornadaPix();
+            } else {
+                showDialogEstornada();
+            }
         }
     }
 
@@ -192,6 +198,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     }
 
+    private void showDialogEstornadaPix() {
+        dialogEstornadaPix = DialogUtils.showDialogCustom(DetalhesComprasActivity.this,
+                getString(R.string.popup_pix_estorno_pagamento_devolvido),
+                getString(R.string.popup_pix_estorno_nao_possivel),
+                null,
+                getString(R.string.title_voltar),
+                getString(R.string.tenta_novamente_dialog),
+                onDialogListenerEstornadaPix());
+    }
+
     private void showDialogDebitoNaoAutorizado() {
 
 //        DialogUtils.showDialogDebitoNaoAutorizado(this,
@@ -210,6 +226,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 getString(R.string.gerar_novo_codigo),
                 getString(R.string.alterar_forma_pagamento),
                 getString(R.string.btn_title_voltarAoInicio), onDialogListener());
+
     }
 
     private OnDialog3ButtonsListener onDialogListener() {
@@ -238,6 +255,28 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             }
         };
     }
+
+    private OnDialog3ButtonsListener onDialogListenerEstornadaPix() {
+        return new OnDialog3ButtonsListener() {
+            @Override
+            public void leftButtom() {
+                //dialogEstornadaPix.dismiss();
+            }
+
+            @Override
+            public void centerButtom() {
+                dialogEstornadaPix.dismiss();
+                PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                finish();
+            }
+
+            @Override
+            public void rightButtom() {
+                dialogEstornadaPix.dismiss();
+            }
+        };
+    }
+
 
 
     private OnDialogSituacaoCompraListener onDebitaNaoAutorizadoDialogListener() {
