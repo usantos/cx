@@ -2,13 +2,14 @@ package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.text.HtmlCompat;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
@@ -463,19 +464,16 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                     title3.setLayoutParams(layoutParams3);
                     title3.setTextAppearance(getContext(), R.style.fontForTitle3Premiados);
                     title3.setPadding(0, 10, 0, 0);
-                    title3.setText(Html.fromHtml("<a href=" + strUrl.toString() + "://a\"" + " target= " + "\"_blank\"" +
-                            ">Consulte aqui o restante da lista de municipios com ganhadores." + "</a>"));
-//                    Linkify.addLinks(title3, Linkify.WEB_URLS);
 
+                    String strTextoHtml = "<a href=\"https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx"
+                            + "?modalidade=" + modalidade.getResultadoConcursoDTO().getConcurso().getModalidade()
+                            + "?concurso=" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero()
+                            + "?titulo=" + modalidade.getResultadoConcursoDTO().getConcurso().getModalidadeDetalhada().getDescricao()
+                            + "\" target=\"_blank\">Consulte aqui o restante da lista de municipios com ganhadores.</a>";
+                    title3.setText(HtmlCompat.fromHtml(strTextoHtml, 0));
+                    title3.setClickable(true);
+                    title3.setMovementMethod(LinkMovementMethod.getInstance());
                     this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
-
-//                    Intent activity = new Intent(MainActivity.this, WebViewActivity.class);
-//                    activity.putExtra("Consulte aqui o restante da lista de municipios com ganhadores.", getString(strUrl));
-//                    startActivity(activity);
-//                    webView = findViewById(R.id.WebView);
-//                    webView.setWebViewClient(new WebViewClient());
-//                    webView.loadUrl(strUrl);
-
                     break;
                 }
             }

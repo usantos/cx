@@ -1173,7 +1173,7 @@
 
     <string name="premio_pix_ja_creditado">Seu prêmio já foi creditado na conta vinculada à Chave informada.</string>
     <string name="visualizar_comprovante">_Visualizar_\ncomprovante</string>
-    <string name="msg_acima30ganhadores">Consulte aqui o restante da lista de municípios com ganhadores.</string>
+    <string name="msg_acima30ganhadores">![CDATA[&lt;a href="https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx?modalidade=LOTOFACIL"&gt;Consulte aqui o restante da lista de municípios com ganhadores. target = "_blank" &lt;/a&gt;]</string>
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
