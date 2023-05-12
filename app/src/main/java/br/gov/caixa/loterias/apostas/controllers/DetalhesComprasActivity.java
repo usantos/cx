@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -93,7 +92,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private CopiaColaPixFragment fragCopiaCola;
     int ordemCompra;
     long tempo_acabar_pix;
-    private Dialog dialogEstornadaPix;
+    private Dialog dialogDevolucaoPix;
 
 
     @Override
@@ -154,11 +153,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
             showDialogDebitoNaoAutorizado();
         } else if (SituacaoCompraUtil.isEstornada(compraDTO.getSituacao())) {
-            if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())) {
-                showDialogEstornadaPix();
-            } else {
-                showDialogEstornada();
-            }
+            showDialogEstornada();
+        } else if (SituacaoCompraUtil.isDevocaoPix(compraDTO.getSituacao())) {
+            showDialogDevolucaoPix();
         }
     }
 
@@ -198,14 +195,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     }
 
-    private void showDialogEstornadaPix() {
-        dialogEstornadaPix = DialogUtils.showDialogCustom(DetalhesComprasActivity.this,
+    private void showDialogDevolucaoPix() {
+        dialogDevolucaoPix = DialogUtils.showDialogCustom(DetalhesComprasActivity.this,
                 getString(R.string.popup_pix_estorno_pagamento_devolvido),
                 getString(R.string.popup_pix_estorno_nao_possivel),
                 null,
                 getString(R.string.title_voltar),
                 getString(R.string.tenta_novamente_dialog),
-                onDialogListenerEstornadaPix());
+                onDialogListenerDevolucaoPix());
     }
 
     private void showDialogDebitoNaoAutorizado() {
@@ -256,7 +253,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         };
     }
 
-    private OnDialog3ButtonsListener onDialogListenerEstornadaPix() {
+    private OnDialog3ButtonsListener onDialogListenerDevolucaoPix() {
         return new OnDialog3ButtonsListener() {
             @Override
             public void leftButtom() {
@@ -265,14 +262,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
             @Override
             public void centerButtom() {
-                dialogEstornadaPix.dismiss();
+                dialogDevolucaoPix.dismiss();
                 PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
                 finish();
             }
 
             @Override
             public void rightButtom() {
-                dialogEstornadaPix.dismiss();
+                dialogDevolucaoPix.dismiss();
             }
         };
     }

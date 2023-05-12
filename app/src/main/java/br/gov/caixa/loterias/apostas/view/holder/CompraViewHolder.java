@@ -59,7 +59,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		//*** Mock - APAGAR - Utilizado para testar a feature/pagamantoDevolvido ***
 //		if (ordemLista == 1) {
 //			item.getMeioPagamento().setValor(6l); //PIX
-//			item.getSituacao().setValor(4l);
+//			item.getSituacao().setValor(11l);
 //			item.getSituacao().setDescricao("Cancelada");
 //		}
 

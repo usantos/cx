@@ -38,6 +38,10 @@ public class SituacaoCompraUtil {
 		return situacao.getValor() == VALOR_ESTORNADA;
 	}
 
+	public static boolean isDevocaoPix(DTOEnumLong situacao) {
+		return situacao.getValor() == VALOR_DEVOLUCAO_PIX;
+	}
+
 	public static boolean isCancelada(DTOEnumLong situacao) {
 		return situacao.getValor() == VALOR_CANCELADA;
 	}
