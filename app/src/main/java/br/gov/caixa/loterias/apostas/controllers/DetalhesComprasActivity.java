@@ -149,13 +149,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void verificaStatusPopUp() {
         if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
-            showDialogCompraCancelada();
+            //showDialogCompraCancelada(); //Alterada para ficar igual ao IOS
+            showDialogDevolucaoPix();
         } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
             showDialogDebitoNaoAutorizado();
         } else if (SituacaoCompraUtil.isEstornada(compraDTO.getSituacao())) {
             showDialogEstornada();
-        } else if (SituacaoCompraUtil.isDevocaoPix(compraDTO.getSituacao())) {
-            showDialogDevolucaoPix();
+//        } else if (SituacaoCompraUtil.isDevocaoPix(compraDTO.getSituacao())) {
+//            showDialogDevolucaoPix();
         }
     }
 
