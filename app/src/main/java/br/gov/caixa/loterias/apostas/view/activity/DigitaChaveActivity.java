@@ -83,6 +83,9 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 				intent.putExtra(ConfirmaDadosPixActivity.NOME_ARG, DadosUsuarioBO.obterNome());
 				intent.putExtra(ConfirmaDadosPixActivity.CPF_ARG, "***.345.678-***");
 				intent.putExtra(ConfirmaDadosPixActivity.INSTITUICAO_ARG, "Caixa Econômica Federal");
+				intent.putExtra(ConfirmaDadosPixActivity.TIPO_CHAVE_ARG, chave);
+				intent.putExtra(ConfirmaDadosPixActivity.VALOR_CHAVE_ARG, edtChave.getText().toString());
+				intent.putExtra(ConfirmaDadosPixActivity.SALVAR_CHAVE_ARG, true);
 				startActivityForResult(intent, TROCA_CHAVE_PIX);
 			} else {
 				isValid = true;
