@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -93,6 +92,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private CopiaColaPixFragment fragCopiaCola;
     int ordemCompra;
     long tempo_acabar_pix;
+    private Dialog dialogDevolucaoPix;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,11 +149,14 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void verificaStatusPopUp() {
         if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
-            showDialogCompraCancelada();
+            //showDialogCompraCancelada(); //Alterada para ficar igual ao IOS
+            showDialogDevolucaoPix();
         } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
             showDialogDebitoNaoAutorizado();
         } else if (SituacaoCompraUtil.isEstornada(compraDTO.getSituacao())) {
             showDialogEstornada();
+//        } else if (SituacaoCompraUtil.isDevocaoPix(compraDTO.getSituacao())) {
+//            showDialogDevolucaoPix();
         }
     }
 
@@ -192,6 +196,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     }
 
+    private void showDialogDevolucaoPix() {
+        dialogDevolucaoPix = DialogUtils.showDialogCustom(DetalhesComprasActivity.this,
+                getString(R.string.popup_pix_estorno_pagamento_devolvido),
+                getString(R.string.popup_pix_estorno_nao_possivel),
+                null,
+                getString(R.string.title_voltar),
+                getString(R.string.tenta_novamente_dialog),
+                onDialogListenerDevolucaoPix());
+    }
+
     private void showDialogDebitoNaoAutorizado() {
 
 //        DialogUtils.showDialogDebitoNaoAutorizado(this,
@@ -210,6 +224,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 getString(R.string.gerar_novo_codigo),
                 getString(R.string.alterar_forma_pagamento),
                 getString(R.string.btn_title_voltarAoInicio), onDialogListener());
+
     }
 
     private OnDialog3ButtonsListener onDialogListener() {
@@ -238,6 +253,28 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             }
         };
     }
+
+    private OnDialog3ButtonsListener onDialogListenerDevolucaoPix() {
+        return new OnDialog3ButtonsListener() {
+            @Override
+            public void leftButtom() {
+                //dialogEstornadaPix.dismiss();
+            }
+
+            @Override
+            public void centerButtom() {
+                dialogDevolucaoPix.dismiss();
+                PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                finish();
+            }
+
+            @Override
+            public void rightButtom() {
+                dialogDevolucaoPix.dismiss();
+            }
+        };
+    }
+
 
 
     private OnDialogSituacaoCompraListener onDebitaNaoAutorizadoDialogListener() {

@@ -1200,4 +1200,9 @@
     <string name="escolha_o_tipo_de_chave">Escolha o tipo de chave</string>
     <string name="chaves_favoritas">Chaves Favoritas</string>
 
+    <!-- Popup Pix Estornado -->
+    <string name="popup_pix_estorno_pagamento_devolvido">Pagamento Devolvido</string>
+    <string name="popup_pix_estorno_nao_possivel">Não foi possível registrar a aposta.</string>
+
+
 </resources>
