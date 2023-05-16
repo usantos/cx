@@ -30,6 +30,7 @@ public class GanhadoresPorRegiaoDTO implements Serializable {
     protected String descricao = null;
 
     /**
+     *
      **/
     @ApiModelProperty(value = "")
     public MunicipioDTO getMunicipioSorteio() {
@@ -41,6 +42,7 @@ public class GanhadoresPorRegiaoDTO implements Serializable {
     }
 
     /**
+     *
      **/
     @ApiModelProperty(value = "")
     public UnidadeFederacaoDTO getUfSorteio() {

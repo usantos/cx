@@ -7,14 +7,19 @@
     android:layout_height="match_parent"
     tools:context="br.gov.caixa.loterias.apostas.controllers.VisualizarResultadosActivity">
 
-    <include layout="@layout/app_bar_degrade_pesquisa" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_toolbar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="?attr/actionBarSize" />
+    <Button
+        android:id="@+id/btn_voltar"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="51dp"
+        android:background="@color/cinzaescuro"
+        android:elevation="15dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/branco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/cl_tab_bar"
+        app:layout_constraintRight_toLeftOf="@+id/cl_tab_bar"
+        tools:text="@string/label_voltar_bold" />
 
     <ScrollView
         android:id="@+id/sv_resultado"
@@ -33,6 +38,84 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <LinearLayout
+                    android:id="@+id/v_container_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_numero_sorteio" />
+
+                <LinearLayout
+                    android:id="@+id/v_container_trevos_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="55dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_trevos" />
+
+                <TextView
+                    android:id="@+id/tv_trevos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/arialmt"
+                    android:text="Trevos sorteados: "
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/v_container_fragment" />
+
+                <TextView
+                    android:id="@+id/tv_numero_sorteio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/arialmt"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_top_modalidades"
+                    tools:text="Números sorteados:" />
+
+                <TextView
+                    android:id="@+id/tv_data_sorteio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/arialmt"
+                    android:textColor="@color/branco"
+                    android:textSize="14.2sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/v_container_trevos_fragment"
+                    tools:text="@string/resultados_data_sorteio" />
+
+                <View
+                    android:id="@+id/v_divisoria"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_data_sorteio" />
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_top_modalidades"
                     android:layout_width="match_parent"
@@ -44,6 +127,33 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/iv_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:scaleY="1.2"
+                        android:src="@drawable/header_interno__milionaria"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_titulo_modalidade"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/branco"
+                        android:textSize="18.0sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/cl_trevo"
+                        tools:text="mega-sena" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_trevo"
@@ -66,112 +176,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/tv_titulo_modalidade"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:gravity="center_vertical"
-                        android:textColor="@color/branco"
-                        android:textSize="18.0sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/cl_trevo"
-                        tools:text="mega-sena" />
-
-                    <ImageView
-                        android:id="@+id/iv_header"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/header_interno__milionaria"
-                        android:visibility="gone"
-                        android:scaleY="1.2"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/tv_numero_sorteio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/arialmt"
-                    tools:text="Números sorteados:"
-                    android:visibility="invisible"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cl_top_modalidades" />
-
-                <LinearLayout
-                    android:id="@+id/v_container_fragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_numero_sorteio"/>
-
-                <TextView
-                    android:id="@+id/tv_trevos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="30dp"
-                    android:fontFamily="@font/arialmt"
-                    android:text="Trevos sorteados: "
-                    android:visibility="gone"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/v_container_fragment" />
-
-                <LinearLayout
-                    android:id="@+id/v_container_trevos_fragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginStart="55dp"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_trevos"/>
-
-                <TextView
-                    android:id="@+id/tv_data_sorteio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/arialmt"
-                    tools:text="@string/resultados_data_sorteio"
-                    android:textColor="@color/branco"
-                    android:textSize="14.2sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/v_container_trevos_fragment" />
-
-                <View
-                    android:id="@+id/v_divisoria"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="invisible"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_data_sorteio" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -179,26 +184,12 @@
                 android:id="@+id/cl_lista_premiacao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/cl_cabecalho_modalidades"
                 android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginBottom="84dp"
-                android:layout_marginTop="10dp"
-                android:visibility="invisible"
-                android:layout_below="@id/cl_cabecalho_modalidades">
-
-                <TextView
-                    android:id="@+id/tv_premiados"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/futura_std_bold"
-                    tools:text="@string/label_premiados"
-                    android:textColor="@color/branco"
-                    android:textSize="15.8sp"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:visibility="invisible">
 
                 <LinearLayout
                     android:id="@+id/ll_premiados"
@@ -212,6 +203,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_premiados" />
 
+                <TextView
+                    android:id="@+id/tv_premiados"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/futura_std_bold"
+                    android:textColor="@color/branco"
+                    android:textSize="15.8sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/label_premiados" />
+
                 <br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado_
                     android:id="@+id/pvdr_resultado_partida"
                     android:layout_width="match_parent"
@@ -219,7 +224,7 @@
                     android:paddingBottom="30dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ll_premiados"/>
+                    app:layout_constraintTop_toBottomOf="@id/ll_premiados" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </RelativeLayout>
     </ScrollView>
@@ -235,53 +240,49 @@
         <Button
             android:id="@+id/btn_concurso_anterior"
             style="@style/ArialMT"
-            android:background="@color/transparente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:background="@color/transparente"
             android:drawableLeft="@drawable/seta_esquerda"
-            tools:text="@string/resultados_botao"
-            android:textAlignment="center"
-            android:textColor="@color/azulescuro"
             android:drawableTint="@color/azulescuro"
-            android:textSize="12sp"
+            android:textAlignment="center"
             android:textAllCaps="false"
+            android:textColor="@color/azulescuro"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"/>
+            tools:text="@string/resultados_botao" />
 
         <Button
             android:id="@+id/btn_proximo_concurso"
             style="@style/ArialMT"
-            android:background="@color/transparente"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
+            android:background="@color/transparente"
             android:drawableRight="@drawable/seta_direita"
-            tools:text="@string/resultados_botao"
-            android:textAlignment="center"
-            android:textColor="@color/azulescuro"
             android:drawableTint="@color/azulescuro"
-            android:textSize="12sp"
+            android:textAlignment="center"
             android:textAllCaps="false"
+            android:textColor="@color/azulescuro"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"/>
+            tools:text="@string/resultados_botao" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/btn_voltar"
-        android:layout_width="184dp"
-        android:layout_height="84dp"
-        android:layout_marginBottom="51dp"
-        android:background="@color/cinzaescuro"
-        android:elevation="15dp"
-        tools:text="@string/label_voltar_bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
-        android:textColor="@color/branco"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/cl_tab_bar"
-        app:layout_constraintRight_toLeftOf="@+id/cl_tab_bar" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+    <include layout="@layout/app_bar_degrade_pesquisa" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
