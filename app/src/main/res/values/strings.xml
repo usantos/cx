@@ -1205,4 +1205,9 @@
     <string name="popup_pix_estorno_nao_possivel">Não foi possível registrar a aposta.</string>
 
 
+    <!-- Push Notification -->
+    <string name="default_notification_channel_id">ChannelId</string>
+    <string name="default_notification_channel_descricao">Canal Loterias</string>
+
+
 </resources>
