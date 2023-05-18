@@ -25,6 +25,7 @@ import br.gov.caixa.loterias.apostas.view.activity.ConfirmaDadosPixActivity;
 import br.gov.caixa.loterias.apostas.view.activity.DigitaChaveActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaChavePixFavoritaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaChavePixRecyclerView;
+import br.gov.caixa.loterias.apostas.view.fragment.ChavePixFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnChaveFavoritaClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
@@ -197,11 +198,9 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == RESGATE_PIX) {
-			if (resultCode == Activity.RESULT_CANCELED ) {
-				if (data != null){
-					finish();
-				}
+		if (requestCode == RESGATE_PIX && resultCode == Activity.RESULT_CANCELED) {
+			if (data != null && data.getStringExtra(ChavePixFragment.ARG_TROCAR_RESGATE) != null){
+				finish();
 			}
 		}
 	}

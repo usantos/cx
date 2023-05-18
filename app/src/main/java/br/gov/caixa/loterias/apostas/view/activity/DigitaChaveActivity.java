@@ -51,7 +51,6 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 	private EditText edtChave;
 	private Button btnConfirmar, btnTrocarChave;
 
-	private static boolean isValid = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,27 +71,20 @@ public class DigitaChaveActivity extends LoteriasAppActivity {
 		setEditType();
 		setValidacao();
 		setListeners();
-		isValid = false;
 	}
 
 	private void setListeners() {
 		btnTrocarChave.setOnClickListener((v) ->  finish() );
 		btnConfirmar.setOnClickListener((v) -> {
-			if (isValid){
-				Intent intent = new Intent(DigitaChaveActivity.this, ConfirmaDadosPixActivity.class);
-				intent.putExtra(ConfirmaDadosPixActivity.NOME_ARG, DadosUsuarioBO.obterNome());
-				intent.putExtra(ConfirmaDadosPixActivity.CPF_ARG, "***.345.678-***");
-				intent.putExtra(ConfirmaDadosPixActivity.INSTITUICAO_ARG, "Caixa Econômica Federal");
-				intent.putExtra(ConfirmaDadosPixActivity.TIPO_CHAVE_ARG, chave);
-				intent.putExtra(ConfirmaDadosPixActivity.VALOR_CHAVE_ARG, edtChave.getText().toString());
-				intent.putExtra(ConfirmaDadosPixActivity.SALVAR_CHAVE_ARG, true);
-				startActivityForResult(intent, TROCA_CHAVE_PIX);
-			} else {
-				isValid = true;
-				DialogUtils.showDialogDefault(DigitaChaveActivity.this, 0,"Chave Inválida",
-											  "A chave digitada não está vinculada a uma conta ativa",
-											  getString(R.string.trocar_chave), getString(R.string.trocar_forma_resgate), onChaveInvalidaListener());
-			}
+			Intent intent = new Intent(DigitaChaveActivity.this, ConfirmaDadosPixActivity.class);
+			intent.putExtra(ConfirmaDadosPixActivity.NOME_ARG, DadosUsuarioBO.obterNome());
+			intent.putExtra(ConfirmaDadosPixActivity.CPF_ARG, "***.345.678-***");
+			intent.putExtra(ConfirmaDadosPixActivity.INSTITUICAO_ARG, "Caixa Econômica Federal");
+			intent.putExtra(ConfirmaDadosPixActivity.TIPO_CHAVE_ARG, chave);
+			intent.putExtra(ConfirmaDadosPixActivity.VALOR_CHAVE_ARG, edtChave.getText().toString());
+			intent.putExtra(ConfirmaDadosPixActivity.SALVAR_CHAVE_ARG, true);
+			startActivityForResult(intent, TROCA_CHAVE_PIX);
+
 		});
 		desabiliaBotaoConfirmar();
 	}

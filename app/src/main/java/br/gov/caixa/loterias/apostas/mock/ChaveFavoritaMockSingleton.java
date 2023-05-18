@@ -12,6 +12,7 @@ public class ChaveFavoritaMockSingleton {
 
 	private ChaveFavoritaMockSingleton(){
 		this.chaves = new ArrayList<>();
+		this.chaves.add(new ChavePix(ChavePixEnum.CELULAR,"(61) 9 9999-9999"));
 	}
 
 	public static ChaveFavoritaMockSingleton getInstance(){

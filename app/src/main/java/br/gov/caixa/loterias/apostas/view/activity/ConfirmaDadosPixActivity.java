@@ -30,7 +30,7 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 	public static final String INSTITUICAO_ARG = "INSTITUICAO_ARG";
 	public static final String TIPO_CHAVE_ARG = "TIPO_CHAVE_ARG";
 	public static final String VALOR_CHAVE_ARG = "VALOR_CHAVE_ARG";
-	public static final String SALVAR_CHAVE_ARG = "VALOR_CHAVE_ARG";
+	public static final String SALVAR_CHAVE_ARG = "SALVAR_CHAVE_ARG";
 
 	private TextView txtNome, txtCPF, txtInstituicao;
 	private Button btnConfirmar, btnTrocar;
@@ -42,7 +42,6 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 	private String nome;
 	private Boolean showSalvarChave = false;
 
-	private static boolean isValid = false;
 	private ChavePixEnum tipoChave;
 	private String valueChave;
 
@@ -64,7 +63,6 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 
 		setTextViews();
 		setListeners();
-		isValid = false;
 		showCheckBox();
 	}
 
@@ -79,25 +77,18 @@ public class ConfirmaDadosPixActivity extends LoteriasAppActivity {
 			trocarChave();
 		});
 		btnConfirmar.setOnClickListener((v) -> {
-			if (isValid){
-				if (checkBox.isChecked()){
-					if (tipoChave != null && valueChave != null){
-						ChaveFavoritaMockSingleton.getInstance().addChave(new ChavePix(tipoChave, valueChave));
-					}
+			if (checkBox.isChecked()){
+				if (tipoChave != null && valueChave != null){
+					ChaveFavoritaMockSingleton.getInstance().addChave(new ChavePix(tipoChave, valueChave));
 				}
-
-				Bundle bundle = new Bundle();
-				bundle.putLong(getResources().getString(R.string.id_aposta), 16399l);
-				bundle.putLong(ConfirmacaoPagamentoActivity.ARG_FLUXO, PixUtils.FLUXO_RESGATE);
-				bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
-				startActivity(IntentUtil.getIntentOrigemDestino(ConfirmaDadosPixActivity.this,
-																ConfirmacaoPagamentoActivity.class, bundle));
-			} else {
-				isValid = true;
-				DialogUtils.showDialogDefault(ConfirmaDadosPixActivity.this, 0, getString(R.string.resgate_nao_autorizado),
-											  getString(R.string.chave_sem_vinculo),
-											  getString(R.string.trocar_chave), getString(R.string.trocar_forma_resgate), onChaveInvalidaListener());
 			}
+
+			Bundle bundle = new Bundle();
+			bundle.putLong(getResources().getString(R.string.id_aposta), 16399l);
+			bundle.putLong(ConfirmacaoPagamentoActivity.ARG_FLUXO, PixUtils.FLUXO_RESGATE);
+			bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
+			startActivity(IntentUtil.getIntentOrigemDestino(ConfirmaDadosPixActivity.this,
+															ConfirmacaoPagamentoActivity.class, bundle));
 		});
 	}
 
