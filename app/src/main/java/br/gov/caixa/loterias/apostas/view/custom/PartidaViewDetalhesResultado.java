@@ -469,7 +469,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                             + "?modalidade=" + modalidade.getResultadoConcursoDTO().getConcurso().getModalidade()
                             + "?concurso=" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero()
                             + "?titulo=" + modalidade.getResultadoConcursoDTO().getConcurso().getModalidadeDetalhada().getDescricao()
-                            + "\" target=\"_blank\">Consulte aqui o restante da lista de municipios com ganhadores.</a>";
+                            + "\" target=\"_blank\">Consulte aqui o restante da lista de municípios com ganhadores.</a>";
                     title3.setText(HtmlCompat.fromHtml(strTextoHtml, 0));
                     title3.setClickable(true);
                     title3.setMovementMethod(LinkMovementMethod.getInstance());
