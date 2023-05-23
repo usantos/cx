@@ -18,8 +18,8 @@ android {
         // SPRINT 79
         //                   22                 1.6.0 = 01 006               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220100600
-        versionName "1.6.0"
+        versionCode 220100601
+        versionName "1.6.1"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
