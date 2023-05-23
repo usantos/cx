@@ -32,6 +32,10 @@
             android:id="@+id/nav_sociais"
             android:icon="@drawable/menu7_repasses"
             android:title="@string/title_repassesSociais" />
+        <item
+            android:id="@+id/nav_notificacoes"
+            android:icon="@drawable/menu8_notificacao"
+            android:title="@string/title_notificacoes" />
     </group>
 
     <group android:checkableBehavior="single">

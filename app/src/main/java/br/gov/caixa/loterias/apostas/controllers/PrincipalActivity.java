@@ -729,7 +729,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition != 0) {
+        if (groupPosition != 0 && groupPosition != 8) {
             drawerLayout.closeDrawer(GravityCompat.START, false);
         }
         switch (groupPosition) {
@@ -753,19 +753,18 @@ public class PrincipalActivity extends AppCompatActivity
                 break;
             case 7: startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
                 break;
-
-            default:
-                break;
         }
     }
 
     private void AbrirMenusItens(int itemPosition) {
         if (ConfiguracaoAppSingleton.getInstance().isMostraMenuAposta()){
             tratarMenuCompleto(itemPosition);
-        }else {
-            trataMenuSemMinhasApostas(itemPosition);       }
+        } else
+        if (itemPosition == 1){
+            trataMenuSemMinhasApostas(itemPosition);
+        }
 
-        sideMenuExpandableListView.collapseGroup(0);
+        sideMenuExpandableListView.collapseGroup(itemPosition);
         drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
@@ -824,6 +823,19 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    private void trataMenuNotificacoes(int itemPosition) {
+        switch (itemPosition) {
+            case 0:
+//                startActivity(new Intent(PrincipalActivity.this, MensagensActivity.class));
+                break;
+            case 1:
+//                startActivity(new Intent(PrincipalActivity.this, PreferenciasActivity.class));
+                break;
+            default:
+                break;
+        }
+    }
+
     private void layoutSideMenu() {
 
         final ExpandableListAdapter expandableListAdapter;
@@ -836,10 +848,14 @@ public class PrincipalActivity extends AppCompatActivity
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
         sideMenuExpandableListView.setOnGroupExpandListener(groupPosition ->
-                AbrirMenusGroup(groupPosition));
+        AbrirMenusGroup(groupPosition));
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            AbrirMenusItens(childPosition);
+            if (groupPosition == 8) {
+                trataMenuNotificacoes(childPosition);
+            } else {
+                AbrirMenusItens(childPosition);
+            }
             return false;
         });
     }
