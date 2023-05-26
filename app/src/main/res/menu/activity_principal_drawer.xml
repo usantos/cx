@@ -34,7 +34,7 @@
             android:title="@string/title_repassesSociais" />
         <item
             android:id="@+id/nav_notificacoes"
-            android:icon="@drawable/menu8_notificacao"
+            android:icon="@drawable/ic_elipse_menu_item3"
             android:title="@string/title_notificacoes" />
     </group>
 
