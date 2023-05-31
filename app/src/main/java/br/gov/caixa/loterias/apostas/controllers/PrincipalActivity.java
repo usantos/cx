@@ -159,7 +159,7 @@ public class PrincipalActivity extends AppCompatActivity
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
-    private View actionApresentarTrevo, actionSettings;
+    private View actionApresentarTrevo, actionSettings, actionApresentarPush;
     private InfiniteScrollAdapter infiniteAdapter;
     private HomeAdapter homeAdapter;
     private View viewNotification;
@@ -509,6 +509,8 @@ public class PrincipalActivity extends AppCompatActivity
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
 
                 actionApresentarTrevo = toolbar.findViewById(R.id.action_apresentar_trevo);
+                actionApresentarPush = toolbar.findViewById(R.id.action_pushmsg);
+
                 if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
                     actionApresentarTrevo.setOnClickListener(view -> {
@@ -521,6 +523,17 @@ public class PrincipalActivity extends AppCompatActivity
                             }
                         }
                     });
+                }
+                if (actionApresentarPush != null) {
+                    toolbar.removeOnLayoutChangeListener(this);
+                    actionApresentarPush.setOnClickListener(view -> {
+//                  Mudar icone
+                        View ic_pushtop = findViewById(R.id.action_pushmsg);
+                        LayouParams Params =
+                                (RelativeLayout.LayoutParams)actionApresentarPush.getLayoutParams();
+
+                    ic_pushtop.setLayoutParams (android:"icon=\"@drawable/ic_notificacao_ex1_topo\"");
+                } );
                 }
 //Alterado para chamar pelo menu lateral
 //                actionSettings = toolbar.findViewById(R.id.action_settings);
