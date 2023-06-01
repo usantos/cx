@@ -524,12 +524,13 @@ public class PrincipalActivity extends AppCompatActivity
                         }
                     });
                 }
-                if (actionApresentarPush != null) {
-                    toolbar.removeOnLayoutChangeListener(this);
-                    actionApresentarPush.setOnClickListener(view -> {
+//                if (actionApresentarPush != null) {
+//                    toolbar.removeOnLayoutChangeListener(this);
+//                    toolbar.setLogo(R.drawable.ic_elipse_menu_item3);
+//                    actionApresentarPush.setOnClickListener(view -> {
 //                  Mudar icone
-                                   } );
-                }
+//                                   } );
+//                }
 //Alterado para chamar pelo menu lateral
 //                actionSettings = toolbar.findViewById(R.id.action_settings);
 //                if (actionSettings != null) {
