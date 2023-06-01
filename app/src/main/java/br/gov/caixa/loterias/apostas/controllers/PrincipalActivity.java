@@ -528,12 +528,7 @@ public class PrincipalActivity extends AppCompatActivity
                     toolbar.removeOnLayoutChangeListener(this);
                     actionApresentarPush.setOnClickListener(view -> {
 //                  Mudar icone
-                        View ic_pushtop = findViewById(R.id.action_pushmsg);
-                        LayouParams Params =
-                                (RelativeLayout.LayoutParams)actionApresentarPush.getLayoutParams();
-
-                    ic_pushtop.setLayoutParams (android:"icon=\"@drawable/ic_notificacao_ex1_topo\"");
-                } );
+                                   } );
                 }
 //Alterado para chamar pelo menu lateral
 //                actionSettings = toolbar.findViewById(R.id.action_settings);
