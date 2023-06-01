@@ -102,6 +102,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
@@ -127,7 +128,7 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected Button buttonHomeBet;
     @ViewById
-    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
+    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, tv_notificacao_topo;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             rlJogoResponsavel,
@@ -154,6 +155,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
+    private VerificaMsgPush contadorMsgpush;
 
     private List<Modalidade> data;
     private List<ParametroSimulacao> modalidadesParaListar;
