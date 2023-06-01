@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".>
+    >
 
     <ImageView
         android:id="@+id/ic_notificacao_topo"
@@ -16,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="2dp"
-        android:contentDescription="@string/ic_notification" />
+        android:contentDescription="@string/icone_notificacoes" />
 
     <ImageView
         android:id="@+id/elipse_quantidade"
@@ -39,7 +39,7 @@
         android:padding="2dp"
         android:textColor="#FFFFFF"
         android:textSize="11sp"
-        app:text="0"
+        app:text="@string/contador_notificacoes"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="0dp"

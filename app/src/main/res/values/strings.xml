@@ -1213,6 +1213,7 @@
     <!-- Push Notification -->
     <string name="default_notification_channel_id">ChannelId</string>
     <string name="default_notification_channel_descricao">Canal Loterias</string>
-
+    <string name="icone_notificacoes">Notificações</string>
+    <string name="contador_notificacoes">0</string>
 
 </resources>

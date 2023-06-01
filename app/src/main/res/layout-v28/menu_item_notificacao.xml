@@ -40,12 +40,12 @@
         android:textStyle="bold"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="0dp"
-        android:text="0"
+        android:text="@string"
         android:fontFamily="@font/font_family_futura"
         android:lineHeight="10dp"
-        android:layout_constraintTop_toTopOf="@id/elipse_quantidade"
-        android:layout_constraintStart_toStartOf="@id/elipse_quantidade"
-        android:layout_constraintBottom_toBottomOf="@id/elipse_quantidade"
-        android:layout_constraintEnd_toEndOf="@id/elipse_quantidade"
+        app:layout_constraintTop_toTopOf="@id/elipse_quantidade"
+        app:layout_constraintStart_toStartOf="@id/elipse_quantidade"
+        app:layout_constraintBottom_toBottomOf="@id/elipse_quantidade"
+        app:layout_constraintEnd_toEndOf="@id/elipse_quantidade"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
