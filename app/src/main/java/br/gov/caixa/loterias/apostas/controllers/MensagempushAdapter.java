@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 
@@ -32,10 +31,12 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
     @NonNull
     @Override
+
     public MensagempushAdapter.MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_msg_push, parent, false);
         return new MessageViewHolder(view);
     }
+
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         String message = filtroMensagens.get(position);
@@ -47,7 +48,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         return filtroMensagens.size();
     }
 
-    @Override
     public Filter GetFilter() {
         return new Filter() {
             @Override
@@ -67,14 +67,20 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 results.values = filteredList;
                 return results;
             }
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filtroMensagens.clear();
+                filtroMensagens.addAll((List<String>) results.values);
+                notifyDataSetChanged();
+            }
         };
     }
+
     @Override
-    protected void publishResults(CharSequence constraint, FilterResults results) {
-        filtroMensagens.clear();
-        filtroMensagens.addAll((List<String>) results.values);
-        notifyDataSetChanged();
+    public Filter getFilter() {
+        return null;
     }
+
     static class MessageViewHolder extends RecyclerView.ViewHolder {
         TextView messageText;
 
@@ -83,4 +89,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             messageText = itemView.findViewById(R.id.message_texto);
         }
     }
+
+
 }
