@@ -121,7 +121,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -129,17 +129,7 @@
 
                 <data
                     android:scheme="https"
-                    android:host="portaldoapostador.des.caixa" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="http"
-                    android:host="food.example.com" />
+                    android:host="loteriasonline.caixa.gov.br" />
             </intent-filter>
         </activity>
         <activity
@@ -211,7 +201,20 @@
             android:name=".controllers.PrincipalActivity_"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.BrancoActionBar" />
+            android:theme="@style/AppTheme.BrancoActionBar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="loteriasonline.caixa.gov.br"
+                    android:pathPrefix="/silce-web/#/combos" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".controllers.TermosUsoActivity"
             android:label="@string/title_activity_termos_uso"
