@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import br.gov.caixa.loterias.apostas.R;
-
 public class VerificaMsgPush  extends Fragment {
 
     private  View view;
@@ -18,8 +16,8 @@ public class VerificaMsgPush  extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.menu_item_notificacao, container, false);
-        tvQuantidadepush = view.findViewById(R.id.tv_notificacao_topo);
+//        view = inflater.inflate(R.layout.menu_item_notificacao, container, false);
+//        tvQuantidadepush = view.findViewById(R.id.tv_notificacao_topo);
 
         return view;
     }
