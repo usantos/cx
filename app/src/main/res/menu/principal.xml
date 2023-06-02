@@ -8,7 +8,7 @@
         android:icon="@drawable/ic_notificacao_topo"
         app:actionLayout="@layout/menu_item_notificacao"
         app:showAsAction="ifRoom"
- />
+        android:title="@string/ic_notificacao" />
     <item
         android:id="@+id/action_apresentar_trevo"
         android:icon="@drawable/icon_trevo_toolbar"
