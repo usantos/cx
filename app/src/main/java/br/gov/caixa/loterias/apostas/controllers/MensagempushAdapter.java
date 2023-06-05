@@ -18,15 +18,17 @@ import br.gov.caixa.loterias.apostas.R;
 public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapter.MessageViewHolder> implements Filterable {
 
     private List<String> mensagens;
-    private List<String> mensagensNaolidas;
-    private List<String> mensagensNaoLidas;
+    private List<String> mensagenslidas;
     private List<String> filtroMensagens;
 
     public MensagempushAdapter(List<String> mensagens, List<String> mensagensNaolidas) {
 
         this.mensagens = mensagens;
-        this.mensagensNaolidas = mensagensNaolidas;
+        this.mensagenslidas = mensagenslidas;
         this.filtroMensagens = new ArrayList<>(mensagens);
+    }
+
+    public MensagempushAdapter(List<MessagePush> mensagensFiltradas) {
     }
 
     @NonNull
