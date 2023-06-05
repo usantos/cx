@@ -214,8 +214,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BrancoActionBar" />
         <activity
-            android:name=".controllers.TermosUsoActivity"
-            android:label="@string/title_activity_termos_uso"
+            android:name=".controllers.MensagensPushActivity"
+            android:label="@string/titulo_central_mensagens"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />

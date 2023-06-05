@@ -837,7 +837,7 @@ public class PrincipalActivity extends AppCompatActivity
     private void trataMenuNotificacoes(int itemPosition) {
         switch (itemPosition) {
             case 0:
-//                startActivity(new Intent(PrincipalActivity.this, MensagensActivity.class));
+                startActivity(new Intent(PrincipalActivity.this, MensagensPushActivity.class));
                 break;
             case 1:
 //                startActivity(new Intent(PrincipalActivity.this, PreferenciasActivity.class));
