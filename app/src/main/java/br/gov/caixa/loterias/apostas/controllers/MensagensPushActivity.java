@@ -3,10 +3,12 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +24,10 @@ public class MensagensPushActivity extends AppCompatActivity {
     private List<MessagePush> mensagensFiltradas;
     private MensagempushAdapter mensagempushAdapter;
     private EditText pesquisaTexto;
+    private LinearLayoutManager layoutManager;
+    private NestedScrollView scrollViewContentViewMensagens;
+    private RecyclerView recyclerViewMensagens;
+    private View progressLoadingMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +36,19 @@ public class MensagensPushActivity extends AppCompatActivity {
 
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_notificacoes)));
         Toolbar toolbar = findViewById(R.id.toolbar);
+        scrollViewContentViewMensagens = findViewById(R.id.scrollViewContentViewPush);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerViewCentralMsg);
+        RecyclerView recyclerViewMensagens = findViewById(R.id.recyclerViewCentralMsg);
         pesquisaTexto = findViewById(R.id.pesquisaTextoPush);
 
         //configura o RecyclerView
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerViewMensagens.setLayoutManager(layoutManager);
+
         mensagens = new ArrayList<MessagePush>();
         mensagensFiltradas = new ArrayList<MessagePush>();
         mensagempushAdapter = new MensagempushAdapter(mensagensFiltradas);
-        recyclerView.setAdapter(mensagempushAdapter);
+        recyclerViewMensagens.setAdapter(mensagempushAdapter);
 
 
         mensagens.add(new MessagePush("Titulo 1","Conteudo da mensagem 1", false));

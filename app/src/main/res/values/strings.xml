@@ -847,6 +847,7 @@
     <string name="posicione_linha_codigo_barras">Posicione a linha abaixo sobre o código de barras e aguarde a focalização da câmera.</string>
     <string name="response">Response</string>
     <string name="evento_entrou_lista_compras">ENTROU_LISTA_COMPRAS</string>
+    <string name="evento_entrou_msg_push">ENTROU_MSG_PUSH</string>
     <string name="de_espacado">&#160;de&#160;</string>
     <string name="evento_entrou_lista_apostas_rapidao">ENTROU_LISTA_APOSTAS_RAPIDAO</string>
     <string name="evento_entrou_adicao_forma_pagamento">ENTROU_ADICAO_FORMA_DE_PAGAMENTO</string>
