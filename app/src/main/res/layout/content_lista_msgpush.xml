@@ -6,51 +6,25 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="br.gov.caixa.loterias.apostas.controllers.MensagensPushActivity"
-    tools:showIn="@layout/activity_notificacao_msg">
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollViewContentViewPush"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    tools:showIn="@layout/central_mensagens_push">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/areaSelecaoMesLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginHorizontal="17dp"
-                android:layout_marginTop="24dp"
-                android:orientation="vertical">
 
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="17dp"
-                android:background="@color/cinzaclaro" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewCentralMsg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="false" />
-
-
-            <ProgressBar
-                android:id="@+id/compras_loading_more"
+            <EditText
+                android:id="@+id/SearchEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="5dp"
-                android:visibility="gone" />
+                />
+
+             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewCentralMsg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+
 </RelativeLayout>

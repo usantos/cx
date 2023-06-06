@@ -1,22 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".controllers.MensagensPushActivity">
+    tools:context="br.gov.caixa.loterias.apostas.controllers.MensagensPushActivity">
 
-    <SearchView
-        android:id="@+id/pesquisaTextoPush"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:queryHint="Pesquisar mensagens"
-        />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCentralMsg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+    <Button
+        android:id="@+id/btn_voltar"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="51dp"
+        android:background="@color/cinzaescuro"
+        android:elevation="15dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/branco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/cl_tab_bar"
+        app:layout_constraintRight_toLeftOf="@+id/cl_tab_bar"
+        tools:text="@string/label_voltar_bold" />
 
-</LinearLayout>
+    <ScrollView
+        android:id="@+id/sv_resultado"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/cl_tab_bar"
+        app:layout_constraintTop_toBottomOf="@+id/gl_toolbar"/>
+
+<include layout="@layout/content_lista_msgpush" />
+
+
+<androidx.constraintlayout.widget.Guideline
+android:id="@+id/gl_toolbar"
+android:layout_width="0dp"
+android:layout_height="0dp"
+android:orientation="horizontal"
+app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+<include layout="@layout/app_bar_degrade_pesquisa" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
