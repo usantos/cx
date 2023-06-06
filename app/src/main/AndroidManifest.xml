@@ -131,6 +131,16 @@
                     android:scheme="https"
                     android:host="loteriasonline.caixa.gov.br" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="bimaste.com" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".controllers.IntroducaoActivity"
@@ -211,8 +221,8 @@
 
                 <data
                     android:scheme="https"
-                    android:host="loteriasonline.caixa.gov.br"
-                    android:pathPrefix="/silce-web/#/combos" />
+                    android:host="bimaste.com"
+                    android:pathPrefix="/combos" />
             </intent-filter>
         </activity>
         <activity
@@ -279,7 +289,20 @@
             android:name=".controllers.ListaComprasActivity"
             android:label="@string/title_activity_lista_compras"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar" />
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="bimaste.com"
+                    android:pathPrefix="/compras" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".controllers.LerBilhetesActivity"
             android:screenOrientation="portrait"
@@ -319,11 +342,23 @@
             android:label="@string/title_activity_minhas_apostas"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar">
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:screenOrientation="portrait"
                 android:value="br.gov.caixa.loterias.apostas.controllers.PrincipalActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="bimaste.com"
+                    android:pathPrefix="/apostas" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".controllers.JogosConfirmadosPremioActivity"
