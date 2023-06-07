@@ -129,16 +129,6 @@
 
                 <data
                     android:scheme="https"
-                    android:host="loteriasonline.caixa.gov.br" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:scheme="https"
                     android:host="bimaste.com" />
             </intent-filter>
         </activity>
@@ -222,7 +212,7 @@
                 <data
                     android:scheme="https"
                     android:host="bimaste.com"
-                    android:pathPrefix="/combos" />
+                    android:pathPrefix="/silce-web/combos" />
             </intent-filter>
         </activity>
         <activity
@@ -300,7 +290,7 @@
                 <data
                     android:scheme="https"
                     android:host="bimaste.com"
-                    android:pathPrefix="/compras" />
+                    android:pathPrefix="/silce-web/compras" />
             </intent-filter>
         </activity>
         <activity
@@ -357,7 +347,7 @@
                 <data
                     android:scheme="https"
                     android:host="bimaste.com"
-                    android:pathPrefix="/apostas" />
+                    android:pathPrefix="/silce-web/apostas" />
             </intent-filter>
         </activity>
         <activity

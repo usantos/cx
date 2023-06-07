@@ -2,9 +2,38 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'org.sonarqube'
 
+
 android {
     signingConfigs {
+        File certifFile = file(System.getProperty('user.home') + '/certificado.properties')
+        String strKeyStorePassword = ''
+        String strKeyAlias = ''
+        String strKeyPassword = ''
+        if (certifFile.exists()) {
+            Properties p = new Properties()
+            p.load(new FileInputStream(certifFile))
+            strKeyStorePassword = p['KEYSTORE_PASSWORD']
+            strKeyAlias = p['KEY_ALIAS']
+            strKeyPassword = p['KEY_PASSWORD']
+        }
+
+        debug {
+            storeFile file('C:\\Users\\F798123\\Downloads\\Caixakeystore')
+            storePassword strKeyStorePassword
+            keyPassword strKeyPassword
+            keyAlias strKeyAlias
+        }
         config {
+            storeFile file('C:\\Users\\F798123\\Downloads\\Caixakeystore')
+            storePassword strKeyStorePassword
+            keyPassword strKeyPassword
+            keyAlias strKeyAlias
+        }
+        release {
+            storeFile file('C:\\Users\\F798123\\Downloads\\Caixakeystore')
+            storePassword strKeyStorePassword
+            keyPassword strKeyPassword
+            keyAlias strKeyAlias
         }
     }
     compileSdkVersion 33
