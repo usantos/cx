@@ -15,7 +15,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
-    <include layout="@layout/pesquisa_push"/>
     <include layout="@layout/content_lista_msgpush"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
     private MensagempushAdapter mensagempushAdapter;
     private EditText searchEditText;
 
-    private LinearLayoutManager layoutManager;
+    private GridLayoutManager layoutManager;
     private NestedScrollView scrollViewContentViewMensagens;
     private RecyclerView recyclerViewMensagens;
     private View progressLoadingMore;
@@ -43,7 +43,8 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         RecyclerView recyclerViewMensagens = findViewById(R.id.recyclerViewCentralMsg);
         EditText searchEditText = (EditText) findViewById(R.id.SearchEditText);
         //configura o RecyclerView
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        GridLayoutManager  layoutManager = new GridLayoutManager(this, 2);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerViewMensagens.setLayoutManager(layoutManager);
 //        scrollViewContentViewMensagens = findViewById(R.id.scrollViewContentViewPush);
 //        searchEditText = findViewById(R.id.search_msgpush);
