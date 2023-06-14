@@ -1170,6 +1170,30 @@
     <string name="id_pagamento">ID do Pagamento:</string>
 
     <string name="visualizar_comprovante">_Visualizar_\ncomprovante</string>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="resgate_pix_concluido">Resgate concluído!</string>
+
+    <string name="salvar_chave_pix_para_resgates_futuros">Salvar Chave Pix para resgates futuros</string>
+    <string name="desistir">Desistir</string>
+    <string name="chaves_favoritas">Chaves Favoritas</string>
+
+    <!-- Popup Pix Estornado -->
+    <string name="titulo_tela_preferencias_notificacao">Preferências de _Notificações_</string>
+    <string name="todas_as_notificacoes">Todas as notificações</string>
+    <string name="pagamentos_resgates">Pagamentos e Resgates</string>
+    <string name="lembretes_sorte">Lembretes da Sorte</string>
+    <string name="resultados_disponiveis">Resultados Disponíveis</string>
+    <string name="dicas_novidades">Dicas e Novidades</string>
+    <string name="alertas_segurancas">Alertas de Segurança ou Disponibilidade de Serviços</string>
+    <string name="confirmacao_e_pendencias_de_pagamentos">Confirmação e pendências de pagamentos e confirmação de resgates realizados</string>
+    <string name="avisos_quando_houver_oportunidade_ganhar_mais">Avisos quando houver oportunidades de ganhar mais (concurso especial, prêmio acumulado)</string>
+    <string name="avisos_resultados_disponiveis">Avisos quando resultados das suas apostas estiverem disponíveis para conferência</string>
+    <string name="novos_produtos_app">Novos produtos ou serviços no App</string>
+    <string name="avisos_melhorar_experiencia">Avisos para proteger você e melhorar sua experiência</string>
+
+
+    <!-- Push Notification -->
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
@@ -1184,7 +1208,6 @@
         <item>Novembro</item>
         <item>Dezembro</item>
     </string-array>
-
     <string-array name="orientacao_pix_list">
         <item>Copie o código gerado e pague dentro do prazo que será apresentado;</item>
         <item>Entre no aplicativo da sua instituição financeira e \nacesse o ambiente Pix;</item>
@@ -1197,13 +1220,9 @@
     <string name="tempo_zerado">00:00</string>
     <string name="codigo_expirado">Código Expirado</string>
 
-    <string name="resgate_pix_concluido">Resgate concluído!</string>
     <string name="premio_pix_ja_creditado">Seu prêmio já foi creditado na conta vinculada à Chave informada.</string>
-    <string name="salvar_chave_pix_para_resgates_futuros">Salvar Chave Pix para resgates futuros</string>
     <string name="tem_certeza_excluir_chave_favorita_xxxx">Tem certeza que deseja excluir dos favoritos a chave xxxx?</string>
-    <string name="desistir">Desistir</string>
     <string name="escolha_o_tipo_de_chave">Escolha o tipo de chave</string>
-    <string name="chaves_favoritas">Chaves Favoritas</string>
 
     <!-- Popup Pix Estornado -->
     <string name="popup_pix_estorno_pagamento_devolvido">Pagamento Devolvido</string>
