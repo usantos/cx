@@ -61,6 +61,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.PreferenciasNotificacoesActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
@@ -96,6 +97,7 @@ import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
@@ -837,10 +839,11 @@ public class PrincipalActivity extends AppCompatActivity
     private void trataMenuNotificacoes(int itemPosition) {
         switch (itemPosition) {
             case 0:
+                TestVisao.toast("Debito tecnico");
 //                startActivity(new Intent(PrincipalActivity.this, MensagensActivity.class));
                 break;
             case 1:
-//                startActivity(new Intent(PrincipalActivity.this, PreferenciasActivity.class));
+                startActivity(new Intent(PrincipalActivity.this, PreferenciasNotificacoesActivity.class));
                 break;
             default:
                 break;
