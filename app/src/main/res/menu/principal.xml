@@ -4,6 +4,11 @@
 
     <!-- "Icone trevo"-->
     <item
+        android:id="@+id/action_pushmsg"
+        app:actionLayout="@layout/menu_item_notificacao"
+        app:showAsAction="ifRoom"
+        />
+    <item
         android:id="@+id/action_apresentar_trevo"
         android:icon="@drawable/icon_trevo_toolbar"
         android:title="@string/apresentar_trevo"

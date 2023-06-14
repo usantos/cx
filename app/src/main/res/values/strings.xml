@@ -457,6 +457,7 @@
     <string name="title_minhaArea">Minha área</string>
     <string name="title_lerBilhete">Conferir Bilhete</string>
     <string name="title_repassesSociais">Repasses sociais</string>
+    <string name="title_notificacoes">Notificações</string>
     <string name="title_aguarde">Aguarde</string>
     <string name="title_sorteio">Sorteio</string>
     <string name="title_apostasEncerram">Apostas se encerram em</string>
@@ -741,6 +742,7 @@
     <string name="ol">Olá, %!</string>
     <string name="tv">TextView</string>
     <string name="apresentar_trevo">Apresentar trevo</string>
+    <string name="ic_notificacao">Notificações</string>
     <string name="_7_n_meros">7 números</string>
     <string name="r_0_00">R$ 0,00</string>
     <string name="carrinho_favorito">Carrinho Favorito</string>
@@ -1212,6 +1214,7 @@
     <string name="default_notification_channel_id">ChannelId</string>
     <string name="default_notification_name">Loterias</string>
     <string name="default_notification_channel_descricao">Canal Loterias</string>
-
+    <string name="icone_notificacoes">Notificações</string>
+    <string name="contador_notificacoes">0</string>
 
 </resources>
