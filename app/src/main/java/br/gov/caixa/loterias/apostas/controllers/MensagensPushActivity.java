@@ -41,7 +41,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         Button btnVoltar = findViewById(R.id.btn_voltar);
 
         RecyclerView recyclerViewMensagens = findViewById(R.id.recyclerViewCentralMsg);
-        EditText searchEditText = (EditText) findViewById(R.id.SearchEditText);
+        EditText searchEditText = (EditText) findViewById(R.id.searchEditText);
         //configura o RecyclerView
         GridLayoutManager  layoutManager = new GridLayoutManager(this, 2);
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -53,17 +53,17 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         mensagempushAdapter = new MensagempushAdapter(mensagensFiltradas);
         recyclerViewMensagens.setAdapter(mensagempushAdapter);
 //        massa de dados teste
-        mensagensList.add(new MessagePush("Titulo 1", "Conteudo da mensagem 1", false));
-        mensagensList.add(new MessagePush("Titulo 2", "Conteudo da mensagem 2", false));
-        mensagensList.add(new MessagePush("Titulo 3", "Conteudo da mensagem 3", false));
-        mensagensList.add(new MessagePush("Titulo 4", "Conteudo da mensagem 4", false));
-        mensagensList.add(new MessagePush("Titulo 5", "Conteudo da mensagem 5", false));
-        mensagensList.add(new MessagePush("Titulo 6", "Conteudo da mensagem 6", true));
-        mensagensList.add(new MessagePush("Titulo 7", "Conteudo da mensagem 8", true));
-        mensagensList.add(new MessagePush("Titulo 8", "Conteudo da mensagem 9", true));
-        mensagensList.add(new MessagePush("Titulo 9", "Conteudo da mensagem 10", true));
-        mensagensList.add(new MessagePush("Titulo 10", "Conteudo da mensagem 11", true));
-        mensagensList.add(new MessagePush("Titulo 11", "Conteudo da mensagem 12", true));
+        mensagensList.add(new MessagePush("Titulo 1", "Conteudo da mensagem 1", "01-fev", false));
+        mensagensList.add(new MessagePush("Titulo 2", "Conteudo da mensagem 2", "01-fev",false));
+        mensagensList.add(new MessagePush("Titulo 3", "Conteudo da mensagem 3", "01-fev",false));
+        mensagensList.add(new MessagePush("Titulo 4", "Conteudo da mensagem 4", "01-fev",false));
+        mensagensList.add(new MessagePush("Titulo 5", "Conteudo da mensagem 5", "01-fev",false));
+        mensagensList.add(new MessagePush("Titulo 6", "Conteudo da mensagem 6", "01-fev",true));
+        mensagensList.add(new MessagePush("Titulo 7", "Conteudo da mensagem 8", "01-fev",true));
+        mensagensList.add(new MessagePush("Titulo 8", "Conteudo da mensagem 9","01-fev", true));
+        mensagensList.add(new MessagePush("Titulo 9", "Conteudo da mensagem 10", "01-fev",true));
+        mensagensList.add(new MessagePush("Titulo 10", "Conteudo da mensagem 11", "01-fev",true));
+        mensagensList.add(new MessagePush("Titulo 11", "Conteudo da mensagem 12", "01-fev",true));
 
         mensagensFiltradas.addAll(mensagensList);
         mensagempushAdapter.notifyDataSetChanged();

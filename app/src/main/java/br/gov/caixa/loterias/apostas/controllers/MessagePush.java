@@ -1,17 +1,16 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import org.w3c.dom.CDATASection;
-
 public class MessagePush {
     private String titulo;
     private final String conteudo;
+    private String data;
     private boolean isRead;
 
-    public MessagePush(String titulo, String conteudo, boolean isRead, CDATASection dia) {
+    public MessagePush(String titulo, String conteudo, String data, boolean isRead) {
         this.titulo = titulo;
         this.conteudo = conteudo;
         this.isRead = isRead;
-        this.dia = dia;
+        this.data = data;
     }
 
     public String getTitulo() {
@@ -24,6 +23,13 @@ public class MessagePush {
 
     public String getConteudo() {
         return conteudo;
+    }
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
     public boolean isRead() {
