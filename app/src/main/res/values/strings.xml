@@ -94,7 +94,8 @@
     <string name="title_activity_toolbar">_Loterias Caixa_</string>
     <string name="title_activity_login">Login</string>
     <string name="titulo_central_mensagens">Notificações</string>
-    <string name="pesquisa_push">Pesquisa mensagens</string>
+    <string name="pesquisa_push">Pesquisar</string>
+    <string name="pesquisa_push_vazia">Você não possui mensagens</string>
     <string name="erro_401">Não autorizado</string>
     <string name="erro_408">Tempo de resposta esgotou</string>
     <string name="erro_500">Ocorreu um erro inesperado, mas não se preocupe, já estamos trabalhando nisso. Quer nos ajudar reportando o problema?</string>

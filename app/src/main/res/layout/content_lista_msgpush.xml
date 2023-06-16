@@ -67,6 +67,16 @@
         </ImageButton>
     </LinearLayout>
 
+    <TextView
+    android:id="@+id/mensagensVazioTextview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:text="@string/pesquisa_push_vazia"
+    android:textSize="18sp"
+    android:textColor="@android:color/black"
+    android:visibility="gone" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"

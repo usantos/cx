@@ -1,17 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/titulo_msgpush"
+    android:layout_height="80dp"
+    android:orientation="horizontal"
+    android:stretchColumns="*"
+    android:showDividers="middle"
+    android:divider="@color/mpsdk_warm_grey">
+
+    >
+    <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-    <TextView
-        android:id="@+id/mensagem_texto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-</LinearLayout>
+        >
+        <ImageView
+            android:id="@+id/icon_ImageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_logo_money" />
+        <TextView
+            android:id="@+id/titulo_msgpush"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:id="@+id/mensagem_texto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:id="@+id/data_texto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </TableRow>
+</TableLayout>
