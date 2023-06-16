@@ -42,7 +42,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "Forma de _pagamento_"));
+		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_Forma de pagamento_"));
 
 		configMenu();
 

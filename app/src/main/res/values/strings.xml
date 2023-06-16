@@ -1130,4 +1130,11 @@
     <!-- Mensagens Disque 180  -->
     <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
     <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
+
+    <!-- Meio Pagamento Novo Layout -->
+    <string name="cartaoCredito">Cartão de Crédito</string>
+    <string name="escolhaUmProcessador">Escolha um dos processadores abaixo e cadastre um cartão de crédito de sua titularidade ou escolha um cartão salvo para continuar.</string>
+    <string name="pagarVia">Pagar via:</string>
+    <string name="bandeirasAceitas">Bandeiras aceitas</string>
+
 </resources>

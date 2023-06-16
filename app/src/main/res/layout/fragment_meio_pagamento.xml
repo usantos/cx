@@ -20,27 +20,53 @@
             android:layout_width="5dp"
             android:layout_height="57dp"
             android:background="@color/branco"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imagemMeioPagamento"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="42dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/margem"
-            app:layout_constraintBottom_toBottomOf="@+id/margem"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_chevron_right"
-            android:layout_marginEnd="28dp"
-            app:layout_constraintTop_toTopOf="parent"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/cardCartao"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            app:cardElevation="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textoPagarVia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pagarVia"
+                android:textColor="@color/cinzaescuro"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                />
+
+            <TextView
+                android:id="@+id/textoBandeiras"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bandeirasAceitas"
+                android:textColor="@color/cinzaescuro"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="150dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imagemMeioPagamento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="42dp"
+                />
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -67,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/adicionar_cartao"
-                android:textColor="#4E596B"
+                android:textColor="@color/cinzaescuro"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
