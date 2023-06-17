@@ -89,9 +89,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/lnPesqPush"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:tabIndicatorColor="@color/azulpush"
+        app:tabIndicatorColor="@color/colorAccent"
+        app:tabIndicatorGravity="center"
+        app:tabIndicatorHeight="5dp"
+        app:tabInlineLabel="true"
         app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/azulpush"
         app:tabTextAppearance="@style/CustomTabTexAppearance"
         app:tabTextColor="@color/azulpush" />
 
