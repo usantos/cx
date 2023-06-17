@@ -84,6 +84,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Todas"));
         tabLayout.addTab(tabLayout.newTab().setText("Não Lidas"));
         tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#0066B3"));
+        tabLayout.setSelectedTabIndicator(R.drawable.tab_push_select);
         tabLayout.setTabTextColors(ColorStateList.valueOf(Color.parseColor("#0066B3")));
 
         // configurar titulo do layout

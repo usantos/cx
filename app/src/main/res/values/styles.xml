@@ -348,8 +348,9 @@
 
     </style>
 
-    <style name="CustomTabTexAppearance">
+    <style name="CustomTabTexAppearance" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
         <item name="textAllCaps">false</item>
+        <item name="android:textSize">16dp</item>
     </style>
     <style name="Base.Widget.Design.TabLayout" parent="@android:style/Theme.Holo">
         <item name="android:actionBarTabTextStyle">@style/My.TabText.Style</item>
