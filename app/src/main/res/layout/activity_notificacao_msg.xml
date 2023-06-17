@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="br.gov.caixa.loterias.apostas.controllers.MensagensPushActivity"
     android:fitsSystemWindows="true">
-    <include layout="@layout/app_bar_degrade_pesquisa" />
+    <include layout="@layout/app_bar_degrade_push" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_toolbar"

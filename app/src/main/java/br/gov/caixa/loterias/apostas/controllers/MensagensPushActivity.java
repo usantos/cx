@@ -1,11 +1,14 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
@@ -40,19 +43,20 @@ public class MensagensPushActivity extends LoteriasAppActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificacao_msg);
-//        setaViews();
         EditText searchEditText = (EditText) findViewById(R.id.searchEditText);
         recyclerViewMensagens = findViewById(R.id.recyclerViewCentralMsg);
         tabLayout = findViewById(R.id.tab_layout);
         configToolbar(R.id.toolbar);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.titulo_central_mensagens)));
+        ImageView ibAjuda = findViewById(R.id.ib_duvidas);
+        ibAjuda.setVisibility(View.GONE);
         Button btnVoltar = findViewById(R.id.btn_voltar);
         mensagensVazioTextview = findViewById(R.id.mensagensVazioTextview);
 
         //Inicializa listas de mensagens
 
-        mensagensList = gerarMsgTodas();
-        mensagensNaolidas = gerarMsgNaoLidas();
+        mensagensList = gerarMsgTodasMock();
+        mensagensNaolidas = gerarMsgNaoLidasMock();
 
         //Define adaptador inicial
         mensagempushAdapter = new MensagempushAdapter(mensagensList);
@@ -79,9 +83,10 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         //Configura as abas
         tabLayout.addTab(tabLayout.newTab().setText("Todas"));
         tabLayout.addTab(tabLayout.newTab().setText("Não Lidas"));
-        tabLayout.setLayoutParams();
+        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#0066B3"));
+        tabLayout.setTabTextColors(ColorStateList.valueOf(Color.parseColor("#0066B3")));
 
-        // configurar o layout
+        // configurar titulo do layout
 //        for (int i = 0; i < tabLayout.getTabCount(); i++) {
 //            TabLayout.Tab tab = tabLayout.getTabAt(i);
 //            if (tab != null) {
@@ -133,7 +138,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         }
     }
 
-    private List<MessagePush> gerarMsgTodas() {
+    private List<MessagePush> gerarMsgTodasMock() {
         mensagensList = new ArrayList<>();
 //        massa de dados mensagens lidas
         mensagensList.add(new MessagePush(R.drawable.ic_pagamentos, "Pagamentos", "Aproveite e aposte !", "01-fev"));
@@ -143,7 +148,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         mensagensList.add(new MessagePush(R.drawable.ic_push_alertas_seguranca,"Alerta de segurança", "Conteudo da mensagem 5", "01-fev"));
     return mensagensList;
     }
-    private List<MessagePush> gerarMsgNaoLidas() {
+    private List<MessagePush> gerarMsgNaoLidasMock() {
         mensagensNaolidas = new ArrayList<>();
         //      massa de dados mensagens nao lidas
         mensagensNaolidas.add(new MessagePush(R.drawable.ic_teimosinha,"Teimosinha", "Conteudo da mensagem 6", "01-fev"));
