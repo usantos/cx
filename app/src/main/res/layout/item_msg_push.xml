@@ -21,16 +21,19 @@
             android:id="@+id/titulo_msgpush"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="@style/MessageTitleStyle"
             />
         <TextView
             android:id="@+id/mensagem_texto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="@style/MessageContentStyle"
             />
         <TextView
             android:id="@+id/data_texto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAppearance="@style/MessageDateStyle"
             />
     </TableRow>
 </TableLayout>

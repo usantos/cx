@@ -84,8 +84,10 @@
         android:layout_below="@+id/lnPesqPush"
         android:layout_marginBottom="16dp"
         app:tabGravity="fill"
+        android:actionBarTabTextStyle="@style/My.TabText.Style"
         app:tabIndicatorColor="@color/colorAccent"
-        app:tabMode="fixed" />
+        app:tabMode="fixed"
+        app:tabTextColor="@color/colorAccent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCentralMsg"
