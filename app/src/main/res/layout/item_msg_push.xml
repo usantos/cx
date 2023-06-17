@@ -1,39 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:orientation="horizontal"
-    android:stretchColumns="*"
-    android:showDividers="middle"
-    android:divider="@color/mpsdk_warm_grey">
+    android:layout_height="wrap_content"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.MensagensPushActivity"
+    tools:showIn="@layout/content_lista_msgpush">
 
-    >
-    <TableRow
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:layout_height="wrap_content"
         >
         <ImageView
             android:id="@+id/icon_ImageView"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:gravity="center"
             android:src="@drawable/ic_logo_money" />
         <TextView
             android:id="@+id/titulo_msgpush"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/MessageTitleStyle"
-            />
+            android:layout_alignTop="@id/icon_ImageView"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/icon_ImageView"
+            android:textColor="@color/cinzaescuro"
+            android:textSize="18sp"/>
         <TextView
             android:id="@+id/mensagem_texto"
+            android:singleLine="true"
+            android:ellipsize="marquee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/MessageContentStyle"
-            />
+            android:layout_below="@id/titulo_msgpush"
+            android:layout_alignStart="@id/titulo_msgpush"
+            android:textColor="@color/cinzaescuro"
+            android:textSize="16sp"/>
         <TextView
             android:id="@+id/data_texto"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/MessageDateStyle"
-            />
-    </TableRow>
-</TableLayout>
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/cinzaescuro"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
