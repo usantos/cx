@@ -105,7 +105,6 @@
         android:layout_below="@+id/tab_layout"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-         />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
