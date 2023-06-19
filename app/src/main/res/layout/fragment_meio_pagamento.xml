@@ -25,7 +25,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            app:cardElevation="10dp"
+            app:cardElevation="15dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -65,16 +65,28 @@
                     android:id="@+id/imagemMeioPagamento"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="0dp"
                     android:layout_marginTop="16dp"
                     app:layout_constraintTop_toBottomOf="@+id/textoPagarVia"
                     app:layout_constraintStart_toStartOf="@+id/textoPagarVia"
+                    />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imagBandeeira1"
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_bandeira_amex"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@+id/textoBandeiras"
+                    app:layout_constraintStart_toStartOf="@+id/textoBandeiras"
                     />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listaCartoes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imagemMeioPagamento"/>
@@ -87,7 +99,7 @@
                     android:textColor="@color/link_cartoes"
                     android:textColorLink="@color/link_cartoes"
                     android:textAppearance="@style/FuturaStdBold"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
