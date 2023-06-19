@@ -3,11 +3,13 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -51,9 +53,9 @@ public class MeioPagamentoFragment extends Fragment {
 	private static final String ARG_CONFIG = "ARG_CONFIG";
 
 	private View view;
-	private View margem;
+	//private View margem;
 	private AppCompatImageView imagem;
-	private ConstraintLayout btnAdd;
+	private TextView btnAdd;
 	private ConstraintLayout cabecalho;
 	private EditText userInput;
 
@@ -92,10 +94,10 @@ public class MeioPagamentoFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_meio_pagamento, container, false);
-		margem = view.findViewById(R.id.margem);
+		//margem = view.findViewById(R.id.margem);
 		imagem = view.findViewById(R.id.imagemMeioPagamento);
-		btnAdd = view.findViewById(R.id.addCartao);
-		cabecalho = view.findViewById(R.id.cabecalho);
+		btnAdd = view.findViewById(R.id.linkAdicionaCartao);
+		//cabecalho = view.findViewById(R.id.cabecalho);
 		listaCartoes = view.findViewById(R.id.listaCartoes);
 
 		buscaCartoes();
@@ -310,11 +312,11 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void aplicaConfig() {
 		if (config != null){
-			margem.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
-			btnAdd.setBackground(getActivity().getDrawable(config.getIdCorBarra()));
-			btnAdd.getBackground().setAlpha(20);
+			//margem.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
+			//btnAdd.setBackground(getActivity().getDrawable(config.getIdCorBarra()));
+			//btnAdd.getBackground().setAlpha(20);
+			btnAdd.setPaintFlags(btnAdd.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
-
 		}
 	}
 
