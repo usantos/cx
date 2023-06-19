@@ -54,9 +54,10 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private View view;
 	//private View margem;
+	//private ConstraintLayout cabecalho;
 	private AppCompatImageView imagem;
 	private TextView btnAdd;
-	private ConstraintLayout cabecalho;
+	private TextView textoSemCartao;
 	private EditText userInput;
 
 	private RecyclerView listaCartoes;
@@ -95,9 +96,10 @@ public class MeioPagamentoFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_meio_pagamento, container, false);
 		//margem = view.findViewById(R.id.margem);
+		//cabecalho = view.findViewById(R.id.cabecalho);
 		imagem = view.findViewById(R.id.imagemMeioPagamento);
 		btnAdd = view.findViewById(R.id.linkAdicionaCartao);
-		//cabecalho = view.findViewById(R.id.cabecalho);
+		textoSemCartao = view.findViewById(R.id.textoSemCartao);
 		listaCartoes = view.findViewById(R.id.listaCartoes);
 
 		buscaCartoes();
@@ -120,6 +122,16 @@ public class MeioPagamentoFragment extends Fragment {
 		return new OnSilceListener<List<RetornoCartao>>() {
 			@Override
 			public void success(List<RetornoCartao> retornoCartaoList) {
+				if (retornoCartaoList.size() == 0) {
+					textoSemCartao.setVisibility(View.VISIBLE);
+					if (model.isMercadoPago(config.getMeioPagamento().getValor())){
+						textoSemCartao.setText(getActivity().getString(R.string.semCartaoMercadoPago));
+					}
+					if (model.isRecargaPay(config.getMeioPagamento().getValor())){
+						textoSemCartao.setText(getActivity().getString(R.string.semCartaoRecargaPay));
+					}
+					btnAdd.setText(getActivity().getString(R.string.novoCartaoCredito));
+				}
 				cartoes = retornoCartaoList;
 				adapter = new CartoesMeioPagamentoRecyclerViewAdapter(cartoes, getContext(), onRecyclerlistener());
 				RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());

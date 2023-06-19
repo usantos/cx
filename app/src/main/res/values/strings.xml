@@ -1136,5 +1136,8 @@
     <string name="escolhaUmProcessador">Escolha um dos processadores abaixo e cadastre um cartão de crédito de sua titularidade ou escolha um cartão salvo para continuar.</string>
     <string name="pagarVia">Pagar via:</string>
     <string name="bandeirasAceitas">Bandeiras aceitas</string>
+    <string name="semCartaoRecargaPay">Você ainda não possui cartão salvo no processador Recarga Pay</string>
+    <string name="semCartaoMercadoPago">Você ainda não possui cartão salvo no processador Mercado Pago</string>
+    <string name="novoCartaoCredito">Novo Cartão de Crédito</string>
 
 </resources>
