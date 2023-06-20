@@ -115,8 +115,11 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		frameRecargaPay = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentRecargaPay,
-									new MeioPagamentoConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, getRecargaPay()));
+									new MeioPagamentoConfig(R.drawable.recargapay, getRecargaPay(),
+											R.drawable.ic_bandeira_elo, R.drawable.ic_master_card,
+											R.drawable.ic_bandeira_visa, 0,0, 0));
 	}
+									//new MeioPagamentoConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, getRecargaPay()));
 
 
 	private DTOEnumLong getRecargaPay() {
@@ -137,7 +140,11 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		frameMercadoPago = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentMercadoPago,
-									new MeioPagamentoConfig(R.color.azul_mercado_pago, R.drawable.ic_mercado_pago, getMercadoPago()));
+									new MeioPagamentoConfig(R.drawable.ic_mercado_pago, getMercadoPago(),
+										R.drawable.ic_bandeira_amex, R.drawable.ic_bandeira_diners,
+										R.drawable.ic_bandeira_elo, R.drawable.ic_hipercard,
+										R.drawable.ic_master_card, R.drawable.ic_bandeira_visa));
 	}
+						//new MeioPagamentoConfig(R.color.azul_mercado_pago, R.drawable.ic_mercado_pago, getMercadoPago()));
 
 }

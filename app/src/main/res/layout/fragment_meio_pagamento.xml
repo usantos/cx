@@ -141,6 +141,7 @@
                     android:id="@+id/listaCartoes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintHeight_min="120dp"
                     android:layout_marginTop="24dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
