@@ -14,13 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,6 +58,7 @@ public class MeioPagamentoFragment extends Fragment {
 	private AppCompatImageView imagem;
 	private TextView btnAdd;
 	private TextView textoSemCartao;
+	private TextView btnListaMaisMenos;
 	private EditText userInput;
 
 	private RecyclerView listaCartoes;
@@ -65,6 +66,7 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private MeioPagamentoConfig config;
 	private List<RetornoCartao> cartoes;
+	private List<RetornoCartao> cartoesMaiorDois;
 	private CartoesModel model;
 	private String requestBody;
 
@@ -100,6 +102,7 @@ public class MeioPagamentoFragment extends Fragment {
 		imagem = view.findViewById(R.id.imagemMeioPagamento);
 		btnAdd = view.findViewById(R.id.linkAdicionaCartao);
 		textoSemCartao = view.findViewById(R.id.textoSemCartao);
+		btnListaMaisMenos = view.findViewById(R.id.linkListarMaisMenos);
 		listaCartoes = view.findViewById(R.id.listaCartoes);
 
 		buscaCartoes();
@@ -123,16 +126,14 @@ public class MeioPagamentoFragment extends Fragment {
 			@Override
 			public void success(List<RetornoCartao> retornoCartaoList) {
 				if (retornoCartaoList.size() == 0) {
-					textoSemCartao.setVisibility(View.VISIBLE);
-					if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-						textoSemCartao.setText(getActivity().getString(R.string.semCartaoMercadoPago));
-					}
-					if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-						textoSemCartao.setText(getActivity().getString(R.string.semCartaoRecargaPay));
-					}
-					btnAdd.setText(getActivity().getString(R.string.novoCartaoCredito));
+					setSemCartao();
 				}
-				cartoes = retornoCartaoList;
+				if (retornoCartaoList.size() <= 2) {
+					cartoes = retornoCartaoList;
+				} else {
+					maisQueDoisCartoes(retornoCartaoList);
+				}
+
 				adapter = new CartoesMeioPagamentoRecyclerViewAdapter(cartoes, getContext(), onRecyclerlistener());
 				RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
 				listaCartoes.setLayoutManager(lm);
@@ -142,6 +143,7 @@ public class MeioPagamentoFragment extends Fragment {
 
 			@Override
 			public void error(VolleyError error) {
+				setSemCartao();
 				AlertDialogUtils.dismiss();
 			}
 		};
@@ -313,6 +315,7 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private void configButton() {
 		btnAdd.setOnClickListener(v -> goToAddCartao());
+		btnListaMaisMenos.setOnClickListener(v -> clickMostraMaisMenos());
 	}
 
 	private void goToAddCartao(){
@@ -328,6 +331,7 @@ public class MeioPagamentoFragment extends Fragment {
 			//btnAdd.setBackground(getActivity().getDrawable(config.getIdCorBarra()));
 			//btnAdd.getBackground().setAlpha(20);
 			btnAdd.setPaintFlags(btnAdd.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+			btnListaMaisMenos.setPaintFlags(btnListaMaisMenos.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
 		}
 	}
@@ -350,4 +354,44 @@ public class MeioPagamentoFragment extends Fragment {
 			}
 		};
 	}
+
+	private void setSemCartao() {
+		textoSemCartao.setVisibility(View.VISIBLE);
+		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
+			textoSemCartao.setText(getActivity().getString(R.string.semCartaoMercadoPago));
+		}
+		if (model.isRecargaPay(config.getMeioPagamento().getValor())){
+			textoSemCartao.setText(getActivity().getString(R.string.semCartaoRecargaPay));
+		}
+		btnAdd.setText(getActivity().getString(R.string.novoCartaoCredito));
+	}
+
+	private void maisQueDoisCartoes(List<RetornoCartao> retornoCartaoList) {
+		btnListaMaisMenos.setVisibility(View.VISIBLE);
+		cartoesMaiorDois = retornoCartaoList;
+		setCartoes2Primeiros(retornoCartaoList);
+	}
+
+	private void setCartoes2Primeiros(List<RetornoCartao> retornoCartaoList) {
+		cartoes = new ArrayList<RetornoCartao>();
+		cartoes.add(retornoCartaoList.get(0));
+		cartoes.add(retornoCartaoList.get(1));
+	}
+
+	private void clickMostraMaisMenos() {
+
+		//Lista Mais
+		if (btnListaMaisMenos.getText().equals(getActivity().getString(R.string.listarMais))) {
+			btnListaMaisMenos.setText(getActivity().getString(R.string.listarMenos));
+			cartoes = cartoesMaiorDois;
+			adapter.setLista(cartoes);
+		} else { //Lista Menos
+			btnListaMaisMenos.setText(getActivity().getString(R.string.listarMais));
+			setCartoes2Primeiros(cartoesMaiorDois);
+			adapter.setLista(cartoes);
+		}
+
+	}
+
+
 }

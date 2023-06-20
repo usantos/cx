@@ -1139,5 +1139,8 @@
     <string name="semCartaoRecargaPay">Você ainda não possui cartão salvo no processador Recarga Pay</string>
     <string name="semCartaoMercadoPago">Você ainda não possui cartão salvo no processador Mercado Pago</string>
     <string name="novoCartaoCredito">Novo Cartão de Crédito</string>
+    <string name="adicionarCartao">Adicionar Cartão</string>
+    <string name="listarMais">Listar Mais</string>
+    <string name="listarMenos">Listar Menos</string>
 
 </resources>

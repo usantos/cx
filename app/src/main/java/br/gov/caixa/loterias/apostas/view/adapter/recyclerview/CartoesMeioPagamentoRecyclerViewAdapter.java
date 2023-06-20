@@ -64,4 +64,9 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
         }
         notifyDataSetChanged();
     }
+
+    public void setLista(List<RetornoCartao> cartoes) {
+        this.lista = cartoes;
+        notifyDataSetChanged();
+    }
 }
