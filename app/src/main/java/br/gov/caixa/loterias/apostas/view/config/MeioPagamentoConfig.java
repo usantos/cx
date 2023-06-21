@@ -23,7 +23,8 @@ public class MeioPagamentoConfig implements Serializable {
 	}
 
 	public MeioPagamentoConfig(int idImagem, DTOEnumLong meioPagamento, int idBandeira1, int idBandeira2,
-							   int idBandeira3, int idBandeira4, int idBandeira5, int idBandeira6) {
+							   int idBandeira3, int idBandeira4, int idBandeira5, int idBandeira6,
+							   int idCorBarra) {
 		this.idImagem = idImagem;
 		this.meioPagamento = meioPagamento;
 		this.idBandeira1 = idBandeira1;
@@ -32,6 +33,7 @@ public class MeioPagamentoConfig implements Serializable {
 		this.idBandeira4 = idBandeira4;
 		this.idBandeira5 = idBandeira5;
 		this.idBandeira6 = idBandeira6;
+		this.idCorBarra = idCorBarra; //Compatibilidade com dependentes
 	}
 
 	public int getIdCorBarra() {

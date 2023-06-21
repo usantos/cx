@@ -117,7 +117,8 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 									R.id.fragmentRecargaPay,
 									new MeioPagamentoConfig(R.drawable.recargapay, getRecargaPay(),
 											R.drawable.ic_bandeira_elo, R.drawable.ic_master_card,
-											R.drawable.ic_bandeira_visa, 0,0, 0));
+											R.drawable.ic_bandeira_visa, 0,0, 0,
+											R.color.laranja_recarga_pay));
 	}
 									//new MeioPagamentoConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, getRecargaPay()));
 
@@ -143,7 +144,8 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 									new MeioPagamentoConfig(R.drawable.ic_mercado_pago, getMercadoPago(),
 										R.drawable.ic_bandeira_amex, R.drawable.ic_bandeira_diners,
 										R.drawable.ic_bandeira_elo, R.drawable.ic_hipercard,
-										R.drawable.ic_master_card, R.drawable.ic_bandeira_visa));
+										R.drawable.ic_master_card, R.drawable.ic_bandeira_visa,
+										R.color.azul_mercado_pago));
 	}
 						//new MeioPagamentoConfig(R.color.azul_mercado_pago, R.drawable.ic_mercado_pago, getMercadoPago()));
 

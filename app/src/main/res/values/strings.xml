@@ -1142,5 +1142,9 @@
     <string name="adicionarCartao">Adicionar Cartão</string>
     <string name="listarMais">Listar Mais</string>
     <string name="listarMenos">Listar Menos</string>
+    <string name="voceDesejaExcluir">Você tem certeza de que deseja excluir o cartão {bandeira} final {XXXX} dos cartões salvos?</string>
+    <string name="naoExcluir">Não excluir</string>
+    <string name="excluir">Excluir</string>
+    <string name="suaTitularidade">O cartão de crédito adicionado deve ser de sua titularidade</string>
 
 </resources>

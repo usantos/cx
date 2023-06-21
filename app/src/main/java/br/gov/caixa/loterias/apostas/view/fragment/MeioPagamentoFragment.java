@@ -27,6 +27,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.AdicionaCartaoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
+import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
@@ -192,10 +193,13 @@ public class MeioPagamentoFragment extends Fragment {
 											   getString(R.string.nao_e_possivel_eliminar_cartao_favorito),
 											   getString(R.string.title_entendi));
 				} else {
-					String mensagem = getString(R.string.deseja_realmente_exluir_cartao) + " " + cartoes.get(position).getUltimosDigitos() + "?";
+					//String mensagem = getString(R.string.deseja_realmente_exluir_cartao) + " " + cartoes.get(position).getUltimosDigitos() + "?";
+					String mensagem = getString(R.string.voceDesejaExcluir);
+					mensagem = mensagem.replace("{bandeira}", cartoes.get(position).getNomeMetodoPagamento());
+					mensagem = mensagem.replace("{XXXX}", cartoes.get(position).getUltimosDigitos());
 					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.excluir_cartao_interrogacao),
-																				getString(R.string.label_nao),
-																				getString(R.string.confirmar),
+																				getString(R.string.naoExcluir),
+																				getString(R.string.excluir),
 																				mensagem,
 																				(dialog, which) -> {
 																					deletaCartao(cartoes.get(position), position);
@@ -326,11 +330,18 @@ public class MeioPagamentoFragment extends Fragment {
 	}
 
 	private void configButton() {
-		btnAdd.setOnClickListener(v -> goToAddCartao());
+		btnAdd.setOnClickListener(v -> {
+			ViewUtils.alertTitleButtonYesListener(getContext(),
+					getResources().getString(R.string.suaTitularidade),
+					getResources().getString(R.string.title_entendi),
+					(dialogInterface, i) -> goToAddCartao());
+		});
+
 		btnListaMaisMenos.setOnClickListener(v -> clickMostraMaisMenos());
 	}
 
 	private void goToAddCartao(){
+
 		Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), AdicionaCartaoActivity.class,
 														  getString(R.string.bundle_key_config), config);
 
@@ -399,13 +410,7 @@ public class MeioPagamentoFragment extends Fragment {
 	private void maisQueDoisCartoes(List<RetornoCartao> retornoCartaoList) {
 		btnListaMaisMenos.setVisibility(View.VISIBLE);
 		cartoesMaiorDois = retornoCartaoList;
-		setCartoes2Primeiros(retornoCartaoList);
-	}
-
-	private void setCartoes2Primeiros(List<RetornoCartao> retornoCartaoList) {
-		cartoes = new ArrayList<RetornoCartao>();
-		cartoes.add(retornoCartaoList.get(0));
-		cartoes.add(retornoCartaoList.get(1));
+		cartoes = model.getCartoes2Primeiros(retornoCartaoList);
 	}
 
 	private void clickMostraMaisMenos() {
@@ -417,7 +422,7 @@ public class MeioPagamentoFragment extends Fragment {
 			adapter.setLista(cartoes);
 		} else { //Lista Menos
 			btnListaMaisMenos.setText(getActivity().getString(R.string.listarMais));
-			setCartoes2Primeiros(cartoesMaiorDois);
+			cartoes = model.getCartoes2Primeiros(cartoesMaiorDois);
 			adapter.setLista(cartoes);
 		}
 

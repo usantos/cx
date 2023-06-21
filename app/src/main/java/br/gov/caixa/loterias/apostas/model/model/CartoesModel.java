@@ -343,4 +343,12 @@ public class CartoesModel extends AppModel {
 		dataExpiracao.setAno(Integer.valueOf(ano));
 		return dataExpiracao;
 	}
+
+	public List<RetornoCartao> getCartoes2Primeiros(List<RetornoCartao> retornoCartaoList) {
+		List<RetornoCartao> cartoes = new ArrayList<RetornoCartao>();
+		cartoes.add(retornoCartaoList.get(0));
+		cartoes.add(retornoCartaoList.get(1));
+		return cartoes;
+	}
+
 }
