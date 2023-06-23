@@ -177,5 +177,7 @@
     <color name="link_cartoes">#0066B8</color>
     <color name="fundoFormaPagamento">#F5F5F5</color>
     <color name="fundoCartao">#ECFAFF</color>
+    <!--color name="fundoCartaoCredito">#BDBDBD</color-->
+    <color name="fundoCartaoCredito">#DADADA</color>
 
 </resources>

@@ -1147,4 +1147,9 @@
     <string name="excluir">Excluir</string>
     <string name="suaTitularidade">O cartão de crédito adicionado deve ser de sua titularidade</string>
 
+    <!-- Confirmar Cartão - CVV -->
+    <string name="confirmarCartao">Confirmar cartão</string>
+    <string name="confirmarDados">Confirme os dados do cartão escolhido</string>
+    <string name="incluirCodigo">Incluir Código</string>
+
 </resources>
