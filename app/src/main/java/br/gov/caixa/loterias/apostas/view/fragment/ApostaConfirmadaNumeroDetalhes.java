@@ -95,9 +95,12 @@ public class ApostaConfirmadaNumeroDetalhes extends Fragment {
 	@AfterViews
 	protected void init() {
 		concursoTxt.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
-		if (!StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
-			dataApostaTxt.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.barra_n) + aposta.getHoraEfetivacao());
+		if (StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
+			dataApostaTxt.setText(aposta.getDataEfetivacao());
+		} else {
+			dataApostaTxt.setText(aposta.getDataEfetivacao() + " - " + aposta.getHoraEfetivacao());
 		}
+		dataApostaTxt.setVisibility(View.VISIBLE);
 
 		if (aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO || apostaPremiada()) {
 			tv_val_premio.setVisibility(View.VISIBLE);
