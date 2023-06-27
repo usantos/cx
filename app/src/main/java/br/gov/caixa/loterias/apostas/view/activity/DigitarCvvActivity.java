@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -76,6 +77,26 @@ public class DigitarCvvActivity extends AppCompatActivity {
 		EditText cvv2 = findViewById(R.id.cvv_digit2);
 		EditText cvv3 = findViewById(R.id.cvv_digit3);
 
+		cvv1.requestFocus();
+//		// Mostra o teclado
+//		InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+//		imm.showSoftInput(cvv1, InputMethodManager.SHOW_IMPLICIT);
+
+//		EditText editText1 = findViewById(R.id.cvv_digit1);
+//		editText1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//			@Override
+//			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//				if (actionId == EditorInfo.IME_ACTION_DONE) {
+//					// O botão 'Enter' foi pressionado, você pode realizar a ação aqui
+//					// Por exemplo, mover o foco para o próximo EditText
+//					EditText editText2 = findViewById(R.id.cvv_digit2);
+//					editText2.requestFocus();
+//					return true;
+//				}
+//				return false;
+//			}
+//		});
+
 		cvv1.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if (cvv1.getText().toString().length() == 1) { //size as per your requirement
@@ -96,16 +117,6 @@ public class DigitarCvvActivity extends AppCompatActivity {
 			public void afterTextChanged(Editable s) {}
 		});
 
-//        // Se desejar, você pode adicionar um TextWatcher ao terceiro campo para retornar o foco para o primeiro campo
-//        cvv3.addTextChangedListener(new TextWatcher() {
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (cvv3.getText().toString().length() == 1) { //size as per your requirement
-//                    cvv1.requestFocus();
-//                }
-//            }
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-//            public void afterTextChanged(Editable s) {}
-//        });
     }
 
 //	private void configButton() {

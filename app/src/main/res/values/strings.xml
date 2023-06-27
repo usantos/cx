@@ -1155,5 +1155,6 @@
     <string name="informarCvv">_Informar CVV_</string>
     <string name="insiraCodigoSeguranca">Insira o código de segurança do seu cartão de crédito</string>
     <string name="normalmenteNoVerso">Normalmente localizado no verso do seu cartão</string>
+    <string name="digiteSeuCvv">Digite seu código de segurança</string>
 
 </resources>
