@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -31,6 +34,7 @@ public class DigitarCvvActivity extends AppCompatActivity {
 
 	private RetornoCartao cartao;
 	private Button btnIncluirCodigo;
+	private boolean isAmex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class DigitarCvvActivity extends AppCompatActivity {
 		configMenu();
 
 		pegaExtras();
+		atualizaCartaoVerso();
 		configEditTexto();
 		//configButton();
 	}
@@ -72,31 +77,37 @@ public class DigitarCvvActivity extends AppCompatActivity {
 		}
 	}
 
+	private void atualizaCartaoVerso() {
+
+		((AppCompatImageView) findViewById(R.id.imgBandeiraVerso)).setImageDrawable(CartaoUtil.getBandeira(this, cartao.getNomeMetodoPagamento()));
+		((TextView) findViewById(R.id.textoCartaoFinal)).setText(getString(R.string.cartaoFinal) +" " + cartao.getUltimosDigitos());
+
+		isAmex = false;
+		if (cartao.getNomeMetodoPagamento().equalsIgnoreCase("amex") ||
+			cartao.getNomeMetodoPagamento().equalsIgnoreCase("american express")) {
+
+			isAmex = true;
+			((TextView) findViewById(R.id.textoCVV)).setText(getString(R.string.xxx) + "X");
+		}
+	}
+
 	private void configEditTexto() {
 		EditText cvv1 = findViewById(R.id.cvv_digit1);
 		EditText cvv2 = findViewById(R.id.cvv_digit2);
 		EditText cvv3 = findViewById(R.id.cvv_digit3);
+		EditText cvv4 = findViewById(R.id.cvv_digit4);
 
+		//Força Mostrar o teclado
 		cvv1.requestFocus();
-//		// Mostra o teclado
-//		InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
-//		imm.showSoftInput(cvv1, InputMethodManager.SHOW_IMPLICIT);
+		cvv1.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				InputMethodManager imm = (InputMethodManager) getSystemService(DigitarCvvActivity.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(cvv1, InputMethodManager.SHOW_FORCED);
+			}
+		},200);
 
-//		EditText editText1 = findViewById(R.id.cvv_digit1);
-//		editText1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//			@Override
-//			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//				if (actionId == EditorInfo.IME_ACTION_DONE) {
-//					// O botão 'Enter' foi pressionado, você pode realizar a ação aqui
-//					// Por exemplo, mover o foco para o próximo EditText
-//					EditText editText2 = findViewById(R.id.cvv_digit2);
-//					editText2.requestFocus();
-//					return true;
-//				}
-//				return false;
-//			}
-//		});
-
+		//Digitou muda o foco para o 2
 		cvv1.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if (cvv1.getText().toString().length() == 1) { //size as per your requirement
@@ -107,6 +118,7 @@ public class DigitarCvvActivity extends AppCompatActivity {
 			public void afterTextChanged(Editable s) {}
 		});
 
+		//Digitou muda o foco para o 3
 		cvv2.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if (cvv2.getText().toString().length() == 1) { //size as per your requirement
@@ -117,16 +129,68 @@ public class DigitarCvvActivity extends AppCompatActivity {
 			public void afterTextChanged(Editable s) {}
 		});
 
-    }
+		if (isAmex) {
+			cvv4.setVisibility(View.VISIBLE);
+			//Digitou muda o foco para o 4
+			cvv3.addTextChangedListener(new TextWatcher() {
+				public void onTextChanged(CharSequence s, int start, int before, int count) {
+					if (cvv3.getText().toString().length() == 1) { //size as per your requirement
+						cvv4.requestFocus();
+					}
+				}
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+				public void afterTextChanged(Editable s) {}
+			});
+		}
 
-//	private void configButton() {
-//		btnIncluirCodigo = findViewById(R.id.btnIncluirCodigo);
-//		btnIncluirCodigo.setOnClickListener(v -> abrirTermosUso());
-//		btnIncluirCodigo.setOnClickListener(v -> {
-//			Intent intent = IntentUtil.getIntentOrigemDestino(this, DigitarCvvActivity.class);
-//			//intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartao);
-//			startActivity(intent);
-//		});
-//	}
+		//Enter
+		cvv1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					Toast.makeText(getApplicationContext(), "*** Botao Enter Precionado no 1 ***", Toast.LENGTH_SHORT).show();
+					return true;
+				}
+				return false;
+			}
+		});
+
+		//Enter
+		cvv2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					Toast.makeText(getApplicationContext(), "*** Botao Enter Precionado no 2 ***", Toast.LENGTH_SHORT).show();
+					return true;
+				}
+				return false;
+			}
+		});
+
+		//Enter
+		cvv3.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					Toast.makeText(getApplicationContext(), "*** Botao Enter Precionado no 3 ***", Toast.LENGTH_SHORT).show();
+					return true;
+				}
+				return false;
+			}
+		});
+
+		//Enter
+		cvv4.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_DONE) {
+					Toast.makeText(getApplicationContext(), "*** Botao Enter Precionado no 4 ***", Toast.LENGTH_SHORT).show();
+					return true;
+				}
+				return false;
+			}
+		});
+
+	}
 
 }

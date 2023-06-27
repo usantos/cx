@@ -98,7 +98,7 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 		btnIncluirCodigo = findViewById(R.id.btnIncluirCodigo);
 		btnIncluirCodigo.setOnClickListener(v -> {
 			Intent intent = IntentUtil.getIntentOrigemDestino(this, DigitarCvvActivity.class);
-			//intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartao);
+			intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartao);
 			startActivity(intent);
 		});
 	}

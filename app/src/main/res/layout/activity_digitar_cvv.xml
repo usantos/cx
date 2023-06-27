@@ -57,6 +57,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textoMensagemVerso">
 
+            <TextView
+                android:id="@+id/textoCartaoFinal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cartaoFinal"
+                android:textColor="@color/cinzaescuro"
+                android:textSize="13sp"
+                android:fontFamily="@font/font_family_futura"
+                android:layout_gravity="right"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
             <include layout="@layout/fragment_cartao_verso"/>
         </FrameLayout>
 
@@ -81,7 +95,6 @@
                 android:maxLength="1"
                 android:inputType="number"
                 android:background="@drawable/background_border_verde"
-                android:layout_marginEnd="20dp"
                 android:gravity="center"/>
 
             <EditText
@@ -93,8 +106,9 @@
                 android:maxLength="1"
                 android:inputType="number"
                 android:background="@drawable/background_border_verde"
-                android:layout_marginEnd="20dp"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:layout_marginStart="15dp"
+                />
 
             <EditText
                 android:id="@+id/cvv_digit3"
@@ -105,7 +119,24 @@
                 android:background="@drawable/background_border_verde"
                 android:gravity="center"
                 android:inputType="number"
-                android:maxLength="1" />
+                android:maxLength="1"
+                android:layout_marginStart="15dp"
+                />
+
+            <EditText
+                android:id="@+id/cvv_digit4"
+                android:layout_width="40dp"
+                android:layout_height="60dp"
+                android:textSize="40sp"
+                android:textColor="@color/numeroDigitacaoCVV"
+                android:background="@drawable/background_border_verde"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:layout_marginStart="15dp"
+                android:visibility="gone"
+                />
+
         </LinearLayout>
 
         <TextView
