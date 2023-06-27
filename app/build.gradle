@@ -4,7 +4,6 @@ apply plugin: 'org.sonarqube'
 
 
 android {
-    signingConfigs {
         File certifFile = file(System.getProperty('user.home') + '/certificado.properties')
         String strKeyStorePassword = ''
         String strKeyAlias = ''
@@ -16,27 +15,32 @@ android {
             strKeyAlias = p['KEY_ALIAS']
             strKeyPassword = p['KEY_PASSWORD']
 
+            signingConfigs {
+
             debug {
-                storeFile file('C:\\Users\\F798123\\Downloads\\Caixakeystore')
+                storeFile file(System.getProperty('user.home') + '/Caixakeystore')
                 storePassword strKeyStorePassword
                 keyPassword strKeyPassword
                 keyAlias strKeyAlias
             }
             config {
-                storeFile file('C:\\Users\\F798123\\Downloads\\Caixakeystore')
+                storeFile file(System.getProperty('user.home') + '/Caixakeystore')
                 storePassword strKeyStorePassword
                 keyPassword strKeyPassword
                 keyAlias strKeyAlias
             }
             release {
-                storeFile file('C:\\Users\\F798123\\Downloads\\Caixakeystore')
+                storeFile file(System.getProperty('user.home') + '/Caixakeystore')
                 storePassword strKeyStorePassword
                 keyPassword strKeyPassword
                 keyAlias strKeyAlias
             }
 
+            }
+        } else {
+            println "O arquivo certificado.properties não existe."
         }
-    }
+
     compileSdkVersion 33
     buildToolsVersion '29.0.2'
     defaultConfig {
