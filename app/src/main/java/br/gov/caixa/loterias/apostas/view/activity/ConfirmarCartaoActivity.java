@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.CartaoUtil;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -41,10 +42,7 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 	private ImageButton btnAjuda;
 
 	private RetornoCartao cartao;
-
-
-	//private MeioPagamentoFragment frameMercadoPago, frameRecargaPay;
-	//private MeioPagamentoModel model;
+	private Button btnIncluirCodigo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +52,12 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_Confirmar cartão_"));
+		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.confirmarCartao)));
 		configMenu();
 
 		pegaExtras();
 		atualizaCartaoFrente();
-
-		//model = new MeioPagamentoModel(ConfirmandoCvvActivity.this);
-
-		//buscaMeiosPagamentos();
+		configButton();
 	}
 
 	private void configMenu() {
@@ -97,6 +92,15 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 
 		((TextView) findViewById(R.id.textoValidMesAno)).setText(cartao.getMesValidade() + "/"  + cartao.getAnoValidade());
 
+	}
+
+	private void configButton() {
+		btnIncluirCodigo = findViewById(R.id.btnIncluirCodigo);
+		btnIncluirCodigo.setOnClickListener(v -> {
+			Intent intent = IntentUtil.getIntentOrigemDestino(this, DigitarCvvActivity.class);
+			//intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartao);
+			startActivity(intent);
+		});
 	}
 
 }

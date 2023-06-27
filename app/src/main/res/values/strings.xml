@@ -1148,8 +1148,12 @@
     <string name="suaTitularidade">O cartão de crédito adicionado deve ser de sua titularidade</string>
 
     <!-- Confirmar Cartão - CVV -->
-    <string name="confirmarCartao">Confirmar cartão</string>
+    <string name="confirmarCartao">_Confirmar cartão_</string>
     <string name="confirmarDados">Confirme os dados do cartão escolhido</string>
     <string name="incluirCodigo">Incluir Código</string>
+    <string name="xxx">XXX</string>
+    <string name="informarCvv">_Informar CVV_</string>
+    <string name="insiraCodigoSeguranca">Insira o código de segurança do seu cartão de crédito</string>
+    <string name="normalmenteNoVerso">Normalmente localizado no verso do seu cartão</string>
 
 </resources>

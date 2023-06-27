@@ -179,5 +179,8 @@
     <color name="fundoCartao">#ECFAFF</color>
     <!--color name="fundoCartaoCredito">#BDBDBD</color-->
     <color name="fundoCartaoCredito">#DADADA</color>
+    <color name="tarjaAmarela">#FCF7E6</color>
+    <color name="bordaDigitacaoCVV">#4BBDAC</color>
+    <color name="numeroDigitacaoCVV">#4BB8A9</color>
 
 </resources>
