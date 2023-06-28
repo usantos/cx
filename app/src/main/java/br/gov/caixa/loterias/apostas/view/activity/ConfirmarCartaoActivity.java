@@ -37,11 +37,13 @@ import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 public class ConfirmarCartaoActivity extends AppCompatActivity {
 
 	public static final String CARTAO = "CARTAO";
+	public static final String CVV = "CVV";
 
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
 
 	private RetornoCartao cartao;
+	private String cvv;
 	private Button btnIncluirCodigo;
 
 	@Override
@@ -57,6 +59,7 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 
 		pegaExtras();
 		atualizaCartaoFrente();
+		atualizaCartaoVerso();
 		configButton();
 	}
 
@@ -81,6 +84,7 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			cartao = (RetornoCartao) bundle.getSerializable(CARTAO);
+			cvv = (String) bundle.getSerializable(CVV);
 		}
 	}
 
@@ -92,6 +96,9 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 
 		((TextView) findViewById(R.id.textoValidMesAno)).setText(cartao.getMesValidade() + "/"  + cartao.getAnoValidade());
 
+	}
+
+	private void atualizaCartaoVerso() {
 	}
 
 	private void configButton() {

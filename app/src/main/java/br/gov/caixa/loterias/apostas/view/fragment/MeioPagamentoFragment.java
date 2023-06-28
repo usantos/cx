@@ -43,6 +43,7 @@ import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.ApresentarCartaoActivity;
 import br.gov.caixa.loterias.apostas.view.activity.ConfirmarCartaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CartoesMeioPagamentoRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -171,8 +172,8 @@ public class MeioPagamentoFragment extends Fragment {
 			public void itemClick(CartaoMeioPagamentoHolder holder, int position) {
 				RetornoCartao cartao = cartoes.get(position);
 				//showDialogCVV(cartao);
-				Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ConfirmarCartaoActivity.class);
-				intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartao);
+				Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApresentarCartaoActivity.class);
+				intent.putExtra(ApresentarCartaoActivity.CARTAO, cartao);
 				startActivity(intent);
 			}
 

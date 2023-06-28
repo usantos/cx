@@ -34,8 +34,9 @@ public class DigitarCvvActivity extends AppCompatActivity {
 	private ImageButton btnAjuda;
 
 	private RetornoCartao cartao;
-	private Button btnIncluirCodigo;
 	private boolean isAmex;
+	private EditText cvv1, cvv2, cvv3, cvv4;
+	private Button btnConfirmarCvv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +52,8 @@ public class DigitarCvvActivity extends AppCompatActivity {
 		pegaExtras();
 		atualizaCartaoVerso();
 		configEditTexto();
-		//configButton();
+		configButton();
+
 	}
 
 	private void configMenu() {
@@ -93,28 +95,24 @@ public class DigitarCvvActivity extends AppCompatActivity {
 	}
 
 	private void configEditTexto() {
-		EditText cvv1 = findViewById(R.id.cvv_digit1);
-		EditText cvv2 = findViewById(R.id.cvv_digit2);
-		EditText cvv3 = findViewById(R.id.cvv_digit3);
-		EditText cvv4 = findViewById(R.id.cvv_digit4);
+		cvv1 = findViewById(R.id.cvv_digit1);
+		cvv2 = findViewById(R.id.cvv_digit2);
+		cvv3 = findViewById(R.id.cvv_digit3);
+		cvv4 = findViewById(R.id.cvv_digit4);
 
-		//Força Mostrar o teclado
 		cvv1.requestFocus();
-		//showKeyBoard(cvv1);
 
 		//Digitou muda o foco para proximo
 		mudaFocoProximo(cvv1, cvv2);
 		mudaFocoProximo(cvv2, cvv3);
+		mudaFocoProximo(cvv3, cvv3);
 		if (isAmex) {
 			cvv4.setVisibility(View.VISIBLE);
 			mudaFocoProximo(cvv3, cvv4);
+			mudaFocoProximo(cvv4, cvv4);
 		}
-		//Digitou Enter
-		pressEnter(cvv1);
-		pressEnter(cvv2);
-		pressEnter(cvv3);
-		pressEnter(cvv4);
 	}
+
 
 	private void mudaFocoProximo(EditText currentEditText, EditText nextEditText) {
 		currentEditText.addTextChangedListener(new TextWatcher() {
@@ -123,47 +121,39 @@ public class DigitarCvvActivity extends AppCompatActivity {
 					nextEditText.requestFocus();
 				}
 			}
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-			public void afterTextChanged(Editable s) {}
-		});
-	}
-
-
-	private void pressEnter(EditText currentEditText) {
-		currentEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if (actionId == EditorInfo.IME_ACTION_DONE) {
-					Toast.makeText(getApplicationContext(), "*** Botao Enter Precionado ***", Toast.LENGTH_SHORT).show();
-					return true;
-				}
-				return false;
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+			public void afterTextChanged(Editable s) {
+				enableDisableButton();
 			}
 		});
 	}
 
-//	private void showKeyBoard(EditText currentEditText) {
-//		currentEditText.postDelayed(new Runnable() {
-//			@Override
-//			public void run() {
-//				InputMethodManager imm = (InputMethodManager) getSystemService(DigitarCvvActivity.INPUT_METHOD_SERVICE);
-//				imm.showSoftInput(currentEditText, InputMethodManager.SHOW_FORCED);
-//			}
-//		},200);
-//	}
-//
-//	private void hideKeyBoard() {
-//		View view = this.getCurrentFocus();
-//		if (view != null) {
-//			InputMethodManager imm = (InputMethodManager) getSystemService(DigitarCvvActivity.INPUT_METHOD_SERVICE);
-//			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//		}
-//	}
-//
-//	@Override
-//	public void onStop() {
-//		super.onStop();
-//		hideKeyBoard();
-//	}
+	private void configButton() {
+		btnConfirmarCvv = findViewById(R.id.btnConfirmarCvv);
+		btnConfirmarCvv.setOnClickListener(v -> {
+			String cvv = cvv1.getText().toString() + cvv2.getText().toString() + cvv3.getText().toString();
+			if (isAmex) {
+				cvv += cvv4.getText().toString();
+			}
+			Intent intent = IntentUtil.getIntentOrigemDestino(this, ConfirmarCartaoActivity.class);
+			intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartao);
+			intent.putExtra(ConfirmarCartaoActivity.CVV, cvv);
+			startActivity(intent);
+		});
+		enableDisableButton();
+	}
 
+	private void enableDisableButton() {
+		if (cvv1.getText().length() > 0 && cvv2.getText().length() > 0 &&
+			cvv3.getText().length() > 0 &&
+			(isAmex && cvv4.getText().length() > 0 ? true : (!isAmex ? true : false))) {
+
+		btnConfirmarCvv.setEnabled(true);
+		btnConfirmarCvv.setBackground(getDrawable(R.drawable.button_rounded_verdeazul));
+	} else {
+			btnConfirmarCvv.setEnabled(false);
+			btnConfirmarCvv.setBackground(getDrawable(R.color.cinzaDisable));
+		}
+	}
 }
