@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -18,19 +21,25 @@ import androidx.appcompat.widget.Toolbar;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.CartaoUtil;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 
 public class DigitarCvvActivity extends AppCompatActivity {
 
 	public static final String CARTAO = "CARTAO";
+	public static final String MEIO = "MEIO";
 
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
 
 	private RetornoCartao cartao;
-	private Button btnIncluirCodigo;
+	private MeioPagamentoConfig config;
+	private boolean isAmex;
+	private EditText cvv1, cvv2, cvv3, cvv4;
+	private Button btnConfirmarCvv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +53,10 @@ public class DigitarCvvActivity extends AppCompatActivity {
 		configMenu();
 
 		pegaExtras();
+		atualizaCartaoVerso();
 		configEditTexto();
-		//configButton();
+		configButton();
+
 	}
 
 	private void configMenu() {
@@ -69,64 +80,85 @@ public class DigitarCvvActivity extends AppCompatActivity {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			cartao = (RetornoCartao) bundle.getSerializable(CARTAO);
+			config = (MeioPagamentoConfig) bundle.getSerializable(MEIO);
+		}
+	}
+
+	private void atualizaCartaoVerso() {
+
+		((AppCompatImageView) findViewById(R.id.imgBandeiraVerso)).setImageDrawable(CartaoUtil.getBandeira(this, cartao.getNomeMetodoPagamento()));
+		((TextView) findViewById(R.id.textoCartaoFinal)).setText(getString(R.string.cartaoFinal) +" " + cartao.getUltimosDigitos());
+
+		isAmex = false;
+		if (cartao.getNomeMetodoPagamento().equalsIgnoreCase("amex") ||
+			cartao.getNomeMetodoPagamento().equalsIgnoreCase("american express")) {
+
+			isAmex = true;
+			((TextView) findViewById(R.id.textoCVV)).setText(getString(R.string.xxx) + "X");
 		}
 	}
 
 	private void configEditTexto() {
-		EditText cvv1 = findViewById(R.id.cvv_digit1);
-		EditText cvv2 = findViewById(R.id.cvv_digit2);
-		EditText cvv3 = findViewById(R.id.cvv_digit3);
+		cvv1 = findViewById(R.id.cvv_digit1);
+		cvv2 = findViewById(R.id.cvv_digit2);
+		cvv3 = findViewById(R.id.cvv_digit3);
+		cvv4 = findViewById(R.id.cvv_digit4);
 
 		cvv1.requestFocus();
-//		// Mostra o teclado
-//		InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
-//		imm.showSoftInput(cvv1, InputMethodManager.SHOW_IMPLICIT);
 
-//		EditText editText1 = findViewById(R.id.cvv_digit1);
-//		editText1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//			@Override
-//			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//				if (actionId == EditorInfo.IME_ACTION_DONE) {
-//					// O botão 'Enter' foi pressionado, você pode realizar a ação aqui
-//					// Por exemplo, mover o foco para o próximo EditText
-//					EditText editText2 = findViewById(R.id.cvv_digit2);
-//					editText2.requestFocus();
-//					return true;
-//				}
-//				return false;
-//			}
-//		});
+		//Digitou muda o foco para proximo
+		mudaFocoProximo(cvv1, cvv2);
+		mudaFocoProximo(cvv2, cvv3);
+		mudaFocoProximo(cvv3, cvv3);
+		if (isAmex) {
+			cvv4.setVisibility(View.VISIBLE);
+			mudaFocoProximo(cvv3, cvv4);
+			mudaFocoProximo(cvv4, cvv4);
+		}
+	}
 
-		cvv1.addTextChangedListener(new TextWatcher() {
+
+	private void mudaFocoProximo(EditText currentEditText, EditText nextEditText) {
+		currentEditText.addTextChangedListener(new TextWatcher() {
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (cvv1.getText().toString().length() == 1) { //size as per your requirement
-					cvv2.requestFocus();
+				if (currentEditText.getText().toString().length() == 1) { //size as per your requirement
+					nextEditText.requestFocus();
 				}
 			}
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-			public void afterTextChanged(Editable s) {}
-		});
-
-		cvv2.addTextChangedListener(new TextWatcher() {
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (cvv2.getText().toString().length() == 1) { //size as per your requirement
-					cvv3.requestFocus();
-				}
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			}
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-			public void afterTextChanged(Editable s) {}
+			public void afterTextChanged(Editable s) {
+				enableDisableButton();
+			}
 		});
+	}
 
-    }
+	private void configButton() {
+		btnConfirmarCvv = findViewById(R.id.btnConfirmarCvv);
+		btnConfirmarCvv.setOnClickListener(v -> {
+			String cvv = cvv1.getText().toString() + cvv2.getText().toString() + cvv3.getText().toString();
+			if (isAmex) {
+				cvv += cvv4.getText().toString();
+			}
+			Intent intent = IntentUtil.getIntentOrigemDestino(this, ConfirmarCartaoActivity.class);
+			intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartao);
+			intent.putExtra(ConfirmarCartaoActivity.MEIO, config);
+			intent.putExtra(ConfirmarCartaoActivity.CVV, cvv);
+			startActivity(intent);
+		});
+		enableDisableButton();
+	}
 
-//	private void configButton() {
-//		btnIncluirCodigo = findViewById(R.id.btnIncluirCodigo);
-//		btnIncluirCodigo.setOnClickListener(v -> abrirTermosUso());
-//		btnIncluirCodigo.setOnClickListener(v -> {
-//			Intent intent = IntentUtil.getIntentOrigemDestino(this, DigitarCvvActivity.class);
-//			//intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartao);
-//			startActivity(intent);
-//		});
-//	}
+	private void enableDisableButton() {
+		if (cvv1.getText().length() > 0 && cvv2.getText().length() > 0 &&
+			cvv3.getText().length() > 0 &&
+			(isAmex && cvv4.getText().length() > 0 ? true : (!isAmex ? true : false))) {
 
+		btnConfirmarCvv.setEnabled(true);
+		btnConfirmarCvv.setBackground(getDrawable(R.drawable.button_rounded_verdeazul));
+	} else {
+			btnConfirmarCvv.setEnabled(false);
+			btnConfirmarCvv.setBackground(getDrawable(R.color.cinzaDisable));
+		}
+	}
 }

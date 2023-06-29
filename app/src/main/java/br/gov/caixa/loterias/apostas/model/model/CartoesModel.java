@@ -89,7 +89,8 @@ public class CartoesModel extends AppModel {
 		});
 	}
 
-	public String preencheDadosPagamentoCartaoSalvoMP(RetornoCartao cartao, Editable securityCode) {
+	//public String preencheDadosPagamentoCartaoSalvoMP(RetornoCartao cartao, Editable securityCode) {
+	public String preencheDadosPagamentoCartaoSalvoMP(RetornoCartao cartao, String securityCode) {
 		JSONObject jsonBody       = new JSONObject();
 		JSONObject jsonCardHolder = new JSONObject();
 		JSONObject jsonIdentification = new JSONObject();

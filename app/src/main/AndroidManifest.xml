@@ -169,12 +169,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"  />
         <activity
-            android:name=".view.activity.ConfirmarCartaoActivity"
+            android:name=".view.activity.ApresentarCartaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"  />
         <activity
             android:name=".view.activity.DigitarCvvActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"  />
+        <activity
+            android:name=".view.activity.ConfirmarCartaoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"  />
