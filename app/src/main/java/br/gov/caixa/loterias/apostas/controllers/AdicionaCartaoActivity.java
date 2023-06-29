@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,18 +38,23 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DataExpiracao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.model.AdicionaCartaoCreditoModel;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
+import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
+import br.gov.caixa.loterias.apostas.view.listener.TextWatcherAfterChangedListener;
 
 public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
-    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent,  editTextAnoValidadeCartaoContent;
+    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextMesValidadeCartaoContent,  editTextAnoValidadeCartaoContent;
     private TextView textoInfoSelecioneFormaPagamento;
     private CheckBox checkBoxSalvarCartao;
     private AppCompatImageView imagemMeioPagamento, voltar;
@@ -57,13 +63,13 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private TextView alterarMeioPagamento;
     private Button btnAvancar;
 
-    private ArrayList<String> listaMeses;
-    private ArrayList<String> listaAnos;
-
     private Boolean primeiraSelecao = false;
 
-    private CartoesModel model;
+    private CartoesModel modelVeio;
+    private AdicionaCartaoCreditoModel model;
     private MeioPagamentoConfig config;
+
+    private CartaoCreditoFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,31 +78,90 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adiciona_cartao);
 
-        model = new CartoesModel(this);
+        modelVeio = new CartoesModel(this);
+        model = new AdicionaCartaoCreditoModel(this);
 
         bindView();
+        startFragment();
 
         pegaExtras();
         configAparencia();
 
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
 
-        configuraBotoesListener();
+        configBandeiras();
 
-        editTextNumeroCartaoContent.addTextChangedListener(MaskEditUtil.mask(editTextNumeroCartaoContent, MaskEditUtil.FORMAT_CRED_CARD));
+        configuraBotoesListener();
+        configTextWatchers();
+
+        editTextNumeroCartaoContent.addTextChangedListener(MaskEditUtil.mask(editTextNumeroCartaoContent, MaskEditUtil.FORMAT_CRED_CARD, text -> {
+            if (fragment != null){
+                if (text.length() > 19){
+                    text = text.substring(0,19);
+                }
+                fragment.atualizaNumero(text);
+                if (text.length() == 19 || (!text.contains(" ") && text.length() == 16)){
+                    fragment.atualizaBandeira(new CartoesModel(AdicionaCartaoActivity.this).getBrand(text));
+                } else {
+                    fragment.atualizaBandeira("");
+                }
+            }
+            checkEnableButton();
+        }));
         addRightImg(findViewById(R.id.editTextNumeroCartaoContent));
         addRightImg(findViewById(R.id.editTextNomeClienteCartaoContent));
-        addRightImg(findViewById(R.id.editTextCodigoSegurancaContent));
 
-        configuraSpin(R.id.spin_meses, getListaMeses(), onSpinListener(editTextMesValidadeCartaoContent, this.listaMeses));
-        configuraSpin(R.id.spin_anos, getListaAnos(), onSpinListener(editTextAnoValidadeCartaoContent, this.listaAnos));
+        configuraSpin(R.id.spin_meses, model.getListaMeses(), onSpinListener(editTextMesValidadeCartaoContent, model.getListaMeses()));
+        configuraSpin(R.id.spin_anos, model.getListaAnos(), onSpinListener(editTextAnoValidadeCartaoContent, model.getListaAnos()));
         apresentaTextCartoes();
+    }
+
+    private void configTextWatchers() {
+        editTextNomeClienteCartaoContent.addTextChangedListener(MaskEditUtil.textWatcherAfterChangedListener(text -> {
+            if (fragment != null){
+                fragment.atualizaNome(text);
+            }
+            checkEnableButton();
+        }));
+        editTextMesValidadeCartaoContent.addTextChangedListener(onValidadeTextListener());
+        editTextAnoValidadeCartaoContent.addTextChangedListener(onValidadeTextListener());
+    }
+
+    @NonNull
+    private TextWatcher onValidadeTextListener() {
+        return MaskEditUtil.textWatcherAfterChangedListener(text -> {
+            String validade = "";
+            if (!editTextMesValidadeCartaoContent.getText().toString().isEmpty()
+                    && !editTextAnoValidadeCartaoContent.getText().toString().isEmpty()){
+                validade = editTextMesValidadeCartaoContent.getText().toString() + "\\" + editTextAnoValidadeCartaoContent.getText().toString();
+            } else if (!editTextMesValidadeCartaoContent.getText().toString().isEmpty()){
+                validade = editTextMesValidadeCartaoContent.getText().toString() + "\\";
+            } else if (!editTextAnoValidadeCartaoContent.getText().toString().isEmpty()){
+                validade = "\\" + editTextAnoValidadeCartaoContent.getText().toString();
+            }
+
+            if (fragment != null) {
+                fragment.atualizaValidade(validade);
+            }
+            checkEnableButton();
+        });
+    }
+
+    private void configBandeiras() {
+        if (!model.isMercadoPago(config.getMeioPagamento().getValor())){
+            findViewById(R.id.imgBandeira1).setVisibility(View.GONE);
+            findViewById(R.id.imgBandeira2).setVisibility(View.GONE);
+            findViewById(R.id.imgBandeira4).setVisibility(View.GONE);
+        }
+    }
+
+    private void startFragment() {
+        fragment = FragmentUtils.startCartaoCredito(getSupportFragmentManager(), R.id.containerCartaoCredito, null);
     }
 
     private void bindView() {
         editTextNumeroCartaoContent      =  findViewById(R.id.editTextNumeroCartaoContent);
         editTextNomeClienteCartaoContent = findViewById(R.id.editTextNomeClienteCartaoContent);
-        editTextCodigoSegurancaContent   = findViewById(R.id.editTextCodigoSegurancaContent);
         editTextMesValidadeCartaoContent = findViewById(R.id.editTextMesValidadeCartaooContent);
         editTextAnoValidadeCartaoContent = findViewById(R.id.editTextAnoValidadeCartaooContent);
         checkBoxSalvarCartao             = findViewById(R.id.checkBoxSalvarCartao);
@@ -111,8 +176,8 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
     private void configAparencia() {
         if (config != null){
-            margem.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
-            backColor.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
+            //margem.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
+            //backColor.setBackgroundColor(getResources().getColor(config.getIdCorBarra()));
             imagemMeioPagamento.setBackground(getDrawable(config.getIdImagem()));
         }
     }
@@ -134,42 +199,22 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         spinner.setOnItemSelectedListener(listener);
     }
 
-    private AdapterView.OnItemSelectedListener onSpinListener(EditText editText, ArrayList<String> lista){
+    private AdapterView.OnItemSelectedListener onSpinListener(EditText editText, ArrayList<String> lista) {
         return new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                if (!primeiraSelecao ){
-//                    editTextMesValidadeCartaoContent.setText("");
-//                } else
-                if(i == 0){
+                //                if (!primeiraSelecao ){
+                //                    editTextMesValidadeCartaoContent.setText("");
+                //                } else
+                if (i == 0) {
                     editText.setText("");
                 } else {
                     editText.setText(lista.get(i));
                 }
-//                primeiraSelecao = true;
+                //                primeiraSelecao = true;
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {return;}
         };
-    }
-
-    private ArrayList<String> getListaMeses() {
-        listaMeses = new ArrayList<>();
-        listaMeses.add(getString(R.string.title_mesDeValidade));
-        for(int x = 1; x <= 12; x++){
-            listaMeses.add(x < 10 ? "0" + x: String.valueOf(x));
-        }
-        return listaMeses;
-    }
-
-    private ArrayList<String> getListaAnos() {
-        listaAnos = new ArrayList<>();
-        listaAnos.add(getString(R.string.title_anoDeValidade));
-        DateTime joda = new DateTime();
-        listaAnos.add("" + joda.getYear());
-        for(int x = 1; x <= 10; x++){
-            listaAnos.add("" + joda.plusYears(x).getYear());
-        }
-        return listaAnos;
     }
 
     private void addRightImg(EditText textField) {
@@ -196,23 +241,27 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     }
 
     private void configuraBotoesListener() {
-        btnAvancar.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.apostarAutorizarCobranca)));
         btnAvancar.setOnClickListener(view -> {
             if(!camposInvalidos()){
-                showLoading();
-                model.buscaMeioPagamento(config.getMeioPagamento().getValor(), onMeioPagamentoListener());
+//                showLoading();
+//                model.buscaMeioPagamento(config.getMeioPagamento().getValor(), onMeioPagamentoListener());
+                TestVisao.toast("Precisa implementar/juntar com tela do CVV");
+            } else {
+                handleMsgError();
             }
         });
 
         alterarMeioPagamento.setOnClickListener( v -> finish());
         voltar.setOnClickListener(v -> finish());
+
+        btnAvancar.setEnabled(camposInvalidos());
     }
 
     private OnSilceListener<MeioPagamentoDTO> onMeioPagamentoListener() {
         return new OnSilceListener<MeioPagamentoDTO>() {
             @Override
             public void success(MeioPagamentoDTO payload) {
-                if (model.isMercadoPago(config.getMeioPagamento().getValor())){
+                if (modelVeio.isMercadoPago(config.getMeioPagamento().getValor())){
                     realizaCompraMercadoPago();
                 } else {
                     realizaCompraRecargaPay();
@@ -227,7 +276,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     }
 
     private void realizaCompraRecargaPay() {
-        model.recuperaTokenApostadorRecargaPay(onRecuperaTokenListener());
+        modelVeio.recuperaTokenApostadorRecargaPay(onRecuperaTokenListener());
     }
 
     private OnSilceListener<String> onRecuperaTokenListener() {
@@ -235,7 +284,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
             @Override
             public void success(String token) {
                 // chama servico para recuperar informacoes pro recargapay
-                model.buscaDadosPessoais(onDadosPessoaisListener(token));
+                modelVeio.buscaDadosPessoais(onDadosPessoaisListener(token));
             }
 
             @Override
@@ -249,7 +298,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new OnSilceListener<ApostadorDTO>() {
             @Override
             public void success(ApostadorDTO payload) {
-                model.realizaCompraRecargaPayNovoCartao(token, true, getCartaoRecargaPay(payload), onRecargaPayListener());
+                modelVeio.realizaCompraRecargaPayNovoCartao(token, true, getCartaoRecargaPay(payload), onRecargaPayListener());
             }
 
             @Override
@@ -281,16 +330,15 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private CartaoRecargaPayDTO getCartaoRecargaPay(ApostadorDTO dadosPessoais) {
         CartaoRecargaPayDTO cartao = new CartaoRecargaPayDTO();
         cartao.setType(RecargaPayConnection.CARTAO_TYPE);
-        cartao.setBrand(model.getBrand(editTextNumeroCartaoContent.getText().toString()));
+        cartao.setBrand(modelVeio.getBrand(editTextNumeroCartaoContent.getText().toString()));
         cartao.setNumber(editTextNumeroCartaoContent.getText().toString());
 
-        CardHolderRecargaPay cardHolder = model.getCardHolderRecargaPay(dadosPessoais);
+        CardHolderRecargaPay cardHolder = modelVeio.getCardHolderRecargaPay(dadosPessoais);
         cartao.setCardHolder(cardHolder);
 
-        DataExpiracao dataExpiracao = model.getDataExpiracao(editTextMesValidadeCartaoContent.getText().toString(), editTextAnoValidadeCartaoContent.getText().toString());
+        DataExpiracao dataExpiracao = modelVeio.getDataExpiracao(editTextMesValidadeCartaoContent.getText().toString(), editTextAnoValidadeCartaoContent.getText().toString());
         cartao.setDataExpiracao(dataExpiracao);
 
-        cartao.setSecurityCode(editTextCodigoSegurancaContent.getText().toString());
         cartao.setShouldSave(checkBoxSalvarCartao.isChecked());
         return cartao;
     }
@@ -299,18 +347,18 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
                                             Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
                                             Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()),
-                                            editTextCodigoSegurancaContent.getText().toString(),
+                                            "",
                                             editTextNomeClienteCartaoContent.getText().toString(),
                                             getResources().getString(R.string.cpf),
                                             DadosUsuarioBO.obterCpf());
-        String requestBody = model.preencheDadosPagamento(cardToken);
+        String requestBody = modelVeio.preencheDadosPagamento(cardToken);
         String bin = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco),
                                                                               getResources().getString(R.string.string_vazia))
                                                 .substring(0, 7);
 
         AppCenterManager.registraEventoDeviceMP(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
         String salvarCartao = getSalvarCartao();
-        model.realizaCompraMercadoPago(bin, requestBody, salvarCartao,true, onMercadoPagoListener());
+        modelVeio.realizaCompraMercadoPago(bin, requestBody, salvarCartao, true, onMercadoPagoListener());
     }
 
     @NonNull
@@ -359,25 +407,46 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         startActivity(activity);
     }
 
+    private void checkEnableButton(){
+        if (camposInvalidos()){
+            btnAvancar.setEnabled(false);
+            btnAvancar.setBackgroundColor(getResources().getColor(R.color.cinzaDisable));
+        } else {
+            btnAvancar.setEnabled(true);
+            btnAvancar.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+        }
+    }
+
     private boolean camposInvalidos(){
-        String errorMessage = getString(R.string.msg_campos_em_branco);
         boolean invalido;
         invalido = (editTextAnoValidadeCartaoContent.getText().toString().trim().equals(getResources().getString(R.string.string_vazia)) ||
                 editTextMesValidadeCartaoContent.getText().toString().trim().equals(getResources().getString(R.string.string_vazia)) ||
                 editTextNumeroCartaoContent.getText().toString().trim().equals(getResources().getString(R.string.string_vazia)) ||
-                editTextCodigoSegurancaContent.getText().toString().trim().equals(getResources().getString(R.string.string_vazia)) ||
                 editTextNomeClienteCartaoContent.getText().toString().trim().equals(getResources().getString(R.string.string_vazia)));
         String textNumeroCartao = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia));
-        if(textNumeroCartao.length() < 15){
+        if(textNumeroCartao.length() < 16){
             invalido =  true ;
+        }
+
+        return invalido;
+    }
+
+    private void handleMsgError(){
+        String errorMessage = getString(R.string.msg_campos_em_branco);
+        boolean invalido = camposInvalidos();
+
+        String textNumeroCartao = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia));
+        if(textNumeroCartao.length() < 15){
+            invalido = true;
             errorMessage = getString(R.string.mercado_pago_numero_cartao_Incorreto);
         }
+
+
         if(invalido){
             ViewUtils.alertTitleButton(AdicionaCartaoActivity.this,
-									   R.string.label_atencao, errorMessage,
-									   AdicionaCartaoActivity.this.getResources().getString(R.string.ok));
+                                       R.string.label_atencao, errorMessage,
+                                       AdicionaCartaoActivity.this.getResources().getString(R.string.ok));
         }
-        return invalido;
     }
 
     private void apresentaTextCartoes() {

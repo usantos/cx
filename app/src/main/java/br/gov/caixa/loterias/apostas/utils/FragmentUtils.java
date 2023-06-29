@@ -9,8 +9,10 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
+import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
@@ -58,4 +60,9 @@ public class FragmentUtils {
 	}
 
 
+	public static CartaoCreditoFragment startCartaoCredito(FragmentManager fm, int id, CartaoCreditoConfig config) {
+		CartaoCreditoFragment fragment = CartaoCreditoFragment.newInstance(config);
+		FragmentUtils.startFragment(fm, id, fragment);
+		return fragment;
+	}
 }

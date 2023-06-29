@@ -103,8 +103,8 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
              }
         });
 
-        editTextLoterico.addTextChangedListener(MaskEditUtil.mask(editTextLoterico, MaskEditUtil.FORMAT_LOT));
-        editTextNumeroBilhete.addTextChangedListener(MaskEditUtil.mask(editTextNumeroBilhete, MaskEditUtil.FORMAT_NSBI));
+        editTextLoterico.addTextChangedListener(MaskEditUtil.mask(editTextLoterico, MaskEditUtil.FORMAT_LOT, null));
+        editTextNumeroBilhete.addTextChangedListener(MaskEditUtil.mask(editTextNumeroBilhete, MaskEditUtil.FORMAT_NSBI, null));
     }
 
     @Override

@@ -1073,7 +1073,7 @@
     <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>
     <string name="digitar_codigo">Digitar o código</string>
     <string name="tentar_novamente">Tentar novamente</string>
-    <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
+    <string name="como_voc_prefere_pagar">Preencha os dados de cartão de crédito de sua titularidade</string>
     <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a opção de sua preferência e preencher os dados do cartão de crédito</string>
     <string name="adicionar_cartao">Adicionar cartão</string>
     <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
