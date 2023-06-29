@@ -71,7 +71,12 @@
                 app:layout_constraintTop_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <include layout="@layout/fragment_cartao_verso"/>
+            <FrameLayout
+                android:id="@+id/containerCartaoVerso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                />
         </FrameLayout>
 
         <LinearLayout

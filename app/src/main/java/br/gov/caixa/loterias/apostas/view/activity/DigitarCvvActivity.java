@@ -23,9 +23,11 @@ import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.CartaoUtil;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
+import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 
 public class DigitarCvvActivity extends AppCompatActivity {
 
@@ -41,15 +43,17 @@ public class DigitarCvvActivity extends AppCompatActivity {
 	private EditText cvv1, cvv2, cvv3, cvv4;
 	private Button btnConfirmarCvv;
 
+	private CartaoCreditoVersoFragment fragment;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_digitar_cvv);
 		toolbar = findViewById(R.id.toolbar);
-
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.informarCvv)));
+
 		configMenu();
 
 		pegaExtras();
@@ -57,6 +61,7 @@ public class DigitarCvvActivity extends AppCompatActivity {
 		configEditTexto();
 		configButton();
 
+		fragment = FragmentUtils.startCartaoCreditoVerso(getSupportFragmentManager(), R.id.containerCartaoVerso, cartao.getNomeMetodoPagamento(), "");
 	}
 
 	private void configMenu() {
@@ -85,17 +90,7 @@ public class DigitarCvvActivity extends AppCompatActivity {
 	}
 
 	private void atualizaCartaoVerso() {
-
-		((AppCompatImageView) findViewById(R.id.imgBandeiraVerso)).setImageDrawable(CartaoUtil.getBandeira(this, cartao.getNomeMetodoPagamento()));
 		((TextView) findViewById(R.id.textoCartaoFinal)).setText(getString(R.string.cartaoFinal) +" " + cartao.getUltimosDigitos());
-
-		isAmex = false;
-		if (cartao.getNomeMetodoPagamento().equalsIgnoreCase("amex") ||
-			cartao.getNomeMetodoPagamento().equalsIgnoreCase("american express")) {
-
-			isAmex = true;
-			((TextView) findViewById(R.id.textoCVV)).setText(getString(R.string.xxx) + "X");
-		}
 	}
 
 	private void configEditTexto() {
