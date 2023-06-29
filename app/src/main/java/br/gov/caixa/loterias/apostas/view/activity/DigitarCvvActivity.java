@@ -25,15 +25,18 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.CartaoUtil;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 
 public class DigitarCvvActivity extends AppCompatActivity {
 
 	public static final String CARTAO = "CARTAO";
+	public static final String MEIO = "MEIO";
 
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
 
 	private RetornoCartao cartao;
+	private MeioPagamentoConfig config;
 	private boolean isAmex;
 	private EditText cvv1, cvv2, cvv3, cvv4;
 	private Button btnConfirmarCvv;
@@ -77,6 +80,7 @@ public class DigitarCvvActivity extends AppCompatActivity {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			cartao = (RetornoCartao) bundle.getSerializable(CARTAO);
+			config = (MeioPagamentoConfig) bundle.getSerializable(MEIO);
 		}
 	}
 
@@ -138,6 +142,7 @@ public class DigitarCvvActivity extends AppCompatActivity {
 			}
 			Intent intent = IntentUtil.getIntentOrigemDestino(this, ConfirmarCartaoActivity.class);
 			intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartao);
+			intent.putExtra(ConfirmarCartaoActivity.MEIO, config);
 			intent.putExtra(ConfirmarCartaoActivity.CVV, cvv);
 			startActivity(intent);
 		});

@@ -174,6 +174,7 @@ public class MeioPagamentoFragment extends Fragment {
 				//showDialogCVV(cartao);
 				Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApresentarCartaoActivity.class);
 				intent.putExtra(ApresentarCartaoActivity.CARTAO, cartao);
+				intent.putExtra(ApresentarCartaoActivity.MEIO, config);
 				startActivity(intent);
 			}
 
@@ -241,7 +242,8 @@ public class MeioPagamentoFragment extends Fragment {
 		int tamanhoCVV = userInput.getText().toString().length();
 		if (tamanhoCVV == 3 || tamanhoCVV == 4) {
 			if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-				requestBody = model.preencheDadosPagamentoCartaoSalvoMP(cartao, userInput.getText());
+				//requestBody = model.preencheDadosPagamentoCartaoSalvoMP(cartao, userInput.getText());
+				requestBody = model.preencheDadosPagamentoCartaoSalvoMP(cartao, userInput.getText().toString());
 				runOnUiThread(() -> AlertDialogUtils.show(getContext()));
 				model.realizaCompraMercadoPago(cartao.getPrimeirosDigitos(), requestBody, "false", false, onCompraAsyncListener());
 			} else {

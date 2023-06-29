@@ -17,15 +17,18 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.utils.CartaoUtil;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 
 public class ApresentarCartaoActivity extends AppCompatActivity {
 
 	public static final String CARTAO = "CARTAO";
+	public static final String MEIO = "MEIO";
 
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
 
 	private RetornoCartao cartao;
+	private MeioPagamentoConfig config;
 	private Button btnIncluirCodigo;
 
 	@Override
@@ -65,6 +68,7 @@ public class ApresentarCartaoActivity extends AppCompatActivity {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
 			cartao = (RetornoCartao) bundle.getSerializable(CARTAO);
+			config = (MeioPagamentoConfig) bundle.getSerializable(MEIO);
 		}
 	}
 
@@ -82,7 +86,8 @@ public class ApresentarCartaoActivity extends AppCompatActivity {
 		btnIncluirCodigo = findViewById(R.id.btnIncluirCodigo);
 		btnIncluirCodigo.setOnClickListener(v -> {
 			Intent intent = IntentUtil.getIntentOrigemDestino(this, DigitarCvvActivity.class);
-			intent.putExtra(ApresentarCartaoActivity.CARTAO, cartao);
+			intent.putExtra(DigitarCvvActivity.CARTAO, cartao);
+			intent.putExtra(DigitarCvvActivity.MEIO, config);
 			startActivity(intent);
 		});
 	}
