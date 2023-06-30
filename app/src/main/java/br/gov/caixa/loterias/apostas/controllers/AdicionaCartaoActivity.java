@@ -99,7 +99,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
                     text = text.substring(0,19);
                 }
                 fragment.atualizaNumero(text);
-                if (text.length() == 19 || (!text.contains(" ") && text.length() == 16)){
+                if (text.length() >= 18 || (!text.contains(" ") && text.length() >= 15)){
                     fragment.atualizaBandeira(new CartoesModel(AdicionaCartaoActivity.this).getBrand(text));
                 } else {
                     fragment.atualizaBandeira("");
@@ -264,7 +264,8 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         return new CartaoCreditoConfig(modelVeio.getBrand(editTextNumeroCartaoContent.getText().toString()),
                                        editTextNumeroCartaoContent.getText().toString(),
                                        editTextNomeClienteCartaoContent.getText().toString(),
-                                       editTextMesValidadeCartaoContent.getText().toString() + "//"+ editTextAnoValidadeCartaoContent.getText().toString(),
+                                       editTextMesValidadeCartaoContent.getText().toString(),
+                                       editTextAnoValidadeCartaoContent.getText().toString(),
                                        checkBoxSalvarCartao.isChecked());
     }
 

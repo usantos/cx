@@ -6,15 +6,17 @@ public class CartaoCreditoConfig implements Serializable {
 	private String nomeMetodo;
 	private String numero;
 	private String nomeTitular;
-	private String validade;
+	private String mes;
+	private String ano;
 	private boolean salvar;
 
 
-	public CartaoCreditoConfig(String nomeMetodo, String numero, String nomeTitular, String validade, boolean salvar) {
+	public CartaoCreditoConfig(String nomeMetodo, String numero, String nomeTitular, String mes, String ano, boolean salvar) {
 		this.nomeMetodo = nomeMetodo;
 		this.numero = numero;
 		this.nomeTitular = nomeTitular;
-		this.validade = validade;
+		this.mes = mes;
+		this.ano = ano;
 		this.salvar = salvar;
 	}
 
@@ -31,10 +33,18 @@ public class CartaoCreditoConfig implements Serializable {
 	}
 
 	public String getValidade() {
-		return validade;
+		return mes + "//" + ano;
 	}
 
 	public boolean isSalvar() {
 		return salvar;
+	}
+
+	public String getAno() {
+		return ano;
+	}
+
+	public String getMes() {
+		return mes;
 	}
 }

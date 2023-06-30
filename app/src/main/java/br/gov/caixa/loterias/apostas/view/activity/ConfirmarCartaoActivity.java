@@ -12,16 +12,24 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.VolleyError;
+import com.mercadopago.model.CardToken;
 
 import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.model.bo.RecargaPayConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CardHolderRecargaPay;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CartaoRecargaPayDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DataExpiracao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
@@ -116,11 +124,12 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 			return new CartaoCreditoConfig(cartaoSalvo.getNomeMetodoPagamento(),
 									getString(R.string.mascara_cartao_sem_ultimos_digitos) + "  " + cartaoSalvo.getUltimosDigitos(),
 									"-",
-									cartaoSalvo.getMesValidade() + "/"  + cartaoSalvo.getAnoValidade(),
+									String.valueOf(cartaoSalvo.getMesValidade()),
+										   String.valueOf(cartaoSalvo.getAnoValidade()),
 									false);
 		} else {
 			return new CartaoCreditoConfig(cartaoNovo.getNomeMetodo(),cartaoNovo.getNumero(),
-									cartaoNovo.getNomeTitular(), cartaoNovo.getValidade(),
+									cartaoNovo.getNomeTitular(), cartaoNovo.getMes(), cartaoNovo.getAno(),
 									cartaoNovo.isSalvar());
 		}
 	}
@@ -145,15 +154,96 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 	}
 
 	private void apostar() {
-		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-			requestBody = model.preencheDadosPagamentoCartaoSalvoMP(cartaoSalvo, cvv);
-			runOnUiThread(() -> AlertDialogUtils.show(this));
-			model.realizaCompraMercadoPago(cartaoSalvo.getPrimeirosDigitos(), requestBody, "false", false, onCompraAsyncListener());
+		runOnUiThread(() -> AlertDialogUtils.show(this));
+
+		if (cartaoSalvo != null){
+			if (model.isMercadoPago(config.getMeioPagamento().getValor())){
+				requestBody = model.preencheDadosPagamentoCartaoSalvoMP(cartaoSalvo, cvv);
+				realizaCompraMercadoPago(cartaoSalvo.getPrimeirosDigitos(), requestBody,"false",false);
+			} else {
+				model.recuperaTokenApostadorRecargaPay(onRecuperaTokenListener(cartaoSalvo, cvv));
+			}
 		} else {
-			runOnUiThread(() -> AlertDialogUtils.show(this));
-			//String cvv = userInput.getText().toString();
-			model.recuperaTokenApostadorRecargaPay(onRecuperaTokenListener(cartaoSalvo, cvv));
+			model.buscaMeioPagamento(config.getMeioPagamento().getValor(), onMeioPagamentoListener());
 		}
+	}
+
+	private OnSilceListener<MeioPagamentoDTO> onMeioPagamentoListener() {
+		return new OnSilceListener<MeioPagamentoDTO>() {
+			@Override
+			public void success(MeioPagamentoDTO payload) {
+				if (model.isMercadoPago(config.getMeioPagamento().getValor())){
+					CardToken cardToken = new CardToken(cartaoNovo.getNumero(),
+														Integer.valueOf(cartaoNovo.getMes()),
+														Integer.valueOf(cartaoNovo.getAno()),
+														cvv,
+														cartaoNovo.getNomeTitular(),
+														getResources().getString(R.string.cpf),
+														DadosUsuarioBO.obterCpf());
+					String requestBody = model.preencheDadosPagamento(cardToken);
+					String bin = cartaoNovo.getNumero().replace(getResources().getString(R.string.espaco_em_branco),
+																						  getResources().getString(R.string.string_vazia))
+															.substring(0, 7);
+
+					AppCenterManager.registraEventoDeviceMP(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
+					String salvarCartao = cartaoNovo.isSalvar() ? "true" : "false";
+					realizaCompraMercadoPago(bin, requestBody,salvarCartao,true);
+				} else {
+					realizaCompraRecargaPay();
+				}
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
+	}
+
+	private void realizaCompraRecargaPay() {
+		model.recuperaTokenApostadorRecargaPay(onRecuperaTokenCartaoNovoListener());
+	}
+
+	private OnSilceListener<String> onRecuperaTokenCartaoNovoListener() {
+		return new OnSilceListener<String>() {
+			@Override
+			public void success(String token) {
+				// chama servico para recuperar informacoes pro recargapay
+				model.buscaDadosPessoais(onDadosPessoaisListener(token));
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
+	}
+
+	private OnSilceListener<ApostadorDTO> onDadosPessoaisListener(String token) {
+		return new OnSilceListener<ApostadorDTO>() {
+			@Override
+			public void success(ApostadorDTO payload) {
+				model.realizaCompraRecargaPayNovoCartao(token, true,
+														model.getCartaoRecargaPay(payload,
+																				  cartaoNovo.getNumero(),
+																				  cartaoNovo.getMes(),
+																				  cartaoNovo.getAno(),
+																				  cvv,
+																				  cartaoNovo.isSalvar()),
+														onRecargaPayListener());
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
+	}
+
+
+
+	private void realizaCompraMercadoPago(String bin, String requestBody, String salvar, boolean isNovo) {
+		model.realizaCompraMercadoPago(bin, requestBody, salvar, isNovo, onCompraAsyncListener());
 	}
 
 	private OnCompraAsync onCompraAsyncListener() {

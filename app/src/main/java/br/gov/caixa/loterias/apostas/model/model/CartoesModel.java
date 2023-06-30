@@ -352,4 +352,20 @@ public class CartoesModel extends AppModel {
 		return cartoes;
 	}
 
+	public CartaoRecargaPayDTO getCartaoRecargaPay(ApostadorDTO dadosPessoais, String numero, String mes, String ano, String cvv, boolean isSalvar) {
+		CartaoRecargaPayDTO cartao = new CartaoRecargaPayDTO();
+		cartao.setType(RecargaPayConnection.CARTAO_TYPE);
+		cartao.setBrand(getBrand(numero));
+		cartao.setNumber(numero);
+
+		CardHolderRecargaPay cardHolder = getCardHolderRecargaPay(dadosPessoais);
+		cartao.setCardHolder(cardHolder);
+
+		DataExpiracao dataExpiracao = getDataExpiracao(mes, ano);
+		cartao.setDataExpiracao(dataExpiracao);
+
+		cartao.setSecurityCode(cvv);
+		cartao.setShouldSave(isSalvar);
+		return cartao;
+	}
 }
