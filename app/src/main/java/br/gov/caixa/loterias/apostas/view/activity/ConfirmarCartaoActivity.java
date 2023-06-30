@@ -14,40 +14,35 @@ import androidx.appcompat.widget.Toolbar;
 import com.android.volley.VolleyError;
 
 import java.util.Date;
-import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
-import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CartaoUtil;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
-import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
-import static com.microsoft.appcenter.utils.HandlerUtils.runOnUiThread;
 
 public class ConfirmarCartaoActivity extends AppCompatActivity {
 
-	public static final String CARTAO = "CARTAO";
+	public static final String CARTAO_SALVO = "CARTAO_SALVO";
+	public static final String CARTAO_NOVO = "CARTAO_NOVO";
 	public static final String MEIO = "MEIO";
 	public static final String CVV = "CVV";
 
@@ -57,10 +52,14 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 	private CartoesModel model;
 	private String requestBody;
 
-	private RetornoCartao cartao;
+	private RetornoCartao cartaoSalvo;
+	private CartaoCreditoConfig cartaoNovo;
 	private MeioPagamentoConfig config;
 	private String cvv;
 	private Button btnApostar;
+
+	private CartaoCreditoFragment cartaoFrenteFragment;
+	private CartaoCreditoVersoFragment cartaoVersoFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -101,25 +100,41 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 	private void pegaExtras() {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-			cartao = (RetornoCartao) bundle.getSerializable(CARTAO);
+			cartaoSalvo = (RetornoCartao) bundle.getSerializable(CARTAO_SALVO);
+			cartaoNovo = (CartaoCreditoConfig) bundle.getSerializable(CARTAO_NOVO);
 			config = (MeioPagamentoConfig) bundle.getSerializable(MEIO);
 			cvv = (String) bundle.getSerializable(CVV);
 		}
 	}
 
 	private void atualizaCartaoFrente() {
+		cartaoFrenteFragment = FragmentUtils.startCartaoCredito(getSupportFragmentManager(),R.id.containerCartaoFrente, getCartaoFrenteConfig());
+	}
 
-		((AppCompatImageView) findViewById(R.id.imgBandeiraCartao)).setImageDrawable(CartaoUtil.getBandeira(this, cartao.getNomeMetodoPagamento()));
-
-		((TextView) findViewById(R.id.textoNumero)).setText(getString(R.string.mascara_cartao_sem_ultimos_digitos) + "  " + cartao.getUltimosDigitos());
-
-		((TextView) findViewById(R.id.textoValidMesAno)).setText(cartao.getMesValidade() + "/"  + cartao.getAnoValidade());
-
+	private CartaoCreditoConfig getCartaoFrenteConfig() {
+		if (cartaoSalvo != null){
+			return new CartaoCreditoConfig(cartaoSalvo.getNomeMetodoPagamento(),
+									getString(R.string.mascara_cartao_sem_ultimos_digitos) + "  " + cartaoSalvo.getUltimosDigitos(),
+									"-",
+									cartaoSalvo.getMesValidade() + "/"  + cartaoSalvo.getAnoValidade(),
+									false);
+		} else {
+			return new CartaoCreditoConfig(cartaoNovo.getNomeMetodo(),cartaoNovo.getNumero(),
+									cartaoNovo.getNomeTitular(), cartaoNovo.getValidade(),
+									cartaoNovo.isSalvar());
+		}
 	}
 
 	private void atualizaCartaoVerso() {
-		((AppCompatImageView) findViewById(R.id.imgBandeiraVerso)).setImageDrawable(CartaoUtil.getBandeira(this, cartao.getNomeMetodoPagamento()));
-		((TextView) findViewById(R.id.textoCVV)).setText(cvv);
+		cartaoVersoFragment = FragmentUtils.startCartaoCreditoVerso(getSupportFragmentManager(), R.id.containerCartaoVerso, getMetodo(), cvv);
+	}
+
+	private String getMetodo() {
+		if (cartaoSalvo != null){
+			return cartaoSalvo.getNomeMetodoPagamento();
+		} else {
+			return cartaoNovo.getNomeMetodo();
+		}
 	}
 
 	private void configButton() {
@@ -131,13 +146,13 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 
 	private void apostar() {
 		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-			requestBody = model.preencheDadosPagamentoCartaoSalvoMP(cartao, cvv);
+			requestBody = model.preencheDadosPagamentoCartaoSalvoMP(cartaoSalvo, cvv);
 			runOnUiThread(() -> AlertDialogUtils.show(this));
-			model.realizaCompraMercadoPago(cartao.getPrimeirosDigitos(), requestBody, "false", false, onCompraAsyncListener());
+			model.realizaCompraMercadoPago(cartaoSalvo.getPrimeirosDigitos(), requestBody, "false", false, onCompraAsyncListener());
 		} else {
 			runOnUiThread(() -> AlertDialogUtils.show(this));
 			//String cvv = userInput.getText().toString();
-			model.recuperaTokenApostadorRecargaPay(onRecuperaTokenListener(cartao, cvv));
+			model.recuperaTokenApostadorRecargaPay(onRecuperaTokenListener(cartaoSalvo, cvv));
 		}
 	}
 

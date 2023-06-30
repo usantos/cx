@@ -50,32 +50,20 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <FrameLayout
-            android:id="@+id/fragmentConfirmarCartao"
+            android:id="@+id/containerCartaoFrente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textoMensagemConfirmar">
-
-            <include
-                layout="@layout/fragment_cartao_credito"
-                android:layout_height="240dp"
-                android:layout_width="match_parent" />
-        </FrameLayout>
+            app:layout_constraintTop_toBottomOf="@+id/textoMensagemConfirmar"/>
 
         <FrameLayout
-            android:id="@+id/fragmentConfirmarVerso"
+            android:id="@+id/containerCartaoVerso"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmarCartao">
-
-            <include layout="@layout/fragment_cartao_verso"
-                android:layout_height="240dp"
-                android:layout_width="wrap_content"
-                />
-        </FrameLayout>
+            app:layout_constraintTop_toBottomOf="@+id/containerCartaoFrente"/>
 
         <Button
             android:id="@+id/btnApostar"
@@ -89,11 +77,12 @@
             android:textSize="17sp"
             android:textStyle="bold"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentConfirmarVerso"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/containerCartaoVerso"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

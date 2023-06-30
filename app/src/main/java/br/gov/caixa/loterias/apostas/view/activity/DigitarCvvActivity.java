@@ -153,9 +153,9 @@ public class DigitarCvvActivity extends AppCompatActivity {
 			}
 			Intent intent = IntentUtil.getIntentOrigemDestino(this, ConfirmarCartaoActivity.class);
 			if (cartaoSalvo != null){
-				intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartaoSalvo);
+				intent.putExtra(ConfirmarCartaoActivity.CARTAO_SALVO, cartaoSalvo);
 			} else {
-				intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartaoNovo);
+				intent.putExtra(ConfirmarCartaoActivity.CARTAO_NOVO, cartaoNovo);
 			}
 			intent.putExtra(ConfirmarCartaoActivity.MEIO, config);
 			intent.putExtra(ConfirmarCartaoActivity.CVV, cvv);
