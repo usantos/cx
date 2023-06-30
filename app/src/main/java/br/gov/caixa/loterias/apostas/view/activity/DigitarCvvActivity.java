@@ -4,40 +4,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.CartaoUtil;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 
 public class DigitarCvvActivity extends AppCompatActivity {
 
-	public static final String CARTAO = "CARTAO";
+	public static final String CARTAO_SALVO = "CARTAO_SALVO";
+	public static final String CARTAO_NOVO = "CARTAO_NOVO";
 	public static final String MEIO = "MEIO";
 
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
 
-	private RetornoCartao cartao;
+	private RetornoCartao cartaoSalvo;
+	private CartaoCreditoConfig cartaoNovo;
 	private MeioPagamentoConfig config;
 	private boolean isAmex;
 	private EditText cvv1, cvv2, cvv3, cvv4;
@@ -61,7 +57,15 @@ public class DigitarCvvActivity extends AppCompatActivity {
 		configEditTexto();
 		configButton();
 
-		fragment = FragmentUtils.startCartaoCreditoVerso(getSupportFragmentManager(), R.id.containerCartaoVerso, cartao.getNomeMetodoPagamento(), "");
+		fragment = FragmentUtils.startCartaoCreditoVerso(getSupportFragmentManager(), R.id.containerCartaoVerso, getNomeMetodoPagamento(), "");
+	}
+
+	private String getNomeMetodoPagamento() {
+		if (cartaoSalvo != null){
+			return cartaoSalvo.getNomeMetodoPagamento();
+		} else {
+			return cartaoNovo.getNomeMetodo();
+		}
 	}
 
 	private void configMenu() {
@@ -84,13 +88,26 @@ public class DigitarCvvActivity extends AppCompatActivity {
 	private void pegaExtras() {
 		Bundle bundle = getIntent().getExtras();
 		if (bundle != null) {
-			cartao = (RetornoCartao) bundle.getSerializable(CARTAO);
 			config = (MeioPagamentoConfig) bundle.getSerializable(MEIO);
+			cartaoSalvo = (RetornoCartao) bundle.getSerializable(CARTAO_SALVO);
+			cartaoNovo = (CartaoCreditoConfig)  bundle.getSerializable(CARTAO_NOVO);
 		}
 	}
 
 	private void atualizaCartaoVerso() {
-		((TextView) findViewById(R.id.textoCartaoFinal)).setText(getString(R.string.cartaoFinal) +" " + cartao.getUltimosDigitos());
+		((TextView) findViewById(R.id.textoCartaoFinal)).setText(getFinalCartao());
+	}
+
+	private String getFinalCartao() {
+		if (cartaoSalvo != null){
+			return getString(R.string.cartaoFinal) +" " + cartaoSalvo.getUltimosDigitos();
+		} else {
+			if (cartaoNovo.getNumero().length() == 19){
+				return getString(R.string.cartaoFinal) +" " + cartaoNovo.getNumero().substring(15,19);
+			} else {
+				return getString(R.string.cartaoFinal) +" " + cartaoNovo.getNumero().substring(12,16);
+			}
+		}
 	}
 
 	private void configEditTexto() {
@@ -111,7 +128,6 @@ public class DigitarCvvActivity extends AppCompatActivity {
 			mudaFocoProximo(cvv4, cvv4);
 		}
 	}
-
 
 	private void mudaFocoProximo(EditText currentEditText, EditText nextEditText) {
 		currentEditText.addTextChangedListener(new TextWatcher() {
@@ -136,7 +152,11 @@ public class DigitarCvvActivity extends AppCompatActivity {
 				cvv += cvv4.getText().toString();
 			}
 			Intent intent = IntentUtil.getIntentOrigemDestino(this, ConfirmarCartaoActivity.class);
-			intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartao);
+			if (cartaoSalvo != null){
+				intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartaoSalvo);
+			} else {
+				intent.putExtra(ConfirmarCartaoActivity.CARTAO, cartaoNovo);
+			}
 			intent.putExtra(ConfirmarCartaoActivity.MEIO, config);
 			intent.putExtra(ConfirmarCartaoActivity.CVV, cvv);
 			startActivity(intent);

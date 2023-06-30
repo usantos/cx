@@ -44,9 +44,12 @@ import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.DigitarCvvActivity;
+import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
@@ -245,7 +248,11 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
             if(!camposInvalidos()){
 //                showLoading();
 //                model.buscaMeioPagamento(config.getMeioPagamento().getValor(), onMeioPagamentoListener());
-                TestVisao.toast("Precisa implementar/juntar com tela do CVV");
+
+                Intent intent = IntentUtil.getIntentOrigemDestino(AdicionaCartaoActivity.this, DigitarCvvActivity.class);
+                intent.putExtra(DigitarCvvActivity.CARTAO_NOVO, getCartaoCredito());
+                intent.putExtra(DigitarCvvActivity.MEIO, config);
+                startActivity(intent);
             } else {
                 handleMsgError();
             }
@@ -255,6 +262,13 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         voltar.setOnClickListener(v -> finish());
 
         btnAvancar.setEnabled(camposInvalidos());
+    }
+
+    private CartaoCreditoConfig getCartaoCredito() {
+        return new CartaoCreditoConfig(modelVeio.getBrand(editTextNumeroCartaoContent.getText().toString()),
+                                       editTextNumeroCartaoContent.getText().toString(),
+                                 editTextNomeClienteCartaoContent.getText().toString(),
+                                 editTextMesValidadeCartaoContent.getText().toString() + "//"+ editTextAnoValidadeCartaoContent.getText().toString());
     }
 
     private OnSilceListener<MeioPagamentoDTO> onMeioPagamentoListener() {

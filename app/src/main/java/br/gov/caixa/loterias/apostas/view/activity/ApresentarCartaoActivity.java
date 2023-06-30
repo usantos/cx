@@ -86,7 +86,7 @@ public class ApresentarCartaoActivity extends AppCompatActivity {
 		btnIncluirCodigo = findViewById(R.id.btnIncluirCodigo);
 		btnIncluirCodigo.setOnClickListener(v -> {
 			Intent intent = IntentUtil.getIntentOrigemDestino(this, DigitarCvvActivity.class);
-			intent.putExtra(DigitarCvvActivity.CARTAO, cartao);
+			intent.putExtra(DigitarCvvActivity.CARTAO_SALVO, cartao);
 			intent.putExtra(DigitarCvvActivity.MEIO, config);
 			startActivity(intent);
 		});
