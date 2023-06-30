@@ -32,6 +32,7 @@ public class CartaoUtil {
 				return context.getDrawable(R.drawable.ic_bandeira_elo);
 			case "amex":
 			case "american express":
+			case "americanexpress":
 				drawable = context.getDrawable(R.drawable.ic_american);
 				drawable.setColorFilter(porterDuffColorFilter);
 				return drawable;

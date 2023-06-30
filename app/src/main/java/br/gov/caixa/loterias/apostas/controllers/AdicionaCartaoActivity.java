@@ -99,7 +99,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
                     text = text.substring(0,19);
                 }
                 fragment.atualizaNumero(text);
-                if (text.length() >= 18 || (!text.contains(" ") && text.length() >= 15)){
+                if (text.length() >= 17 || (!text.contains(" ") && text.length() >= 15)){
                     fragment.atualizaBandeira(new CartoesModel(AdicionaCartaoActivity.this).getBrand(text));
                 } else {
                     fragment.atualizaBandeira("");
