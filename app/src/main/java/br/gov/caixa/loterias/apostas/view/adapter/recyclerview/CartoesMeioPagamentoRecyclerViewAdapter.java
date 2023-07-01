@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -18,6 +19,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCartaoMeioPagamentoListener
 public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapter<CartaoMeioPagamentoHolder> {
 
     public List<RetornoCartao> lista;
+    public List<RetornoCartao> listaApresentada;
     private Context context;
     private OnCartaoMeioPagamentoListener listener;
 
@@ -25,6 +27,7 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
         this.context = context;
         this.lista = cartoes;
         this.listener = listener;
+        mostrarMenos();
     }
 
     @NonNull
@@ -36,22 +39,22 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
 
     @Override
     public void onBindViewHolder(@NonNull CartaoMeioPagamentoHolder holder, int position) {
-        if (lista.size() <= 1){
+        if (listaApresentada.size() <= 1){
             holder.showButtonFav(false);
-            if (lista.size() == 1){
-                lista.get(0).setFav(false);
+            if (listaApresentada.size() == 1){
+                listaApresentada.get(0).setFav(false);
             }
         } else {
             holder.showButtonFav(false);
         }
 
-        RetornoCartao cartao = lista.get(position);
+        RetornoCartao cartao = listaApresentada.get(position);
         holder.bind(cartao, position);
     }
 
     @Override
     public int getItemCount() {
-        return lista == null ? 0 : lista.size();
+        return listaApresentada == null ? 0 : listaApresentada.size();
     }
 
     public void atualizaCartaoFavorito(RetornoCartao retornoCartao) {
@@ -65,8 +68,40 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
         notifyDataSetChanged();
     }
 
-    public void setLista(List<RetornoCartao> cartoes) {
-        this.lista = cartoes;
+    public void mostrarTodos() {
+        limparLista();
+
+        listaApresentada.addAll(lista);
+
         notifyDataSetChanged();
+    }
+
+    public void mostrarMenos() {
+        limparLista();
+
+        if (lista != null && !lista.isEmpty()){
+            if (lista.size() > 2){
+                listaApresentada.add(lista.get(0));
+                listaApresentada.add(lista.get(1));
+            } else {
+                for (int i = 0; i<lista.size();i++){
+                    listaApresentada.add(lista.get(i));
+                }
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+
+    private void limparLista() {
+        if (listaApresentada != null) {
+            listaApresentada.clear();
+        } else {
+            listaApresentada = new ArrayList<>();
+        }
+    }
+
+    public boolean temMaisPraMostrar() {
+        return lista.size() > 2;
     }
 }
