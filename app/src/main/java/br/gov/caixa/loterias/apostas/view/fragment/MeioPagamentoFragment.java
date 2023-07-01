@@ -205,9 +205,15 @@ public class MeioPagamentoFragment extends Fragment {
 			public void success(List<RetornoCartao> payload) {
 				AlertDialogUtils.dismiss();
 				cartoes.remove(position);
-				adapter.notifyDataSetChanged();
+				adapter.atualizaLista();
 				if (cartoes.isEmpty()){
 					setSemCartao();
+				}
+
+				if (adapter.temMaisPraMostrar()) {
+					btnListaMaisMenos.setVisibility(View.VISIBLE);
+				} else {
+					btnListaMaisMenos.setVisibility(View.GONE);
 				}
 			}
 

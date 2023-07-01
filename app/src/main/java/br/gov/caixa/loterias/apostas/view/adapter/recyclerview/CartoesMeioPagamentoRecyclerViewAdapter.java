@@ -22,6 +22,7 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
     public List<RetornoCartao> listaApresentada;
     private Context context;
     private OnCartaoMeioPagamentoListener listener;
+    private boolean mostrandoMais;
 
     public CartoesMeioPagamentoRecyclerViewAdapter(List<RetornoCartao> cartoes, Context context, OnCartaoMeioPagamentoListener listener){
         this.context = context;
@@ -73,6 +74,7 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
 
         listaApresentada.addAll(lista);
 
+        mostrandoMais = true;
         notifyDataSetChanged();
     }
 
@@ -90,6 +92,7 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
             }
         }
 
+        mostrandoMais = false;
         notifyDataSetChanged();
     }
 
@@ -103,5 +106,13 @@ public class CartoesMeioPagamentoRecyclerViewAdapter extends RecyclerView.Adapte
 
     public boolean temMaisPraMostrar() {
         return lista.size() > 2;
+    }
+
+    public void atualizaLista() {
+        if (mostrandoMais){
+            mostrarTodos();
+        } else {
+            mostrarMenos();
+        }
     }
 }
