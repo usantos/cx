@@ -57,8 +57,6 @@ public class MeioPagamentoFragment extends Fragment {
 	private static final String ARG_CONFIG = "ARG_CONFIG";
 
 	private View view;
-	//private View margem;
-	//private ConstraintLayout cabecalho;
 	private AppCompatImageView imagem;
 	private AppCompatImageView imgBandeira1;
 	private AppCompatImageView imgBandeira2;
@@ -328,6 +326,9 @@ public class MeioPagamentoFragment extends Fragment {
 
 				cartoes.remove(position);
 				adapter.notifyDataSetChanged();
+				if (cartoes.isEmpty()){
+					setSemCartao();
+				}
 			}
 
 			@Override
