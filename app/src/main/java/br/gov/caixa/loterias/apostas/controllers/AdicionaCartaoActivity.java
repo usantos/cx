@@ -74,7 +74,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
                     text = text.substring(0,19);
                 }
                 fragment.atualizaNumero(text);
-                if (text.length() >= 17 || (!text.contains(" ") && text.length() >= 15)){
+                if (text.length() >= 16 || (!text.contains(" ") && text.length() >= 14)){
                     fragment.atualizaBandeira(new CartoesModel(AdicionaCartaoActivity.this).getBrand(text));
                 } else {
                     fragment.atualizaBandeira("");
@@ -245,7 +245,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
                 editTextNumeroCartaoContent.getText().toString().trim().equals(getResources().getString(R.string.string_vazia)) ||
                 editTextNomeClienteCartaoContent.getText().toString().trim().equals(getResources().getString(R.string.string_vazia)));
         String textNumeroCartao = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia));
-        if(textNumeroCartao.length() < 15){
+        if(textNumeroCartao.length() < 14){
             invalido =  true ;
         }
 
@@ -257,7 +257,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         boolean invalido = camposInvalidos();
 
         String textNumeroCartao = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia));
-        if(textNumeroCartao.length() < 15){
+        if(textNumeroCartao.length() < 14){
             invalido = true;
             errorMessage = getString(R.string.mercado_pago_numero_cartao_Incorreto);
         }
