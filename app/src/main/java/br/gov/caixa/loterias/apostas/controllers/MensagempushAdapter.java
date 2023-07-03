@@ -1,9 +1,11 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,10 +17,11 @@ import br.gov.caixa.loterias.apostas.R;
 
 public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapter.MessageViewHolder> {
     private List<MessagePush> mensagensList;
-
+    private SparseBooleanArray expandedPositions;
 
     public MensagempushAdapter(List<MessagePush> mensagensList) {
         this.mensagensList = mensagensList;
+        this.expandedPositions = new SparseBooleanArray();
     }
 
     public void setMensagensList(List<MessagePush> mensagensList) {
@@ -28,13 +31,13 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_msg_push, parent, false);
-        return new MessageViewHolder(view);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_msg_push, parent, false);
+        return new MessageViewHolder(itemView);
     }
 
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         MessagePush message = mensagensList.get(position);
-        holder.bind(message);
+        holder.bind(message, position);
     }
 
     @Override
@@ -42,12 +45,12 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         return mensagensList != null ? mensagensList.size() : 0;
     }
 
-    static class MessageViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView iconImageView;
-        private final TextView titleTextView;
-        private final TextView contentTextView;
-        private final TextView dateTextView;
-
+    class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private ImageView iconImageView;
+        private TextView titleTextView;
+        private TextView contentTextView;
+        private TextView dateTextView;
+        private LinearLayout expandedLayout;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -55,13 +58,29 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             titleTextView = itemView.findViewById(R.id.titulo_msgpush);
             contentTextView = itemView.findViewById(R.id.mensagem_texto);
             dateTextView = itemView.findViewById(R.id.data_texto);
+            expandedLayout = itemView.findViewById(R.id.expandedLayout);
+
+            expandedLayout.setOnClickListener(this);
         }
 
-        public void bind(MessagePush mensagensList) {
+        public void bind(MessagePush mensagensList, int position) {
             iconImageView.setImageResource(mensagensList.getIcon());
             titleTextView.setText(mensagensList.getTitulo());
             contentTextView.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
+
+            boolean isExpanded = expandedPositions.get(position, false);
+            expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+
+            boolean isExpanded = expandedPositions.get(position, false);
+            expandedPositions.put(position, !isExpanded);
+
+            notifyDataSetChanged();
         }
     }
 }
