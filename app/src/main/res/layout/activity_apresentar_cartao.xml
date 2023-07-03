@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="@string/confirmarCartao"
+            android:text="@string/confirmarDados"
             android:textColor="@color/azul_alterar"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -47,7 +47,8 @@
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/textoConfirmarCartao"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"/>
 
         <FrameLayout
             android:id="@+id/fragmentConfirmarCartao"
