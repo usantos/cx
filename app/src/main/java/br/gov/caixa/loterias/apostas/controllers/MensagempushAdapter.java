@@ -38,6 +38,9 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         MessagePush message = mensagensList.get(position);
         holder.bind(message, position);
+
+        boolean isExpanded = expandedPositions.get(position, false);
+        holder.setExpanded(isExpanded);
     }
 
     @Override
@@ -63,7 +66,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             expandedLayout.setOnClickListener(this);
         }
 
-        public void bind(MessagePush mensagensList, int position) {
+        public void bind(@NonNull MessagePush mensagensList, int position) {
             iconImageView.setImageResource(mensagensList.getIcon());
             titleTextView.setText(mensagensList.getTitulo());
             contentTextView.setText(mensagensList.getConteudo());
@@ -73,14 +76,19 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         }
 
+        public void setExpanded(boolean expanded) {
+            expandedLayout.setVisibility(expanded ? View.VISIBLE : View.GONE);
+        }
+
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
 
-            boolean isExpanded = expandedPositions.get(position, false);
-            expandedPositions.put(position, !isExpanded);
-
-            notifyDataSetChanged();
+            if(position != RecyclerView.NO_POSITION) {
+                boolean isExpanded = expandedPositions.get(position, false);
+                expandedPositions.put(position, !isExpanded);
+                setExpanded(!isExpanded);
+            }
         }
     }
 }
