@@ -74,11 +74,11 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             dateTextView.setText(mensagensList.getData());
 
             boolean isExpanded = expandedPositions.get(position, false);
-            expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+            expandedLayout.setVisibility(View.VISIBLE);
         }
 
         public void setExpanded(boolean expanded) {
-            expandedLayout.setVisibility(expanded ? View.VISIBLE : View.GONE);
+            expandedLayout.setVisibility(View.VISIBLE);
         }
 
         @Override
