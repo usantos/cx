@@ -101,10 +101,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCentralMsg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/tab_layout"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="#FFFFFF"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_msg_push" />
 
 </RelativeLayout>

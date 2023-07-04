@@ -52,6 +52,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         private ImageView iconImageView;
         private TextView titleTextView;
         private TextView contentTextView;
+        private TextView text_preview;
         private TextView dateTextView;
         private LinearLayout expandedLayout;
 
@@ -62,6 +63,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             contentTextView = itemView.findViewById(R.id.mensagem_texto);
             dateTextView = itemView.findViewById(R.id.data_texto);
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
+            text_preview = itemView.findViewById(R.id.text_preview);
 
             itemView.setOnClickListener(this);
         }
@@ -70,15 +72,18 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             iconImageView.setImageResource(mensagensList.getIcon());
             titleTextView.setText(mensagensList.getTitulo());
             TextView contentTextView = expandedLayout.findViewById(R.id.mensagem_texto);
-            contentTextView.setText(itemView.getContentDescription());
+            text_preview.setText(mensagensList.getConteudo());
+            contentTextView.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
 
             boolean isExpanded = expandedPositions.get(position, false);
-            expandedLayout.setVisibility(View.VISIBLE);
+
+            expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         }
 
         public void setExpanded(boolean expanded) {
-            expandedLayout.setVisibility(View.VISIBLE);
+            text_preview.setVisibility(!expanded ? View.VISIBLE : View.GONE);
+            expandedLayout.setVisibility(expanded ? View.VISIBLE : View.GONE);
         }
 
         @Override
