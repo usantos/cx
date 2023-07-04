@@ -63,13 +63,14 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             dateTextView = itemView.findViewById(R.id.data_texto);
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
 
-            expandedLayout.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(@NonNull MessagePush mensagensList, int position) {
             iconImageView.setImageResource(mensagensList.getIcon());
             titleTextView.setText(mensagensList.getTitulo());
-            contentTextView.setText(mensagensList.getConteudo());
+            TextView contentTextView = expandedLayout.findViewById(R.id.mensagem_texto);
+            contentTextView.setText(itemView.getContentDescription());
             dateTextView.setText(mensagensList.getData());
 
             boolean isExpanded = expandedPositions.get(position, false);
