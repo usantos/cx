@@ -77,7 +77,7 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.confirmarCartao)));
+		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.confirmarDadosCartao)));
 		configMenu();
 
 		model = new CartoesModel(this);

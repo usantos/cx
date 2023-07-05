@@ -33,8 +33,9 @@ public class CartaoUtil {
 			case "amex":
 			case "american express":
 			case "americanexpress":
-				drawable = context.getDrawable(R.drawable.ic_american);
-				drawable.setColorFilter(porterDuffColorFilter);
+				//drawable = context.getDrawable(R.drawable.ic_american);
+				drawable = context.getDrawable(R.drawable.ic_bandeira_amex2);
+				//drawable.setColorFilter(porterDuffColorFilter);
 				return drawable;
 			default:
 				return context.getDrawable(R.drawable.cartao_cvc);

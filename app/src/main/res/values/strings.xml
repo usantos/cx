@@ -1159,7 +1159,7 @@
     <string name="cartaoFinal">cartão final</string>
     <string name="confirmarCvv">Confirmar</string>
     <string name="apostar">Apostar</string>
-    <string name="confirmarDadosCartao">Confirmar dados do cartão</string>
+    <string name="confirmarDadosCartao">_Confirmar dados do cartão_</string>
     <string name="confirmarDigitado">Confirme os dados digitados</string>
 
 </resources>

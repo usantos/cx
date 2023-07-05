@@ -16,6 +16,7 @@ import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.utils.CartaoUtil;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 
@@ -78,7 +79,7 @@ public class ApresentarCartaoActivity extends AppCompatActivity {
 
 		((TextView) findViewById(R.id.textoNumero)).setText(getString(R.string.mascara_cartao_sem_ultimos_digitos) + "  " + cartao.getUltimosDigitos());
 
-		((TextView) findViewById(R.id.textoValidMesAno)).setText(cartao.getMesValidade() + "/"  + cartao.getAnoValidade());
+		((TextView) findViewById(R.id.textoValidMesAno)).setText(StringUtils.padZeroLeft(cartao.getMesValidade().intValue(),2) + "/"  + cartao.getAnoValidade());
 
 	}
 
