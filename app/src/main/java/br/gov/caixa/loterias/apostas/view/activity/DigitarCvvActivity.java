@@ -96,6 +96,14 @@ public class DigitarCvvActivity extends AppCompatActivity {
 
 	private void atualizaCartaoVerso() {
 		((TextView) findViewById(R.id.textoCartaoFinal)).setText(getFinalCartao());
+
+		isAmex = false;
+		if (getNomeMetodoPagamento().equalsIgnoreCase("amex") ||
+			getNomeMetodoPagamento().equalsIgnoreCase("american express") ||
+			getNomeMetodoPagamento().equalsIgnoreCase("americanexpress")) {
+			isAmex = true;
+		}
+
 	}
 
 	private String getFinalCartao() {
