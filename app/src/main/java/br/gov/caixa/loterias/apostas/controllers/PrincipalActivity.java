@@ -5,11 +5,11 @@ import android.Manifest;
 import android.animation.AnimatorSet;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
@@ -19,8 +19,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.net.Uri;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,7 +51,11 @@ import org.androidannotations.annotations.ViewById;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -167,6 +169,8 @@ public class PrincipalActivity extends AppCompatActivity
     private Handler handlerDelayNotificacao;
     private boolean precisaBuscarRepasses = true;
     private static int contRegressivo = 1;
+    private int anInt;
+    private int ano;
 
     @AfterViews
     public void init() {
@@ -481,7 +485,20 @@ public class PrincipalActivity extends AppCompatActivity
         valorRepassesPrincipal.setText(getResources().getString(R.string.zero));
 
         tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
-        textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_repassados_boas_causas_bold)));
+        Date data = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = null;
+        try {
+            date = dateFormat.parse(repassesSociais.getDataBase());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        ano = calendar.get(Calendar.YEAR);
+
+        textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this,
+                String.format(getString(R.string.label_repassados_boas_causas_bold).replace("{ano_repassometro}", String.valueOf(ano)))));
         AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, repassesSociais);
     }
 
@@ -505,14 +522,15 @@ public class PrincipalActivity extends AppCompatActivity
                         }
                     });
                 }
-                actionSettings = toolbar.findViewById(R.id.action_settings);
-                if (actionSettings != null) {
-                    toolbar.removeOnLayoutChangeListener(this);
-                    actionSettings.setOnClickListener(view -> {
-                        Intent activity = new Intent(PrincipalActivity.this, TermosUsoActivity.class);
-                        startActivity(activity);
-                    });
-                }
+//Alterado para chamar pelo menu lateral
+//                actionSettings = toolbar.findViewById(R.id.action_settings);
+//                if (actionSettings != null) {
+//                    toolbar.removeOnLayoutChangeListener(this);
+//                    actionSettings.setOnClickListener(view -> {
+//                        Intent activity = new Intent(PrincipalActivity.this, TermosUsoActivity.class);
+//                        startActivity(activity);
+//                    });
+//                }
             }
         });
     }
@@ -731,6 +749,10 @@ public class PrincipalActivity extends AppCompatActivity
                 break;
             case 5: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
                 break;
+            case 6: startActivity(new Intent(PrincipalActivity.this, TermosAceiteActivity.class));
+                break;
+            case 7: startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
+                break;
 
             default:
                 break;
@@ -744,7 +766,7 @@ public class PrincipalActivity extends AppCompatActivity
             trataMenuSemMinhasApostas(itemPosition);       }
 
         sideMenuExpandableListView.collapseGroup(0);
-        drawerLayout.closeDrawer(Gravity.START, false);
+        drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
     private void tratarMenuCompleto(int itemPosition) {

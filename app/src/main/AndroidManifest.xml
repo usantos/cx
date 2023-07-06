@@ -13,16 +13,17 @@
 
     <!--  Permission to Topaz OFD  -->
     <!--  permissoes ja utilizadas INTERNET, ACCESS_NETWORK_STATE, ACCESS_FINE_LOCATION  -->
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
-    <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -40,7 +41,7 @@
         <activity
             android:name=".WebViewActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false" />
+            android:exported="false"></activity>
         <activity
             android:name=".TutorialMaisMilionariaActivity"
             android:screenOrientation="portrait"
@@ -120,6 +121,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="loteriasonline.caixa.gov.br" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".controllers.IntroducaoActivity"
@@ -167,6 +178,21 @@
             android:name=".view.activity.FormaPagamentoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.ApresentarCartaoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"  />
+        <activity
+            android:name=".view.activity.DigitarCvvActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"  />
+        <activity
+            android:name=".view.activity.ConfirmarCartaoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"  />
         <activity
             android:name=".controllers.ConfirmacaoPagamentoActivity"
@@ -190,9 +216,22 @@
             android:name=".controllers.PrincipalActivity_"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.BrancoActionBar" />
+            android:theme="@style/AppTheme.BrancoActionBar"
+            android:exported="true"></activity>
         <activity
             android:name=".controllers.TermosUsoActivity"
+            android:label="@string/title_activity_termos_uso"
+            android:parentActivityName=".controllers.PrincipalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".controllers.TermosAceiteActivity"
+            android:label="@string/title_activity_termos_uso"
+            android:parentActivityName=".controllers.PrincipalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar" />
+        <activity
+            android:name=".controllers.DuvidasActivity"
             android:label="@string/title_activity_termos_uso"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
@@ -213,6 +252,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.gov.caixa.loterias.apostas.controllers.PrincipalActivity" />
         </activity>
+        <!-- Bloquada para zerar erro no AndroidManifest
         <activity
             android:name=".controllers.RapidaoConfigActivity_"
             android:label="@string/title_activity_lista_rapidao"
@@ -224,6 +264,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.gov.caixa.loterias.apostas.controllers.ListaRapidaoActivity" />
         </activity>
+        -->
         <activity
             android:name=".controllers.SelecaoModalidadesRapidaoActivity"
             android:label="@string/title_activity_lista_rapidao"
@@ -253,7 +294,8 @@
             android:name=".controllers.ListaComprasActivity"
             android:label="@string/title_activity_lista_compras"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar" />
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:exported="true"></activity>
         <activity
             android:name=".controllers.LerBilhetesActivity"
             android:screenOrientation="portrait"
@@ -293,7 +335,8 @@
             android:label="@string/title_activity_minhas_apostas"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar">
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:screenOrientation="portrait"
@@ -361,6 +404,7 @@
                     android:scheme="${scheme}" />
             </intent-filter>
         </activity>
+        <!-- Bloquada para zerar erro no AndroidManifest
         <activity
             android:name=".controllers.RapidaoApostaFavoritasSelecaoActivity"
             android:label="@string/title_activity_lista_rapidao"
@@ -371,6 +415,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.gov.caixa.loterias.apostas.controllers.RapidaoConfigActivity_" />
         </activity>
+        -->
         <activity android:name="com.queue_it.androidsdk.QueueActivity" />
 
         <provider

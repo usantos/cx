@@ -89,7 +89,8 @@ public class CartoesModel extends AppModel {
 		});
 	}
 
-	public String preencheDadosPagamentoCartaoSalvoMP(RetornoCartao cartao, Editable securityCode) {
+	//public String preencheDadosPagamentoCartaoSalvoMP(RetornoCartao cartao, Editable securityCode) {
+	public String preencheDadosPagamentoCartaoSalvoMP(RetornoCartao cartao, String securityCode) {
 		JSONObject jsonBody       = new JSONObject();
 		JSONObject jsonCardHolder = new JSONObject();
 		JSONObject jsonIdentification = new JSONObject();
@@ -342,5 +343,29 @@ public class CartoesModel extends AppModel {
 		dataExpiracao.setMes(Integer.valueOf(mes));
 		dataExpiracao.setAno(Integer.valueOf(ano));
 		return dataExpiracao;
+	}
+
+	public List<RetornoCartao> getCartoes2Primeiros(List<RetornoCartao> retornoCartaoList) {
+		List<RetornoCartao> cartoes = new ArrayList<RetornoCartao>();
+		cartoes.add(retornoCartaoList.get(0));
+		cartoes.add(retornoCartaoList.get(1));
+		return cartoes;
+	}
+
+	public CartaoRecargaPayDTO getCartaoRecargaPay(ApostadorDTO dadosPessoais, String numero, String mes, String ano, String cvv, boolean isSalvar) {
+		CartaoRecargaPayDTO cartao = new CartaoRecargaPayDTO();
+		cartao.setType(RecargaPayConnection.CARTAO_TYPE);
+		cartao.setBrand(getBrand(numero));
+		cartao.setNumber(numero);
+
+		CardHolderRecargaPay cardHolder = getCardHolderRecargaPay(dadosPessoais);
+		cartao.setCardHolder(cardHolder);
+
+		DataExpiracao dataExpiracao = getDataExpiracao(mes, ano);
+		cartao.setDataExpiracao(dataExpiracao);
+
+		cartao.setSecurityCode(cvv);
+		cartao.setShouldSave(isSalvar);
+		return cartao;
 	}
 }

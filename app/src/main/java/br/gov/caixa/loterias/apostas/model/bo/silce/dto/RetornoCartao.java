@@ -14,11 +14,13 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-public class RetornoCartao {
+public class RetornoCartao  implements Serializable {
     @SerializedName("statusCodeHttp")
     private Integer statusCodeHttp = null;
 

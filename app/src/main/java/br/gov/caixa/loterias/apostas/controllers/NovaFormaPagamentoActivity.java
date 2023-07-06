@@ -90,7 +90,7 @@ public class NovaFormaPagamentoActivity extends SettingToolbarActivity implement
 
         configuraBotoesListener();
 
-        editTextNumeroCartaoContent.addTextChangedListener(MaskEditUtil.mask(editTextNumeroCartaoContent, MaskEditUtil.FORMAT_CRED_CARD));
+        editTextNumeroCartaoContent.addTextChangedListener(MaskEditUtil.mask(editTextNumeroCartaoContent, MaskEditUtil.FORMAT_CRED_CARD, null));
         addRightImg(findViewById(R.id.editTextNumeroCartaoContent));
         addRightImg(findViewById(R.id.editTextNomeClienteCartaoContent));
         addRightImg(findViewById(R.id.editTextCodigoSegurancaContent));

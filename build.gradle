@@ -33,6 +33,9 @@ allprojects {
                 secretKey "WZ2/LY6u2idPIho9E/ofADpnANdiI5VRjjIbY7oV" // Chave fornecida pelo time da Topaz OFD
             }
         }
+        maven {
+            url "https://artifacts.mercadolibre.com/repository/android-releases"
+        }
     }
 }
 

@@ -289,7 +289,7 @@
     <string name="label_faca_apostas_apenas_um_clique">Faça várias apostas\nem apenas um clique.</string>
     <string name="label_ler_bilhestes">_Conferir bilhetes_</string>
     <string name="label_ler_bilhestes_bold">_Conferir_ _bilhetes_</string>
-    <string name="label_repassados_boas_causas_bold">_repassados_ para boas causas.</string>
+    <string name="label_repassados_boas_causas_bold">_repassados_ para boas causas em {ano_repassometro}.</string>
     <string name="label_apostou_loterica_confira_resultados">Apostou em uma lotérica?\n Confira aqui os seus resultados.</string>
     <string name="label_favoritas">Favoritas</string>
     <string name="label_suas_apostas_sorte_apenas_clique">Suas apostas da sorte\n em apenas um clique. :)</string>
@@ -797,6 +797,7 @@
     <string name="modalidade">modalidade</string>
     <string name="tipoAposta">tipoAposta</string>
     <string name="valorAposta">valorAposta</string>
+    <string name="yyyy">yyyy</string>
     <string name="underline_com_espaco">&#160;_&#160;</string>
     <string name="dd_mm">dd/MM</string>
     <string name="dd_mm_yyyy_hh_mm_ss">dd/MM/yyyy HH:mm:ss</string>
@@ -1073,7 +1074,7 @@
     <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>
     <string name="digitar_codigo">Digitar o código</string>
     <string name="tentar_novamente">Tentar novamente</string>
-    <string name="como_voc_prefere_pagar">Como você prefere pagar?</string>
+    <string name="como_voc_prefere_pagar">Preencha os dados de cartão de crédito de sua titularidade</string>
     <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a opção de sua preferência e preencher os dados do cartão de crédito</string>
     <string name="adicionar_cartao">Adicionar cartão</string>
     <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
@@ -1130,4 +1131,41 @@
     <!-- Mensagens Disque 180  -->
     <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
     <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
+    <string name="falha_comunicacao_situacao_aposta">Falha de comunicação! Clique para conferir.</string>
+
+    <!-- Meio Pagamento Novo Layout -->
+    <string name="cartaoCredito">Cartão de Crédito</string>
+    <string name="escolhaUmProcessador">Escolha um dos processadores abaixo e cadastre um cartão de crédito de sua titularidade ou escolha um cartão salvo para continuar.</string>
+    <string name="pagarVia">Pagar via:</string>
+    <string name="bandeirasAceitas">Bandeiras aceitas</string>
+    <string name="semCartaoRecargaPay">Você ainda não possui cartão salvo no processador Recarga Pay</string>
+    <string name="semCartaoMercadoPago">Você ainda não possui cartão salvo no processador Mercado Pago</string>
+    <string name="novoCartaoCredito">Novo Cartão de Crédito</string>
+    <string name="adicionarCartao">Adicionar Cartão</string>
+    <string name="listarMais">Listar Mais</string>
+    <string name="listarMenos">Listar Menos</string>
+    <string name="voceDesejaExcluir">Você tem certeza de que deseja excluir o cartão {bandeira} final {XXXX} dos cartões salvos?</string>
+    <string name="naoExcluir">Não excluir</string>
+    <string name="excluir">Excluir</string>
+    <string name="suaTitularidade">O cartão de crédito adicionado deve ser de sua titularidade</string>
+
+    <!-- Confirmar Cartão - CVV -->
+    <string name="confirmarCartao">_Confirmar cartão_</string>
+    <string name="confirmarDados">Confirme os dados do cartão escolhido</string>
+    <string name="incluirCodigo">Incluir Código de Verificação</string>
+    <string name="xxx">XXX</string>
+    <string name="informarCvv">_Informar CVV_</string>
+    <string name="insiraCodigoSeguranca">Insira o código de segurança do seu cartão de crédito</string>
+    <string name="normalmenteNoVerso">Normalmente localizado no verso do seu cartão</string>
+    <string name="digiteSeuCvv">Digite seu código de segurança</string>
+    <string name="cartaoFinal">cartão final</string>
+    <string name="confirmarCvv">Confirmar</string>
+    <string name="apostar">Apostar</string>
+    <string name="confirmarDadosCartao">_Confirmar dados do cartão_</string>
+    <string name="confirmarDigitado">Confirme os dados digitados</string>
+
+    <string name="deeplink_path_combos">https://loteriasonline.caixa.gov.br/silce-web/#combos</string>
+    <string name="deeplink_path_apostas">https://loteriasonline.caixa.gov.br/silce-web/#apostas</string>
+    <string name="depplink_path_compras">https://loteriasonline.caixa.gov.br/silce-web/#compras</string>
+    
 </resources>
