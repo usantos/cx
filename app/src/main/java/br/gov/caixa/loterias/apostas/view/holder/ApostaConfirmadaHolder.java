@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
 public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements View.OnClickListener {
+	private TextView dataApostaTxt;
 	private View stripe;
 	private TextView modalidadeTxt;
 	private TextView concursoTxt;
@@ -57,6 +58,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		if (!listaVazia) {
 			stripe = view.findViewById(R.id.stripe);
 			modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
+			dataApostaTxt = view.findViewById(R.id.dataApostaTxt);
 			concursoTxt = view.findViewById(R.id.concursoTxt);
 			reloadBtn = view.findViewById(R.id.reloadBtn);
 			setaImg = view.findViewById(R.id.setaImg);
@@ -89,6 +91,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		this.color = color;
 		this.stripe.setBackgroundColor(color);
 		this.modalidadeTxt.setTextColor(color);
+		this.dataApostaTxt.setText(aposta.getDataCompra());
+		this.dataApostaTxt.setTextColor(color);
 		this.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta));
 		this.situacaoTxt.setTextColor(color);
 		if (descricaoStatus.isEmpty()){
