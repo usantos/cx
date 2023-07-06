@@ -1131,4 +1131,7 @@
     <!-- Mensagens Disque 180  -->
     <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
     <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
+    <string name="deeplink_path_combos">https://loteriasonline.caixa.gov.br/silce-web/#combos</string>
+    <string name="deeplink_path_apostas">https://loteriasonline.caixa.gov.br/silce-web/#apostas</string>
+    <string name="depplink_path_compras">https://loteriasonline.caixa.gov.br/silce-web/#compras</string>
 </resources>

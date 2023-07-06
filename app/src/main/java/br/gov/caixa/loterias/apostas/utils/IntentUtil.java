@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import java.io.Serializable;
 
+import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity_;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
@@ -37,11 +38,11 @@ public class IntentUtil {
 	public static Intent getIntentDeepLink(Activity activity, String deepLink) {
 		Intent intent = null;
 
-		if (deepLink.equals("https://bimaste.com/silce-web/#combos")) {
+		if (deepLink.equals(activity.getResources().getString(R.string.deeplink_path_combos))) {
 			intent = IntentUtil.getIntentOrigemDestino(activity, PrincipalActivity_.class);
-		} else if (deepLink.equals("https://bimaste.com/silce-web/#apostas")) {
+		} else if (deepLink.equals(activity.getResources().getString(R.string.deeplink_path_apostas))) {
 			intent = IntentUtil.getIntentOrigemDestino(activity, MinhasApostasActivity_.class);
-		} else if (deepLink.equals("https://bimaste.com/silce-web/#compras")) {
+		} else if (deepLink.equals(activity.getResources().getString(R.string.depplink_path_compras))) {
 			intent = IntentUtil.getIntentOrigemDestino(activity, ListaComprasActivity.class);
 		}
 
