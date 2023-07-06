@@ -522,14 +522,15 @@ public class PrincipalActivity extends AppCompatActivity
                         }
                     });
                 }
-                actionSettings = toolbar.findViewById(R.id.action_settings);
-                if (actionSettings != null) {
-                    toolbar.removeOnLayoutChangeListener(this);
-                    actionSettings.setOnClickListener(view -> {
-                        Intent activity = new Intent(PrincipalActivity.this, TermosUsoActivity.class);
-                        startActivity(activity);
-                    });
-                }
+//Alterado para chamar pelo menu lateral
+//                actionSettings = toolbar.findViewById(R.id.action_settings);
+//                if (actionSettings != null) {
+//                    toolbar.removeOnLayoutChangeListener(this);
+//                    actionSettings.setOnClickListener(view -> {
+//                        Intent activity = new Intent(PrincipalActivity.this, TermosUsoActivity.class);
+//                        startActivity(activity);
+//                    });
+//                }
             }
         });
     }
@@ -747,6 +748,10 @@ public class PrincipalActivity extends AppCompatActivity
             case 4: startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
                 break;
             case 5: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+                break;
+            case 6: startActivity(new Intent(PrincipalActivity.this, TermosAceiteActivity.class));
+                break;
+            case 7: startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
                 break;
 
             default:
