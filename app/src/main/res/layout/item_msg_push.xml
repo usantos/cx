@@ -16,13 +16,14 @@
         android:layout_marginBottom="16dp"
         android:background="?attr/selectableItemBackground"
         >
+
         <ImageView
             android:id="@+id/icon_ImageView"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:gravity="center"
-            android:src="@drawable/ic_logo_money"
-            />
+            android:src="@drawable/ic_logo_money" />
+
         <TextView
             android:id="@+id/titulo_msgpush"
             android:layout_width="match_parent"
@@ -30,23 +31,25 @@
             android:layout_alignTop="@id/icon_ImageView"
             android:layout_marginStart="16dp"
             android:layout_toEndOf="@id/icon_ImageView"
-            android:textColor="@color/cinzaescuro"
             android:text="Usuario from"
-            android:textSize="16sp"/>
+            android:textColor="@color/cinzaescuro"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/text_preview"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/titulo_msgpush"
             android:layout_alignStart="@id/titulo_msgpush"
+            android:layout_marginEnd="24dp"
             android:ellipsize="marquee"
             android:singleLine="true"
-            android:textColor="@color/cinzaescuro"
             android:text="mensagem preview"
-            android:layout_marginEnd="24dp"
-            android:textSize="16sp"/>
+            android:textColor="@color/cinzaescuro"
+            android:textSize="16sp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/expandedLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,22 +57,35 @@
             android:layout_alignStart="@id/titulo_msgpush"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="61dp"
-            android:layout_marginBottom="1dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="15dp"
             android:orientation="horizontal"
-            android:padding="1dp">
+            android:padding="8dp">
+
+            <Button
+                android:id="@+id/buttonCompart"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/ic_compartilhar"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="8dp"
+                 />
 
             <TextView
                 android:id="@+id/mensagem_texto"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_width="239dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/titulo_msgpush"
-                android:layout_alignStart="@id/titulo_msgpush"
-                android:ellipsize="marquee"
-                android:singleLine="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="0dp"
+                android:padding="8dp"
                 android:textColor="@color/cinzaescuro"
                 android:textSize="16sp" />
-        </LinearLayout>
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/data_texto"

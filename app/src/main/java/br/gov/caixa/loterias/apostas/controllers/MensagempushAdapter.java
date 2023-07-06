@@ -1,11 +1,14 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,16 +57,19 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         private TextView contentTextView;
         private TextView text_preview;
         private TextView dateTextView;
-        private LinearLayout expandedLayout;
+        private RelativeLayout expandedLayout;
+        private Button buttonCompart;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             iconImageView = itemView.findViewById(R.id.icon_ImageView);
+            buttonCompart = itemView.findViewById(R.id.buttonCompart);
             titleTextView = itemView.findViewById(R.id.titulo_msgpush);
             contentTextView = itemView.findViewById(R.id.mensagem_texto);
             dateTextView = itemView.findViewById(R.id.data_texto);
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
             text_preview = itemView.findViewById(R.id.text_preview);
+
 
             itemView.setOnClickListener(this);
         }
@@ -75,6 +81,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             text_preview.setText(mensagensList.getConteudo());
             contentTextView.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
+//            buttonCompart.setImageResource(mensagensList.getButton);
 
             boolean isExpanded = expandedPositions.get(position, false);
 
@@ -95,6 +102,20 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 expandedPositions.put(position, !isExpanded);
                 setExpanded(!isExpanded);
             }
+
+            if (v.getId() == R.id.buttonCompart) {
+                MessagePush messagePush = mensagensList.get(position);
+                shareMessage(v.getContext(), messagePush);
+            }
+        }
+
+        private void shareMessage(Context context, MessagePush messagePush) {
+            String textToShare = messagePush.getTitulo() + messagePush.getConteudo();
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, textToShare);
+            context.startActivity(Intent.createChooser(shareIntent, "Compartilhar mensagem"));
+
         }
     }
 }
