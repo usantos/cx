@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -57,7 +57,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         private TextView contentTextView;
         private TextView text_preview;
         private TextView dateTextView;
-        private RelativeLayout expandedLayout;
+        private ConstraintLayout expandedLayout;
         private Button buttonCompart;
 
         public MessageViewHolder(@NonNull View itemView) {

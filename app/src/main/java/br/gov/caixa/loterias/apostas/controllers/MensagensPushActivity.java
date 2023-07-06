@@ -104,7 +104,8 @@ public class MensagensPushActivity extends LoteriasAppActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 if (position == 0) {
-                    mensagempushAdapter.setMensagensList(mensagensList);
+                    recyclerViewMensagens.setAdapter(mensagempushAdapter);
+//                    mensagempushAdapter.setMensagensList(mensagensList);
                 } else if (position == 1) {
                     mensagempushAdapter.setMensagensList(mensagensNaolidas);
                 }
@@ -121,6 +122,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
+//            updateTabIndicators();
         });
         checarEstadoVazio();
     }
@@ -169,4 +171,18 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         }
 
     }
+//    private void updateTabIndicators() {
+//        for (int i = 0; i< tabLayout.getTabCount();i++) {
+//            TabLayout.Tab tab = tabLayout.getTabAt(i);
+//            if (tab != null) {
+//               View customView = tab.getCustomView();
+//               if (customView != null) {
+//                  TextView tabTitle = customView.findViewById(R.id.tabTitle);
+//                  View tabIndicator = customView.findViewById(R.id.tabIndicator);
+//               }
+//
+//
+//            }
+//        }
+//    }
 }

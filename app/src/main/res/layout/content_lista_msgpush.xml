@@ -90,26 +90,23 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tabIndicatorColor="@color/colorAccent"
-            app:tabIndicatorGravity="center"
-            app:tabIndicatorHeight="5dp"
-            app:tabInlineLabel="true"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/azulpush"
-            app:tabTextAppearance="@style/CustomTabTexAppearance"
-            app:tabTextColor="@color/azulpush" />
+            android:background="@color/white"
+            android:elevation="4dp"
+            app:tabIndicatorColor="@color/mpsdk_white_background"
+            android:textColor="@color/azulpush"
+            android:textSize="16sp"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewCentralMsg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#FFFFFF"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/tab_layout"
-            app:layout_constraintTop_toBottomOf="@+id/tab_layout"
             tools:listitem="@layout/item_msg_push" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
