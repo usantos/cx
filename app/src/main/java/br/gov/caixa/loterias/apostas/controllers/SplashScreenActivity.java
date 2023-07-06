@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -27,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -136,7 +138,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             callConfiguracoesApp();
             new Handler().postDelayed(() -> {
                 LoginSP.limpar();
-                startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+                if (!redirectDeepLink()) {
+                    startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
+                }
                 finish();
             }, SPLASH_TIME);
         }
@@ -207,5 +211,19 @@ public class SplashScreenActivity extends AppCompatActivity {
         } else if (resultCode == RESULT_OK && requestCode == 1) {
             verificaVersao();
         }
+    }
+
+    private boolean redirectDeepLink() {
+        Intent appLinkIntent = getIntent();
+        String appLinkAction = appLinkIntent.getAction();
+        Uri appLinkData = appLinkIntent.getData();
+        if (appLinkData != null && appLinkData.toString().length() >0) {
+            Intent intent = IntentUtil.getIntentDeepLink(this, appLinkData.toString());
+            if (intent != null) {
+                startActivity(intent);
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1164,4 +1164,8 @@
     <string name="confirmarDadosCartao">_Confirmar dados do cartão_</string>
     <string name="confirmarDigitado">Confirme os dados digitados</string>
 
+    <string name="deeplink_path_combos">https://loteriasonline.caixa.gov.br/silce-web/#combos</string>
+    <string name="deeplink_path_apostas">https://loteriasonline.caixa.gov.br/silce-web/#apostas</string>
+    <string name="depplink_path_compras">https://loteriasonline.caixa.gov.br/silce-web/#compras</string>
+    
 </resources>
