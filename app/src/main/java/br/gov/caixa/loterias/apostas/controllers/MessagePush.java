@@ -6,15 +6,15 @@ public class MessagePush {
     private String titulo;
     private final String conteudo;
     private String data;
-    private boolean read;
+    private boolean isRead;
 
-    public MessagePush(int icon, int categoria, String titulo, String conteudo, String data, boolean read) {
+    public MessagePush(int icon, int categoria, String titulo, String conteudo, String data, boolean isRead) {
         this.icon = icon;
         this.categoria = categoria;
         this.titulo = titulo;
         this.conteudo = conteudo;
         this.data = data;
-        this.read = read;
+        this.isRead = false;
     }
     public int getIcon() { return icon; }
 
@@ -44,4 +44,10 @@ public class MessagePush {
         this.data = data;
     }
 
+    public boolean isRead() {
+        return isRead;
+    }
+    public void setRead(boolean read) {
+        isRead = read;
+    }
 }

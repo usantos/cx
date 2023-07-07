@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -29,6 +30,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
     public void setMensagensList(List<MessagePush> mensagensList) {
         this.mensagensList = mensagensList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -51,6 +53,34 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         return mensagensList != null ? mensagensList.size() : 0;
     }
 
+    public void mensagensFiltradas(String searchEditText) {
+        List<MessagePush> mensagensFiltradas = new ArrayList<>();
+
+        if (searchEditText.isEmpty()) {
+            mensagensFiltradas.addAll(mensagensList);
+        } else {
+            for (MessagePush message : mensagensList) {
+                if (message.getTitulo().toLowerCase().contains(searchEditText.toLowerCase()) ||
+                        message.getConteudo().toLowerCase().contains(searchEditText.toLowerCase())) {
+                    mensagensFiltradas.add(message);
+                }
+            }
+            setMensagensList(mensagensFiltradas);
+
+        }
+
+    }
+
+    public List<MessagePush> getUnreadMessages() {
+        List<MessagePush> mensagensNaolidas = new ArrayList<>();
+        for (MessagePush message : mensagensList ) {
+            if (!message.isRead()) {
+                mensagensNaolidas.add(message);
+            }
+        }
+        return mensagensNaolidas;
+    }
+
     class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView iconImageView;
         private TextView titleTextView;
@@ -70,7 +100,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
             text_preview = itemView.findViewById(R.id.text_preview);
 
-
             itemView.setOnClickListener(this);
         }
 
@@ -86,10 +115,11 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             boolean isExpanded = expandedPositions.get(position, false);
 
             expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+
         }
 
         public void setExpanded(boolean expanded) {
-            text_preview.setVisibility(!expanded ? View.VISIBLE : View.GONE);
+            text_preview.setVisibility(!expanded ? View.VISIBLE : View.INVISIBLE);
             expandedLayout.setVisibility(expanded ? View.VISIBLE : View.GONE);
         }
 
@@ -101,12 +131,15 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 boolean isExpanded = expandedPositions.get(position, false);
                 expandedPositions.put(position, !isExpanded);
                 setExpanded(!isExpanded);
+            }else{
+                expandedPositions.delete(position);
             }
 
             if (v.getId() == R.id.buttonCompart) {
                 MessagePush messagePush = mensagensList.get(position);
                 shareMessage(v.getContext(), messagePush);
             }
+            notifyDataSetChanged();
         }
 
         private void shareMessage(Context context, MessagePush messagePush) {
@@ -117,5 +150,8 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             context.startActivity(Intent.createChooser(shareIntent, "Compartilhar mensagem"));
 
         }
+    }
+
+    public static class OnItemClickListener {
     }
 }
