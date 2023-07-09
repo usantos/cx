@@ -71,16 +71,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
     }
 
-    public List<MessagePush> getUnreadMessages() {
-        List<MessagePush> mensagensNaolidas = new ArrayList<>();
-        for (MessagePush message : mensagensList ) {
-            if (!message.isRead()) {
-                mensagensNaolidas.add(message);
-            }
-        }
-        return mensagensNaolidas;
-    }
-
     class MessageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView iconImageView;
         private TextView titleTextView;
@@ -99,7 +89,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             dateTextView = itemView.findViewById(R.id.data_texto);
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
             text_preview = itemView.findViewById(R.id.text_preview);
-
+            buttonCompart.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
 
@@ -115,6 +105,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             boolean isExpanded = expandedPositions.get(position, false);
 
             expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+
 
         }
 
@@ -139,6 +130,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 MessagePush messagePush = mensagensList.get(position);
                 shareMessage(v.getContext(), messagePush);
             }
+
             notifyDataSetChanged();
         }
 
@@ -150,8 +142,5 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             context.startActivity(Intent.createChooser(shareIntent, "Compartilhar mensagem"));
 
         }
-    }
-
-    public static class OnItemClickListener {
     }
 }
