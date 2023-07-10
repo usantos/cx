@@ -50,18 +50,25 @@ public class ApostaPartidaLotecaView extends LinearLayout {
     }
 
     public void setLayout(PartidaLotecaDTO partidaLotecaDTO) {
-        this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewUm, partidaLotecaDTO.getEquipe1());
-        this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewDois, partidaLotecaDTO.getEquipe2());
+        this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewUm, partidaLotecaDTO.getEquipe1(),
+                partidaLotecaDTO.getLetraLegenda());
+        this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewDois, partidaLotecaDTO.getEquipe2(),
+                partidaLotecaDTO.getLetraLegenda());
 
         EquipeDTO equipeDTOEmpate = new EquipeDTO();
         equipeDTOEmpate.setVitoria(partidaLotecaDTO.getEmpate());
         equipeDTOEmpate.setNome(Constantes.X_STRING);
-        this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewEmpate, equipeDTOEmpate);
+        this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewEmpate, equipeDTOEmpate, null);
     }
 
-    private void setValueApostaEquipeLotecaView(ApostaEquipeLotecaView apostaEquipeLotecaView, EquipeDTO equipeDTO) {
+    private void setValueApostaEquipeLotecaView(ApostaEquipeLotecaView apostaEquipeLotecaView,
+                                                EquipeDTO equipeDTO, String letraLegenda) {
         apostaEquipeLotecaView.getImageApostaPartidaLoteca().setSelected(equipeDTO.getVitoria());
-        apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));
+        if (letraLegenda != null) {
+            apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO) + " (" +letraLegenda + ")");
+        } else {
+            apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));
+        }
         if (equipeDTO.getVitoria()) {
             apostaEquipeLotecaView.getTextApostaPartidaLoteca().setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
         }

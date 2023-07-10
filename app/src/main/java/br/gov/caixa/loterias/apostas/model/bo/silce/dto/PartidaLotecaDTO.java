@@ -17,6 +17,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import br.gov.caixa.loterias.apostas.R;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -30,6 +31,10 @@ public class PartidaLotecaDTO implements Serializable {
     protected Boolean empate = null;
     @Expose(serialize = false, deserialize = false)
     protected transient Long idDB;
+    @SerializedName("descricaoLegenda")
+    protected String descricaoLegenda = null;
+    @SerializedName("letraLegenda")
+    protected String letraLegenda = null;
 
     /**
      **/
@@ -70,6 +75,24 @@ public class PartidaLotecaDTO implements Serializable {
 
     public void setIdDB(Long idDB) {
         this.idDB = idDB;
+    }
+
+    @ApiModelProperty(value = "")
+    public String getDescricaoLegenda() {
+        return descricaoLegenda;
+    }
+
+    public void setDescricaoLegenda(String descricaoLegenda) {
+        this.descricaoLegenda = descricaoLegenda;
+    }
+
+    @ApiModelProperty(value = "")
+    public String getLetraLegenda() {
+        return letraLegenda;
+    }
+
+    public void setLetraLegenda(String letraLegenda) {
+        this.letraLegenda = letraLegenda;
     }
 
     @Override
