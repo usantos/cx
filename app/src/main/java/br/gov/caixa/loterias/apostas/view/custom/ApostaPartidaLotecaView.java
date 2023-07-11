@@ -51,9 +51,9 @@ public class ApostaPartidaLotecaView extends LinearLayout {
 
     public void setLayout(PartidaLotecaDTO partidaLotecaDTO) {
         this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewUm, partidaLotecaDTO.getEquipe1(),
-                partidaLotecaDTO.getLetraLegenda());
+                partidaLotecaDTO.getDescricaoLegenda());
         this.setValueApostaEquipeLotecaView(apostasPartidaLotecaViewDois, partidaLotecaDTO.getEquipe2(),
-                partidaLotecaDTO.getLetraLegenda());
+                partidaLotecaDTO.getDescricaoLegenda());
 
         EquipeDTO equipeDTOEmpate = new EquipeDTO();
         equipeDTOEmpate.setVitoria(partidaLotecaDTO.getEmpate());
@@ -62,10 +62,10 @@ public class ApostaPartidaLotecaView extends LinearLayout {
     }
 
     private void setValueApostaEquipeLotecaView(ApostaEquipeLotecaView apostaEquipeLotecaView,
-                                                EquipeDTO equipeDTO, String letraLegenda) {
+                                                EquipeDTO equipeDTO, String legenda) {
         apostaEquipeLotecaView.getImageApostaPartidaLoteca().setSelected(equipeDTO.getVitoria());
-        if (letraLegenda != null) {
-            apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO) + " (" +letraLegenda + ")");
+        if (legenda != null) {
+            apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO) + " (" +legenda + ")");
         } else {
             apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));
         }
