@@ -64,4 +64,5 @@ public class MessagePush {
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
+    public void marcarRead() {read = true; }
 }

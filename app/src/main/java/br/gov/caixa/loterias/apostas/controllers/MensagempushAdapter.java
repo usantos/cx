@@ -23,7 +23,7 @@ import br.gov.caixa.loterias.apostas.R;
 public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapter.MessageViewHolder> {
     private List<MessagePush> mensagensList;
     private SparseBooleanArray expandedPositions;
-
+    private int selectedPosition = RecyclerView.NO_POSITION;
     private int positionLast;
 
     public MensagempushAdapter(List<MessagePush> mensagensList) {
@@ -49,6 +49,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
         boolean isExpanded = expandedPositions.get(position, false);
         holder.setExpanded(isExpanded);
+        boolean isSelected = position == selectedPosition;
     }
 
     @Override
@@ -56,6 +57,10 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         return mensagensList != null ? mensagensList.size() : 0;
     }
 
+    public void setSelectedPosition(int position) {
+        int previousSelectedPosition = selectedPosition;
+
+    }
     public void mensagensFiltradas(String searchEditText) {
         List<MessagePush> mensagensFiltradas = new ArrayList<>();
 
@@ -71,6 +76,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             setMensagensList(mensagensFiltradas);
 
         }
+
 
     }
 
@@ -107,15 +113,14 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             text_preview.setText(mensagensList.getConteudo());
             contentTextView.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
-//            buttonCompart.setImageResource(mensagensList.getButton);
+
 
             boolean isExpanded = expandedPositions.get(position, false);
 
             expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-
-            if (mensagensList.isExpanded() && mensagensList.isRead()) {
+            if (mensagensList.isRead()) {mensagensList.setRead(true);}
+            if (mensagensList.isExpanded()) {
                 updateMessageViewAsRead();
-                mensagensList.setRead(true);
                 mensagensList.setRead(true);
             } else {
                 updateMessageViewAsUnread();
@@ -211,5 +216,14 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
     public int getPositionLast() {
         return positionLast;
+    }
+
+    public MessagePush getMensagem(int position) {
+        return mensagensList.get(position);
+    }
+
+    public void deleteMensagem(int position) {
+        mensagensList.remove(position);
+        notifyItemRemoved(position);
     }
 }

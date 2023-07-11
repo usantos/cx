@@ -26,8 +26,6 @@ import br.gov.caixa.loterias.apostas.LoteriasAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
-import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
-
 public class MensagensPushActivity extends LoteriasAppActivity {
 
     private List<MessagePush> mensagensList;
@@ -41,7 +39,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
     private GridLayoutManager layoutManager;
     private NestedScrollView scrollViewContentViewMensagens;
     private RecyclerView recyclerViewMensagens;
-    private View progressLoadingMore;
+    private View progressLoadingMore, marcarComoLidaButtom;
     private Button buttonMsgExcluir;
     private Button buttonMsgLida;
 
@@ -65,7 +63,6 @@ public class MensagensPushActivity extends LoteriasAppActivity {
 
         //Inicializa listas de mensagens
         mensagensList = gerarMsgTodasMock();
-
         unreadMensagensList = getUnreadmensagens();
         readMensagensList = getReadmensagens();
 
@@ -110,66 +107,28 @@ public class MensagensPushActivity extends LoteriasAppActivity {
             @Override
             public void onClick(View v) {
                 int position = mensagempushAdapter.getPositionLast();
-                if (NO_POSITION != -1) {
+                if (position != -1) {
                     readMensagensList.remove(position);
                     mensagempushAdapter.notifyDataSetChanged();
                 }
 
             }
         });
+
         buttonMsgLida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = NO_POSITION;
-
-                mensagempushAdapter.notifyDataSetChanged();
+                int position = mensagempushAdapter.getPositionLast();
+                if (position != -1) {
+                    MessagePush selectedMessage = mensagempushAdapter.getMensagem(position);
+                    selectedMessage.marcarRead();
+                    mensagempushAdapter.notifyDataSetChanged();
+                    readMensagensList.add(selectedMessage);
+                    unreadMensagensList.remove(selectedMessage);
+                    mensagempushAdapter.notifyDataSetChanged();
+                }
             }
         });
-//        rbTodas.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    mensagempushAdapter.setMensagensList(mensagensList);
-//                    mensagempushAdapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
-//        rbNaoLidas.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    mensagempushAdapter.setMensagensList(unreadMensagensList);
-//                    mensagempushAdapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
-        //        radioGroupMensagens.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId) {
-//                switch (checkedId) {
-//                    case R.id.rb_todas:
-//                        filterMessages(false);
-//                        break;
-//                    case R.id.rb_naolidas:
-//                        filterMessages(true);
-//                        break;
-//                }
-//            }
-//        });
-//
-//        rbTodas.setOnClickListener(v -> mensagempushAdapter.setMensagensList(readMensagensList)
-//        );
-//
-//        rbNaoLidas.setOnClickListener(v -> mensagempushAdapter.setMensagensList(unreadMensagensList));
-//        mensagempushAdapter.notifyDataSetChanged();
-
-//        rbTodas.setOnClickListener(v -> {
-//            mensagempushAdapter.setMensagensList(mensagensList);
-//        });
-//
-//        rbNaoLidas.setOnClickListener(v -> {
-//            mensagempushAdapter.setMensagensList(unreadmensagensList);
-//        });
 
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -188,9 +147,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
 
         });
 
-
     }
-
 
     private List<MessagePush>  getUnreadmensagens() {
         List<MessagePush> unreadMessages = new ArrayList<>();
@@ -211,7 +168,6 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         }
         return readMessages;
     }
-
 
     private void checarEstadoVazio() {
         if (mensagempushAdapter.getItemCount() == 0) {
