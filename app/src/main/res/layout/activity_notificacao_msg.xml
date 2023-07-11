@@ -11,9 +11,9 @@
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_toolbar"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="?attr/actionBarSize" />
+    android:layout_height="0dp"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
     <include layout="@layout/content_lista_msgpush"/>
 
