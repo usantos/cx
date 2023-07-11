@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
@@ -72,6 +73,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         mensagempushAdapter = new MensagempushAdapter(readMensagensList);
         recyclerViewMensagens.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewMensagens.setAdapter(mensagempushAdapter);
+        checarEstadoVazio();
 
         //ativa o swipe
         ItemTouchHelper itemTouchHelper;
@@ -101,6 +103,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
                     mensagempushAdapter.notifyDataSetChanged();
                 }
             }
+
         });
 
         buttonMsgExcluir.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +114,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
                     readMensagensList.remove(position);
                     mensagempushAdapter.notifyDataSetChanged();
                 }
+
             }
         });
         buttonMsgLida.setOnClickListener(new View.OnClickListener() {
@@ -209,11 +213,11 @@ public class MensagensPushActivity extends LoteriasAppActivity {
     }
 
 
-//    private void checarEstadoVazio() {
-//        if (mensagempushAdapter.getItemCount() == 0) {
-//            Toast.makeText(MensagensPushActivity.this, "Lista de mensagens está vazia", Toast.LENGTH_LONG).show();
-//        }
-//    }
+    private void checarEstadoVazio() {
+        if (mensagempushAdapter.getItemCount() == 0) {
+            Toast.makeText(MensagensPushActivity.this, "Lista de mensagens está vazia", Toast.LENGTH_LONG).show();
+        }
+    }
 
     private List<MessagePush> gerarMsgTodasMock() {
         mensagensList = new ArrayList<>();
