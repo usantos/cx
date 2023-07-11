@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,8 @@ import br.gov.caixa.loterias.apostas.R;
 public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapter.MessageViewHolder> {
     private List<MessagePush> mensagensList;
     private SparseBooleanArray expandedPositions;
+
+    private int positionLast;
 
     public MensagempushAdapter(List<MessagePush> mensagensList) {
         this.mensagensList = mensagensList;
@@ -78,18 +81,22 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         private TextView text_preview;
         private TextView dateTextView;
         private ConstraintLayout expandedLayout;
-        private Button buttonCompart;
+        private Button buttonCompart, buttonMsgExpandida, buttonMsgLida, buttonMsgExcluir;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
             iconImageView = itemView.findViewById(R.id.icon_ImageView);
             buttonCompart = itemView.findViewById(R.id.buttonCompart);
+//            buttonMsgExcluir = itemView.findViewById(R.id.buttonMsgExcluir);
+            buttonMsgExpandida = itemView.findViewById(R.id.buttonMsgExpandida);
+
             titleTextView = itemView.findViewById(R.id.titulo_msgpush);
             contentTextView = itemView.findViewById(R.id.mensagem_texto);
             dateTextView = itemView.findViewById(R.id.data_texto);
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
             text_preview = itemView.findViewById(R.id.text_preview);
             buttonCompart.setOnClickListener(this);
+            buttonMsgExpandida.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
 
@@ -106,7 +113,59 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
             expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
 
+            if (mensagensList.isExpanded() && mensagensList.isRead()) {
+                updateMessageViewAsRead();
+                mensagensList.setRead(true);
+                mensagensList.setRead(true);
+            } else {
+                updateMessageViewAsUnread();
+            }
 
+            switch (mensagensList.getCategoria()) {
+                case 1:
+                    buttonMsgExpandida.setVisibility(View.VISIBLE);
+                    buttonMsgExpandida.setText("Pagamentos e Resgates");
+                    buttonMsgExpandida.setTextColor(Color.WHITE);
+                    buttonMsgExpandida.setBackgroundColor(contentTextView.getResources().getColor(R.color.pushbotaoaposteagora));
+                    break;
+                case 2:
+                    buttonMsgExpandida.setVisibility(View.VISIBLE);
+                    buttonMsgExpandida.setTextColor(Color.WHITE);
+                    buttonMsgExpandida.setText("Lembretes da Sorte");
+                    buttonMsgExpandida.setBackgroundColor(contentTextView.getResources().getColor(R.color.pushbotaoconferiragora));
+                    break;
+//                case 3:
+//                    buttonMsgExpandida.setVisibility(View.VISIBLE);
+//                    buttonMsgExpandida.setTextColor(Color.WHITE);
+//                    buttonMsgExpandida.setText("Resultados Disponíveis");
+//                    buttonMsgExpandida.setBackgroundColor(Color.GREEN);
+//                    break;
+//                case 4:
+//                    buttonMsgExpandida.setVisibility(View.VISIBLE);
+//                    buttonMsgExpandida.setTextColor(Color.WHITE);
+//                    buttonMsgExpandida.setText("Dicas e Novidades");
+//                    buttonMsgExpandida.setBackgroundColor(Color.YELLOW);
+//                    break;
+//                case 5:
+//                    buttonMsgExpandida.setVisibility(View.VISIBLE);
+//                    buttonMsgExpandida.setTextColor(Color.WHITE);
+//                    buttonMsgExpandida.setText("Alertas de Segurança ou Disponibilidade de Serviços");
+//                    buttonMsgExpandida.setBackgroundColor(Color.RED);
+//                    break;
+                default:
+                    buttonMsgExpandida.setVisibility(View.GONE);
+                    buttonMsgExpandida.setText("");
+            }
+        }
+
+        private void updateMessageViewAsUnread() {
+            itemView.setBackgroundColor(contentTextView.getResources().getColor(R.color.pushbotaoconferiragora));
+            titleTextView.setTextColor(Color.GRAY);
+        }
+
+        private void updateMessageViewAsRead() {
+            itemView.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
+            titleTextView.setTextColor(Color.BLACK);
         }
 
         public void setExpanded(boolean expanded) {
@@ -114,33 +173,43 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             expandedLayout.setVisibility(expanded ? View.VISIBLE : View.GONE);
         }
 
+
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
 
-            if(position != RecyclerView.NO_POSITION) {
+            if (position != RecyclerView.NO_POSITION) {
+                positionLast = position;
                 boolean isExpanded = expandedPositions.get(position, false);
                 expandedPositions.put(position, !isExpanded);
                 setExpanded(!isExpanded);
-            }else{
+                notifyDataSetChanged();
+            } else {
+                positionLast = -1;
                 expandedPositions.delete(position);
+                notifyDataSetChanged();
             }
 
             if (v.getId() == R.id.buttonCompart) {
                 MessagePush messagePush = mensagensList.get(position);
                 shareMessage(v.getContext(), messagePush);
+                notifyDataSetChanged();
             }
 
             notifyDataSetChanged();
         }
 
         private void shareMessage(Context context, MessagePush messagePush) {
-            String textToShare = messagePush.getTitulo() + messagePush.getConteudo();
+            String textToShare = messagePush.getTitulo() + " <br>" + messagePush.getConteudo();
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, textToShare);
             context.startActivity(Intent.createChooser(shareIntent, "Compartilhar mensagem"));
-
         }
+
+    }
+
+    public int getPositionLast() {
+        return positionLast;
     }
 }

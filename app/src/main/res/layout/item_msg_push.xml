@@ -7,12 +7,13 @@
     tools:showIn="@layout/content_lista_msgpush"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/fundobrancocentralmsg"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground">
+        android:background="@color/fundobrancocentralmsg">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container_cabecalho"
@@ -86,6 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
+            android:background="@drawable/tab_selector_push"
             app:layout_constraintStart_toEndOf="@id/titulo_msgpush"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container_cabecalho">
@@ -99,16 +101,38 @@
                 android:padding="8dp"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <Button
+                android:id="@+id/buttonMsgExpandida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginBottom="8dp"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/futura_std_bold"
+                android:padding="8dp"
+                android:text="botaoMsg"
+                android:textAllCaps="false"
+                android:textSize="11dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mensagem_texto" />
+
             <TextView
                 android:id="@+id/mensagem_texto"
                 android:layout_width="298dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/titulo_msgpush"
+                android:fontFamily="@font/futura_std_bold"
                 android:padding="8dp"
+                android:textAllCaps="false"
                 android:textColor="@color/cinzaescuro"
-                android:textSize="16sp"
+                android:textSize="12dp"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:layout_editor_absoluteY="8dp" />
+            />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

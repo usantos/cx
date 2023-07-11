@@ -371,5 +371,34 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/cinza_total</item>
     </style>
-
+    <style name="ButtonPushStyleCategoria1" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria2" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/verde_card</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria3" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/mais_milionaria_media</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria4" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/mpsdk_cabal</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria5" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/vermelho_dialog</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
 </resources>
