@@ -110,11 +110,23 @@
             android:layout_height="98dp"
             android:background="@drawable/drawer_linha_divisao_bg"
             android:orientation="vertical"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/labelExplicaSuasApostas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:paddingTop="1dp"
+                android:text="@string/label_suas_apostas_explica"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/labelTituloLoteca"
+                />
 
             <TextView
                 android:id="@+id/labelTituloLoteca"
@@ -122,24 +134,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="17dp"
-                android:paddingTop="36dp"
-                android:text="@string/label_suas_apostas"
+                android:paddingTop="1dp"
+                android:text="@string/label_suas_apostas_loteca"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/labelSimplesLoteca"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@id/labelExplicaSuasApostas"
+                app:layout_constraintTop_toBottomOf="@id/labelExplicaSuasApostas" />
 
             <TextView
                 android:id="@+id/labelSimplesLoteca"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
                 android:paddingLeft="17dp"
-                android:paddingTop="59dp"
+                android:paddingTop="0dp"
                 android:text="@string/label_simples"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@+id/labelTriplasLoteca"
+                app:layout_constraintEnd_toBottomOf="id/labelTituloLoteca"
+                app:layout_constraintStart_toStartOf="id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="id/labelTituloLoteca" />
 
             <TextView
                 style="@style/ArialMT"
@@ -164,6 +179,7 @@
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -176,6 +192,7 @@
                 android:paddingTop="59dp"
                 android:text="@string/label_duplas"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -188,6 +205,7 @@
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -202,6 +220,7 @@
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -214,6 +233,7 @@
                 android:paddingTop="59dp"
                 android:text="@string/label_triplas"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -226,6 +246,7 @@
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -234,14 +255,17 @@
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:paddingLeft="229dp"
-                android:paddingTop="57dp"
+                android:paddingTop="59dp"
                 android:text="@string/zero"
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
