@@ -5,7 +5,8 @@
     <!-- "Icone trevo"-->
     <item
         android:id="@+id/action_pushmsg"
-        app:actionLayout="@layout/menu_item_notificacao"
+        android:title="@string/title_activity_mensagem_push"
+        android:icon="@drawable/ic_notificacao_topo"
         app:showAsAction="ifRoom"
         />
     <item
