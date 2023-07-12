@@ -95,6 +95,13 @@ public class PartidaLotecaDTO implements Serializable {
         this.letraLegenda = letraLegenda;
     }
 
+    public String getLegendaAbreviada() {
+        if (descricaoLegenda != null && descricaoLegenda.length() > 4)
+            return descricaoLegenda.substring(4);
+        else
+            return "(MAS)";
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
