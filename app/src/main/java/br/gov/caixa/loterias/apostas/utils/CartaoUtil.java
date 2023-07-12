@@ -23,7 +23,8 @@ public class CartaoUtil {
 				return drawable;
 			case "master":
 			case "mastercard":
-				return context.getDrawable(R.drawable.ic_master_card);
+				//return context.getDrawable(R.drawable.ic_master_card);
+				return context.getDrawable(R.drawable.ic_bandeira_master);
 			case "hipercard":
 				return context.getDrawable(R.drawable.ic_hipercard);
 			case "diners":

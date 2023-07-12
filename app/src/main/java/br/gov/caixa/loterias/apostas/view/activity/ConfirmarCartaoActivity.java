@@ -39,6 +39,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CartaoUtil;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -124,7 +125,7 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 			return new CartaoCreditoConfig(cartaoSalvo.getNomeMetodoPagamento(),
 									getString(R.string.mascara_cartao_sem_ultimos_digitos) + "  " + cartaoSalvo.getUltimosDigitos(),
 									"-",
-									String.valueOf(cartaoSalvo.getMesValidade()),
+										   StringUtils.padZeroLeft(cartaoSalvo.getMesValidade().intValue(),2),
 										   String.valueOf(cartaoSalvo.getAnoValidade()),
 									false);
 		} else {

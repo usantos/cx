@@ -107,11 +107,11 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
             String validade = "";
             if (!editTextMesValidadeCartaoContent.getText().toString().isEmpty()
                     && !editTextAnoValidadeCartaoContent.getText().toString().isEmpty()){
-                validade = editTextMesValidadeCartaoContent.getText().toString() + "\\" + editTextAnoValidadeCartaoContent.getText().toString();
+                validade = editTextMesValidadeCartaoContent.getText().toString() + "/" + editTextAnoValidadeCartaoContent.getText().toString();
             } else if (!editTextMesValidadeCartaoContent.getText().toString().isEmpty()){
-                validade = editTextMesValidadeCartaoContent.getText().toString() + "\\";
+                validade = editTextMesValidadeCartaoContent.getText().toString() + "/";
             } else if (!editTextAnoValidadeCartaoContent.getText().toString().isEmpty()){
-                validade = "\\" + editTextAnoValidadeCartaoContent.getText().toString();
+                validade = "/" + editTextAnoValidadeCartaoContent.getText().toString();
             }
 
             if (fragment != null) {
