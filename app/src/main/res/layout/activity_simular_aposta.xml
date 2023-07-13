@@ -142,26 +142,67 @@
                 app:layout_constraintTop_toBottomOf="@id/labelExplicaSuasApostas" />
 
             <TextView
-                android:id="@+id/labelSimplesLoteca"
+                android:id="@+id/labelJogosLoteca"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:paddingLeft="17dp"
-                android:paddingTop="0dp"
-                android:text="@string/label_simples"
+                android:paddingTop="8dp"
+                android:text="@string/label_jogos"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/labelTriplasLoteca"
-                app:layout_constraintEnd_toBottomOf="id/labelTituloLoteca"
-                app:layout_constraintStart_toStartOf="id/labelTituloLoteca"
-                app:layout_constraintTop_toBottomOf="id/labelTituloLoteca" />
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
 
             <TextView
                 style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="67dp"
-                android:paddingTop="59dp"
+                android:paddingLeft="57dp"
+                android:paddingTop="69dp"
+                android:text="@string/label_dois_pontos"
+                android:textColor="@color/verdeazul"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toBottomOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/labelValueJogosLoteca"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="70dp"
+                android:paddingTop="57dp"
+                android:text="@string/zero"
+                android:textColor="@color/verdeazul"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/labelSimplesLoteca"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:paddingLeft="115dp"
+                android:paddingTop="0dp"
+                android:text="@string/label_simples"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@+id/labelTriplasLoteca"
+                app:layout_constraintEnd_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="id/labelTituloLoteca"
+                 />
+
+            <TextView
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="167dp"
+                android:paddingTop="69dp"
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
                 android:textSize="14sp"
@@ -173,7 +214,7 @@
                 style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="74dp"
+                android:paddingLeft="174dp"
                 android:paddingTop="57dp"
                 android:text="@string/zero"
                 android:textColor="@color/verdeazul"
@@ -188,7 +229,7 @@
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="100dp"
+                android:paddingLeft="200dp"
                 android:paddingTop="59dp"
                 android:text="@string/label_duplas"
                 android:textSize="14sp"
@@ -200,7 +241,7 @@
                 style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="143dp"
+                android:paddingLeft="243dp"
                 android:paddingTop="59dp"
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
@@ -214,7 +255,7 @@
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="152dp"
+                android:paddingLeft="252dp"
                 android:paddingTop="57dp"
                 android:text="@string/zero"
                 android:textColor="@color/verdeazul"
@@ -229,7 +270,7 @@
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="180dp"
+                android:paddingLeft="280dp"
                 android:paddingTop="59dp"
                 android:text="@string/label_triplas"
                 android:textSize="14sp"
@@ -241,7 +282,7 @@
                 style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="221dp"
+                android:paddingLeft="321dp"
                 android:paddingTop="59dp"
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
@@ -256,7 +297,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:paddingLeft="229dp"
+                android:paddingLeft="329dp"
                 android:paddingTop="59dp"
                 android:text="@string/zero"
                 android:textColor="@color/verdeazul"
@@ -271,12 +312,10 @@
 
     <FrameLayout
         android:id="@+id/paginacaoView"
-        android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:layout_constraintTop_toBottomOf="@id/toolBar"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar" />
 
     <FrameLayout
         android:id="@+id/fragmentSimularApostas"
