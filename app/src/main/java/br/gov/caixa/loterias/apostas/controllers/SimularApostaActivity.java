@@ -113,7 +113,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     protected FrameLayout fragmentSimularApostas;
 
     @ViewById
-    protected TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
+    protected TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
             textInfoCarrinho, tvQuantidadeApostas, valorAtualCarrinho;
 
     @ViewById
@@ -426,6 +426,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         abrirTelaCartela(true);
     }
 
+    public void setLabelValueJogosLoteca(String labelValueJogosLoteca) {
+        this.labelValueSimplesLoteca.setText(labelValueJogosLoteca);
+    }
+
     public void setLabelValueSimplesLoteca(String labelValueSimplesLoteca) {
         this.labelValueSimplesLoteca.setText(labelValueSimplesLoteca);
     }
@@ -440,6 +444,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     public TextView getLabelValueSimplesLoteca() {
         return labelValueSimplesLoteca;
+    }
+
+    public TextView getLabelValueJogosLoteca() {
+        return labelValueJogosLoteca;
     }
 
     public TextView getLabelValueDuplasLoteca() {
