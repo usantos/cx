@@ -126,6 +126,7 @@
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toTopOf="parent"
                 />
 
             <TextView
@@ -156,14 +157,14 @@
                 style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="57dp"
-                android:paddingTop="69dp"
+                android:paddingLeft="44dp"
+                android:paddingTop="8dp"
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toTopOf="@id/labelTituloLoteca"
                 />
 
             <TextView
@@ -172,15 +173,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="70dp"
-                android:paddingTop="57dp"
+                android:paddingTop="8dp"
                 android:text="@string/zero"
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toBottomOf="parent"/>
+                app:layout_constraintTop_toTopOf="@id/labelTituloLoteca"
+                />
 
             <TextView
                 android:id="@+id/labelSimplesLoteca"
@@ -188,13 +189,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
-                android:paddingLeft="115dp"
-                android:paddingTop="0dp"
+                android:paddingLeft="97dp"
+                android:paddingTop="8dp"
                 android:text="@string/label_simples"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@+id/labelTriplasLoteca"
-                app:layout_constraintEnd_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="id/labelTituloLoteca"
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
                  />
 
             <TextView
@@ -202,12 +202,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="167dp"
-                android:paddingTop="69dp"
+                android:paddingTop="8dp"
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
                 android:textSize="14sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
 
             <TextView
                 android:id="@+id/labelValueSimplesLoteca"
@@ -215,14 +216,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="174dp"
-                android:paddingTop="57dp"
+                android:paddingTop="8dp"
                 android:text="@string/zero"
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
 
             <TextView
                 android:id="@+id/labelDuplasLoteca"
@@ -230,25 +231,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="200dp"
-                android:paddingTop="59dp"
+                android:paddingTop="8dp"
                 android:text="@string/label_duplas"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
 
             <TextView
                 style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="243dp"
-                android:paddingTop="59dp"
+                android:paddingTop="8dp"
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
 
             <TextView
                 android:id="@+id/labelValueDuplasLoteca"
@@ -256,14 +257,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="252dp"
-                android:paddingTop="57dp"
+                android:paddingTop="8dp"
                 android:text="@string/zero"
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+             />
 
             <TextView
                 android:id="@+id/labelTriplasLoteca"
@@ -271,12 +272,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="280dp"
-                android:paddingTop="59dp"
+                android:paddingTop="8dp"
                 android:text="@string/label_triplas"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
 
             <TextView
                 style="@style/ArialMT"
@@ -287,32 +288,31 @@
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/verdeazul"
                 android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
 
             <TextView
                 android:id="@+id/labelValueTriplasLoteca"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:paddingLeft="329dp"
-                android:paddingTop="59dp"
+                android:paddingTop="8dp"
                 android:text="@string/zero"
                 android:textColor="@color/verdeazul"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
+                app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
+            />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:id="@+id/paginacaoView"
         android:layout_height="60dp"
+        android:layout_width="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolBar" />
