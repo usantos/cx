@@ -33,7 +33,7 @@ public class CartaoCreditoConfig implements Serializable {
 	}
 
 	public String getValidade() {
-		return mes + "//" + ano;
+		return mes + "/" + ano;
 	}
 
 	public boolean isSalvar() {
