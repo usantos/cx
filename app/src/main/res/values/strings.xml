@@ -156,7 +156,7 @@
     <string name="label_suas_apostas_explica">Escolha os resultados dos jogos abaixo.\nVocê precisa apostar em todos os jogos, sendo que pelo menos 1 palpite deve ser duplo
         (apostar nos dois times ou em um time e no empate) ou triplo (apostar em empate e nos dois times).
         Você ganha com 13 ou 14 palpites corretos.</string>
-    <string name="label_jogos">Jogos</string>
+    <string name="label_jogos">Partidas</string>
     <string name="label_simples">Simples</string>
     <string name="label_duplas">Duplas</string>
     <string name="label_triplas">Triplas</string>

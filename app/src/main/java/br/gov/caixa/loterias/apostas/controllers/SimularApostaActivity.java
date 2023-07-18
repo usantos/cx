@@ -209,6 +209,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     public void zerarApostasLoteca() {
+        this.setLabelValueJogosLoteca(Constantes.ZERO_STRING);
         this.setLabelValueSimplesLoteca(Constantes.ZERO_STRING);
         this.setLabelValueDuplasLoteca(Constantes.ZERO_STRING);
         this.setLabelValueTriplasLoteca(Constantes.ZERO_STRING);
@@ -427,7 +428,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     public void setLabelValueJogosLoteca(String labelValueJogosLoteca) {
-        this.labelValueSimplesLoteca.setText(labelValueJogosLoteca);
+        this.labelValueJogosLoteca.setText(labelValueJogosLoteca);
     }
 
     public void setLabelValueSimplesLoteca(String labelValueSimplesLoteca) {

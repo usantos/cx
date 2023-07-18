@@ -1351,11 +1351,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		if (parametroPartida.isSelecionado()) {
 			if (parametroPartida.getQtdItensSelecionados() == 1) {
 				parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) + 1));
+				parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueJogosLoteca().getText().toString()) + 1));
 				if (parametroPartida.getQtdItensSelecionadosAnterior() == 2) {
 					parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) - 1));
+//					parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) - 1));
 				}
 			} else if (parametroPartida.getQtdItensSelecionados() == 2) {
 				parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) + 1));
+				parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueJogosLoteca().getText().toString()) + 1));
 				if (parametroPartida.getQtdItensSelecionadosAnterior() == 3) {
 					parentActivity.setLabelValueTriplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()) - 1));
 				} else {
@@ -1364,10 +1367,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else if (parametroPartida.getQtdItensSelecionados() == 3) {
 				parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) - 1));
 				parentActivity.setLabelValueTriplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()) + 1));
+				parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueJogosLoteca().getText().toString()) + 1));
 			}
 			partidasSelecionadas.add(parametroPartida);
 		} else {
 			parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) - 1));
+			parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueJogosLoteca().getText().toString()) - 1));
 			partidasSelecionadas.remove(parametroPartida);
 		}
 		Boolean mostraBotao = atualizaValorApostaLoteca();
