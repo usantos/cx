@@ -113,7 +113,8 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             text_preview.setText(mensagensList.getConteudo());
             contentTextView.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
-
+            //
+            text_preview.setTextColor(Color.WHITE);
 
             boolean isExpanded = expandedPositions.get(position, false);
 
@@ -128,12 +129,14 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
             switch (mensagensList.getCategoria()) {
                 case 1:
+                    buttonCompart.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setText("Pagamentos e Resgates");
                     buttonMsgExpandida.setTextColor(Color.WHITE);
                     buttonMsgExpandida.setBackgroundColor(contentTextView.getResources().getColor(R.color.pushbotaoaposteagora));
                     break;
                 case 2:
+                    buttonCompart.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setTextColor(Color.WHITE);
                     buttonMsgExpandida.setText("Lembretes da Sorte");
@@ -159,6 +162,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 //                    break;
                 default:
                     buttonMsgExpandida.setVisibility(View.GONE);
+                    buttonCompart.setVisibility(View.GONE);
                     buttonMsgExpandida.setText("");
             }
         }
@@ -169,19 +173,26 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         }
 
         private void updateMessageViewAsRead() {
+            itemView.setBackgroundColor(Color.TRANSPARENT);
             itemView.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
             titleTextView.setTextColor(Color.BLACK);
         }
 
         public void setExpanded(boolean expanded) {
+            titleTextView.setBackgroundColor(Color.WHITE);
             text_preview.setVisibility(!expanded ? View.VISIBLE : View.INVISIBLE);
             expandedLayout.setVisibility(expanded ? View.VISIBLE : View.GONE);
         }
 
-
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
+
+            //fecha a antiga expandida na ultima posicao
+            //so pode ter uma expandidade aberta
+            if (positionLast != position) {
+                expandedPositions.delete(positionLast);
+            }
 
             if (position != RecyclerView.NO_POSITION) {
                 positionLast = position;
