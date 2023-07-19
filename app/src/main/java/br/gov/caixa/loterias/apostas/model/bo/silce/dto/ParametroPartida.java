@@ -29,6 +29,11 @@ public class ParametroPartida implements Serializable {
     protected ParametroEquipe equipe1 = null;
     @SerializedName("equipe2")
     protected ParametroEquipe equipe2 = null;
+    @SerializedName("descricaoLegenda")
+    protected String descricaoLegenda = null;
+    @SerializedName("letraLegenda")
+    protected String letraLegenda = null;
+
     @Expose(serialize = false, deserialize = false)
     protected transient boolean selecionado;
     @Expose(serialize = false, deserialize = false)
@@ -71,6 +76,30 @@ public class ParametroPartida implements Serializable {
         this.equipe2 = equipe2;
     }
 
+    @ApiModelProperty(value = "")
+    public String getDescricaoLegenda() {
+        return descricaoLegenda;
+    }
+
+    public void setDescricaoLegenda(String descricaoLegenda) {
+        this.descricaoLegenda = descricaoLegenda;
+    }
+
+    @ApiModelProperty(value = "")
+    public String getLetraLegenda() {
+        return letraLegenda;
+    }
+
+    public void setLetraLegenda(String letraLegenda) {
+        this.letraLegenda = letraLegenda;
+    }
+
+    public String getLegendaAbreviada() {
+        if (descricaoLegenda != null && descricaoLegenda.length() > 4)
+            return descricaoLegenda.substring(4);
+        else
+            return "(MAS)";
+    }
 
     @Override
     public boolean equals(Object o) {
