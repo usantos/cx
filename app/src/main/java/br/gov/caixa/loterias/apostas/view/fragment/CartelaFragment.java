@@ -123,7 +123,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public BigDecimal valorTotalAposta;
 	public int typeGameColorLight, typeGameColorDark, numeroConcursoAtual;
 	public Button botaoFinalizar, botaoLimparAposta;
-	public TextView valorAposta;
+	public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
 	public ListaDezenaRecyclerView simularDezenasAdapter;
 	public String dataSorteioAtual;
 
@@ -1348,17 +1348,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	@Override
 	public void clickEquipeLoteca(ParametroPartida parametroPartida) {
 		BigDecimal ultimoValor = valorEmReais;
+
 		if (parametroPartida.isSelecionado()) {
 			if (parametroPartida.getQtdItensSelecionados() == 1) {
 				parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) + 1));
-				parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueJogosLoteca().getText().toString()) + 1));
 				if (parametroPartida.getQtdItensSelecionadosAnterior() == 2) {
 					parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) - 1));
-//					parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) - 1));
 				}
 			} else if (parametroPartida.getQtdItensSelecionados() == 2) {
 				parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) + 1));
-				parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueJogosLoteca().getText().toString()) + 1));
 				if (parametroPartida.getQtdItensSelecionadosAnterior() == 3) {
 					parentActivity.setLabelValueTriplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()) - 1));
 				} else {
@@ -1367,14 +1365,44 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else if (parametroPartida.getQtdItensSelecionados() == 3) {
 				parentActivity.setLabelValueDuplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()) - 1));
 				parentActivity.setLabelValueTriplasLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()) + 1));
-				parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueJogosLoteca().getText().toString()) + 1));
 			}
 			partidasSelecionadas.add(parametroPartida);
 		} else {
 			parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) - 1));
-			parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueJogosLoteca().getText().toString()) - 1));
 			partidasSelecionadas.remove(parametroPartida);
 		}
+		int somaTotais = 0;
+		int valueSimples = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()))));
+		int valueDuplas= Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()))));
+		int valueTriplas= Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()))));
+		somaTotais = valueSimples +valueDuplas + valueTriplas;
+
+		parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(String.valueOf(somaTotais))));
+
+		valorTotalJogos = parentActivity.getLabelValueJogosLoteca();
+		valorTotalSimples= parentActivity.getLabelValueSimplesLoteca();
+		valorTotalDuplas= parentActivity.getLabelValueDuplasLoteca();
+		valorTotalTriplas= parentActivity.getLabelValueTriplasLoteca();
+
+
+		if (somaTotais > 13) {
+			valorTotalJogos.setTextColor(getResources().getColor(R.color.verdeazul));
+		} else {
+			valorTotalJogos.setTextColor(getResources().getColor(R.color.lotecaclaro));
+		}
+		if (valueSimples > 1 && somaTotais > 13) {
+			valorTotalSimples.setTextColor(getResources().getColor(R.color.verdeazul));
+		} else {
+			valorTotalSimples.setTextColor(getResources().getColor(R.color.lotecaclaro));
+		}
+		if (valueDuplas == 1 || valueTriplas == 1) {
+			valorTotalDuplas.setTextColor(getResources().getColor(R.color.verdeazul));
+			valorTotalTriplas.setTextColor(getResources().getColor(R.color.verdeazul));
+		} else {
+			valorTotalTriplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
+			valorTotalDuplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
+		}
+
 		Boolean mostraBotao = atualizaValorApostaLoteca();
 		atualizaStatusBotaoFinalizarLoteca(mostraBotao);
 		verificaSeMostraBotaoLimparAposta();
