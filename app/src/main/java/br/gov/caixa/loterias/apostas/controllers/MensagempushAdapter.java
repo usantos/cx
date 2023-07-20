@@ -16,8 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.daimajia.swipe.SwipeLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,12 +53,12 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         boolean isSelected = position == selectedPosition;
         
 
-        final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;
-        swipeLayout.setClickToClose(true);
-        swipeLayout.getDragEdgeMap().clear();
-        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.btn_msg_lidas));
-        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.btn_msg_eliminar));
-        swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
+//        final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;
+//        swipeLayout.setClickToClose(true);
+//        swipeLayout.getDragEdgeMap().clear();
+//        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.btn_msg_lidas));
+//        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.btn_msg_eliminar));
+//        swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
 
     }
 
@@ -99,10 +97,11 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         private TextView categoriaTextView;
         private TextView text_preview;
         private TextView dateTextView;
-        private ConstraintLayout expandedLayout;
+        private ConstraintLayout expandedLayout, cabecalho;
         private Button buttonCompart, buttonMsgExpandida;
         private Button buttonMsgLida, buttonMsgExcluir;
         private LinearLayout swipebuttomPush;
+
 
 
         public MessageViewHolder(@NonNull View itemView) {
@@ -114,13 +113,13 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             buttonMsgLida = itemView.findViewById(R.id.btn_msg_lidas);
             buttonMsgExcluir = itemView.findViewById(R.id.btn_msg_eliminar);
             swipebuttomPush = itemView.findViewById(R.id.swipebuttomPush);
-
+            cabecalho = itemView.findViewById(R.id.container_cabecalho);
             titleTextView = itemView.findViewById(R.id.titulo_msgpush);
             contentTextView = itemView.findViewById(R.id.mensagem_texto);
             dateTextView = itemView.findViewById(R.id.data_texto);
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
             text_preview = itemView.findViewById(R.id.text_preview);
-
+            cabecalho = itemView.findViewById(R.id.container_cabecalho);
             buttonCompart.setOnClickListener(this);
             buttonMsgExpandida.setOnClickListener(this);
             itemView.setOnClickListener(this);
@@ -133,7 +132,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             text_preview.setText(mensagensList.getConteudo());
             contentTextView.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
-
             text_preview.setTextColor(Color.WHITE);
 
             boolean isExpanded = expandedPositions.get(position, false);
@@ -143,8 +141,10 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             if (mensagensList.isExpanded()) {
                 updateMessageViewAsRead();
                 mensagensList.setRead(true);
+                cabecalho.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
             } else {
                 updateMessageViewAsUnread();
+                cabecalho.setBackgroundColor(contentTextView.getResources().getColor(R.color.fundobrancocentralmsg));
             }
 
             switch (mensagensList.getCategoria()) {
@@ -188,12 +188,11 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         }
 
         private void updateMessageViewAsUnread() {
-            itemView.setBackgroundColor(contentTextView.getResources().getColor(R.color.pushbotaoconferiragora));
+            itemView.setBackgroundColor(contentTextView.getResources().getColor(R.color.fundobrancocentralmsg));
             titleTextView.setTextColor(Color.GRAY);
         }
 
         private void updateMessageViewAsRead() {
-            itemView.setBackgroundColor(Color.TRANSPARENT);
             itemView.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
             titleTextView.setTextColor(Color.BLACK);
         }
@@ -231,7 +230,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 shareMessage(v.getContext(), messagePush);
                 notifyDataSetChanged();
             }
-
             notifyDataSetChanged();
         }
 

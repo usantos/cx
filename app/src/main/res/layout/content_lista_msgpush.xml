@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:layout_marginRight="32dp"
+            android:layout_marginLeft="20dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_push_msg"
@@ -78,7 +79,6 @@
             tools:ignore="TouchTargetSizeCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container_tabs"
         android:layout_width="match_parent"
