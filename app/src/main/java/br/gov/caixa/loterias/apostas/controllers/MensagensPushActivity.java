@@ -108,18 +108,22 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         buttonMsgExcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = mensagempushAdapter.getPositionLast();
-                if (position != -1 && !readMensagensList.isEmpty()) {
-                    readMensagensList.remove(position);
+
+                readMensagensList.clear();
+                unreadMensagensList.clear();
+//                int position = mensagempushAdapter.getPositionLast();
+//                if (position != -1 && !readMensagensList.isEmpty()) {
+//                    readMensagensList.remove(position);
                     mensagempushAdapter.notifyDataSetChanged();
                 }
 
             }
-        });
+        );
 
         buttonMsgLida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+          //Marcar todas as mensagens lidas
                 int position = mensagempushAdapter.getPositionLast();
                 if (position != -1 && !unreadMensagensList.isEmpty()) {
                     MessagePush selectedMessage = mensagempushAdapter.getMensagem(position);
