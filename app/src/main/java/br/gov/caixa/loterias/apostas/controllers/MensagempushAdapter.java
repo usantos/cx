@@ -9,11 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,15 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         boolean isExpanded = expandedPositions.get(position, false);
         holder.setExpanded(isExpanded);
         boolean isSelected = position == selectedPosition;
+        
+
+        final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;
+        swipeLayout.setClickToClose(true);
+        swipeLayout.getDragEdgeMap().clear();
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.btn_msg_lidas));
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.btn_msg_eliminar));
+        swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
+
     }
 
     @Override
@@ -84,10 +96,14 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         private ImageView iconImageView;
         private TextView titleTextView;
         private TextView contentTextView;
+        private TextView categoriaTextView;
         private TextView text_preview;
         private TextView dateTextView;
         private ConstraintLayout expandedLayout;
-        private Button buttonCompart, buttonMsgExpandida, buttonMsgLida, buttonMsgExcluir;
+        private Button buttonCompart, buttonMsgExpandida;
+        private Button buttonMsgLida, buttonMsgExcluir;
+        private LinearLayout swipebuttomPush;
+
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,12 +111,16 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             buttonCompart = itemView.findViewById(R.id.buttonCompart);
 //            buttonMsgExcluir = itemView.findViewById(R.id.buttonMsgExcluir);
             buttonMsgExpandida = itemView.findViewById(R.id.buttonMsgExpandida);
+            buttonMsgLida = itemView.findViewById(R.id.btn_msg_lidas);
+            buttonMsgExcluir = itemView.findViewById(R.id.btn_msg_eliminar);
+            swipebuttomPush = itemView.findViewById(R.id.swipebuttomPush);
 
             titleTextView = itemView.findViewById(R.id.titulo_msgpush);
             contentTextView = itemView.findViewById(R.id.mensagem_texto);
             dateTextView = itemView.findViewById(R.id.data_texto);
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
             text_preview = itemView.findViewById(R.id.text_preview);
+
             buttonCompart.setOnClickListener(this);
             buttonMsgExpandida.setOnClickListener(this);
             itemView.setOnClickListener(this);
@@ -113,7 +133,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             text_preview.setText(mensagensList.getConteudo());
             contentTextView.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
-            //
+
             text_preview.setTextColor(Color.WHITE);
 
             boolean isExpanded = expandedPositions.get(position, false);
