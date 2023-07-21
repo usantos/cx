@@ -7,7 +7,7 @@
     tools:showIn="@layout/content_lista_msgpush"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/fundobrancocentralmsg"
+    android:background="@color/branco_transparente"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -87,8 +87,8 @@
 
             <Button
                 android:id="@+id/buttonCompart"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/ic_compartilhar"
                 android:drawablePadding="8dp"
@@ -115,21 +115,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mensagem_texto" />
 
-            <TextView
-                android:id="@+id/mensagem_texto"
-                android:layout_width="298dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="77dp"
-                android:fontFamily="@font/futura_std_bold"
-                android:padding="8dp"
-                android:textAllCaps="false"
-                android:textColor="@color/cinzaescuro"
-                android:textSize="12dp"
-                app:layout_constraintEnd_toStartOf="@+id/buttonCompart"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/mensagem_texto"
+            android:layout_width="298dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/futura_std_bold"
+            android:padding="12dp"
+            android:textAllCaps="false"
+            android:textColor="@color/cinzaescuro"
+            android:textSize="12dp"
+            app:layout_constraintEnd_toStartOf="@+id/buttonCompart"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
             />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
