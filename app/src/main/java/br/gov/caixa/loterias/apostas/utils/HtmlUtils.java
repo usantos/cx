@@ -263,8 +263,6 @@ public class HtmlUtils {
                     EquipeDTO equipe2 = partidaLotecaDTO.getEquipe2();
 
                     String abrev = partidaLotecaDTO.getLegendaAbreviada();
-                    abrev = abrev.replace("(","");
-                    abrev = abrev.replace(")","");
 
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_ABREV,abrev);
 
