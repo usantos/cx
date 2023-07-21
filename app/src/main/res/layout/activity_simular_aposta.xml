@@ -107,7 +107,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolBarLoteca"
             android:layout_width="0dp"
-            android:layout_height="120dp"
+            android:layout_height="140dp"
             android:background="@drawable/drawer_linha_divisao_bg"
             android:orientation="vertical"
             android:visibility="visible"
@@ -118,16 +118,16 @@
 
             <TextView
                 android:id="@+id/labelExplicaSuasApostas"
+                style="@style/ExplicativoArialMT"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="17dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="17dp"
                 android:paddingTop="5dp"
                 android:text="@string/label_suas_apostas_explica"
-                style="@style/ExplicativoFuturaStdBold"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/labelTituloLoteca"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/labelTituloLoteca"

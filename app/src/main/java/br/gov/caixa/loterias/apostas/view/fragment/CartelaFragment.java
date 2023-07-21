@@ -1385,23 +1385,21 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		valorTotalTriplas= parentActivity.getLabelValueTriplasLoteca();
 
 
-		if (somaTotais > 13) {
+		if (somaTotais >= 14) {
 			valorTotalJogos.setTextColor(getResources().getColor(R.color.verdeazul));
-		} else {
-			valorTotalJogos.setTextColor(getResources().getColor(R.color.lotecaclaro));
-		}
-		if (valueSimples > 1 && somaTotais > 13) {
 			valorTotalSimples.setTextColor(getResources().getColor(R.color.verdeazul));
 		} else {
+			valorTotalJogos.setTextColor(getResources().getColor(R.color.lotecaclaro));
 			valorTotalSimples.setTextColor(getResources().getColor(R.color.lotecaclaro));
 		}
-		if (valueDuplas == 1 || valueTriplas == 1) {
+		if (valueDuplas  == 0 && valueTriplas == 0) {
+			valorTotalDuplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
+			valorTotalTriplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
+		} else {
 			valorTotalDuplas.setTextColor(getResources().getColor(R.color.verdeazul));
 			valorTotalTriplas.setTextColor(getResources().getColor(R.color.verdeazul));
-		} else {
-			valorTotalTriplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
-			valorTotalDuplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
 		}
+
 
 		Boolean mostraBotao = atualizaValorApostaLoteca();
 		atualizaStatusBotaoFinalizarLoteca(mostraBotao);

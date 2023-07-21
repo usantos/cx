@@ -126,6 +126,11 @@
                     android:scheme="https"
                     android:host="loteriasonline.caixa.gov.br" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".controllers.IntroducaoActivity"
@@ -213,11 +218,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BrancoActionBar"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".controllers.TermosUsoActivity"
