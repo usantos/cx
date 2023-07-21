@@ -12,10 +12,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,22 +70,24 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         recyclerViewMensagens.setAdapter(mensagempushAdapter);
         checarEstadoVazio();
 
-        //ativa o swipe
-        ItemTouchHelper itemTouchHelper;
-        itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
+//        recyclerViewMensagens.setOnClickListener(new MensagempushAdapter.onItemClickListener());
 
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//                int position = viewHolder.getAdapterPosition();
-//                readMensagensList.remove(position);
-//                mensagempushAdapter.notifyDataSetChanged();
-            }
-        });
-        itemTouchHelper.attachToRecyclerView(recyclerViewMensagens);
+//        //ativa o swipe
+//        ItemTouchHelper itemTouchHelper;
+//        itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+//            @Override
+//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+////                int position = viewHolder.getAdapterPosition();
+////                readMensagensList.remove(position);
+////                mensagempushAdapter.notifyDataSetChanged();
+//            }
+//        });
+//        itemTouchHelper.attachToRecyclerView(recyclerViewMensagens);
 
         radioGroupMensagens.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -108,33 +108,46 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         buttonMsgExcluir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                readMensagensList.clear();
-                unreadMensagensList.clear();
-//                int position = mensagempushAdapter.getPositionLast();
-//                if (position != -1 && !readMensagensList.isEmpty()) {
-//                    readMensagensList.remove(position);
-                    mensagempushAdapter.notifyDataSetChanged();
+                ViewUtils.alertTitleButtonYesOrNotListener(
+                        MensagensPushActivity.this,
+                        getResources().getString(R.string.msg_push_excluir),
+                        (dialog, which) -> {
+                            if (!readMensagensList.isEmpty()) {
+                                readMensagensList.clear();
+                                mensagempushAdapter.notifyDataSetChanged();
+                            }
+                            if (!unreadMensagensList.isEmpty()) {
+                                unreadMensagensList.clear();
+                                mensagempushAdapter.notifyDataSetChanged();
+                            }
+                        },
+                        (dialog, which) -> {
+                            dialog.dismiss();
+                        });
                 }
 
             }
         );
 
         buttonMsgLida.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-          //Marcar todas as mensagens lidas
-                int position = mensagempushAdapter.getPositionLast();
-                if (position != -1 && !unreadMensagensList.isEmpty()) {
-                    MessagePush selectedMessage = mensagempushAdapter.getMensagem(position);
-                    selectedMessage.marcarRead();
-                    mensagempushAdapter.notifyDataSetChanged();
-                    readMensagensList.add(selectedMessage);
-                    unreadMensagensList.remove(selectedMessage);
-                    mensagempushAdapter.notifyDataSetChanged();
-                }
-            }
-        });
+                                             @Override
+                                             public void onClick(View v) {
+                                                 ViewUtils.alertTitleButtonYesOrNotListener(
+                                                         MensagensPushActivity.this,
+                                                         getResources().getString(R.string.msg_push_marcar_lidas),
+                                                         (dialog, which) -> {
+                                                             marcarTodasLidas(unreadMensagensList);
+                                                             unreadMensagensList.clear();
+                                                             mensagempushAdapter.notifyDataSetChanged();
+                                                         },
+                                                         (dialog, which) -> {
+                                                             dialog.dismiss();
+                                                         });
+                                             }
+
+                                         }
+        );
+
 
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -174,7 +187,11 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         }
         return readMessages;
     }
-
+    public static void marcarTodasLidas(List<MessagePush> messages) {
+        for (MessagePush message : messages) {
+            message.setRead(true);
+        }
+    }
     private void checarEstadoVazio() {
         if (mensagempushAdapter.getItemCount() == 0) {
             Toast.makeText(MensagensPushActivity.this, "Lista de mensagens está vazia", Toast.LENGTH_LONG).show();
