@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -194,9 +193,11 @@ public class MensagensPushActivity extends LoteriasAppActivity {
     }
     private void checarEstadoVazio() {
         if (mensagempushAdapter.getItemCount() == 0) {
-            Toast.makeText(MensagensPushActivity.this, "Lista de mensagens está vazia", Toast.LENGTH_LONG).show();
+//            Toast.makeText(MensagensPushActivity.this, "A lista de mensagens está vazia", Toast.LENGTH_LONG).show();
+            ViewUtils.alert(this, getString(R.string.pesquisa_push_vazia) );
         }
     }
+
 
     private List<MessagePush> gerarMsgTodasMock() {
         mensagensList = new ArrayList<>();

@@ -144,15 +144,17 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             contentTextView.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
 
-            if (mensagensList.isSelected()) {
-                if (getAdapterPosition() == positionLast) {
-                    itemView.setBackgroundColor(Color.YELLOW);
-                } else {
-                    itemView.setBackgroundColor(Color.LTGRAY);
-                }
-            } else {
-                itemView.setBackgroundColor(Color.TRANSPARENT);
-            }
+            setSelectedPosition(position);
+
+//            if (itemView.isSelected()) {
+//                if (getAdapterPosition() == positionLast) {
+//                    itemView.setBackgroundColor(itemView.getResources().getColor(R.color.branco));
+//                } else {
+//                    itemView.setBackgroundColor(itemView.getResources().getColor(R.color.fundobrancocentralmsg));
+//                }
+//            } else {
+//                itemView.setBackgroundColor(itemView.getResources().getColor(R.color.fundobrancocentralmsg));
+//            }
 //                cabecalho.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
 //                titleTextView.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
 //            } else {
@@ -166,14 +168,26 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             boolean isExpanded = expandedPositions.get(position, false);
 
             expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-            if (mensagensList.isRead()) {mensagensList.setRead(true);}
+
+            if (mensagensList.isRead()) {
+                mensagensList.setRead(true);
+                mensagensList.setSelected(true);
+                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.mpsdk_light_gray));
+            }
+
             if (mensagensList.isExpanded()) {
                 updateMessageViewAsRead();
                 mensagensList.setRead(true);
-                cabecalho.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
+                mensagensList.setSelected(true);
+                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
             } else {
                 updateMessageViewAsUnread();
-                cabecalho.setBackgroundColor(contentTextView.getResources().getColor(R.color.fundobrancocentralmsg));
+                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.fundobrancocentralmsg));
+            }
+
+            if (mensagensList.isSelected()) {
+                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
+                itemView.setBackgroundColor(itemView.getResources().getColor(R.color.branco));
             }
 
             switch (mensagensList.getCategoria()) {
@@ -182,14 +196,15 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                     buttonMsgExpandida.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setText("Pagamentos e Resgates");
                     buttonMsgExpandida.setTextColor(Color.WHITE);
-                    buttonMsgExpandida.setBackgroundColor(contentTextView.getResources().getColor(R.color.pushbotaoaposteagora));
+                    cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.mpsdk_light_gray));
+                    buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoaposteagora));
                     break;
                 case 2:
                     buttonCompart.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setTextColor(Color.WHITE);
                     buttonMsgExpandida.setText("Lembretes da Sorte");
-                    buttonMsgExpandida.setBackgroundColor(contentTextView.getResources().getColor(R.color.pushbotaoconferiragora));
+                    buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoconferiragora));
                     break;
 //                case 3:
 //                    buttonMsgExpandida.setVisibility(View.VISIBLE);
@@ -217,14 +232,14 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         }
 
         private void updateMessageViewAsUnread() {
-            cabecalho.setBackgroundColor(contentTextView.getResources().getColor(R.color.fundobrancocentralmsg));
-            itemView.setBackgroundColor(contentTextView.getResources().getColor(R.color.fundobrancocentralmsg));
+            cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.fundobrancocentralmsg));
+            itemView.setBackgroundColor(itemView.getResources().getColor(R.color.fundobrancocentralmsg));
             titleTextView.setTextColor(Color.GRAY);
         }
 
         private void updateMessageViewAsRead() {
-            cabecalho.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
-            itemView.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
+            cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
+            itemView.setBackgroundColor(itemView.getResources().getColor(R.color.branco));
             titleTextView.setTextColor(Color.BLACK);
         }
 
@@ -285,11 +300,11 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
             if (v.getId() == R.id.cabecalho) {
                 if (itemView.isSelected()) {
-                    cabecalho.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
-                    titleTextView.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
+                    cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
+                    titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.branco));
                 } else
-                    cabecalho.setBackgroundColor(contentTextView.getResources().getColor(R.color.fundobrancocentralmsg));
-                    titleTextView.setBackgroundColor(contentTextView.getResources().getColor(R.color.fundobrancocentralmsg));
+                    cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.fundobrancocentralmsg));
+                    titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.fundobrancocentralmsg));
                 {
 
                 }

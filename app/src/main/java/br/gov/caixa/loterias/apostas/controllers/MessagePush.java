@@ -74,4 +74,5 @@ public class MessagePush {
     public void setSelected(boolean selected) {
         isSelected = selected;
     }
+
 }

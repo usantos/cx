@@ -39,15 +39,15 @@
                 android:background="@drawable/search_edittext_background"
                 android:drawableStart="@drawable/ic_pesquisar"
                 android:drawableLeft="@drawable/ic_pesquisar"
-                android:hint="@string/pesquisa_push"
+                android:hint="  Pesquisar"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:padding="10dp"
                 android:textAppearance="@style/pesqpush"
                 android:visibility="visible"
                 app:boxBackgroundMode="none"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp"
+                app:boxStrokeWidth="5sp"
+                app:boxStrokeWidthFocused="5sp"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
