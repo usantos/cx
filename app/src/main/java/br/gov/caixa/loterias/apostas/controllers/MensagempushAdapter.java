@@ -246,8 +246,8 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         public void setSelectedPosition(int position) {
             positionLast = selectedPosition;
             selectedPosition = position;
-            notifyItemChanged(positionLast);
-            notifyItemChanged(selectedPosition);
+//            notifyItemChanged(positionLast);
+//            notifyItemChanged(selectedPosition);
         }
 
         public void setExpanded(boolean expanded) {
