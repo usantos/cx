@@ -82,33 +82,33 @@ public class LocalizacaoActivity extends AppCompatActivity {
         setResult(RESULT_OK);
         finish();
 
-//        switch (LocalizacaoUtils.checaStatusPermissao(this)) {
-//            case LocalizacaoUtils.LOC_NAO_PERMITIDA:
-//                LocalizacaoUtils.solicitaPermissao(LocalizacaoActivity.this);
-//                break;
-//            case LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE:
-//                tvMsgGenerica.setText(getResources().getString(R.string.bloq_local_desativada_msg));
-//                btnGenerico.setText(getResources().getString(R.string.bloq_local_permitir));
-//                btnGenerico.setOnClickListener(view -> LocalizacaoUtils.intentConfigPermissao(this));
-//                break;
-//            case LocalizacaoUtils.LOC_DESATIVADA:
-//                tvMsgGenerica.setText(getResources().getString(R.string.bloq_local_desativada_msg));
-//                btnGenerico.setText(getResources().getString(R.string.bloq_local_ir_config));
-//                btnGenerico.setOnClickListener(view -> LocalizacaoUtils.intentConfigGps(this));
-//                break;
-//            case LocalizacaoUtils.LOC_FORA_DO_BRASIL:
-//                configLocForaBrasil();
-//                break;
-//            case LocalizacaoUtils.LOC_NO_BRASIL:
-//                setResult(RESULT_OK);
-//                finish();
-//                break;
-//            case LocalizacaoUtils.LOC_ERRO:
-//                tvMsgGenerica.setText(getResources().getString(R.string.bloq_local_erro));
-//                btnGenerico.setText(getResources().getString(R.string.bloq_local_tente_nvm));
-//                btnGenerico.setOnClickListener(view -> trataPermissaoDelay());
-//                break;
-//        }
+        switch (LocalizacaoUtils.checaStatusPermissao(this)) {
+            case LocalizacaoUtils.LOC_NAO_PERMITIDA:
+                LocalizacaoUtils.solicitaPermissao(LocalizacaoActivity.this);
+                break;
+            case LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE:
+                tvMsgGenerica.setText(getResources().getString(R.string.bloq_local_desativada_msg));
+                btnGenerico.setText(getResources().getString(R.string.bloq_local_permitir));
+                btnGenerico.setOnClickListener(view -> LocalizacaoUtils.intentConfigPermissao(this));
+                break;
+            case LocalizacaoUtils.LOC_DESATIVADA:
+                tvMsgGenerica.setText(getResources().getString(R.string.bloq_local_desativada_msg));
+                btnGenerico.setText(getResources().getString(R.string.bloq_local_ir_config));
+                btnGenerico.setOnClickListener(view -> LocalizacaoUtils.intentConfigGps(this));
+                break;
+            case LocalizacaoUtils.LOC_FORA_DO_BRASIL:
+                configLocForaBrasil();
+                break;
+            case LocalizacaoUtils.LOC_NO_BRASIL:
+                setResult(RESULT_OK);
+                finish();
+                break;
+            case LocalizacaoUtils.LOC_ERRO:
+                tvMsgGenerica.setText(getResources().getString(R.string.bloq_local_erro));
+                btnGenerico.setText(getResources().getString(R.string.bloq_local_tente_nvm));
+                btnGenerico.setOnClickListener(view -> trataPermissaoDelay());
+                break;
+        }
     }
 
     private void configLocForaBrasil() {

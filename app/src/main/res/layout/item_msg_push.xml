@@ -7,6 +7,8 @@
     tools:showIn="@layout/content_lista_msgpush"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:focusable="true"
+    android:clickable="true"
     android:background="@color/branco_transparente"
     >
 

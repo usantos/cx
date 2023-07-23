@@ -8,6 +8,8 @@
     tools:context="br.gov.caixa.loterias.apostas.controllers.MensagensPushActivity"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_notificacao_msg"
+    android:clickable="true"
+    android:focusable="true"
    >
     <include layout="@layout/app_bar_degrade_push" />
 
