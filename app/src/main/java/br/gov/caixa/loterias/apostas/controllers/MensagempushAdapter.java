@@ -151,11 +151,9 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
 
             if (getAdapterPosition() == selectedPosition) {
-//                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push_branco);
-                itemView.setBackgroundColor(R.layout.item_msg_push_selected);
-                } else {
-//                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push);
-                itemView.setBackgroundColor(R.layout.item_msg_push);
+                itemView.setBackgroundColor(Color.YELLOW);
+            } else {
+                itemView.setBackgroundColor(Color.WHITE);
             }
 
             boolean isExpanded = expandedPositions.get(position, false);
@@ -165,7 +163,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             if (mensagensList.isRead()) {
                 mensagensList.setRead(true);
                 mensagensList.setSelected(true);
-                itemView.setBackgroundColor(R.layout.item_msg_push_selected);
+//                itemView.setBackgroundColor(R.layout.item_msg_push_selected);
 //                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push);
             }
 
@@ -173,18 +171,18 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 updateMessageViewAsRead();
                 mensagensList.setRead(true);
                 mensagensList.setSelected(true);
-                itemView.setBackgroundColor(R.layout.item_msg_push_selected);
+//                itemView.setBackgroundColor(R.layout.item_msg_push_selected);
 //                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push_branco);
             } else {
                 updateMessageViewAsUnread();
                 mensagensList.setRead(false);
                 mensagensList.setSelected(false);
-                itemView.setBackgroundColor(R.layout.item_msg_push);
+//                itemView.setBackgroundColor(R.layout.item_msg_push);
 //                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push);
             }
 
 //            if (mensagensList.isSelected()) {
-//                itemView.setBackgroundColor(R.layout.item_msg_push_selected);
+//                itemView.setBackgroundColor(R.drawable.ic_cabec_push_branco);
 ////                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push_branco);
 //            }
 
@@ -241,40 +239,23 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 //            itemView.setBackgroundColor(itemView.getResources().getColor(R.color.branco));
 //            cabecalho.setBackgroundColor(R.drawable.ic_cabec_push_branco);
             titleTextView.setTextColor(Color.BLACK);
+            cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
+            expandedLayout.setBackgroundColor(expandedLayout.getResources().getColor(R.color.branco));
+            titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.branco));
+            iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.branco));
+            text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.branco));
+            dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.branco));
         }
 
         public void setSelectedPosition(int position) {
-            selectedPosition = position;
-            notifyDataSetChanged();
-//            if (selectedPosition == position) {
-//                selectedPosition = RecyclerView.NO_POSITION;
-//            } else {
-//                selectedPosition = position;
-//            }
-
-        }
-
-        public void setExpanded(boolean expanded) {
-            if (itemView.isClickable()) {
-                titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.branco));
-                text_preview.setBackgroundColor(titleTextView.getResources().getColor(R.color.branco));
-                iconImageView.setBackgroundColor(titleTextView.getResources().getColor(R.color.branco));
-
-                //                expandedLayout.setBackgroundColor(R.drawable.ic_cabec_push_branco);
-//                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
-////              cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));//                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push_branco);
-                itemView.setBackgroundColor(R.drawable.ic_cabec_push_branco);
+//            selectedPosition = position;
+//            notifyItemChanged(position);
+            if (selectedPosition == position) {
+                selectedPosition = RecyclerView.NO_POSITION;
             } else {
-//                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.fundobrancocentralmsg));
-                titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.fundobrancocentralmsg));
-                text_preview.setBackgroundColor(titleTextView.getResources().getColor(R.color.fundobrancocentralmsg));
-                iconImageView.setBackgroundColor(titleTextView.getResources().getColor(R.color.fundobrancocentralmsg));
-//                expandedLayout.setBackgroundColor(R.drawable.ic_cabec_push);
-//                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push);
-                itemView.setBackgroundColor(R.drawable.ic_cabec_push);
+                selectedPosition = position;
             }
-            text_preview.setVisibility(!expanded ? View.VISIBLE : View.INVISIBLE);
-            expandedLayout.setVisibility(expanded ? View.VISIBLE : View.GONE);
+
         }
 
         public void onClick(View v) {
@@ -284,6 +265,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             //so pode ter uma expandidade aberta
             if (positionLast != position) {
                 expandedPositions.delete(positionLast);
+                notifyItemChanged(positionLast);
             }
 
             if (position != RecyclerView.NO_POSITION) {
@@ -291,25 +273,38 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 boolean isExpanded = expandedPositions.get(position, false);
                 expandedPositions.put(position, !isExpanded);
                 setExpanded(!isExpanded);
+                cabecalho.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
+                expandedLayout.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
                 titleTextView.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
-                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push_branco);
-                notifyDataSetChanged();
+                iconImageView.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
+                text_preview.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
+                dateTextView.setBackgroundColor(contentTextView.getResources().getColor(R.color.branco));
+                //                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push_branco);
+//                itemView.setBackgroundResource(R.drawable.ic_cabec_push_branco);
+
+//                notifyDataSetChanged();
+                notifyItemChanged(position);
             } else {
                 positionLast = -1;
                 expandedPositions.delete(position);
-                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push);
-                notifyDataSetChanged();
+//                titleTextView.setBackgroundColor(R.drawable.ic_cabec_push);
+//                itemView.setBackgroundResource(R.drawable.ic_cabec_push);
+
+//
+//                cabecalho.setBackgroundColor(R.drawable.ic_cabec_push);
+//                notifyDataSetChanged();
+                notifyItemChanged(position);
             }
 
             if (v.getId() == R.id.buttonCompart) {
                 MessagePush messagePush = mensagensList.get(position);
                 shareMessage(v.getContext(), messagePush);
-                notifyDataSetChanged();
+                notifyItemChanged(position);
             }
 
             if (v.getId() == R.id.buttonMsgExpandida) {
-                ViewUtils.alert(contentTextView.getContext(), contentTextView.getResources().getString(R.string.msg_push_botaocategoria) );
-                notifyDataSetChanged();
+                ViewUtils.alert(contentTextView.getContext(), contentTextView.getResources().getString(R.string.msg_push_botaocategoria));
+                notifyItemChanged(position);
             }
 
 //            if (v.getId() == R.id.cabecalho) {
@@ -322,7 +317,29 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 ////                    cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.fundobrancocentralmsg));
 //                    titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.fundobrancocentralmsg));
 //                }
-//            }
+        }
+
+        public void setExpanded(boolean isExpanded) {
+            if (itemView.isSelected()) {
+                titleTextView.setTextColor(Color.BLACK);
+                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
+                expandedLayout.setBackgroundColor(expandedLayout.getResources().getColor(R.color.branco));
+                titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.branco));
+                iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.branco));
+                text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.branco));
+                dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.branco));
+
+            } else {
+                titleTextView.setTextColor(Color.BLACK);
+                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.fundobrancocentralmsg));
+                expandedLayout.setBackgroundColor(expandedLayout.getResources().getColor(R.color.fundobrancocentralmsg));
+                titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.fundobrancocentralmsg));
+                iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.fundobrancocentralmsg));
+                text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.fundobrancocentralmsg));
+                dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.fundobrancocentralmsg));
+            }
+            text_preview.setVisibility(!isExpanded ? View.VISIBLE : View.INVISIBLE);
+            expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         }
 
         private void shareMessage(Context context, MessagePush messagePush) {
@@ -344,4 +361,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         notifyItemRemoved(position);
     }
 
+
 }
+
+
