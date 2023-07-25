@@ -185,7 +185,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 mensagensList.setSelected(true);
             } else {
                 updateMessageViewAsUnread();
-                mensagensList.setRead(false);
+//                mensagensList.setRead(false);
                 mensagensList.setSelected(false);
             }
 
@@ -244,7 +244,10 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                     buttonMsgExpandida.setVisibility(View.GONE);
                     buttonCompart.setVisibility(View.GONE);
                     buttonMsgExpandida.setText("");
+
+                    break;
             }
+
         }
 
         private void updateMessageViewAsUnread() {
@@ -287,7 +290,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 }
             }
 
-            setSelectedPosition(position);
+//            setSelectedPosition(position);
             if (position != RecyclerView.NO_POSITION) {
                 positionLast = position;
                 boolean isExpanded = expandedPositions.get(position, false);
@@ -295,7 +298,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 itemView.setSelected(true);
                 setExpanded(!isExpanded);
 
-               cabecalho.setBackgroundResource(R.drawable.ic_cabec_push_branco);
+//               cabecalho.setBackgroundResource(R.drawable.ic_cabec_push_branco);
 
                 notifyItemChanged(position);
                 notifyDataSetChanged();
