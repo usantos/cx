@@ -97,14 +97,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         notifyDataSetChanged();
     }
 
-//
-////        final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;
-////        swipeLayout.setClickToClose(true);
-////        swipeLayout.getDragEdgeMap().clear();
-////        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.btn_msg_lidas));
-////        swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.btn_msg_eliminar));
-////        swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
-
     public void mensagensFiltradas(String searchEditText) {
         List<MessagePush> mensagensFiltradas = new ArrayList<>();
 
@@ -179,12 +171,12 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             contentTextView.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
 
-            final SwipeLayout swipeLayout = (SwipeLayout) this.itemView;
-            swipeLayout.setClickToClose(true);
-            swipeLayout.getDragEdgeMap().clear();
-            swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.swipebuttomPush));
-            swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
-            swipebuttomPush.setAnimation();
+//            final SwipeLayout swipeLayout = (SwipeLayout) this.itemView;
+//            swipeLayout.setClickToClose(true);
+//            swipeLayout.getDragEdgeMap().clear();
+//            swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.swipebuttomPush));
+//            swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
+//            swipebuttomPush.setAnimation();
 
             position = row_index;
 // (position == selectedposition)
