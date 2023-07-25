@@ -102,6 +102,7 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/ic_compartilhar"
             android:drawablePadding="8dp"
             android:padding="8dp"
