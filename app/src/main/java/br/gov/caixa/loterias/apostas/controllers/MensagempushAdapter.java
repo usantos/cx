@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,7 +40,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_msg_push, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_msg_push_swipebuttons, parent, false);
         return new MessageViewHolder(itemView);
     }
 
@@ -69,11 +70,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             holder.expandedLayout.setVisibility(View.VISIBLE);
             holder.setExpanded(true);
         } else {
-//            holder.cabecalho.setBackgroundColor(Color.parseColor("#E5E5E5"));
             holder.titleTextView.setBackgroundColor(Color.parseColor("#E5E5E5"));
-//            holder.text_preview.setBackgroundColor(Color.parseColor("#E5E5E5"));
-//            holder.dateTextView.setBackgroundColor(Color.parseColor("#E5E5E5"));
-//            holder.iconImageView.setBackgroundColor(holder.iconImageView.getResources().getColor(R.color.pesquisa_msgpush));
             holder.expandedLayout.setVisibility(View.GONE);
         }
 
@@ -122,9 +119,9 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         private TextView categoriaTextView;
         private TextView text_preview;
         private TextView dateTextView;
-        private ConstraintLayout expandedLayout, cabecalho;
+        private LinearLayout expandedLayout, cabecalho;
         private Button buttonCompart, buttonMsgExpandida;
-        private Button buttonMsgLida, buttonMsgExcluir;
+        private ImageButton buttonMsgLida, buttonMsgExcluir;
         private LinearLayout swipebuttomPush;
 
         public MessageViewHolder(@NonNull View itemView) {
@@ -135,7 +132,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             buttonMsgExpandida = itemView.findViewById(R.id.buttonMsgExpandida);
             buttonMsgLida = itemView.findViewById(R.id.btn_msg_lidas);
             buttonMsgExcluir = itemView.findViewById(R.id.btn_msg_eliminar);
-            swipebuttomPush = itemView.findViewById(R.id.swipebuttomPush);
+            swipebuttomPush = itemView.findViewById(R.id.swipeLayoutButtonPush);
             cabecalho = itemView.findViewById(R.id.container_cabecalho);
             titleTextView = itemView.findViewById(R.id.titulo_msgpush);
             contentTextView = itemView.findViewById(R.id.mensagem_texto);
@@ -145,6 +142,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             buttonCompart.setOnClickListener(this);
             buttonMsgExpandida.setOnClickListener(this);
             cabecalho.setOnClickListener(this);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,12 +169,44 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             contentTextView.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
 
-//            final SwipeLayout swipeLayout = (SwipeLayout) this.itemView;
-//            swipeLayout.setClickToClose(true);
-//            swipeLayout.getDragEdgeMap().clear();
-//            swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.swipebuttomPush));
-//            swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
+            final SwipeLayout swipeLayout = (SwipeLayout) this.itemView;
+            swipeLayout.setClickToClose(true);
+            swipeLayout.getDragEdgeMap().clear();
+            swipeLayout.addDrag(SwipeLayout.DragEdge.Right, swipeLayout.findViewById(R.id.swipeLayoutButtonPush));
+            swipeLayout.setDragEdge(SwipeLayout.DragEdge.Right);
 //            swipebuttomPush.setAnimation();
+
+            swipeLayout.addSwipeListener(new SwipeLayout.SwipeListener() {
+                @Override
+                public void onClose(SwipeLayout layout) {
+                    //when the SurfaceView totally cover the BottomView.
+                }
+
+                @Override
+                public void onUpdate(SwipeLayout layout, int leftOffset, int topOffset) {
+                    //you are swiping.
+                }
+
+                @Override
+                public void onStartOpen(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onOpen(SwipeLayout layout) {
+                    //when the BottomView totally show.
+                }
+
+                @Override
+                public void onStartClose(SwipeLayout layout) {
+
+                }
+
+                @Override
+                public void onHandRelease(SwipeLayout layout, float xvel, float yvel) {
+                    //when user's hand released.
+                }
+            });
 
             position = row_index;
 // (position == selectedposition)
