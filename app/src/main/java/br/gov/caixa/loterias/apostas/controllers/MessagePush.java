@@ -81,5 +81,11 @@ public class MessagePush {
 
     public void setApagada(boolean apagada) {
         this.apagada = apagada; }
+
+    public boolean isApagada() {
+        return apagada;
     }
+}
+
+
 

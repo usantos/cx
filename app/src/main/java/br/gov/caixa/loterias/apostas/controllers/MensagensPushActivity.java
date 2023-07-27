@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -66,29 +65,31 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         readMensagensList = getReadmensagens();
 
         //Define adaptador inicial
+        recyclerViewMensagens.setLayoutManager(new GridLayoutManager(this, 2));
         mensagempushAdapter = new MensagempushAdapter(readMensagensList);
-        recyclerViewMensagens.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewMensagens.setAdapter(mensagempushAdapter);
         checarEstadoVazio();
 
         radioGroupMensagens.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rb_todas) {
-                    readMensagensList.clear();
-                    mensagempushAdapter.notifyDataSetChanged();
-                    mensagempushAdapter.setMensagensList(getReadmensagens());
-                    mensagempushAdapter.notifyDataSetChanged();
-                    mensagempushAdapter.setColunaTab(1);
-                    checarEstadoVazio();
-                } else if (checkedId == R.id.rb_naolidas) {
-                    unreadMensagensList.clear();
-                    mensagempushAdapter.notifyDataSetChanged();
-                    mensagempushAdapter.setMensagensList(getUnreadmensagens());
-                    mensagempushAdapter.notifyDataSetChanged();
-                    mensagempushAdapter.setColunaTab(2);
-                    checarEstadoVazio();
-                }
+                mensagempushAdapter.setMensagensList(readMensagensList, unreadMensagensList);
+
+//                if (checkedId == R.id.rb_todas) {
+//                    readMensagensList.clear();
+//                    mensagempushAdapter.notifyDataSetChanged();
+//                    mensagempushAdapter.setMensagensList(getReadmensagens(), getUnreadmensagens());
+//                    mensagempushAdapter.notifyDataSetChanged();
+//                    mensagempushAdapter.setColunaTab(1);
+//                    checarEstadoVazio();
+//                } else if (checkedId == R.id.rb_naolidas) {
+//                    unreadMensagensList.clear();
+//                    mensagempushAdapter.notifyDataSetChanged();
+//                    mensagempushAdapter.setMensagensList(getUnreadmensagens());
+//                    mensagempushAdapter.notifyDataSetChanged();
+//                    mensagempushAdapter.setColunaTab(2);
+//                    checarEstadoVazio();
+//                }
             }
 
         });
@@ -100,9 +101,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
                         MensagensPushActivity.this,
                         getResources().getString(R.string.msg_push_excluir),
                         (dialog, which) -> {
-                                apagarTodas(readMensagensList);
-                                apagarTodas(unreadMensagensList);
-                                mensagensList.clear();
+                                apagarTodas(mensagensList);
                                 mensagempushAdapter.notifyDataSetChanged();
                         },
                         (dialog, which) -> {
@@ -124,7 +123,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
                                                              unreadMensagensList.clear();
                                                              mensagempushAdapter.notifyDataSetChanged();
                                                              readMensagensList = getReadmensagens();
-                                                             mensagempushAdapter.setMensagensList(readMensagensList);
+                                                             mensagempushAdapter.setMensagensList(readMensagensList, unreadMensagensList);
                                                              mensagempushAdapter.notifyDataSetChanged();
                                                          },
                                                          (dialog, which) -> {
@@ -156,9 +155,9 @@ public class MensagensPushActivity extends LoteriasAppActivity {
 
     private List<MessagePush>  getUnreadmensagens() {
         List<MessagePush> unreadMessages = new ArrayList<>();
-        for (MessagePush message : mensagensList) {
-            if (!message.getRead() && !message.getApagada()) {
-                unreadMessages.add(message);
+        for (MessagePush messagePush : mensagensList) {
+            if (!messagePush.getRead() && !messagePush.getApagada()) {
+                unreadMessages.add(messagePush);
             }
         }
         return unreadMessages;
@@ -166,21 +165,21 @@ public class MensagensPushActivity extends LoteriasAppActivity {
 
     private List<MessagePush> getReadmensagens() {
         List<MessagePush> readMessages = new ArrayList<>();
-        for (MessagePush message : mensagensList) {
-            if (!message.getApagada()) {
-                readMessages.add(message);
+        for (MessagePush messagePush : mensagensList) {
+            if (!messagePush.getApagada()) {
+                readMessages.add(messagePush);
             }
         }
         return readMessages;
     }
     public static void marcarTodasLidas(List<MessagePush> messages) {
-        for (MessagePush message : messages) {
-            message.setRead(true);
+        for (MessagePush messagePush : messages) {
+            messagePush.setRead(true);
         }
     }
     public static void apagarTodas(List<MessagePush> messages) {
-        for (MessagePush message : messages) {
-            message.setApagada(true);
+        for (MessagePush messagePush : messages) {
+            messagePush.setApagada(true);
         }
     }
     private void checarEstadoVazio() {
@@ -189,9 +188,6 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         }
     }
 
-    private void iniciaCarga() {
-
-    }
     private List<MessagePush> gerarMsgTodasMock() {
         mensagensList = new ArrayList<>();
 //        massa de dados mensagens lidas
