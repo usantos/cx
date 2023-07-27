@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.daimajia.swipe.SwipeLayout;
 
@@ -30,6 +31,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
     private int selectedPosition = RecyclerView.NO_POSITION;
     private int positionLast = RecyclerView.NO_POSITION;
     private int row_index = -1;
+    private int colunaTab = 1;
     private OnItemClickListener clickListener;
 
     public MensagempushAdapter(List<MessagePush> mensagensList) {
@@ -62,13 +64,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             }
         });
         if (row_index == position) {
-//            holder.cabecalho.setBackgroundColor(Color.parseColor("#ffffff"));
-//            holder.titleTextView.setBackgroundColor(Color.parseColor("#ffffff"));
-//            holder.text_preview.setBackgroundColor(Color.parseColor("#ffffff"));
-//            holder.dateTextView.setBackgroundColor(Color.parseColor("#ffffff"));
-//            holder.surfacePush.setBackgroundColor(Color.parseColor("#ffffff"));
-//            holder.iconImageView.setBackgroundColor(holder.iconImageView.getResources().getColor(R.color.branco));
-//            holder.expandedLayout.setVisibility(View.VISIBLE);
             holder.setExpanded(true);
         } else {
             holder.setExpanded(false);
@@ -102,7 +97,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         } else {
             for (MessagePush message : mensagensList) {
                 if (message.getTitulo().toLowerCase().contains(searchEditText.toLowerCase()) ||
-                    message.getConteudo().toLowerCase().contains(searchEditText.toLowerCase())) {
+                        message.getConteudo().toLowerCase().contains(searchEditText.toLowerCase())) {
                     mensagensFiltradas.add(message);
                 }
             }
@@ -124,6 +119,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         private ImageButton buttonMsgLidaItem;
         private ImageButton buttonMsgExcluirItem;
         private LinearLayout swipebuttomPush, surfacePush;
+        private RadioGroup rg_push_msg;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -140,13 +136,13 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
             text_preview = itemView.findViewById(R.id.text_preview);
             surfacePush = itemView.findViewById(R.id.surface_push);
+            rg_push_msg = itemView.findViewById(R.id.container_tabs);
 
             buttonCompart.setOnClickListener(this);
             buttonMsgExpandida.setOnClickListener(this);
             cabecalho.setOnClickListener(this);
             buttonMsgExcluirItem.setOnClickListener(this);
             buttonMsgLidaItem.setOnClickListener(this);
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -253,8 +249,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 iconImageView.setBackgroundColor(R.drawable.ic_cabec_push_branco);
                 text_preview.setBackgroundColor(R.drawable.ic_cabec_push_branco);
                 dateTextView.setBackgroundColor(R.drawable.ic_cabec_push_branco);
-            } else
-            {
+            } else {
                 cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.pesquisa_msgpush));
                 surfacePush.setBackgroundColor(surfacePush.getResources().getColor(R.color.pesquisa_msgpush));
                 titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.pesquisa_msgpush));
@@ -278,7 +273,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                     buttonMsgExpandida.setTextColor(Color.WHITE);
                     buttonMsgExpandida.setText("Lembretes da Sorte");
                     buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoconferiragora));
-                     break;
+                    break;
 //                case 3:
 //                    buttonMsgExpandida.setVisibility(View.VISIBLE);
 //                    buttonMsgExpandida.setTextColor(Color.WHITE);
@@ -364,7 +359,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             } else {
                 positionLast = -1;
                 setExpanded(false);
-//                expandedPositions.delete(position);
+                expandedPositions.delete(position);
                 notifyItemChanged(position);
                 notifyDataSetChanged();
             }
@@ -422,13 +417,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.branco));
                 dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.branco));
             }
-//            else {
-//                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.pesquisa_msgpush));
-//                titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.cinza));
-//                iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.pesquisa_msgpush));
-//                text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.pesquisa_msgpush));
-//                dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.pesquisa_msgpush));
-//            }
+//
             text_preview.setVisibility(!isExpanded ? View.VISIBLE : View.INVISIBLE);
             expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         }
@@ -453,8 +442,12 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         notifyItemRemoved(position);
     }
 
+    public void setColunaTab (int dadoCol) {
+        colunaTab = dadoCol;
+    }
     public void marcaMensagemLida(int position) {
         getMensagem(position).setRead(true);
+        if (colunaTab == 2) mensagensList.remove(position);
         notifyItemRemoved(position);
     }
 
