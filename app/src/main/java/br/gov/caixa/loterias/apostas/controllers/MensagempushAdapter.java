@@ -149,6 +149,8 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     int positionLast = selectedPosition;
+                    setExpanded(false);
+                    notifyItemChanged(position);
                     if (position != RecyclerView.NO_POSITION) {
                         setSelectedPosition(position);
                         if (clickListener != null) {
@@ -209,22 +211,22 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             });
 
 //            position = row_index;
-// (position == selectedposition)
-            if (mensagensList.isSelected()) {
-//                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
-//                titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.black));
-//                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
-//                iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.branco));
-//                text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.branco));
-//                dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.branco));
+
+            if (position == positionLast) {
+                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
+                titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.black));
+                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
+                iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.branco));
+                text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.branco));
+                dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.branco));
             } else {
-//                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.pesquisa_msgpush));
-//                titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.cinza));
-//                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.pesquisa_msgpush));
-//                titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.pesquisa_msgpush));
-//                iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.pesquisa_msgpush));
-//                text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.pesquisa_msgpush));
-//                dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.pesquisa_msgpush));
+                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.pesquisa_msgpush));
+                titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.cinza));
+                cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.pesquisa_msgpush));
+                titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.pesquisa_msgpush));
+                iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.pesquisa_msgpush));
+                text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.pesquisa_msgpush));
+                dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.pesquisa_msgpush));
             }
 
             boolean isExpanded = expandedPositions.get(position, false);
@@ -238,7 +240,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             } else {
                 updateMessageViewAsUnread();
 //                mensagensList.setRead(false);
-//                mensagensList.setSelected(false);
+                mensagensList.setSelected(false);
             }
 
             if (mensagensList.isSelected()) {
@@ -275,17 +277,19 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                     buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoaposteagora));
                     break;
                 case 3:
+//                    buttonCompart.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setTextColor(Color.WHITE);
-                    buttonMsgExpandida.setText("Resultados Disponíveis");
-                    buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoresultadosdisponiveis));
+                    buttonMsgExpandida.setText("Conferir agora");
+                    buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoconferiragora));
                     break;
-//                case 4:
+                case 4:
+                    buttonCompart.setVisibility(View.VISIBLE);
 //                    buttonMsgExpandida.setVisibility(View.VISIBLE);
 //                    buttonMsgExpandida.setTextColor(Color.WHITE);
 //                    buttonMsgExpandida.setText("Dicas e Novidades");
 //                    buttonMsgExpandida.setBackgroundColor(Color.YELLOW);
-//                    break;
+                    break;
 //                case 5:
 //                    buttonMsgExpandida.setVisibility(View.VISIBLE);
 //                    buttonMsgExpandida.setTextColor(Color.WHITE);
@@ -346,7 +350,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 }
             }
 
-            setSelectedPosition(position);
+//            setSelectedPosition(position);
             if (position != RecyclerView.NO_POSITION) {
                 positionLast = position;
                 boolean isExpanded = expandedPositions.get(position, false);
