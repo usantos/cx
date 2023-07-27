@@ -120,7 +120,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
                                                          MensagensPushActivity.this,
                                                          getResources().getString(R.string.msg_push_marcar_lidas),
                                                          (dialog, which) -> {
-                                                             marcarTodasLidas(unreadMensagensList);
+                                                             marcarTodasLidas(mensagensList);
                                                              unreadMensagensList.clear();
                                                              mensagempushAdapter.notifyDataSetChanged();
                                                              readMensagensList = getReadmensagens();
@@ -173,8 +173,8 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         }
         return readMessages;
     }
-    public static void marcarTodasLidas(List<MessagePush> mensagensList) {
-        for (MessagePush message : mensagensList) {
+    public static void marcarTodasLidas(List<MessagePush> messages) {
+        for (MessagePush message : messages) {
             message.setRead(true);
         }
     }
@@ -188,12 +188,10 @@ public class MensagensPushActivity extends LoteriasAppActivity {
             ViewUtils.alert(this, getString(R.string.pesquisa_push_vazia) );
         }
     }
-    private void fecharExpandidos() {
-        if (mensagempushAdapter.getItemCount() == 0) {
 
-        }
+    private void iniciaCarga() {
+
     }
-
     private List<MessagePush> gerarMsgTodasMock() {
         mensagensList = new ArrayList<>();
 //        massa de dados mensagens lidas
