@@ -260,26 +260,26 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             }
 
             switch (mensagensList.getCategoria()) {
-                case 1:
-                    buttonCompart.setVisibility(View.VISIBLE);
-                    buttonMsgExpandida.setVisibility(View.VISIBLE);
-                    buttonMsgExpandida.setText("Pagamentos e Resgates");
-                    buttonMsgExpandida.setTextColor(Color.WHITE);
-                    buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoaposteagora));
-                    break;
+//                case 1:
+//                    buttonCompart.setVisibility(View.VISIBLE);
+//                    buttonMsgExpandida.setVisibility(View.VISIBLE);
+//                    buttonMsgExpandida.setText("Pagamentos e Resgates");
+//                    buttonMsgExpandida.setTextColor(Color.WHITE);
+//                    buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoaposteagora));
+//                    break;
                 case 2:
                     buttonCompart.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setVisibility(View.VISIBLE);
                     buttonMsgExpandida.setTextColor(Color.WHITE);
-                    buttonMsgExpandida.setText("Lembretes da Sorte");
-                    buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoconferiragora));
+                    buttonMsgExpandida.setText("Apostar agora");
+                    buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoaposteagora));
                     break;
-//                case 3:
-//                    buttonMsgExpandida.setVisibility(View.VISIBLE);
-//                    buttonMsgExpandida.setTextColor(Color.WHITE);
-//                    buttonMsgExpandida.setText("Resultados Disponíveis");
-//                    buttonMsgExpandida.setBackgroundColor(Color.GREEN);
-//                    break;
+                case 3:
+                    buttonMsgExpandida.setVisibility(View.VISIBLE);
+                    buttonMsgExpandida.setTextColor(Color.WHITE);
+                    buttonMsgExpandida.setText("Resultados Disponíveis");
+                    buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoresultadosdisponiveis));
+                    break;
 //                case 4:
 //                    buttonMsgExpandida.setVisibility(View.VISIBLE);
 //                    buttonMsgExpandida.setTextColor(Color.WHITE);
