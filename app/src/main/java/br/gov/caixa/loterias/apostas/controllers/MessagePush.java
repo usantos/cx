@@ -10,6 +10,7 @@ public class MessagePush {
     private boolean read;
     private boolean expanded;
     private boolean selected;
+    private boolean apagada;
 
     public MessagePush(int icon, int categoria, String titulo, String conteudo, String data, boolean read) {
         this.icon = icon;
@@ -21,6 +22,7 @@ public class MessagePush {
         this.read = read;
         this.expanded = false;
         this.selected = false;
+        this.apagada = false;
     }
     public int getIcon() { return icon; }
 
@@ -54,6 +56,9 @@ public class MessagePush {
         return read;
     }
 
+    public boolean getApagada() {
+        return apagada; }
+
     public boolean isRead() {
         return read;
     }
@@ -66,11 +71,15 @@ public class MessagePush {
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
-    public void marcarRead() {read = true; }
+
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
     public boolean isSelected() {
         return selected;
     }
-}
+
+    public void setApagada(boolean apagada) {
+        this.apagada = apagada; }
+    }
+

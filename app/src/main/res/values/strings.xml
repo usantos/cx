@@ -97,9 +97,11 @@
     <string name="pesquisa_push">Pesquisar</string>
     <string name="pesquisa_push_vazia">Você não possui mensagens</string>
     <string name="msg_push_excluir_todas">Deseja excluir todas as mensagens ?</string>
-    <string name="msg_push_excluir">Deseja excluir todas a mensagem ?</string>
+    <string name="msg_push_excluir">Deseja excluir todas a mensagens ?</string>
+    <string name="msg_push_excluir_item">Deseja excluir esta mensagem ?</string>
     <string name="msg_push_marcar_lidas">Deseja marcar todas a mensagens como lidas ?</string>
-    <string name="msg_push_botaocategoria">Realiza acao da categoria</string>
+    <string name="msg_push_marcar_lida_item">Deseja marcar esta mensagem como lida ?</string>
+    <string name="msg_push_botaocategoria">Realiza ação da categoria</string>
     <string name="erro_401">Não autorizado</string>
     <string name="erro_408">Tempo de resposta esgotou</string>
     <string name="erro_500">Ocorreu um erro inesperado, mas não se preocupe, já estamos trabalhando nisso. Quer nos ajudar reportando o problema?</string>

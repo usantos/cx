@@ -37,8 +37,9 @@ public class MensagensPushActivity extends LoteriasAppActivity {
     private NestedScrollView scrollViewContentViewMensagens;
     private RecyclerView recyclerViewMensagens;
     private View progressLoadingMore, marcarComoLidaButtom;
-    private Button buttonMsgExcluir;
+    private Button buttonMsgExcluir ;
     private Button buttonMsgLida;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +70,15 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         recyclerViewMensagens.setAdapter(mensagempushAdapter);
         checarEstadoVazio();
 
-
         radioGroupMensagens.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rb_todas) {
-                    mensagempushAdapter.setMensagensList(readMensagensList);
+                    mensagempushAdapter.setMensagensList(getReadmensagens());
                     mensagempushAdapter.notifyDataSetChanged();
                     checarEstadoVazio();
                 } else if (checkedId == R.id.rb_naolidas) {
-                    mensagempushAdapter.setMensagensList(unreadMensagensList);
+                    mensagempushAdapter.setMensagensList(getUnreadmensagens());
                     mensagempushAdapter.notifyDataSetChanged();
                     checarEstadoVazio();
                 }
@@ -94,10 +94,12 @@ public class MensagensPushActivity extends LoteriasAppActivity {
                         getResources().getString(R.string.msg_push_excluir),
                         (dialog, which) -> {
                             if (!readMensagensList.isEmpty()) {
+                                apagarTodas(readMensagensList);
                                 readMensagensList.clear();
                                 mensagempushAdapter.notifyDataSetChanged();
                             }
                             if (!unreadMensagensList.isEmpty()) {
+                                apagarTodas(unreadMensagensList);
                                 unreadMensagensList.clear();
                                 mensagempushAdapter.notifyDataSetChanged();
                             }
@@ -129,7 +131,6 @@ public class MensagensPushActivity extends LoteriasAppActivity {
                                          }
         );
 
-
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -152,7 +153,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
     private List<MessagePush>  getUnreadmensagens() {
         List<MessagePush> unreadMessages = new ArrayList<>();
         for (MessagePush message : mensagensList) {
-            if (!message.getRead()) {
+            if (!message.getRead() && !message.getApagada()) {
                 unreadMessages.add(message);
             }
         }
@@ -162,9 +163,9 @@ public class MensagensPushActivity extends LoteriasAppActivity {
     private List<MessagePush> getReadmensagens() {
         List<MessagePush> readMessages = new ArrayList<>();
         for (MessagePush message : mensagensList) {
-//            if (message.getRead()) {
+            if (message.getApagada()) {
                 readMessages.add(message);
-//            }
+            }
         }
         return readMessages;
     }
@@ -173,9 +174,13 @@ public class MensagensPushActivity extends LoteriasAppActivity {
             message.setRead(true);
         }
     }
+    public static void apagarTodas(List<MessagePush> messages) {
+        for (MessagePush message : messages) {
+            message.setApagada(true);
+        }
+    }
     private void checarEstadoVazio() {
         if (mensagempushAdapter.getItemCount() == 0) {
-//            Toast.makeText(MensagensPushActivity.this, "A lista de mensagens está vazia", Toast.LENGTH_LONG).show();
             ViewUtils.alert(this, getString(R.string.pesquisa_push_vazia) );
         }
     }
@@ -187,11 +192,11 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         mensagensList.add(new MessagePush(R.drawable.ic_pagamentos, 1, "Pagamentos", "Aproveite e aposte ! este item dos pagamentos , aproveite aposte , aproveite aposte, aproveite aposte, aproveite aposte", "hoje", true));
         mensagensList.add(new MessagePush(R.drawable.ic_logo_money, 2, "Lembretes de sorte", "Aproveite e aposte ! , estou continuando a mensagem para ver como fica o aproveite e aposte ", "ontem", true));
         mensagensList.add(new MessagePush(R.drawable.ic_push_dicas_news, 4, "Dicas e Novidades", "Aproveite e aposte ! , estou alogando a mensagem para ver como fica o texto até o final ", "03/03/2023", true));
-//        mensagensList.add(new MessagePush(R.drawable.ic_push_resultados, 3, "Resultados disponiveis", "Aproveite e aposte ! esta mensagem fala sobre resultados disponiveis, aqui voce vai ganhar link para resultados disponiveis, aqui vai botao de resultados", "25/03/2023", true));
-//        mensagensList.add(new MessagePush(R.drawable.ic_push_alertas_seguranca, 5, "Alerta de segurança", "Conteudo de alerta de segurança da mensagem 5, esta msg fala sobre segurança no app, informacoes de como fazer a seguranca no seu celular e dar tudo o que puder", "01/02/2023", true));
-//        mensagensList.add(new MessagePush(R.drawable.ic_teimosinha, 0, "Teimosinha", "Conteudo da mensagem Teimosinha, fala sobre tudo o que puder, mostrando as vantagens da teimosinha a todo o vapor", "01/01/2023", false));
-//        mensagensList.add(new MessagePush(R.drawable.icon_trevo, 0, "Trevo", "Conteudo da Trevo, aqui estou mostrando as vantagens que o Trevo da sorte pode trazer para os clientes ", "hoje", false));
-//        mensagensList.add(new MessagePush(R.drawable.icon_loteria, 0, "Loteria ", "Conteudo da Loteria, aqui vamos na mensagem das loterias e estamos demonstrando o que fazer nesta loteria da CEF", "ontem", false));
+        mensagensList.add(new MessagePush(R.drawable.ic_push_resultados, 3, "Resultados disponiveis", "Aproveite e aposte ! esta mensagem fala sobre resultados disponiveis, aqui voce vai ganhar link para resultados disponiveis, aqui vai botao de resultados", "25/03/2023", true));
+        mensagensList.add(new MessagePush(R.drawable.ic_push_alertas_seguranca, 5, "Alerta de segurança", "Conteudo de alerta de segurança da mensagem 5, esta msg fala sobre segurança no app, informacoes de como fazer a seguranca no seu celular e dar tudo o que puder", "01/02/2023", true));
+        mensagensList.add(new MessagePush(R.drawable.ic_teimosinha, 0, "Teimosinha", "Conteudo da mensagem Teimosinha, fala sobre tudo o que puder, mostrando as vantagens da teimosinha a todo o vapor", "01/01/2023", false));
+        mensagensList.add(new MessagePush(R.drawable.icon_trevo, 0, "Trevo", "Conteudo da Trevo, aqui estou mostrando as vantagens que o Trevo da sorte pode trazer para os clientes ", "hoje", false));
+        mensagensList.add(new MessagePush(R.drawable.icon_loteria, 0, "Loteria ", "Conteudo da Loteria, aqui vamos na mensagem das loterias e estamos demonstrando o que fazer nesta loteria da CEF", "ontem", false));
         mensagensList.add(new MessagePush(R.drawable.icon_add_carrinho, 0, "Adicione este combo", "Conteudo da mensagem dos combos , aqui vamos descrever como mostrar o combo das atividades estamos fazendo tudo o que puder", "05/05/2023", false));
         mensagensList.add(new MessagePush(R.drawable.icon_data_megasena, 0, "Megasena data", "Conteudo da mensagem, acumulou a nova MEGASENA , agora vamos mostrar o prêmio milionário e sua chance de mostrar ", "06/04/2023", false));
         mensagensList.add(new MessagePush(R.drawable.icon_surpresinha, 0, "Surpresinha", "Conteudo da mensagem surpresinha , aqui voce nao perde tempo na hora de aposta e criar seus jogos estantaneamente fazendo o acerto de tudo ", "08/03/2023", false));
