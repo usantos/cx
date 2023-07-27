@@ -66,13 +66,15 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             holder.titleTextView.setBackgroundColor(Color.parseColor("#ffffff"));
             holder.text_preview.setBackgroundColor(Color.parseColor("#ffffff"));
             holder.dateTextView.setBackgroundColor(Color.parseColor("#ffffff"));
+            holder.surfacePush.setBackgroundColor(Color.parseColor("#ffffff"));
             holder.iconImageView.setBackgroundColor(holder.iconImageView.getResources().getColor(R.color.branco));
             holder.expandedLayout.setVisibility(View.VISIBLE);
             holder.setExpanded(true);
-        } else {
-            holder.titleTextView.setBackgroundColor(Color.parseColor("#E5E5E5"));
-            holder.expandedLayout.setVisibility(View.GONE);
         }
+//        } else {
+//            holder.titleTextView.setBackgroundColor(Color.parseColor("#E5E5E5"));
+//            holder.expandedLayout.setVisibility(View.GONE);
+//        }
 
     }
 
@@ -122,7 +124,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         private LinearLayout expandedLayout, cabecalho;
         private Button buttonCompart, buttonMsgExpandida;
         private ImageButton buttonMsgLida, buttonMsgExcluir;
-        private LinearLayout swipebuttomPush;
+        private LinearLayout swipebuttomPush, surfacePush;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -139,6 +141,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             dateTextView = itemView.findViewById(R.id.data_texto);
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
             text_preview = itemView.findViewById(R.id.text_preview);
+            surfacePush = itemView.findViewById(R.id.surface_push);
             buttonCompart.setOnClickListener(this);
             buttonMsgExpandida.setOnClickListener(this);
             cabecalho.setOnClickListener(this);
@@ -165,8 +168,8 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             iconImageView.setImageResource(mensagensList.getIcon());
             titleTextView.setText(mensagensList.getTitulo());
             TextView contentTextView = expandedLayout.findViewById(R.id.mensagem_texto);
-            text_preview.setText(mensagensList.getConteudo());
             contentTextView.setText(mensagensList.getConteudo());
+            text_preview.setText(mensagensList.getConteudo());
             dateTextView.setText(mensagensList.getData());
 
             final SwipeLayout swipeLayout = (SwipeLayout) this.itemView;
@@ -231,10 +234,10 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
             expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
 
-            if (mensagensList.isRead()) {
-                mensagensList.setRead(true);
-                mensagensList.setSelected(true);
-            }
+//            if (mensagensList.isRead()) {
+//                mensagensList.setRead(true);
+//                mensagensList.setSelected(true);
+//            }
 
             if (mensagensList.isExpanded()) {
                 mensagensList.setRead(true);
@@ -248,14 +251,17 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
 
             if (mensagensList.isSelected()) {
                 titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.black));
+                titleTextView.setBackgroundColor(R.drawable.ic_cabec_push_branco);
                 cabecalho.setBackgroundColor(R.drawable.ic_cabec_push_branco);
+                surfacePush.setBackgroundColor(R.drawable.ic_cabec_push_branco);
                 iconImageView.setBackgroundColor(R.drawable.ic_cabec_push_branco);
                 text_preview.setBackgroundColor(R.drawable.ic_cabec_push_branco);
                 dateTextView.setBackgroundColor(R.drawable.ic_cabec_push_branco);
             } else
             {
-                titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.cinza));
                 cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.pesquisa_msgpush));
+                surfacePush.setBackgroundColor(surfacePush.getResources().getColor(R.color.pesquisa_msgpush));
+                titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.pesquisa_msgpush));
                 titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.pesquisa_msgpush));
                 iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.pesquisa_msgpush));
                 text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.pesquisa_msgpush));
@@ -306,23 +312,23 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         }
 
         private void updateMessageViewAsUnread() {
-//            cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.pesquisa_msgpush));
-//            titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.cinza));
-//            cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.pesquisa_msgpush));
-//            titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.pesquisa_msgpush));
-//            iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.pesquisa_msgpush));
-//            text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.pesquisa_msgpush));
-//            dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.pesquisa_msgpush));
+            cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.pesquisa_msgpush));
+            surfacePush.setBackgroundColor(surfacePush.getResources().getColor(R.color.pesquisa_msgpush));
+            titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.pesquisa_msgpush));
+            titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.pesquisa_msgpush));
+            iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.pesquisa_msgpush));
+            text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.pesquisa_msgpush));
+            dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.pesquisa_msgpush));
         }
 
         private void updateMessageViewAsRead() {
+            cabecalho.setBackgroundColor(cabecalho.getResources().getColor(R.color.branco));
+            surfacePush.setBackgroundColor(surfacePush.getResources().getColor(R.color.branco));
+            titleTextView.setBackgroundColor(titleTextView.getResources().getColor(R.color.branco));
             titleTextView.setTextColor(titleTextView.getResources().getColor(R.color.black));
-            cabecalho.setBackgroundColor(R.drawable.ic_cabec_push_branco);
-            cabecalho.setBackgroundColor(R.drawable.ic_cabec_push_branco);
-            iconImageView.setBackgroundColor(R.drawable.ic_cabec_push_branco);
-            text_preview.setBackgroundColor(R.drawable.ic_cabec_push_branco);
-            dateTextView.setBackgroundColor(R.drawable.ic_cabec_push_branco);
-
+            iconImageView.setBackgroundColor(iconImageView.getResources().getColor(R.color.branco));
+            text_preview.setBackgroundColor(text_preview.getResources().getColor(R.color.branco));
+            dateTextView.setBackgroundColor(dateTextView.getResources().getColor(R.color.branco));
         }
 
         public void setSelectedPosition(int position) {
@@ -340,8 +346,8 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             //so pode ter uma expandidade aberta
             if (positionLast != position) {
                 if (positionLast != -1) {
-                    expandedPositions.delete(positionLast);
                     updateMessageViewAsRead();
+                    expandedPositions.delete(positionLast);
                     notifyItemChanged(positionLast);
                     notifyDataSetChanged();
                 }
@@ -354,9 +360,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
                 expandedPositions.put(position, !isExpanded);
                 itemView.setSelected(true);
                 setExpanded(!isExpanded);
-
-               cabecalho.setBackgroundResource(R.drawable.ic_cabec_push_branco);
-
+                updateMessageViewAsRead();
                 notifyItemChanged(position);
                 notifyDataSetChanged();
             } else {
