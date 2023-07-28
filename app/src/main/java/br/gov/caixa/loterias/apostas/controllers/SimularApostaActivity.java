@@ -959,7 +959,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         labelValueSimplesLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
         labelValueDuplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
         labelValueTriplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-        labelValueJogosLoteca1.setTextColor(getResources().getColor(R.color.lotecaclaro));
+        labelValueJogosLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
     }
 
     private void configuraMenuItem(int id) {
