@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.app.assist.AssistStructure;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,8 +11,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -80,6 +77,10 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         return mensagensList != null ? mensagensList.size() : 0;
     }
 
+    private List<MessagePush> getAllMensagens() {
+        return mensagensList;
+    }
+
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
@@ -88,25 +89,24 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         this.clickListener = listener;
     }
 
-    public void setMensagensList(List<MessagePush> readMensagensList, List<MessagePush> unreadMensagensList) {
-        this.readMensagensList = readMensagensList;
-        this.unreadMensagensList = unreadMensagensList;
-        updateDisplayedMensagensList();
-        notifyDataSetChanged();
+    public void setMensagensList(List<MessagePush> MensagensList) {
+        this.mensagensList = mensagensList;
+//        this.unreadMensagensList = unreadMensagensList;
+//        updateDisplayedMensagensList();
+//        notifyDataSetChanged();
     }
 
 
 
-    private void updateDisplayedMensagensList() {
-
-
-        if (radioGroupMensagens.isChecked()) {
-            displayedMessages = readMensagensList;
-        } else {
-            displayedMessages = unreadMensagensList;
-        }
-        notifyDataSetChanged();
-    }
+//    private void updateDisplayedMensagensList() {
+//
+//        if (radioGroupMensagens.isChecked()) {
+//            displayedMessages = readMensagensList;
+//        } else {
+//            displayedMessages = unreadMensagensList;
+//        }
+//        notifyDataSetChanged();
+//    }
 
     public void mensagensFiltradas(String searchEditText) {
         List<MessagePush> mensagensFiltradas = new ArrayList<>();
@@ -138,7 +138,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         private ImageButton buttonMsgLidaItem;
         private ImageButton buttonMsgExcluirItem;
         private LinearLayout swipebuttomPush, surfacePush;
-        private RadioGroup rg_push_msg;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -155,7 +154,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
             expandedLayout = itemView.findViewById(R.id.expandedLayout);
             text_preview = itemView.findViewById(R.id.text_preview);
             surfacePush = itemView.findViewById(R.id.surface_push);
-            rg_push_msg = itemView.findViewById(R.id.container_tabs);
 
             buttonCompart.setOnClickListener(this);
             buttonMsgExpandida.setOnClickListener(this);
@@ -469,6 +467,7 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
     public void setColunaTab (int dadoCol) {
         colunaTab = dadoCol;
     }
+
     public void marcaMensagemLida(int position) {
         getMensagem(position).setRead(true);
         if (colunaTab == 2) mensagensList.remove(position);
