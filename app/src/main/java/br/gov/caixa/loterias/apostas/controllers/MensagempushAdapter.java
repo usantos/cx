@@ -93,7 +93,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagempushAdapte
         this.mensagensList = mensagensList;
 //        this.unreadMensagensList = unreadMensagensList;
 //        updateDisplayedMensagensList();
-//        notifyDataSetChanged();
     }
 
 
