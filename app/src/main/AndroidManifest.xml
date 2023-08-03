@@ -137,7 +137,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme"
             android:exported="true">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".controllers.IntroducaoActivity"
@@ -214,12 +217,7 @@
             android:label="@string/titulo_central_mensagens"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.DegradeActionBar"/>
         <activity
             android:name=".controllers.TermosAceiteActivity"
             android:label="@string/title_activity_termos_uso"

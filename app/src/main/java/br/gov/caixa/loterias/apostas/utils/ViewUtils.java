@@ -225,7 +225,9 @@ public class ViewUtils {
     }
 
 
-    public static Dialog alertTitleButtonYesOrNotListener(Context context, String message, DialogInterface.OnClickListener listenerYes,DialogInterface.OnClickListener  listenerNo) {
+    public static Dialog alertTitleButtonYesOrNotListener(Context context, String message,
+                                                          DialogInterface.OnClickListener listenerYes,
+                                                          DialogInterface.OnClickListener  listenerNo) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
                                  .setCancelable(false)
                                  .setNegativeButton (R.string.label_nao, listenerNo)
