@@ -185,9 +185,15 @@ android {
                 ]
             }
         }
+    buildFeatures {
+        viewBinding true
     }
+}
 
     dependencies {
+        implementation 'androidx.navigation:navigation-fragment:2.5.3'
+        implementation 'androidx.navigation:navigation-ui:2.5.3'
+
 
         // versions
         def AAVersion = '4.6.0'

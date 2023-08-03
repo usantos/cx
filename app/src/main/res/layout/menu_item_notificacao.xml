@@ -18,9 +18,10 @@
 
     <ImageView
         android:id="@+id/elipse_quantidade"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
         android:layout_marginTop="2dp"
+        android:visibility="gone"
         android:background="@drawable/ic_elipse_contador"
         app:layout_constraintEnd_toEndOf="@+id/ic_notificacao_topo"
         app:layout_constraintStart_toEndOf="@+id/ic_notificacao_topo"

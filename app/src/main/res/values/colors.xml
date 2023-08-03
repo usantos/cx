@@ -6,6 +6,10 @@
     <color name="colorAccent">#005ca9</color>
     <color name="azulClaroSelecaotime">#cae1e4</color>
     <color name="azulclaro">#d4dfe2</color>
+    <color name="azulpush">#0066B3</color>
+    <color name="pushbotaoaposteagora">#0164AF</color>
+    <color name="pushbotaoconferiragora">#4BBDAC</color>/
+    <color name="fundobrancocentralmsg">#F4F4F4</color>
     <color name="black_overlay">#66000000</color>
     <color name="branco">#ffffff</color>
     <color name="branco_transparente">#99ffffff</color>
@@ -179,5 +183,7 @@
     <color name="laranja_fundo_switch">#FFB647</color>
 
     <color name="label_nao_sim">#007AFF</color>
+
+    <color name="pesquisa_msgpush">#E5E5E5</color>
 
 </resources>
