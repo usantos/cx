@@ -5,14 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.VolleyError;
-import com.mercadopago.model.CardToken;
 
 import java.util.Date;
 
@@ -20,15 +17,11 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.RecargaPayConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CardHolderRecargaPay;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CartaoRecargaPayDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DataExpiracao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -36,7 +29,6 @@ import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.CartaoUtil;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
@@ -174,17 +166,14 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 			@Override
 			public void success(MeioPagamentoDTO payload) {
 				if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-					CardToken cardToken = new CardToken(cartaoNovo.getNumero(),
-														Integer.valueOf(cartaoNovo.getMes()),
-														Integer.valueOf(cartaoNovo.getAno()),
-														cvv,
-														cartaoNovo.getNomeTitular(),
-														getResources().getString(R.string.cpf),
-														DadosUsuarioBO.obterCpf());
-					String requestBody = model.preencheDadosPagamento(cardToken);
+					String requestBody = model.preencheDadosPagamento(DadosUsuarioBO.obterCpf(),
+																	  cartaoNovo.getNomeTitular(),
+																	  cartaoNovo.getNumero().replace(getResources().getString(R.string.espaco_em_branco), getResources().getString(R.string.string_vazia)),
+																	  Integer.valueOf(cartaoNovo.getAno()),
+																	  Integer.valueOf(cartaoNovo.getMes()),
+																	  cvv);
 					String bin = cartaoNovo.getNumero().replace(getResources().getString(R.string.espaco_em_branco),
-																						  getResources().getString(R.string.string_vazia))
-															.substring(0, 7);
+																getResources().getString(R.string.string_vazia)).substring(0, 7);
 
 					AppCenterManager.registraEventoDeviceMP(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
 					String salvarCartao = cartaoNovo.isSalvar() ? "true" : "false";
