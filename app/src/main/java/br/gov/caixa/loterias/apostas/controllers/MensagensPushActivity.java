@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
     private RecyclerView recyclerViewMensagens;
     private Button buttonMsgExcluir ;
     private Button buttonMsgLida;
+    private TextView listaVazia;
 
     private MensagemPushModel model;
 
@@ -51,6 +53,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         radioGroupMensagens = findViewById(R.id.rg_push);
         buttonMsgExcluir = findViewById(R.id.btn_push_apagar);
         buttonMsgLida = findViewById(R.id.btn_push_msg);
+        listaVazia = findViewById(R.id.lista_vazia);
 
         model = new MensagemPushModel(this);
 
@@ -154,7 +157,8 @@ public class MensagensPushActivity extends LoteriasAppActivity {
 
     private void checarEstadoVazio() {
         if (adapter.getItemCount() == 0) {
-            ViewUtils.alert(this, getString(R.string.pesquisa_push_vazia) );
+            recyclerViewMensagens.setVisibility(View.GONE);
+            listaVazia.setText(getString(R.string.pesquisa_push_vazia));
         }
     }
 

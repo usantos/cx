@@ -1,9 +1,11 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import br.gov.caixa.loterias.apostas.model.enums.CategoriaMessagePushEnum;
+
 public class MessagePush {
     private Long id;
     private int icon;
-    private int categoria;
+    private CategoriaMessagePushEnum categoria;
     private String titulo;
     private final String conteudo;
     private String data;
@@ -11,7 +13,7 @@ public class MessagePush {
     private boolean expanded;
     private boolean selected;
 
-    public MessagePush(Long id, int icon, int categoria, String titulo, String conteudo, String data, boolean read) {
+    public MessagePush(Long id, int icon, CategoriaMessagePushEnum categoria, String titulo, String conteudo, String data, boolean read) {
         this.id = id;
         this.icon = icon;
         this.categoria = categoria;
@@ -29,11 +31,11 @@ public class MessagePush {
 
     public int getIcon() { return icon; }
 
-    public int getCategoria() {
+    public CategoriaMessagePushEnum getCategoria() {
         return categoria;
     }
 
-    public void setCategoria() { this.categoria = categoria; }
+    public void setCategoria(CategoriaMessagePushEnum categoria) { this.categoria = categoria; }
 
     public String getTitulo() {
         return titulo;

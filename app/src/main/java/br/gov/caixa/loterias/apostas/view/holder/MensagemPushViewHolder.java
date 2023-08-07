@@ -131,27 +131,27 @@ public class MensagemPushViewHolder extends LoteriasHolder<MessagePush> implemen
 		}
 
 		switch (item.getCategoria()) {
-			//                case 1:
+			//                case PAGAMENTOS_RESGATES:
 			//                    buttonCompart.setVisibility(View.VISIBLE);
 			//                    buttonMsgExpandida.setVisibility(View.VISIBLE);
 			//                    buttonMsgExpandida.setText("Pagamentos e Resgates");
 			//                    buttonMsgExpandida.setTextColor(Color.WHITE);
 			//                    buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoaposteagora));
 			//                    break;
-			case 2:
+			case LEMBRETES_SORTE:
 				buttonCompart.setVisibility(View.VISIBLE);
 				buttonMsgExpandida.setVisibility(View.VISIBLE);
 				buttonMsgExpandida.setTextColor(Color.WHITE);
 				buttonMsgExpandida.setText("Apostar agora");
 				buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoaposteagora));
 				break;
-			case 3:
+			case RESULTADOS_DISPONIVEIS:
 				buttonMsgExpandida.setVisibility(View.VISIBLE);
 				buttonMsgExpandida.setTextColor(Color.WHITE);
 				buttonMsgExpandida.setText("Conferir agora");
 				buttonMsgExpandida.setBackgroundColor(buttonMsgExpandida.getResources().getColor(R.color.pushbotaoconferiragora));
 				break;
-			case 4:
+			case DICAS_NOVIDADES:
 				buttonCompart.setVisibility(View.VISIBLE);
 				break;
 			default:
