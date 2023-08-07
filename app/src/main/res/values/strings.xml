@@ -95,7 +95,8 @@
     <string name="title_activity_login">Login</string>
     <string name="titulo_central_mensagens">Notificações</string>
     <string name="pesquisa_push">Pesquisar</string>
-    <string name="pesquisa_push_vazia">Você não possui mensagens.</string>
+    <string name="pesquisa_push_vazia">Você não possui mensagens</string>
+    <string name="pesquisa_push_nao_lida">Você não possui mensagens não lidas</string>
     <string name="msg_push_excluir_todas">Deseja excluir todas as mensagens ?</string>
     <string name="msg_push_excluir">Deseja excluir todas a mensagens ?</string>
     <string name="msg_push_excluir_item">Deseja excluir esta mensagem ?</string>

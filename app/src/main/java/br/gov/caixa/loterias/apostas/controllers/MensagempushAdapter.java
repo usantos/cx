@@ -20,13 +20,14 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagemPushViewHo
     private List<MessagePush> listaApresentada;
     private int selectedPosition = RecyclerView.NO_POSITION;
     private int positionLast = RecyclerView.NO_POSITION;
-    private FiltroMessagePushEnum filtro = FiltroMessagePushEnum.TODAS;
+    private FiltroMessagePushEnum filtro;
     private OnMensagemPushListener listener;
 
     public MensagempushAdapter(List<MessagePush> mensagensList, OnMensagemPushListener listener) {
         this.mensagensList = mensagensList;
         this.listener = listener;
         this.listaApresentada = new ArrayList<>();
+        this.filtro = FiltroMessagePushEnum.TODAS;
         showAllMessages();
     }
 
@@ -134,7 +135,6 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagemPushViewHo
         listaApresentada.get(position).setExpanded(!listaApresentada.get(position).isExpanded());
         if (listaApresentada.get(position).isExpanded()){
             listaApresentada.get(position).setRead(true);
-
         }
 
         notifyItemChanged(position);
@@ -157,6 +157,23 @@ public class MensagempushAdapter extends RecyclerView.Adapter<MensagemPushViewHo
                 notifyItemChanged(position);
             }
         }
+    }
+
+    public void fecharTodosExceto(int item) {
+        for (int position = 0; position < listaApresentada.size(); position++){
+            if (listaApresentada.get(position).isExpanded() && position != item){
+                listaApresentada.get(position).setExpanded(false);
+                notifyItemChanged(position);
+            }
+        }
+    }
+
+    public FiltroMessagePushEnum getFiltro() {
+        return this.filtro;
+    }
+
+    public boolean isListaVazia() {
+        return listaApresentada != null && listaApresentada.size() == 0;
     }
 }
 

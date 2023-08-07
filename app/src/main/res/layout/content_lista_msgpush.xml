@@ -135,9 +135,12 @@
 
     <TextView
         android:id="@+id/lista_vazia"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        android:text="@string/pesquisa_push_vazia"
+        android:textStyle="bold"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/container_tabs"
         app:layout_constraintBottom_toBottomOf="parent"

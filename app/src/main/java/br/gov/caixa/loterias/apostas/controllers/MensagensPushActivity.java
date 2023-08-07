@@ -77,7 +77,12 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         });
 
         buttonMsgExcluir.setOnClickListener(v -> showAlert(getResources().getString(R.string.msg_push_excluir),
-                (dialog, which) -> adapter.apagarTodas()));
+                (dialog, which) -> {
+            adapter.apagarTodas();
+            listaVazia.setVisibility(View.VISIBLE);
+            recyclerViewMensagens.setVisibility(View.GONE);
+        }
+        ));
 
         buttonMsgLida.setOnClickListener(v -> showAlert(getResources().getString(R.string.msg_push_marcar_lidas),
                                                         (dialog, which) -> adapter.marcarTodasComoLidas()));
@@ -106,7 +111,7 @@ public class MensagensPushActivity extends LoteriasAppActivity {
         return new OnMensagemPushListener() {
             @Override
             public void clickItem(int position) {
-                adapter.closeAll();
+                adapter.fecharTodosExceto(position);
                 adapter.mudarVisibilidade(position);
                 model.marcarComoLida(mensagensList, adapter.getMensagem(position));
             }
@@ -156,9 +161,17 @@ public class MensagensPushActivity extends LoteriasAppActivity {
     }
 
     private void checarEstadoVazio() {
-        if (adapter.getItemCount() == 0) {
+        if (adapter.isListaVazia()) {
             recyclerViewMensagens.setVisibility(View.GONE);
-            listaVazia.setText(getString(R.string.pesquisa_push_vazia));
+            if (adapter.getFiltro() == FiltroMessagePushEnum.TODAS) {
+                listaVazia.setText(getResources().getString(R.string.pesquisa_push_vazia));
+            } else {
+                listaVazia.setText(getResources().getString(R.string.pesquisa_push_nao_lida));
+            }
+            listaVazia.setVisibility(View.VISIBLE);
+        } else {
+            listaVazia.setVisibility(View.GONE);
+            recyclerViewMensagens.setVisibility(View.VISIBLE);
         }
     }
 
