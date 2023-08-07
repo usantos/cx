@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import br.gov.caixa.loterias.apostas.LoteriasAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
@@ -36,13 +37,12 @@ import static br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmad
 import static br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity.COMPROVANTE;
 import static br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity.DETALHES;
 
-public class ResgatePremioLotericaActivity extends AppCompatActivity {
+public class ResgatePremioLotericaActivity extends LoteriasAppActivity {
 
     private static Integer SEG_INICIO_COR = 60;
     private static Integer SEG_INICIO_ANIMACAO = 10;
     private static Integer SEG_INICIO_VIBRACAO = 3;
 
-    private Toolbar toolbar;
     private TextView tvTimer, tvDescQrCode, tvTopico3;
     private Button btnNovaAposta;
     private ImageView ivQrCode;
@@ -55,6 +55,7 @@ public class ResgatePremioLotericaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resgate_premio_loterica);
+        configToolbar(R.id.toolbar);
         pegaExtras();
         setaViews();
         setaMetodos();
@@ -70,14 +71,11 @@ public class ResgatePremioLotericaActivity extends AppCompatActivity {
     }
 
     private void setaViews(){
-        toolbar = findViewById(R.id.toolbar);
         tvTimer = findViewById(R.id.tv_timer);
         tvTopico3 = findViewById(R.id.tv_topico_3);
         tvDescQrCode = findViewById(R.id.tv_desc_qr_code);
         btnNovaAposta = findViewById(R.id.btn_nova_aposta);
         ivQrCode = findViewById(R.id.iv_qr_code);
-
-        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.label_loterica));
         tvTopico3.setText(ViewUtils.textColor(this,getResources().getString(R.string.rsgt_lt_msg_info_3),R.color.verde_card));

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 
 public class MeioPagamentoConfig implements Serializable {
+	private String titulo;
 	private int idCorBarra;
 	private int idImagem;
 	private DTOEnumLong meioPagamento;
@@ -15,11 +16,14 @@ public class MeioPagamentoConfig implements Serializable {
 	private int idBandeira5;
 	private int idBandeira6;
 
+	private boolean showSeta = false;
 
-	public MeioPagamentoConfig(int idCorBarra, int idImagem, DTOEnumLong meioPagamento) {
+	public MeioPagamentoConfig(String titulo, int idCorBarra, int idImagem, DTOEnumLong meioPagamento, boolean showSeta) {
+		this.titulo = titulo;
 		this.idCorBarra = idCorBarra;
 		this.idImagem = idImagem;
 		this.meioPagamento = meioPagamento;
+		this.showSeta = showSeta;
 	}
 
 	public MeioPagamentoConfig(int idImagem, DTOEnumLong meioPagamento, int idBandeira1, int idBandeira2,
@@ -70,5 +74,13 @@ public class MeioPagamentoConfig implements Serializable {
 
 	public int getIdBandeira6() {
 		return idBandeira6;
+	}
+
+	public String getTitulo() { 
+		return titulo;
+	}
+
+	public boolean isShowSeta(){
+		return showSeta;
 	}
 }

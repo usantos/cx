@@ -160,7 +160,7 @@ android {
             emulador {
                 dimension "default"
                 applicationIdSuffix ".hmp"
-                resValue "string", "app_name", "Loterias_tqs_emulador"
+                resValue "string", "app_name", "Loterias_emulador"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""
@@ -191,7 +191,7 @@ android {
             automacao {
                 dimension "default"
                 applicationIdSuffix ".hmp"
-                resValue "string", "app_name", "Loterias_tqs_automacao"
+                resValue "string", "app_name", "Loterias_automacao"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""
@@ -219,9 +219,15 @@ android {
                 ]
             }
         }
+    buildFeatures {
+        viewBinding true
     }
+}
 
     dependencies {
+        implementation 'androidx.navigation:navigation-fragment:2.5.3'
+        implementation 'androidx.navigation:navigation-ui:2.5.3'
+
 
         // versions
         def AAVersion = '4.6.0'
@@ -240,6 +246,7 @@ android {
         implementation 'androidx.appcompat:appcompat:1.6.1'
         implementation 'com.google.android.material:material:1.6.0'
         implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+        implementation 'com.google.android.material:material:1.3.0-alpha02'
         implementation 'androidx.cardview:cardview:1.0.0'
         implementation 'androidx.recyclerview:recyclerview:1.3.0'
 
@@ -318,6 +325,11 @@ android {
 
         //Joda time
         implementation 'net.danlew:android.joda:2.10.9.1'
+
+        // Import the Firebase BoM - Utiliado em conjunto com FMC
+        implementation platform('com.google.firebase:firebase-bom:32.0.0')
+        // Firebase Cloud Messaging (Java)
+        implementation 'com.google.firebase:firebase-messaging'
 
         // testImplementation deps
         testImplementation 'junit:junit:4.13.2'

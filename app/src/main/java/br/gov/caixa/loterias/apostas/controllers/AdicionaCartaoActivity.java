@@ -14,13 +14,28 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
+import com.mercadopago.model.CardToken;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.model.AdicionaCartaoCreditoModel;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
+import br.gov.caixa.loterias.apostas.model.model.CompraModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -30,19 +45,20 @@ import br.gov.caixa.loterias.apostas.view.activity.DigitarCvvActivity;
 import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
-    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextMesValidadeCartaoContent,  editTextAnoValidadeCartaoContent;
     private TextView textoInfoSelecioneFormaPagamento, alterarMeioPagamento;
     private CheckBox checkBoxSalvarCartao;
     private AppCompatImageView imagemMeioPagamento, voltar;
     private Button btnAvancar;
-
     private CartoesModel cartaoModel;
     private AdicionaCartaoCreditoModel adicionaCartaoModel;
+    private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextCodigoSegurancaContent, editTextMesValidadeCartaoContent,  editTextAnoValidadeCartaoContent;
+    private ConstraintLayout backColor;
+    private View margem;
     private MeioPagamentoConfig config;
-
     private CartaoCreditoFragment fragment;
 
     @Override
@@ -141,9 +157,13 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         checkBoxSalvarCartao             = findViewById(R.id.checkBoxSalvarCartao);
         textoInfoSelecioneFormaPagamento = findViewById(R.id.textoInfoSelecioneFormaPagamento);
         imagemMeioPagamento              = findViewById(R.id.imagemMeioPagamento);
+        backColor                        = findViewById(R.id.background_dados_cartao);
+        margem                           = findViewById(R.id.margem_cabecalho);
         btnAvancar                       = findViewById(R.id.botaoAvancarPagamento);
         alterarMeioPagamento             = findViewById(R.id.alterarMeioPagamento);
         voltar                           = findViewById(R.id.iv_voltar);
+
+        btnAvancar.setEnabled(false);
     }
 
     private void configAparencia() {
@@ -161,7 +181,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private void configuraSpin(int idSprin, ArrayList<String> lista, AdapterView.OnItemSelectedListener listener){
         Spinner spinner = findViewById(idSprin);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, lista);
-
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(listener);
@@ -215,7 +234,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
         alterarMeioPagamento.setOnClickListener( v -> finish());
         voltar.setOnClickListener(v -> finish());
-
         btnAvancar.setEnabled(camposInvalidos());
     }
 
@@ -235,6 +253,125 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         } else {
             btnAvancar.setEnabled(true);
             btnAvancar.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+    	}
+    }
+
+    private void realizaCompraRecargaPay() {
+        cartaoModel.recuperaTokenApostadorRecargaPay(onRecuperaTokenListener());
+    }
+
+    private OnSilceListener<String> onRecuperaTokenListener() {
+        return new OnSilceListener<String>() {
+            @Override
+            public void success(String token) {
+                // chama servico para recuperar informacoes pro recargapay
+                cartaoModel.buscaDadosPessoais(onDadosPessoaisListener(token));
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        };
+    }
+
+    private OnSilceListener<ApostadorDTO> onDadosPessoaisListener(String token) {
+        return new OnSilceListener<ApostadorDTO>() {
+            @Override
+            public void success(ApostadorDTO payload) {
+                cartaoModel.realizaCompraRecargaPayNovoCartao(token, true,
+                        cartaoModel.getCartaoRecargaPay(payload,
+                                                                                  editTextNumeroCartaoContent.getText().toString(),
+                                                                                  editTextMesValidadeCartaoContent.getText().toString(),
+                                                                                  editTextAnoValidadeCartaoContent.getText().toString(),
+                                                                                  editTextCodigoSegurancaContent.getText().toString(),
+                                                                                  checkBoxSalvarCartao.isChecked()),
+                                                        onRecargaPayListener());
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        };
+    }
+
+    private OnCompraAsync onRecargaPayListener() {
+        return new OnCompraAsync() {
+            @Override
+            public void successCompra() {
+                onCompraSuccess();
+            }
+
+            @Override
+            public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
+                onCompraRedirect(compraAsyncResponse);
+            }
+
+            @Override
+            public void errorCompra(VolleyError volleyError) {
+                onCompraError(volleyError);
+            }
+        };
+    }
+
+    private void realizaCompraMercadoPago() {
+        CardToken cardToken = new CardToken(editTextNumeroCartaoContent.getText().toString(),
+                                            Integer.valueOf(editTextMesValidadeCartaoContent.getText().toString()),
+                                            Integer.valueOf(editTextAnoValidadeCartaoContent.getText().toString()),
+                                            editTextCodigoSegurancaContent.getText().toString(),
+                                            editTextNomeClienteCartaoContent.getText().toString(),
+                                            getResources().getString(R.string.cpf),
+                                            DadosUsuarioBO.obterCpf());
+        String requestBody = cartaoModel.preencheDadosPagamento(cardToken);
+        String bin = editTextNumeroCartaoContent.getText().toString().replace(getResources().getString(R.string.espaco_em_branco),
+                                                                              getResources().getString(R.string.string_vazia))
+                                                .substring(0, 7);
+
+        AppCenterManager.registraEventoDeviceMP(getResources().getString(R.string.app_center_mp_sem_cartao), requestBody);
+        String salvarCartao = getSalvarCartao();
+        cartaoModel.realizaCompraMercadoPago(bin, requestBody, salvarCartao,true, onMercadoPagoListener());
+    }
+
+    @NonNull
+    private String getSalvarCartao() {
+        return checkBoxSalvarCartao.isChecked() ? "true" : "false";
+    }
+
+    private OnCompraAsync onMercadoPagoListener() {
+        return new OnCompraAsync() {
+            @Override
+            public void successCompra() {
+                onCompraSuccess();
+            }
+
+            @Override
+            public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
+                onCompraRedirect(compraAsyncResponse);
+            }
+
+            @Override
+            public void errorCompra(VolleyError volleyError) {
+                onCompraError(volleyError);
+            }
+        };
+    }
+
+    private void onCompraError(VolleyError volleyError) {
+        RedirectNetwork.checkRedirectCompraAsync(volleyError, AdicionaCartaoActivity.this);
+        AlertDialogUtils.dismiss();
+    }
+
+    private void onCompraRedirect(CompraAsyncResponse compraAsyncResponse) {
+        RedirectNetwork.checkRedirectSucesso(compraAsyncResponse.getRedirect(), AdicionaCartaoActivity.this);
+        AlertDialogUtils.dismiss();
+    }
+
+    private void onCompraSuccess() {
+        new CompraModel(AdicionaCartaoActivity.this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(),new Date());
+        AlertDialogUtils.dismiss();
+        if (checkBoxSalvarCartao.isChecked()) {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_forma_pagamento_sucesso));
         }
     }
 
@@ -278,4 +415,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         }
     }
 
+    private void showLoading(){
+        runOnUiThread(() -> AlertDialogUtils.show(AdicionaCartaoActivity.this));
+    }
 }

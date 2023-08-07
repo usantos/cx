@@ -23,6 +23,7 @@ import org.androidannotations.annotations.ViewById;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.ResgatePixActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -34,6 +35,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoAdapter;
@@ -58,7 +60,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     protected ContentResultadoPremiado contentResultadoPremiado;
 
     @ViewById
-    protected RelativeLayout lotericaLayout, agenciaCaixaLayout, mercadoPagoLayout;
+    protected RelativeLayout lotericaLayout, agenciaCaixaLayout, mercadoPagoLayout, pixLayout;
 
     @Extra
     protected DetalhesPremioDTO detalhesPremioDTO;
@@ -178,6 +180,12 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         apresentaOrientacoesResgate(false);
     }
 
+    @Click(R.id.pixLayout)
+    protected void clickPixLayout() {
+        Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);
+        startActivity(intent);
+    }
+
     @Click(R.id.mercadoPagoLayout)
     protected void clickMercadoPagoLayout() {
         Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
@@ -197,14 +205,17 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     private void trataFormasDeResgate() {
         for (TipoPagamentoDTO meioPagamento: detalhesPremioDTO.getMeiosResgate()) {
             switch (meioPagamento.getCanal()) {
-                case SIGEL:
-                    agenciaCaixaLayout.setVisibility(View.VISIBLE);
-                    break;
                 case SILCE:
-                    mercadoPagoLayout.setVisibility(View.VISIBLE);
+                    if (meioPagamento.getId().intValue() == MeioPagamentoUtil.MERCADO_PAGO.intValue())
+                        mercadoPagoLayout.setVisibility(View.VISIBLE);
+                    if (meioPagamento.getId().intValue() == MeioPagamentoUtil.PIX.intValue())
+                        pixLayout.setVisibility(View.VISIBLE);
                     break;
                 case SISPL:
                     lotericaLayout.setVisibility(View.VISIBLE);
+                    break;
+                case SIGEL:
+                    agenciaCaixaLayout.setVisibility(View.VISIBLE);
                     break;
             }
         }

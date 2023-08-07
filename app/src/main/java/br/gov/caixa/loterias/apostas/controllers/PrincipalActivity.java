@@ -61,6 +61,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.PreferenciasNotificacoesActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
@@ -96,12 +97,14 @@ import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
@@ -154,12 +157,13 @@ public class PrincipalActivity extends AppCompatActivity
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
+    private VerificaMsgPush contadorMsgpush;
 
     private List<Modalidade> data;
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
-    private View actionApresentarTrevo, actionSettings;
+    private View actionApresentarTrevo, actionSettings, actionApresentarPush;
     private InfiniteScrollAdapter infiniteAdapter;
     private HomeAdapter homeAdapter;
     private View viewNotification;
@@ -509,6 +513,8 @@ public class PrincipalActivity extends AppCompatActivity
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
 
                 actionApresentarTrevo = toolbar.findViewById(R.id.action_apresentar_trevo);
+                actionApresentarPush = toolbar.findViewById(R.id.action_pushmsg);
+
                 if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
                     actionApresentarTrevo.setOnClickListener(view -> {
@@ -522,15 +528,6 @@ public class PrincipalActivity extends AppCompatActivity
                         }
                     });
                 }
-//Alterado para chamar pelo menu lateral
-//                actionSettings = toolbar.findViewById(R.id.action_settings);
-//                if (actionSettings != null) {
-//                    toolbar.removeOnLayoutChangeListener(this);
-//                    actionSettings.setOnClickListener(view -> {
-//                        Intent activity = new Intent(PrincipalActivity.this, TermosUsoActivity.class);
-//                        startActivity(activity);
-//                    });
-//                }
             }
         });
     }
@@ -729,7 +726,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition != 0) {
+        if (groupPosition != 0 && groupPosition != 8) {
             drawerLayout.closeDrawer(GravityCompat.START, false);
         }
         switch (groupPosition) {
@@ -753,7 +750,6 @@ public class PrincipalActivity extends AppCompatActivity
                 break;
             case 7: startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
                 break;
-
             default:
                 break;
         }
@@ -762,10 +758,12 @@ public class PrincipalActivity extends AppCompatActivity
     private void AbrirMenusItens(int itemPosition) {
         if (ConfiguracaoAppSingleton.getInstance().isMostraMenuAposta()){
             tratarMenuCompleto(itemPosition);
-        }else {
-            trataMenuSemMinhasApostas(itemPosition);       }
+        } else
+        if (itemPosition == 1){
+            trataMenuSemMinhasApostas(itemPosition);
+        }
 
-        sideMenuExpandableListView.collapseGroup(0);
+        sideMenuExpandableListView.collapseGroup(itemPosition);
         drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
@@ -824,6 +822,19 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    private void trataMenuNotificacoes(int itemPosition) {
+        switch (itemPosition) {
+            case 0:
+                startActivity(new Intent(PrincipalActivity.this, MensagensPushActivity.class));
+                break;
+            case 1:
+                startActivity(new Intent(PrincipalActivity.this, PreferenciasNotificacoesActivity.class));
+                break;
+            default:
+                break;
+        }
+    }
+
     private void layoutSideMenu() {
 
         final ExpandableListAdapter expandableListAdapter;
@@ -836,10 +847,14 @@ public class PrincipalActivity extends AppCompatActivity
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
         sideMenuExpandableListView.setOnGroupExpandListener(groupPosition ->
-                AbrirMenusGroup(groupPosition));
+        AbrirMenusGroup(groupPosition));
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            AbrirMenusItens(childPosition);
+            if (groupPosition == 8) {
+                trataMenuNotificacoes(childPosition);
+            } else {
+                AbrirMenusItens(childPosition);
+            }
             return false;
         });
     }

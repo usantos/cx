@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient_cinza_claro"
+    tools:context=".OrientacaoPixActivity">
+
+    <include layout="@layout/app_bar_degrade_pesquisa" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/copia_codigo_instrucoes_pix"
+        android:textColor="#004680"
+        android:textSize="14sp"
+        android:fontFamily="@font/font_family_futura"
+        android:paddingTop="17dp"
+        android:paddingStart="17dp"
+        android:paddingEnd="17dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/gl_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/fragmentCopiaColaPix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titulo"/>
+
+    <Button
+        android:id="@+id/botaoGerarPix"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:background="@color/verdeazul"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:text="@string/gerar_novo_codigo_pix"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/branco"
+        android:textSize="17sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/fragmentCopiaColaPix"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/fragmentCopiaColaPix"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/layoutSimular"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent">-->
+
+<!--        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
+<!--            android:id="@+id/btnSimularCompra"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="end"-->
+<!--            android:backgroundTint="@color/colorAccent"-->
+<!--            android:text="Simular Compra"-->
+<!--            android:textColor="@color/branco"-->
+<!--            app:icon="@drawable/ic_simular"-->
+<!--            android:theme="@style/MyMaterialTheme"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent" />-->
+
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/btnCompraCPFDivergente"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="24dp"-->
+<!--            android:backgroundTint="@color/vermelho_cancelada"-->
+<!--            app:fabSize="normal"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/btnSimularCompra"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/btnSimularCompra"-->
+<!--            app:srcCompat="@drawable/ic_x" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/txtCompraDivergente"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:text="CPF divergente"-->
+<!--            android:textColor="@color/branco"-->
+<!--            android:background="@color/vermelho_cancelada"-->
+<!--            android:visibility="gone"-->
+<!--            android:padding="8dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/btnCompraCPFDivergente"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/btnCompraCPFDivergente"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/btnCompraCPFDivergente" />-->
+
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/btnCompraSucesso"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="24dp"-->
+<!--            android:backgroundTint="@color/verde_pix"-->
+<!--            app:fabSize="normal"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/btnCompraCPFDivergente"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/btnCompraCPFDivergente"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/btnCompraCPFDivergente"-->
+<!--            app:srcCompat="@drawable/ic_sucesso" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/txtCompraSucesso"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:text="Sucesso"-->
+<!--            android:textColor="@color/branco"-->
+<!--            android:background="@color/verde_pix"-->
+<!--            android:visibility="gone"-->
+<!--            android:padding="8dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/btnCompraSucesso"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/btnCompraSucesso"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/btnCompraSucesso" />-->
+
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/btnAlterarContagem"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="24dp"-->
+<!--            android:backgroundTint="@color/colorPrimary"-->
+<!--            app:fabSize="normal"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/btnCompraSucesso"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/btnCompraSucesso"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/btnCompraSucesso"-->
+<!--            app:srcCompat="@drawable/ic_change" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/txtAlterarContagem"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginEnd="8dp"-->
+<!--            android:text="Alterar contagem"-->
+<!--            android:textColor="@color/branco"-->
+<!--            android:background="@color/colorPrimary"-->
+<!--            android:visibility="gone"-->
+<!--            android:padding="8dp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/btnAlterarContagem"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/btnAlterarContagem"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/btnAlterarContagem" />-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

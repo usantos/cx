@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.DigitaChaveActivity">
+
+    <include layout="@layout/app_bar_degrade_pesquisa" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_pix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_pix_145"
+        android:layout_margin="32dp"
+        app:layout_constraintTop_toBottomOf="@id/gl_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view_valor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradiente_titulo_caixa"
+        android:layout_marginTop="32dp"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/img_pix"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/txt_premio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prêmio"
+            android:textColor="@color/azul_alterar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/premio_valor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="R$ 24,00"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/branco"
+            app:layout_constraintTop_toBottomOf="@id/txt_premio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txt_informe_chave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Informe sua Chave Pix"
+        android:textStyle="bold"
+        android:textColor="@color/azul_alterar"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@id/view_valor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/region_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+55"
+        android:visibility="gone"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_informe_chave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_confimar"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/labelChave"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:hint="Email"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_informe_chave"
+        app:layout_constraintStart_toEndOf="@id/region_phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_confimar">
+
+        <EditText
+            android:id="@+id/edt_chave"
+            style="@style/editTextRegisterTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cinza"
+            android:textColorHint="@color/azulFormNovoTipoPagamento"
+            android:textSize="16sp"
+            android:maxLines="1"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_confimar"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/cinza_pix_disabled"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:text="Confirmar"
+        android:enabled="false"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/branco"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_trocar_chave"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/btn_trocar_chave"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:text="Trocar Tipo de Chave"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/verdeazul"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:background="@drawable/button_border_verde"
+        android:layout_marginBottom="51dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
