@@ -163,7 +163,7 @@ public class PrincipalActivity extends AppCompatActivity
     private List<ParametroSimulacao> modalidadesParaListar;
     private RepassometroDTO repassesSociais;
     private DBLoteriasHelper dbLoteriasHelper;
-    private View actionApresentarTrevo, actionSettings, actionApresentarPush;
+    private View actionApresentarTrevo, actionSettings; //, actionApresentarPush;
     private InfiniteScrollAdapter infiniteAdapter;
     private HomeAdapter homeAdapter;
     private View viewNotification;
@@ -513,7 +513,7 @@ public class PrincipalActivity extends AppCompatActivity
                                        int oldLeft, int oldTop, int oldRight, int oldBottom) {
 
                 actionApresentarTrevo = toolbar.findViewById(R.id.action_apresentar_trevo);
-                actionApresentarPush = toolbar.findViewById(R.id.action_pushmsg);
+                //actionApresentarPush = toolbar.findViewById(R.id.action_pushmsg);
 
                 if (actionApresentarTrevo != null) {
                     toolbar.removeOnLayoutChangeListener(this);
@@ -822,18 +822,18 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private void trataMenuNotificacoes(int itemPosition) {
-        switch (itemPosition) {
-            case 0:
-                startActivity(new Intent(PrincipalActivity.this, MensagensPushActivity.class));
-                break;
-            case 1:
-                startActivity(new Intent(PrincipalActivity.this, PreferenciasNotificacoesActivity.class));
-                break;
-            default:
-                break;
-        }
-    }
+//    private void trataMenuNotificacoes(int itemPosition) {
+//        switch (itemPosition) {
+//            case 0:
+//                startActivity(new Intent(PrincipalActivity.this, MensagensPushActivity.class));
+//                break;
+//            case 1:
+//                startActivity(new Intent(PrincipalActivity.this, PreferenciasNotificacoesActivity.class));
+//                break;
+//            default:
+//                break;
+//        }
+//    }
 
     private void layoutSideMenu() {
 
@@ -850,11 +850,11 @@ public class PrincipalActivity extends AppCompatActivity
         AbrirMenusGroup(groupPosition));
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            if (groupPosition == 8) {
-                trataMenuNotificacoes(childPosition);
-            } else {
+            //if (groupPosition == 8) {
+            //    trataMenuNotificacoes(childPosition);
+            //} else {
                 AbrirMenusItens(childPosition);
-            }
+            //}
             return false;
         });
     }

@@ -18,8 +18,8 @@ public class ExpandableListDataSideMenu {
     public static final String MENU_FAVORITAS = "Apostas favoritas";
     public static final String MENU_CARRINHOS_FAVORITOS = "Carrinhos favoritos";
     public static final String MENU_MEUS_CARTOES = "Meus cartões";
-    public static final String MENU_NOTIFICACOES1 = "Mensagens";
-    public static final String MENU_NOTIFICACOES2 = "Preferências";
+    //public static final String MENU_NOTIFICACOES1 = "Mensagens";
+    //public static final String MENU_NOTIFICACOES2 = "Preferências";
 
     public static HashMap<String, List<String>> getData() {
         LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
@@ -42,9 +42,9 @@ public class ExpandableListDataSideMenu {
         List<String> termo = new ArrayList<>();
         List<String> duvidas = new ArrayList<>();
         List<String> JogoResponsavel = new ArrayList<>();
-        List<String> notificacoes = new ArrayList<>();
-        notificacoes.add(MENU_NOTIFICACOES1);
-        notificacoes.add(MENU_NOTIFICACOES2);
+        //List<String> notificacoes = new ArrayList<>();
+        //notificacoes.add(MENU_NOTIFICACOES1);
+        //notificacoes.add(MENU_NOTIFICACOES2);
 
 
         expandableListDetail.put("Minha área", minhaArea);
@@ -55,7 +55,7 @@ public class ExpandableListDataSideMenu {
         expandableListDetail.put("Repasses sociais", sociais);
         expandableListDetail.put("Termo de aceite", termo);
         expandableListDetail.put("Dúvidas", duvidas);
-        expandableListDetail.put("Notificações", notificacoes);
+        //expandableListDetail.put("Notificações", notificacoes);
         return expandableListDetail;
     }
 }
