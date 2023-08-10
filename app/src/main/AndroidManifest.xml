@@ -469,7 +469,9 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/images_path" />
-        </provider> <!-- [START firebase_service] -->
+        </provider>
+
+        <!-- [START firebase_service]
         <service
             android:name=".utils.MessagingService"
             android:exported="false">
@@ -477,6 +479,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        [END firebase_service] -->
+
     </application>
 
     <queries>

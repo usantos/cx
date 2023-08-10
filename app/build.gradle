@@ -327,9 +327,9 @@ android {
         implementation 'net.danlew:android.joda:2.10.9.1'
 
         // Import the Firebase BoM - Utiliado em conjunto com FMC
-        implementation platform('com.google.firebase:firebase-bom:32.0.0')
+        //implementation platform('com.google.firebase:firebase-bom:32.0.0')
         // Firebase Cloud Messaging (Java)
-        implementation 'com.google.firebase:firebase-messaging'
+        //implementation 'com.google.firebase:firebase-messaging'
 
         // testImplementation deps
         testImplementation 'junit:junit:4.13.2'
