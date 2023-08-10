@@ -294,9 +294,6 @@ android {
         //QRCode gerador
         implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
 
-        //Mercado Pago
-        implementation 'com.mercadopago:sdk:3.8.1'
-
         implementation 'com.mercadolibre.android.device:sdk:3.0.5'
 
         //Apache commons

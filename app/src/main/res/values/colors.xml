@@ -183,4 +183,9 @@
     <color name="bordaDigitacaoCVV">#4BBDAC</color>
     <color name="numeroDigitacaoCVV">#4BB8A9</color>
 
+    <color name="mp_darker_gray">#ABABAB</color>
+    <color name="mp_warm_grey">#b7999999</color>
+    <color name="mp_color_red_error">#FF2B2B</color>
+    <color name="mp_error_red_pink">#F04449</color>
+
 </resources>

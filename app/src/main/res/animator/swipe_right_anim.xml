@@ -4,5 +4,5 @@
         android:valueFrom="0"
         android:valueTo="-2000"
         android:propertyName="x"
-        android:duration="@integer/mpsdk_card_flip_time_half" />
+        android:duration="@integer/mp_duration" />
 </set>

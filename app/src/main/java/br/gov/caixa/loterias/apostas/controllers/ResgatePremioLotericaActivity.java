@@ -114,7 +114,7 @@ public class ResgatePremioLotericaActivity extends AppCompatActivity {
                 long minSeg = TimeUnit.MINUTES.toSeconds(min) + seg;
                 String tempo = String.format(getResources().getString(R.string.mm_ss_percent_d2),min,seg);
                 if(minSeg <= SEG_INICIO_COR){
-                    tvTimer.setTextColor(getResources().getColor(R.color.mpsdk_color_red_error));
+                    tvTimer.setTextColor(getResources().getColor(R.color.mp_color_red_error));
                 }
                 if(minSeg <= SEG_INICIO_ANIMACAO) {
                     scaleIn.start();
@@ -129,7 +129,7 @@ public class ResgatePremioLotericaActivity extends AppCompatActivity {
             public void onFinish() {
                 scaleIn.start();
                 tvTimer.setTextColor(getResources().getColor(R.color.verde_card));
-                configDescQrCode(getResources().getString(R.string.rsgt_lt_msg_qr_invalido),R.color.mpsdk_error_red_pink);
+                configDescQrCode(getResources().getString(R.string.rsgt_lt_msg_qr_invalido),R.color.mp_error_red_pink);
                 trocaVisibilidadeTimer();
             }
         }.start();

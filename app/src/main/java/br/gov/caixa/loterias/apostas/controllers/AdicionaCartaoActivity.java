@@ -34,7 +34,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
 public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
     private EditText editTextNumeroCartaoContent, editTextNomeClienteCartaoContent, editTextMesValidadeCartaoContent,  editTextAnoValidadeCartaoContent;
-    private TextView textoInfoSelecioneFormaPagamento, alterarMeioPagamento;
+    private TextView alterarMeioPagamento;
     private CheckBox checkBoxSalvarCartao;
     private AppCompatImageView imagemMeioPagamento, voltar;
     private Button btnAvancar;
@@ -87,7 +87,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
         configuraSpin(R.id.spin_meses, adicionaCartaoModel.getListaMeses(), onSpinListener(editTextMesValidadeCartaoContent, adicionaCartaoModel.getListaMeses()));
         configuraSpin(R.id.spin_anos, adicionaCartaoModel.getListaAnos(), onSpinListener(editTextAnoValidadeCartaoContent, adicionaCartaoModel.getListaAnos()));
-        apresentaTextCartoes();
     }
 
     private void configTextWatchers() {
@@ -139,7 +138,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         editTextMesValidadeCartaoContent = findViewById(R.id.editTextMesValidadeCartaooContent);
         editTextAnoValidadeCartaoContent = findViewById(R.id.editTextAnoValidadeCartaooContent);
         checkBoxSalvarCartao             = findViewById(R.id.checkBoxSalvarCartao);
-        textoInfoSelecioneFormaPagamento = findViewById(R.id.textoInfoSelecioneFormaPagamento);
         imagemMeioPagamento              = findViewById(R.id.imagemMeioPagamento);
         btnAvancar                       = findViewById(R.id.botaoAvancarPagamento);
         alterarMeioPagamento             = findViewById(R.id.alterarMeioPagamento);
@@ -267,14 +265,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
             ViewUtils.alertTitleButton(AdicionaCartaoActivity.this,
                                        R.string.label_atencao, errorMessage,
                                        AdicionaCartaoActivity.this.getResources().getString(R.string.ok));
-        }
-    }
-
-    private void apresentaTextCartoes() {
-        Bundle bundle = getIntent().getExtras();
-        Boolean isPossiuCartao = bundle.getBoolean(getResources().getString(R.string.textoInfoSelecioneFormaPagamento));
-        if (isPossiuCartao) {
-            textoInfoSelecioneFormaPagamento.setVisibility(View.GONE);
         }
     }
 

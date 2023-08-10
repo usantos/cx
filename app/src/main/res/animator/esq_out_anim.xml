@@ -4,6 +4,6 @@
         android:valueFrom="-270"
         android:valueTo="-360"
         android:propertyName="rotationY"
-        android:startOffset="@integer/mpsdk_card_flip_time_half"
-        android:duration="@integer/mpsdk_card_flip_time_half" />
+        android:startOffset="@integer/mp_duration"
+        android:duration="@integer/mp_duration" />
 </set>
