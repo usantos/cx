@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true"> simlo.des.caixa </domain>
+        <domain includeSubdomains="true"> simlo.tqs.caixa </domain>
         <domain includeSubdomains="true"> sispl-api-apostas-des-esteiras.nprd2.caixa </domain>
     </domain-config>
 </network-security-config>
