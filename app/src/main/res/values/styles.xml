@@ -391,7 +391,7 @@
     </style>
     <style name="ButtonPushStyleCategoria4" parent="Widget.AppCompat.Button">
         <item name="android:textSize">14sp</item>
-        <item name="colorPrimary">@color/mpsdk_cabal</item>
+        <item name="colorPrimary">#D4B44B</item>
         <item name="android:textColor">@color/branco</item>
         <item name="android:fontFamily">Future LT</item>
     </style>
