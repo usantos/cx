@@ -1243,6 +1243,7 @@
     <!-- Meio Pagamento Novo Layout -->
     <string name="cartaoCredito">Cartão de Crédito</string>
     <string name="escolhaUmProcessador">Escolha um dos processadores abaixo e cadastre um cartão de crédito de sua titularidade ou escolha um cartão salvo para continuar.</string>
+    <string name="gere_codigo_pix_copia_cola">Gere um código Pix Copia e Cola para pagar suas apostas.</string>
     <string name="pagarVia">Pagar via:</string>
     <string name="bandeirasAceitas">Bandeiras aceitas</string>
     <string name="semCartaoRecargaPay">Você ainda não possui cartão salvo no processador Recarga Pay</string>

@@ -18,7 +18,8 @@ public class OrientacaoPixActivity extends LoteriasAppActivity {
 	}
 
 	private void startFragment() {
-		 FragmentUtils.startCardOrientacaoPix(getSupportFragmentManager(), R.id.fragmentOrientacaoPix);
+		 FragmentUtils.startCardOrientacaoPix(getSupportFragmentManager(),
+											  R.id.fragmentOrientacaoPix);
 	}
 
 }

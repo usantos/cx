@@ -8,11 +8,13 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.VolleyError;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -22,6 +24,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
@@ -29,9 +32,10 @@ import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 
 public class FormaPagamentoActivity extends AppCompatActivity {
 
-	private MeioPagamentoFragment frameMercadoPago, frameRecargaPay, framePix;
+	private MeioPagamentoFragment frameMercadoPago, frameRecargaPay;
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
+	private ConstraintLayout containerPix;
 
 	private MeioPagamentoModel model;
 	private boolean carregouConteudo = false;
@@ -46,9 +50,19 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_Forma de pagamento_"));
 
+		containerPix = findViewById(R.id.container_pix);
+		findViewById(R.id.btn_gerar_codigo).setOnClickListener(onGerarCodigoPixClick());
+
 		configMenu();
 
 		model = new MeioPagamentoModel(FormaPagamentoActivity.this);
+	}
+
+	private View.OnClickListener onGerarCodigoPixClick() {
+		return v -> {
+			Intent intent = IntentUtil.getIntentOrigemDestino(FormaPagamentoActivity.this, OrientacaoPixActivity.class);
+			startActivity(intent);
+		};
 	}
 
 	@Override
@@ -57,6 +71,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 		if (!carregouConteudo){
 			buscaMeiosPagamentos();
 		}
+
 	}
 
 	private void apresentaAlertaPreCompra() {
@@ -83,10 +98,10 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 			public void success(List<MeioPagamentoDTO> payload) {
 				if (payload != null && !payload.isEmpty()){
 					// TODO: POSSIVELMENTE INCLUIR AQUI O FRAGMENT DO PIX
-//					if(retornoServicoContemPix(payload)){
-//						startFragmentPix();
-//						carregouConteudo = true;
-//					}
+					if(retornoServicoContemPix(payload)){
+						showPix();
+						carregouConteudo = true;
+					}
 					boolean primeiroMeioPagamentoCartao = true;
 					for (MeioPagamentoDTO meioPagamento: payload){
 						if (MeioPagamentoUtils.isMercadoPago(meioPagamento.getId())){
@@ -108,6 +123,10 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 				AlertDialogUtils.dismiss();
 			}
 		};
+	}
+
+	private void showPix() {
+		containerPix.setVisibility(View.VISIBLE);
 	}
 
 	private boolean retornoServicoContemPix(List<MeioPagamentoDTO> payload) {

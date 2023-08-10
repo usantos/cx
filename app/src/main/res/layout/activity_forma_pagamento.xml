@@ -21,58 +21,119 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
-        <TextView
-            android:id="@+id/textoCartao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/cartaoCredito"
-            android:textColor="@color/azul_alterar"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gl_toolbar" />
-
-        <TextView
-            android:id="@+id/mensagemCartao"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_pix"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/escolhaUmProcessador"
-            android:textColor="@color/cinzaescuro"
-            android:textSize="13sp"
-            android:fontFamily="@font/font_family_futura"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textoCartao"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@+id/gl_toolbar"
+            >
 
-        <FrameLayout
-            android:id="@+id/fragmentMercadoPago"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mensagemCartao"/>
+            <TextView
+                android:id="@+id/titulo_pix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/label_pix"
+                android:textColor="@color/azul_alterar"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-        <FrameLayout
-            android:id="@+id/fragmentRecargaPay"
-            android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/subtitulo_pix"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/gere_codigo_pix_copia_cola"
+                android:textColor="@color/cinzaescuro"
+                android:textSize="13sp"
+                android:fontFamily="@font/font_family_futura"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/titulo_pix"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/subtitulo_pix"
+                app:layout_constraintStart_toStartOf="@id/subtitulo_pix"
+                app:layout_constraintEnd_toEndOf="@id/subtitulo_pix">
+
+                <include
+                    layout="@layout/fragment_meio_pagamento_pix"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_cartoes"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            app:layout_constraintTop_toBottomOf="@id/container_pix"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentMercadoPago"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/textoCartao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/cartaoCredito"
+                android:textColor="@color/azul_alterar"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/mensagemCartao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/escolhaUmProcessador"
+                android:textColor="@color/cinzaescuro"
+                android:textSize="13sp"
+                android:fontFamily="@font/font_family_futura"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/textoCartao"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <FrameLayout
+                android:id="@+id/fragmentMercadoPago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mensagemCartao"/>
+
+            <FrameLayout
+                android:id="@+id/fragmentRecargaPay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragmentMercadoPago"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
