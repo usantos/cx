@@ -48,6 +48,7 @@ public class HtmlUtils {
     private static final String FILE_PATH_COMPROVANTE_CABECALHO_RODAPE_PREMIO = "htmls/comprovante_cabecalho_rodape_premio.html";
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO = "htmls/comprovante_lista_corpo_numerico.html";
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA = "htmls/comprovante_lista_corpo_loteca.html";
+    private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA2 = "htmls/comprovante_lista_corpo_loteca2.html";
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTOGOL = "htmls/comprovante_lista_corpo_lotogol.html";
     private static final String FILE_PATH_COMPROVANTE_LISTA_CORPO_SUPER_7 = "htmls/comprovante_lista_corpo_super7.html";
     private static final String FILE_PATH_COMPROVANTE_CORPO_PREMIO_HISTORICO = "htmls/comprovante_corpo_premio_historico.html";
@@ -69,6 +70,7 @@ public class HtmlUtils {
     private static final String BODY_TITULO = "{body_titulo}";
     private static final String BODY_LISTA_ITENS_APOSTA = "{body_lista_itens_aposta}";
     private static final String BODY_INFORMACAO_APOSTA = "{body_informacao_aposta}";
+    private static final String BODY_ABREV = "{body_abrev}";
     private static final String BODY_PARTIDA1 = "{body_partida1}";
     private static final String BODY_EMPATE = "{body_empate}";
     private static final String BODY_PARTIDA2 = "{body_partida2}";
@@ -255,10 +257,14 @@ public class HtmlUtils {
         String htmlBodyList = "";
         switch (aposta.getModalidade()) {
             case LOTECA:
-                htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA, context);
+                htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA2, context);
                 for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
                     EquipeDTO equipe1 = partidaLotecaDTO.getEquipe1();
                     EquipeDTO equipe2 = partidaLotecaDTO.getEquipe2();
+
+                    String abrev = partidaLotecaDTO.getLegendaAbreviada();
+
+                    htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_ABREV,abrev);
 
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_PARTIDA1,
                                                              context.getString(R.string.label_corpo_equipe, equipe1.getVitoria() ? PONTO_MARCADOR : " ", Utils.getEquipeComUf(partidaLotecaDTO.getEquipe1())));
@@ -269,7 +275,7 @@ public class HtmlUtils {
                                                              context.getString(R.string.label_corpo_equipe, equipe2.getVitoria() ? PONTO_MARCADOR : " ", Utils.getEquipeComUf(partidaLotecaDTO.getEquipe2())));
 
                     sbHtmlBodyList.append(htmlBodyList);
-                    htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA, context);
+                    htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA2, context);
                 }
                 return sbHtmlBodyList.toString();
             case LOTOGOL:

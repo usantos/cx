@@ -14,7 +14,15 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
+import org.joda.time.Seconds;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.math.BigDecimal;
+
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -46,6 +54,16 @@ public class CompraDTO {
     private DTOEnumLong meioPagamento = null;
     @SerializedName("codigoMensageErro")
     private String codigoMensageErro = null;
+    @SerializedName("e2eId")
+    private String e2eId = null;
+    @SerializedName("dataHoraExpiracaoPagamento")
+    private String dataHoraExpiracaoPagamento = null;
+    @SerializedName("qrcodeString")
+    private String qrcodeString = null;
+    @SerializedName("qrcodeArrByte")
+    private String qrcodeArrByte = null;
+    @SerializedName("pixCopiaECola")
+    private String pixCopiaECola = null;
 
     /**
      **/
@@ -179,6 +197,66 @@ public class CompraDTO {
         this.codigoMensageErro = codigoMensageErro;
     }
 
+    /**
+     **/
+    @ApiModelProperty(value = "")
+    public String getE2eId() {
+        return e2eId;
+    }
+
+    public void setE2eId(String e2eId) {
+        this.e2eId = e2eId;
+    }
+
+    @ApiModelProperty(value = "")
+    public String getDataHoraExpiracaoPagamento() {
+        return dataHoraExpiracaoPagamento;
+    }
+
+    public void setDataHoraExpiracaoPagamento(String dataHoraExpiracaoPagamento) {
+        this.dataHoraExpiracaoPagamento = dataHoraExpiracaoPagamento;
+    }
+
+    @ApiModelProperty(value = "")
+    public String getQrcodeString() {
+        return qrcodeString;
+    }
+
+    public void setQrcodeString(String qrcodeString) {
+        this.qrcodeString = qrcodeString;
+    }
+
+    @ApiModelProperty(value = "")
+    public String getQrcodeArrByte() {
+        return qrcodeArrByte;
+    }
+
+    public void setQrcodeArrByte(String qrcodeArrByte) {
+        this.qrcodeArrByte = qrcodeArrByte;
+    }
+
+    @ApiModelProperty(value = "")
+    public String getPixCopiaECola() {
+        return pixCopiaECola;
+    }
+
+    public void setPixCopiaECola(String pixCopiaECola) {
+        this.pixCopiaECola = pixCopiaECola;
+    }
+
+    public int getTimerSeconds() {
+        DateTimeZone timeZone = DateTimeZone.forID("America/Sao_Paulo");
+        DateTime agora = DateTime.now(timeZone);
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").withZone(timeZone);
+        DateTime expiracao = formatter.parseDateTime(getDataHoraExpiracaoPagamento());
+
+        Duration duration = new Duration(agora, expiracao);
+        long diffInSeconds = duration.getStandardSeconds();
+
+        return (int) diffInSeconds;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -200,7 +278,12 @@ public class CompraDTO {
                 (this.valorTotal == null ? compraDTO.valorTotal == null : this.valorTotal.equals(compraDTO.valorTotal)) &&
                 (this.timestampUltimaAlteracao == null ? compraDTO.timestampUltimaAlteracao == null : this.timestampUltimaAlteracao.equals(compraDTO.timestampUltimaAlteracao)) &&
                 (this.meioPagamento == null ? compraDTO.meioPagamento == null : this.meioPagamento.equals(compraDTO.meioPagamento)) &&
-                (this.codigoMensageErro == null ? compraDTO.codigoMensageErro == null : this.codigoMensageErro.equals(compraDTO.codigoMensageErro));
+                (this.codigoMensageErro == null ? compraDTO.codigoMensageErro == null : this.codigoMensageErro.equals(compraDTO.codigoMensageErro)) &&
+                (this.e2eId == null ? compraDTO.e2eId == null : this.e2eId.equals(compraDTO.e2eId)) &&
+                (this.dataHoraExpiracaoPagamento == null ? compraDTO.dataHoraExpiracaoPagamento == null : this.dataHoraExpiracaoPagamento.equals(compraDTO.dataHoraExpiracaoPagamento)) &&
+                (this.qrcodeString == null ? compraDTO.qrcodeString == null : this.qrcodeString.equals(compraDTO.qrcodeString)) &&
+                (this.qrcodeArrByte == null ? compraDTO.qrcodeArrByte == null : this.qrcodeArrByte.equals(compraDTO.qrcodeArrByte)) &&
+                (this.pixCopiaECola == null ? compraDTO.pixCopiaECola == null : this.pixCopiaECola.equals(compraDTO.pixCopiaECola));
     }
 
     @Override
@@ -218,6 +301,11 @@ public class CompraDTO {
         result = 31 * result + (this.timestampUltimaAlteracao == null ? 0 : this.timestampUltimaAlteracao.hashCode());
         result = 31 * result + (this.meioPagamento == null ? 0 : this.meioPagamento.hashCode());
         result = 31 * result + (this.codigoMensageErro == null ? 0 : this.codigoMensageErro.hashCode());
+        result = 31 * result + (this.e2eId == null ? 0 : this.e2eId.hashCode());
+        result = 31 * result + (this.dataHoraExpiracaoPagamento == null ? 0 : this.dataHoraExpiracaoPagamento.hashCode());
+        result = 31 * result + (this.qrcodeString == null ? 0 : this.qrcodeString.hashCode());
+        result = 31 * result + (this.qrcodeArrByte == null ? 0 : this.qrcodeArrByte.hashCode());
+        result = 31 * result + (this.pixCopiaECola == null ? 0 : this.pixCopiaECola.hashCode());
         return result;
     }
 
@@ -237,6 +325,11 @@ public class CompraDTO {
                 "  timestampUltimaAlteracao: " + timestampUltimaAlteracao + "\n" +
                 "  meioPagamento: " + meioPagamento + "\n" +
                 "  codigoMensageErro: " + codigoMensageErro + "\n" +
+                "  e2eId: " + e2eId + "\n" +
+                "  dataHoraExpiracaoPagamento: " + dataHoraExpiracaoPagamento + "\n" +
+                "  qrcodeString: " + qrcodeString + "\n" +
+                "  qrcodeArrByte: " + qrcodeArrByte + "\n" +
+                "  pixCopiaECola: " + pixCopiaECola + "\n" +
                 "}\n";
         return sb;
     }

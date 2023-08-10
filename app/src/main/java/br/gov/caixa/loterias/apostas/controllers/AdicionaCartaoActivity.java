@@ -38,11 +38,9 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private CheckBox checkBoxSalvarCartao;
     private AppCompatImageView imagemMeioPagamento, voltar;
     private Button btnAvancar;
-
     private CartoesModel cartaoModel;
     private AdicionaCartaoCreditoModel adicionaCartaoModel;
     private MeioPagamentoConfig config;
-
     private CartaoCreditoFragment fragment;
 
     @Override
@@ -142,6 +140,8 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         btnAvancar                       = findViewById(R.id.botaoAvancarPagamento);
         alterarMeioPagamento             = findViewById(R.id.alterarMeioPagamento);
         voltar                           = findViewById(R.id.iv_voltar);
+
+        btnAvancar.setEnabled(false);
     }
 
     private void configAparencia() {
@@ -159,7 +159,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private void configuraSpin(int idSprin, ArrayList<String> lista, AdapterView.OnItemSelectedListener listener){
         Spinner spinner = findViewById(idSprin);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, lista);
-
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(listener);
@@ -213,7 +212,6 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
 
         alterarMeioPagamento.setOnClickListener( v -> finish());
         voltar.setOnClickListener(v -> finish());
-
         btnAvancar.setEnabled(camposInvalidos());
     }
 
@@ -233,7 +231,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         } else {
             btnAvancar.setEnabled(true);
             btnAvancar.setBackgroundColor(getResources().getColor(R.color.verdeazul));
-        }
+    	}
     }
 
     private boolean camposInvalidos(){
