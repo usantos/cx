@@ -69,8 +69,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         AppCenter.start(getApplication(), BuildConfig.APP_CENTER_KEY, Analytics.class, Crashes.class);
 
         //Permissao de Notificacao
-        MessagingPermission messagingPermission = new MessagingPermission(this);
-        messagingPermission.requestNotificationPermission();
+        //MessagingPermission messagingPermission = new MessagingPermission(this);
+        //messagingPermission.requestNotificationPermission();
 
         startaFila();
     }
