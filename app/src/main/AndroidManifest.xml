@@ -233,25 +233,19 @@
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BrancoActionBar"
-            android:exported="true"></activity>
+            android:exported="true"/>
+        <activity
+            android:name=".controllers.TermosUsoActivity"
+            android:label="@string/title_activity_termos_uso"
+            android:parentActivityName=".controllers.PrincipalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar"/>
         <activity
             android:name=".controllers.MensagensPushActivity"
             android:label="@string/titulo_central_mensagens"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"/>
-        <activity
-            android:name=".controllers.TermosAceiteActivity"
-            android:label="@string/title_activity_termos_uso"
-            android:parentActivityName=".controllers.PrincipalActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar" />
-        <activity
-            android:name=".controllers.DuvidasActivity"
-            android:label="@string/title_activity_termos_uso"
-            android:parentActivityName=".controllers.PrincipalActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.TermosAceiteActivity"
             android:label="@string/title_activity_termos_uso"
