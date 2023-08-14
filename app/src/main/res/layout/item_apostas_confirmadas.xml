@@ -29,7 +29,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp">
 
                 <ProgressBar
                     android:id="@+id/progressBarSituacao"
@@ -48,8 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_weight="1"
+                    android:layout_marginTop="8dp"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/constraintDataAposta"
@@ -121,31 +121,6 @@
 
         </LinearLayout>
 
-        <!--<LinearLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="10dp"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:paddingBottom="5dp">-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/situacaoLabel"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/label_situacao_list_apostas_confirmadas"-->
-        <!--android:textSize="12sp"-->
-        <!--tools:textColor="#642475" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/situacaoTxt"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:textSize="12sp"-->
-        <!--android:textStyle="bold"-->
-        <!--tools:text="Efetivado"-->
-        <!--tools:textColor="#642475" />-->
-        <!--</LinearLayout>-->
     </LinearLayout>
 
     <LinearLayout
