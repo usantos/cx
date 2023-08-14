@@ -34,121 +34,124 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textoComoRetirarPremio"
                 android:layout_marginBottom="38dp"
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:layout_marginStart="@dimen/activity_vertical_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:background="@drawable/custom_border_cinza_escuro"
+                android:layout_centerInParent="true"
                 android:baselineAligned="true"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 >
 
                 <RelativeLayout
                     android:id="@+id/pixLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:layout_margin="0dp"
-                    android:layout_weight="1"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
-                    <TextView
-                        android:id="@+id/pixText"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_centerHorizontal="true"
-                        android:text="@string/label_pix"
-                        android:textColor="@color/cinza"
-                        android:textSize="14.2sp" />
+                        android:layout_height="34dp"
+                        android:background="@color/azul_botao_pix">
+
+                        <ImageView
+                            android:id="@+id/pixIcon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/icone_do_pix"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/pixText"
+                            app:layout_constraintHorizontal_chainStyle="packed" />
+
+                        <TextView
+                            android:id="@+id/pixText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:text="@string/label_pix"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                            android:textStyle="bold"
+                            android:textColor="@color/branco"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/pixIcon"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/mercadoPagoLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
                     android:layout_margin="0dp"
-                    android:layout_weight="1"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
-                    <View
-                        android:id="@+id/linhaSeparadoraZero"
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/cinza" />
                     <TextView
                         android:id="@+id/mercadoPagoText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/verdeazul"
                         android:text="@string/label_mercado_pago"
-                        android:textColor="@color/cinza"
-                        android:textSize="14.2sp" />
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/lotericaLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_margin="0dp"
-                    android:layout_weight="1"
-                    android:visibility="gone">
-
-                    <View
-                        android:id="@+id/linhaSeparadoraUm"
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/cinza" />
-
-                    <TextView
-                        android:id="@+id/lotericaText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/linhaSeparadoraUm"
-                        android:layout_alignTop="@+id/linhaSeparadoraUm"
+                        android:textAlignment="center"
                         android:gravity="center"
-                        android:layout_centerHorizontal="true"
-                        android:paddingEnd="@dimen/text_margin_small"
-                        android:paddingStart="@dimen/text_margin_small"
-                        android:text="@string/label_loterica"
-                        android:textColor="@color/cinza"
-                        android:textSize="14.2sp" />
-
-
+                        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                        android:textStyle="bold"
+                        android:textColor="@color/branco"
+                        android:textSize="14sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/agenciaCaixaLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="56dp"
-                    android:layout_weight="1"
-                    android:visibility="gone">
-
-                    <View
-                        android:id="@+id/linhaSeparadoraDois"
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/cinza" />
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:visibility="visible">
 
                     <TextView
                         android:id="@+id/agenciaCaixaText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/linhaSeparadoraDois"
-                        android:layout_alignTop="@+id/linhaSeparadoraDois"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/verdeazul"
+                        android:text="@string/label_agencia_maiuscula"
+                        android:textAlignment="center"
                         android:gravity="center"
-                        android:layout_centerHorizontal="true"
-                        android:paddingEnd="@dimen/text_margin_small"
-                        android:paddingStart="@dimen/text_margin_small"
-                        android:text="@string/label_agencia_caixa"
-                        android:textColor="@color/cinza"
-                        android:textSize="14.2sp" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                        android:textStyle="bold"
+                        android:textColor="@color/branco"
+                        android:textSize="14sp" />
                 </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/lotericaLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_margin="0dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/lotericaText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/verdeazul"
+                        android:text="@string/label_loterica"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                        android:textStyle="bold"
+                        android:textColor="@color/branco"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
             </LinearLayout>
         </RelativeLayout>
 
