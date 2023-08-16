@@ -840,6 +840,9 @@
     <string name="evento_entrou_tour_tela_2">ENTROU_TOUR_TELA2</string>
     <string name="evento_entrou_tour_tela_3">ENTROU_TOUR_TELA3</string>
     <string name="evento_entrou_tour_tela_4">ENTROU_TOUR_TELA4</string>
+    <string name="evento_pagina_1de3">Página 1 de 3</string>
+    <string name="evento_pagina_2de3">Página 2 de 3</string>
+    <string name="evento_pagina_3de3">Página 3 de 3</string>
     <string name="evento_pulou_tour">PULOU_TOUR</string>
     <string name="teste_xxx">Teste xxx</string>
     <string name="tipo_caixa">tipoCaixa</string>
@@ -1236,8 +1239,8 @@
     <string name="popup_pix_estorno_nao_possivel">Não foi possível registrar a aposta.</string>
 
     <!-- Mensagens Disque 180  -->
-    <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
-    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
+    <string name="tituloMsgDisque180">Central de Atendimento à Mulher</string>
+    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência pelo Whatsapp do canal 180.</string>
     <string name="falha_comunicacao_situacao_aposta">Falha de comunicação! Clique para conferir.</string>
 
     <!-- Meio Pagamento Novo Layout -->

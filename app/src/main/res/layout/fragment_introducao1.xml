@@ -6,49 +6,56 @@
     tools:context="br.gov.caixa.loterias.apostas.view.fragment.Introducao1Fragment">
 
     <!-- TODO: Update blank fragment layout -->
+<TextView
+    android:id="@+id/pag1de3"
+    android:hint="@string/evento_pagina_1de3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="@color/transparente"
+    />
 
-    <ImageView
-        android:id="@+id/imageViewLogoLoterias"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="18dp"
-        android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/logo"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+  <ImageView
+      android:id="@+id/imageViewLogoLoterias"
+      android:layout_width="120dp"
+      android:layout_height="120dp"
+      android:layout_alignParentTop="true"
+      android:layout_centerHorizontal="true"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="18dp"
+      app:srcCompat="@drawable/logo" />
 
-    <ImageView
-        android:id="@+id/imageViewTelefone"
-        android:layout_width="161dp"
-        android:layout_height="70dp"
-        app:srcCompat="@drawable/ilustra_mobile"
-        android:layout_marginTop="45dp"
-        android:layout_below="@+id/imageViewLogoLoterias"
-        android:layout_centerHorizontal="true" />
+     <ImageView
+         android:id="@+id/imageViewTelefone"
+         android:layout_width="161dp"
+         android:layout_height="70dp"
+         android:layout_below="@+id/imageViewLogoLoterias"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="45dp"
+         app:srcCompat="@drawable/ilustra_mobile" />
 
      <TextView
          android:id="@+id/textView1Fragment1"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
+         android:layout_below="@+id/imageViewTelefone"
+         android:layout_centerHorizontal="true"
          android:layout_gravity="center_horizontal"
          android:layout_marginTop="19dp"
          android:text="@string/uma_nova_experi_ncia"
          android:textColor="@color/branco"
-         android:textSize="18sp"
-         android:layout_below="@+id/imageViewTelefone"
-         android:layout_centerHorizontal="true" />
+         android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/textView2Fragment1"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1Fragment1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/todas_as_apostas_na_palma_da_sua_m_o_o_dia_inteiro_todos_os_dias"
-        android:textAlignment="center"
-        android:textSize="12sp"
-        android:textColor="@color/branco"/>
+     <TextView
+         android:id="@+id/textView2Fragment1"
+         android:layout_width="220dp"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/textView1Fragment1"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="20dp"
+         android:text="@string/todas_as_apostas_na_palma_da_sua_m_o_o_dia_inteiro_todos_os_dias"
+         android:textAlignment="center"
+         android:textColor="@color/branco"
+         android:textSize="12sp" />
 
      <Button
          android:id="@+id/buttonPularIntroducao"

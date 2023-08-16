@@ -6,7 +6,13 @@ android:layout_height="match_parent"
 tools:context="br.gov.caixa.loterias.apostas.view.fragment.Introducao3Fragment">
 
 <!-- TODO: Update blank fragment layout -->
-
+    <TextView
+        android:id="@+id/pag3de3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/evento_pagina_3de3"
+        android:textColor="@color/transparente"
+        />
 <ImageView
     android:id="@+id/imageViewLogoLoterias"
     android:layout_width="120dp"
@@ -38,16 +44,17 @@ tools:context="br.gov.caixa.loterias.apostas.view.fragment.Introducao3Fragment">
     android:layout_below="@+id/imageViewTelefone"
  />
 
-<TextView
-    android:id="@+id/textView3"
-    android:layout_width="130dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    android:text="@string/acompanhe_e_gerencie_todas_as_suas_apostas"
-    android:textAlignment="center"
-    android:textColor="@color/branco"
-    android:textSize="12sp"
-    android:layout_below="@+id/textView1Fragment3"
-    android:layout_alignLeft="@+id/imageViewLogoLoterias"
-    android:layout_alignStart="@+id/imageViewLogoLoterias" />
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1Fragment3"
+        android:layout_alignStart="@+id/imageViewLogoLoterias"
+        android:layout_alignLeft="@+id/imageViewLogoLoterias"
+        android:layout_marginTop="20dp"
+        android:text="@string/acompanhe_e_gerencie_todas_as_suas_apostas"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        android:textSize="12sp" />
+
 </RelativeLayout>

@@ -67,8 +67,6 @@ public class Introducao1Fragment extends Fragment {
             mParam1 = getArguments().getInt(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
@@ -90,8 +88,6 @@ public class Introducao1Fragment extends Fragment {
             startActivity(new Intent(getActivity(), RestritoDezoitoAnosActivity.class));
             getActivity().finish();
         });
-
-
 
         return v;
     }
