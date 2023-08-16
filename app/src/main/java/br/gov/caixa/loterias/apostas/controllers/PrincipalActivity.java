@@ -70,6 +70,7 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -193,6 +194,9 @@ public class PrincipalActivity extends AppCompatActivity
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+
+        EscudoBO.getInstance().carregaEscudos(this);
+
 //        if (TestVisao.isTeste()){
 //            buttonHomeBet.setOnLongClickListener(v -> {
 //                nextActivity(IntroducaoTutorialActivity.class);
