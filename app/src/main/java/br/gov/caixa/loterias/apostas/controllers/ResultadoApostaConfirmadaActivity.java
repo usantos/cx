@@ -3,11 +3,14 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Context;
 import android.content.Intent;
 
+import android.os.Build;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -61,6 +64,12 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @ViewById
     protected RelativeLayout lotericaLayout, agenciaCaixaLayout, mercadoPagoLayout, pixLayout;
+
+    @ViewById
+    protected TextView mercadoPagoText, agenciaCaixaText, lotericaText;
+
+    @ViewById
+    protected ConstraintLayout constraintLayoutPix;
 
     @Extra
     protected DetalhesPremioDTO detalhesPremioDTO;
@@ -136,6 +145,9 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.lotericaLayout)
     protected void clickLotericaLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            lotericaText.setBackgroundColor(getColor(R.color.azul_botao_pix));
+        }
         apresentaOrientacoesResgate(true);
     }
 
@@ -177,17 +189,26 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.agenciaCaixaLayout)
     protected void clickAgenciaCaixaLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            agenciaCaixaText.setBackgroundColor(getColor(R.color.azul_botao_pix));
+        }
         apresentaOrientacoesResgate(false);
     }
 
     @Click(R.id.pixLayout)
     protected void clickPixLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            constraintLayoutPix.setBackgroundColor(getColor(R.color.azul_botao_pix));
+        }
         Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);
         startActivity(intent);
     }
 
     @Click(R.id.mercadoPagoLayout)
     protected void clickMercadoPagoLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mercadoPagoText.setBackgroundColor(getColor(R.color.azul_botao_pix));
+        }
         Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
         intent.putExtra( getResources().getString(R.string.extra_valor_premio), ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
         intent.putExtra( getResources().getString(R.string.extra_id_aposta), detalhesPremioDTO.getAposta().getId() );
@@ -237,4 +258,18 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     private Context getContext() {
         return ResultadoApostaConfirmadaActivity.this;
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            constraintLayoutPix.setBackgroundColor(getColor(R.color.verdeazul));
+            mercadoPagoText.setBackgroundColor(getColor(R.color.verdeazul));
+            agenciaCaixaText.setBackgroundColor(getColor(R.color.verdeazul));
+            lotericaText.setBackgroundColor(getColor(R.color.verdeazul));
+        }
+
+    }
+
 }
