@@ -6,13 +6,7 @@ android:layout_height="match_parent"
 tools:context="br.gov.caixa.loterias.apostas.view.fragment.Introducao2Fragment">
 
 <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/pag2de3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/evento_pagina_2de3"
-        android:textColor="@color/transparente"
-        />
+
     <ImageView
         android:id="@+id/imageViewLogoLoterias"
         android:layout_width="120dp"
@@ -21,7 +15,6 @@ tools:context="br.gov.caixa.loterias.apostas.view.fragment.Introducao2Fragment">
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="18dp"
-        android:hint="@string/bem_vindo_ao_app"
         app:srcCompat="@drawable/logo" />
 
     <ImageView
