@@ -44,6 +44,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -74,6 +75,7 @@ import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
@@ -744,7 +746,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		preencherVisibilidaeGridView(View.VISIBLE, View.VISIBLE, View.GONE, View.GONE);
 		informeNomeTime = selecioneTimeCoracaoLayout.findViewById(R.id.informe_nome_time);
 		onChangeInformeNomeTime();
-		configurarSelecaoTimeCoracao();
+		EscudoBO.getInstance().carregaEscudos(getContext(), new OnEscudoListener() {
+			@Override
+			public void aposCarregarEscudos() {
+				configurarSelecaoTimeCoracao();
+			}
+		});
+		//configurarSelecaoTimeCoracao();
 		atualizaStatusBotaoFinalizar(false);
 		verificaSeMostraBotaoLimparAposta();
 		verificaSeMostraSalvarApostaView();
@@ -1105,7 +1113,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			listaDezenas.setNestedScrollingEnabled(false);
 		} else {
 			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-				configurarTimesLoteca();
+				EscudoBO.getInstance().carregaEscudos(getContext(), new OnEscudoListener() {
+					@Override
+					public void aposCarregarEscudos() {
+						configurarTimesLoteca();
+					}
+				});
+				//configurarTimesLoteca();
+
 				partidasSelecionadas = new HashSet<>();
 				fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
 			} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
