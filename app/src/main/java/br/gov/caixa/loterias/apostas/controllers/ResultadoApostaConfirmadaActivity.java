@@ -230,8 +230,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                     if (meioPagamento.getId().intValue() == MeioPagamentoUtil.MERCADO_PAGO.intValue())
                         mercadoPagoLayout.setVisibility(View.VISIBLE);
                     //Bloqueado para garantir que não chame o resgate PIX
-                    if (meioPagamento.getId().intValue() == MeioPagamentoUtil.PIX.intValue())
-                        pixLayout.setVisibility(View.VISIBLE);
+                    //if (meioPagamento.getId().intValue() == MeioPagamentoUtil.PIX.intValue())
+                    //    pixLayout.setVisibility(View.VISIBLE);
                     break;
                 case SISPL:
                     lotericaLayout.setVisibility(View.VISIBLE);
