@@ -1,20 +1,13 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
 import com.microsoft.appcenter.AppCenter;
@@ -37,8 +30,6 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
-import br.gov.caixa.loterias.apostas.utils.MessagingPermission;
-import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.ICallbackQueueIT;
@@ -47,7 +38,7 @@ import br.gov.caixa.loterias.apostas.view.listener.ICallbackQueueIT;
 public class SplashScreenActivity extends AppCompatActivity {
 
     public static final int SPLASH_TIME = 2000;
-    public static final int REQ_LOC = 2;
+
     private VersionResponse responseVersao;
 
     @Override
@@ -85,7 +76,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void startaFila() {
-        UtilQueueIT queueIT = new UtilQueueIT(SplashScreenActivity.this, onQueueITListener());
+        new UtilQueueIT(SplashScreenActivity.this, onQueueITListener());
     }
 
     private ICallbackQueueIT onQueueITListener() {
@@ -110,29 +101,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         };
     }
 
-    private void trataPermissao() {
-        int statusPermissao = LocalizacaoUtils.checaStatusPermissao(this);
-        if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA) {
-            LocalizacaoUtils.solicitaPermissao(this);
-        } else {
-            if (statusPermissao == LocalizacaoUtils.LOC_NO_BRASIL) {
-                trataSucesso(responseVersao);
-            } else {
-                startActivityForResult(new Intent(SplashScreenActivity.this, LocalizacaoActivity.class), REQ_LOC);
-            }
-        }
-    }
-
     public void verificaVersao() {
         AcessoBO_.getInstance_(this).getVerificaVersao(BuildConfig.VERSION_NAME, new RequestListener<VersionResponse>() {
             @Override
             public void onResponse(VersionResponse response) {
                 responseVersao = response;
-                if (BuildVersionUtil.isEmulador() || BuildVersionUtil.isAutomacao()){
-                    trataSucesso(responseVersao);
-                } else {
-                    trataPermissao();
-                }
+                trataSucesso(responseVersao);
             }
 
             @Override
@@ -207,20 +181,8 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        if (requestCode == LocalizacaoUtils.PERMISSAO_LOCALIZACAO_COD) {
-            if (grantResults.length > 0) {
-                trataPermissao();
-            }
-        }
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == REQ_LOC) {
-            trataSucesso(responseVersao);
-        } else if (resultCode == RESULT_OK && requestCode == 1) {
+        if (resultCode == RESULT_OK && requestCode == 1) {
             verificaVersao();
         }
     }

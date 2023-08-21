@@ -320,8 +320,14 @@ public class DialogUtils {
         buttonLeft.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao1));
         buttonRigth.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao2));
 
-        buttonLeft.setOnClickListener(v -> listener.left());
-        buttonRigth.setOnClickListener(v -> listener.right());
+        buttonLeft.setOnClickListener(v -> {
+            dialog.dismiss();
+            listener.left();
+        });
+        buttonRigth.setOnClickListener(v -> {
+            dialog.dismiss();
+            listener.right();
+        });
 
         dialog.show();
     }
