@@ -63,8 +63,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 //			item.getSituacao().setDescricao("Cancelada");
 //		}
 
-		this.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_situacao_descricao,
-				item.getSituacao().getDescricao())));
+		preencheSituacaoCompra(item);
 
 		if (SituacaoCompraUtil.isSituacaoPositiva(item.getSituacao())) {
 			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.azul_minhas_compras));
@@ -102,8 +101,9 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 				contagemRegressiva = new ContagemRegressiva(textContadorDown,tempo_inicial_pix * 1000, 1 * 1000) {
 					@Override
 					public void onFinish() {
-						btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
-								context.getString(R.string.label_compra_lista_tentar_novamente)));
+//						btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
+//								context.getString(R.string.label_compra_lista_tentar_novamente)));
+						btnMinhasCompras.setVisibility(View.GONE);
 					}
 				};
 				contagemRegressiva.start();
@@ -112,11 +112,11 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 						context.getString(R.string.label_compra_lista_alterar_compra)));
 			}
 
-			if (SituacaoCompraUtil.isSituacaoNegativa(item.getSituacao())) {
-				btnMinhasCompras.setVisibility(View.VISIBLE);
-				btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
-						context.getString(R.string.label_compra_lista_tentar_novamente)));
-			}
+//			if (SituacaoCompraUtil.isSituacaoNegativa(item.getSituacao())) {
+//				btnMinhasCompras.setVisibility(View.VISIBLE);
+//				btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
+//						context.getString(R.string.label_compra_lista_tentar_novamente)));
+//			}
 		}
 
 		ContagemRegressiva finalContagemRegressiva = contagemRegressiva;
@@ -136,5 +136,13 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 				listener.onItemClick(item);
 			}
 		});
+	}
+
+	private void preencheSituacaoCompra(CompraDTO item) {
+		String descricao = SituacaoCompraUtil.getDescricao(item);
+
+		this.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context,
+																			   context.getString(R.string.label_compra_lista_situacao_descricao,
+																				descricao)));
 	}
 }

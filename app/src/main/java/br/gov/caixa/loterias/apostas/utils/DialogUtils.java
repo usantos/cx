@@ -68,15 +68,20 @@ public class DialogUtils {
         dialog.show();
     }
 
-    public static void showDialogDebitoNaoAutorizado(Context context, String nomeBotao, boolean showButtonAjuda, OnDialogSituacaoCompraListener listener) {
+    public static void showDialogDebitoNaoAutorizado(Context context, String descricao, String nomeBotao, boolean showButtonAjuda, OnDialogSituacaoCompraListener listener) {
 
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
 
+        TextView descricaoTxt           = dialog.findViewById(R.id.texto_popup);
         Button dialogButtonFechar    = dialog.findViewById(R.id.dialogButtonCompraCanceladaCancelar);
         Button dialogButtonAjuda     = dialog.findViewById(R.id.dialogButtonCompraCanceladaAjuda);
-        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
+        Button dialogButtonOk        = dialog.findViewById(R.id.dialogButtonCompraCanceladaNovamente);
         dialogButtonOk.setText(nomeBotao);
+
+        if (descricao != null && !descricao.isEmpty()){
+            descricaoTxt.setText(descricao);
+        }
 
         dialogButtonFechar.setOnClickListener(v -> {
             dialog.dismiss();
