@@ -16,7 +16,10 @@ import org.androidannotations.annotations.ViewById;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
+import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
 
 /**
  * Created by cedesbr450 on 26/03/18.
@@ -46,8 +49,16 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
         this.modalidade = modalidade;
 
         this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.fromHtml("Nº <b>" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "</b> | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
-        setContentResultadoPorModalidade(modalidade);
-
+        if (ModalidadeEnum.LOTECA.toString().equalsIgnoreCase(modalidade.getTipoModalidade().toString())) {
+            EscudoBO.getInstance().carregaEscudos(getContext(), new OnEscudoListener() {
+                @Override
+                public void aposCarregarEscudos() {
+                    setContentResultadoPorModalidade(modalidade);
+                }
+            });
+        } else {
+            setContentResultadoPorModalidade(modalidade);
+        }
         this.scrollResultados.setFocusableInTouchMode(true);
         this.scrollResultados.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
 
