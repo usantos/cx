@@ -18,7 +18,7 @@
         <LinearLayout
             android:id="@+id/toolBarSimularAposta"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:background="@color/azulclaro"
             android:orientation="horizontal"
             android:weightSum="1"
