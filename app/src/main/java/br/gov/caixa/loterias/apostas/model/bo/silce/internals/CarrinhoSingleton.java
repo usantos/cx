@@ -21,6 +21,8 @@ public class CarrinhoSingleton {
 
     public void setCarrinho(CarrinhoDTO carrinho){
         this.carrinho = carrinho;
-        this.carrinho.atualizaValorTotal();
+        if (carrinho != null){
+            this.carrinho.atualizaValorTotal();
+        }
     }
 }

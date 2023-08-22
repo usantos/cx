@@ -1284,6 +1284,6 @@
     <string name="contador_notificacoes">0</string>
     <string name="title_activity_mensagem_push">Mensagens</string>
     <string name="alerta_precisa_estar_no_brasil">As apostas só podem ocorrer em território nacional. Suas apostas serão mantidas no carrinho para a conclusão da compra quando você estiver no país.</string>
-    <string name="posso_consultar_sua_localizacao">As apostas só podem ocorrer em território nacional.\nPortanto, você somente conseguirá pagar uma compra se estiver no Brasil, não havendo impedimento para utilizar os demais serviços.\nPodemos consultar a sua localização?</string>
+    <string name="posso_consultar_sua_localizacao">As apostas só podem ocorrer em território nacional. Portanto, você somente conseguirá pagar uma compra se estiver no Brasil, não havendo impedimento para utilizar os demais serviços.\nPodemos consultar a sua localização?</string>
 
 </resources>

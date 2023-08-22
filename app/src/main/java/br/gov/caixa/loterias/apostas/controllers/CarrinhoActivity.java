@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -36,6 +37,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -269,10 +271,27 @@ public class CarrinhoActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == LocalizacaoUtils.PERMISSAO_LOCALIZACAO_COD) {
+            if (grantResults.length > 0 && grantResults[0] >= 0) {
+                trataPermissao();
+            } else {
+                showAlertLocalizacao();
+            }
+        }
+    }
+
     private void showAlertLocalizacao() {
-        ViewUtils.alertTitleButton(this, R.string.label_atencao ,
+        ViewUtils.alertTitleButton(this, R.string.label_atencao,
                                    getString(R.string.alerta_precisa_estar_no_brasil),
-                                   getResources().getString(R.string.title_entendi));
+                                   getResources().getString(R.string.title_entendi), new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                    }
+                });
     }
 
     private void onFluxoLocalizacaoNoBrasil(){
