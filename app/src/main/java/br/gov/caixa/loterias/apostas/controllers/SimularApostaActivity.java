@@ -113,7 +113,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     protected FrameLayout fragmentSimularApostas;
 
     @ViewById
-    protected TextView labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
+    protected TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
             textInfoCarrinho, tvQuantidadeApostas, valorAtualCarrinho;
 
     @ViewById
@@ -209,9 +209,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     public void zerarApostasLoteca() {
+        this.setLabelValueJogosLoteca(Constantes.ZERO_STRING);
         this.setLabelValueSimplesLoteca(Constantes.ZERO_STRING);
         this.setLabelValueDuplasLoteca(Constantes.ZERO_STRING);
         this.setLabelValueTriplasLoteca(Constantes.ZERO_STRING);
+        setColorValuesLoteca();
     }
 
     public void atualizaTextoBotoesQtdSelecionadas() {
@@ -426,6 +428,17 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         abrirTelaCartela(true);
     }
 
+    public void setColorValuesLoteca() {
+        this.labelValueJogosLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+        this.labelValueSimplesLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+        this.labelValueDuplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+        this.labelValueTriplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+
+    }
+    public void setLabelValueJogosLoteca(String labelValueJogosLoteca) {
+        this.labelValueJogosLoteca.setText(labelValueJogosLoteca);
+    }
+
     public void setLabelValueSimplesLoteca(String labelValueSimplesLoteca) {
         this.labelValueSimplesLoteca.setText(labelValueSimplesLoteca);
     }
@@ -440,6 +453,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     public TextView getLabelValueSimplesLoteca() {
         return labelValueSimplesLoteca;
+    }
+
+    public TextView getLabelValueJogosLoteca() {
+        return labelValueJogosLoteca;
     }
 
     public TextView getLabelValueDuplasLoteca() {
@@ -935,6 +952,14 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         typeGameColorLight = lightColor;
         typeGameColorDark = darkColor;
+    }
+
+    private void iniciaCoresValoresLoteca () {
+        //cores valores
+        labelValueSimplesLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+        labelValueDuplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+        labelValueTriplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+        labelValueJogosLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
     }
 
     private void configuraMenuItem(int id) {
