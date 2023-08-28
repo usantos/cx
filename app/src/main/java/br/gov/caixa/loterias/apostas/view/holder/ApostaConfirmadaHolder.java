@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
@@ -38,9 +39,6 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private TextView modalidadeTxt;
 	private TextView concursoTxt;
 	private View reloadBtn;
-	private ImageView setaImg;
-	private LinearLayout reloadBtnLayout;
-	private LinearLayout setaLayout;
 	private TextView situacaoTxt;
 	private Button btnAposteAqui;
 	private ProgressBar progressBarSituacao;
@@ -61,15 +59,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			dataApostaTxt = view.findViewById(R.id.dataApostaTxt);
 			concursoTxt = view.findViewById(R.id.concursoTxt);
 			reloadBtn = view.findViewById(R.id.reloadBtn);
-			setaImg = view.findViewById(R.id.setaImg);
-			setaLayout = view.findViewById(R.id.setaLayout);
-			reloadBtnLayout = view.findViewById(R.id.reloadBtnLayout);
 			situacaoTxt = view.findViewById(R.id.situacaoTxt);
 			progressBarSituacao = view.findViewById(R.id.progressBarSituacao);
-
-			setaLayout.setOnClickListener(this);
-			setaImg.setOnClickListener(this);
-			reloadBtnLayout.setOnClickListener(this);
 			reloadBtn.setOnClickListener(this);
 		} else {
 			btnAposteAqui = view.findViewById(R.id.btnAposteAquiApostasConfirmadas);
@@ -282,15 +273,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 				switch (view.getId()) {
 					case R.id.reloadBtn:
-					case R.id.reloadBtnLayout: {
 						onApostasConfirmadasListener.onReload(getAdapterPosition());
 						break;
-					}
-					case R.id.setaLayout:
-					case R.id.setaImg: {
-						onApostasConfirmadasListener.onItemClick(getAdapterPosition(), this);
-						break;
-					}
 					default:
 						onApostasConfirmadasListener.onItemClick(getAdapterPosition(), this);
 						break;
