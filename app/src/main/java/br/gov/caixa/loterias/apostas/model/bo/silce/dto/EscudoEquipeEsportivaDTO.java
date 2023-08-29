@@ -16,7 +16,8 @@ public class EscudoEquipeEsportivaDTO {
     @SerializedName("id")
     private Integer id;
     @SerializedName("modalidades")
-    private List<ModalidadeDTO> modalidades;
+    //private List<ModalidadeDTO> modalidades;
+    private List<String> modalidades;
     @SerializedName("equipe")
     private EquipeEscudoDTO equipe;
     @SerializedName("imagem")
@@ -25,18 +26,29 @@ public class EscudoEquipeEsportivaDTO {
     public EscudoEquipeEsportivaDTO() {
     }
 
-    public EscudoEquipeEsportivaDTO(Integer id, List<ModalidadeDTO> modalidades, EquipeEscudoDTO equipe, String imagem) {
+    public EscudoEquipeEsportivaDTO(Integer id, List<String> modalidades, EquipeEscudoDTO equipe, String imagem) {
         this.id = id;
         this.modalidades = modalidades;
         this.equipe = equipe;
         this.imagem = imagem;
     }
 
+//    public EscudoEquipeEsportivaDTO(Integer id, List<ModalidadeDTO> modalidades, EquipeEscudoDTO equipe, String imagem) {
+//        this.id = id;
+//        this.modalidades = modalidades;
+//        this.equipe = equipe;
+//        this.imagem = imagem;
+//    }
+
     public Integer getId() {
         return id;
     }
 
-    public List<ModalidadeDTO> getModalidades() {
+//    public List<ModalidadeDTO> getModalidades() {
+//        return modalidades;
+//    }
+
+    public List<String> getModalidades() {
         return modalidades;
     }
 

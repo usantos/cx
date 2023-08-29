@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModel;
  */
 
 @ApiModel(description = "")
-class EquipeEscudoDTO {
+public class EquipeEscudoDTO {
 
     @SerializedName("id")
     private Integer id;

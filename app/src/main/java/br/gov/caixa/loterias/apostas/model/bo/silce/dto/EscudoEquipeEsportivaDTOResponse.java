@@ -23,20 +23,33 @@ public class EscudoEquipeEsportivaDTOResponse {
     private RedirectEnum redirect = null;
     @SerializedName("errosValidacao")
     private List<ErroValidacao> errosValidacao = null;
+    @SerializedName("versao")
+    private String versao = null;
     @SerializedName("payload")
-    private EscudoEquipeEsportivaDTO payload = null;
+    private List<EscudoEquipeEsportivaDTO> payload = null;
 
     public EscudoEquipeEsportivaDTOResponse() {
     }
 
-    public EscudoEquipeEsportivaDTOResponse(String codigo, String mensagem, TipoEnum tipo, RedirectEnum redirect, List<ErroValidacao> errosValidacao, EscudoEquipeEsportivaDTO payload) {
+    public EscudoEquipeEsportivaDTOResponse(String codigo, String mensagem, TipoEnum tipo, RedirectEnum redirect, List<ErroValidacao> errosValidacao, String versao, List<EscudoEquipeEsportivaDTO> payload) {
         this.codigo = codigo;
         this.mensagem = mensagem;
         this.tipo = tipo;
         this.redirect = redirect;
         this.errosValidacao = errosValidacao;
+        this.versao = versao;
         this.payload = payload;
     }
+
+
+//    public EscudoEquipeEsportivaDTOResponse(String codigo, String mensagem, TipoEnum tipo, RedirectEnum redirect, List<ErroValidacao> errosValidacao, EscudoEquipeEsportivaDTO payload) {
+//        this.codigo = codigo;
+//        this.mensagem = mensagem;
+//        this.tipo = tipo;
+//        this.redirect = redirect;
+//        this.errosValidacao = errosValidacao;
+//        this.payload = payload;
+//    }
 
     public String getCodigo() {
         return codigo;
@@ -58,7 +71,11 @@ public class EscudoEquipeEsportivaDTOResponse {
         return errosValidacao;
     }
 
-    public EscudoEquipeEsportivaDTO getPayload() {
+    public String getVersao() {
+        return versao;
+    }
+
+    public List<EscudoEquipeEsportivaDTO> getPayload() {
         return payload;
     }
 }

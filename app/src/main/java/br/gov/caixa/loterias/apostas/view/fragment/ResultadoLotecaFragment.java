@@ -16,8 +16,10 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaResultadoTimesAdapter;
+import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
 
 import static br.gov.caixa.loterias.apostas.view.fragment.ResultadoGenericoFragment.RESULTADO_DTO;
 
@@ -52,7 +54,13 @@ public class ResultadoLotecaFragment extends Fragment implements DiscreteScrollV
         if (getArguments() != null) {
             resultado = (ResultadoConcursoDTO) getArguments().getSerializable(RESULTADO_DTO);
             if(resultado != null){
-                configuraResultadoLoteca(resultado);
+                //configuraResultadoLoteca(resultado);
+                EscudoBO.getInstance().carregaEscudos(getContext(), new OnEscudoListener() {
+                    @Override
+                    public void aposCarregarEscudos() {
+                        configuraResultadoLoteca(resultado);
+                    }
+                });
             }
         }
     }

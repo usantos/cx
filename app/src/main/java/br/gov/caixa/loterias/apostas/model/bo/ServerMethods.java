@@ -70,7 +70,6 @@ class ServerMethods {
      static final String APOSTAS_CONFIRMADAS_HISTORICO_COMPROVANTE_PREMIO_PATH = "/historico-apostas/{id}/comprovante-premio";
      static final String APOSTAS_VERIFICA_APRESENTA_HISTORICO_PATH = "/parametros/configuraveis-app";
 
-     static final String EQUIPES_ESPORTIVAS_ESCUDO_PATH = "/equipes-esportivas/{id}/escudo";
      static final String BILHETES_CONFERIR_BILHETE_PATH = "/bilhetes/conferir-bilhete";
      static final String BILHETES_CONFERIR_BILHETE_NOVO_PATH = "/bilhetes/conferir-bilhete-qrcode";
 
@@ -81,7 +80,9 @@ class ServerMethods {
      static final String DUVIDAS_SECOES_PATH = "/duvidas/secoes";
      static final String DUVIDAS_PATH = "/duvidas";
 
+     static final String EQUIPES_ESPORTIVAS_ESCUDO_PATH = "/equipes-esportivas/{id}/escudo";
      static final String EQUIPES_ESPORTIVAS_POR_MODALIDADE_EQUIPE_PATH = "/equipes-esportivas/{idEquipe}/{idModalidade}/escudo";
+     static final String EQUIPES_ESPORTIVAS_LISTA_EQUIPES_PATH = "/equipes-esportivas/listaEquipes";
 
 
      static final String RESULTADOS_MODALIDADE_CONCURSO_PATH = "resultados/{modalidade}/{concurso}";

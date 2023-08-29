@@ -839,6 +839,18 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
+    public void getEscudosEquipes(final RequestListener<EscudoEquipeEsportivaDTOResponse> listener) {
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.EQUIPES_ESPORTIVAS_LISTA_EQUIPES_PATH,
+                new LinkedHashMap<>(),
+                EscudoEquipeEsportivaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
     public void gerarCodigoPix(MeioPagamentoPix meioPagamento, final RequestListener<GerarPixResponse> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.GERAR_CODIGO_PIX,
                                                                      new LinkedHashMap<>(),
