@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,13 +35,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 
 
 public class CarrinhoActivity extends AppCompatActivity {
@@ -233,6 +238,63 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void onClickAvanvaPagamento() {
+       trataPermissao();
+    }
+
+    private void trataPermissao() {
+        int statusPermissao = LocalizacaoUtils.checaStatusPermissao(this);
+        if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA) {
+            DialogUtils.showDialogDefault(this, 0,
+                                          getResources().getString(R.string.label_atencao),
+                                          getString(R.string.posso_consultar_sua_localizacao),
+                                          getResources().getString(R.string.label_sim),
+                                          getResources().getString(R.string.label_nao),
+                                          new OnDialogListenerLeftRight() {
+                                              @Override
+                                              public void left() {
+                                                  LocalizacaoUtils.solicitaPermissao(CarrinhoActivity.this);
+                                              }
+
+                                              @Override
+                                              public void right() {
+                                                  showAlertLocalizacao();
+                                              }
+                                          });
+        } else if (statusPermissao == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE){
+            showAlertLocalizacao();
+        } else {
+            if (statusPermissao == LocalizacaoUtils.LOC_NO_BRASIL) {
+                onFluxoLocalizacaoNoBrasil();
+            } else {
+                showAlertLocalizacao();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (requestCode == LocalizacaoUtils.PERMISSAO_LOCALIZACAO_COD) {
+            if (grantResults.length > 0 && grantResults[0] >= 0) {
+                trataPermissao();
+            } else {
+                showAlertLocalizacao();
+            }
+        }
+    }
+
+    private void showAlertLocalizacao() {
+        ViewUtils.alertTitleButton(this, R.string.label_atencao,
+                                   getString(R.string.alerta_precisa_estar_no_brasil),
+                                   getResources().getString(R.string.title_entendi), new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                    }
+                });
+    }
+
+    private void onFluxoLocalizacaoNoBrasil(){
         try {
             if (model.existeCompraMesmoValorEm24horas(carrinho.getValorTotal())){
                 //modal
