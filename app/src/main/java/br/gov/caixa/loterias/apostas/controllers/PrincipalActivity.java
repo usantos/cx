@@ -874,7 +874,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         if (installed) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=5561996565008&text=Disque180"));
+            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=5561996100180&text=Disque180"));
             startActivity(intent);
         }
         else
