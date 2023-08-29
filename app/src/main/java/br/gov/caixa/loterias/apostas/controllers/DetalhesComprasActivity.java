@@ -149,8 +149,13 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void verificaStatusPopUp() {
         if (SituacaoCompraUtil.isCancelada(compraDTO.getSituacao())) {
-            //showDialogCompraCancelada(); //Alterada para ficar igual ao IOS
-            showDialogDevolucaoPix();
+            if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())){
+                showDialogCompraCancelada(getString(R.string.pix_cancelado_descricao));
+            } else {
+                showDialogCompraCancelada(getString(R.string.pagamento_pix_nao_identificado));
+            }
+        } else if(SituacaoCompraUtil.isCanceladaPix(compraDTO.getSituacao())){
+            showDialogCompraCancelada(getString(R.string.pagamento_pix_nao_identificado));
         } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
             showDialogDebitoNaoAutorizado();
         } else if (SituacaoCompraUtil.isEstornada(compraDTO.getSituacao())) {
@@ -162,6 +167,15 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void showDialogCompraCancelada() {
         DialogUtils.showDialogDebitoNaoAutorizado(this,
+                                                  getResources().getString(R.string.mensagem_compra_cancelada_dialog),
+                                                  getResources().getString(R.string.salvar_carrinho),
+                                                  false,
+                                                  onCompraCancelaDialogListener());
+    }
+
+    private void showDialogCompraCancelada(String descricao) {
+        DialogUtils.showDialogDebitoNaoAutorizado(this,
+                                                  descricao,
                                                   getResources().getString(R.string.salvar_carrinho),
                                                   false,
                                                   onCompraCancelaDialogListener());
@@ -196,7 +210,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     }
 
-    private void showDialogDevolucaoPix() {
+    private void showDialogDevolucaoPagamento() {
         dialogDevolucaoPix = DialogUtils.showDialogCustom(DetalhesComprasActivity.this,
                 getString(R.string.popup_pix_estorno_pagamento_devolvido),
                 getString(R.string.popup_pix_estorno_nao_possivel),
@@ -208,22 +222,16 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void showDialogDebitoNaoAutorizado() {
 
-//        DialogUtils.showDialogDebitoNaoAutorizado(this,
-//                                                  getResources().getString(R.string.tenta_novamente_dialog),
-//                                                  true,
-//                                                  onDebitaNaoAutorizadoDialogListener());
-
-//        DialogUtils.showDialogDebitoNaoAutorizado(this,
-//                                                  getResources().getString(R.string.salvar_carrinho),
-//                                                  true,
-//                                                  onCompraCancelaDialogListener());
-
-        DialogUtils.showDialog3Botoes(this, R.drawable.vermelho,
-                getString(R.string.popup_pix_nao_realizado),
-                getString(R.string.popup_pix_nao_realizado_descricao),
-                getString(R.string.gerar_novo_codigo),
-                getString(R.string.alterar_forma_pagamento),
-                getString(R.string.btn_title_voltarAoInicio), onDialogListener());
+        if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())){
+            DialogUtils.showDialog3Botoes(this, R.drawable.vermelho,
+                                          getString(R.string.popup_pix_nao_realizado),
+                                          getString(R.string.popup_pix_nao_realizado_descricao),
+                                          getString(R.string.gerar_novo_codigo),
+                                          getString(R.string.alterar_forma_pagamento),
+                                          getString(R.string.btn_title_voltarAoInicio), onDialogListener());
+        } else {
+            showDialogCompraCancelada();
+        }
 
     }
 
@@ -274,8 +282,6 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             }
         };
     }
-
-
 
     private OnDialogSituacaoCompraListener onDebitaNaoAutorizadoDialogListener() {
         return new OnDialogSituacaoCompraListener() {
@@ -390,7 +396,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
         TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
         situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao_descricao,
-                compraDTO.getSituacao().getDescricao())));
+                SituacaoCompraUtil.getDescricao(compraDTO))));
 
         if (SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
             situacaoCompraTextView.setTextColor(getResources().getColor(R.color.azul_minhas_compras));

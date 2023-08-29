@@ -123,7 +123,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public BigDecimal valorTotalAposta;
 	public int typeGameColorLight, typeGameColorDark, numeroConcursoAtual;
 	public Button botaoFinalizar, botaoLimparAposta;
-	public TextView valorAposta;
+	public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
 	public ListaDezenaRecyclerView simularDezenasAdapter;
 	public String dataSorteioAtual;
 
@@ -1348,6 +1348,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	@Override
 	public void clickEquipeLoteca(ParametroPartida parametroPartida) {
 		BigDecimal ultimoValor = valorEmReais;
+
 		if (parametroPartida.isSelecionado()) {
 			if (parametroPartida.getQtdItensSelecionados() == 1) {
 				parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) + 1));
@@ -1370,6 +1371,36 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			parentActivity.setLabelValueSimplesLoteca(String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()) - 1));
 			partidasSelecionadas.remove(parametroPartida);
 		}
+		int somaTotais = 0;
+		int valueSimples = Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueSimplesLoteca().getText().toString()))));
+		int valueDuplas= Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueDuplasLoteca().getText().toString()))));
+		int valueTriplas= Integer.parseInt((String.valueOf(Integer.parseInt(parentActivity.getLabelValueTriplasLoteca().getText().toString()))));
+		somaTotais = valueSimples +valueDuplas + valueTriplas;
+
+		parentActivity.setLabelValueJogosLoteca(String.valueOf(Integer.parseInt(String.valueOf(somaTotais))));
+
+		valorTotalJogos = parentActivity.getLabelValueJogosLoteca();
+		valorTotalSimples= parentActivity.getLabelValueSimplesLoteca();
+		valorTotalDuplas= parentActivity.getLabelValueDuplasLoteca();
+		valorTotalTriplas= parentActivity.getLabelValueTriplasLoteca();
+
+
+		if (somaTotais >= 14) {
+			valorTotalJogos.setTextColor(getResources().getColor(R.color.verdeazul));
+			valorTotalSimples.setTextColor(getResources().getColor(R.color.verdeazul));
+		} else {
+			valorTotalJogos.setTextColor(getResources().getColor(R.color.lotecaclaro));
+			valorTotalSimples.setTextColor(getResources().getColor(R.color.lotecaclaro));
+		}
+		if (valueDuplas  == 0 && valueTriplas == 0) {
+			valorTotalDuplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
+			valorTotalTriplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
+		} else {
+			valorTotalDuplas.setTextColor(getResources().getColor(R.color.verdeazul));
+			valorTotalTriplas.setTextColor(getResources().getColor(R.color.verdeazul));
+		}
+
+
 		Boolean mostraBotao = atualizaValorApostaLoteca();
 		atualizaStatusBotaoFinalizarLoteca(mostraBotao);
 		verificaSeMostraBotaoLimparAposta();

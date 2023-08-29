@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 
 public class SituacaoCompraUtil {
@@ -32,7 +34,6 @@ public class SituacaoCompraUtil {
 	private static final int VALOR_CANCELADA_PAGAMENTO_NAO_IDENTIFICADO_TEMPO_LIMITE = 12;
 	private static final int VALOR_FINALIZADA_TODAS_APOSTAS_EFETIVADAS = 13;
 	private static final int VALOR_FINALIZADA_CONTEM_APOSTAS_NAO_EFETIVADAS = 14;
-	private static final int VALOR_DEVOLUCAO_PIX = 11;
 
 	public static boolean isDebitoNaoAutorizado(DTOEnumLong situacao) {
 		return situacao.getValor() == VALOR_DEBITO_NAO_AUTORIZADO;
@@ -40,10 +41,6 @@ public class SituacaoCompraUtil {
 
 	public static boolean isEstornada(DTOEnumLong situacao) {
 		return situacao.getValor() == VALOR_ESTORNADA;
-	}
-
-	public static boolean isDevocaoPix(DTOEnumLong situacao) {
-		return situacao.getValor() == VALOR_DEVOLUCAO_PIX;
 	}
 
 	public static boolean isCancelada(DTOEnumLong situacao) {
@@ -62,7 +59,7 @@ public class SituacaoCompraUtil {
 				situacao.getValor() == VALOR_ESTORNADA ||
 				situacao.getValor() == VALOR_CANCELADA ||
 				situacao.getValor() == VALOR_CANCELADA_PAGAMENTO_NAO_IDENTIFICADO_TEMPO_LIMITE ||
-				situacao.getValor() == VALOR_DEVOLUCAO_PIX;
+				situacao.getValor() == VALOR_AGUARDANDO_DEVOLUCAO_PIX;
 	}
 
 	public static boolean isSituacaoProcessamento(DTOEnumLong situacao) {
@@ -73,4 +70,19 @@ public class SituacaoCompraUtil {
 				situacao.getValor() == VALOR_AGUARDANDO_PAGAMENTO_PIX ||
 				situacao.getValor() == VALOR_AGUARDANDO_DEVOLUCAO_PIX;
 	}
+
+	public static boolean isCanceladaPix(DTOEnumLong situacao) {
+		return situacao.getValor() == VALOR_CANCELADA_PAGAMENTO_NAO_IDENTIFICADO_TEMPO_LIMITE;
+	}
+
+	public static String getDescricao(CompraDTO item) {
+		String descricao = "";
+		if (MeioPagamentoUtil.isPix(item.getMeioPagamento()) && SituacaoCompraUtil.isCancelada(item.getSituacao())){
+			descricao = Aplicacao.application.getBaseContext().getResources().getString(R.string.popup_pix_nao_realizado);
+		} else {
+			descricao = item.getSituacao().getDescricao();
+		}
+		return descricao;
+	}
+
 }
