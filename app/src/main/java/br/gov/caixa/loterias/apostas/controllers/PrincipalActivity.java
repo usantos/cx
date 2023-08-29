@@ -61,7 +61,6 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
-import br.gov.caixa.loterias.apostas.PreferenciasNotificacoesActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
@@ -97,7 +96,6 @@ import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
@@ -193,6 +191,7 @@ public class PrincipalActivity extends AppCompatActivity
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+
 //        if (TestVisao.isTeste()){
 //            buttonHomeBet.setOnLongClickListener(v -> {
 //                nextActivity(IntroducaoTutorialActivity.class);
@@ -875,7 +874,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         if (installed) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=5561996565008&text=Disque180"));
+            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=5561996100180&text=Disque180"));
             startActivity(intent);
         }
         else

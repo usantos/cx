@@ -845,6 +845,10 @@
     <string name="evento_entrou_tour_tela_2">ENTROU_TOUR_TELA2</string>
     <string name="evento_entrou_tour_tela_3">ENTROU_TOUR_TELA3</string>
     <string name="evento_entrou_tour_tela_4">ENTROU_TOUR_TELA4</string>
+    <string name="evento_pagina_1de4">Logo imagem CEF Loterias, Página 1 de 4</string>
+    <string name="evento_pagina_2de4">Página 2 de 4</string>
+    <string name="evento_pagina_3de4">Página 3 de 4</string>
+    <string name="evento_pagina_4de4">Página 4 de 4</string>
     <string name="evento_pulou_tour">PULOU_TOUR</string>
     <string name="teste_xxx">Teste xxx</string>
     <string name="tipo_caixa">tipoCaixa</string>
@@ -1241,8 +1245,8 @@
     <string name="popup_pix_estorno_nao_possivel">Não foi possível registrar a aposta.</string>
 
     <!-- Mensagens Disque 180  -->
-    <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
-    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
+    <string name="tituloMsgDisque180">Central de Atendimento à Mulher</string>
+    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência pelo WhatsApp do canal 180.</string>
     <string name="falha_comunicacao_situacao_aposta">Falha de comunicação! Clique para conferir.</string>
 
     <!-- Meio Pagamento Novo Layout -->
@@ -1291,5 +1295,7 @@
     <string name="pagamento_nao_identificado_dentro_do_prazo">Não recebemos seu Pix dentro do prazo.\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma aposta e gerar novo código para pagamento.</string>
     <string name="pix_cancelado_descricao">Não recebemos seu Pix dentro do prazo previsto para efetuar sua aposta e você não está concorrendo. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
     <string name="pagamento_pix_nao_identificado">Não identificamos o seu pagamento dentro do prazo previsto para efetuar sua aposta e você não está concorrendo. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. E não se preocupe! Caso o pagamento seja identificado, será estornado para a conta pagadora.</string>
+    <string name="alerta_precisa_estar_no_brasil">As apostas só podem ocorrer em território nacional. Suas apostas serão mantidas no carrinho para a conclusão da compra quando você estiver no país.</string>
+    <string name="posso_consultar_sua_localizacao">As apostas só podem ocorrer em território nacional. Portanto, você somente conseguirá pagar uma compra se estiver no Brasil, não havendo impedimento para utilizar os demais serviços.\nPodemos consultar a sua localização?</string>
 
 </resources>

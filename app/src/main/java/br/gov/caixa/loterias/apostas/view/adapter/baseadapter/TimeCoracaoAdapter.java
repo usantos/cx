@@ -63,12 +63,12 @@ public class TimeCoracaoAdapter extends BaseAdapter {
         equipe.setBrasaoSelecionadoId(R.drawable.time_selecionado);
         equipe.setBrasaoId(R.drawable.time);
 
-        if (i != 0) {
+//        if (i != 0) {
             EscudoEquipeUtil.setEscudo(context, times.get(i), imageTime);
-        }else if(!buscouPrimeiraPosicao){
-            buscouPrimeiraPosicao = true;
-            EscudoEquipeUtil.setEscudo(context, times.get(i), imageTime);
-        }
+//        }else if(!buscouPrimeiraPosicao){
+//            buscouPrimeiraPosicao = true;
+//            EscudoEquipeUtil.setEscudo(context, times.get(i), imageTime);
+//        }
         if (equipe.isSelecionado()) {
 //            imageTime.setImageResource(equipe.getBrasaoSelecionadoId());
 
