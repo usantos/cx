@@ -10,6 +10,8 @@ import android.widget.EditText;
 import java.util.Arrays;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.view.listener.TextWatcherAfterChangedListener;
+
 
 public class MaskEditUtil {
 
@@ -30,7 +32,7 @@ public class MaskEditUtil {
      * @param mask
      * @return
      */
-    public static TextWatcher mask(final EditText ediTxt, final String mask) {
+    public static TextWatcher mask(final EditText ediTxt, final String mask, TextWatcherAfterChangedListener listener) {
         return new TextWatcher() {
             boolean isUpdating;
             String old = "";
@@ -38,7 +40,11 @@ public class MaskEditUtil {
             private List<String> binsAmex = Arrays.asList("34", "37");
 
             @Override
-            public void afterTextChanged(final Editable s) {}
+            public void afterTextChanged(final Editable s) {
+                if (listener != null){
+                    listener.onChanged(s.toString());
+                }
+            }
 
             @Override
             public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {}
@@ -83,5 +89,23 @@ public class MaskEditUtil {
 
     public static String unmask(final String s) {
         return s.replaceAll("[.]", "").replaceAll("[-]", "").replaceAll("[/]", "").replaceAll("[(]", "").replaceAll("[ ]","").replaceAll("[)]", "");
+    }
+
+    public static TextWatcher textWatcherAfterChangedListener(TextWatcherAfterChangedListener listener) {
+        return new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(final Editable s) {
+                listener.onChanged(s.toString());
+            }
+
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {}
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+
+            }
+        };
     }
 }

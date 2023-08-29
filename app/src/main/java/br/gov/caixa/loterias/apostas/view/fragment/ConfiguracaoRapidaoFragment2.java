@@ -19,7 +19,6 @@ import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.JustifyContent;
-import com.mercadopago.listeners.RecyclerItemClickListener;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import br.gov.caixa.loterias.apostas.utils.CustomTypefaceSpan;
 import br.gov.caixa.loterias.apostas.utils.SafeFlexboxLayoutManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SugestoesPremioMinimoAdapter;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 import static br.gov.caixa.loterias.apostas.R.color.amareloQueimado;
 
@@ -89,7 +89,7 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 
 
 		//adapter
-		modalidadesAdapter = new SugestoesPremioMinimoAdapter(getContext(),listaSugestoes);
+		modalidadesAdapter = new SugestoesPremioMinimoAdapter(getContext(),listaSugestoes, onItemClick());
 		rvSugestoes.setAdapter(modalidadesAdapter);
 
 		//layout manager
@@ -109,17 +109,26 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 		numberPicker.setWrapSelectorWheel(true);
 
 		//metodos
-		rvSugestoes.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), (view1, position) -> {
-			modalidadesAdapter.setSelectedPosition(position);
-			modalidadesAdapter.notifyDataSetChanged();
-			numberPicker.setValue(pegaIndiceDoPicker(position));
-			RapidaoConfigSingleton.getInstance().getRapidaoConfig().setValorMinimoPremioPrincipal(new BigDecimal(numberPicker.getValue() * 1000000));
-
-		}));
+//		rvSugestoes.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), (view1, position) -> {
+//			modalidadesAdapter.setSelectedPosition(position);
+//			modalidadesAdapter.notifyDataSetChanged();
+//			numberPicker.setValue(pegaIndiceDoPicker(position));
+//			RapidaoConfigSingleton.getInstance().getRapidaoConfig().setValorMinimoPremioPrincipal(new BigDecimal(numberPicker.getValue() * 1000000));
+//
+//		}));
 
 		numberPicker.setOnValueChangedListener((numberPicker, oldVal, newVal) -> {
 			atualizaSugestoes();
 		});
+	}
+
+	private OnItemClickListener onItemClick() {
+		return (holder, position) -> {
+			modalidadesAdapter.setSelectedPosition(position);
+			modalidadesAdapter.notifyDataSetChanged();
+			numberPicker.setValue(pegaIndiceDoPicker(position));
+			RapidaoConfigSingleton.getInstance().getRapidaoConfig().setValorMinimoPremioPrincipal(new BigDecimal(numberPicker.getValue() * 1000000));
+		};
 	}
 
 	private void atualizaSugestoes(){

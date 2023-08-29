@@ -1,11 +1,9 @@
 package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
-import android.text.Editable;
 
 import com.android.volley.VolleyError;
 import com.mercadolibre.android.device.sdk.DeviceSDK;
-import com.mercadopago.model.CardToken;
 
 import org.json.JSONObject;
 
@@ -89,7 +87,8 @@ public class CartoesModel extends AppModel {
 		});
 	}
 
-	public String preencheDadosPagamentoCartaoSalvoMP(RetornoCartao cartao, Editable securityCode) {
+	//public String preencheDadosPagamentoCartaoSalvoMP(RetornoCartao cartao, Editable securityCode) {
+	public String preencheDadosPagamentoCartaoSalvoMP(RetornoCartao cartao, String securityCode) {
 		JSONObject jsonBody       = new JSONObject();
 		JSONObject jsonCardHolder = new JSONObject();
 		JSONObject jsonIdentification = new JSONObject();
@@ -111,20 +110,20 @@ public class CartoesModel extends AppModel {
 		return jsonBody.toString();
 	}
 
-	public String preencheDadosPagamento(CardToken cardToken){
+	public String preencheDadosPagamento(String cpf, String name, String cardNumber, Integer year, Integer month, String securityCode){
 		JSONObject jsonBody = new JSONObject();
 		JSONObject jsonCardHolder = new JSONObject();
 		JSONObject jsonIdentification = new JSONObject();
 		try {
 			jsonIdentification.put("type", "CPF");
-			jsonIdentification.put("number", DadosUsuarioBO.obterCpf());
-			jsonCardHolder.put("identification",jsonIdentification);
-			jsonCardHolder.put("name",cardToken.getCardholder().getName());
+			jsonIdentification.put("number", cpf);
+			jsonCardHolder.put("identification", jsonIdentification);
+			jsonCardHolder.put("name", name);
 
-			jsonBody.put("card_number", cardToken.getCardNumber().replace(getActivity().getResources().getString(R.string.espaco_em_branco), getActivity().getResources().getString(R.string.string_vazia)));
-			jsonBody.put("expiration_year",Integer.valueOf(cardToken.getExpirationYear()));
-			jsonBody.put("expiration_month", Integer.valueOf(cardToken.getExpirationMonth()));
-			jsonBody.put("security_code", cardToken.getSecurityCode());
+			jsonBody.put("card_number", cardNumber);
+			jsonBody.put("expiration_year", year);
+			jsonBody.put("expiration_month", month);
+			jsonBody.put("security_code", securityCode);
 			jsonBody.put("cardholder", jsonCardHolder);
 			jsonBody.put("device", DeviceSDK.getInstance().getInfoAsJsonString());
 		}catch (Exception e) {
@@ -342,5 +341,29 @@ public class CartoesModel extends AppModel {
 		dataExpiracao.setMes(Integer.valueOf(mes));
 		dataExpiracao.setAno(Integer.valueOf(ano));
 		return dataExpiracao;
+	}
+
+	public List<RetornoCartao> getCartoes2Primeiros(List<RetornoCartao> retornoCartaoList) {
+		List<RetornoCartao> cartoes = new ArrayList<RetornoCartao>();
+		cartoes.add(retornoCartaoList.get(0));
+		cartoes.add(retornoCartaoList.get(1));
+		return cartoes;
+	}
+
+	public CartaoRecargaPayDTO getCartaoRecargaPay(ApostadorDTO dadosPessoais, String numero, String mes, String ano, String cvv, boolean isSalvar) {
+		CartaoRecargaPayDTO cartao = new CartaoRecargaPayDTO();
+		cartao.setType(RecargaPayConnection.CARTAO_TYPE);
+		cartao.setBrand(getBrand(numero));
+		cartao.setNumber(numero);
+
+		CardHolderRecargaPay cardHolder = getCardHolderRecargaPay(dadosPessoais);
+		cartao.setCardHolder(cardHolder);
+
+		DataExpiracao dataExpiracao = getDataExpiracao(mes, ano);
+		cartao.setDataExpiracao(dataExpiracao);
+
+		cartao.setSecurityCode(cvv);
+		cartao.setShouldSave(isSalvar);
+		return cartao;
 	}
 }

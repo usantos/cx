@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:stretchColumns="*"
     android:showDividers="middle"
-    android:divider="@color/mpsdk_warm_grey">
+    android:divider="@color/mp_warm_grey">
 
     <TextView
         android:layout_width="0dp"

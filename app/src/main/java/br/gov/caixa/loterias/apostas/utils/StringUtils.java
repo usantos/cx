@@ -30,4 +30,8 @@ public class StringUtils {
     public static String firstWord(String texto) {
         return texto.substring(0, texto.indexOf(" "));
     }
+
+    public static String padZeroLeft(int valor, int tamanho) {
+        return String.format("%0" + tamanho + "d", valor);
+    }
 }

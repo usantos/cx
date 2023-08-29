@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class SugestoesPremioMinimoAdapter extends RecyclerView.Adapter<SugestoesPremioMinimoAdapter.ViewHolder> {
 
@@ -25,18 +26,21 @@ public class SugestoesPremioMinimoAdapter extends RecyclerView.Adapter<Sugestoes
 	private OnModalidadeSelecionadaListener listener;
 	private ArrayList<String> listaSugestoes;
 
+	private OnItemClickListener itemClickListener;
+
 	private int selectedPosition = -1;
 
-	public SugestoesPremioMinimoAdapter(Context context, ArrayList<String> listaSugestoes) {
+	public SugestoesPremioMinimoAdapter(Context context, ArrayList<String> listaSugestoes, OnItemClickListener listener) {
 		this.mContext = context;
 		this.listaSugestoes = listaSugestoes;
+		this.itemClickListener = listener;
 	}
 
 	@NonNull
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_opcao_premio_minimo, null);
-		return new ViewHolder(view);
+		return new ViewHolder(view, itemClickListener);
 	}
 
 	@Override
@@ -54,10 +58,10 @@ public class SugestoesPremioMinimoAdapter extends RecyclerView.Adapter<Sugestoes
 		void onItemClick(TipoAposta item);
 	}
 
-	public class ViewHolder extends RecyclerView.ViewHolder {
+	public class ViewHolder extends RecyclerView.ViewHolder{
 		protected Button btnSugestao;
 
-		public ViewHolder(final View itemView) {
+		public ViewHolder(final View itemView, OnItemClickListener itemClickListener) {
 			super(itemView);
 			btnSugestao = itemView.findViewById(R.id.btn_sugestao);
 			ViewGroup.LayoutParams lp = btnSugestao.getLayoutParams();
@@ -65,6 +69,10 @@ public class SugestoesPremioMinimoAdapter extends RecyclerView.Adapter<Sugestoes
 				FlexboxLayoutManager.LayoutParams flexboxLp = (FlexboxLayoutManager.LayoutParams)lp;
 				flexboxLp.setFlexGrow(1.0f);
 			}
+
+			itemView.setOnClickListener(v -> {
+				itemClickListener.itemClick(this,getAbsoluteAdapterPosition());
+			});
 		}
 	}
 

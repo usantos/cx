@@ -173,4 +173,19 @@
 
     <color name="label_nao_sim">#007AFF</color>
 
+    <!-- Forma de Pagamento - Novo Layout  -->
+    <color name="link_cartoes">#0066B8</color>
+    <color name="fundoFormaPagamento">#F5F5F5</color>
+    <color name="fundoCartao">#ECFAFF</color>
+    <!--color name="fundoCartaoCredito">#BDBDBD</color-->
+    <color name="fundoCartaoCredito">#DADADA</color>
+    <color name="tarjaAmarela">#FCF7E6</color>
+    <color name="bordaDigitacaoCVV">#4BBDAC</color>
+    <color name="numeroDigitacaoCVV">#4BB8A9</color>
+
+    <color name="mp_darker_gray">#ABABAB</color>
+    <color name="mp_warm_grey">#b7999999</color>
+    <color name="mp_color_red_error">#FF2B2B</color>
+    <color name="mp_error_red_pink">#F04449</color>
+
 </resources>
