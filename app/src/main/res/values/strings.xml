@@ -1236,8 +1236,8 @@
     <string name="popup_pix_estorno_nao_possivel">Não foi possível registrar a aposta.</string>
 
     <!-- Mensagens Disque 180  -->
-    <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
-    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
+    <string name="tituloMsgDisque180">Central de Atendimento à Mulher</string>
+    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência pelo WhatsApp do canal 180.</string>
     <string name="falha_comunicacao_situacao_aposta">Falha de comunicação! Clique para conferir.</string>
 
     <!-- Meio Pagamento Novo Layout -->
