@@ -35,6 +35,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:text="@string/ol"
+        android:contentDescription=" "
         android:textAlignment="center"
         android:textColor="@color/verdeazul"
         android:textSize="16dp"

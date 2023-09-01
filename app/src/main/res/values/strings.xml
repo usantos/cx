@@ -10,8 +10,8 @@
     <string name="title_activity_minhas_apostas">Minhas _apostas_</string>
     <string name="title_activity_dados_pessoais">_Dados Pessoais_</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Menu principal</string>
+    <string name="navigation_drawer_close">Fechar menu</string>
 
     <string name="action_settings">Configurações</string>
     <string name="action_duvidas">Dúvidas</string>
