@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/arialmt"
                 android:paddingLeft="38dp"
-                android:text="@string/minha_rea"
+
                 android:textColor="@color/cinza"
                 android:textSize="14sp" />
         </LinearLayout>

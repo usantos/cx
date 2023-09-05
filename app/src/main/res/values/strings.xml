@@ -12,6 +12,7 @@
 
     <string name="navigation_drawer_open">Menu principal</string>
     <string name="navigation_drawer_close">Fechar menu</string>
+    <string name="olausuario">Início menu principal</string>
 
     <string name="action_settings">Configurações</string>
     <string name="action_duvidas">Dúvidas</string>
