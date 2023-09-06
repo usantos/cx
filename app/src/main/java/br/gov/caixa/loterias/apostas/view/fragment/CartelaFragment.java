@@ -213,8 +213,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onStart() {
+		super.onStart();
 		int idList;
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 			idList = R.id.recyclerViewPartida;

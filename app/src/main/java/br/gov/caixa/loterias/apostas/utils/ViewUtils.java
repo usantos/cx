@@ -407,15 +407,17 @@ public class ViewUtils {
                         int heightNavigationBar = resources.getDimensionPixelSize(resourceId);
 
                         int heightLayout = constraintLayout.getMeasuredHeight();
-                        int heightElementToExpand = activity.findViewById(idViewToExpand).getMeasuredHeight();
-                        float heightStatusBar = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, resources.getDisplayMetrics());
+                        if(activity.findViewById(idViewToExpand) != null){
+                            int heightElementToExpand = activity.findViewById(idViewToExpand).getMeasuredHeight();
+                            float heightStatusBar = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, resources.getDisplayMetrics());
 
-                        if (!activity.findViewById(idScrollView).canScrollVertically(1)) {
-                            ConstraintSet set = new ConstraintSet();
+                            if (!activity.findViewById(idScrollView).canScrollVertically(1)) {
+                                ConstraintSet set = new ConstraintSet();
 
-                            set.clone(constraintLayout);
-                            set.constrainHeight(idViewToExpand, (heightElementToExpand + heightWindow - (int) heightStatusBar - heightLayout - heightNavigationBar - 14));
-                            set.applyTo(constraintLayout);
+                                set.clone(constraintLayout);
+                                set.constrainHeight(idViewToExpand, (heightElementToExpand + heightWindow - (int) heightStatusBar - heightLayout - heightNavigationBar - 14));
+                                set.applyTo(constraintLayout);
+                            }
                         }
                     }
                 }
