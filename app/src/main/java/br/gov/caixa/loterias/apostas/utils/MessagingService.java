@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 public class MessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MessagingService";
+    private static final String TOKEN_DISPOSITIVO = "TOKEN_DISPOSITIVO";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -51,8 +52,8 @@ public class MessagingService extends FirebaseMessagingService {
     public void onNewToken(String token) {
         Log.d(TAG, "Refreshed token: " + token);
 
-        //Envia Token servidor Caixa
-        //sendRegistrationToServer(token);
+        //Salva Token para futuro envio para o Servico Caixa de Mensagens
+        SharedPreferencesUtils.setValor(TOKEN_DISPOSITIVO, token);
     }
 
 

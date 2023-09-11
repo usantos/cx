@@ -118,6 +118,7 @@ android {
                 buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
                 buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasprd\""
                 buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutLoterias\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                         hostName             : "br.gov.caixa.caixaloterias",
@@ -149,6 +150,7 @@ android {
                 buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
                 buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasdes\""
                 buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                         hostName             : "br.gov.caixa.caixaloterias",
@@ -180,6 +182,7 @@ android {
                 buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
                 buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasdes\""
                 buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                         hostName             : "br.gov.caixa.caixaloterias",
@@ -211,6 +214,7 @@ android {
                 buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
                 buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasdes\""
                 buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                         hostName             : "br.gov.caixa.caixaloterias",

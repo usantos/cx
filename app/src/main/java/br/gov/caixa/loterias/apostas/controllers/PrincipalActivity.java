@@ -69,9 +69,11 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.model.bo.MessagingConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
@@ -88,6 +90,7 @@ import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -95,6 +98,7 @@ import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
@@ -104,6 +108,7 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
 
@@ -116,6 +121,8 @@ public class PrincipalActivity extends AppCompatActivity
 
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
+    private static final String TOKEN_DISPOSITIVO = "TOKEN_DISPOSITIVO";
+
 
     @ViewById
     public AppBarLayout navigationBarListaModalidade;
@@ -191,6 +198,15 @@ public class PrincipalActivity extends AppCompatActivity
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+
+        //Envia Token Dispositivo
+        String tokenDispositivo = SharedPreferencesUtils.getValorString(TOKEN_DISPOSITIVO, null);
+        String cpf = DadosUsuarioBO.obterCpf();
+        if ((tokenDispositivo != null && tokenDispositivo.length() > 0) && (cpf != null && cpf.length() > 0)) {
+            //tokenDispositivo = "TOKEN_TESTE"; //APAGAR
+            //cpf = "44625623057"; //APAGAR
+            MessagingConnection.callMessagingCaixaSalvaToken(this, cpf, tokenDispositivo, onMessagingListener());
+        }
 
 //        if (TestVisao.isTeste()){
 //            buttonHomeBet.setOnLongClickListener(v -> {
@@ -927,6 +943,28 @@ public class PrincipalActivity extends AppCompatActivity
         dbLoteriasHelper.close();
         AlertDialogUtils.dismiss();
         super.onDestroy();
+    }
+
+    private MessagingConnection.MessagingListener onMessagingListener() {
+        return new MessagingConnection.MessagingListener() {
+            @Override
+            public void onSucesso(String codigo, String descricao, String tokenDispositivo) {
+                if (codigo.equals("200")) {
+                    if (!BuildVersionUtil.isPRD()) {
+                        ViewUtils.alert(PrincipalActivity.this, "GRAVOU O TOKEN DO DISPOSITIVO COM SUCESSO\n" + tokenDispositivo);
+                    }
+                    //Apaga o Token após o envio para não enviar novamente
+                    SharedPreferencesUtils.setValor(TOKEN_DISPOSITIVO, "");
+                }
+            }
+
+            @Override
+            public void onErro(String msgError) {
+                if (!BuildVersionUtil.isPRD()) {
+                    ViewUtils.alert(PrincipalActivity.this, "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + msgError);
+                }
+            }
+        };
     }
 
 }
