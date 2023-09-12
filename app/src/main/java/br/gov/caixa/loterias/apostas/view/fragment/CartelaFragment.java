@@ -1126,6 +1126,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private OnItemClickListener<DezenaHolder> onItemClickListener() {
 		return (OnItemClickListener<DezenaHolder>) (holder, position) -> {
 			Dezena  dezena           = dezenas.get(position);
+			dezena.setSelected(!dezena.isSelected());
 			Integer valorSelecionado = Integer.valueOf(dezena.getValue());
 
 			if (dezenasSelecionadas.contains(valorSelecionado)) {
@@ -1189,7 +1190,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				atualizaStatusBotaoFinalizar(false);
 			}
 
-			simularDezenasAdapter.notifyDataSetChanged();
+			simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
 		};
 	}
 
