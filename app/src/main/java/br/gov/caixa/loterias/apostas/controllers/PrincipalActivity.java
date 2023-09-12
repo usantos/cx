@@ -203,8 +203,6 @@ public class PrincipalActivity extends AppCompatActivity
         String tokenDispositivo = SharedPreferencesUtils.getValorString(TOKEN_DISPOSITIVO, null);
         String cpf = DadosUsuarioBO.obterCpf();
         if ((tokenDispositivo != null && tokenDispositivo.length() > 0) && (cpf != null && cpf.length() > 0)) {
-            //tokenDispositivo = "TOKEN_TESTE"; //APAGAR
-            //cpf = "44625623057"; //APAGAR
             MessagingConnection.callMessagingCaixaSalvaToken(this, cpf, tokenDispositivo, onMessagingListener());
         }
 

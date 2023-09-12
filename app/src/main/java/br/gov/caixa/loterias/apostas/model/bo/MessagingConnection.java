@@ -51,6 +51,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
 import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
@@ -64,7 +65,6 @@ public class MessagingConnection {
 		void onErro(String msgError);
 	}
 
-	//*** APAGAR APENAS COMO TESTE
 	private static void trustEveryone() {
 		try {
 			HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier(){
@@ -93,8 +93,10 @@ public class MessagingConnection {
 		KeycloakBO keycloakBO = KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext());
 		String tokenApostador = keycloakBO.getAccessToken();
 
-		//*** APAGAR APENAS TESTE
-		trustEveryone();
+		if (!BuildVersionUtil.isPRD()) {
+			//NAO Pode ser chamado em PRD
+			trustEveryone();
+		}
 
 		JSONObject postData = new JSONObject();
 		try {
