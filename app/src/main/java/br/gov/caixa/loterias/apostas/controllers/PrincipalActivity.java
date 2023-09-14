@@ -128,7 +128,7 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected Button buttonHomeBet;
     @ViewById
-    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
+    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, recolherMenu;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             rlJogoResponsavel,
@@ -722,6 +722,11 @@ public class PrincipalActivity extends AppCompatActivity
             AnimacaoFecharMenuRapido(relativeContentPrincipal);
             startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
         }
+    }
+
+    @Click(R.id.recolherMenu)
+    protected void clickRecolherMenu() {
+        onBackPressed();
     }
 
     private void AbrirMenusGroup(int groupPosition) {
