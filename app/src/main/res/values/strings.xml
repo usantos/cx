@@ -67,6 +67,7 @@
     <string name="label_acompanhe_suas_compras_pix">_Acompanhe_\nsuas compras</string>
     <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
+    <string name="continuarApostando">Continuar apostando</string>
 
     <string name="adicionarFormaPagamento">_Adicionar_\nforma de pagamento</string>
     <string name="tituloFormaPagamento">Agora é pra valer!</string>

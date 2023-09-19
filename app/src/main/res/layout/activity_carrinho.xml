@@ -94,7 +94,7 @@
         android:background="@drawable/button_white_with_green_border"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
-        android:text="@string/fazerNovaAposta"
+        android:text="@string/continuarApostando"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/verdeazul"
         android:textSize="16sp"
