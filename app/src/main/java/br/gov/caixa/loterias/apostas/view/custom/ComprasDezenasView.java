@@ -68,7 +68,11 @@ public class ComprasDezenasView extends LinearLayout {
         switch (aposta.getModalidade()) {
             case TIMEMANIA:
                 labelDetalheTxt.setText(R.string.label_time_coracao);
-                detalheTxt.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getContext().getString(R.string.texto_futura_bold, aposta.getTimeDoCoracao().getNome())));
+                detalheTxt.setText(ViewUtils.textFuturaAndFuturaBold(getContext(),
+                        getContext().getString(R.string.texto_futura_bold,
+                                aposta.getTimeDoCoracao().getNome() +"/"+
+                                aposta.getTimeDoCoracao().getUf()
+                        )));
                 detalheLayout.setVisibility(View.VISIBLE);
                 break;
 
