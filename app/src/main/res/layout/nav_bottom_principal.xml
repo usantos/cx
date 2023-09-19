@@ -12,21 +12,32 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnCount="2"
+        android:columnCount="3"
         android:orientation="vertical"
-        android:rowCount="2">
+        android:rowCount="3">
+
+
+        <TextView
+            android:id="@+id/recolherMenu"
+            android:layout_width="200dp"
+            android:layout_column="1"
+            android:layout_row="0"
+            android:contentDescription="Sair do menu principal"
+            android:textColor="#00000000"
+            />
 
         <ImageView
             android:id="@+id/iconCef"
             android:layout_width="30dp"
             android:layout_column="0"
+            android:layout_row="1"
             android:src="@drawable/caixa_logo" />
 
         <TextView
             android:id="@+id/nav_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="0"
+            android:layout_row="1"
             android:layout_column="1"
             android:gravity="left"
             android:paddingLeft="10dp"
@@ -41,7 +52,7 @@
             android:id="@+id/nav_user_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="1"
+            android:layout_row="2"
             android:layout_column="1"
             android:gravity="left"
             android:paddingTop="3dp"
