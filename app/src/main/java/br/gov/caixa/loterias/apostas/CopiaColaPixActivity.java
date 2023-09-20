@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.Nullable;
+
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -48,6 +50,10 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		});
 
 		model = new PixModel(this);
+		gerarCodigoPix();
+	}
+
+	private void gerarCodigoPix() {
 		AlertDialogUtils.show(this);
 		model.gerarCodigoPix(onGerarPixListener());
 	}
@@ -192,4 +198,10 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		startActivity(intent);
 		finish();
 	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		finish();
+	}
+
 }

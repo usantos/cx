@@ -79,8 +79,6 @@ public class LocalizacaoActivity extends AppCompatActivity {
 
     private void trataPermissao() {
         btnGenerico.setVisibility(View.VISIBLE);
-        setResult(RESULT_OK);
-        finish();
 
         switch (LocalizacaoUtils.checaStatusPermissao(this)) {
             case LocalizacaoUtils.LOC_NAO_PERMITIDA:

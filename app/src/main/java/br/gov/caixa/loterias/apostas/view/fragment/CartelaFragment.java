@@ -215,8 +215,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onStart() {
+		super.onStart();
 		int idList;
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 			idList = R.id.recyclerViewPartida;
@@ -1141,6 +1141,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private OnItemClickListener<DezenaHolder> onItemClickListener() {
 		return (OnItemClickListener<DezenaHolder>) (holder, position) -> {
 			Dezena  dezena           = dezenas.get(position);
+			dezena.setSelected(!dezena.isSelected());
 			Integer valorSelecionado = Integer.valueOf(dezena.getValue());
 
 			if (dezenasSelecionadas.contains(valorSelecionado)) {
@@ -1204,7 +1205,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				atualizaStatusBotaoFinalizar(false);
 			}
 
-			simularDezenasAdapter.notifyDataSetChanged();
+			simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
 		};
 	}
 
