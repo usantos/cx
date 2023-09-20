@@ -128,7 +128,7 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected Button buttonHomeBet;
     @ViewById
-    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
+    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, recolherMenu;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             rlJogoResponsavel,
@@ -724,6 +724,11 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    @Click(R.id.recolherMenu)
+    protected void clickRecolherMenu() {
+        onBackPressed();
+    }
+
     private void AbrirMenusGroup(int groupPosition) {
         if (groupPosition != 0 && groupPosition != 8) {
             drawerLayout.closeDrawer(GravityCompat.START, false);
@@ -928,5 +933,7 @@ public class PrincipalActivity extends AppCompatActivity
         AlertDialogUtils.dismiss();
         super.onDestroy();
     }
+
+
 
 }

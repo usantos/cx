@@ -94,6 +94,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         listTitleTextView.setTypeface(null, Typeface.BOLD);
         listTitleTextView.setText(listTitle);
 
+
         ImageView imagemMaisOpcoes = convertView.findViewById(R.id.imagemMaisOpcoes);
 
         ImageView imageViewGroup = convertView
@@ -102,6 +103,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
             case 0:
                 imageViewGroup.setImageResource(R.drawable.menu1_area);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
+                listTitleTextView.setHint("este botão possue subitem");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
@@ -111,6 +113,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
              case 1:
                 imageViewGroup.setImageResource(R.drawable.menu3_resultados);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
+                listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
@@ -119,6 +122,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
             case 2:
                 imageViewGroup.setImageResource(R.drawable.menu4_rapidao);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
+                listTitleTextView.setHint("botão" + listTitle);
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
@@ -126,6 +130,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
             case 3:
                 imageViewGroup.setImageResource(R.drawable.menu5_bilhetes);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
+                listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
@@ -133,6 +138,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
             case 4:
                 imageViewGroup.setImageResource(R.drawable.menu6_jogo_responsavel);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
+                listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
@@ -140,6 +146,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
             case 5:
                 imageViewGroup.setImageResource(R.drawable.menu7_repasses);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
+                listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
@@ -147,6 +154,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
             case 6:
                 imageViewGroup.setImageResource(R.drawable.menu_termo_uso);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
+                listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
@@ -154,11 +162,20 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
             case 7:
                 imageViewGroup.setImageResource(R.drawable.ic_questions);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
+                listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
-                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
+//                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
-//            case 8:
+            case 8:
+//                imageViewGroup.setImageResource(R.drawable.ic_elipse_menu);
+                listTitleTextView.setTextColor(context.getResources().getColor(R.color.transparente));
+                convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
+                listTitleTextView.setHint("botão, fechar menu, sair");
+                imagemMaisOpcoes.setVisibility(View.GONE);
+//                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
+                break;
+//            case 9:
 //                imageViewGroup.setImageResource(R.drawable.ic_elipse_menu);
 //                listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
 //                convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
