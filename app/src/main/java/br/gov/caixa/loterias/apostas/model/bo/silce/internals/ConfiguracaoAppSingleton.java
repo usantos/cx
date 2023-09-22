@@ -10,6 +10,9 @@ public class ConfiguracaoAppSingleton {
     private Boolean mostraMenuAposta;
     private Boolean isAtualizaPublicKey;
 
+    private String urlBaseCarrinhoPiloto;
+    private String urlBaseCarrinhoProducao;
+
     private static ConfiguracaoAppSingleton configuracaoAppSingleton;
 
     private ConfiguracaoAppSingleton(){ }
@@ -20,6 +23,8 @@ public class ConfiguracaoAppSingleton {
             configuracaoAppSingleton.mostraMenuAposta = MOSTRA_MENU_APOSTAS_DEFAULT;
             configuracaoAppSingleton.isMicroServico = IS_MICRO_SERVICO_DEFAULT;
             configuracaoAppSingleton.isAtualizaPublicKey = Boolean.FALSE;
+            configuracaoAppSingleton.urlBaseCarrinhoPiloto="-";
+            configuracaoAppSingleton.urlBaseCarrinhoProducao="-";
         }
         return configuracaoAppSingleton;
     }
@@ -54,5 +59,21 @@ public class ConfiguracaoAppSingleton {
 
     public void setAtualizaPublicKey(Boolean atualiza){
         isAtualizaPublicKey = atualiza;
+    }
+
+    public String getUrlBaseCarrinhoPiloto() {
+        return urlBaseCarrinhoPiloto;
+    }
+
+    public void setUrlBaseCarrinhoPiloto(String urlBaseCarrinhoPiloto) {
+        this.urlBaseCarrinhoPiloto = urlBaseCarrinhoPiloto;
+    }
+
+    public String getUrlBaseCarrinhoProducao() {
+        return urlBaseCarrinhoProducao;
+    }
+
+    public void setUrlBaseCarrinhoProducao(String urlBaseCarrinhoProducao) {
+        this.urlBaseCarrinhoProducao = urlBaseCarrinhoProducao;
     }
 }

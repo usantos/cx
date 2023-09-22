@@ -11,10 +11,13 @@ import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
@@ -32,6 +35,8 @@ public class SilceConnection {
     private static final String TAG = SilceConnection.class.getName();
     private static final int TIMEOUT = 30000;
     private static final String TAG_REQUEST = "TAG_REQUEST";
+    private static final String PUBLICO = "/publico";
+    private static final String LOGADO = "/logado";
 
     private RequestQueue requestQueue;
     private SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
@@ -177,6 +182,12 @@ public class SilceConnection {
     }
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
+
+        String novoCaminho = alteraCaminhoCarrinho(path);
+        if (novoCaminho != null) {
+            return novoCaminho;
+        }
+
         return fillUrl(path) + fillParamStr(queryParams);
     }
 
@@ -262,5 +273,68 @@ public class SilceConnection {
             }
         }
         return sb.toString();
+    }
+
+    private String alteraCaminhoCarrinho(String path) {
+
+        String baseUrlCarrinho;
+        if(BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")) {
+            baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
+        } else {
+            baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
+        }
+
+        if (baseUrlCarrinho.equals("-")) {
+            return null;
+        }
+
+        List<String> listPublico = Arrays.asList(
+            "/equipes-esportivas/listaEquipes",
+            "/parametros-simulacao",
+            "/combos");
+
+        if (listPublico.contains(path)) {
+            return baseUrlCarrinho + PUBLICO + path;
+        }
+
+        List<String> listLogadoExato = Arrays.asList(
+            "/carrinhos",
+            "/carrinhos/atualiza-teimosinha-aposta",
+            "/carrinhos/incluir-aposta",
+            "/carrinhos/incluir-apostas",
+            "/carrinhos/incluir-combo",
+            "/carrinhos/incluir-surpresinha",
+            "/carrinhos/incluir-surpresinhas",
+            "/carrinhos/iniciar-pagamento-externo",
+            "/carrinhos/limpar",
+            "/carrinhos/limpar-carrinho-favorito",
+            "/carrinhos/registrar-apostas",
+            "/carrinhos/registrar-apostas-async",
+            "/carrinhos/registrar-apostas-sem-carrinho",
+            "/carrinhos/salvar-carrinho-favorito",
+            "/carrinhos/validar",
+            "/carrinhos/validar-aposta-identica",
+            "/carrinhos/verifica-compra-processamento",
+            "/usuarios/verificar-cadastro");
+
+        if (listLogadoExato.contains(path)) {
+            return baseUrlCarrinho + LOGADO + path;
+        }
+
+        List<String> listLogadoParcial = Arrays.asList(
+            "/apostas-favoritas",
+            "/carrinhos-favoritos",
+            "/carrinhos/apostas",
+            "/carrinhos/combos",
+            "/carrinhos/incluir-aposta-favorita",
+            "/carrinhos/incluir-carrinho-favorito");
+
+        for(String parcial : listLogadoParcial) {
+            if (parcial.startsWith(path)) {
+                return baseUrlCarrinho + LOGADO + path;
+            }
+        }
+
+        return null;
     }
 }

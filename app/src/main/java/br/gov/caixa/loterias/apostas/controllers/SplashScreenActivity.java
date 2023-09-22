@@ -148,6 +148,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                         ConfiguracaoAppSingleton.getInstance().setAtualizaPublicKey(result.getPayload().getMapa().isAtualizaPublicKey());
                     }
 
+                    if (temDadosPayloadMapa(result)) {
+                        ConfiguracaoAppSingleton.getInstance().setUrlBaseCarrinhoPiloto(result.getPayload().getMapa().getUrlBaseCarrinhoPiloto());
+                        ConfiguracaoAppSingleton.getInstance().setUrlBaseCarrinhoProducao(result.getPayload().getMapa().getUrlBaseCarrinhoProducao());
+                    }
+
                 }
 
                 @Override
