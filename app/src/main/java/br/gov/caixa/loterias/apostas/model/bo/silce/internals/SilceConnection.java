@@ -35,8 +35,39 @@ public class SilceConnection {
     private static final String TAG = SilceConnection.class.getName();
     private static final int TIMEOUT = 30000;
     private static final String TAG_REQUEST = "TAG_REQUEST";
+
     private static final String PUBLICO = "/publico";
     private static final String LOGADO = "/logado";
+    private static final List<String> listPublico = Arrays.asList(
+                                        "/equipes-esportivas/listaEquipes",
+                                        "/parametros-simulacao",
+                                        "/combos");
+    private static final List<String> listLogadoExato = Arrays.asList(
+                                        "/carrinhos",
+                                        "/carrinhos/atualiza-teimosinha-aposta",
+                                        "/carrinhos/incluir-aposta",
+                                        "/carrinhos/incluir-apostas",
+                                        "/carrinhos/incluir-combo",
+                                        "/carrinhos/incluir-surpresinha",
+                                        "/carrinhos/incluir-surpresinhas",
+                                        "/carrinhos/iniciar-pagamento-externo",
+                                        "/carrinhos/limpar",
+                                        "/carrinhos/limpar-carrinho-favorito",
+                                        "/carrinhos/registrar-apostas",
+                                        "/carrinhos/registrar-apostas-async",
+                                        "/carrinhos/registrar-apostas-sem-carrinho",
+                                        "/carrinhos/salvar-carrinho-favorito",
+                                        "/carrinhos/validar",
+                                        "/carrinhos/validar-aposta-identica",
+                                        "/carrinhos/verifica-compra-processamento",
+                                        "/usuarios/verificar-cadastro");
+    private static final List<String> listLogadoParcial = Arrays.asList(
+                                        "/apostas-favoritas",
+                                        "/carrinhos-favoritos",
+                                        "/carrinhos/apostas",
+                                        "/carrinhos/combos",
+                                        "/carrinhos/incluir-aposta-favorita",
+                                        "/carrinhos/incluir-carrinho-favorito");
 
     private RequestQueue requestQueue;
     private SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
@@ -185,7 +216,7 @@ public class SilceConnection {
 
         String novoCaminho = alteraCaminhoCarrinho(path);
         if (novoCaminho != null) {
-            return novoCaminho;
+            return novoCaminho + fillParamToString(queryParams);
         }
 
         return fillUrl(path) + fillParamStr(queryParams);
@@ -275,6 +306,19 @@ public class SilceConnection {
         return sb.toString();
     }
 
+    private String fillParamToString(Map<String, String> queryParams) {
+        if ((queryParams == null) || (queryParams.isEmpty())) {
+            return "";
+        }
+        StringBuilder singleParam = new StringBuilder();
+        for (Map.Entry<String, String> param : queryParams.entrySet()) {
+            if (param.getValue() != null) {
+                singleParam.append(param.getKey()).append("==").append(param.getValue()).append("&&");
+            }
+        }
+        return "/?q=" + singleParam.toString();
+    }
+
     private String alteraCaminhoCarrinho(String path) {
 
         String baseUrlCarrinho;
@@ -288,46 +332,13 @@ public class SilceConnection {
             return null;
         }
 
-        List<String> listPublico = Arrays.asList(
-            "/equipes-esportivas/listaEquipes",
-            "/parametros-simulacao",
-            "/combos");
-
         if (listPublico.contains(path)) {
             return baseUrlCarrinho + PUBLICO + path;
         }
 
-        List<String> listLogadoExato = Arrays.asList(
-            "/carrinhos",
-            "/carrinhos/atualiza-teimosinha-aposta",
-            "/carrinhos/incluir-aposta",
-            "/carrinhos/incluir-apostas",
-            "/carrinhos/incluir-combo",
-            "/carrinhos/incluir-surpresinha",
-            "/carrinhos/incluir-surpresinhas",
-            "/carrinhos/iniciar-pagamento-externo",
-            "/carrinhos/limpar",
-            "/carrinhos/limpar-carrinho-favorito",
-            "/carrinhos/registrar-apostas",
-            "/carrinhos/registrar-apostas-async",
-            "/carrinhos/registrar-apostas-sem-carrinho",
-            "/carrinhos/salvar-carrinho-favorito",
-            "/carrinhos/validar",
-            "/carrinhos/validar-aposta-identica",
-            "/carrinhos/verifica-compra-processamento",
-            "/usuarios/verificar-cadastro");
-
         if (listLogadoExato.contains(path)) {
             return baseUrlCarrinho + LOGADO + path;
         }
-
-        List<String> listLogadoParcial = Arrays.asList(
-            "/apostas-favoritas",
-            "/carrinhos-favoritos",
-            "/carrinhos/apostas",
-            "/carrinhos/combos",
-            "/carrinhos/incluir-aposta-favorita",
-            "/carrinhos/incluir-carrinho-favorito");
 
         for(String parcial : listLogadoParcial) {
             if (parcial.startsWith(path)) {
