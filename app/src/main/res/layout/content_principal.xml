@@ -414,6 +414,22 @@
         android:textSize="16sp"
         tools:text="Aposta\npor R$ 2,00" />
 
+    <Button
+        android:id="@+id/buttonHomeBolao"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="88dp"
+        android:layout_marginEnd="88dp"
+        android:layout_marginBottom="168dp"
+        android:background="@drawable/btn_rounded_orange_outlined"
+        android:textAllCaps="false"
+        android:textColor="@color/laranjacaixa"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:text="Compre seu bolão a partir de R$ 10,00" />
+
     <RelativeLayout
         android:id="@+id/id_fg_somador_carrinho"
         android:layout_width="match_parent"

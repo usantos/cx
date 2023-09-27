@@ -220,8 +220,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="40dp"
+                        android:layout_below="@+id/LinearLayoutContentCard"
+                        android:layout_marginTop="8dp"
                         android:gravity="bottom"
                         android:orientation="vertical">
 
