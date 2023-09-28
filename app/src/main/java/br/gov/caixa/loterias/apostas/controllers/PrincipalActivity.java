@@ -649,6 +649,9 @@ public class PrincipalActivity extends AppCompatActivity
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
 
             if (data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA){
+                buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
+                                                                          getResources()
+                                                                                  .getString(R.string.apostas_boloes)));
                 buttonHomeBolao.setVisibility(View.VISIBLE);
             } else {
                 buttonHomeBolao.setVisibility(View.GONE);
