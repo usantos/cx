@@ -8,11 +8,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.slider.Slider;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class FiltraMarketplaceActivity extends AppCompatActivity {
 
@@ -46,11 +48,11 @@ public class FiltraMarketplaceActivity extends AppCompatActivity {
         //callWebservice();
     }
 
-//    @Override
-//    public boolean onSupportNavigateUp() {
-//        finish();
-//        return true;
-//    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 
     private void setaViews() {
 
@@ -68,6 +70,12 @@ public class FiltraMarketplaceActivity extends AppCompatActivity {
         sliderQtdDezenas.setValueFrom(6);
         sliderQtdDezenas.setValueTo(100);
         sliderQtdDezenas.setValue(50);
+
+        //Toolbar
+        Toolbar toolbar = findViewById( R.id.toolbar );
+        setSupportActionBar( toolbar );
+        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+        setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getResources().getString(R.string.filtrar)));
 
     }
 
