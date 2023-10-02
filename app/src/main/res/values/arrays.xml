@@ -8,7 +8,11 @@
         <item>40sp</item>
         <item>100sp</item>
     </array>
-    <array name="initial_slider_values">
+    <array name="bolao_initial_slider_values">
+        <item>60.0</item>
+        <item>250.0</item>
+    </array>
+    <array name="bolao_initial_slider_quantidades">
         <item>20.0</item>
         <item>70.0</item>
     </array>

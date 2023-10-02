@@ -28,6 +28,54 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/text_valor_cotas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/valor_cotas"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="14.2sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <com.google.android.material.slider.RangeSlider
+                android:theme="@style/MyMaterialTheme"
+                android:id="@+id/sliderValorCotas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                app:trackColorActive="@color/bolao_slider_trilha_ativa"
+                app:trackColorInactive="@color/bolao_slider_trilha_inativa"
+                app:thumbColor="@color/bolao_slider_marcador"
+                app:haloColor="@color/bolao_slider_areola"
+                app:tickVisible="false"
+                app:labelBehavior="visible"
+                android:stepSize="1"
+                android:valueFrom="1"
+                android:valueTo="300"
+                app:values="@array/bolao_initial_slider_values"
+                android:labelFor="@+id/text_valor_cotas"
+                android:contentDescription="@string/valor_cotas"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_valor_cotas"
+                />
+
+            <View
+                android:id="@+id/view_div_val_cotas"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@+id/sliderValorCotas"
+                />
+
+            <TextView
                 android:id="@+id/text_quantidade_cotas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +86,7 @@
                 android:textColor="@color/black"
                 android:textSize="14.2sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_div_val_cotas"
                 app:layout_constraintStart_toStartOf="parent"
                 />
 
@@ -51,13 +99,14 @@
                 app:trackColorActive="@color/bolao_slider_trilha_ativa"
                 app:trackColorInactive="@color/bolao_slider_trilha_inativa"
                 app:thumbColor="@color/bolao_slider_marcador"
+                app:haloColor="@color/bolao_slider_areola"
                 app:tickVisible="false"
                 app:labelBehavior="visible"
                 android:stepSize="1"
                 android:valueFrom="1"
                 android:valueTo="100"
-                app:values="@array/initial_slider_values"
-                android:labelFor="@+id/quantidadeCotas"
+                app:values="@array/bolao_initial_slider_quantidades"
+                android:labelFor="@+id/text_quantidade_cotas"
                 android:contentDescription="@string/quantidade_cotas"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_quantidade_cotas"
@@ -95,6 +144,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
+                app:trackColorActive="@color/bolao_slider_trilha_ativa"
+                app:trackColorInactive="@color/bolao_slider_trilha_inativa"
+                app:thumbColor="@color/bolao_slider_marcador"
+                app:haloColor="@color/bolao_slider_areola"
                 app:tickVisible="false"
                 app:labelBehavior="visible"
                 android:stepSize="1"
@@ -262,8 +315,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/button_white_with_rouded_black_border"
                 android:hint="@string/nome_ou_codigo"
                 android:paddingStart="8dp"
@@ -285,10 +338,10 @@
 
             <Button
                 android:id="@+id/btn_limpar_filtros"
-                android:layout_width="130dp"
+                android:layout_width="140dp"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="20dp"
                 android:background="@drawable/button_white_with_rouded_black_border"
                 android:text="@string/limpar_filtros"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
@@ -301,10 +354,10 @@
 
             <Button
                 android:id="@+id/btn_avancar"
-                android:layout_width="200dp"
+                android:layout_width="210dp"
                 android:layout_height="40dp"
                 android:layout_below="@id/btn_limpar_filtros"
-                android:layout_marginEnd="25dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/button_orange_rounded"
                 android:text="@string/aplicar"
                 android:textAlignment="center"

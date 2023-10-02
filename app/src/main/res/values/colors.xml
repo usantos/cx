@@ -208,8 +208,9 @@
     <color name="bolao_linha">#D9D9D9</color>
     <color name="bolao_digitacao">#3A4859</color>
     <color name="bolao_trilha_slider_ativa">#D9D9D9</color> <!--Figma #757575-->
-    <color name="bolao_slider_trilha_ativa">#D9D9D9</color>
+    <color name="bolao_slider_trilha_ativa">#54BBAB</color>
     <color name="bolao_slider_trilha_inativa">#D9D9D9</color>
+    <color name="bolao_slider_areola">#54BBAB</color>
     <color name="bolao_slider_marcador">#FFFFFF</color>
 
 </resources>

@@ -1302,6 +1302,7 @@
 
     <!-- Bolao -->
     <string name="filtrar">Filtrar</string>
+    <string name="valor_cotas">Valor das Cotas</string>
     <string name="quantidade_cotas">Quantidade de Cotas</string>
     <string name="quantidade_dezenas">Quantidade de Dezenas</string>
     <string name="limpar_filtros">Limpar Filtros</string>
