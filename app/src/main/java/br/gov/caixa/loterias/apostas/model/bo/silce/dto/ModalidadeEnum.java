@@ -19,7 +19,8 @@ public enum ModalidadeEnum implements Serializable {
     @SerializedName("QUINA")QUINA,
     @SerializedName("TIMEMANIA")TIMEMANIA,
     @SerializedName("SUPER_7") SUPER_7,
-    @SerializedName("MAIS_MILIONARIA") MAIS_MILIONARIA;
+    @SerializedName("MAIS_MILIONARIA") MAIS_MILIONARIA,
+    @SerializedName("BOLAO") BOLAO;
 
     public static String fromString(ModalidadeEnum modalidade) {
         switch (modalidade) {
@@ -45,6 +46,8 @@ public enum ModalidadeEnum implements Serializable {
                 return "super sete";
             case MAIS_MILIONARIA:
                 return "+Milionária";
+            case BOLAO:
+                return "bolão";
         }
         return "";
     }
@@ -79,6 +82,9 @@ public enum ModalidadeEnum implements Serializable {
             case "maismilionária":
             case "+milionária":
                 return MAIS_MILIONARIA;
+            case "bolao":
+            case "bolão":
+                return BOLAO;
             default:
                 return null;
         }
