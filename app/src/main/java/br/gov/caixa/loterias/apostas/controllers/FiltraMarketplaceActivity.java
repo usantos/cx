@@ -2,26 +2,31 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.RangeSlider;
-import com.google.android.material.slider.Slider;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotericaAdapter;
 
 public class FiltraMarketplaceActivity extends AppCompatActivity {
 
@@ -32,7 +37,17 @@ public class FiltraMarketplaceActivity extends AppCompatActivity {
     //private LinearLayout accordionContentQuero;
     //private AppCompatImageView accordionNaoQueroButton;
     //private LinearLayout accordionContentNaoQuero;
+    private EditText editLoterica;
+    private RecyclerView recyclerViewLoterica;
+    private LotericaAdapter lotericaAdapter;
     private Button btnLimpaFiltros;
+
+    private List<String> listLoterica = Arrays.asList(
+            "Serra Dourada - Santos/SP",
+            "Serra Dourada - Guarujá/SP",
+            "Serra Dourada - São Bernardo/SP",
+            "Serra Dourada - São Vicente/SP",
+            "Serra Dourada - Praia Grande/SP");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +90,8 @@ public class FiltraMarketplaceActivity extends AppCompatActivity {
 
         sliderValCotas = findViewById(R.id.sliderValorCotas);
         sliderQtdCotas = findViewById(R.id.sliderQuantidadeCotas);
+        editLoterica = findViewById(R.id.edit_loterica);
+        recyclerViewLoterica = findViewById(R.id.recyclerViewLoterica);
         btnLimpaFiltros = findViewById(R.id.btn_limpar_filtros);
 
         sliderValCotas.setLabelFormatter(new LabelFormatter() {
@@ -128,6 +145,25 @@ public class FiltraMarketplaceActivity extends AppCompatActivity {
                 limpaFiltros();
             }
         });
+
+        lotericaAdapter = new LotericaAdapter(listLoterica);
+        recyclerViewLoterica.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewLoterica.setAdapter(lotericaAdapter);
+
+        editLoterica.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                filtraLoterica(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
     }
 
     private void setaRangeComponentes() {
@@ -140,6 +176,25 @@ public class FiltraMarketplaceActivity extends AppCompatActivity {
     private void limpaFiltros() {
         sliderValCotas.setValues(0F,300F);
         sliderQtdCotas.setValues(0F,100F);
+        editLoterica.setText("");
+    }
+
+    private void filtraLoterica(String text) {
+
+        if (text.length() >= 3) {
+            List<String> filteredList = new ArrayList<>();
+
+            for (String item : listLoterica) {
+                if (item.toLowerCase().contains(text.toLowerCase())) {
+                    filteredList.add(item);
+                }
+            }
+
+            recyclerViewLoterica.setVisibility(View.VISIBLE);
+            lotericaAdapter.filterList(filteredList);
+        } else {
+            recyclerViewLoterica.setVisibility(View.GONE);
+        }
     }
 
 //    private void callWebservice() {
