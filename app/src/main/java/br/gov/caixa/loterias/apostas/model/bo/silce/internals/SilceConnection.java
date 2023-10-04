@@ -95,6 +95,8 @@ public class SilceConnection {
             if (!precisaRefreshToken) {
                 req.getHeaders().put("cookie", "security=false");
                 req.getHeaders().put("Subcanal", "3");
+                //Necessario no Carrinho Nuvem
+                req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
             }
 
         } catch (Exception e) {
@@ -115,6 +117,8 @@ public class SilceConnection {
                     req.getHeaders().put("Authorization", "Bearer " + keycloakBO.getAccessToken());
                     req.getHeaders().put("cookie", "security=false");
                     req.getHeaders().put("Subcanal", "3");
+                    //Necessario no Carrinho Nuvem
+                    req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
