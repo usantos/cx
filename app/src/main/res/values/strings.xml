@@ -1300,7 +1300,8 @@
     <string name="alerta_precisa_estar_no_brasil">As apostas só podem ocorrer em território nacional. Suas apostas serão mantidas no carrinho para a conclusão da compra quando você estiver no país.</string>
     <string name="posso_consultar_sua_localizacao">As apostas só podem ocorrer em território nacional. Portanto, você somente conseguirá pagar uma compra se estiver no Brasil, não havendo impedimento para utilizar os demais serviços.\nPodemos consultar a sua localização?</string>
 
-
+    <!-- Strings de boloes mkp -->
     <string name="apostas_boloes">_Apostas Bolões_</string>
+    <string name="descritivo_tela_bolao">Veja aqui os bolões da Mega-Sena em destaque. Em breve, mais modalidades!</string>
 
 </resources>

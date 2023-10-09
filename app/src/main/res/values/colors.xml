@@ -203,4 +203,11 @@
 
     <color name="azul_botao_pix">#0077DB</color>
 
+
+
+<!--  Novas cores MARKETPLACE  -->
+
+    <color name="mega_verde_claro_mkp">#04A766</color>
+    <color name="mega_verde_escuro_mkp">#00945E</color>
+
 </resources>

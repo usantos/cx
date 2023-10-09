@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Bolao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 
@@ -60,7 +61,7 @@ public class BolaoHolder extends LoteriasHolder<Bolao> implements View.OnClickLi
 
 	@Override
 	public void bind(Bolao bolao, int position) {
-		modalidade.setText(bolao.getModalidade());
+		modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
 		loterica.setText(bolao.getLoterica());
 		concurso.setText(bolao.getConcurso());
 		cidade.setText(bolao.getCidade());

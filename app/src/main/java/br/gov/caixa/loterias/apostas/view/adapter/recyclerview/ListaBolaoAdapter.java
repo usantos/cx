@@ -30,7 +30,7 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 	@NonNull
 	@Override
 	public BolaoHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bolao , parent, false);
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_bolao, parent, false);
 		return new BolaoHolder(activity, view, listener);
 	}
 
