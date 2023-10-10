@@ -290,7 +290,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 getSupportFragmentManager().beginTransaction()
                                            .replace(R.id.fragmentContainer, numerosFragment)
-                                           .commit();
+                                           .commitAllowingStateLoss();
                 break;
         }
     }
