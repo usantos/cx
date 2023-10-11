@@ -668,8 +668,7 @@ public class PrincipalActivity extends AppCompatActivity
     protected void clickButtonBolao() {
         if(DadosUsuarioBO.checarUsuarioLogado(this)){
             if (!DadosUsuarioBO.checarTutorial(DadosUsuarioBO.BOLAO_TUTORIAL)){
-                TestVisao.toast("Implementar Tutorial do Bolao");
-                DadosUsuarioBO.updateTutorial(true, DadosUsuarioBO.BOLAO_TUTORIAL);
+                startActivity(IntentUtil.getIntentTutorial(this, ModalidadeEnum.BOLAO));
             } else {
                 startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
             }

@@ -68,6 +68,8 @@ public class TutorialPassoFragment extends Fragment {
 	}
 
 	public void startAnimacao(){
-		animationView.playAnimation();
+		if (animationView != null){
+			animationView.playAnimation();
+		}
 	}
 }

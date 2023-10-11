@@ -11,6 +11,11 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity_;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity_;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
+import br.gov.caixa.loterias.apostas.view.activity.TutorialActivity;
 
 public class IntentUtil {
 
@@ -56,4 +61,26 @@ public class IntentUtil {
 		return intent;
 	}
 
+	public static Intent getIntentFimTutorial(Activity activity, ModalidadeEnum modalidade) {
+		if (modalidade == ModalidadeEnum.BOLAO){
+			return new Intent(activity, BolaoActivity.class);
+		} else {
+			return new Intent(activity, SimularApostaActivity_.class);
+		}
+	}
+
+	public static Intent getIntentTutorial(Activity activity, ModalidadeEnum modalidade) {
+		Intent intent = new Intent(activity, TutorialActivity.class);
+		intent.putExtra(activity.getResources().getString(R.string.tipoAposta), modalidade);
+
+		return intent;
+	}
+
+	public static Intent getIntentTutorial(Activity activity, ModalidadeEnum modalidade, ParametroJogoDTO parametroJogo) {
+		Intent intent = new Intent(activity, TutorialActivity.class);
+		intent.putExtra(activity.getResources().getString(R.string.tipoAposta), modalidade);
+		intent.putExtra(activity.getResources().getString(R.string.extra_modalidade), parametroJogo);
+
+		return intent;
+	}
 }
