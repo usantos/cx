@@ -2,9 +2,12 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
@@ -45,29 +48,39 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 																								ViewUtils.getMoedaFormat(item.getValorTotal()))));
 
 		this.itemCompraOrdemTextView.setText(ViewUtils.textFuturaAndFuturaBold(context, context.getString(R.string.label_compra_lista_situacao,
-																											item.getSituacao().getDescricao())));
-		if (SituacaoCompraUtil.isSituacaoPositiva(item.getSituacao())) {
-			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.azul_minhas_compras));
-		} else if (SituacaoCompraUtil.isSituacaoNegativa(item.getSituacao())) {
+																										  item.getSituacao().getDescricao())));
+		if (SituacaoCompraUtil.isSituacaoNegativa(item.getSituacao())) {
 			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.vermelho_minhas_compras));
 		} else if (SituacaoCompraUtil.isSituacaoProcessamento(item.getSituacao())) {
 			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.amarelo_minhas_compras));
+		} else {
+			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.azul_minhas_compras));
 		}
 
 
-		this.itemView.setOnClickListener(view -> {
+		this.itemView.setOnClickListener(onItemClickListener(item, ordemLista));
+
+		this.ibFavoritar.setOnClickListener(onFavoritarListener(item));
+	}
+
+	@NonNull
+	private View.OnClickListener onFavoritarListener(CompraDTO item) {
+		return v -> {
+			if(listener != null){
+				listener.onItemClick(item);
+			}
+		};
+	}
+
+	@NonNull
+	private View.OnClickListener onItemClickListener(CompraDTO item, int ordemLista) {
+		return view -> {
 
 			Intent activity      = new Intent(context, DetalhesComprasActivity.class);
 			String arrayAsString = new Gson().toJson(item);
 			activity.putExtra(context.getResources().getString(R.string.extra_compra_dto), arrayAsString);
 			activity.putExtra(context.getResources().getString(R.string.extra_ordem), ordemLista);
 			context.startActivity(activity);
-		});
-
-		this.ibFavoritar.setOnClickListener( v -> {
-			if(listener != null){
-				listener.onItemClick(item);
-			}
-		});
+		};
 	}
 }
