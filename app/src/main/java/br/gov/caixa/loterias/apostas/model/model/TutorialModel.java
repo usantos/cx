@@ -41,6 +41,10 @@ public class TutorialModel extends AppModel{
 				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_final, false));
 				break;
 			case  BOLAO:
+				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_introducao_tutorial_mais_milionaria, true));
+				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_1, false));
+				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_5, false));
+				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_final, false));
 				break;
 			default:
 				// BOLAO
