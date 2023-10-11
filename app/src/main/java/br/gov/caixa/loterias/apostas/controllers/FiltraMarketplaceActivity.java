@@ -24,11 +24,15 @@ import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
+import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotericaAdapter;
+import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
-public class FiltraMarketplaceActivity extends AppCompatActivity {
+public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private RangeSlider sliderValCotas;
     private RangeSlider sliderQtdCotas;
@@ -49,15 +53,28 @@ public class FiltraMarketplaceActivity extends AppCompatActivity {
             "Serra Dourada - São Vicente/SP",
             "Serra Dourada - Praia Grande/SP");
 
+    private SomadorCarrinhoFragment somadorCarrinhoFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_filtra_marketplace );
+        configToolbar(R.id.toolbar);
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getResources().getString(R.string.filtrar)));
 
         setaViews();
         setaRangeComponentes();
         limpaFiltros();
         setaMetodos();
+        startFragmentSomadorCarrinho();
+    }
+
+    private void startFragmentSomadorCarrinho() {
+        if(somadorCarrinhoFragment == null){
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, true);
+        }else {
+            somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
+        }
     }
 
     @Override
@@ -72,12 +89,6 @@ public class FiltraMarketplaceActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //callWebservice();
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
     }
 
     private void setaViews() {
@@ -104,12 +115,6 @@ public class FiltraMarketplaceActivity extends AppCompatActivity {
                 return format.format(value);
             }
         });
-
-        //Toolbar
-        Toolbar toolbar = findViewById( R.id.toolbar );
-        setSupportActionBar( toolbar );
-        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
-        setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getResources().getString(R.string.filtrar)));
     }
 
     private void setaMetodos() {

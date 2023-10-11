@@ -40,6 +40,11 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".view.activity.BolaoActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.FiltraMarketplaceActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".PreferenciasNotificacoesActivity"

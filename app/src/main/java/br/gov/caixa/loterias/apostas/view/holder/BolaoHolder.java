@@ -63,7 +63,7 @@ public class BolaoHolder extends LoteriasHolder<Bolao> implements View.OnClickLi
 	public void bind(Bolao bolao, int position) {
 		modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
 		loterica.setText(bolao.getLoterica());
-		concurso.setText(bolao.getConcurso());
+		concurso.setText(String.valueOf(bolao.getConcurso()));
 		cidade.setText(bolao.getCidade());
 		valor.setText(bolao.getValor());
 		valorPremio.setText(bolao.getValorEstimadoPremio());

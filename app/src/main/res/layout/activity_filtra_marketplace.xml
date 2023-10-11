@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
    >
 
-    <include layout="@layout/app_bar_degrade_pesquisa" />
+    <include layout="@layout/app_bar_marketplace" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_toolbar"

@@ -40,6 +40,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bolao);
 		configToolbar(R.id.toolbar);
+		configFiltrar();
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_Voltar Apostas Individuais_"));
 
 		listView = findViewById(R.id.lista_bolao);
@@ -55,7 +56,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private void fragmentSomadorCarrinho() {
 		if(somadorCarrinhoFragment == null){
-			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, "TELA BOLAO");
+			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, true);
 		}else {
 			somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
 		}

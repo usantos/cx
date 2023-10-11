@@ -40,6 +40,14 @@ public class FragmentUtils {
 		return fragment;
 	}
 
+	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, Boolean irCarrinho) {
+		if(fragment == null){
+			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), irCarrinho);
+			FragmentUtils.startFragment(fm, id, fragment);
+		}
+		return fragment;
+	}
+
 	public static MeusCartoesFragment meusCartoesFragment(FragmentManager fm, int id, List<RetornoCartao> cartoes, MeusCartoesConfig config) {
 		MeusCartoesFragment fragment = MeusCartoesFragment.newInstance(cartoes, config);
 		FragmentUtils.startFragment(fm, id, fragment);

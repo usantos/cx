@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -38,6 +41,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 public class SomadorCarrinhoFragment extends Fragment {
 	public static final String ARG_CARRINHO = "ARG_CARRINHO";
 	public static final String ARG_TELA = "ARG_TELA";
+	public static final String ARG_IR_CARRINHO = "ARG_IR_CARRINHO";
 
 	private  View view;
 	private TextView tvValorTotal, tvQtdApostas;
@@ -48,6 +52,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 
 	private Context context;
 	private OnSomadorListener listener;
+	private boolean podeIrCarrinho = false;
 
 	public SomadorCarrinhoFragment() {
 		// Required empty public constructor
@@ -69,6 +74,15 @@ public class SomadorCarrinhoFragment extends Fragment {
 		return fragment;
 	}
 
+	public static SomadorCarrinhoFragment newInstance(CarrinhoDTO carrinho, Boolean irCarrinho) {
+		SomadorCarrinhoFragment fragment = new SomadorCarrinhoFragment();
+		Bundle                  args     = new Bundle();
+		args.putBoolean(ARG_IR_CARRINHO, irCarrinho);
+		args.putSerializable(ARG_CARRINHO, carrinho);
+		fragment.setArguments(args);
+		return fragment;
+	}
+
 	@Override
 	public void onAttach(@NonNull Context context) {
 		super.onAttach(context);
@@ -85,6 +99,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 		context = getContext();
 		if (getArguments() != null) {
 			TAG = getArguments().getString(ARG_TELA);
+			podeIrCarrinho = getArguments().getBoolean(ARG_IR_CARRINHO);
 			carrinho = (CarrinhoDTO) getArguments().getSerializable(ARG_CARRINHO);
 			if (carrinho == null) {
 				carregouDoServico = false;
@@ -100,6 +115,11 @@ public class SomadorCarrinhoFragment extends Fragment {
 		view = inflater.inflate(R.layout.fragment_somador_carrinho, container, false);
 		tvValorTotal = view.findViewById(R.id.tv_valor_total);
 		tvQtdApostas = view.findViewById(R.id.tv_quantidade_apostas);
+		if (podeIrCarrinho){
+			view.setOnClickListener(v -> {
+				startActivity(new Intent(getActivity(), CarrinhoActivity.class));
+			});
+		}
 		return view;
 	}
 

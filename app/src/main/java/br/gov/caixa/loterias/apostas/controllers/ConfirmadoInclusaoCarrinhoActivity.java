@@ -74,8 +74,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
     private void fragmentSomadorCarrinho() {
         if(somadorCarrinhoFragment == null){
-            somadorCarrinhoFragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), "TELA CONFIRMACAO INCLUSAO");
-            FragmentUtils.startFragment(getSupportFragmentManager(), R.id.id_fg_somador_carrinho, somadorCarrinhoFragment);
+            somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment,R.id.id_fg_somador_carrinho,"TELA CONFIRMACAO INCLUSAO");
         }
     }
 
