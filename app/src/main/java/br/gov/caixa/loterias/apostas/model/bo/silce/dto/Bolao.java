@@ -1,16 +1,12 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
-/**
- * Created by joafilho on 23/01/2018.
- */
-
 public class Bolao {
 
 	private static Long ID_GENERATOR = 0l;
 
 	private  Long id;
-    private String modalidade;
-	private String concurso;
+    private ModalidadeEnum modalidade;
+	private Integer concurso;
 	private String loterica;
 	private String cidade;
 	private String valor;
@@ -18,10 +14,12 @@ public class Bolao {
 	private String valorEstimadoPremio;
 	private int quantidade;
 	private int qtdPermitida;
+	private Boolean isDestaque;
 
-	public Bolao(String modalidade, String concurso, String loterica, String cidade, String valor, String valorEstimadoPremio, int qtdPermitida) {
+	public Bolao(ModalidadeEnum modalidade, Integer concurso, String loterica, String cidade, String valor, String valorEstimadoPremio, int qtdPermitida, Boolean isDestaque) {
 		this.valorEstimadoPremio = valorEstimadoPremio;
 		this.qtdPermitida = qtdPermitida;
+		this.isDestaque = isDestaque;
 		ID_GENERATOR++;
 		this.id = ID_GENERATOR;
 		this.modalidade = modalidade;
@@ -43,11 +41,11 @@ public class Bolao {
 		}
 	}
 
-	public String getModalidade() {
+	public ModalidadeEnum getModalidade() {
 		return modalidade;
 	}
 
-	public String getConcurso() {
+	public Integer getConcurso() {
 		return concurso;
 	}
 
@@ -89,5 +87,9 @@ public class Bolao {
 
 	public int getQtdPermitida() {
 		return qtdPermitida;
+	}
+
+	public Boolean isDestaque() {
+		return isDestaque;
 	}
 }
