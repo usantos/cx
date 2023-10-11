@@ -1,0 +1,408 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/carrinhoScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+
+    <include layout="@layout/app_bar_degrade_pesquisa" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+    <ScrollView
+        android:id="@+id/scroll_filtra_market"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/id_fg_somador_carrinho"
+        app:layout_constraintTop_toTopOf="@id/gl_toolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/text_valor_cotas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/valor_cotas"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="14.2sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <com.google.android.material.slider.RangeSlider
+                android:theme="@style/MyMaterialTheme"
+                android:id="@+id/sliderValorCotas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                app:trackColorActive="@color/bolao_slider_trilha_ativa"
+                app:trackColorInactive="@color/bolao_slider_trilha_inativa"
+                app:thumbColor="@color/bolao_slider_marcador"
+                app:haloColor="@color/bolao_slider_areola"
+                app:tickVisible="false"
+                app:labelBehavior="visible"
+                android:stepSize="1"
+                android:valueFrom="1"
+                android:valueTo="300"
+                app:values="@array/bolao_initial_slider_values"
+                android:labelFor="@+id/text_valor_cotas"
+                android:contentDescription="@string/valor_cotas"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_valor_cotas"
+                />
+
+            <View
+                android:id="@+id/view_div_val_cotas"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@+id/sliderValorCotas"
+                />
+
+            <TextView
+                android:id="@+id/text_quantidade_cotas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/quantidade_cotas"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="14.2sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/view_div_val_cotas"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <com.google.android.material.slider.RangeSlider
+                android:theme="@style/MyMaterialTheme"
+                android:id="@+id/sliderQuantidadeCotas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                app:trackColorActive="@color/bolao_slider_trilha_ativa"
+                app:trackColorInactive="@color/bolao_slider_trilha_inativa"
+                app:thumbColor="@color/bolao_slider_marcador"
+                app:haloColor="@color/bolao_slider_areola"
+                app:tickVisible="false"
+                app:labelBehavior="visible"
+                android:stepSize="1"
+                android:valueFrom="1"
+                android:valueTo="100"
+                app:values="@array/bolao_initial_slider_quantidades"
+                android:labelFor="@+id/text_quantidade_cotas"
+                android:contentDescription="@string/quantidade_cotas"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_quantidade_cotas"
+                />
+
+            <View
+                android:id="@+id/view_div_qtd_cotas"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@+id/sliderQuantidadeCotas"
+                />
+
+            <TextView
+                android:id="@+id/text_quantidade_dezenas"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/quantidade_dezenas"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="14.2sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/view_div_qtd_cotas"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <com.google.android.material.slider.Slider
+                android:visibility="gone"
+                android:theme="@style/MyMaterialTheme"
+                android:id="@+id/sliderQuantidadeDezena"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                app:trackColorActive="@color/bolao_slider_trilha_ativa"
+                app:trackColorInactive="@color/bolao_slider_trilha_inativa"
+                app:thumbColor="@color/bolao_slider_marcador"
+                app:haloColor="@color/bolao_slider_areola"
+                app:tickVisible="false"
+                app:labelBehavior="visible"
+                android:stepSize="1"
+                android:value="25"
+                android:valueFrom="1"
+                android:valueTo="100"
+                android:labelFor="@+id/quantidadeDezenas"
+                android:contentDescription="@string/quantidade_dezenas"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_quantidade_dezenas"
+                />
+
+            <View
+                android:id="@+id/view_div_qtd_dezena"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@+id/sliderQuantidadeDezena" />
+
+            <TextView
+                android:id="@+id/accordion_quero"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/numeros_quero"
+                android:textColor="@color/black"
+                android:textSize="14.2sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintTop_toBottomOf="@id/view_div_qtd_dezena"
+                app:layout_constraintStart_toStartOf="parent"
+                 />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="gone"
+                android:id="@+id/img_accordion_quero"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_accordion_plus"
+                android:layout_marginEnd="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/accordion_quero"
+                />
+
+            <LinearLayout
+                android:id="@+id/accordionContentQuero"
+                android:layout_width="0dp"
+                android:layout_height="180dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/accordion_quero"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Conteudo Acordeon -->
+                <TextView
+                    android:id="@+id/text_teste"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="start"
+                    android:paddingLeft="20dp"
+                    android:text="teste quero"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/accordionContentQuero" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_div_acc_quero"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@+id/accordionContentQuero" />
+
+            <TextView
+                android:id="@+id/accordion_nao_quero"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/numeros_nao_quero"
+                android:textColor="@color/black"
+                android:textSize="14.2sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintTop_toBottomOf="@id/view_div_acc_quero"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:visibility="gone"
+                android:id="@+id/img_accordion_nao_quero"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_accordion_plus"
+                android:layout_marginEnd="35dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/accordion_nao_quero"
+                />
+
+            <LinearLayout
+                android:id="@+id/accordionContentNaoQuero"
+                android:layout_width="0dp"
+                android:layout_height="180dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/accordion_nao_quero"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Conteudo Acordeon -->
+                <TextView
+                    android:id="@+id/text_teste_nao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="start"
+                    android:paddingLeft="20dp"
+                    android:text="teste NAO quero"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    android:textSize="14.2sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/accordionContentNaoQuero" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_div_acc_nao_quero"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/bolao_linha"
+                app:layout_constraintTop_toBottomOf="@+id/accordionContentNaoQuero" />
+
+            <TextView
+                android:id="@+id/text_loterica"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:text="@string/label_loterica"
+                android:textColor="@color/black"
+                android:textSize="14.2sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/view_div_qtd_cotas"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <EditText
+                android:id="@+id/edit_loterica"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                android:hint="@string/nome_ou_codigo"
+                android:textColorHint="@color/bolao_hint"
+                android:paddingStart="8dp"
+                android:inputType="text"
+                android:textSize="16sp"
+                android:textColor="@color/bolao_hint"
+                android:textStyle="italic"
+                app:layout_constraintTop_toBottomOf="@+id/text_loterica"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewLoterica"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_loterica"
+                />
+
+            <View
+                android:id="@+id/view_espaco_inferior"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="0dp"
+                app:layout_constraintTop_toBottomOf="@id/recyclerViewLoterica"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <Button
+                android:id="@+id/btn_limpar_filtros"
+                android:layout_width="140dp"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="20dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                android:text="@string/limpar_filtros"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/view_espaco_inferior"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <Button
+                android:id="@+id/btn_avancar"
+                android:layout_width="210dp"
+                android:layout_height="40dp"
+                android:layout_below="@id/btn_limpar_filtros"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/button_orange_rounded"
+                android:text="@string/aplicar"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                android:textColor="@color/branco"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/view_espaco_inferior"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+
+    <FrameLayout
+        android:id="@+id/id_fg_somador_carrinho"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
