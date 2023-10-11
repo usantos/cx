@@ -66,7 +66,7 @@ public class IntroducaoTutorialActivity extends AppCompatActivity implements Vie
 		switch (v.getId()){
 			case R.id.btnComecar:
 				if (checkBox.isChecked()) {
-					DadosUsuarioBO.updateTutorialMaisMilionaria(checkBox.isChecked());
+					DadosUsuarioBO.updateTutorial(checkBox.isChecked(), DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL);
 				}
 				comecarTurorial();
 				break;

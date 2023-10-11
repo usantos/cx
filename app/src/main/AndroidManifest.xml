@@ -39,6 +39,9 @@
         android:usesCleartextTraffic="false"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".view.activity.BolaoActivity"
+            android:exported="false" />
+        <activity
             android:name=".PreferenciasNotificacoesActivity"
             android:exported="true"
             android:screenOrientation="portrait"

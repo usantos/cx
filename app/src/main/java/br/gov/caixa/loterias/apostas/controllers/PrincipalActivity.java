@@ -96,7 +96,9 @@ import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
@@ -126,7 +128,7 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected DrawerLayout drawerLayout;
     @ViewById
-    protected Button buttonHomeBet;
+    protected Button buttonHomeBet, buttonHomeBolao;
     @ViewById
     protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, recolherMenu;
     @ViewById
@@ -645,6 +647,15 @@ public class PrincipalActivity extends AppCompatActivity
             buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
                     getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+
+            if (data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA){
+                buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
+                                                                          getResources()
+                                                                                  .getString(R.string.apostas_boloes)));
+                buttonHomeBolao.setVisibility(View.VISIBLE);
+            } else {
+                buttonHomeBolao.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -653,11 +664,25 @@ public class PrincipalActivity extends AppCompatActivity
         nextActivity(TutorialMaisMilionariaActivity.class);
     }
 
+    @Click(R.id.buttonHomeBolao)
+    protected void clickButtonBolao() {
+        if(DadosUsuarioBO.checarUsuarioLogado(this)){
+            if (!DadosUsuarioBO.checarTutorial(DadosUsuarioBO.BOLAO_TUTORIAL)){
+                TestVisao.toast("Implementar Tutorial do Bolao");
+                DadosUsuarioBO.updateTutorial(true, DadosUsuarioBO.BOLAO_TUTORIAL);
+            } else {
+                startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
+            }
+        } else {
+            RedirectNetwork.connectKeycloak(this);
+        }
+    }
+
     private void nextActivity(Class clazz) {
         int              selecionada   = Integer.parseInt(buttonHomeBet.getTag().toString());
         ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
-        if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorialMaisMilionaria()){
+        if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
             Intent activity = new Intent(PrincipalActivity.this, clazz);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());

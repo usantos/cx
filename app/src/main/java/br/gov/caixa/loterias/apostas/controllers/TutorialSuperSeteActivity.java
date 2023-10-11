@@ -110,7 +110,7 @@ public class TutorialSuperSeteActivity extends AppCompatActivity {
         });
 
         btnPular.setOnClickListener(view -> {
-            DadosUsuarioBO.updateTutorialSuperSete(true);
+            DadosUsuarioBO.updateTutorial(true, DadosUsuarioBO.SUPER_SETE_TUTORIAL);
             finish();
         });
 
@@ -123,7 +123,7 @@ public class TutorialSuperSeteActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(FRAG_CONFIRMAR);
                     break;
                 case FRAG_CONFIRMAR:
-                    DadosUsuarioBO.updateTutorialSuperSete(true);
+                    DadosUsuarioBO.updateTutorial(true, DadosUsuarioBO.SUPER_SETE_TUTORIAL);
                     finish();
                     break;
             }

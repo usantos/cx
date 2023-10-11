@@ -45,8 +45,9 @@ public class DadosUsuarioBO extends BaseBO {
     private static final String USUARIO_KEY = "USUARIO_KEY";
     private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
     private final static String LOGIN_SUCESSO = "LOGIN_SUCESSO";
-    private final static String SUPER_SETE_TUTORIAL = "SUPER_SETE_TUTORIAL";
-    private final static String MAIS_MILIONARIA_TUTORIAL = "MAIS_MILIONARIA_TUTORIAL";
+    public final static String SUPER_SETE_TUTORIAL = "SUPER_SETE_TUTORIAL";
+    public final static String MAIS_MILIONARIA_TUTORIAL = "MAIS_MILIONARIA_TUTORIAL";
+    public final static String BOLAO_TUTORIAL = "BOLAO_TUTORIAL";
 
     private static final String alphabetString = "abcdefghijklmnopqrstuvwxyz";
     private static final String numberString = "0123456789";
@@ -189,20 +190,12 @@ public class DadosUsuarioBO extends BaseBO {
 
     }
 
-    public static Boolean checarTutorialSuperSete() {
-        return checarBoolean(SUPER_SETE_TUTORIAL);
+    public static Boolean checarTutorial(String tutorial) {
+        return checarBoolean(tutorial);
     }
 
-    public static Boolean checarTutorialMaisMilionaria() {
-        return checarBoolean(MAIS_MILIONARIA_TUTORIAL);
-    }
-
-    public static void updateTutorialSuperSete(Boolean status) {
-        updateBoolean(status, SUPER_SETE_TUTORIAL);
-    }
-
-    public static void updateTutorialMaisMilionaria(Boolean status) {
-        updateBoolean(status, MAIS_MILIONARIA_TUTORIAL);
+    public static void updateTutorial(Boolean status, String tutorial) {
+        updateBoolean(status, tutorial);
     }
 
     public static Boolean checarBoolean(String key) {

@@ -181,7 +181,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         }
 
         //Tutorial permanente
-        if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorialSuperSete()) {
+        if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.SUPER_SETE_TUTORIAL)) {
             startActivity(new Intent(this,TutorialSuperSeteActivity.class));
         }
     }
