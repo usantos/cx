@@ -50,7 +50,7 @@
                 android:textColor="@color/branco"
                 android:textSize="18.0sp"
                 android:textStyle="bold"
-                tools:text="@string/mega_sena"
+                android:text="@string/mega_sena"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/layout_money"/>
@@ -204,7 +204,7 @@
             android:textAllCaps="false"
             android:textColor="@color/branco"
             android:textSize="16sp"
-            tools:text="@string/adicionarAoCarrinho"
+            android:text="@string/adicionarAoCarrinho"
             android:background="@drawable/rounded_card"
             android:layout_marginStart="36dp"
             android:layout_marginEnd="36dp"

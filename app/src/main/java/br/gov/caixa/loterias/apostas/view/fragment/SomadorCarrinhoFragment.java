@@ -198,7 +198,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 		if (carrinho != null && carrinho.getValorTotal() != null && carrinho.getValorTotal().compareTo(BigDecimal.ZERO) == 1){
 			view.setVisibility(View.VISIBLE);
 		}else {
-			view.setVisibility(View.INVISIBLE);
+			view.setVisibility(View.GONE);
 		}
 	}
 

@@ -26,9 +26,6 @@ public class BolaoModel extends AppModel{
 		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2353, "Serra Dourada", "Santos - SP", "R$ 10,00", "R$ 110.000.000,00", 4, true));
 		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2353, "Serra Dourada", "Santos - SP", "R$ 100,00", "R$ 100.000.000,00", 3, false));
 		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2353, "Serra Dourada", "Santos - SP", "R$ 100,00", "R$ 100.000.000,00", 3, false));
-		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2353, "Serra Dourada", "Santos - SP", "R$ 100,00", "R$ 100.000.000,00", 3, false));
-		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2353, "Serra Dourada", "Santos - SP", "R$ 100,00", "R$ 100.000.000,00", 3, false));
-
 	}
 
 	public List<Bolao> getListBolao(){
