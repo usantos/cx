@@ -15,8 +15,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
-public class BolaoCarrosselHolder extends LoteriasHolder<Bolao> implements View.OnClickListener {
+public class BolaoCarrosselHolder extends LoteriasHolder<Bolao> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
 	private Activity activity;
 	private static final int QUANTIDADE_MINIMA = 1;
 	private TextView modalidade;
@@ -37,7 +38,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<Bolao> implements View.
 	public BolaoCarrosselHolder(Activity activity, View itemView, OnItemCarrosselBolaoListener listener) {
 		super(itemView);
 		this.activity 	= activity;
-		modalidade 		= itemView.findViewById(R.id.textViewCardTitle);
+		modalidade 		= itemView.findViewById(R.id.textViewCardBolaoTitle);
 		valorPremio 	= itemView.findViewById(R.id.valor_estimado_premio);
 		concurso 		= itemView.findViewById(R.id.descricao_numero_concurso);
 		loterica 		= itemView.findViewById(R.id.loterica_cidade_uf);
@@ -60,6 +61,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<Bolao> implements View.
 		preencheCabecalho(bolao);
 		preencheConteudo(bolao);
 		atualizaQuantidadeTextView(bolao.getQuantidade(), bolao.getQtdPermitida());
+		btnAddCarrinho.setText(ViewUtils.textFuturaAndFuturaBold(activity,activity.getResources().getString(R.string.adicionarAoCarrinho)));
 	}
 
 	private void preencheConteudo(Bolao bolao) {
@@ -94,12 +96,14 @@ public class BolaoCarrosselHolder extends LoteriasHolder<Bolao> implements View.
 		}
 	}
 
+	@Override
 	public void atualizaQuantidadeTextView(int quantidade, int maxPermitido) {
 		qtdCotas.setText(Integer.toString(quantidade));
 		atualizaBotoesQtdCotas(quantidade, maxPermitido);
 	}
 
-	private void atualizaBotoesQtdCotas(int quantidade, int maxPermitido) {
+	@Override
+	public void atualizaBotoesQtdCotas(int quantidade, int maxPermitido) {
 		if (quantidade == QUANTIDADE_MINIMA){
 			btnDiminui.setBackgroundTintList(getCor(R.color.cinzaescuro));
 			btnDiminui.setEnabled(false);

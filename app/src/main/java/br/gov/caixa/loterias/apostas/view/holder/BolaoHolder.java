@@ -16,8 +16,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Bolao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
-public class BolaoHolder extends LoteriasHolder<Bolao> implements View.OnClickListener {
+public class BolaoHolder extends LoteriasHolder<Bolao> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
 	private Activity activity;
 	private static final int QUANTIDADE_MINIMA = 1;
 	private TextView modalidade;
@@ -100,12 +101,14 @@ public class BolaoHolder extends LoteriasHolder<Bolao> implements View.OnClickLi
 		}
 	}
 
+	@Override
 	public void atualizaQuantidadeTextView(int quantidade, int maxPermitido) {
 		qtdCotas.setText(Integer.toString(quantidade));
 		atualizaBotoesQtdCotas(quantidade, maxPermitido);
 	}
 
-	private void atualizaBotoesQtdCotas(int quantidade, int maxPermitido) {
+	@Override
+	public void atualizaBotoesQtdCotas(int quantidade, int maxPermitido) {
 		if (quantidade == QUANTIDADE_MINIMA){
 			btnDiminui.setBackgroundTintList(getCor(R.color.cinzaescuro));
 			btnDiminui.setEnabled(false);
