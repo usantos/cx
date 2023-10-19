@@ -22,216 +22,102 @@ import io.swagger.annotations.ApiModelProperty;
 public class DadosCotaBolao {
     @SerializedName("statusCodeHttp")
     private Integer statusCodeHttp = null;
-
     @SerializedName("index")
     private Integer index = null;
-
     @SerializedName("codigoBolao")
     private String codigoBolao = null;
-
     @SerializedName("codigoCota")
     private String codigoCota = null;
-
     @SerializedName("qtdCotaDigital")
     private Integer qtdCotaDigital = null;
-
     @SerializedName("qtdCotaTotal")
     private Integer qtdCotaTotal = null;
-
     @SerializedName("qtdCotaDisponivel")
     private Integer qtdCotaDisponivel = null;
-
     @SerializedName("qtdCotaFisica")
     private Integer qtdCotaFisica = null;
-
     @SerializedName("qtdCotaBaixadasImpressas")
     private Integer qtdCotaBaixadasImpressas = null;
-
     @SerializedName("qtdCotaVendidas")
     private Integer qtdCotaVendidas = null;
-
     @SerializedName("qtdCotaReservada")
     private Integer qtdCotaReservada = null;
-
     @SerializedName("qtdCotaBaixadas")
     private Integer qtdCotaBaixadas = null;
-
     @SerializedName("loterica")
     private Long loterica = null;
-
     @SerializedName("nomeFantasia")
     private String nomeFantasia = null;
-
     @SerializedName("nomeRazaoSocial")
     private String nomeRazaoSocial = null;
-
     @SerializedName("numeroUF")
     private Long numeroUF = null;
-
     @SerializedName("uf")
     private UnidadeFederacao uf = null;
-
     @SerializedName("idMunicipio")
     private Long idMunicipio = null;
-
     @SerializedName("municipio")
     private Municipio municipio = null;
-
     @SerializedName("concurso")
     private Integer concurso = null;
-
     @SerializedName("tipoConcurso")
     private Integer tipoConcurso = null;
-
     @SerializedName("idModalidade")
     private Integer idModalidade = null;
-
-    /**
-     * Gets or Sets modalidade
-     */
-    @JsonAdapter(ModalidadeEnum.Adapter.class)
-    public enum ModalidadeEnum {
-        DIA_DE_SORTE("DIA_DE_SORTE"),
-
-        DUPLA_SENA("DUPLA_SENA"),
-
-        LOTECA("LOTECA"),
-
-        LOTOFACIL("LOTOFACIL"),
-
-        LOTOGOL("LOTOGOL"),
-
-        LOTOMANIA("LOTOMANIA"),
-
-        MAIS_MILIONARIA("MAIS_MILIONARIA"),
-
-        MEGA_SENA("MEGA_SENA"),
-
-        QUINA("QUINA"),
-
-        SUPER_7("SUPER_7"),
-
-        TIMEMANIA("TIMEMANIA");
-
-        private String value;
-
-        ModalidadeEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static ModalidadeEnum fromValue(String text) {
-            for (ModalidadeEnum b : ModalidadeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        public static class Adapter extends TypeAdapter<ModalidadeEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final ModalidadeEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public ModalidadeEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return ModalidadeEnum.fromValue(String.valueOf(value));
-            }
-        }
-    }
-
     @SerializedName("modalidade")
     private ModalidadeEnum modalidade = null;
-
     @SerializedName("dataSorteio")
     private String dataSorteio = null;
-
     @SerializedName("horaSorteio")
     private String horaSorteio = null;
-
     @SerializedName("diaSorteio")
     private String diaSorteio = null;
-
     @SerializedName("vrPremioEstimado")
     private BigDecimal vrPremioEstimado = null;
-
     @SerializedName("vrCotaSemTarifa")
     private BigDecimal vrCotaSemTarifa = null;
-
     @SerializedName("vrCotaComTarifa")
     private BigDecimal vrCotaComTarifa = null;
-
     @SerializedName("valorCota")
     private BigDecimal valorCota = null;
-
     @SerializedName("valorTarifaServico")
     private BigDecimal valorTarifaServico = null;
-
     @SerializedName("vrUltimaCotaSemTarifa")
     private BigDecimal vrUltimaCotaSemTarifa = null;
-
     @SerializedName("vrUltimaCotaComTarifa")
     private BigDecimal vrUltimaCotaComTarifa = null;
-
     @SerializedName("vrTarifaServicoUltimaCota")
     private BigDecimal vrTarifaServicoUltimaCota = null;
-
     @SerializedName("vrTarifaBolao")
     private BigDecimal vrTarifaBolao = null;
-
     @SerializedName("vrTotalBolaoComTarifa")
     private BigDecimal vrTotalBolaoComTarifa = null;
-
     @SerializedName("vrTotalBolaoSemTarifa")
     private BigDecimal vrTotalBolaoSemTarifa = null;
-
     @SerializedName("apostas")
     private List<RetornoDetalhamentoBolaoApostas> apostas = null;
-
     @SerializedName("qtdApostas")
     private Integer qtdApostas = null;
-
     @SerializedName("qtdNumeros")
     private Integer qtdNumeros = null;
-
     @SerializedName("qtdSimplesLoteca")
     private Integer qtdSimplesLoteca = null;
-
     @SerializedName("qtdDuplosLoteca")
     private Integer qtdDuplosLoteca = null;
-
     @SerializedName("qtdTriplosLoteca")
     private Integer qtdTriplosLoteca = null;
-
     @SerializedName("numeroCota")
     private Integer numeroCota = null;
-
     @SerializedName("dataHoraReserva")
     private String dataHoraReserva = null;
-
     @SerializedName("dataRegistroBolao")
     private Data dataRegistroBolao = null;
-
     @SerializedName("horaRegistroBolao")
     private Hora horaRegistroBolao = null;
-
     @SerializedName("numeroTerminalLoterico")
     private Integer numeroTerminalLoterico = null;
-
     @SerializedName("apostasBolao")
     private String apostasBolao = null;
-
     /**
      * Gets or Sets situacaoCota
      */
@@ -298,50 +184,33 @@ public class DadosCotaBolao {
             }
         }
     }
-
     @SerializedName("situacaoCota")
     private SituacaoCotaEnum situacaoCota = null;
-
     @SerializedName("tempoExpiracao")
     private Integer tempoExpiracao = null;
-
     @SerializedName("cotas")
     private List<DadosCotaBolao> cotas = null;
-
     @SerializedName("totalRegistros")
     private Integer totalRegistros = null;
-
     @SerializedName("paginaAtual")
     private Integer paginaAtual = null;
-
     @SerializedName("ultimaPagina")
     private Integer ultimaPagina = null;
-
     @SerializedName("cpf")
     private String cpf = null;
-
     @SerializedName("nsu")
     private Long nsu = null;
-
     @SerializedName("nsus")
     private List<Long> nsus = null;
-
     @SerializedName("reservaCotaBolao")
     private ReservaCotaBolao reservaCotaBolao = null;
-
     @SerializedName("nsbc")
     private String nsbc = null;
-
     @SerializedName("retornoErro")
     private RetornoErro retornoErro = null;
-
     @SerializedName("operacaoExecutadaComSucesso")
     private Boolean operacaoExecutadaComSucesso = null;
 
-    public DadosCotaBolao statusCodeHttp(Integer statusCodeHttp) {
-        this.statusCodeHttp = statusCodeHttp;
-        return this;
-    }
 
     /**
      * Get statusCodeHttp
@@ -354,11 +223,6 @@ public class DadosCotaBolao {
 
     public void setStatusCodeHttp(Integer statusCodeHttp) {
         this.statusCodeHttp = statusCodeHttp;
-    }
-
-    public DadosCotaBolao index(Integer index) {
-        this.index = index;
-        return this;
     }
 
     /**
@@ -374,11 +238,6 @@ public class DadosCotaBolao {
         this.index = index;
     }
 
-    public DadosCotaBolao codigoBolao(String codigoBolao) {
-        this.codigoBolao = codigoBolao;
-        return this;
-    }
-
     /**
      * Get codigoBolao
      * @return codigoBolao
@@ -390,11 +249,6 @@ public class DadosCotaBolao {
 
     public void setCodigoBolao(String codigoBolao) {
         this.codigoBolao = codigoBolao;
-    }
-
-    public DadosCotaBolao codigoCota(String codigoCota) {
-        this.codigoCota = codigoCota;
-        return this;
     }
 
     /**
@@ -410,11 +264,6 @@ public class DadosCotaBolao {
         this.codigoCota = codigoCota;
     }
 
-    public DadosCotaBolao qtdCotaDigital(Integer qtdCotaDigital) {
-        this.qtdCotaDigital = qtdCotaDigital;
-        return this;
-    }
-
     /**
      * Get qtdCotaDigital
      * @return qtdCotaDigital
@@ -426,11 +275,6 @@ public class DadosCotaBolao {
 
     public void setQtdCotaDigital(Integer qtdCotaDigital) {
         this.qtdCotaDigital = qtdCotaDigital;
-    }
-
-    public DadosCotaBolao qtdCotaTotal(Integer qtdCotaTotal) {
-        this.qtdCotaTotal = qtdCotaTotal;
-        return this;
     }
 
     /**
@@ -446,11 +290,6 @@ public class DadosCotaBolao {
         this.qtdCotaTotal = qtdCotaTotal;
     }
 
-    public DadosCotaBolao qtdCotaDisponivel(Integer qtdCotaDisponivel) {
-        this.qtdCotaDisponivel = qtdCotaDisponivel;
-        return this;
-    }
-
     /**
      * Get qtdCotaDisponivel
      * @return qtdCotaDisponivel
@@ -462,11 +301,6 @@ public class DadosCotaBolao {
 
     public void setQtdCotaDisponivel(Integer qtdCotaDisponivel) {
         this.qtdCotaDisponivel = qtdCotaDisponivel;
-    }
-
-    public DadosCotaBolao qtdCotaFisica(Integer qtdCotaFisica) {
-        this.qtdCotaFisica = qtdCotaFisica;
-        return this;
     }
 
     /**
@@ -482,11 +316,6 @@ public class DadosCotaBolao {
         this.qtdCotaFisica = qtdCotaFisica;
     }
 
-    public DadosCotaBolao qtdCotaBaixadasImpressas(Integer qtdCotaBaixadasImpressas) {
-        this.qtdCotaBaixadasImpressas = qtdCotaBaixadasImpressas;
-        return this;
-    }
-
     /**
      * Get qtdCotaBaixadasImpressas
      * @return qtdCotaBaixadasImpressas
@@ -498,11 +327,6 @@ public class DadosCotaBolao {
 
     public void setQtdCotaBaixadasImpressas(Integer qtdCotaBaixadasImpressas) {
         this.qtdCotaBaixadasImpressas = qtdCotaBaixadasImpressas;
-    }
-
-    public DadosCotaBolao qtdCotaVendidas(Integer qtdCotaVendidas) {
-        this.qtdCotaVendidas = qtdCotaVendidas;
-        return this;
     }
 
     /**
@@ -518,11 +342,6 @@ public class DadosCotaBolao {
         this.qtdCotaVendidas = qtdCotaVendidas;
     }
 
-    public DadosCotaBolao qtdCotaReservada(Integer qtdCotaReservada) {
-        this.qtdCotaReservada = qtdCotaReservada;
-        return this;
-    }
-
     /**
      * Get qtdCotaReservada
      * @return qtdCotaReservada
@@ -534,11 +353,6 @@ public class DadosCotaBolao {
 
     public void setQtdCotaReservada(Integer qtdCotaReservada) {
         this.qtdCotaReservada = qtdCotaReservada;
-    }
-
-    public DadosCotaBolao qtdCotaBaixadas(Integer qtdCotaBaixadas) {
-        this.qtdCotaBaixadas = qtdCotaBaixadas;
-        return this;
     }
 
     /**
@@ -554,11 +368,6 @@ public class DadosCotaBolao {
         this.qtdCotaBaixadas = qtdCotaBaixadas;
     }
 
-    public DadosCotaBolao loterica(Long loterica) {
-        this.loterica = loterica;
-        return this;
-    }
-
     /**
      * Get loterica
      * @return loterica
@@ -570,11 +379,6 @@ public class DadosCotaBolao {
 
     public void setLoterica(Long loterica) {
         this.loterica = loterica;
-    }
-
-    public DadosCotaBolao nomeFantasia(String nomeFantasia) {
-        this.nomeFantasia = nomeFantasia;
-        return this;
     }
 
     /**
@@ -590,11 +394,6 @@ public class DadosCotaBolao {
         this.nomeFantasia = nomeFantasia;
     }
 
-    public DadosCotaBolao nomeRazaoSocial(String nomeRazaoSocial) {
-        this.nomeRazaoSocial = nomeRazaoSocial;
-        return this;
-    }
-
     /**
      * Get nomeRazaoSocial
      * @return nomeRazaoSocial
@@ -606,11 +405,6 @@ public class DadosCotaBolao {
 
     public void setNomeRazaoSocial(String nomeRazaoSocial) {
         this.nomeRazaoSocial = nomeRazaoSocial;
-    }
-
-    public DadosCotaBolao numeroUF(Long numeroUF) {
-        this.numeroUF = numeroUF;
-        return this;
     }
 
     /**
@@ -626,11 +420,6 @@ public class DadosCotaBolao {
         this.numeroUF = numeroUF;
     }
 
-    public DadosCotaBolao uf(UnidadeFederacao uf) {
-        this.uf = uf;
-        return this;
-    }
-
     /**
      * Get uf
      * @return uf
@@ -642,11 +431,6 @@ public class DadosCotaBolao {
 
     public void setUf(UnidadeFederacao uf) {
         this.uf = uf;
-    }
-
-    public DadosCotaBolao idMunicipio(Long idMunicipio) {
-        this.idMunicipio = idMunicipio;
-        return this;
     }
 
     /**
@@ -662,11 +446,6 @@ public class DadosCotaBolao {
         this.idMunicipio = idMunicipio;
     }
 
-    public DadosCotaBolao municipio(Municipio municipio) {
-        this.municipio = municipio;
-        return this;
-    }
-
     /**
      * Get municipio
      * @return municipio
@@ -678,11 +457,6 @@ public class DadosCotaBolao {
 
     public void setMunicipio(Municipio municipio) {
         this.municipio = municipio;
-    }
-
-    public DadosCotaBolao concurso(Integer concurso) {
-        this.concurso = concurso;
-        return this;
     }
 
     /**
@@ -698,11 +472,6 @@ public class DadosCotaBolao {
         this.concurso = concurso;
     }
 
-    public DadosCotaBolao tipoConcurso(Integer tipoConcurso) {
-        this.tipoConcurso = tipoConcurso;
-        return this;
-    }
-
     /**
      * Get tipoConcurso
      * @return tipoConcurso
@@ -714,11 +483,6 @@ public class DadosCotaBolao {
 
     public void setTipoConcurso(Integer tipoConcurso) {
         this.tipoConcurso = tipoConcurso;
-    }
-
-    public DadosCotaBolao idModalidade(Integer idModalidade) {
-        this.idModalidade = idModalidade;
-        return this;
     }
 
     /**
@@ -734,11 +498,6 @@ public class DadosCotaBolao {
         this.idModalidade = idModalidade;
     }
 
-    public DadosCotaBolao modalidade(ModalidadeEnum modalidade) {
-        this.modalidade = modalidade;
-        return this;
-    }
-
     /**
      * Get modalidade
      * @return modalidade
@@ -750,11 +509,6 @@ public class DadosCotaBolao {
 
     public void setModalidade(ModalidadeEnum modalidade) {
         this.modalidade = modalidade;
-    }
-
-    public DadosCotaBolao dataSorteio(String dataSorteio) {
-        this.dataSorteio = dataSorteio;
-        return this;
     }
 
     /**
@@ -770,11 +524,6 @@ public class DadosCotaBolao {
         this.dataSorteio = dataSorteio;
     }
 
-    public DadosCotaBolao horaSorteio(String horaSorteio) {
-        this.horaSorteio = horaSorteio;
-        return this;
-    }
-
     /**
      * Get horaSorteio
      * @return horaSorteio
@@ -786,11 +535,6 @@ public class DadosCotaBolao {
 
     public void setHoraSorteio(String horaSorteio) {
         this.horaSorteio = horaSorteio;
-    }
-
-    public DadosCotaBolao diaSorteio(String diaSorteio) {
-        this.diaSorteio = diaSorteio;
-        return this;
     }
 
     /**
@@ -806,11 +550,6 @@ public class DadosCotaBolao {
         this.diaSorteio = diaSorteio;
     }
 
-    public DadosCotaBolao vrPremioEstimado(BigDecimal vrPremioEstimado) {
-        this.vrPremioEstimado = vrPremioEstimado;
-        return this;
-    }
-
     /**
      * Get vrPremioEstimado
      * @return vrPremioEstimado
@@ -822,11 +561,6 @@ public class DadosCotaBolao {
 
     public void setVrPremioEstimado(BigDecimal vrPremioEstimado) {
         this.vrPremioEstimado = vrPremioEstimado;
-    }
-
-    public DadosCotaBolao vrCotaSemTarifa(BigDecimal vrCotaSemTarifa) {
-        this.vrCotaSemTarifa = vrCotaSemTarifa;
-        return this;
     }
 
     /**
@@ -842,11 +576,6 @@ public class DadosCotaBolao {
         this.vrCotaSemTarifa = vrCotaSemTarifa;
     }
 
-    public DadosCotaBolao vrCotaComTarifa(BigDecimal vrCotaComTarifa) {
-        this.vrCotaComTarifa = vrCotaComTarifa;
-        return this;
-    }
-
     /**
      * Get vrCotaComTarifa
      * @return vrCotaComTarifa
@@ -858,11 +587,6 @@ public class DadosCotaBolao {
 
     public void setVrCotaComTarifa(BigDecimal vrCotaComTarifa) {
         this.vrCotaComTarifa = vrCotaComTarifa;
-    }
-
-    public DadosCotaBolao valorCota(BigDecimal valorCota) {
-        this.valorCota = valorCota;
-        return this;
     }
 
     /**
@@ -878,11 +602,6 @@ public class DadosCotaBolao {
         this.valorCota = valorCota;
     }
 
-    public DadosCotaBolao valorTarifaServico(BigDecimal valorTarifaServico) {
-        this.valorTarifaServico = valorTarifaServico;
-        return this;
-    }
-
     /**
      * Get valorTarifaServico
      * @return valorTarifaServico
@@ -894,11 +613,6 @@ public class DadosCotaBolao {
 
     public void setValorTarifaServico(BigDecimal valorTarifaServico) {
         this.valorTarifaServico = valorTarifaServico;
-    }
-
-    public DadosCotaBolao vrUltimaCotaSemTarifa(BigDecimal vrUltimaCotaSemTarifa) {
-        this.vrUltimaCotaSemTarifa = vrUltimaCotaSemTarifa;
-        return this;
     }
 
     /**
@@ -914,11 +628,6 @@ public class DadosCotaBolao {
         this.vrUltimaCotaSemTarifa = vrUltimaCotaSemTarifa;
     }
 
-    public DadosCotaBolao vrUltimaCotaComTarifa(BigDecimal vrUltimaCotaComTarifa) {
-        this.vrUltimaCotaComTarifa = vrUltimaCotaComTarifa;
-        return this;
-    }
-
     /**
      * Get vrUltimaCotaComTarifa
      * @return vrUltimaCotaComTarifa
@@ -930,11 +639,6 @@ public class DadosCotaBolao {
 
     public void setVrUltimaCotaComTarifa(BigDecimal vrUltimaCotaComTarifa) {
         this.vrUltimaCotaComTarifa = vrUltimaCotaComTarifa;
-    }
-
-    public DadosCotaBolao vrTarifaServicoUltimaCota(BigDecimal vrTarifaServicoUltimaCota) {
-        this.vrTarifaServicoUltimaCota = vrTarifaServicoUltimaCota;
-        return this;
     }
 
     /**
@@ -950,11 +654,6 @@ public class DadosCotaBolao {
         this.vrTarifaServicoUltimaCota = vrTarifaServicoUltimaCota;
     }
 
-    public DadosCotaBolao vrTarifaBolao(BigDecimal vrTarifaBolao) {
-        this.vrTarifaBolao = vrTarifaBolao;
-        return this;
-    }
-
     /**
      * Get vrTarifaBolao
      * @return vrTarifaBolao
@@ -966,11 +665,6 @@ public class DadosCotaBolao {
 
     public void setVrTarifaBolao(BigDecimal vrTarifaBolao) {
         this.vrTarifaBolao = vrTarifaBolao;
-    }
-
-    public DadosCotaBolao vrTotalBolaoComTarifa(BigDecimal vrTotalBolaoComTarifa) {
-        this.vrTotalBolaoComTarifa = vrTotalBolaoComTarifa;
-        return this;
     }
 
     /**
@@ -986,11 +680,6 @@ public class DadosCotaBolao {
         this.vrTotalBolaoComTarifa = vrTotalBolaoComTarifa;
     }
 
-    public DadosCotaBolao vrTotalBolaoSemTarifa(BigDecimal vrTotalBolaoSemTarifa) {
-        this.vrTotalBolaoSemTarifa = vrTotalBolaoSemTarifa;
-        return this;
-    }
-
     /**
      * Get vrTotalBolaoSemTarifa
      * @return vrTotalBolaoSemTarifa
@@ -1002,19 +691,6 @@ public class DadosCotaBolao {
 
     public void setVrTotalBolaoSemTarifa(BigDecimal vrTotalBolaoSemTarifa) {
         this.vrTotalBolaoSemTarifa = vrTotalBolaoSemTarifa;
-    }
-
-    public DadosCotaBolao apostas(List<RetornoDetalhamentoBolaoApostas> apostas) {
-        this.apostas = apostas;
-        return this;
-    }
-
-    public DadosCotaBolao addApostasItem(RetornoDetalhamentoBolaoApostas apostasItem) {
-        if (this.apostas == null) {
-            this.apostas = new ArrayList<RetornoDetalhamentoBolaoApostas>();
-        }
-        this.apostas.add(apostasItem);
-        return this;
     }
 
     /**
@@ -1030,11 +706,6 @@ public class DadosCotaBolao {
         this.apostas = apostas;
     }
 
-    public DadosCotaBolao qtdApostas(Integer qtdApostas) {
-        this.qtdApostas = qtdApostas;
-        return this;
-    }
-
     /**
      * Get qtdApostas
      * @return qtdApostas
@@ -1046,11 +717,6 @@ public class DadosCotaBolao {
 
     public void setQtdApostas(Integer qtdApostas) {
         this.qtdApostas = qtdApostas;
-    }
-
-    public DadosCotaBolao qtdNumeros(Integer qtdNumeros) {
-        this.qtdNumeros = qtdNumeros;
-        return this;
     }
 
     /**
@@ -1066,11 +732,6 @@ public class DadosCotaBolao {
         this.qtdNumeros = qtdNumeros;
     }
 
-    public DadosCotaBolao qtdSimplesLoteca(Integer qtdSimplesLoteca) {
-        this.qtdSimplesLoteca = qtdSimplesLoteca;
-        return this;
-    }
-
     /**
      * Get qtdSimplesLoteca
      * @return qtdSimplesLoteca
@@ -1082,11 +743,6 @@ public class DadosCotaBolao {
 
     public void setQtdSimplesLoteca(Integer qtdSimplesLoteca) {
         this.qtdSimplesLoteca = qtdSimplesLoteca;
-    }
-
-    public DadosCotaBolao qtdDuplosLoteca(Integer qtdDuplosLoteca) {
-        this.qtdDuplosLoteca = qtdDuplosLoteca;
-        return this;
     }
 
     /**
@@ -1102,11 +758,6 @@ public class DadosCotaBolao {
         this.qtdDuplosLoteca = qtdDuplosLoteca;
     }
 
-    public DadosCotaBolao qtdTriplosLoteca(Integer qtdTriplosLoteca) {
-        this.qtdTriplosLoteca = qtdTriplosLoteca;
-        return this;
-    }
-
     /**
      * Get qtdTriplosLoteca
      * @return qtdTriplosLoteca
@@ -1118,11 +769,6 @@ public class DadosCotaBolao {
 
     public void setQtdTriplosLoteca(Integer qtdTriplosLoteca) {
         this.qtdTriplosLoteca = qtdTriplosLoteca;
-    }
-
-    public DadosCotaBolao numeroCota(Integer numeroCota) {
-        this.numeroCota = numeroCota;
-        return this;
     }
 
     /**
@@ -1138,11 +784,6 @@ public class DadosCotaBolao {
         this.numeroCota = numeroCota;
     }
 
-    public DadosCotaBolao dataHoraReserva(String dataHoraReserva) {
-        this.dataHoraReserva = dataHoraReserva;
-        return this;
-    }
-
     /**
      * Get dataHoraReserva
      * @return dataHoraReserva
@@ -1154,11 +795,6 @@ public class DadosCotaBolao {
 
     public void setDataHoraReserva(String dataHoraReserva) {
         this.dataHoraReserva = dataHoraReserva;
-    }
-
-    public DadosCotaBolao dataRegistroBolao(Data dataRegistroBolao) {
-        this.dataRegistroBolao = dataRegistroBolao;
-        return this;
     }
 
     /**
@@ -1174,11 +810,6 @@ public class DadosCotaBolao {
         this.dataRegistroBolao = dataRegistroBolao;
     }
 
-    public DadosCotaBolao horaRegistroBolao(Hora horaRegistroBolao) {
-        this.horaRegistroBolao = horaRegistroBolao;
-        return this;
-    }
-
     /**
      * Get horaRegistroBolao
      * @return horaRegistroBolao
@@ -1190,11 +821,6 @@ public class DadosCotaBolao {
 
     public void setHoraRegistroBolao(Hora horaRegistroBolao) {
         this.horaRegistroBolao = horaRegistroBolao;
-    }
-
-    public DadosCotaBolao numeroTerminalLoterico(Integer numeroTerminalLoterico) {
-        this.numeroTerminalLoterico = numeroTerminalLoterico;
-        return this;
     }
 
     /**
@@ -1210,11 +836,6 @@ public class DadosCotaBolao {
         this.numeroTerminalLoterico = numeroTerminalLoterico;
     }
 
-    public DadosCotaBolao apostasBolao(String apostasBolao) {
-        this.apostasBolao = apostasBolao;
-        return this;
-    }
-
     /**
      * Get apostasBolao
      * @return apostasBolao
@@ -1226,11 +847,6 @@ public class DadosCotaBolao {
 
     public void setApostasBolao(String apostasBolao) {
         this.apostasBolao = apostasBolao;
-    }
-
-    public DadosCotaBolao situacaoCota(SituacaoCotaEnum situacaoCota) {
-        this.situacaoCota = situacaoCota;
-        return this;
     }
 
     /**
@@ -1246,11 +862,6 @@ public class DadosCotaBolao {
         this.situacaoCota = situacaoCota;
     }
 
-    public DadosCotaBolao tempoExpiracao(Integer tempoExpiracao) {
-        this.tempoExpiracao = tempoExpiracao;
-        return this;
-    }
-
     /**
      * Get tempoExpiracao
      * @return tempoExpiracao
@@ -1262,19 +873,6 @@ public class DadosCotaBolao {
 
     public void setTempoExpiracao(Integer tempoExpiracao) {
         this.tempoExpiracao = tempoExpiracao;
-    }
-
-    public DadosCotaBolao cotas(List<DadosCotaBolao> cotas) {
-        this.cotas = cotas;
-        return this;
-    }
-
-    public DadosCotaBolao addCotasItem(DadosCotaBolao cotasItem) {
-        if (this.cotas == null) {
-            this.cotas = new ArrayList<DadosCotaBolao>();
-        }
-        this.cotas.add(cotasItem);
-        return this;
     }
 
     /**
@@ -1290,11 +888,6 @@ public class DadosCotaBolao {
         this.cotas = cotas;
     }
 
-    public DadosCotaBolao totalRegistros(Integer totalRegistros) {
-        this.totalRegistros = totalRegistros;
-        return this;
-    }
-
     /**
      * Get totalRegistros
      * @return totalRegistros
@@ -1306,11 +899,6 @@ public class DadosCotaBolao {
 
     public void setTotalRegistros(Integer totalRegistros) {
         this.totalRegistros = totalRegistros;
-    }
-
-    public DadosCotaBolao paginaAtual(Integer paginaAtual) {
-        this.paginaAtual = paginaAtual;
-        return this;
     }
 
     /**
@@ -1326,11 +914,6 @@ public class DadosCotaBolao {
         this.paginaAtual = paginaAtual;
     }
 
-    public DadosCotaBolao ultimaPagina(Integer ultimaPagina) {
-        this.ultimaPagina = ultimaPagina;
-        return this;
-    }
-
     /**
      * Get ultimaPagina
      * @return ultimaPagina
@@ -1342,11 +925,6 @@ public class DadosCotaBolao {
 
     public void setUltimaPagina(Integer ultimaPagina) {
         this.ultimaPagina = ultimaPagina;
-    }
-
-    public DadosCotaBolao cpf(String cpf) {
-        this.cpf = cpf;
-        return this;
     }
 
     /**
@@ -1362,11 +940,6 @@ public class DadosCotaBolao {
         this.cpf = cpf;
     }
 
-    public DadosCotaBolao nsu(Long nsu) {
-        this.nsu = nsu;
-        return this;
-    }
-
     /**
      * Get nsu
      * @return nsu
@@ -1378,19 +951,6 @@ public class DadosCotaBolao {
 
     public void setNsu(Long nsu) {
         this.nsu = nsu;
-    }
-
-    public DadosCotaBolao nsus(List<Long> nsus) {
-        this.nsus = nsus;
-        return this;
-    }
-
-    public DadosCotaBolao addNsusItem(Long nsusItem) {
-        if (this.nsus == null) {
-            this.nsus = new ArrayList<Long>();
-        }
-        this.nsus.add(nsusItem);
-        return this;
     }
 
     /**
@@ -1406,11 +966,6 @@ public class DadosCotaBolao {
         this.nsus = nsus;
     }
 
-    public DadosCotaBolao reservaCotaBolao(ReservaCotaBolao reservaCotaBolao) {
-        this.reservaCotaBolao = reservaCotaBolao;
-        return this;
-    }
-
     /**
      * Get reservaCotaBolao
      * @return reservaCotaBolao
@@ -1422,11 +977,6 @@ public class DadosCotaBolao {
 
     public void setReservaCotaBolao(ReservaCotaBolao reservaCotaBolao) {
         this.reservaCotaBolao = reservaCotaBolao;
-    }
-
-    public DadosCotaBolao nsbc(String nsbc) {
-        this.nsbc = nsbc;
-        return this;
     }
 
     /**
@@ -1442,11 +992,6 @@ public class DadosCotaBolao {
         this.nsbc = nsbc;
     }
 
-    public DadosCotaBolao retornoErro(RetornoErro retornoErro) {
-        this.retornoErro = retornoErro;
-        return this;
-    }
-
     /**
      * Get retornoErro
      * @return retornoErro
@@ -1458,11 +1003,6 @@ public class DadosCotaBolao {
 
     public void setRetornoErro(RetornoErro retornoErro) {
         this.retornoErro = retornoErro;
-    }
-
-    public DadosCotaBolao operacaoExecutadaComSucesso(Boolean operacaoExecutadaComSucesso) {
-        this.operacaoExecutadaComSucesso = operacaoExecutadaComSucesso;
-        return this;
     }
 
     /**

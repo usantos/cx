@@ -15,26 +15,16 @@ import io.swagger.annotations.ApiModelProperty;
 public class RetornoErro {
     @SerializedName("message")
     private String message = null;
-
     @SerializedName("error")
     private String error = null;
-
     @SerializedName("status")
     private Integer status = null;
-
     @SerializedName("causeCode")
     private Integer causeCode = null;
-
     @SerializedName("causeMessage")
     private String causeMessage = null;
-
     @SerializedName("code")
     private String code = null;
-
-    public RetornoErro message(String message) {
-        this.message = message;
-        return this;
-    }
 
     /**
      * Get message
@@ -49,10 +39,6 @@ public class RetornoErro {
         this.message = message;
     }
 
-    public RetornoErro error(String error) {
-        this.error = error;
-        return this;
-    }
 
     /**
      * Get error
@@ -65,11 +51,6 @@ public class RetornoErro {
 
     public void setError(String error) {
         this.error = error;
-    }
-
-    public RetornoErro status(Integer status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -85,11 +66,6 @@ public class RetornoErro {
         this.status = status;
     }
 
-    public RetornoErro causeCode(Integer causeCode) {
-        this.causeCode = causeCode;
-        return this;
-    }
-
     /**
      * Get causeCode
      * @return causeCode
@@ -103,11 +79,6 @@ public class RetornoErro {
         this.causeCode = causeCode;
     }
 
-    public RetornoErro causeMessage(String causeMessage) {
-        this.causeMessage = causeMessage;
-        return this;
-    }
-
     /**
      * Get causeMessage
      * @return causeMessage
@@ -119,11 +90,6 @@ public class RetornoErro {
 
     public void setCauseMessage(String causeMessage) {
         this.causeMessage = causeMessage;
-    }
-
-    public RetornoErro code(String code) {
-        this.code = code;
-        return this;
     }
 
     /**
@@ -162,7 +128,6 @@ public class RetornoErro {
         return Objects.hash(message, error, status, causeCode, causeMessage, code);
     }
 
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -188,5 +153,4 @@ public class RetornoErro {
         }
         return o.toString().replace("\n", "\n    ");
     }
-
 }

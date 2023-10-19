@@ -16,17 +16,10 @@ import io.swagger.annotations.ApiModelProperty;
 public class RetornoDetalhamentoBolaoApostas {
     @SerializedName("indicadorSurpresinha")
     private Boolean indicadorSurpresinha = null;
-
     @SerializedName("dezenas")
     private List<Integer> dezenas = null;
-
     @SerializedName("trevos")
     private List<Integer> trevos = null;
-
-    public RetornoDetalhamentoBolaoApostas indicadorSurpresinha(Boolean indicadorSurpresinha) {
-        this.indicadorSurpresinha = indicadorSurpresinha;
-        return this;
-    }
 
     /**
      * Get indicadorSurpresinha
@@ -41,19 +34,6 @@ public class RetornoDetalhamentoBolaoApostas {
         this.indicadorSurpresinha = indicadorSurpresinha;
     }
 
-    public RetornoDetalhamentoBolaoApostas dezenas(List<Integer> dezenas) {
-        this.dezenas = dezenas;
-        return this;
-    }
-
-    public RetornoDetalhamentoBolaoApostas addDezenasItem(Integer dezenasItem) {
-        if (this.dezenas == null) {
-            this.dezenas = new ArrayList<Integer>();
-        }
-        this.dezenas.add(dezenasItem);
-        return this;
-    }
-
     /**
      * Get dezenas
      * @return dezenas
@@ -65,19 +45,6 @@ public class RetornoDetalhamentoBolaoApostas {
 
     public void setDezenas(List<Integer> dezenas) {
         this.dezenas = dezenas;
-    }
-
-    public RetornoDetalhamentoBolaoApostas trevos(List<Integer> trevos) {
-        this.trevos = trevos;
-        return this;
-    }
-
-    public RetornoDetalhamentoBolaoApostas addTrevosItem(Integer trevosItem) {
-        if (this.trevos == null) {
-            this.trevos = new ArrayList<Integer>();
-        }
-        this.trevos.add(trevosItem);
-        return this;
     }
 
     /**

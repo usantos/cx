@@ -22,174 +22,79 @@ import io.swagger.annotations.ApiModelProperty;
 public class BoloesDTO {
     @SerializedName("totalRegistros")
     private Integer totalRegistros = null;
-
     @SerializedName("paginaAtual")
     private Integer paginaAtual = null;
-
     @SerializedName("ultimaPagina")
     private Integer ultimaPagina = null;
-
     @SerializedName("qtdCotaDigital")
     private Integer qtdCotaDigital = null;
-
     @SerializedName("qtdCotaTotal")
     private Integer qtdCotaTotal = null;
-
     @SerializedName("qtdCotaDisponivel")
     private Integer qtdCotaDisponivel = null;
-
     @SerializedName("loterica")
     private Long loterica = null;
-
     @SerializedName("nomeFantasia")
     private String nomeFantasia = null;
-
     @SerializedName("nomeRazaoSocial")
     private String nomeRazaoSocial = null;
-
     @SerializedName("uf")
     private UnidadeFederacao uf = null;
-
     @SerializedName("municipioCota")
     private Municipio municipioCota = null;
-
     @SerializedName("concurso")
     private Integer concurso = null;
-
     @SerializedName("idModalidade")
     private Integer idModalidade = null;
-
-    /**
-     * Modalidade do bolão
-     */
-    @JsonAdapter(ModalidadeEnum.Adapter.class)
-    public enum ModalidadeEnum {
-        DIA_DE_SORTE("DIA_DE_SORTE"),
-        DUPLA_SENA("DUPLA_SENA"),
-        LOTECA("LOTECA"),
-        LOTOFACIL("LOTOFACIL"),
-        LOTOGOL("LOTOGOL"),
-        LOTOMANIA("LOTOMANIA"),
-        MAIS_MILIONARIA("MAIS_MILIONARIA"),
-        MEGA_SENA("MEGA_SENA"),
-        QUINA("QUINA"),
-        SUPER_7("SUPER_7"),
-        TIMEMANIA("TIMEMANIA");
-
-        private String value;
-
-        ModalidadeEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static ModalidadeEnum fromValue(String text) {
-            for (ModalidadeEnum b : ModalidadeEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        public static class Adapter extends TypeAdapter<ModalidadeEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final ModalidadeEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public ModalidadeEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return ModalidadeEnum.fromValue(String.valueOf(value));
-            }
-        }
-    }
-
     @SerializedName("modalidade")
     private ModalidadeEnum modalidade = null;
-
     @SerializedName("dataSorteio")
     private String dataSorteio = null;
-
     @SerializedName("diaSorteio")
     private String diaSorteio = null;
-
     @SerializedName("horaSorteio")
     private String horaSorteio = null;
-
     @SerializedName("vrPremioEstimado")
     private BigDecimal vrPremioEstimado = null;
-
     @SerializedName("vrTarifaServicoCota")
     private BigDecimal vrTarifaServicoCota = null;
-
     @SerializedName("qtdApostas")
     private Integer qtdApostas = null;
-
     @SerializedName("qtdNumeros")
     private Integer qtdNumeros = null;
-
     @SerializedName("qtdCotaFisica")
     private Integer qtdCotaFisica = null;
-
     @SerializedName("qtdCotaBaixadasImpressas")
     private Integer qtdCotaBaixadasImpressas = null;
-
     @SerializedName("qtdCotaVendidas")
     private Integer qtdCotaVendidas = null;
-
     @SerializedName("qtdCotaReservada")
     private Integer qtdCotaReservada = null;
-
     @SerializedName("qtdCotaBaixadas")
     private Integer qtdCotaBaixadas = null;
-
     @SerializedName("tipoConcurso")
     private Integer tipoConcurso = null;
-
     @SerializedName("vrCotaSemTarifa")
     private BigDecimal vrCotaSemTarifa = null;
-
     @SerializedName("vrCotaComTarifa")
     private BigDecimal vrCotaComTarifa = null;
-
     @SerializedName("vrUltimaCotaSemTarifa")
     private BigDecimal vrUltimaCotaSemTarifa = null;
-
     @SerializedName("vrUltimaCotaComTarifa")
     private BigDecimal vrUltimaCotaComTarifa = null;
-
     @SerializedName("vrTarifaServicoUltimaCota")
     private BigDecimal vrTarifaServicoUltimaCota = null;
-
     @SerializedName("vrTarifaBolao")
     private BigDecimal vrTarifaBolao = null;
-
     @SerializedName("vrTotalBolaoComTarifa")
     private BigDecimal vrTotalBolaoComTarifa = null;
-
     @SerializedName("vrTotalBolaoSemTarifa")
     private BigDecimal vrTotalBolaoSemTarifa = null;
-
     @SerializedName("apostas")
     private List<RetornoDetalhamentoBolaoApostas> apostas = null;
-
     @SerializedName("cotas")
     private List<DadosCotaBolao> cotas = null;
 
-    public BoloesDTO totalRegistros(Integer totalRegistros) {
-        this.totalRegistros = totalRegistros;
-        return this;
-    }
 
     /**
      * Cotas disponíveis total
@@ -202,11 +107,6 @@ public class BoloesDTO {
 
     public void setTotalRegistros(Integer totalRegistros) {
         this.totalRegistros = totalRegistros;
-    }
-
-    public BoloesDTO paginaAtual(Integer paginaAtual) {
-        this.paginaAtual = paginaAtual;
-        return this;
     }
 
     /**
@@ -222,11 +122,6 @@ public class BoloesDTO {
         this.paginaAtual = paginaAtual;
     }
 
-    public BoloesDTO ultimaPagina(Integer ultimaPagina) {
-        this.ultimaPagina = ultimaPagina;
-        return this;
-    }
-
     /**
      * Cotas disponíveis total
      * @return ultimaPagina
@@ -238,11 +133,6 @@ public class BoloesDTO {
 
     public void setUltimaPagina(Integer ultimaPagina) {
         this.ultimaPagina = ultimaPagina;
-    }
-
-    public BoloesDTO qtdCotaDigital(Integer qtdCotaDigital) {
-        this.qtdCotaDigital = qtdCotaDigital;
-        return this;
     }
 
     /**
@@ -258,11 +148,6 @@ public class BoloesDTO {
         this.qtdCotaDigital = qtdCotaDigital;
     }
 
-    public BoloesDTO qtdCotaTotal(Integer qtdCotaTotal) {
-        this.qtdCotaTotal = qtdCotaTotal;
-        return this;
-    }
-
     /**
      * Quantidade de cota total
      * @return qtdCotaTotal
@@ -274,11 +159,6 @@ public class BoloesDTO {
 
     public void setQtdCotaTotal(Integer qtdCotaTotal) {
         this.qtdCotaTotal = qtdCotaTotal;
-    }
-
-    public BoloesDTO qtdCotaDisponivel(Integer qtdCotaDisponivel) {
-        this.qtdCotaDisponivel = qtdCotaDisponivel;
-        return this;
     }
 
     /**
@@ -294,11 +174,6 @@ public class BoloesDTO {
         this.qtdCotaDisponivel = qtdCotaDisponivel;
     }
 
-    public BoloesDTO loterica(Long loterica) {
-        this.loterica = loterica;
-        return this;
-    }
-
     /**
      * Identificador da loterica
      * @return loterica
@@ -310,11 +185,6 @@ public class BoloesDTO {
 
     public void setLoterica(Long loterica) {
         this.loterica = loterica;
-    }
-
-    public BoloesDTO nomeFantasia(String nomeFantasia) {
-        this.nomeFantasia = nomeFantasia;
-        return this;
     }
 
     /**
@@ -330,11 +200,6 @@ public class BoloesDTO {
         this.nomeFantasia = nomeFantasia;
     }
 
-    public BoloesDTO nomeRazaoSocial(String nomeRazaoSocial) {
-        this.nomeRazaoSocial = nomeRazaoSocial;
-        return this;
-    }
-
     /**
      * Razão social da loterica
      * @return nomeRazaoSocial
@@ -346,11 +211,6 @@ public class BoloesDTO {
 
     public void setNomeRazaoSocial(String nomeRazaoSocial) {
         this.nomeRazaoSocial = nomeRazaoSocial;
-    }
-
-    public BoloesDTO uf(UnidadeFederacao uf) {
-        this.uf = uf;
-        return this;
     }
 
     /**
@@ -366,11 +226,6 @@ public class BoloesDTO {
         this.uf = uf;
     }
 
-    public BoloesDTO municipioCota(Municipio municipioCota) {
-        this.municipioCota = municipioCota;
-        return this;
-    }
-
     /**
      * Municipio loterica
      * @return municipioCota
@@ -382,11 +237,6 @@ public class BoloesDTO {
 
     public void setMunicipioCota(Municipio municipioCota) {
         this.municipioCota = municipioCota;
-    }
-
-    public BoloesDTO concurso(Integer concurso) {
-        this.concurso = concurso;
-        return this;
     }
 
     /**
@@ -402,11 +252,6 @@ public class BoloesDTO {
         this.concurso = concurso;
     }
 
-    public BoloesDTO idModalidade(Integer idModalidade) {
-        this.idModalidade = idModalidade;
-        return this;
-    }
-
     /**
      * ID modalidade do bolão
      * @return idModalidade
@@ -418,11 +263,6 @@ public class BoloesDTO {
 
     public void setIdModalidade(Integer idModalidade) {
         this.idModalidade = idModalidade;
-    }
-
-    public BoloesDTO modalidade(ModalidadeEnum modalidade) {
-        this.modalidade = modalidade;
-        return this;
     }
 
     /**
@@ -438,11 +278,6 @@ public class BoloesDTO {
         this.modalidade = modalidade;
     }
 
-    public BoloesDTO dataSorteio(String dataSorteio) {
-        this.dataSorteio = dataSorteio;
-        return this;
-    }
-
     /**
      * Data do sorteio
      * @return dataSorteio
@@ -454,11 +289,6 @@ public class BoloesDTO {
 
     public void setDataSorteio(String dataSorteio) {
         this.dataSorteio = dataSorteio;
-    }
-
-    public BoloesDTO diaSorteio(String diaSorteio) {
-        this.diaSorteio = diaSorteio;
-        return this;
     }
 
     /**
@@ -474,11 +304,6 @@ public class BoloesDTO {
         this.diaSorteio = diaSorteio;
     }
 
-    public BoloesDTO horaSorteio(String horaSorteio) {
-        this.horaSorteio = horaSorteio;
-        return this;
-    }
-
     /**
      * Hora do sorteio
      * @return horaSorteio
@@ -490,11 +315,6 @@ public class BoloesDTO {
 
     public void setHoraSorteio(String horaSorteio) {
         this.horaSorteio = horaSorteio;
-    }
-
-    public BoloesDTO vrPremioEstimado(BigDecimal vrPremioEstimado) {
-        this.vrPremioEstimado = vrPremioEstimado;
-        return this;
     }
 
     /**
@@ -510,11 +330,6 @@ public class BoloesDTO {
         this.vrPremioEstimado = vrPremioEstimado;
     }
 
-    public BoloesDTO vrTarifaServicoCota(BigDecimal vrTarifaServicoCota) {
-        this.vrTarifaServicoCota = vrTarifaServicoCota;
-        return this;
-    }
-
     /**
      * Valor da tarifa de serviço
      * @return vrTarifaServicoCota
@@ -526,11 +341,6 @@ public class BoloesDTO {
 
     public void setVrTarifaServicoCota(BigDecimal vrTarifaServicoCota) {
         this.vrTarifaServicoCota = vrTarifaServicoCota;
-    }
-
-    public BoloesDTO qtdApostas(Integer qtdApostas) {
-        this.qtdApostas = qtdApostas;
-        return this;
     }
 
     /**
@@ -546,11 +356,6 @@ public class BoloesDTO {
         this.qtdApostas = qtdApostas;
     }
 
-    public BoloesDTO qtdNumeros(Integer qtdNumeros) {
-        this.qtdNumeros = qtdNumeros;
-        return this;
-    }
-
     /**
      * Quantidade de números da aposta
      * @return qtdNumeros
@@ -562,11 +367,6 @@ public class BoloesDTO {
 
     public void setQtdNumeros(Integer qtdNumeros) {
         this.qtdNumeros = qtdNumeros;
-    }
-
-    public BoloesDTO qtdCotaFisica(Integer qtdCotaFisica) {
-        this.qtdCotaFisica = qtdCotaFisica;
-        return this;
     }
 
     /**
@@ -582,11 +382,6 @@ public class BoloesDTO {
         this.qtdCotaFisica = qtdCotaFisica;
     }
 
-    public BoloesDTO qtdCotaBaixadasImpressas(Integer qtdCotaBaixadasImpressas) {
-        this.qtdCotaBaixadasImpressas = qtdCotaBaixadasImpressas;
-        return this;
-    }
-
     /**
      * Quantidade de cota baixadas/impressas
      * @return qtdCotaBaixadasImpressas
@@ -598,11 +393,6 @@ public class BoloesDTO {
 
     public void setQtdCotaBaixadasImpressas(Integer qtdCotaBaixadasImpressas) {
         this.qtdCotaBaixadasImpressas = qtdCotaBaixadasImpressas;
-    }
-
-    public BoloesDTO qtdCotaVendidas(Integer qtdCotaVendidas) {
-        this.qtdCotaVendidas = qtdCotaVendidas;
-        return this;
     }
 
     /**
@@ -618,11 +408,6 @@ public class BoloesDTO {
         this.qtdCotaVendidas = qtdCotaVendidas;
     }
 
-    public BoloesDTO qtdCotaReservada(Integer qtdCotaReservada) {
-        this.qtdCotaReservada = qtdCotaReservada;
-        return this;
-    }
-
     /**
      * Quantidade de cotas reservadas
      * @return qtdCotaReservada
@@ -634,11 +419,6 @@ public class BoloesDTO {
 
     public void setQtdCotaReservada(Integer qtdCotaReservada) {
         this.qtdCotaReservada = qtdCotaReservada;
-    }
-
-    public BoloesDTO qtdCotaBaixadas(Integer qtdCotaBaixadas) {
-        this.qtdCotaBaixadas = qtdCotaBaixadas;
-        return this;
     }
 
     /**
@@ -654,11 +434,6 @@ public class BoloesDTO {
         this.qtdCotaBaixadas = qtdCotaBaixadas;
     }
 
-    public BoloesDTO tipoConcurso(Integer tipoConcurso) {
-        this.tipoConcurso = tipoConcurso;
-        return this;
-    }
-
     /**
      * Tipo concurso 1: NORMAL 2: ESPECIAL
      * @return tipoConcurso
@@ -670,11 +445,6 @@ public class BoloesDTO {
 
     public void setTipoConcurso(Integer tipoConcurso) {
         this.tipoConcurso = tipoConcurso;
-    }
-
-    public BoloesDTO vrCotaSemTarifa(BigDecimal vrCotaSemTarifa) {
-        this.vrCotaSemTarifa = vrCotaSemTarifa;
-        return this;
     }
 
     /**
@@ -690,11 +460,6 @@ public class BoloesDTO {
         this.vrCotaSemTarifa = vrCotaSemTarifa;
     }
 
-    public BoloesDTO vrCotaComTarifa(BigDecimal vrCotaComTarifa) {
-        this.vrCotaComTarifa = vrCotaComTarifa;
-        return this;
-    }
-
     /**
      * Valor da cota com tarifa
      * @return vrCotaComTarifa
@@ -706,11 +471,6 @@ public class BoloesDTO {
 
     public void setVrCotaComTarifa(BigDecimal vrCotaComTarifa) {
         this.vrCotaComTarifa = vrCotaComTarifa;
-    }
-
-    public BoloesDTO vrUltimaCotaSemTarifa(BigDecimal vrUltimaCotaSemTarifa) {
-        this.vrUltimaCotaSemTarifa = vrUltimaCotaSemTarifa;
-        return this;
     }
 
     /**
@@ -726,11 +486,6 @@ public class BoloesDTO {
         this.vrUltimaCotaSemTarifa = vrUltimaCotaSemTarifa;
     }
 
-    public BoloesDTO vrUltimaCotaComTarifa(BigDecimal vrUltimaCotaComTarifa) {
-        this.vrUltimaCotaComTarifa = vrUltimaCotaComTarifa;
-        return this;
-    }
-
     /**
      * Valor da ultima cota com tarifa
      * @return vrUltimaCotaComTarifa
@@ -742,11 +497,6 @@ public class BoloesDTO {
 
     public void setVrUltimaCotaComTarifa(BigDecimal vrUltimaCotaComTarifa) {
         this.vrUltimaCotaComTarifa = vrUltimaCotaComTarifa;
-    }
-
-    public BoloesDTO vrTarifaServicoUltimaCota(BigDecimal vrTarifaServicoUltimaCota) {
-        this.vrTarifaServicoUltimaCota = vrTarifaServicoUltimaCota;
-        return this;
     }
 
     /**
@@ -762,11 +512,6 @@ public class BoloesDTO {
         this.vrTarifaServicoUltimaCota = vrTarifaServicoUltimaCota;
     }
 
-    public BoloesDTO vrTarifaBolao(BigDecimal vrTarifaBolao) {
-        this.vrTarifaBolao = vrTarifaBolao;
-        return this;
-    }
-
     /**
      * Valor tarifa do bolão
      * @return vrTarifaBolao
@@ -778,11 +523,6 @@ public class BoloesDTO {
 
     public void setVrTarifaBolao(BigDecimal vrTarifaBolao) {
         this.vrTarifaBolao = vrTarifaBolao;
-    }
-
-    public BoloesDTO vrTotalBolaoComTarifa(BigDecimal vrTotalBolaoComTarifa) {
-        this.vrTotalBolaoComTarifa = vrTotalBolaoComTarifa;
-        return this;
     }
 
     /**
@@ -798,11 +538,6 @@ public class BoloesDTO {
         this.vrTotalBolaoComTarifa = vrTotalBolaoComTarifa;
     }
 
-    public BoloesDTO vrTotalBolaoSemTarifa(BigDecimal vrTotalBolaoSemTarifa) {
-        this.vrTotalBolaoSemTarifa = vrTotalBolaoSemTarifa;
-        return this;
-    }
-
     /**
      * Valor total do bolão sem tarifa
      * @return vrTotalBolaoSemTarifa
@@ -816,19 +551,6 @@ public class BoloesDTO {
         this.vrTotalBolaoSemTarifa = vrTotalBolaoSemTarifa;
     }
 
-    public BoloesDTO apostas(List<RetornoDetalhamentoBolaoApostas> apostas) {
-        this.apostas = apostas;
-        return this;
-    }
-
-    public BoloesDTO addApostasItem(RetornoDetalhamentoBolaoApostas apostasItem) {
-        if (this.apostas == null) {
-            this.apostas = new ArrayList<RetornoDetalhamentoBolaoApostas>();
-        }
-        this.apostas.add(apostasItem);
-        return this;
-    }
-
     /**
      * Apostas contendo indicador de surpresinha e números
      * @return apostas
@@ -840,19 +562,6 @@ public class BoloesDTO {
 
     public void setApostas(List<RetornoDetalhamentoBolaoApostas> apostas) {
         this.apostas = apostas;
-    }
-
-    public BoloesDTO cotas(List<DadosCotaBolao> cotas) {
-        this.cotas = cotas;
-        return this;
-    }
-
-    public BoloesDTO addCotasItem(DadosCotaBolao cotasItem) {
-        if (this.cotas == null) {
-            this.cotas = new ArrayList<DadosCotaBolao>();
-        }
-        this.cotas.add(cotasItem);
-        return this;
     }
 
     /**

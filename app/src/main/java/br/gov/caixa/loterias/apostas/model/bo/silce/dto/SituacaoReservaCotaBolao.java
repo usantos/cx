@@ -20,13 +20,10 @@ import io.swagger.annotations.ApiModelProperty;
 public class SituacaoReservaCotaBolao {
     @SerializedName("id")
     private Long id = null;
-
     @SerializedName("nome")
     private String nome = null;
-
     @SerializedName("descricao")
     private String descricao = null;
-
     /**
      * Gets or Sets _enum
      */
@@ -79,14 +76,9 @@ public class SituacaoReservaCotaBolao {
             }
         }
     }
-
     @SerializedName("enum")
     private EnumEnum _enum = null;
 
-    public SituacaoReservaCotaBolao id(Long id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Get id
@@ -99,11 +91,6 @@ public class SituacaoReservaCotaBolao {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public SituacaoReservaCotaBolao nome(String nome) {
-        this.nome = nome;
-        return this;
     }
 
     /**
@@ -119,11 +106,6 @@ public class SituacaoReservaCotaBolao {
         this.nome = nome;
     }
 
-    public SituacaoReservaCotaBolao descricao(String descricao) {
-        this.descricao = descricao;
-        return this;
-    }
-
     /**
      * Get descricao
      * @return descricao
@@ -135,11 +117,6 @@ public class SituacaoReservaCotaBolao {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public SituacaoReservaCotaBolao _enum(EnumEnum _enum) {
-        this._enum = _enum;
-        return this;
     }
 
     /**

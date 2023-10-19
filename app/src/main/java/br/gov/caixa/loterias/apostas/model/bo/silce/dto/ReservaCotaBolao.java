@@ -15,73 +15,50 @@ import io.swagger.annotations.ApiModelProperty;
 public class ReservaCotaBolao {
     @SerializedName("id")
     private Long id = null;
-
     @SerializedName("mes")
     private Integer mes = null;
-
     @SerializedName("ano")
     private Integer ano = null;
-
     @SerializedName("particao")
     private Long particao = null;
-
     @SerializedName("codBolao")
     private String codBolao = null;
-
     @SerializedName("codCota")
     private String codCota = null;
-
     @SerializedName("loterica")
     private Loterica loterica = null;
-
     @SerializedName("dataHoraReserva")
     private Data dataHoraReserva = null;
-
     @SerializedName("dataExpiracaoReservaCotaBolao")
     private Data dataExpiracaoReservaCotaBolao = null;
-
     @SerializedName("horaExpiracaoReservaCotaBolao")
     private Hora horaExpiracaoReservaCotaBolao = null;
-
     @SerializedName("numeroCotaReservada")
     private Integer numeroCotaReservada = null;
-
     @SerializedName("qtdCotaTotal")
     private Integer qtdCotaTotal = null;
-
     @SerializedName("valorCotaReservada")
     private Decimal valorCotaReservada = null;
-
     @SerializedName("valorTarifaServico")
     private Decimal valorTarifaServico = null;
-
     @SerializedName("dataRegistroBolao")
     private Data dataRegistroBolao = null;
-
     @SerializedName("horaRegistroBolao")
     private Hora horaRegistroBolao = null;
-
     @SerializedName("numeroTerminalLoterico")
     private Integer numeroTerminalLoterico = null;
-
     @SerializedName("dadosCotaBolao")
     private String dadosCotaBolao = null;
-
     @SerializedName("situacao")
     private SituacaoReservaCotaBolao situacao = null;
-
     @SerializedName("dataUltimaSituacao")
     private Data dataUltimaSituacao = null;
-
     @SerializedName("valorCotaCusteio")
     private Decimal valorCotaCusteio = null;
-
     @SerializedName("valorTarifaCusteio")
     private Decimal valorTarifaCusteio = null;
-
     @SerializedName("nsu")
     private Long nsu = null;
-
     @SerializedName("cpfApostador")
     private String cpfApostador = null;
 
@@ -90,14 +67,9 @@ public class ReservaCotaBolao {
 
     @SerializedName("valorTotal")
     private Decimal valorTotal = null;
-
     @SerializedName("dataHoraExpiracao")
     private Data dataHoraExpiracao = null;
 
-    public ReservaCotaBolao id(Long id) {
-        this.id = id;
-        return this;
-    }
 
     /**
      * Get id
@@ -110,11 +82,6 @@ public class ReservaCotaBolao {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ReservaCotaBolao mes(Integer mes) {
-        this.mes = mes;
-        return this;
     }
 
     /**
@@ -130,11 +97,6 @@ public class ReservaCotaBolao {
         this.mes = mes;
     }
 
-    public ReservaCotaBolao ano(Integer ano) {
-        this.ano = ano;
-        return this;
-    }
-
     /**
      * Get ano
      * @return ano
@@ -146,11 +108,6 @@ public class ReservaCotaBolao {
 
     public void setAno(Integer ano) {
         this.ano = ano;
-    }
-
-    public ReservaCotaBolao particao(Long particao) {
-        this.particao = particao;
-        return this;
     }
 
     /**
@@ -166,11 +123,6 @@ public class ReservaCotaBolao {
         this.particao = particao;
     }
 
-    public ReservaCotaBolao codBolao(String codBolao) {
-        this.codBolao = codBolao;
-        return this;
-    }
-
     /**
      * Get codBolao
      * @return codBolao
@@ -182,11 +134,6 @@ public class ReservaCotaBolao {
 
     public void setCodBolao(String codBolao) {
         this.codBolao = codBolao;
-    }
-
-    public ReservaCotaBolao codCota(String codCota) {
-        this.codCota = codCota;
-        return this;
     }
 
     /**
@@ -202,11 +149,6 @@ public class ReservaCotaBolao {
         this.codCota = codCota;
     }
 
-    public ReservaCotaBolao loterica(Loterica loterica) {
-        this.loterica = loterica;
-        return this;
-    }
-
     /**
      * Get loterica
      * @return loterica
@@ -218,11 +160,6 @@ public class ReservaCotaBolao {
 
     public void setLoterica(Loterica loterica) {
         this.loterica = loterica;
-    }
-
-    public ReservaCotaBolao dataHoraReserva(Data dataHoraReserva) {
-        this.dataHoraReserva = dataHoraReserva;
-        return this;
     }
 
     /**
@@ -238,11 +175,6 @@ public class ReservaCotaBolao {
         this.dataHoraReserva = dataHoraReserva;
     }
 
-    public ReservaCotaBolao dataExpiracaoReservaCotaBolao(Data dataExpiracaoReservaCotaBolao) {
-        this.dataExpiracaoReservaCotaBolao = dataExpiracaoReservaCotaBolao;
-        return this;
-    }
-
     /**
      * Get dataExpiracaoReservaCotaBolao
      * @return dataExpiracaoReservaCotaBolao
@@ -254,11 +186,6 @@ public class ReservaCotaBolao {
 
     public void setDataExpiracaoReservaCotaBolao(Data dataExpiracaoReservaCotaBolao) {
         this.dataExpiracaoReservaCotaBolao = dataExpiracaoReservaCotaBolao;
-    }
-
-    public ReservaCotaBolao horaExpiracaoReservaCotaBolao(Hora horaExpiracaoReservaCotaBolao) {
-        this.horaExpiracaoReservaCotaBolao = horaExpiracaoReservaCotaBolao;
-        return this;
     }
 
     /**
@@ -274,11 +201,6 @@ public class ReservaCotaBolao {
         this.horaExpiracaoReservaCotaBolao = horaExpiracaoReservaCotaBolao;
     }
 
-    public ReservaCotaBolao numeroCotaReservada(Integer numeroCotaReservada) {
-        this.numeroCotaReservada = numeroCotaReservada;
-        return this;
-    }
-
     /**
      * Get numeroCotaReservada
      * @return numeroCotaReservada
@@ -290,11 +212,6 @@ public class ReservaCotaBolao {
 
     public void setNumeroCotaReservada(Integer numeroCotaReservada) {
         this.numeroCotaReservada = numeroCotaReservada;
-    }
-
-    public ReservaCotaBolao qtdCotaTotal(Integer qtdCotaTotal) {
-        this.qtdCotaTotal = qtdCotaTotal;
-        return this;
     }
 
     /**
@@ -310,11 +227,6 @@ public class ReservaCotaBolao {
         this.qtdCotaTotal = qtdCotaTotal;
     }
 
-    public ReservaCotaBolao valorCotaReservada(Decimal valorCotaReservada) {
-        this.valorCotaReservada = valorCotaReservada;
-        return this;
-    }
-
     /**
      * Get valorCotaReservada
      * @return valorCotaReservada
@@ -326,11 +238,6 @@ public class ReservaCotaBolao {
 
     public void setValorCotaReservada(Decimal valorCotaReservada) {
         this.valorCotaReservada = valorCotaReservada;
-    }
-
-    public ReservaCotaBolao valorTarifaServico(Decimal valorTarifaServico) {
-        this.valorTarifaServico = valorTarifaServico;
-        return this;
     }
 
     /**
@@ -346,11 +253,6 @@ public class ReservaCotaBolao {
         this.valorTarifaServico = valorTarifaServico;
     }
 
-    public ReservaCotaBolao dataRegistroBolao(Data dataRegistroBolao) {
-        this.dataRegistroBolao = dataRegistroBolao;
-        return this;
-    }
-
     /**
      * Get dataRegistroBolao
      * @return dataRegistroBolao
@@ -362,11 +264,6 @@ public class ReservaCotaBolao {
 
     public void setDataRegistroBolao(Data dataRegistroBolao) {
         this.dataRegistroBolao = dataRegistroBolao;
-    }
-
-    public ReservaCotaBolao horaRegistroBolao(Hora horaRegistroBolao) {
-        this.horaRegistroBolao = horaRegistroBolao;
-        return this;
     }
 
     /**
@@ -382,11 +279,6 @@ public class ReservaCotaBolao {
         this.horaRegistroBolao = horaRegistroBolao;
     }
 
-    public ReservaCotaBolao numeroTerminalLoterico(Integer numeroTerminalLoterico) {
-        this.numeroTerminalLoterico = numeroTerminalLoterico;
-        return this;
-    }
-
     /**
      * Get numeroTerminalLoterico
      * @return numeroTerminalLoterico
@@ -398,11 +290,6 @@ public class ReservaCotaBolao {
 
     public void setNumeroTerminalLoterico(Integer numeroTerminalLoterico) {
         this.numeroTerminalLoterico = numeroTerminalLoterico;
-    }
-
-    public ReservaCotaBolao dadosCotaBolao(String dadosCotaBolao) {
-        this.dadosCotaBolao = dadosCotaBolao;
-        return this;
     }
 
     /**
@@ -418,11 +305,6 @@ public class ReservaCotaBolao {
         this.dadosCotaBolao = dadosCotaBolao;
     }
 
-    public ReservaCotaBolao situacao(SituacaoReservaCotaBolao situacao) {
-        this.situacao = situacao;
-        return this;
-    }
-
     /**
      * Get situacao
      * @return situacao
@@ -434,11 +316,6 @@ public class ReservaCotaBolao {
 
     public void setSituacao(SituacaoReservaCotaBolao situacao) {
         this.situacao = situacao;
-    }
-
-    public ReservaCotaBolao dataUltimaSituacao(Data dataUltimaSituacao) {
-        this.dataUltimaSituacao = dataUltimaSituacao;
-        return this;
     }
 
     /**
@@ -454,11 +331,6 @@ public class ReservaCotaBolao {
         this.dataUltimaSituacao = dataUltimaSituacao;
     }
 
-    public ReservaCotaBolao valorCotaCusteio(Decimal valorCotaCusteio) {
-        this.valorCotaCusteio = valorCotaCusteio;
-        return this;
-    }
-
     /**
      * Get valorCotaCusteio
      * @return valorCotaCusteio
@@ -470,11 +342,6 @@ public class ReservaCotaBolao {
 
     public void setValorCotaCusteio(Decimal valorCotaCusteio) {
         this.valorCotaCusteio = valorCotaCusteio;
-    }
-
-    public ReservaCotaBolao valorTarifaCusteio(Decimal valorTarifaCusteio) {
-        this.valorTarifaCusteio = valorTarifaCusteio;
-        return this;
     }
 
     /**
@@ -490,11 +357,6 @@ public class ReservaCotaBolao {
         this.valorTarifaCusteio = valorTarifaCusteio;
     }
 
-    public ReservaCotaBolao nsu(Long nsu) {
-        this.nsu = nsu;
-        return this;
-    }
-
     /**
      * Get nsu
      * @return nsu
@@ -506,11 +368,6 @@ public class ReservaCotaBolao {
 
     public void setNsu(Long nsu) {
         this.nsu = nsu;
-    }
-
-    public ReservaCotaBolao cpfApostador(String cpfApostador) {
-        this.cpfApostador = cpfApostador;
-        return this;
     }
 
     /**
@@ -526,29 +383,6 @@ public class ReservaCotaBolao {
         this.cpfApostador = cpfApostador;
     }
 
-//    public ReservaCotaBolao aposta(ApostaObject aposta) {
-//        this.aposta = aposta;
-//        return this;
-//    }
-
-//    /**
-//     * Get aposta
-//     * @return aposta
-//     **/
-//    @ApiModelProperty(value = "")
-//    public ApostaObject getAposta() {
-//        return aposta;
-//    }
-//
-//    public void setAposta(ApostaObject aposta) {
-//        this.aposta = aposta;
-//    }
-
-    public ReservaCotaBolao valorTotal(Decimal valorTotal) {
-        this.valorTotal = valorTotal;
-        return this;
-    }
-
     /**
      * Get valorTotal
      * @return valorTotal
@@ -560,11 +394,6 @@ public class ReservaCotaBolao {
 
     public void setValorTotal(Decimal valorTotal) {
         this.valorTotal = valorTotal;
-    }
-
-    public ReservaCotaBolao dataHoraExpiracao(Data dataHoraExpiracao) {
-        this.dataHoraExpiracao = dataHoraExpiracao;
-        return this;
     }
 
     /**
