@@ -5,6 +5,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.ComponentActivity;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.Serializable;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -16,6 +21,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 import br.gov.caixa.loterias.apostas.view.activity.TutorialActivity;
+import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 
 public class IntentUtil {
 
@@ -82,5 +88,18 @@ public class IntentUtil {
 		intent.putExtra(activity.getResources().getString(R.string.extra_modalidade), parametroJogo);
 
 		return intent;
+	}
+
+	public static ActivityResultLauncher<Intent> registerLauncherActivityForResult(AppCompatActivity activity, OnActivityForResult listener) {
+		return activity
+				.registerForActivityResult(new ActivityResultContracts
+												   .StartActivityForResult(),
+										   result -> {
+											   listener.result(result);
+										   });
+	}
+
+	public static void startActivityForResult(ActivityResultLauncher<Intent> launcher, ComponentActivity activity, Class clazz) {
+		launcher.launch(IntentUtil.getIntentOrigemDestino(activity, clazz));
 	}
 }
