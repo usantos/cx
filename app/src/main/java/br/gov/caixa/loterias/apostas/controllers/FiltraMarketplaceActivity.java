@@ -38,6 +38,8 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
 public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
+    private static final String FILTRO_MARKETPLACE_RETORNO = "FILTRO_MARKETPLACE_RETORNO";
+
     private EditText editValMin, editValMax;
     private RangeSlider sliderQtdCotas;
     //private AppCompatImageView accordionQueroButton;
@@ -48,7 +50,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private Button btnLimpaFiltros;
     private Button btnAplicar;
 
-    private List<LotericaDTO> listLotericaDTO = null;
+    private List<LotericaDTO> listLotericaDTO = new ArrayList<>();
     private LotericaDTO selectLotericaDTO = null;
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
@@ -140,7 +142,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                     selectLotericaDTO);
 
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("FILTRO_MARKETPLACE_RETORNO", filtroMarketplace);
+                returnIntent.putExtra(FILTRO_MARKETPLACE_RETORNO, filtroMarketplace);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
