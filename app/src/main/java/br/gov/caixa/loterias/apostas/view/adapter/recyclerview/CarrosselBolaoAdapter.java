@@ -10,19 +10,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Bolao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoCarrosselHolder;
-import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 
 
 public class CarrosselBolaoAdapter extends RecyclerView.Adapter<BolaoCarrosselHolder> {
 
-    private List<Bolao> bolaoList;
+    private List<CotasBolaoDTO> bolaoList;
     private OnItemCarrosselBolaoListener listener;
     private Activity activity;
 
-    public CarrosselBolaoAdapter(Activity activity, List<Bolao> data, OnItemCarrosselBolaoListener listener) {
+    public CarrosselBolaoAdapter(Activity activity, List<CotasBolaoDTO> data, OnItemCarrosselBolaoListener listener) {
         this.bolaoList = data;
         this.activity = activity;
         this.listener = listener;
@@ -38,8 +37,8 @@ public class CarrosselBolaoAdapter extends RecyclerView.Adapter<BolaoCarrosselHo
 
     @Override
     public void onBindViewHolder(final BolaoCarrosselHolder holder, final int position) {
-        Bolao bolao = bolaoList.get(position);
-        holder.bind(bolao, position);
+        CotasBolaoDTO cotaBolao = bolaoList.get(position);
+        holder.bind(cotaBolao, position);
     }
 
     @Override

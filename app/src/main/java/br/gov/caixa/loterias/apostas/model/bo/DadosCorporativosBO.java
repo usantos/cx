@@ -34,18 +34,6 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 @EBean(scope = Singleton)
 public class DadosCorporativosBO extends BaseBO{
 
-    private static LinkedHashMap<String, String> header;
-
-    private LinkedHashMap<String, String> getHeader(){
-        if(header == null){
-            this.header = new LinkedHashMap<>();
-        }
-        this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-
-        return header;
-    }
-
-
     public void ufs(final RequestListener<UnidadeFederacaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         silceConnection.get(ServerMethods.UFS_PATH,

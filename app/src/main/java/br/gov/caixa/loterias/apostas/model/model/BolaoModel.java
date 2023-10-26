@@ -2,54 +2,44 @@ package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
 
+import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Bolao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.BolaoBO;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BoloesDisponiveisResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 
 public class BolaoModel extends AppModel{
-	private List<Bolao> bolaoList;
 
 	public BolaoModel(Activity activity) {
 		super(activity);
-		initListaBolao();
 	}
 
-	private void initListaBolao() {
-		bolaoList = new ArrayList<>();
+	public void buscaBoloes(OnSilceListener<ListaBolaoDTO> listener) {
+		new BolaoBO().getBoloesDisponiveis(1, 690, 41, 1, 10,
+										   new RequestListener<BoloesDisponiveisResponse>() {
+			@Override
+			public void onResponse(BoloesDisponiveisResponse response) {
+				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_carregou_boloes_disponiveis));
+				if (response.getRedirect() != null){
+					RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
+				}
 
-		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2352, "Serra Dourada", "Santos - SP", "R$ 150,00", "R$ 150.000.000,00", 3, false));
-		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2352, "Serra Dourada", "Santos - SP", "R$ 40,00", "R$ 140.000.000,00", 2, true));
-		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2352, "Serra Dourada", "Santos - SP", "R$ 50,00", "R$ 130.000.000,00", 4, true));
-		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2353, "Serra Dourada", "Santos - SP", "R$ 250,00", "R$ 120.000.000,00", 5, false));
-		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2353, "Serra Dourada", "Santos - SP", "R$ 10,00", "R$ 110.000.000,00", 4, true));
-		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2353, "Serra Dourada", "Santos - SP", "R$ 100,00", "R$ 100.000.000,00", 3, false));
-		bolaoList.add(new Bolao(ModalidadeEnum.MEGA_SENA, 2353, "Serra Dourada", "Santos - SP", "R$ 100,00", "R$ 100.000.000,00", 3, false));
-	}
-
-	public List<Bolao> getListBolao(){
-		List<Bolao> boloes = new ArrayList<>();
-
-		for (Bolao bolao: bolaoList){
-			if (!bolao.isDestaque()){
-				boloes.add(bolao);
+				listener.success(response.getPayload());
 			}
-		}
 
-		return boloes;
-	}
-
-	public List<Bolao> getListCarrossel(){
-		List<Bolao> boloes = new ArrayList<>();
-
-		for (Bolao bolao: bolaoList){
-			if (bolao.isDestaque()){
-				boloes.add(bolao);
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				RedirectNetwork.checkRedirect(error, getActivity());
+				listener.error(error);
 			}
-		}
-
-		return boloes;
+		});
 	}
-
 }

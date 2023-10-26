@@ -6,5 +6,5 @@ import io.swagger.annotations.ApiModel;
  * BoloesDisponiveisResponse
  */
 @ApiModel(description = "")
-public class BoloesDisponiveisResponse extends SilceResponse<BoloesDTO> {
+public class BoloesDisponiveisResponse extends SilceResponse<ListaBolaoDTO> {
 }

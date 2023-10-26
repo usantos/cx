@@ -10,14 +10,13 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Bolao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
-public class BolaoCarrosselHolder extends LoteriasHolder<Bolao> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
+public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
 	private Activity activity;
 	private static final int QUANTIDADE_MINIMA = 1;
 	private TextView modalidade;
@@ -57,24 +56,23 @@ public class BolaoCarrosselHolder extends LoteriasHolder<Bolao> implements View.
 	}
 
 	@Override
-	public void bind(Bolao bolao, int position) {
+	public void bind(CotasBolaoDTO bolao, int position) {
 		preencheCabecalho(bolao);
 		preencheConteudo(bolao);
-		atualizaQuantidadeTextView(bolao.getQuantidade(), bolao.getQtdPermitida());
+		atualizaQuantidadeTextView(bolao.getQtdCotaReservada(), bolao.getQtdCotaDisponivel());
 		btnAddCarrinho.setText(ViewUtils.textFuturaAndFuturaBold(activity,activity.getResources().getString(R.string.adicionarAoCarrinho)));
 	}
 
-	private void preencheConteudo(Bolao bolao) {
-		valorPremio.setText(bolao.getValorEstimadoPremio());
+	private void preencheConteudo(CotasBolaoDTO bolao) {
+		valorPremio.setText(String.valueOf(bolao.getVrPremioEstimado()));
 		concurso.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
 														   itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso())));
-		loterica.setText(bolao.getLoterica()+ "\n" + bolao.getCidade());
-		valorCota.setText(bolao.getValor());
+		loterica.setText(bolao.getLoterica()+ "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
+		valorCota.setText(String.valueOf(bolao.getVrCotaComTarifa()));
 	}
 
-	private void preencheCabecalho(Bolao bolao) {
+	private void preencheCabecalho(CotasBolaoDTO bolao) {
 		modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
-
 	}
 
 	@Override

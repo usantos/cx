@@ -18,6 +18,7 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
 import java.io.UnsupportedEncodingException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
@@ -49,6 +50,8 @@ public class BaseBO {
 
     @RootContext
     protected Context context;
+
+    private static LinkedHashMap<String, String> header;
 
     @AfterInject
     protected void init(){
@@ -124,6 +127,14 @@ public class BaseBO {
         return Bin.fromBase64(request.getUrl().replaceAll(BuildConfig.CAIXA_BASE_URL_SILCE,"")).toUtf8();
     }
 
+    protected LinkedHashMap<String, String> getHeader(){
+        if(header == null){
+            this.header = new LinkedHashMap<>();
+        }
+        this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+
+        return header;
+    }
 
     public static ErrorResponse transformaErroEmErrorResponse(VolleyError error){
         ErrorResponse errorResponse = new ErrorResponse();

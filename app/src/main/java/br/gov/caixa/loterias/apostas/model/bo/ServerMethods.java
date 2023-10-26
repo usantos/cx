@@ -113,5 +113,7 @@ class ServerMethods {
 
      static final String TOKEN_APOSTADOR_RP_PATH = "/usuarios/gerar-token-apostador-recarga-pay";
 
+     static final String BOLOES_DISPONIVEIS = "/boloes/recuperar-boloes-disponiveis";
+
      private ServerMethods(){}
 }

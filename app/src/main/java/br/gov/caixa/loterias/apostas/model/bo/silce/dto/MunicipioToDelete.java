@@ -18,35 +18,35 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(description = "")
-public class UnidadeFederacao {
+public class MunicipioToDelete {
 
-    @SerializedName("sigla")
-    private String sigla = null;
     @SerializedName("id")
-    private Long id = null;
+    private MunicipioPK id = null;
+    @SerializedName("uf")
+    private UnidadeFederacaoToDelete uf = null;
     @SerializedName("nome")
     private String nome = null;
 
     /**
      **/
     @ApiModelProperty(value = "")
-    public String getSigla() {
-        return sigla;
+    public MunicipioPK getId() {
+        return id;
     }
 
-    public void setSigla(String sigla) {
-        this.sigla = sigla;
+    public void setId(MunicipioPK id) {
+        this.id = id;
     }
 
     /**
      **/
     @ApiModelProperty(value = "")
-    public Long getId() {
-        return id;
+    public UnidadeFederacaoToDelete getUf() {
+        return uf;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUf(UnidadeFederacaoToDelete uf) {
+        this.uf = uf;
     }
 
     /**
@@ -69,17 +69,17 @@ public class UnidadeFederacao {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        UnidadeFederacao unidadeFederacao = (UnidadeFederacao) o;
-        return (this.sigla == null ? unidadeFederacao.sigla == null : this.sigla.equals(unidadeFederacao.sigla)) &&
-                (this.id == null ? unidadeFederacao.id == null : this.id.equals(unidadeFederacao.id)) &&
-                (this.nome == null ? unidadeFederacao.nome == null : this.nome.equals(unidadeFederacao.nome));
+        MunicipioToDelete municipio = (MunicipioToDelete) o;
+        return (this.id == null ? municipio.id == null : this.id.equals(municipio.id)) &&
+                (this.uf == null ? municipio.uf == null : this.uf.equals(municipio.uf)) &&
+                (this.nome == null ? municipio.nome == null : this.nome.equals(municipio.nome));
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + (this.sigla == null ? 0 : this.sigla.hashCode());
         result = 31 * result + (this.id == null ? 0 : this.id.hashCode());
+        result = 31 * result + (this.uf == null ? 0 : this.uf.hashCode());
         result = 31 * result + (this.nome == null ? 0 : this.nome.hashCode());
         return result;
     }
@@ -87,9 +87,9 @@ public class UnidadeFederacao {
     @Override
     public String toString() {
 
-        String sb = "class UnidadeFederacao {\n" +
-                "  sigla: " + sigla + "\n" +
+        String sb = "class Municipio {\n" +
                 "  id: " + id + "\n" +
+                "  uf: " + uf + "\n" +
                 "  nome: " + nome + "\n" +
                 "}\n";
         return sb;

@@ -1,17 +1,12 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 
-import java.io.IOException;
+import com.google.gson.annotations.SerializedName;
+
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
+import br.gov.caixa.loterias.apostas.utils.SituacaoCotaEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -19,15 +14,12 @@ import io.swagger.annotations.ApiModelProperty;
  * DadosCotaBolao
  */
 @ApiModel(description = "")
-public class DadosCotaBolao {
-    @SerializedName("statusCodeHttp")
-    private Integer statusCodeHttp = null;
+public class CotasBolaoDTO {
+
     @SerializedName("index")
     private Integer index = null;
     @SerializedName("codigoBolao")
     private String codigoBolao = null;
-    @SerializedName("codigoCota")
-    private String codigoCota = null;
     @SerializedName("qtdCotaDigital")
     private Integer qtdCotaDigital = null;
     @SerializedName("qtdCotaTotal")
@@ -36,14 +28,6 @@ public class DadosCotaBolao {
     private Integer qtdCotaDisponivel = null;
     @SerializedName("qtdCotaFisica")
     private Integer qtdCotaFisica = null;
-    @SerializedName("qtdCotaBaixadasImpressas")
-    private Integer qtdCotaBaixadasImpressas = null;
-    @SerializedName("qtdCotaVendidas")
-    private Integer qtdCotaVendidas = null;
-    @SerializedName("qtdCotaReservada")
-    private Integer qtdCotaReservada = null;
-    @SerializedName("qtdCotaBaixadas")
-    private Integer qtdCotaBaixadas = null;
     @SerializedName("loterica")
     private Long loterica = null;
     @SerializedName("nomeFantasia")
@@ -53,11 +37,11 @@ public class DadosCotaBolao {
     @SerializedName("numeroUF")
     private Long numeroUF = null;
     @SerializedName("uf")
-    private UnidadeFederacao uf = null;
+    private UnidadeFederacaoDTO uf = null;
     @SerializedName("idMunicipio")
     private Long idMunicipio = null;
     @SerializedName("municipio")
-    private Municipio municipio = null;
+    private MunicipioDTO municipio = null;
     @SerializedName("concurso")
     private Integer concurso = null;
     @SerializedName("tipoConcurso")
@@ -74,38 +58,34 @@ public class DadosCotaBolao {
     private String diaSorteio = null;
     @SerializedName("vrPremioEstimado")
     private BigDecimal vrPremioEstimado = null;
-    @SerializedName("vrCotaSemTarifa")
-    private BigDecimal vrCotaSemTarifa = null;
-    @SerializedName("vrCotaComTarifa")
-    private BigDecimal vrCotaComTarifa = null;
     @SerializedName("valorCota")
     private BigDecimal valorCota = null;
     @SerializedName("valorTarifaServico")
     private BigDecimal valorTarifaServico = null;
-    @SerializedName("vrUltimaCotaSemTarifa")
-    private BigDecimal vrUltimaCotaSemTarifa = null;
-    @SerializedName("vrUltimaCotaComTarifa")
-    private BigDecimal vrUltimaCotaComTarifa = null;
-    @SerializedName("vrTarifaServicoUltimaCota")
-    private BigDecimal vrTarifaServicoUltimaCota = null;
+    @SerializedName("qtdApostas")
+    private Integer qtdApostas = null;
+    @SerializedName("qtdNumeros")
+    private Integer qtdNumeros = null;
+    @SerializedName("operacaoExecutadaComSucesso")
+    private Boolean operacaoExecutadaComSucesso = null;
+    @SerializedName("codigoCota")
+    private String codigoCota = null;
+
+    @SerializedName("qtdCotaVendidas")
+    private Integer qtdCotaVendidas = null;
+    @SerializedName("qtdCotaReservada")
+    private Integer qtdCotaReservada = null;
+    @SerializedName("vrCotaSemTarifa")
+    private BigDecimal vrCotaSemTarifa = null;
+    @SerializedName("vrCotaComTarifa")
+    private BigDecimal vrCotaComTarifa = null;
     @SerializedName("vrTarifaBolao")
     private BigDecimal vrTarifaBolao = null;
     @SerializedName("vrTotalBolaoComTarifa")
     private BigDecimal vrTotalBolaoComTarifa = null;
     @SerializedName("vrTotalBolaoSemTarifa")
     private BigDecimal vrTotalBolaoSemTarifa = null;
-    @SerializedName("apostas")
-    private List<RetornoDetalhamentoBolaoApostas> apostas = null;
-    @SerializedName("qtdApostas")
-    private Integer qtdApostas = null;
-    @SerializedName("qtdNumeros")
-    private Integer qtdNumeros = null;
-    @SerializedName("qtdSimplesLoteca")
-    private Integer qtdSimplesLoteca = null;
-    @SerializedName("qtdDuplosLoteca")
-    private Integer qtdDuplosLoteca = null;
-    @SerializedName("qtdTriplosLoteca")
-    private Integer qtdTriplosLoteca = null;
+
     @SerializedName("numeroCota")
     private Integer numeroCota = null;
     @SerializedName("dataHoraReserva")
@@ -118,112 +98,12 @@ public class DadosCotaBolao {
     private Integer numeroTerminalLoterico = null;
     @SerializedName("apostasBolao")
     private String apostasBolao = null;
-    /**
-     * Gets or Sets situacaoCota
-     */
-    @JsonAdapter(SituacaoCotaEnum.Adapter.class)
-    public enum SituacaoCotaEnum {
-        CRIADA("CRIADA"),
-
-        DISPONIVEL("DISPONIVEL"),
-
-        RESERVADA("RESERVADA"),
-
-        BAIXADA_NAO_IMPRESSA("BAIXADA_NAO_IMPRESSA"),
-
-        BAIXADA_NO_ENCERRAMENTO("BAIXADA_NO_ENCERRAMENTO"),
-
-        FISICA_IMPRESSA("FISICA_IMPRESSA"),
-
-        FISICA_NAO_IMPRESSA("FISICA_NAO_IMPRESSA"),
-
-        BAIXADA_IMPRESSA("BAIXADA_IMPRESSA"),
-
-        VENDIDA("VENDIDA"),
-
-        ESTORNADA("ESTORNADA"),
-
-        SEM_NSBC("SEM_NSBC"),
-
-        FISICA_REIMPRESSA("FISICA_REIMPRESSA");
-
-        private String value;
-
-        SituacaoCotaEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static SituacaoCotaEnum fromValue(String text) {
-            for (SituacaoCotaEnum b : SituacaoCotaEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        public static class Adapter extends TypeAdapter<SituacaoCotaEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final SituacaoCotaEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public SituacaoCotaEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return SituacaoCotaEnum.fromValue(String.valueOf(value));
-            }
-        }
-    }
     @SerializedName("situacaoCota")
     private SituacaoCotaEnum situacaoCota = null;
     @SerializedName("tempoExpiracao")
     private Integer tempoExpiracao = null;
-    @SerializedName("cotas")
-    private List<DadosCotaBolao> cotas = null;
-    @SerializedName("totalRegistros")
-    private Integer totalRegistros = null;
-    @SerializedName("paginaAtual")
-    private Integer paginaAtual = null;
-    @SerializedName("ultimaPagina")
-    private Integer ultimaPagina = null;
-    @SerializedName("cpf")
-    private String cpf = null;
-    @SerializedName("nsu")
-    private Long nsu = null;
-    @SerializedName("nsus")
-    private List<Long> nsus = null;
-    @SerializedName("reservaCotaBolao")
-    private ReservaCotaBolao reservaCotaBolao = null;
-    @SerializedName("nsbc")
-    private String nsbc = null;
-    @SerializedName("retornoErro")
-    private RetornoErro retornoErro = null;
-    @SerializedName("operacaoExecutadaComSucesso")
-    private Boolean operacaoExecutadaComSucesso = null;
 
-
-    /**
-     * Get statusCodeHttp
-     * @return statusCodeHttp
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getStatusCodeHttp() {
-        return statusCodeHttp;
-    }
-
-    public void setStatusCodeHttp(Integer statusCodeHttp) {
-        this.statusCodeHttp = statusCodeHttp;
-    }
+    private Boolean isAbertoParaMostrarDetalhes = Boolean.FALSE;
 
     /**
      * Get index
@@ -317,19 +197,6 @@ public class DadosCotaBolao {
     }
 
     /**
-     * Get qtdCotaBaixadasImpressas
-     * @return qtdCotaBaixadasImpressas
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getQtdCotaBaixadasImpressas() {
-        return qtdCotaBaixadasImpressas;
-    }
-
-    public void setQtdCotaBaixadasImpressas(Integer qtdCotaBaixadasImpressas) {
-        this.qtdCotaBaixadasImpressas = qtdCotaBaixadasImpressas;
-    }
-
-    /**
      * Get qtdCotaVendidas
      * @return qtdCotaVendidas
      **/
@@ -353,19 +220,6 @@ public class DadosCotaBolao {
 
     public void setQtdCotaReservada(Integer qtdCotaReservada) {
         this.qtdCotaReservada = qtdCotaReservada;
-    }
-
-    /**
-     * Get qtdCotaBaixadas
-     * @return qtdCotaBaixadas
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getQtdCotaBaixadas() {
-        return qtdCotaBaixadas;
-    }
-
-    public void setQtdCotaBaixadas(Integer qtdCotaBaixadas) {
-        this.qtdCotaBaixadas = qtdCotaBaixadas;
     }
 
     /**
@@ -425,11 +279,11 @@ public class DadosCotaBolao {
      * @return uf
      **/
     @ApiModelProperty(value = "")
-    public UnidadeFederacao getUf() {
+    public UnidadeFederacaoDTO getUf() {
         return uf;
     }
 
-    public void setUf(UnidadeFederacao uf) {
+    public void setUf(UnidadeFederacaoDTO uf) {
         this.uf = uf;
     }
 
@@ -451,11 +305,11 @@ public class DadosCotaBolao {
      * @return municipio
      **/
     @ApiModelProperty(value = "")
-    public Municipio getMunicipio() {
+    public MunicipioDTO getMunicipio() {
         return municipio;
     }
 
-    public void setMunicipio(Municipio municipio) {
+    public void setMunicipio(MunicipioDTO municipio) {
         this.municipio = municipio;
     }
 
@@ -616,45 +470,6 @@ public class DadosCotaBolao {
     }
 
     /**
-     * Get vrUltimaCotaSemTarifa
-     * @return vrUltimaCotaSemTarifa
-     **/
-    @ApiModelProperty(value = "")
-    public BigDecimal getVrUltimaCotaSemTarifa() {
-        return vrUltimaCotaSemTarifa;
-    }
-
-    public void setVrUltimaCotaSemTarifa(BigDecimal vrUltimaCotaSemTarifa) {
-        this.vrUltimaCotaSemTarifa = vrUltimaCotaSemTarifa;
-    }
-
-    /**
-     * Get vrUltimaCotaComTarifa
-     * @return vrUltimaCotaComTarifa
-     **/
-    @ApiModelProperty(value = "")
-    public BigDecimal getVrUltimaCotaComTarifa() {
-        return vrUltimaCotaComTarifa;
-    }
-
-    public void setVrUltimaCotaComTarifa(BigDecimal vrUltimaCotaComTarifa) {
-        this.vrUltimaCotaComTarifa = vrUltimaCotaComTarifa;
-    }
-
-    /**
-     * Get vrTarifaServicoUltimaCota
-     * @return vrTarifaServicoUltimaCota
-     **/
-    @ApiModelProperty(value = "")
-    public BigDecimal getVrTarifaServicoUltimaCota() {
-        return vrTarifaServicoUltimaCota;
-    }
-
-    public void setVrTarifaServicoUltimaCota(BigDecimal vrTarifaServicoUltimaCota) {
-        this.vrTarifaServicoUltimaCota = vrTarifaServicoUltimaCota;
-    }
-
-    /**
      * Get vrTarifaBolao
      * @return vrTarifaBolao
      **/
@@ -694,19 +509,6 @@ public class DadosCotaBolao {
     }
 
     /**
-     * Get apostas
-     * @return apostas
-     **/
-    @ApiModelProperty(value = "")
-    public List<RetornoDetalhamentoBolaoApostas> getApostas() {
-        return apostas;
-    }
-
-    public void setApostas(List<RetornoDetalhamentoBolaoApostas> apostas) {
-        this.apostas = apostas;
-    }
-
-    /**
      * Get qtdApostas
      * @return qtdApostas
      **/
@@ -730,45 +532,6 @@ public class DadosCotaBolao {
 
     public void setQtdNumeros(Integer qtdNumeros) {
         this.qtdNumeros = qtdNumeros;
-    }
-
-    /**
-     * Get qtdSimplesLoteca
-     * @return qtdSimplesLoteca
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getQtdSimplesLoteca() {
-        return qtdSimplesLoteca;
-    }
-
-    public void setQtdSimplesLoteca(Integer qtdSimplesLoteca) {
-        this.qtdSimplesLoteca = qtdSimplesLoteca;
-    }
-
-    /**
-     * Get qtdDuplosLoteca
-     * @return qtdDuplosLoteca
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getQtdDuplosLoteca() {
-        return qtdDuplosLoteca;
-    }
-
-    public void setQtdDuplosLoteca(Integer qtdDuplosLoteca) {
-        this.qtdDuplosLoteca = qtdDuplosLoteca;
-    }
-
-    /**
-     * Get qtdTriplosLoteca
-     * @return qtdTriplosLoteca
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getQtdTriplosLoteca() {
-        return qtdTriplosLoteca;
-    }
-
-    public void setQtdTriplosLoteca(Integer qtdTriplosLoteca) {
-        this.qtdTriplosLoteca = qtdTriplosLoteca;
     }
 
     /**
@@ -876,136 +639,6 @@ public class DadosCotaBolao {
     }
 
     /**
-     * Get cotas
-     * @return cotas
-     **/
-    @ApiModelProperty(value = "")
-    public List<DadosCotaBolao> getCotas() {
-        return cotas;
-    }
-
-    public void setCotas(List<DadosCotaBolao> cotas) {
-        this.cotas = cotas;
-    }
-
-    /**
-     * Get totalRegistros
-     * @return totalRegistros
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getTotalRegistros() {
-        return totalRegistros;
-    }
-
-    public void setTotalRegistros(Integer totalRegistros) {
-        this.totalRegistros = totalRegistros;
-    }
-
-    /**
-     * Get paginaAtual
-     * @return paginaAtual
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getPaginaAtual() {
-        return paginaAtual;
-    }
-
-    public void setPaginaAtual(Integer paginaAtual) {
-        this.paginaAtual = paginaAtual;
-    }
-
-    /**
-     * Get ultimaPagina
-     * @return ultimaPagina
-     **/
-    @ApiModelProperty(value = "")
-    public Integer getUltimaPagina() {
-        return ultimaPagina;
-    }
-
-    public void setUltimaPagina(Integer ultimaPagina) {
-        this.ultimaPagina = ultimaPagina;
-    }
-
-    /**
-     * Get cpf
-     * @return cpf
-     **/
-    @ApiModelProperty(value = "")
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    /**
-     * Get nsu
-     * @return nsu
-     **/
-    @ApiModelProperty(value = "")
-    public Long getNsu() {
-        return nsu;
-    }
-
-    public void setNsu(Long nsu) {
-        this.nsu = nsu;
-    }
-
-    /**
-     * Get nsus
-     * @return nsus
-     **/
-    @ApiModelProperty(value = "")
-    public List<Long> getNsus() {
-        return nsus;
-    }
-
-    public void setNsus(List<Long> nsus) {
-        this.nsus = nsus;
-    }
-
-    /**
-     * Get reservaCotaBolao
-     * @return reservaCotaBolao
-     **/
-    @ApiModelProperty(value = "")
-    public ReservaCotaBolao getReservaCotaBolao() {
-        return reservaCotaBolao;
-    }
-
-    public void setReservaCotaBolao(ReservaCotaBolao reservaCotaBolao) {
-        this.reservaCotaBolao = reservaCotaBolao;
-    }
-
-    /**
-     * Get nsbc
-     * @return nsbc
-     **/
-    @ApiModelProperty(value = "")
-    public String getNsbc() {
-        return nsbc;
-    }
-
-    public void setNsbc(String nsbc) {
-        this.nsbc = nsbc;
-    }
-
-    /**
-     * Get retornoErro
-     * @return retornoErro
-     **/
-    @ApiModelProperty(value = "")
-    public RetornoErro getRetornoErro() {
-        return retornoErro;
-    }
-
-    public void setRetornoErro(RetornoErro retornoErro) {
-        this.retornoErro = retornoErro;
-    }
-
-    /**
      * Get operacaoExecutadaComSucesso
      * @return operacaoExecutadaComSucesso
      **/
@@ -1018,6 +651,13 @@ public class DadosCotaBolao {
         this.operacaoExecutadaComSucesso = operacaoExecutadaComSucesso;
     }
 
+    public Boolean isAbertoParaMostrarDetalhes() {
+        return isAbertoParaMostrarDetalhes;
+    }
+
+    public void setAbertoParaMostrarDetalhes(Boolean abertoParaMostrarDetalhes) {
+        isAbertoParaMostrarDetalhes = abertoParaMostrarDetalhes;
+    }
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -1027,19 +667,16 @@ public class DadosCotaBolao {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        DadosCotaBolao dadosCotaBolao = (DadosCotaBolao) o;
-        return Objects.equals(this.statusCodeHttp, dadosCotaBolao.statusCodeHttp) &&
-                Objects.equals(this.index, dadosCotaBolao.index) &&
+        CotasBolaoDTO dadosCotaBolao = (CotasBolaoDTO) o;
+        return Objects.equals(this.index, dadosCotaBolao.index) &&
                 Objects.equals(this.codigoBolao, dadosCotaBolao.codigoBolao) &&
                 Objects.equals(this.codigoCota, dadosCotaBolao.codigoCota) &&
                 Objects.equals(this.qtdCotaDigital, dadosCotaBolao.qtdCotaDigital) &&
                 Objects.equals(this.qtdCotaTotal, dadosCotaBolao.qtdCotaTotal) &&
                 Objects.equals(this.qtdCotaDisponivel, dadosCotaBolao.qtdCotaDisponivel) &&
                 Objects.equals(this.qtdCotaFisica, dadosCotaBolao.qtdCotaFisica) &&
-                Objects.equals(this.qtdCotaBaixadasImpressas, dadosCotaBolao.qtdCotaBaixadasImpressas) &&
                 Objects.equals(this.qtdCotaVendidas, dadosCotaBolao.qtdCotaVendidas) &&
                 Objects.equals(this.qtdCotaReservada, dadosCotaBolao.qtdCotaReservada) &&
-                Objects.equals(this.qtdCotaBaixadas, dadosCotaBolao.qtdCotaBaixadas) &&
                 Objects.equals(this.loterica, dadosCotaBolao.loterica) &&
                 Objects.equals(this.nomeFantasia, dadosCotaBolao.nomeFantasia) &&
                 Objects.equals(this.nomeRazaoSocial, dadosCotaBolao.nomeRazaoSocial) &&
@@ -1059,18 +696,11 @@ public class DadosCotaBolao {
                 Objects.equals(this.vrCotaComTarifa, dadosCotaBolao.vrCotaComTarifa) &&
                 Objects.equals(this.valorCota, dadosCotaBolao.valorCota) &&
                 Objects.equals(this.valorTarifaServico, dadosCotaBolao.valorTarifaServico) &&
-                Objects.equals(this.vrUltimaCotaSemTarifa, dadosCotaBolao.vrUltimaCotaSemTarifa) &&
-                Objects.equals(this.vrUltimaCotaComTarifa, dadosCotaBolao.vrUltimaCotaComTarifa) &&
-                Objects.equals(this.vrTarifaServicoUltimaCota, dadosCotaBolao.vrTarifaServicoUltimaCota) &&
                 Objects.equals(this.vrTarifaBolao, dadosCotaBolao.vrTarifaBolao) &&
                 Objects.equals(this.vrTotalBolaoComTarifa, dadosCotaBolao.vrTotalBolaoComTarifa) &&
                 Objects.equals(this.vrTotalBolaoSemTarifa, dadosCotaBolao.vrTotalBolaoSemTarifa) &&
-                Objects.equals(this.apostas, dadosCotaBolao.apostas) &&
                 Objects.equals(this.qtdApostas, dadosCotaBolao.qtdApostas) &&
                 Objects.equals(this.qtdNumeros, dadosCotaBolao.qtdNumeros) &&
-                Objects.equals(this.qtdSimplesLoteca, dadosCotaBolao.qtdSimplesLoteca) &&
-                Objects.equals(this.qtdDuplosLoteca, dadosCotaBolao.qtdDuplosLoteca) &&
-                Objects.equals(this.qtdTriplosLoteca, dadosCotaBolao.qtdTriplosLoteca) &&
                 Objects.equals(this.numeroCota, dadosCotaBolao.numeroCota) &&
                 Objects.equals(this.dataHoraReserva, dadosCotaBolao.dataHoraReserva) &&
                 Objects.equals(this.dataRegistroBolao, dadosCotaBolao.dataRegistroBolao) &&
@@ -1079,22 +709,22 @@ public class DadosCotaBolao {
                 Objects.equals(this.apostasBolao, dadosCotaBolao.apostasBolao) &&
                 Objects.equals(this.situacaoCota, dadosCotaBolao.situacaoCota) &&
                 Objects.equals(this.tempoExpiracao, dadosCotaBolao.tempoExpiracao) &&
-                Objects.equals(this.cotas, dadosCotaBolao.cotas) &&
-                Objects.equals(this.totalRegistros, dadosCotaBolao.totalRegistros) &&
-                Objects.equals(this.paginaAtual, dadosCotaBolao.paginaAtual) &&
-                Objects.equals(this.ultimaPagina, dadosCotaBolao.ultimaPagina) &&
-                Objects.equals(this.cpf, dadosCotaBolao.cpf) &&
-                Objects.equals(this.nsu, dadosCotaBolao.nsu) &&
-                Objects.equals(this.nsus, dadosCotaBolao.nsus) &&
-                Objects.equals(this.reservaCotaBolao, dadosCotaBolao.reservaCotaBolao) &&
-                Objects.equals(this.nsbc, dadosCotaBolao.nsbc) &&
-                Objects.equals(this.retornoErro, dadosCotaBolao.retornoErro) &&
                 Objects.equals(this.operacaoExecutadaComSucesso, dadosCotaBolao.operacaoExecutadaComSucesso);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(statusCodeHttp, index, codigoBolao, codigoCota, qtdCotaDigital, qtdCotaTotal, qtdCotaDisponivel, qtdCotaFisica, qtdCotaBaixadasImpressas, qtdCotaVendidas, qtdCotaReservada, qtdCotaBaixadas, loterica, nomeFantasia, nomeRazaoSocial, numeroUF, uf, idMunicipio, municipio, concurso, tipoConcurso, idModalidade, modalidade, dataSorteio, horaSorteio, diaSorteio, vrPremioEstimado, vrCotaSemTarifa, vrCotaComTarifa, valorCota, valorTarifaServico, vrUltimaCotaSemTarifa, vrUltimaCotaComTarifa, vrTarifaServicoUltimaCota, vrTarifaBolao, vrTotalBolaoComTarifa, vrTotalBolaoSemTarifa, apostas, qtdApostas, qtdNumeros, qtdSimplesLoteca, qtdDuplosLoteca, qtdTriplosLoteca, numeroCota, dataHoraReserva, dataRegistroBolao, horaRegistroBolao, numeroTerminalLoterico, apostasBolao, situacaoCota, tempoExpiracao, cotas, totalRegistros, paginaAtual, ultimaPagina, cpf, nsu, nsus, reservaCotaBolao, nsbc, retornoErro, operacaoExecutadaComSucesso);
+        return Objects.hash(index, codigoBolao, codigoCota,
+                            qtdCotaDigital, qtdCotaTotal, qtdCotaDisponivel,
+                            qtdCotaFisica, qtdCotaVendidas,
+                            qtdCotaReservada, loterica, nomeFantasia,
+                            nomeRazaoSocial, numeroUF, uf, idMunicipio, municipio,
+                            concurso, tipoConcurso, idModalidade, modalidade, dataSorteio,
+                            horaSorteio, diaSorteio, vrPremioEstimado, vrCotaSemTarifa,
+                            vrCotaComTarifa, valorCota, valorTarifaServico, vrTarifaBolao,
+                            vrTotalBolaoComTarifa, vrTotalBolaoSemTarifa, qtdApostas,
+                            numeroCota, dataHoraReserva, dataRegistroBolao, horaRegistroBolao,
+                            numeroTerminalLoterico, apostasBolao, situacaoCota, tempoExpiracao,operacaoExecutadaComSucesso);
     }
 
 
@@ -1103,7 +733,6 @@ public class DadosCotaBolao {
         StringBuilder sb = new StringBuilder();
         sb.append("class DadosCotaBolao {\n");
 
-        sb.append("    statusCodeHttp: ").append(toIndentedString(statusCodeHttp)).append("\n");
         sb.append("    index: ").append(toIndentedString(index)).append("\n");
         sb.append("    codigoBolao: ").append(toIndentedString(codigoBolao)).append("\n");
         sb.append("    codigoCota: ").append(toIndentedString(codigoCota)).append("\n");
@@ -1111,10 +740,8 @@ public class DadosCotaBolao {
         sb.append("    qtdCotaTotal: ").append(toIndentedString(qtdCotaTotal)).append("\n");
         sb.append("    qtdCotaDisponivel: ").append(toIndentedString(qtdCotaDisponivel)).append("\n");
         sb.append("    qtdCotaFisica: ").append(toIndentedString(qtdCotaFisica)).append("\n");
-        sb.append("    qtdCotaBaixadasImpressas: ").append(toIndentedString(qtdCotaBaixadasImpressas)).append("\n");
         sb.append("    qtdCotaVendidas: ").append(toIndentedString(qtdCotaVendidas)).append("\n");
         sb.append("    qtdCotaReservada: ").append(toIndentedString(qtdCotaReservada)).append("\n");
-        sb.append("    qtdCotaBaixadas: ").append(toIndentedString(qtdCotaBaixadas)).append("\n");
         sb.append("    loterica: ").append(toIndentedString(loterica)).append("\n");
         sb.append("    nomeFantasia: ").append(toIndentedString(nomeFantasia)).append("\n");
         sb.append("    nomeRazaoSocial: ").append(toIndentedString(nomeRazaoSocial)).append("\n");
@@ -1134,18 +761,11 @@ public class DadosCotaBolao {
         sb.append("    vrCotaComTarifa: ").append(toIndentedString(vrCotaComTarifa)).append("\n");
         sb.append("    valorCota: ").append(toIndentedString(valorCota)).append("\n");
         sb.append("    valorTarifaServico: ").append(toIndentedString(valorTarifaServico)).append("\n");
-        sb.append("    vrUltimaCotaSemTarifa: ").append(toIndentedString(vrUltimaCotaSemTarifa)).append("\n");
-        sb.append("    vrUltimaCotaComTarifa: ").append(toIndentedString(vrUltimaCotaComTarifa)).append("\n");
-        sb.append("    vrTarifaServicoUltimaCota: ").append(toIndentedString(vrTarifaServicoUltimaCota)).append("\n");
         sb.append("    vrTarifaBolao: ").append(toIndentedString(vrTarifaBolao)).append("\n");
         sb.append("    vrTotalBolaoComTarifa: ").append(toIndentedString(vrTotalBolaoComTarifa)).append("\n");
         sb.append("    vrTotalBolaoSemTarifa: ").append(toIndentedString(vrTotalBolaoSemTarifa)).append("\n");
-        sb.append("    apostas: ").append(toIndentedString(apostas)).append("\n");
         sb.append("    qtdApostas: ").append(toIndentedString(qtdApostas)).append("\n");
         sb.append("    qtdNumeros: ").append(toIndentedString(qtdNumeros)).append("\n");
-        sb.append("    qtdSimplesLoteca: ").append(toIndentedString(qtdSimplesLoteca)).append("\n");
-        sb.append("    qtdDuplosLoteca: ").append(toIndentedString(qtdDuplosLoteca)).append("\n");
-        sb.append("    qtdTriplosLoteca: ").append(toIndentedString(qtdTriplosLoteca)).append("\n");
         sb.append("    numeroCota: ").append(toIndentedString(numeroCota)).append("\n");
         sb.append("    dataHoraReserva: ").append(toIndentedString(dataHoraReserva)).append("\n");
         sb.append("    dataRegistroBolao: ").append(toIndentedString(dataRegistroBolao)).append("\n");
@@ -1154,16 +774,6 @@ public class DadosCotaBolao {
         sb.append("    apostasBolao: ").append(toIndentedString(apostasBolao)).append("\n");
         sb.append("    situacaoCota: ").append(toIndentedString(situacaoCota)).append("\n");
         sb.append("    tempoExpiracao: ").append(toIndentedString(tempoExpiracao)).append("\n");
-        sb.append("    cotas: ").append(toIndentedString(cotas)).append("\n");
-        sb.append("    totalRegistros: ").append(toIndentedString(totalRegistros)).append("\n");
-        sb.append("    paginaAtual: ").append(toIndentedString(paginaAtual)).append("\n");
-        sb.append("    ultimaPagina: ").append(toIndentedString(ultimaPagina)).append("\n");
-        sb.append("    cpf: ").append(toIndentedString(cpf)).append("\n");
-        sb.append("    nsu: ").append(toIndentedString(nsu)).append("\n");
-        sb.append("    nsus: ").append(toIndentedString(nsus)).append("\n");
-        sb.append("    reservaCotaBolao: ").append(toIndentedString(reservaCotaBolao)).append("\n");
-        sb.append("    nsbc: ").append(toIndentedString(nsbc)).append("\n");
-        sb.append("    retornoErro: ").append(toIndentedString(retornoErro)).append("\n");
         sb.append("    operacaoExecutadaComSucesso: ").append(toIndentedString(operacaoExecutadaComSucesso)).append("\n");
         sb.append("}");
         return sb.toString();

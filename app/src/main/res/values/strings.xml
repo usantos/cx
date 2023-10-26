@@ -806,6 +806,7 @@
     <string name="evento_entrou_carrinho_online">ENTROU_CARRINHO_DE_APOSTAS_ONLINE</string>
     <string name="confirmar">Confirmar</string>
     <string name="evento_entrou_formas_pagamento">ENTROU_FORMAS_DE_PAGAMENTO</string>
+    <string name="evento_carregou_boloes_disponiveis">CARREGOU_BOLOES_DISPONIVEIS</string>
     <string name="string_true">true</string>
     <string name="string_false">false</string>
     <string name="evento_pagamento_sucesso">EFETUOU_PAGAMENTO_SUCESSO</string>

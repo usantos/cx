@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.android.volley.VolleyError;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
@@ -14,7 +15,9 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Bolao;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -40,8 +43,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private ListaBolaoAdapter listAdapter;
 
 	private BolaoModel model;
-	private List<Bolao> bolaoList;
-	private List<Bolao> carrosselList;
+	private List<CotasBolaoDTO> bolaoList;
+	private List<CotasBolaoDTO> carrosselList;
 	private SomadorCarrinhoFragment somadorCarrinhoFragment;
 	private ActivityResultLauncher<Intent> launcher;
 
@@ -59,18 +62,32 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 		model = new BolaoModel(this);
 
-		carrosselList = model.getListCarrossel();
-		carrosselAdapter = new CarrosselBolaoAdapter(this, carrosselList, onCarrosselItemListener());
-		carrosselView.setAdapter(carrosselAdapter);
-		carrosselView.setItemTransformer(new ScaleTransformer.Builder()
-												 .setMinScale(0.8f)
-												 .build());
-
-		bolaoList = model.getListBolao();
-		listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), this);
-		listView.setAdapter(listAdapter);
+		model.buscaBoloes(onBoloesListener());
 
 		fragmentSomadorCarrinho();
+	}
+
+	private OnSilceListener<ListaBolaoDTO> onBoloesListener() {
+		return new OnSilceListener<ListaBolaoDTO>() {
+			@Override
+			public void success(ListaBolaoDTO payload) {
+
+				carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener());
+				carrosselView.setAdapter(carrosselAdapter);
+				carrosselView.setItemTransformer(new ScaleTransformer.Builder()
+														 .setMinScale(0.8f)
+														 .build());
+
+
+				listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
+				listView.setAdapter(listAdapter);
+			}
+
+			@Override
+			public void error(VolleyError error) {
+
+			}
+		};
 	}
 
 	private OnActivityForResult OnActivityForResult() {
@@ -106,14 +123,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 		};
 	}
 
-	private void aumentaQuatidade(List<Bolao> list, int position, OnViewAumentaDiminuiQuantidade holder) {
+	private void aumentaQuatidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
 		list.get(position).aumentaQuantidade();
-		holder.atualizaQuantidadeTextView(list.get(position).getQuantidade(), list.get(position).getQtdPermitida());
+		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotaReservada(), list.get(position).getQtdCotaDisponivel());
 	}
 
-	private void diminuiQuatidade(List<Bolao> list, int position, OnViewAumentaDiminuiQuantidade holder) {
+	private void diminuiQuatidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
 		list.get(position).diminuiQuantidade();
-		holder.atualizaQuantidadeTextView(list.get(position).getQuantidade(), list.get(position).getQtdPermitida());
+		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotaReservada(), list.get(position).getQtdCotaDisponivel());
 	}
 
 	private void fragmentSomadorCarrinho() {
@@ -128,8 +145,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 		return new OnItemBolaoListener() {
 			@Override
 			public void verMais(BolaoHolder holder, int position) {
-				bolaoList.get(position).setAberto(!bolaoList.get(position).isAberto());
-				holder.mostrarDetalhes(bolaoList.get(position).isAberto());
+				bolaoList.get(position).setAbertoParaMostrarDetalhes(!bolaoList.get(position).isAbertoParaMostrarDetalhes());
+				holder.mostrarDetalhes(bolaoList.get(position).isAbertoParaMostrarDetalhes());
 			}
 
 			@Override
@@ -154,11 +171,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 		};
 	}
 
-	private void detalhesBolao(Bolao bolao) {
+	private void detalhesBolao(CotasBolaoDTO bolao) {
 		TestVisao.toast("Funcionalidade ainda nao implementada!");
 	}
 
-	private void adicionarNoCarrinho(Bolao bolao) {
+	private void adicionarNoCarrinho(CotasBolaoDTO bolao) {
 		TestVisao.toast("Funcionalidade ainda nao implementada!");
 	}
 

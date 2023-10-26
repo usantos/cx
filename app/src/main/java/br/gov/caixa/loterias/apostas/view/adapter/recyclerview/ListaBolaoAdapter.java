@@ -11,17 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Bolao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 
 public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 
-	private List<Bolao> bolaoList;
+	private List<CotasBolaoDTO> bolaoList;
 	private OnItemBolaoListener listener;
 	private Activity activity;
 
-	public ListaBolaoAdapter(List<Bolao> bolaoList, OnItemBolaoListener listener, Activity activity){
+	public ListaBolaoAdapter(List<CotasBolaoDTO> bolaoList, OnItemBolaoListener listener, Activity activity){
 		this.bolaoList = bolaoList;
 		this.listener = listener;
 		this.activity = activity;
@@ -36,8 +36,8 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 
 	@Override
 	public void onBindViewHolder(@NonNull BolaoHolder holder, int position) {
-		Bolao bolao = bolaoList.get(position);
-		holder.bind(bolao, position);
+		CotasBolaoDTO cotaBolao = bolaoList.get(position);
+		holder.bind(cotaBolao, position);
 	}
 
 	@Override

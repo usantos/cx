@@ -60,7 +60,7 @@ public class Apostador {
     @SerializedName("aceitaReceberNoticias")
     private Boolean aceitaReceberNoticias = null;
     @SerializedName("municipio")
-    private Municipio municipio = null;
+    private MunicipioToDelete municipio = null;
     @SerializedName("situacao")
     private SituacaoApostador situacao = null;
     @SerializedName("dataCadastro")
@@ -307,11 +307,11 @@ public class Apostador {
     /**
      **/
     @ApiModelProperty(value = "")
-    public Municipio getMunicipio() {
+    public MunicipioToDelete getMunicipio() {
         return municipio;
     }
 
-    public void setMunicipio(Municipio municipio) {
+    public void setMunicipio(MunicipioToDelete municipio) {
         this.municipio = municipio;
     }
 

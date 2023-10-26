@@ -57,17 +57,6 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 @EBean(scope = Singleton)
 public class ApostaBO extends BaseBO {
 
-    private static LinkedHashMap<String, String> header;
-
-    private LinkedHashMap<String, String> getHeader(){
-        if(header == null){
-            this.header = new LinkedHashMap<>();
-        }
-        this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-
-        return header;
-    }
-
     //Carrinho Favorito
     public void validarCarrinhoFavorito(String nomeCarrinho, RequestListener<CarrinhoFavoritoDTOResponse> listener){
         LinkedHashMap<String, String> params = new LinkedHashMap<>();

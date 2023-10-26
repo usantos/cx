@@ -14,12 +14,7 @@ import io.swagger.annotations.ApiModelProperty;
  */
 @ApiModel(description = "")
 public class BoloesDTO {
-    @SerializedName("totalRegistros")
-    private Integer totalRegistros = null;
-    @SerializedName("paginaAtual")
-    private Integer paginaAtual = null;
-    @SerializedName("ultimaPagina")
-    private Integer ultimaPagina = null;
+    
     @SerializedName("qtdCotaDigital")
     private Integer qtdCotaDigital = null;
     @SerializedName("qtdCotaTotal")
@@ -33,9 +28,9 @@ public class BoloesDTO {
     @SerializedName("nomeRazaoSocial")
     private String nomeRazaoSocial = null;
     @SerializedName("uf")
-    private UnidadeFederacao uf = null;
+    private UnidadeFederacaoToDelete uf = null;
     @SerializedName("municipioCota")
-    private Municipio municipioCota = null;
+    private MunicipioToDelete municipioCota = null;
     @SerializedName("concurso")
     private Integer concurso = null;
     @SerializedName("idModalidade")
@@ -86,48 +81,6 @@ public class BoloesDTO {
     private BigDecimal vrTotalBolaoSemTarifa = null;
     @SerializedName("apostas")
     private List<RetornoDetalhamentoBolaoApostas> apostas = null;
-    @SerializedName("cotas")
-    private List<DadosCotaBolao> cotas = null;
-
-
-    /**
-     * Cotas disponíveis total
-     * @return totalRegistros
-     **/
-    @ApiModelProperty(value = "Cotas disponíveis total")
-    public Integer getTotalRegistros() {
-        return totalRegistros;
-    }
-
-    public void setTotalRegistros(Integer totalRegistros) {
-        this.totalRegistros = totalRegistros;
-    }
-
-    /**
-     * Cotas disponíveis total
-     * @return paginaAtual
-     **/
-    @ApiModelProperty(value = "Cotas disponíveis total")
-    public Integer getPaginaAtual() {
-        return paginaAtual;
-    }
-
-    public void setPaginaAtual(Integer paginaAtual) {
-        this.paginaAtual = paginaAtual;
-    }
-
-    /**
-     * Cotas disponíveis total
-     * @return ultimaPagina
-     **/
-    @ApiModelProperty(value = "Cotas disponíveis total")
-    public Integer getUltimaPagina() {
-        return ultimaPagina;
-    }
-
-    public void setUltimaPagina(Integer ultimaPagina) {
-        this.ultimaPagina = ultimaPagina;
-    }
 
     /**
      * Quantidade de cota digital
@@ -212,11 +165,11 @@ public class BoloesDTO {
      * @return uf
      **/
     @ApiModelProperty(value = "UF Loterica")
-    public UnidadeFederacao getUf() {
+    public UnidadeFederacaoToDelete getUf() {
         return uf;
     }
 
-    public void setUf(UnidadeFederacao uf) {
+    public void setUf(UnidadeFederacaoToDelete uf) {
         this.uf = uf;
     }
 
@@ -225,11 +178,11 @@ public class BoloesDTO {
      * @return municipioCota
      **/
     @ApiModelProperty(value = "Municipio loterica")
-    public Municipio getMunicipioCota() {
+    public MunicipioToDelete getMunicipioCota() {
         return municipioCota;
     }
 
-    public void setMunicipioCota(Municipio municipioCota) {
+    public void setMunicipioCota(MunicipioToDelete municipioCota) {
         this.municipioCota = municipioCota;
     }
 
@@ -558,18 +511,6 @@ public class BoloesDTO {
         this.apostas = apostas;
     }
 
-    /**
-     * Cotas disponiveis para compra
-     * @return cotas
-     **/
-    @ApiModelProperty(value = "Cotas disponiveis para compra")
-    public List<DadosCotaBolao> getCotas() {
-        return cotas;
-    }
-
-    public void setCotas(List<DadosCotaBolao> cotas) {
-        this.cotas = cotas;
-    }
 
 
     @Override
@@ -581,10 +522,7 @@ public class BoloesDTO {
             return false;
         }
         BoloesDTO boloesDTO = (BoloesDTO) o;
-        return Objects.equals(this.totalRegistros, boloesDTO.totalRegistros) &&
-                Objects.equals(this.paginaAtual, boloesDTO.paginaAtual) &&
-                Objects.equals(this.ultimaPagina, boloesDTO.ultimaPagina) &&
-                Objects.equals(this.qtdCotaDigital, boloesDTO.qtdCotaDigital) &&
+        return Objects.equals(this.qtdCotaDigital, boloesDTO.qtdCotaDigital) &&
                 Objects.equals(this.qtdCotaTotal, boloesDTO.qtdCotaTotal) &&
                 Objects.equals(this.qtdCotaDisponivel, boloesDTO.qtdCotaDisponivel) &&
                 Objects.equals(this.loterica, boloesDTO.loterica) &&
@@ -616,13 +554,12 @@ public class BoloesDTO {
                 Objects.equals(this.vrTarifaBolao, boloesDTO.vrTarifaBolao) &&
                 Objects.equals(this.vrTotalBolaoComTarifa, boloesDTO.vrTotalBolaoComTarifa) &&
                 Objects.equals(this.vrTotalBolaoSemTarifa, boloesDTO.vrTotalBolaoSemTarifa) &&
-                Objects.equals(this.apostas, boloesDTO.apostas) &&
-                Objects.equals(this.cotas, boloesDTO.cotas);
+                Objects.equals(this.apostas, boloesDTO.apostas);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(totalRegistros, paginaAtual, ultimaPagina, qtdCotaDigital, qtdCotaTotal, qtdCotaDisponivel, loterica, nomeFantasia, nomeRazaoSocial, uf, municipioCota, concurso, idModalidade, modalidade, dataSorteio, diaSorteio, horaSorteio, vrPremioEstimado, vrTarifaServicoCota, qtdApostas, qtdNumeros, qtdCotaFisica, qtdCotaBaixadasImpressas, qtdCotaVendidas, qtdCotaReservada, qtdCotaBaixadas, tipoConcurso, vrCotaSemTarifa, vrCotaComTarifa, vrUltimaCotaSemTarifa, vrUltimaCotaComTarifa, vrTarifaServicoUltimaCota, vrTarifaBolao, vrTotalBolaoComTarifa, vrTotalBolaoSemTarifa, apostas, cotas);
+        return Objects.hash( qtdCotaDigital, qtdCotaTotal, qtdCotaDisponivel, loterica, nomeFantasia, nomeRazaoSocial, uf, municipioCota, concurso, idModalidade, modalidade, dataSorteio, diaSorteio, horaSorteio, vrPremioEstimado, vrTarifaServicoCota, qtdApostas, qtdNumeros, qtdCotaFisica, qtdCotaBaixadasImpressas, qtdCotaVendidas, qtdCotaReservada, qtdCotaBaixadas, tipoConcurso, vrCotaSemTarifa, vrCotaComTarifa, vrUltimaCotaSemTarifa, vrUltimaCotaComTarifa, vrTarifaServicoUltimaCota, vrTarifaBolao, vrTotalBolaoComTarifa, vrTotalBolaoSemTarifa, apostas);
     }
 
 
@@ -631,9 +568,6 @@ public class BoloesDTO {
         StringBuilder sb = new StringBuilder();
         sb.append("class BoloesDTO {\n");
 
-        sb.append("    totalRegistros: ").append(toIndentedString(totalRegistros)).append("\n");
-        sb.append("    paginaAtual: ").append(toIndentedString(paginaAtual)).append("\n");
-        sb.append("    ultimaPagina: ").append(toIndentedString(ultimaPagina)).append("\n");
         sb.append("    qtdCotaDigital: ").append(toIndentedString(qtdCotaDigital)).append("\n");
         sb.append("    qtdCotaTotal: ").append(toIndentedString(qtdCotaTotal)).append("\n");
         sb.append("    qtdCotaDisponivel: ").append(toIndentedString(qtdCotaDisponivel)).append("\n");
@@ -667,7 +601,6 @@ public class BoloesDTO {
         sb.append("    vrTotalBolaoComTarifa: ").append(toIndentedString(vrTotalBolaoComTarifa)).append("\n");
         sb.append("    vrTotalBolaoSemTarifa: ").append(toIndentedString(vrTotalBolaoSemTarifa)).append("\n");
         sb.append("    apostas: ").append(toIndentedString(apostas)).append("\n");
-        sb.append("    cotas: ").append(toIndentedString(cotas)).append("\n");
         sb.append("}");
         return sb.toString();
     }
