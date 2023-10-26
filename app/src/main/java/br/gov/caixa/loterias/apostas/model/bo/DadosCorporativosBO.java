@@ -193,6 +193,34 @@ public class DadosCorporativosBO extends BaseBO{
                             new LinkedHashMap<>(), listener);
     }
 
+    public void buscarLoteriasNomeFantasia(String nomeFantasia, final RequestListener<LotericaDTOResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("nomeFantasia", nomeFantasia);
+
+        GsonRequest request = silceConnection.buildGetRequest(ServerMethods.LOTERICAS_NOME_FANTASIA_PATH,
+                queryParams,
+                LotericaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
+    public void buscarLoteriasNomeCodigo(String nomeCodigo, final RequestListener<LotericaDTOResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("nomeCodigo", nomeCodigo);
+
+        GsonRequest request = silceConnection.buildGetRequest(ServerMethods.LOTERICAS_NOME_LOTERICO_PATH,
+                queryParams,
+                LotericaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
     public void validaTermoAceito(final RequestListener<ResourceResponse> listener) {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TERMO_VALIDA_ACEITO_PATH,
                                                                     new LinkedHashMap<>(),

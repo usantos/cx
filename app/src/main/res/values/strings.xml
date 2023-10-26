@@ -1301,8 +1301,9 @@
     <string name="posso_consultar_sua_localizacao">As apostas só podem ocorrer em território nacional. Portanto, você somente conseguirá pagar uma compra se estiver no Brasil, não havendo impedimento para utilizar os demais serviços.\nPodemos consultar a sua localização?</string>
 
     <!-- Strings de boloes mkp -->
-    <string name="filtrar">Filtrar</string>
-    <string name="valor_cotas">Valor da Cota</string>
+    <string name="filtrar">_Filtrar_</string>
+    <string name="valor_minimo_aposta">Valor Mínimo Aposta</string>
+    <string name="valor_maximo_aposta">Valor Máximo Aposta</string>
     <string name="quantidade_cotas">Quantidade de Cotas</string>
     <string name="quantidade_dezenas">Quantidade de Dezenas</string>
     <string name="limpar_filtros">Limpar Filtros</string>

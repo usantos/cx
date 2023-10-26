@@ -51,6 +51,9 @@ class ServerMethods {
      static final String LOTERICAS_PATH = "/lotericas";
      static final String LOTERICAS_HABILITADAS_PATH = "/lotericas/buscas-habilitadas";
      static final String LOTERICAS_CODIGO_COMPLETO_PATH = "/lotericas/codigo-completo";
+     static final String LOTERICAS_NOME_FANTASIA_PATH = "/lotericas/nome-fantasia";
+     static final String LOTERICAS_NOME_LOTERICO_PATH = "/lotericas/nome-loterico";
+
      static final String GERAR_APOSTAS_RAPIDAO_PATH = "/rapidoes/gerar-apostas";
      static final String RAPIDOES_PATH = "/rapidoes";
      static final String MODALIDADES_PATH = "/modalidades";

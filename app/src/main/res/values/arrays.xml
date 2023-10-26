@@ -13,7 +13,7 @@
         <item>250.0</item>
     </array>
     <array name="bolao_initial_slider_quantidades">
-        <item>20.0</item>
-        <item>70.0</item>
+        <item>2.0</item>
+        <item>100.0</item>
     </array>
 </resources>

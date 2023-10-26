@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 public class StringUtils {
@@ -33,5 +35,11 @@ public class StringUtils {
 
     public static String padZeroLeft(int valor, int tamanho) {
         return String.format("%0" + tamanho + "d", valor);
+    }
+
+    public static String formatToCurrency(double value) {
+        DecimalFormat df = new DecimalFormat("###,##0.00");
+        df.setDecimalFormatSymbols(new DecimalFormatSymbols(new Locale("pt", "BR")));
+        return df.format(value);
     }
 }
