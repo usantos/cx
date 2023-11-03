@@ -74,7 +74,7 @@ public class CotasBolaoDTO {
     @SerializedName("qtdCotaVendidas")
     private Integer qtdCotaVendidas = null;
     @SerializedName("qtdCotaReservada")
-    private Integer qtdCotaReservada = null;
+    private Integer qtdCotaReservada = 0;
     @SerializedName("vrCotaSemTarifa")
     private BigDecimal vrCotaSemTarifa = null;
     @SerializedName("vrCotaComTarifa")
@@ -104,6 +104,18 @@ public class CotasBolaoDTO {
     private Integer tempoExpiracao = null;
 
     private Boolean isAbertoParaMostrarDetalhes = Boolean.FALSE;
+
+    public void aumentaQuantidade() {
+        if (qtdCotaReservada < qtdCotaDisponivel){
+            qtdCotaReservada++;
+        }
+    }
+
+    public void diminuiQuantidade() {
+        if (qtdCotaReservada > 0){
+            qtdCotaReservada--;
+        }
+    }
 
     /**
      * Get index

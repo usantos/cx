@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -72,6 +73,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 			@Override
 			public void success(ListaBolaoDTO payload) {
 
+				carrosselList = model.getCarrosselList(payload.getCotas());
 				carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener());
 				carrosselView.setAdapter(carrosselAdapter);
 				carrosselView.setItemTransformer(new ScaleTransformer.Builder()
@@ -79,13 +81,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 														 .build());
 
 
+				bolaoList = model.getBolaoList(payload.getCotas());
 				listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
 				listView.setAdapter(listAdapter);
 			}
 
 			@Override
 			public void error(VolleyError error) {
-
+				Log.d("","");
 			}
 		};
 	}

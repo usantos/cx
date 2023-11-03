@@ -20,6 +20,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BoloesDisponiveisResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
@@ -63,11 +64,11 @@ public class ApostaBO extends BaseBO {
         params.put("nome", nomeCarrinho);
 
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.CARRINHO_FAVORITO_VALIDAR_NOME,
-                                                                     new LinkedHashMap<>(),
-                                                                     params, CarrinhoFavoritoDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                params, CarrinhoFavoritoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
@@ -78,12 +79,12 @@ public class ApostaBO extends BaseBO {
         params.put("incluirEspecial", opcaoSelecionada.toString());
 
         final GsonRequest request = silceConnection.buildPostRequest(url,
-                                                                     new LinkedHashMap<>(),
-                                                                     params,
-                                                                     CarrinhoDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                params,
+                CarrinhoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
@@ -97,11 +98,11 @@ public class ApostaBO extends BaseBO {
         url = url.replace("{idAposta}",idAposta);
 
         final GsonRequest request = silceConnection.buildDeleteRequest(url ,
-                                                                       new LinkedHashMap<>(),
-                                                                       ListApostaCarrinhoFavoritoDTO.class,
-                                                                       listener.getSilceListener(),
-                                                                       listener.getErrorListener(),
-                                                                       getHeader());
+                new LinkedHashMap<>(),
+                ListApostaCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
@@ -111,11 +112,11 @@ public class ApostaBO extends BaseBO {
         String url = ServerMethods.CARRINHO_FAVORITO_DELETAR_CARRINHO.replace("{id}", idCarrinho);
 
         final GsonRequest request = silceConnection.buildDeleteRequest(url ,
-                                                                       new LinkedHashMap<>(),
-                                                                       ListCarrinhoFavoritoDTO.class,
-                                                                       listener.getSilceListener(),
-                                                                       listener.getErrorListener(),
-                                                                       getHeader());
+                new LinkedHashMap<>(),
+                ListCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
@@ -144,23 +145,23 @@ public class ApostaBO extends BaseBO {
 
 
         final GsonRequest request = silceConnection.buildPostRequest(url,
-                                                                     new LinkedHashMap<>(),
-                                                                     params,
-                                                                     CarrinhoFavoritoDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                params,
+                CarrinhoFavoritoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
 
     public void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoDTO> listener){
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.CARRINHO_FAVORITO_BUSCAR_CARRINHOS,
-                                                                    new LinkedHashMap<>(),
-                                                                    ListCarrinhoFavoritoDTO.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                new LinkedHashMap<>(),
+                ListCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
@@ -168,11 +169,11 @@ public class ApostaBO extends BaseBO {
     public void buscaApostasCarrinhoFavorito(Long idCarrinho,RequestListener<ListApostaCarrinhoFavoritoDTO> listener){
         String url = ServerMethods.CARRINHO_FAVORITO_BUSCA_APOSTAS.replace("{idCarrinho}", idCarrinho.toString());
         final GsonRequest request = silceConnection.buildGetRequest(url,
-                                                                    new LinkedHashMap<>(),
-                                                                    ListApostaCarrinhoFavoritoDTO.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                new LinkedHashMap<>(),
+                ListApostaCarrinhoFavoritoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
@@ -192,11 +193,11 @@ public class ApostaBO extends BaseBO {
         queryParams.put("maiorPrognostico", String.valueOf(maiorPrognostico));
 
         silceConnection.get(ServerMethods.COMPLETA_JOGO_PATH,
-                            queryParams,
-                            CompletaJogoRsp.class,
-                            listener.getSilceListener(),
-                            listener.getErrorListener(),
-                            new LinkedHashMap<>(), listener);
+                queryParams,
+                CompletaJogoRsp.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                new LinkedHashMap<>(), listener);
     }
 
     public void completaJogoNovo(final int quantidadeTotalNumeros,
@@ -211,11 +212,11 @@ public class ApostaBO extends BaseBO {
         queryParams.put("numerosMarcadosMatriz",gsonNumeros.toJson(numerosMarcados));
 
         silceConnection.get(url,
-                            queryParams,
-                            CompletaJogoNovoRsp.class,
-                            listener.getSilceListener(),
-                            listener.getErrorListener(),
-                            new LinkedHashMap<>(), listener);
+                queryParams,
+                CompletaJogoNovoRsp.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                new LinkedHashMap<>(), listener);
     }
 
     //APOSTA
@@ -223,11 +224,11 @@ public class ApostaBO extends BaseBO {
         final Map<String, String> queryParams = getQueryParams(page);
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_PATH,
-                                                                    queryParams,
-                                                                    ResultadoPesquisaPaginadaDTOApostaDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                ResultadoPesquisaPaginadaDTOApostaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
@@ -270,11 +271,11 @@ public class ApostaBO extends BaseBO {
         //        queryParams.put("modalidade", modalidade);
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_HISTORICO_PATH,
-                                                                    queryParams,
-                                                                    ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
@@ -286,11 +287,11 @@ public class ApostaBO extends BaseBO {
 
         String url = ServerMethods.APOSTAS_RESGATAR_PATH.replace("{idAposta}", String.valueOf( idAposta ));
         final GsonRequest request = silceConnection.buildPostRequest(url,
-                                                                     new LinkedHashMap<>(),
-                                                                     infoPgtoDTO, RetornoPadraoDTO.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                infoPgtoDTO, RetornoPadraoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
@@ -300,11 +301,11 @@ public class ApostaBO extends BaseBO {
         queryParams.put("email", email);
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TOKEN_CADASTRO_MP_PATH,
-                                                                    queryParams,
-                                                                    StringResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                StringResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -314,11 +315,11 @@ public class ApostaBO extends BaseBO {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.TOKEN_APOSTADOR_RP_PATH,
-                                                                    queryParams,
-                                                                    StringResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                StringResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -327,22 +328,22 @@ public class ApostaBO extends BaseBO {
 
     public void getDatasApostasConfirmadas(final RequestListener<MesAnoDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_MES_ANO_PATH,
-                                                                    new LinkedHashMap<>(),
-                                                                    MesAnoDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    null,
-                                                                    getHeader());
+                new LinkedHashMap<>(),
+                MesAnoDTOResponse.class,
+                listener.getSilceListener(),
+                null,
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
 
     public void getDatasApostasHistorico(final RequestListener<MesAnoDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_HISTORICO_MES_ANO_PATH,
-                                                                    new LinkedHashMap<>(),
-                                                                    MesAnoDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                new LinkedHashMap<>(),
+                MesAnoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
     }
@@ -353,11 +354,11 @@ public class ApostaBO extends BaseBO {
         queryParams.put("size", String.valueOf("8"));
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.APOSTAS_FAVORITAS_LISTA_UNICA_PATH,
-                                                                    queryParams,
-                                                                    ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -368,11 +369,11 @@ public class ApostaBO extends BaseBO {
         String url = ServerMethods.APOSTAS_CONFIRMADAS_HISTORICO_COMPROVANTE_PREMIO_PATH.replace("{id}", id.toString());
         final Map<String, String> queryParams = new HashMap<>();
         final GsonRequest request = silceConnection.buildGetRequest(url,
-                                                                    queryParams,
-                                                                    DetalhesHistoricoPremioDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                DetalhesHistoricoPremioDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -384,11 +385,11 @@ public class ApostaBO extends BaseBO {
         String url = ServerMethods.APOSTAS_GERAR_CODIGO_RESGATE_PATH.replace("{id}", id.toString());
         final Map<String, String> queryParams = new HashMap<>();
         final GsonRequest request = silceConnection.buildGetRequest(url,
-                                                                    queryParams,
-                                                                    CodigoResgateDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                CodigoResgateDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -399,11 +400,11 @@ public class ApostaBO extends BaseBO {
         String url = ServerMethods.APOSTAS_CONFIRMADAS_DETALHES_PATH.replace("{id}", id.toString());
         final Map<String, String> queryParams = new HashMap<>();
         final GsonRequest request = silceConnection.buildGetRequest(url,
-                                                                    queryParams,
-                                                                    DetalhesPremioDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                DetalhesPremioDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -414,11 +415,11 @@ public class ApostaBO extends BaseBO {
         String url = ServerMethods.APOSTAS_CONFIRMADAS_COMPROVANTE_PATH.replace("{id}", id.toString());
         final Map<String, String> queryParams = new HashMap<>();
         final GsonRequest request = silceConnection.buildGetRequest(url,
-                                                                    queryParams,
-                                                                    ComprovanteApostaDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                ComprovanteApostaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -430,11 +431,11 @@ public class ApostaBO extends BaseBO {
         String url = ServerMethods.APOSTAS_COMPROVANTE_PREMIO_PATH.replace("{id}", id.toString());
         final Map<String, String> queryParams = new HashMap<>();
         final GsonRequest request = silceConnection.buildGetRequest(url,
-                                                                    queryParams,
-                                                                    DetalhesPremioDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                DetalhesPremioDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -445,11 +446,11 @@ public class ApostaBO extends BaseBO {
         String url = ServerMethods.APOSTAS_CONFERIR_PATH.replace("{id}", id.toString());
         final Map<String, String> queryParams = new HashMap<>();
         final GsonRequest request = silceConnection.buildGetRequest(url,
-                                                                    queryParams,
-                                                                    DTOEnumIntegerResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                DTOEnumIntegerResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -472,11 +473,11 @@ public class ApostaBO extends BaseBO {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("id", idAposta);
         final GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.APOSTAS_FAVORITAS_PATH + idAposta,
-                                                                       queryParams,
-                                                                       RetornoPadraoDTO.class,
-                                                                       listener.getSilceListener(),
-                                                                       listener.getErrorListener(),
-                                                                       getHeader());
+                queryParams,
+                RetornoPadraoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -484,11 +485,11 @@ public class ApostaBO extends BaseBO {
 
     public void postApostasFavoritas(final ApostaFavoritaDTO apostaFavoritaDTO, final RequestListener<RetornoPadraoDTO> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.APOSTAS_FAVORITAS_PATH,
-                                                                     new LinkedHashMap<>(),
-                                                                     apostaFavoritaDTO, RetornoPadraoDTO.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                apostaFavoritaDTO, RetornoPadraoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -503,12 +504,12 @@ public class ApostaBO extends BaseBO {
         url = url.replace("{qtdTeimosinhas}", String.valueOf(qtdTeimosinhas));
 
         final GsonRequest request = silceConnection.buildPostRequest(url,
-                                                                     new LinkedHashMap<>(),
-                                                                     "",
-                                                                     CarrinhoDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                "",
+                CarrinhoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -548,11 +549,11 @@ public class ApostaBO extends BaseBO {
 
     public void validarCarrinho(final RequestListener<ResourceResponse> listener) {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.VALIDAR_CARRINHO,
-                                                                    new LinkedHashMap<>(),
-                                                                    ResourceResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                new LinkedHashMap<>(),
+                ResourceResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -562,11 +563,11 @@ public class ApostaBO extends BaseBO {
     public void adicionarApostasNoCarrinho(final List<IdentificaoDeUmaApostaDas8Modalidades> apostas,
                                            final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_APOSTAS_CARRINHO_PATH,
-                                                                     new LinkedHashMap<>(),
-                                                                     apostas, AgrupadorDTOApostaDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                apostas, AgrupadorDTOApostaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -617,11 +618,11 @@ public class ApostaBO extends BaseBO {
 
     public void postRegistrarApostaCarrinho(final MeioPagamento meioPagamento, final RequestListener<RetornoPadraoDTO> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_PATH,
-                                                                     new LinkedHashMap<>(),
-                                                                     meioPagamento, RetornoPadraoDTO.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                meioPagamento, RetornoPadraoDTO.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -629,11 +630,11 @@ public class ApostaBO extends BaseBO {
 
     public void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<CompraAsyncResponse> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_ASYNC_PATH,
-                                                                     new LinkedHashMap<>(),
-                                                                     meioPagamento, CompraAsyncResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                meioPagamento, CompraAsyncResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -657,11 +658,11 @@ public class ApostaBO extends BaseBO {
     //RAPIDAO
     public void getRapidoes(final RequestListener<RapidaoDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.RAPIDOES_PATH,
-                                                                    new LinkedHashMap<>(),
-                                                                    RapidaoDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                new LinkedHashMap<>(),
+                RapidaoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -670,11 +671,11 @@ public class ApostaBO extends BaseBO {
     public void postRapidoes(final RapidaoDTO rapidao,
                              final RequestListener<RapidaoDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.RAPIDOES_PATH,
-                                                                     new LinkedHashMap<>(),
-                                                                     rapidao, RapidaoDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                rapidao, RapidaoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -688,12 +689,12 @@ public class ApostaBO extends BaseBO {
         }
 
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.GERAR_APOSTAS_RAPIDAO_PATH,
-                                                                     queryParams,
-                                                                     "",
-                                                                     CarrinhoDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                queryParams,
+                "",
+                CarrinhoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -709,11 +710,11 @@ public class ApostaBO extends BaseBO {
         queryParams.put("size", String.valueOf(size));
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.COMPRAS_PATH,
-                                                                    queryParams,
-                                                                    ResultadoPesquisaPaginadaDTOCompraDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                ResultadoPesquisaPaginadaDTOCompraDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -722,11 +723,11 @@ public class ApostaBO extends BaseBO {
     public void getDetalhesCompras(final String idSelecionado, final RequestListener<AgrupadorApostaCompraDTOResponse> listener) {
         String url = ServerMethods.DETALHES_COMPRAS_PATH.replace("{id}", idSelecionado);
         final GsonRequest request = silceConnection.buildGetRequest(url,
-                                                                    new LinkedHashMap<>(),
-                                                                    AgrupadorApostaCompraDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                new LinkedHashMap<>(),
+                AgrupadorApostaCompraDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -734,11 +735,11 @@ public class ApostaBO extends BaseBO {
 
     public void getMesesCompras(final RequestListener<MesAnoDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.COMPRAS_MESES_PATH,
-                                                                    new LinkedHashMap<>(),
-                                                                    MesAnoDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                new LinkedHashMap<>(),
+                MesAnoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -751,11 +752,11 @@ public class ApostaBO extends BaseBO {
         url = url.replace("{concurso}",concurso);
 
         final GsonRequest request = silceConnection.buildGetRequest(url,
-                                                                    queryParams,
-                                                                    ResultadoConcursoDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                queryParams,
+                ResultadoConcursoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -767,11 +768,11 @@ public class ApostaBO extends BaseBO {
 
     public void getModalidades(final RequestListener<ModalidadeDTOResponse> listener) {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.MODALIDADES_PATH,
-                                                                    new LinkedHashMap<>(),
-                                                                    ModalidadeDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                new LinkedHashMap<>(),
+                ModalidadeDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -785,19 +786,19 @@ public class ApostaBO extends BaseBO {
         params.put("grecaptchaResponse", "");
 
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.BILHETES_CONFERIR_BILHETE_PATH,
-                                                                     new LinkedHashMap<>(),
-                                                                     params,
-                                                                     ResultadoConsultaBilheteDTOResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     headers);
+                new LinkedHashMap<>(),
+                params,
+                ResultadoConsultaBilheteDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
         silceConnection.request(request, listener);
     }
 
     public void postConferirBilhetesNovo(final String codigoBilhete,
-                                     final RequestListener<ResultadoConsultaBilheteDTOResponse> listener) {
+                                         final RequestListener<ResultadoConsultaBilheteDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         Map<String, String> params = new HashMap<>();
         params.put("codigo", codigoBilhete);
@@ -818,11 +819,11 @@ public class ApostaBO extends BaseBO {
     public void obterEscudoTime(String id, final RequestListener<EscudoEquipeEsportivaDTOResponse> listener) {
         String url = ServerMethods.EQUIPES_ESPORTIVAS_ESCUDO_PATH.replace("{id}", id);
         final GsonRequest request = silceConnection.buildGetRequest(url,
-                                                                    new LinkedHashMap<>(),
-                                                                    EscudoEquipeEsportivaDTOResponse.class,
-                                                                    listener.getSilceListener(),
-                                                                    listener.getErrorListener(),
-                                                                    getHeader());
+                new LinkedHashMap<>(),
+                EscudoEquipeEsportivaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -842,12 +843,12 @@ public class ApostaBO extends BaseBO {
 
     public void gerarCodigoPix(MeioPagamentoPix meioPagamento, final RequestListener<GerarPixResponse> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.GERAR_CODIGO_PIX,
-                                                                     new LinkedHashMap<>(),
-                                                                     meioPagamento,
-                                                                     GerarPixResponse.class,
-                                                                     listener.getSilceListener(),
-                                                                     listener.getErrorListener(),
-                                                                     getHeader());
+                new LinkedHashMap<>(),
+                meioPagamento,
+                GerarPixResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
         silceConnection.request(request, listener);
@@ -876,5 +877,29 @@ public class ApostaBO extends BaseBO {
         }
         listener.onErrorResponse(new VolleyError(new NetworkResponse(401, null, false, 0L, null)));
         return false;
+    }
+
+    // BOLAO
+
+    public void getBoloesDisponiveis(final int tipoConsulta, final int idMunicipio,
+                                     final int idUf, final int pagina, final  int qtdPorPagina,
+                                     final RequestListener<BoloesDisponiveisResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+
+        queryParams.put("tipoConsulta", String.valueOf(tipoConsulta));
+        queryParams.put("idMunicipio", String.valueOf(idMunicipio));
+        queryParams.put("idUf", String.valueOf(idUf));
+        queryParams.put("pagina", String.valueOf(pagina));
+        queryParams.put("qtdPorPagina", String.valueOf(qtdPorPagina));
+
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.BOLOES_DISPONIVEIS,
+                queryParams,
+                BoloesDisponiveisResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
     }
 }

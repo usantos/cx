@@ -116,7 +116,7 @@ public class BaseBO {
         ErrorResponse   errorResponse = transformaErroEmErrorResponse(error);
         NetworkResponse response      = error.networkResponse;
         if(response != null && response.statusCode == 500){
-           AppCenterManager.registraErro(errorResponse.getCodigo(), getEndpoint(request));
+            AppCenterManager.registraErro(errorResponse.getCodigo(), getEndpoint(request));
         }
     }
 
