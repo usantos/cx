@@ -7,41 +7,30 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BoloesDisponiveisResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
+import br.gov.caixa.loterias.apostas.model.repository.BolaoRepository;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 
 public class BolaoModel extends AppModel{
 
+	private BolaoRepository bolaoRepository;
+
 	public BolaoModel(Activity activity) {
 		super(activity);
+
+		this.bolaoRepository = new BolaoRepository(activity);
 	}
 
-	public void buscaBoloes(OnSilceListener<ListaBolaoDTO> listener) {
-		ApostaBO_.getInstance_(getActivity()).getBoloesDisponiveis(1, 690, 41, 1, 10,
-										   new RequestListener<BoloesDisponiveisResponse>() {
-			@Override
-			public void onResponse(BoloesDisponiveisResponse response) {
-				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_carregou_boloes_disponiveis));
-				if (response.getRedirect() != null){
-					RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
-				}
-
-				listener.success(response.getPayload());
-			}
-
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				RedirectNetwork.checkRedirect(error, getActivity());
-				listener.error(error);
-			}
-		});
+	public void buscaBoloes(int idMunicipio, int idUf, OnSilceListener<ListaBolaoDTO> listener) {
+		bolaoRepository.buscarBoloesDisponiveis(idMunicipio, idUf, listener);
 	}
 
 	public List<CotasBolaoDTO> getCarrosselList(List<CotasBolaoDTO> listaCompleta) {
@@ -59,5 +48,28 @@ public class BolaoModel extends AppModel{
 		}
 
 		return new ArrayList<>();
+	}
+
+	public void buscaFiltradaBoloes(int idMunicipio, int idUf, FiltroAplicadoMarketplace filtroMarketplace, OnSilceListener<ListaBolaoDTO> listener) {
+		bolaoRepository.buscarFiltrada(idMunicipio, idUf, filtroMarketplace, listener);
+	}
+
+	public void buscaDadosUsuario(OnSilceListener<ApostadorDTO> listener) {
+		DadosUsuarioBO_.getInstance_( getActivity() ).getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
+			@Override
+			public void onResponse(ApostadorDTOResponse response) {
+				AppCenterManager.registraEvento("DADOS_USUARIO");
+				checkRedirect(response);
+				listener.success(response.getPayload());
+
+			}
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				AppCenterManager.registraEventoErro("BOLOES_DADOS_USUARIO", error);
+				RedirectNetwork.checkRedirect( error, getActivity() );
+				listener.error(error);
+			}
+		} );
 	}
 }

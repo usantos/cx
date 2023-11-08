@@ -2,15 +2,12 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,23 +19,22 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.FiltroMarketplace;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.model.FiltroMarketplaceModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotericaAdapter;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.custom.MoedaMaskTextWatcher;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
 public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
-    private static final String FILTRO_MARKETPLACE_RETORNO = "FILTRO_MARKETPLACE_RETORNO";
+    public static final String FILTRO_MARKETPLACE_RETORNO = "FILTRO_MARKETPLACE_RETORNO";
 
     private EditText editValMin, editValMax;
     private RangeSlider sliderQtdCotas;
@@ -54,6 +50,10 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private LotericaDTO selectLotericaDTO = null;
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
+    private TextWatcher textWatcher;
+
+    private FiltroMarketplaceModel model;
+
 //    private AutoCompleteTextView autoCompleteLoterica;
 //    private LotericaArrayAdapter lotericaArrayAdapter;
 
@@ -63,6 +63,8 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         setContentView( R.layout.activity_filtra_marketplace );
         configToolbar(R.id.toolbar);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getResources().getString(R.string.filtrar)));
+
+        model =  new FiltroMarketplaceModel(this);
 
         setaViews();
         setaRangeComponentes();
@@ -124,120 +126,27 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 //            }
 //        });
 
-        btnLimpaFiltros.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                limpaFiltros();
-            }
-        });
+        btnLimpaFiltros.setOnClickListener(v -> limpaFiltros());
 
-        btnAplicar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FiltroMarketplace filtroMarketplace = new FiltroMarketplace(
-                    editValMin.getText().toString(),
-                    editValMax.getText().toString(),
-                    sliderQtdCotas.getValueFrom(),
-                    sliderQtdCotas.getValueTo(),
-                    selectLotericaDTO);
+        btnAplicar.setOnClickListener(v -> aplicarFiltro());
 
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(FILTRO_MARKETPLACE_RETORNO, filtroMarketplace);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            }
-        });
-
-        lotericaAdapter = new LotericaAdapter(listLotericaDTO, new LotericaAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(LotericaDTO lotericaDTO) {
-                editLoterica.setText(lotericaDTO.getNome().trim());
-                recyclerViewLoterica.setVisibility(View.GONE);
-                selectLotericaDTO = lotericaDTO;
-            }
+        lotericaAdapter = new LotericaAdapter(listLotericaDTO, lotericaDTO -> {
+            editLoterica.setText(lotericaDTO.getNome().trim());
+            recyclerViewLoterica.setVisibility(View.GONE);
+            selectLotericaDTO = lotericaDTO;
         });
         recyclerViewLoterica.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewLoterica.setAdapter(lotericaAdapter);
 
-        editValMin.addTextChangedListener(new TextWatcher() {
-            private String current = "";
+        editValMin.addTextChangedListener(new MoedaMaskTextWatcher(editValMin));
 
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+        editValMax.addTextChangedListener(new MoedaMaskTextWatcher(editValMax));
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                if (charSequence.toString().length() == 0) {
-                    current = charSequence.toString();
-                    return;
-                }
-                if (!charSequence.toString().equals(current)) {
-                    editValMin.removeTextChangedListener(this);
-                    String cleanString = charSequence.toString().replaceAll("[,.]", "");
-                    double parsed = Double.parseDouble(cleanString);
-                    String formated = StringUtils.formatToCurrency(parsed/100);
-                    current = formated;
-                    editValMin.setText(formated);
-                    editValMin.setSelection(formated.length());
-                    editValMin.addTextChangedListener(this);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
+        textWatcher = MaskEditUtil.textWatcherOnTextTChangedListener(charSequence -> {
+            onTextChanged(charSequence);
         });
 
-        editValMax.addTextChangedListener(new TextWatcher() {
-            private String current = "";
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                if (charSequence.toString().length() == 0) {
-                    current = charSequence.toString();
-                    return;
-                }
-                if (!charSequence.toString().equals(current)) {
-                    editValMax.removeTextChangedListener(this);
-                    String cleanString = charSequence.toString().replaceAll("[,.]", "");
-                    double parsed = Double.parseDouble(cleanString);
-                    String formated = StringUtils.formatToCurrency(parsed/100);
-                    current = formated;
-                    editValMax.setText(formated);
-                    editValMax.setSelection(formated.length());
-                    editValMax.addTextChangedListener(this);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
-        editLoterica.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                editLoterica.removeTextChangedListener(this);
-
-                filtraLoterica(charSequence.toString());
-
-                editLoterica.setSelection(editLoterica.length());
-                editLoterica.addTextChangedListener(this);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
+        editLoterica.addTextChangedListener(textWatcher);
 
 //        //Auto
 //        listLotericaDTO = new ArrayList<>();
@@ -255,6 +164,29 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 //        buscaLoterica( "maria ");
     }
 
+    private void onTextChanged(String charSequence){
+        editLoterica.removeTextChangedListener(textWatcher);
+
+        filtraLoterica(charSequence.toString());
+
+        editLoterica.setSelection(editLoterica.length());
+        editLoterica.addTextChangedListener(textWatcher);
+    }
+
+    private void aplicarFiltro() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(FILTRO_MARKETPLACE_RETORNO, getExtraFiltro());
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
+
+    private FiltroAplicadoMarketplace getExtraFiltro() {
+        return model.getFiltroAplicado(editValMin.getText().toString(),
+                editValMax.getText().toString(),
+                sliderQtdCotas.getValues().get(0),
+                sliderQtdCotas.getValues().get(1),
+                selectLotericaDTO);
+    }
 
     private void setaRangeComponentes() {
         sliderQtdCotas.setValueFrom(2);
@@ -274,35 +206,11 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         if (text.length() >= 6) {
 
             if (text.length() == 6) {
-                final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-                DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
-                //dadosCorporativosBO.buscarLoteriasNomeFantasia(text, new RequestListener<LotericaDTOResponse>() {
-                dadosCorporativosBO.buscarLoteriasNomeCodigo(text, new RequestListener<LotericaDTOResponse>() {
-                    @Override
-                    public void onResponse(LotericaDTOResponse response) {
-                        loadViewProgress.dismiss();
-                        listLotericaDTO = response.getPayload();
-                        recyclerViewLoterica.setVisibility(View.VISIBLE);
-                        lotericaAdapter.filterList(listLotericaDTO);
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        loadViewProgress.dismiss();
-                    }
-                });
-
+                AlertDialogUtils.show(this);
+                model.buscaLotericas(text, onBuscaLotericasListener());
             } else {
-
                 if (listLotericaDTO != null && listLotericaDTO.size()>0) {
-                    List<LotericaDTO> filteredList = new ArrayList<>();
-                    for (LotericaDTO item : listLotericaDTO) {
-                        if (item.getNome().toLowerCase().contains(text.toLowerCase())) {
-                            filteredList.add(item);
-                        }
-                    }
-                    recyclerViewLoterica.setVisibility(View.VISIBLE);
-                    lotericaAdapter.filterList(filteredList);
+                    apresentaListaFiltrada(model.getListaFiltrada(text, listLotericaDTO));
                 }
             }
         } else {
@@ -310,6 +218,26 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         }
     }
 
+    private OnSilceListener<List<LotericaDTO>> onBuscaLotericasListener() {
+        return new OnSilceListener<List<LotericaDTO>>() {
+            @Override
+            public void success(List<LotericaDTO> payload) {
+                AlertDialogUtils.dismiss();
+                listLotericaDTO = payload;
+                apresentaListaFiltrada(listLotericaDTO);
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        };
+    }
+
+    private void apresentaListaFiltrada(List<LotericaDTO> filteredList) {
+        recyclerViewLoterica.setVisibility(View.VISIBLE);
+        lotericaAdapter.filterList(filteredList);
+    }
 
 //    private void buscaLoterica(String text) {
 //        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);

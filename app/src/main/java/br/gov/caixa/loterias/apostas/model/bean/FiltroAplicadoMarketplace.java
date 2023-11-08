@@ -4,17 +4,17 @@ import java.io.Serializable;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
 
-public class FiltroMarketplace implements Serializable {
+public class FiltroAplicadoMarketplace implements Serializable {
     private String valorMinimoAposta;
     private String valorMaximoAposta;
     private Float qtdMinCotas;
     private Float qtdMaxCotas;
     private LotericaDTO lotericaDTO;
 
-    public FiltroMarketplace(){
+    public FiltroAplicadoMarketplace(){
     }
 
-    public FiltroMarketplace(String valorMinimoAposta, String valorMaximoAposta, Float qtdMinCotas, Float qtdMaxCotas, LotericaDTO lotericaDTO) {
+    public FiltroAplicadoMarketplace(String valorMinimoAposta, String valorMaximoAposta, Float qtdMinCotas, Float qtdMaxCotas, LotericaDTO lotericaDTO) {
         this.valorMinimoAposta = valorMinimoAposta;
         this.valorMaximoAposta = valorMaximoAposta;
         this.qtdMinCotas = qtdMinCotas;

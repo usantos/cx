@@ -23,6 +23,7 @@ public final class AppCenterManager {
     public static final String ERRO_GENERICO_SERIALIZACAO = "ERRO_SERIALIZACAO";
     public static final String ERRO_UNSUPPORTED_ENCODING = "ERRO_UNSUPPORTED_ENCODING";
     public static final String ERRO_SERVICO_SEM_RESPONSEDATA = "ERRO_SERVICO_SEM_RESPONSEDATA";
+    public static final String ERRO_BOLOES_DISPONIVEIS = "ERRO_SERVICO_SEM_RESPONSEDATA";
 
     // constants para tag
 
@@ -50,7 +51,6 @@ public final class AppCenterManager {
 
         Analytics.trackEvent(evento + "_" + DadosUsuarioBO.obterCpf() + "_" + getDate(), properties, Flags.CRITICAL);
     }
-
 
     public static void registraEventoErro(String evento, VolleyError error) {
         registraEventoErro(evento, error, null);

@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -16,11 +17,15 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
+import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
@@ -49,6 +54,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private SomadorCarrinhoFragment somadorCarrinhoFragment;
 	private ActivityResultLauncher<Intent> launcher;
 
+	private TextView todosBoloesTxt;
+	private int idMunicipio;
+	private int idUf;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,21 +67,41 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 		configFiltrar(launcher);
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_Voltar Apostas Individuais_"));
 
+		todosBoloesTxt = findViewById(R.id.txt_todos_boloes);
+
 		listView = findViewById(R.id.lista_bolao);
 		carrosselView = findViewById(R.id.bolao_carousel);
 
 		model = new BolaoModel(this);
 
-		model.buscaBoloes(onBoloesListener());
+		AlertDialogUtils.show(this);
+		model.buscaDadosUsuario(onBuscaDadosUsuarios());
 
 		fragmentSomadorCarrinho();
+	}
+
+	private OnSilceListener<ApostadorDTO> onBuscaDadosUsuarios() {
+		return new OnSilceListener<ApostadorDTO>() {
+			@Override
+			public void success(ApostadorDTO payload) {
+				idMunicipio = payload.getMunicipioId().getNumero().intValue();
+				idUf = payload.getMunicipioId().getIdUF().intValue();
+
+				model.buscaBoloes(idMunicipio, idUf, onBoloesListener());
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+				// montar estado vazio da tela
+			}
+		};
 	}
 
 	private OnSilceListener<ListaBolaoDTO> onBoloesListener() {
 		return new OnSilceListener<ListaBolaoDTO>() {
 			@Override
 			public void success(ListaBolaoDTO payload) {
-
 				carrosselList = model.getCarrosselList(payload.getCotas());
 				carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener());
 				carrosselView.setAdapter(carrosselAdapter);
@@ -84,11 +113,18 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 				bolaoList = model.getBolaoList(payload.getCotas());
 				listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
 				listView.setAdapter(listAdapter);
+
+				if (bolaoList.isEmpty()){
+					todosBoloesTxt.setVisibility(View.INVISIBLE);
+				}
+
+				AlertDialogUtils.dismiss();
 			}
 
 			@Override
 			public void error(VolleyError error) {
-				Log.d("","");
+				AlertDialogUtils.dismiss();
+				// montar estado vazio da tela
 			}
 		};
 	}
@@ -97,7 +133,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 		return result -> {
 			if (result.getResultCode() == Activity.RESULT_OK) {
 				Intent data = result.getData();
-				// recupertar objeto de filtro aqui
+				FiltroAplicadoMarketplace filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
+
+				AlertDialogUtils.show(BolaoActivity.this);
+				model.buscaFiltradaBoloes(idMunicipio, idUf, filtro, onBoloesListener());
 			}
 		};
 	}

@@ -52,6 +52,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
+import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
@@ -880,17 +881,31 @@ public class ApostaBO extends BaseBO {
     }
 
     // BOLAO
-
-    public void getBoloesDisponiveis(final int tipoConsulta, final int idMunicipio,
-                                     final int idUf, final int pagina, final  int qtdPorPagina,
+    public void getBoloesDisponiveis(FiltroMarketPlace filtro,
                                      final RequestListener<BoloesDisponiveisResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
-        queryParams.put("tipoConsulta", String.valueOf(tipoConsulta));
-        queryParams.put("idMunicipio", String.valueOf(idMunicipio));
-        queryParams.put("idUf", String.valueOf(idUf));
-        queryParams.put("pagina", String.valueOf(pagina));
-        queryParams.put("qtdPorPagina", String.valueOf(qtdPorPagina));
+        queryParams.put("tipoConsulta", String.valueOf(filtro.getTipoConsulta().getValor()));
+        queryParams.put("idMunicipio", String.valueOf(filtro.getIdMunicipio()));
+        queryParams.put("idUf", String.valueOf(filtro.getIdUf()));
+        queryParams.put("pagina", String.valueOf(filtro.getPagina()));
+        queryParams.put("qtdPorPagina", String.valueOf(filtro.getQtdPorPagina()));
+
+        if (filtro.getValorMinimoCota() != null){
+            queryParams.put("valorMinimoCota",String.valueOf(filtro.getValorMinimoCota()));
+        }
+        if (filtro.getValorMaximoCota() != null){
+            queryParams.put("valorMaximoCota",String.valueOf(filtro.getValorMaximoCota()));
+        }
+        if (filtro.getQtdMinimaCota() > 0){
+            queryParams.put("qtdMinimaCota",String.valueOf(filtro.getQtdMinimaCota()));
+        }
+        if (filtro.getQtdMaximaCota() > 0){
+            queryParams.put("qtdMaximaCota",String.valueOf(filtro.getQtdMaximaCota()));
+        }
+        if (filtro.getNumeroLoterico() != null){
+            queryParams.put("numeroLoterico",String.valueOf(filtro.getNumeroLoterico()));
+        }
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.BOLOES_DISPONIVEIS,
                 queryParams,

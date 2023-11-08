@@ -63,7 +63,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
 		modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
-		loterica.setText(String.valueOf(bolao.getLoterica()));
+		loterica.setText(bolao.getNomeFantasia().substring(0,13).concat("..."));
 		concurso.setText(String.valueOf(bolao.getConcurso()));
 		cidade.setText(bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
 		valor.setText(String.valueOf(bolao.getVrCotaComTarifa()));

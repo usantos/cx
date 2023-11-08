@@ -74,7 +74,7 @@ public class CotasBolaoDTO {
     @SerializedName("qtdCotaVendidas")
     private Integer qtdCotaVendidas = null;
     @SerializedName("qtdCotaReservada")
-    private Integer qtdCotaReservada = 0;
+    private Integer qtdCotaReservada = 1;
     @SerializedName("vrCotaSemTarifa")
     private BigDecimal vrCotaSemTarifa = null;
     @SerializedName("vrCotaComTarifa")
@@ -448,7 +448,11 @@ public class CotasBolaoDTO {
      **/
     @ApiModelProperty(value = "")
     public BigDecimal getVrCotaComTarifa() {
-        return vrCotaComTarifa;
+        if (vrCotaComTarifa != null){
+            return vrCotaComTarifa;
+        } else {
+            return valorCota.add(valorTarifaServico);
+        }
     }
 
     public void setVrCotaComTarifa(BigDecimal vrCotaComTarifa) {

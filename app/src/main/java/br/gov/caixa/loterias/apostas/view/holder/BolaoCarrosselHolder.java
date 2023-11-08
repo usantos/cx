@@ -64,11 +64,11 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	}
 
 	private void preencheConteudo(CotasBolaoDTO bolao) {
-		valorPremio.setText(String.valueOf(bolao.getVrPremioEstimado()));
+		valorPremio.setText(ViewUtils.getMoedaFormat(bolao.getVrPremioEstimado()));
 		concurso.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
 														   itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso())));
-		loterica.setText(bolao.getLoterica()+ "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
-		valorCota.setText(String.valueOf(bolao.getVrCotaComTarifa()));
+		loterica.setText(bolao.getNomeFantasia()+ "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
+		valorCota.setText(ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()));
 	}
 
 	private void preencheCabecalho(CotasBolaoDTO bolao) {
