@@ -93,30 +93,38 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 			@Override
 			public void error(VolleyError error) {
 				AlertDialogUtils.dismiss();
-				// montar estado vazio da tela
+				apresentanEstadoVazio();
 			}
 		};
+	}
+
+	private void apresentanEstadoVazio() {
+		ViewUtils.alertTitleButton(BolaoActivity.this, R.string.label_atencao, "Sua busca não retornou resultados.", "Ok");
 	}
 
 	private OnSilceListener<ListaBolaoDTO> onBoloesListener() {
 		return new OnSilceListener<ListaBolaoDTO>() {
 			@Override
 			public void success(ListaBolaoDTO payload) {
+				if (payload.getCotas().isEmpty()) {
+					apresentanEstadoVazio();
+				}
 				carrosselList = model.getCarrosselList(payload.getCotas());
 				carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener());
 				carrosselView.setAdapter(carrosselAdapter);
 				carrosselView.setItemTransformer(new ScaleTransformer.Builder()
-														 .setMinScale(0.8f)
-														 .build());
+						.setMinScale(0.8f)
+						.build());
 
 
 				bolaoList = model.getBolaoList(payload.getCotas());
 				listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
 				listView.setAdapter(listAdapter);
 
-				if (bolaoList.isEmpty()){
+				if (bolaoList.isEmpty()) {
 					todosBoloesTxt.setVisibility(View.INVISIBLE);
 				}
+
 
 				AlertDialogUtils.dismiss();
 			}
@@ -124,7 +132,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 			@Override
 			public void error(VolleyError error) {
 				AlertDialogUtils.dismiss();
-				// montar estado vazio da tela
+				apresentanEstadoVazio();
 			}
 		};
 	}
