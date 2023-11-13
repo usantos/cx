@@ -12,9 +12,11 @@ import java.util.Random;
 
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmBolao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
@@ -417,4 +419,21 @@ public class ApostaUtils {
 		return "";
 	}
 
+	public static IdentificaoDeUmaApostaDas8Modalidades converteBolaoEmAposta(CotasBolaoDTO bolao) {
+		IdentificaoDeUmBolao aposta = new IdentificaoDeUmBolao();
+		aposta.setModalidade(bolao.getModalidade());
+		aposta.setValor(bolao.getValorCota());
+		aposta.setConcursoAlvo(bolao.getConcurso());
+		aposta.setSubcanalCarrinhoAposta(1);
+		aposta.setIndicadorCotaBolao(true);
+		aposta.setIdBolao(bolao.getCodigoBolao());
+		aposta.setQtdCotasBolao(bolao.getQtdCotasBolao());
+		aposta.setValorTarifaServico(bolao.getValorTarifaServico());
+		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+		tipoConcurso.setValor(bolao.getTipoConcurso().toString());
+		tipoConcurso.setDescricao("");
+		aposta.setTipoConcurso(tipoConcurso);
+
+		return aposta;
+	}
 }

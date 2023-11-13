@@ -175,12 +175,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private void aumentaQuatidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
 		list.get(position).aumentaQuantidade();
-		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotaReservada(), list.get(position).getQtdCotaDisponivel());
+		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotasBolao(), list.get(position).getQtdCotaDisponivel());
 	}
 
 	private void diminuiQuatidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
 		list.get(position).diminuiQuantidade();
-		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotaReservada(), list.get(position).getQtdCotaDisponivel());
+		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotasBolao(), list.get(position).getQtdCotaDisponivel());
 	}
 
 	private void fragmentSomadorCarrinho() {
@@ -226,7 +226,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 	}
 
 	private void adicionarNoCarrinho(CotasBolaoDTO bolao) {
-		TestVisao.toast("Funcionalidade ainda nao implementada!");
+		model.addBolaoCarrinho(bolao);
 	}
 
 }
