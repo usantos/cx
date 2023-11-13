@@ -13,15 +13,14 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
+import br.gov.caixa.loterias.apostas.view.holder.LoteriasHolder;
+import br.gov.caixa.loterias.apostas.view.holder.LotericaViewHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
-public class LotericaAdapter extends RecyclerView.Adapter<LotericaAdapter.LotericaViewHolder> {
+public class LotericaAdapter extends RecyclerView.Adapter<LotericaViewHolder> {
 
     private static List<LotericaDTO> listLotericaDTO;
     private OnItemClickListener onItemClickListener;
-
-    public interface OnItemClickListener {
-        void onItemClick(LotericaDTO lotericaDTO);
-    }
 
     public LotericaAdapter(List<LotericaDTO> listLotericaDTO, OnItemClickListener onItemClickListener) {
         this.listLotericaDTO = listLotericaDTO;
@@ -30,40 +29,19 @@ public class LotericaAdapter extends RecyclerView.Adapter<LotericaAdapter.Loteri
 
     @NonNull
     @Override
-    public LotericaAdapter.LotericaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LotericaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loterica, parent, false);
         return new LotericaViewHolder(view, onItemClickListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull LotericaAdapter.LotericaViewHolder holder, int position) {
-        holder.textView.setText(listLotericaDTO.get(position).getNome().trim());
+    public void onBindViewHolder(@NonNull LotericaViewHolder holder, int position) {
+        holder.bind(listLotericaDTO.get(position), position);
     }
 
     @Override
     public int getItemCount() {
         return listLotericaDTO.size();
-    }
-
-    static class LotericaViewHolder extends RecyclerView.ViewHolder {
-        TextView textView;
-
-        LotericaViewHolder(@NonNull View itemView, final OnItemClickListener onItemClickListener) {
-            super(itemView);
-            textView = itemView.findViewById(R.id.textNomeLoterica);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onItemClickListener != null) {
-                        int position = getAbsoluteAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            onItemClickListener.onItemClick(listLotericaDTO.get(position));
-                        }
-                    }
-                }
-            });
-        }
     }
 
     public void filterList(List<LotericaDTO> listLotericaDTOFiltrada) {

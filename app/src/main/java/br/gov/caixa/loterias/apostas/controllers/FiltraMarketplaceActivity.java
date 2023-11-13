@@ -27,10 +27,12 @@ import br.gov.caixa.loterias.apostas.model.model.FiltroMarketplaceModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotericaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.MoedaMaskTextWatcher;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
@@ -130,11 +132,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
         btnAplicar.setOnClickListener(v -> aplicarFiltro());
 
-        lotericaAdapter = new LotericaAdapter(listLotericaDTO, lotericaDTO -> {
-            editLoterica.setText(lotericaDTO.getNome().trim());
-            recyclerViewLoterica.setVisibility(View.GONE);
-            selectLotericaDTO = lotericaDTO;
-        });
+        lotericaAdapter = new LotericaAdapter(listLotericaDTO, onItemClickListener());
         recyclerViewLoterica.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewLoterica.setAdapter(lotericaAdapter);
 
@@ -162,6 +160,15 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 ////        });
 //        //*** ACERTAR ***
 //        buscaLoterica( "maria ");
+    }
+
+    private OnItemClickListener onItemClickListener() {
+        return (holder, position) -> {
+            LotericaDTO lotericaDTO = listLotericaDTO.get(position);
+            editLoterica.setText(lotericaDTO.getNome().trim());
+            recyclerViewLoterica.setVisibility(View.GONE);
+            selectLotericaDTO = lotericaDTO;
+        };
     }
 
     private void onTextChanged(String charSequence){
@@ -235,6 +242,10 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     }
 
     private void apresentaListaFiltrada(List<LotericaDTO> filteredList) {
+        if (filteredList.isEmpty()){
+            TestVisao.toast("Sua busca não retornou resultados.");
+            return;
+        }
         recyclerViewLoterica.setVisibility(View.VISIBLE);
         lotericaAdapter.filterList(filteredList);
     }

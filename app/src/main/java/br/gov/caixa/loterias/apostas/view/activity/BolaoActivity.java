@@ -123,6 +123,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 				if (bolaoList.isEmpty()) {
 					todosBoloesTxt.setVisibility(View.INVISIBLE);
+				} else {
+					todosBoloesTxt.setVisibility(View.VISIBLE);
 				}
 
 

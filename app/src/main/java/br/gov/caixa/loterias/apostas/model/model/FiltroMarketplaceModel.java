@@ -35,7 +35,11 @@ public class FiltroMarketplaceModel extends AppModel{
 		dadosCorporativosBO.buscarLoteriasNomeCodigo(text, new RequestListener<LotericaDTOResponse>() {
 			@Override
 			public void onResponse(LotericaDTOResponse response) {
-				listener.success(response.getPayload());
+				if (response.getPayload() == null){
+					listener.success(new ArrayList<>());
+				} else {
+					listener.success(response.getPayload());
+				}
 			}
 
 			@Override
