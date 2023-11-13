@@ -33,6 +33,10 @@ public class FaixaPremiadaDTO implements Serializable {
     protected String nome = null;
     @SerializedName("valorLiquido")
     protected BigDecimal valorLiquido = null;
+    @SerializedName("valorPremioCota")
+    protected BigDecimal valorPremioCota = null;
+    @SerializedName("quantidadeAcertos")
+    protected Integer quantidadeAcertos = null;
 
     private String situacao;
     private int qtd;
@@ -113,6 +117,22 @@ public class FaixaPremiadaDTO implements Serializable {
         this.qtd = qtd;
     }
 
+    public BigDecimal getValorPremioCota() {
+        return valorPremioCota;
+    }
+
+    public void setValorPremioCota(BigDecimal valorPremioCota) {
+        this.valorPremioCota = valorPremioCota;
+    }
+
+    public Integer getQuantidadeAcertos() {
+        return quantidadeAcertos;
+    }
+
+    public void setQuantidadeAcertos(Integer quantidadeAcertos) {
+        this.quantidadeAcertos = quantidadeAcertos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -126,7 +146,9 @@ public class FaixaPremiadaDTO implements Serializable {
                 (this.numero == null ? faixaPremiadaDTO.numero == null : this.numero.equals(faixaPremiadaDTO.numero)) &&
                 (this.sorteio == null ? faixaPremiadaDTO.sorteio == null : this.sorteio.equals(faixaPremiadaDTO.sorteio)) &&
                 (this.nome == null ? faixaPremiadaDTO.nome == null : this.nome.equals(faixaPremiadaDTO.nome)) &&
-                (this.valorLiquido == null ? faixaPremiadaDTO.valorLiquido == null : this.valorLiquido.equals(faixaPremiadaDTO.valorLiquido));
+                (this.valorLiquido == null ? faixaPremiadaDTO.valorLiquido == null : this.valorLiquido.equals(faixaPremiadaDTO.valorLiquido)) &&
+                (this.valorPremioCota == null ? faixaPremiadaDTO.valorPremioCota == null : this.valorPremioCota.equals(faixaPremiadaDTO.valorPremioCota)) &&
+                (this.quantidadeAcertos == null ? faixaPremiadaDTO.quantidadeAcertos == null : this.quantidadeAcertos.equals(faixaPremiadaDTO.quantidadeAcertos));
     }
 
     @Override
@@ -137,6 +159,8 @@ public class FaixaPremiadaDTO implements Serializable {
         result = 31 * result + (this.sorteio == null ? 0 : this.sorteio.hashCode());
         result = 31 * result + (this.nome == null ? 0 : this.nome.hashCode());
         result = 31 * result + (this.valorLiquido == null ? 0 : this.valorLiquido.hashCode());
+        result = 31 * result + (this.valorPremioCota == null ? 0 : this.valorPremioCota.hashCode());
+        result = 31 * result + (this.quantidadeAcertos == null ? 0 : this.quantidadeAcertos.hashCode());
         return result;
     }
 
@@ -149,6 +173,8 @@ public class FaixaPremiadaDTO implements Serializable {
                 "  sorteio: " + sorteio + "\n" +
                 "  nome: " + nome + "\n" +
                 "  valorLiquido: " + valorLiquido + "\n" +
+                "  valorPremioCota: " + valorPremioCota + "\n" +
+                "  QuantidadeAcertos: " + quantidadeAcertos + "\n" +
                 "}\n";
         return sb;
     }

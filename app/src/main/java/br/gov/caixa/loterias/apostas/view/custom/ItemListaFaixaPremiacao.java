@@ -59,7 +59,7 @@ public class ItemListaFaixaPremiacao extends LinearLayout {
         }
 
         if (faixaPremiadaDTO.getQtd() >= 0){
-            quantidadePremiacaoTextView.setText(String.valueOf(faixaPremiadaDTO.getQtd()));
+            quantidadePremiacaoTextView.setText(String.valueOf(faixaPremiadaDTO.getQuantidadeAcertos()));
         } else {
             quantidadePremiacaoTextView.setText("-");
         }
@@ -70,7 +70,9 @@ public class ItemListaFaixaPremiacao extends LinearLayout {
             sorteioTextView.setText("-");
         }
 
-        if (faixaPremiadaDTO.getValorLiquido() != null){
+        if (faixaPremiadaDTO.getValorPremioCota() != null){
+            premiacaoTextView.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorPremioCota()));
+        } else if (faixaPremiadaDTO.getValorLiquido() != null){
             premiacaoTextView.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido()));
         } else {
             premiacaoTextView.setText("-");

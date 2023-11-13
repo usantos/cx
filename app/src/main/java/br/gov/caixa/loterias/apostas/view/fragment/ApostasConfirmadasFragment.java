@@ -176,7 +176,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     @Click
     protected void dateSelectorBtn() {
-        dialogData.show();
+        if (dialogData != null){
+            dialogData.show();
+        }
     }
 
     private void setaDialogFiltrar() {

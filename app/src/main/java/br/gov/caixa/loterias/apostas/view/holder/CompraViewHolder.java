@@ -2,11 +2,14 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
@@ -56,21 +59,15 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		//Nao pode ser inicializado abaixo
 		long tempo_inicial_pix = 0;
 
-		//*** Mock - APAGAR - Utilizado para testar a feature/pagamantoDevolvido ***
-//		if (ordemLista == 1) {
-//			item.getMeioPagamento().setValor(6l); //PIX
-//			item.getSituacao().setValor(11l);
-//			item.getSituacao().setDescricao("Cancelada");
-//		}
-
 		preencheSituacaoCompra(item);
-
 		if (SituacaoCompraUtil.isSituacaoPositiva(item.getSituacao())) {
 			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.azul_minhas_compras));
 		} else if (SituacaoCompraUtil.isSituacaoNegativa(item.getSituacao())) {
 			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.vermelho_minhas_compras));
 		} else if (SituacaoCompraUtil.isSituacaoProcessamento(item.getSituacao())) {
 			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.amarelo_minhas_compras));
+		} else {
+			this.itemCompraOrdemTextView.setTextColor(context.getResources().getColor(R.color.azul_minhas_compras));
 		}
 
 		this.textTotal.setText(ViewUtils.textFuturaAndFuturaBold(context,
@@ -129,12 +126,6 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 				activity.putExtra(context.getResources().getString(R.string.extra_tempo_pix), finalContagemRegressiva.getMillisUntilFinish());
 			}
 			context.startActivity(activity);
-		});
-
-		this.ibFavoritar.setOnClickListener( v -> {
-			if(listener != null){
-				listener.onItemClick(item);
-			}
 		});
 	}
 

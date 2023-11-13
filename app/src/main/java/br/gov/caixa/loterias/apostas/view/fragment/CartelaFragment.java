@@ -21,6 +21,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -136,10 +137,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 	public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
 		BigDecimal valorEmReais = BigDecimal.ZERO;
-		if (parametroJogo == null) {
-			SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-			parametroJogo = ViewUtils.getParametroSimulacao(sessaoUsuario, tipoJogo).getParametroJogo();
-		}
+		loadParametroJogo();
 
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 			ParametroValorApostaDTO valorAposta = parametroJogo.getValorApostaBy(numPrognostico, parametroJogo.getTrevos().getQtdMinima());
@@ -182,6 +180,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		valorTotalAposta = valorEmReais;
 	}
 
+	private void loadParametroJogo() {
+		if (parametroJogo == null) {
+			SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+			parametroJogo = ViewUtils.getParametroSimulacao(sessaoUsuario, tipoJogo).getParametroJogo();
+		}
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -189,9 +194,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
 		parentActivity = ((SimularApostaActivity) getActivity());
+		identificarTipoJogo();
 		if (parentActivity != null) {
 			parametroJogo = parentActivity.getParametroSimulacao();
-			identificarTipoJogo();
 		}
 
 		if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null
@@ -215,12 +220,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	@Override
 	public void onStart() {
 		super.onStart();
-		int idList;
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
-			idList = R.id.recyclerViewPartida;
-		} else {
-			idList = R.id.listaDezenas;
-		}
+
+		loadParametroJogo();
 
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
 			opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);
@@ -257,9 +258,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			verificaSeMostraSalvarApostaView();
 		}
 		editaAposta();
-
-		ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
-//		((ScrollView) view.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
 	}
 
 	public void cartelaFragmentBuilder(Bundle dataBundle) {
