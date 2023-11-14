@@ -157,6 +157,37 @@ android {
                 ]
             }
 
+            tqsexterno {
+                dimension "default"
+                applicationIdSuffix ".hmp"
+                resValue "string", "app_name", "Loterias_tqs"
+                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.tqs.caixa.gov.br/silce-servico-rest/rest/v1/\""
+                buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""
+                buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
+                buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
+                buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+                buildConfigField "String", "URL_SSO", "\"https://logindes.caixa.gov.br\""
+                buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
+                buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
+                buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+                buildConfigField "String", "URL_SSO_LOGOUT", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+                buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
+                buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+                buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
+                buildConfigField "String", "RP_CREATE_TOKEN_URL", "\"https://secure-sandbox.recargapay.com\""
+                buildConfigField "String", "APP_CENTER_KEY", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+                buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
+                buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasdes\""
+                buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
+                manifestPlaceholders = [
+                        appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                        hostName             : "br.gov.caixa.caixaloterias",
+                        path                 : "/oauth2Callback",
+                        scheme               : "https"
+                ]
+            }
+
             emulador {
                 dimension "default"
                 applicationIdSuffix ".hmp"

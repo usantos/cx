@@ -189,8 +189,8 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 
 	@Override
 	public void onFinish() {
-		btnGerar.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.gerar_novo_codigo_pix)));
-		btnGerar.setVisibility(View.VISIBLE);
+		//btnGerar.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.gerar_novo_codigo_pix)));
+		//btnGerar.setVisibility(View.VISIBLE);
 	}
 
 	private void restart() {
