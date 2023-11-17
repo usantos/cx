@@ -1316,5 +1316,6 @@
     <string name="descritivo_tela_bolao">Veja aqui os bolões da Mega-Sena em destaque. Em breve, mais modalidades!</string>
     <string name="cotas_bolao">Cotas Bolão</string>
     <string name="apostas_individuais">Apostas Individuais</string>
+    <string name="cota_cancelada">Cota Cancelada</string>
 
 </resources>

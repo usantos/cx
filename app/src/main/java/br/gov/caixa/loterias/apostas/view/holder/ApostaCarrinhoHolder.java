@@ -5,10 +5,12 @@ import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -24,10 +26,13 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaLotecaAdapter;
@@ -43,12 +48,14 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private TextView trevosAposta;
 	private TextView valorAposta;
 	private TextView textContadorBolao;
+	private TextView textCotaCancelada;
 	private ExpandableHeightRecyclerView recycleViewDetalheAposta;
 	private RelativeLayout containerFragment;
 	private RelativeLayout layoutCabecalhoLoteca;
 	private LinearLayout dadosApostaCarrinho;
 	private LinearLayout dadosCarrinho;
 	private TextView textViewNumeroConcurso, tvNumeroConcursoNovo;
+	private ImageView iconTimer;
 
 
 	private Context context;
@@ -79,6 +86,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		tvNumeroConcursoNovo = view.findViewById(R.id.tv_numero_concurso_novo);
 		containerFragment = view.findViewById(R.id.rl_container_fragment);
 		textContadorBolao = view.findViewById(R.id.contadorBolao);
+		iconTimer = view.findViewById(R.id.imageViewRelogio);
+		textCotaCancelada = view.findViewById(R.id.textCotaCancelada);
 	}
 
 	@Override
@@ -102,18 +111,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 		this.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
-		ContagemRegressiva contagemRegressiva = null;
-		long tempo_inicial_pix = 100;
-		if(position == 1) tempo_inicial_pix = 120;
-		contagemRegressiva = new ContagemRegressiva(textContadorBolao,tempo_inicial_pix * 1000, 1 * 1000) {
-			@Override
-			public void onFinish() {
-//						btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
-//								context.getString(R.string.label_compra_lista_tentar_novamente)));
-//				btnMinhasCompras.setVisibility(View.GONE);
-			}
-		};
-		contagemRegressiva.start();
+		if (isBolao) {
+			startTimer(position);
+		}
 
 		TextView     quantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
 		TextView     quantidadeSorteios  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
@@ -328,4 +328,41 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		fm.beginTransaction().replace(newContainerId, fragment).commit();
 
 	}
+
+	private void startTimer(int position) {
+
+		textContadorBolao.setVisibility(View.VISIBLE);
+		iconTimer.setVisibility(View.VISIBLE);
+
+		//Ler de apostas ***
+		long tempo_inicial_milesec = 100 * 1000;
+		if(position == 1) tempo_inicial_milesec = 120 * 1000;
+		ContagemRegressiva contDown = new ContagemRegressiva(textContadorBolao, tempo_inicial_milesec, 1000) {
+			@Override
+			public void onFinish() {
+				try {
+					textContadorBolao.setTextColor(Aplicacao.application.getResources().getColor(R.color.vermelho_cancelada));
+					textContadorBolao.setText(R.string.tempo_zerado);
+					iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.vermelho_cancelada));
+					textCotaCancelada.setVisibility(View.VISIBLE);
+				} catch (Exception e){}
+			}
+		};
+
+		contDown.setListener(onContagemListener(contDown));
+		contDown.start();
+		TimerSingleton.getInstance().setContagemRegressiva(contDown);
+	}
+
+	@NonNull
+	private ContagemRegressiva.ContagemRegressivaListener onContagemListener(ContagemRegressiva contDown) {
+		return millisUntilFinish -> {
+			if (contDown.estaFaltandoXMin(millisUntilFinish, 1)){
+				textContadorBolao.setTextColor(Aplicacao.application.getResources().getColor(R.color.jr_amarelo));
+				iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.jr_amarelo));
+			}
+		};
+	}
+
+
 }

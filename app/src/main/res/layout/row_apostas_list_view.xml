@@ -275,25 +275,43 @@
 
             <TextView
                 android:id="@+id/contadorBolao"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="11dp"
                 android:layout_toStartOf="@+id/excluirApostaCarrinhoLayout"
                 android:text="@string/tempo_zerado"
+                android:textStyle="bold"
                 android:textAlignment="textEnd"
-                android:textColor="@color/cinza"
-                android:textSize="14.2sp" />
+                android:textColor="@color/bolao_barra_titulo"
+                android:textSize="12sp"
+                android:visibility="gone"
+                />
 
             <ImageView
                 android:id="@+id/imageViewRelogio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="2dp"
                 android:layout_toStartOf="@+id/contadorBolao"
-                app:srcCompat="@drawable/relogio_amarelo" />
+                android:background="@drawable/ic_timer"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/textCotaCancelada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="38dp"
+                android:layout_marginRight="-35dp"
+                android:layout_toStartOf="@+id/excluirApostaCarrinhoLayout"
+                android:text="@string/cota_cancelada"
+                android:textStyle="bold"
+                android:textColor="@color/vermelho_cancelada"
+                android:textSize="12sp"
+                android:visibility="gone"
+                />
 
             <RelativeLayout
                 android:id="@+id/excluirApostaCarrinhoLayout"
