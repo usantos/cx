@@ -59,7 +59,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private Dialog dialogFavoritar;
-    private ExpandableHeightRecyclerView rvListaApostas;
+    private ExpandableHeightRecyclerView rvListaApostas, rvListaBoloes;
     private TextView infoValorMinimo;
     protected View vLoading;
     private EditText etCarrinho;
@@ -71,7 +71,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     private boolean onResume = false;
     private boolean bloqScroll = false;
     private List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = new ArrayList<>();
-    private LinearLayoutManager layoutManager;
+    private LinearLayoutManager layoutManager, layoutManagerBoloes;
     private ScrollView svCarrinho;
 
     private String origem;
@@ -195,6 +195,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void setaViews() {
+        rvListaBoloes  = findViewById(R.id.erv_boloes_listas);
         rvListaApostas = findViewById(R.id.erv_apostas_listas);
         infoValorMinimo = findViewById(R.id.tv_info_valor_minimo);
         btnAvancaPagamento = findViewById(R.id.btn_avancar_pagamento);
@@ -217,9 +218,15 @@ public class CarrinhoActivity extends AppCompatActivity {
         btnLimpar.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
         btnFavoritar.setOnClickListener(v -> dialogFavoritar.show());
 
+        layoutManagerBoloes = new LinearLayoutManager(this);
+        rvListaBoloes.setLayoutManager(layoutManagerBoloes);
+        rvListaBoloes.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listApostas, this, true, model, true));
+        rvListaBoloes.setExpanded(Boolean.TRUE);
+        rvListaBoloes.setItemViewCacheSize(PAGE_SIZE);
+
         layoutManager = new LinearLayoutManager(this);
         rvListaApostas.setLayoutManager(layoutManager);
-        rvListaApostas.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listApostas, this, true, model));
+        rvListaApostas.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listApostas, this, true, model, false));
         rvListaApostas.setExpanded(Boolean.TRUE);
         rvListaApostas.setItemViewCacheSize(PAGE_SIZE);
 

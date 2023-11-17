@@ -273,6 +273,28 @@
                 android:textAlignment="textEnd"
                 android:textSize="14.2sp" />
 
+            <TextView
+                android:id="@+id/contadorBolao"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="11dp"
+                android:layout_toStartOf="@+id/excluirApostaCarrinhoLayout"
+                android:text="@string/tempo_zerado"
+                android:textAlignment="textEnd"
+                android:textColor="@color/cinza"
+                android:textSize="14.2sp" />
+
+            <ImageView
+                android:id="@+id/imageViewRelogio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="2dp"
+                android:layout_toStartOf="@+id/contadorBolao"
+                app:srcCompat="@drawable/relogio_amarelo" />
+
             <RelativeLayout
                 android:id="@+id/excluirApostaCarrinhoLayout"
                 android:layout_width="44dp"

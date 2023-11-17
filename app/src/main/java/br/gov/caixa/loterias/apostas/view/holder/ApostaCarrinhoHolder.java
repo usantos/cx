@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
@@ -41,6 +42,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private TextView numerosAposta;
 	private TextView trevosAposta;
 	private TextView valorAposta;
+	private TextView textContadorBolao;
 	private ExpandableHeightRecyclerView recycleViewDetalheAposta;
 	private RelativeLayout containerFragment;
 	private RelativeLayout layoutCabecalhoLoteca;
@@ -51,14 +53,16 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 	private Context context;
 	private AppCompatActivity activity;
-	private boolean animacao;
+	private boolean animacao, isBolao;
 	private ApostaCarrinhoListener listener;
 
 
-	public ApostaCarrinhoHolder(View view, AppCompatActivity activity, boolean animacao, ApostaCarrinhoListener listener) {
+	public ApostaCarrinhoHolder(View view, AppCompatActivity activity, boolean animacao, boolean isBolao, ApostaCarrinhoListener listener) {
 		super(view);
 
 		this.animacao = animacao;
+		this.isBolao = isBolao;
+
 		this.context = view.getContext();
 		this.activity = activity;
 		this.listener = listener;
@@ -74,6 +78,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		textViewNumeroConcurso = view.findViewById(R.id.numeroConcurso);
 		tvNumeroConcursoNovo = view.findViewById(R.id.tv_numero_concurso_novo);
 		containerFragment = view.findViewById(R.id.rl_container_fragment);
+		textContadorBolao = view.findViewById(R.id.contadorBolao);
 	}
 
 	@Override
@@ -96,6 +101,19 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		this.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorAposta(aposta));
 		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 		this.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
+
+		ContagemRegressiva contagemRegressiva = null;
+		long tempo_inicial_pix = 100;
+		if(position == 1) tempo_inicial_pix = 120;
+		contagemRegressiva = new ContagemRegressiva(textContadorBolao,tempo_inicial_pix * 1000, 1 * 1000) {
+			@Override
+			public void onFinish() {
+//						btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBold(context,
+//								context.getString(R.string.label_compra_lista_tentar_novamente)));
+//				btnMinhasCompras.setVisibility(View.GONE);
+			}
+		};
+		contagemRegressiva.start();
 
 		TextView     quantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
 		TextView     quantidadeSorteios  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
