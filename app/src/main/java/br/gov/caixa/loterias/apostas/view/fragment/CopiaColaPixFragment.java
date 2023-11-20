@@ -132,6 +132,7 @@ public class CopiaColaPixFragment extends Fragment {
 					timerView.setText(R.string.tempo_zerado);
 					iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.vermelho_dialog));
 					edtNumeroPix.setText(R.string.codigo_expirado);
+					edtNumeroPix.setTextColor(Aplicacao.application.getResources().getColor(R.color.vermelho_dialog));
 					edtNumeroPix.setBackground(VectorUtils.getShape(R.drawable.shape_input_pix_copia_cola, R.color.cinza_borda));
 					edtNumeroPix.setTextColor(getActivity().getResources().getColor(R.color.branco));
 					numeroPix = "";

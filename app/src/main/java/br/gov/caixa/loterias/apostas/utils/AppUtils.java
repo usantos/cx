@@ -21,9 +21,6 @@ import java.util.Locale;
 
 public class AppUtils {
 
-    private AppUtils() {
-    }
-
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
@@ -73,32 +70,10 @@ public class AppUtils {
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public static void requestFingerprintPermission(Activity activity, int requestCode) {
-        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.USE_FINGERPRINT}, requestCode);
-    }
-
-    public static boolean checkFingerprintPermission(Activity activity) {
-        return ActivityCompat.checkSelfPermission(activity, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED;
-    }
-
     public static String capitalizeFirstChar(String string) {
         StringBuilder sb = new StringBuilder(string);
         sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
         return sb.toString();
-    }
-
-    public static String capitalizeString(String string) {
-        char[] chars = string.toLowerCase(new Locale("pt", "BR")).toCharArray();
-        boolean found = false;
-        for (int i = 0; i < chars.length; i++) {
-            if (!found && Character.isLetter(chars[i])) {
-                chars[i] = Character.toUpperCase(chars[i]);
-                found = true;
-            } else if (Character.isWhitespace(chars[i]) || chars[i] == '.' || chars[i] == '\'') { // You can add other chars here
-                found = false;
-            }
-        }
-        return String.valueOf(chars);
     }
 
     public static String removeMasckCPF(String cpf) {
@@ -127,26 +102,6 @@ public class AppUtils {
                 lineSB.append(ViewUtils.getNumberIntegerToString(lista.get(i)));
             } else {
                 lineSB.append(String.format(" - %s", ViewUtils.getNumberIntegerToString(lista.get(i))));
-            }
-        }
-        lines.add(lineSB.toString());
-        return lines;
-    }
-
-    public static List<String> listDezenasSurpresinha(int size) {
-
-        List<String> lines = new ArrayList<>();
-        StringBuilder lineSB = new StringBuilder();
-
-        for (int i = 0; i < size; i++) {
-            if (i == 0) {
-                lineSB.append("XX");
-            } else if (i % 5 == 0) {
-                lines.add(lineSB.toString());
-                lineSB = new StringBuilder();
-                lineSB.append("XX");
-            } else {
-                lineSB.append(String.format(" - %s", "XX"));
             }
         }
         lines.add(lineSB.toString());

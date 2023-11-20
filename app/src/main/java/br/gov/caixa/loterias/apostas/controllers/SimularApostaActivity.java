@@ -190,7 +190,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     protected void onResume() {
         super.onResume();
         Paginacao paginacao = getPaginacao();
-        if (paginacao != null && isFragmentCartela()){
+        if (paginacao != null && isFragmentCartela() && !parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA)){
             voltaPagina();
         }
     }

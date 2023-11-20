@@ -62,6 +62,22 @@ public class PdfUtils {
         }
     }
 
+    public static void createComprovantePremioPagoPdf(DetalhesPremioDTO detalhesPremioDTO, AppCompatActivity activity) {
+        try {
+            String html = HtmlUtils.getComprovanteCabecalhoRodapePremioPago(detalhesPremioDTO, activity);
+
+            // cria a estrutura de diretório
+            File dir = new File(FileUtils.getDownloadsDir(activity), DIRETORIO_COMPROVANTE);
+            dir.mkdirs();
+
+            String pathArquivo = dir + "/" + ARQUIVO_COMPROV_PREMIO + ".pdf";
+            createAndOpenPDF(activity, html, pathArquivo);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Toast.makeText(activity, "Ocorreu um erro inesperado, por favor tente novamente.", Toast.LENGTH_LONG).show();
+        }
+    }
+
     public void createComprovanteHistoricoPremioPdf(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, AppCompatActivity activity) {
         try {
             String html = HtmlUtils.getComprovanteCabecalhoRodapePremioHistorico(detalhesHistoricoPremioDTO, activity);

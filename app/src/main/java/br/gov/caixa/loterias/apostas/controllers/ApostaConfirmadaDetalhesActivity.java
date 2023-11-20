@@ -482,9 +482,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             }
         } else if (premioPago) {
             if(detalhesPremioDTOResponse != null && detalhesPremioDTOResponse.getPayload() != null){
-                pdfUtils.createComprovantePremioPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                pdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
             } else if (detalhesPremioDTO != null){
-                pdfUtils.createComprovantePremioPdf(detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this);
+                pdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this);
             } else {
                 buscarDetalheComprovantePremioAposta(true);
             }

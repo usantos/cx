@@ -92,7 +92,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 			if (SituacaoCompraUtil.isSituacaoProcessamento(item.getSituacao())) {
 				imageViewRelogio.setVisibility(View.VISIBLE);
 				textContadorDown.setVisibility(View.VISIBLE);
-				btnMinhasCompras.setVisibility(View.VISIBLE);
+				btnMinhasCompras.setVisibility(View.GONE);
 
 				tempo_inicial_pix = item.getTimerSeconds();
 				contagemRegressiva = new ContagemRegressiva(textContadorDown,tempo_inicial_pix * 1000, 1 * 1000) {
