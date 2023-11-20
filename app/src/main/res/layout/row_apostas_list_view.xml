@@ -248,6 +248,18 @@
                 android:textColor="@color/cinza"
                 android:textSize="14.2sp" />
 
+            <ImageView
+                android:id="@+id/imageViewDetalheBoloes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="80dp"
+                android:layout_toEndOf="@+id/modalidadeConcursoLayout"
+                android:background="@drawable/ic_trevo_carrinho_bolao"
+                android:visibility="gone"
+                />
+
+
             <TextView
                 android:id="@+id/trevos"
                 style="@style/editTextArialMTTheme"
@@ -289,7 +301,7 @@
                 />
 
             <ImageView
-                android:id="@+id/imageViewRelogio"
+                android:id="@+id/imageViewRelogioBoloes"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginTop="20dp"

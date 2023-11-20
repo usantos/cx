@@ -55,7 +55,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private LinearLayout dadosApostaCarrinho;
 	private LinearLayout dadosCarrinho;
 	private TextView textViewNumeroConcurso, tvNumeroConcursoNovo;
-	private ImageView iconTimer;
+	private ImageView iconTimer, imageDetalheBoloes;
 
 
 	private Context context;
@@ -86,7 +86,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		tvNumeroConcursoNovo = view.findViewById(R.id.tv_numero_concurso_novo);
 		containerFragment = view.findViewById(R.id.rl_container_fragment);
 		textContadorBolao = view.findViewById(R.id.contadorBolao);
-		iconTimer = view.findViewById(R.id.imageViewRelogio);
+		imageDetalheBoloes = view.findViewById(R.id.imageViewDetalheBoloes);
+		iconTimer = view.findViewById(R.id.imageViewRelogioBoloes);
 		textCotaCancelada = view.findViewById(R.id.textCotaCancelada);
 	}
 
@@ -112,6 +113,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		this.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
 		if (isBolao) {
+			imageDetalheBoloes.setVisibility(View.VISIBLE);
 			startTimer(position);
 		}
 
@@ -285,7 +287,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			numeroStr.append("\n\n\n");
 		}
 
-		this.numerosAposta.setText(removeUltimoTraco(numeroStr.toString()));
+		if(!isBolao) {
+			this.numerosAposta.setText(removeUltimoTraco(numeroStr.toString()));
+		}
 		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
 			this.trevosAposta.setText(removeUltimoTraco(trevosStr.toString() + "\n"));
 		} else {
@@ -328,6 +332,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		fm.beginTransaction().replace(newContainerId, fragment).commit();
 
 	}
+
 
 	private void startTimer(int position) {
 
