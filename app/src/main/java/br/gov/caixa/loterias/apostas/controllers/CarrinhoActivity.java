@@ -37,7 +37,6 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -71,8 +70,12 @@ public class CarrinhoActivity extends AppCompatActivity {
     private boolean onResume = false;
     private boolean bloqScroll = false;
     private List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = new ArrayList<>();
+    private List<IdentificaoDeUmaApostaDas8Modalidades> listBoloes  = new ArrayList<>();
     private LinearLayoutManager layoutManager, layoutManagerBoloes;
     private ScrollView svCarrinho;
+    private TextView textCotasBolao, textApostasIndividuais;
+    private View viewDivBottomBolao, viewDivBottom;
+
 
     private String origem;
 
@@ -96,6 +99,8 @@ public class CarrinhoActivity extends AppCompatActivity {
         super.onResume();
         limparCarrinhoInicial();
         atualizaParametros();
+        desabilitaBoloes();
+        desabilitaApostas();
     }
 
     private void limparCarrinhoInicial() {
@@ -195,6 +200,12 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void setaViews() {
+
+        textCotasBolao = findViewById(R.id.tv_cotas_bolao);
+        textApostasIndividuais = findViewById(R.id.tv_apostas_individuais);
+        viewDivBottomBolao = findViewById(R.id.v_div_bottom_cotas);
+        viewDivBottom = findViewById(R.id.v_div_bottom);
+
         rvListaBoloes  = findViewById(R.id.erv_boloes_listas);
         rvListaApostas = findViewById(R.id.erv_apostas_listas);
         infoValorMinimo = findViewById(R.id.tv_info_valor_minimo);
@@ -220,7 +231,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
         layoutManagerBoloes = new LinearLayoutManager(this);
         rvListaBoloes.setLayoutManager(layoutManagerBoloes);
-        rvListaBoloes.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listApostas, this, true, model, true));
+        rvListaBoloes.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listBoloes, this, true, model, true));
         rvListaBoloes.setExpanded(Boolean.TRUE);
         rvListaBoloes.setItemViewCacheSize(PAGE_SIZE);
 
@@ -334,9 +345,16 @@ public class CarrinhoActivity extends AppCompatActivity {
     public void atualizaLayout(int offSet) {
         try {
             if (carrinho != null) {
+                //if (carrinho.getBoloes() != null) {
+                if (carrinho.getApostas() != null) {
+                    configuraRecyclerViewCarrinhoBoloes();;
+                    //fragmentSomadorCarrinho();
+                    habilitaBoloes();
+                }
                 if (carrinho.getApostas() != null) {
                     configuraRecyclerViewCarrinhoAposta(offSet);
                     fragmentSomadorCarrinho();
+                    habilitaApostas();
                 }
             } else {
                 callWebservice();
@@ -523,6 +541,34 @@ public class CarrinhoActivity extends AppCompatActivity {
         btnAvancaPagamento.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.avancarFormaPagamento)));
     }
 
+    public void configuraRecyclerViewCarrinhoBoloes() {
+        int cont;
+        int maximoLista = 0;
+
+        List<IdentificaoDeUmaApostaDas8Modalidades> apostas = new ArrayList<>();
+        if (carrinho != null && carrinho.getApostas() != null && carrinho.getApostas().size() > 0) {
+            maximoLista = pegaMaximoLista(); //Rever
+            for (cont = offSet; cont < maximoLista; cont++) {
+                IdentificaoDeUmaApostaDas8Modalidades aposta = carrinho.getApostas().get(cont) == null ? null : carrinho.getApostas().get(cont);
+                if (aposta.getModalidade() != null) {
+                    apostas.add(aposta);
+                }
+            }
+        }
+
+        if (apostas != null) {
+            listBoloes.addAll(apostas);
+        }
+
+        if (listBoloes != null) {
+            synchronized (rvListaBoloes) {
+                rvListaBoloes.getAdapter().notifyItemRangeInserted(offSet, maximoLista);
+            }
+            //this.offSet += PAGE_SIZE;
+        }
+        //bloqScroll = false;
+    }
+
     public void configuraRecyclerViewCarrinhoAposta(int offSet) {
         int cont;
         int maximoLista = 0;
@@ -558,6 +604,34 @@ public class CarrinhoActivity extends AppCompatActivity {
         }
         bloqScroll = false;
 
+    }
+
+    private void desabilitaBoloes() {
+        textCotasBolao.setVisibility(View.GONE);
+        viewDivBottomBolao.setVisibility(View.GONE);
+        rvListaBoloes.setVisibility(View.GONE);
+    }
+
+    private void habilitaBoloes() {
+        if (carrinho != null && carrinho.getApostas() != null && carrinho.getApostas().size() > 0) {
+            textCotasBolao.setVisibility(View.VISIBLE);
+            viewDivBottomBolao.setVisibility(View.VISIBLE);
+            rvListaBoloes.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void desabilitaApostas() {
+        textApostasIndividuais.setVisibility(View.GONE);
+        viewDivBottom.setVisibility(View.GONE);
+        rvListaApostas.setVisibility(View.GONE);
+    }
+
+    private void habilitaApostas() {
+        if (carrinho != null && carrinho.getApostas() != null && carrinho.getApostas().size() > 0) {
+            textApostasIndividuais.setVisibility(View.VISIBLE);
+            viewDivBottom.setVisibility(View.VISIBLE);
+            rvListaApostas.setVisibility(View.VISIBLE);
+        }
     }
 
     private void configuraBotoesSuperiores() {
