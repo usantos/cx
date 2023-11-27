@@ -752,7 +752,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void onChangeInformeNomeTime() {
-		informeNomeTime.addTextChangedListener(new NomeTimemaniaTextWatcher(parametroJogo.getEquipes(),
+		informeNomeTime.addTextChangedListener(new NomeTimemaniaTextWatcher(getActivity(), informeNomeTime, parametroJogo.getEquipes(),
 				onNomeTimeTextWatchListener()));
 	}
 
