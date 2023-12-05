@@ -29,7 +29,6 @@
     <application
         android:name=".utils.Aplicacao"
         android:allowBackup="false"
-        tools:replace="android:allowBackup"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -37,11 +36,39 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="false">
+        android:usesCleartextTraffic="false"
+        tools:replace="android:allowBackup">
+        <activity
+            android:name=".PreferenciasNotificacoesActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".CopiaColaPixActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".OrientacaoPixActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ResgatePixActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.DigitaChaveActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.ConfirmaDadosPixActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".WebViewActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="false"></activity>
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TutorialMaisMilionariaActivity"
             android:screenOrientation="portrait"
@@ -108,12 +135,12 @@
         <activity
             android:name=".controllers.SplashScreenActivity"
             android:configChanges="orientation"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
+            android:theme="@style/SplashTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -206,13 +233,19 @@
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BrancoActionBar"
-            android:exported="true"></activity>
+            android:exported="true"/>
         <activity
             android:name=".controllers.TermosUsoActivity"
             android:label="@string/title_activity_termos_uso"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar" />
+            android:theme="@style/AppTheme.DegradeActionBar"/>
+        <activity
+            android:name=".controllers.MensagensPushActivity"
+            android:label="@string/titulo_central_mensagens"
+            android:parentActivityName=".controllers.PrincipalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar"/>
         <activity
             android:name=".controllers.TermosAceiteActivity"
             android:label="@string/title_activity_termos_uso"
@@ -299,13 +332,11 @@
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
-
         <activity
             android:name=".controllers.ResultadoLerBilhetesNovoActivity_"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
-
         <activity
             android:name=".controllers.DetalhesComprasActivity"
             android:label="@string/title_activity_detalhes_compras"
@@ -338,6 +369,12 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.JogosConfirmadosPremioMercadoPagoActivity"
+            android:label="@string/title_activity_resultado_ler_bilhetes"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.DegradeActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".controllers.ConfirmacaoResgatePixActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar"
@@ -378,9 +415,9 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.TokenActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -416,6 +453,17 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/images_path" />
         </provider>
+
+        <!-- [START firebase_service]
+        <service
+            android:name=".utils.MessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        [END firebase_service] -->
+
     </application>
 
     <queries>
@@ -432,5 +480,4 @@
             <data android:mimeType="*/*" />
         </intent>
     </queries>
-
 </manifest>

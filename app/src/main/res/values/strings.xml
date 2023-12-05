@@ -44,8 +44,12 @@
     <string name="label_nao">Não</string>
     <string name="label_compra_valor">Compra %d</string>
 
-    <string name="label_compra_lista_valor">_Total:_\n %s</string>
-    <string name="label_compra_lista_situacao">_Situação:_ %s</string>
+    <string name="label_compra_lista_valor">_Total:_</string>
+    <string name="label_compra_lista_situacao">Situação:</string>
+    <string name="label_compra_lista_situacao_descricao">Situação: _%s_</string>
+    <string name="label_compra_lista_processada_por">Compra processada por: _%s_</string>
+    <string name="label_compra_lista_alterar_compra">Alterar Compra</string>
+    <string name="label_compra_lista_tentar_novamente">Tentar Novamente</string>
 
     <string name="label_atencao">Atenção</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
@@ -59,6 +63,7 @@
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
     <string name="confirmacao">Confirmação</string>
     <string name="label_acompanhe_suas_compras">_Ir para_\ncompras</string>
+    <string name="label_acompanhe_suas_compras_pix">_Acompanhe_\nsuas compras</string>
     <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
 
@@ -70,13 +75,14 @@
 
     <string name="total">Total</string>
 
+    <string name="confirmacaoPagamentoInfoApostasPIX">Acompanhe a situação \ne detalhamento da compra. \nVocê estará concorrendo quando \na APOSTA aparececer como EFETIVADA.</string>
     <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
+    <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
     <string name="label_concurso_atual">Informações do concurso atual</string>
-
     <string name="novaFormaPagamentoTitulo">Cadastrar cartão</string>
     <string name="novaFormaPagamentoNenhumCartaoCadastrado">Notamos que você ainda não possui nenhum cartão de crédito cadastrado. Para continuar, informe:</string>
     <string name="title_activity_main_teste">MainTesteActivity</string>
@@ -87,6 +93,16 @@
     <string name="title_activity_teste">TesteActivity</string>
     <string name="title_activity_toolbar">_Loterias Caixa_</string>
     <string name="title_activity_login">Login</string>
+    <string name="titulo_central_mensagens">Notificações</string>
+    <string name="pesquisa_push">Pesquisar</string>
+    <string name="pesquisa_push_vazia">Você não possui mensagens</string>
+    <string name="pesquisa_push_nao_lida">Você não possui mensagens não lidas</string>
+    <string name="msg_push_excluir_todas">Deseja excluir todas as mensagens ?</string>
+    <string name="msg_push_excluir">Deseja excluir todas a mensagens ?</string>
+    <string name="msg_push_excluir_item">Deseja excluir esta mensagem ?</string>
+    <string name="msg_push_marcar_lidas">Deseja marcar todas a mensagens como lidas ?</string>
+    <string name="msg_push_marcar_lida_item">Deseja marcar esta mensagem como lida ?</string>
+    <string name="msg_push_botaocategoria">Realiza ação da categoria</string>
     <string name="erro_401">Não autorizado</string>
     <string name="erro_408">Tempo de resposta esgotou</string>
     <string name="erro_500">Ocorreu um erro inesperado, mas não se preocupe, já estamos trabalhando nisso. Quer nos ajudar reportando o problema?</string>
@@ -152,6 +168,11 @@
     <string name="label_empate">Empate</string>
     <string name="label_nome_do_seu_time">Nome do seu time</string>
     <string name="label_suas_apostas">Suas apostas</string>
+    <string name="label_suas_apostas_loteca">Loteca</string>
+    <string name="label_suas_apostas_explica">Escolha os resultados dos jogos abaixo.\nVocê precisa apostar em todos os jogos, sendo que pelo menos 1 palpite deve ser duplo
+        (apostar nos dois times ou em um time e no empate) ou triplo (apostar em empate e nos dois times).
+        Você ganha com 13 ou 14 palpites corretos.</string>
+    <string name="label_jogos">Partidas</string>
     <string name="label_simples">Simples</string>
     <string name="label_duplas">Duplas</string>
     <string name="label_triplas">Triplas</string>
@@ -192,7 +213,7 @@
     <string name="label_quantidade_gols_cada_time">a quantidade de gols de cada time.</string>
     <string name="title_activity_favoritas">Favoritas</string>
     <string name="title_activity_favoritas_bold">_Apostas Favoritas_</string>
-    <string name="title_activity_lista_compras">Compras</string>
+    <string name="title_activity_lista_compras">Minhas Compras</string>
 
     <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
     <string name="btn_entendi">entendi</string>
@@ -312,6 +333,7 @@
     <string name="label_loterica">Lotérica</string>
     <string name="label_agencia_caixa">Agência CAIXA</string>
     <string name="label_mercado_pago">Mercado Pago</string>
+    <string name="label_pix">Pix</string>
     <string name="label_premio_pago">O prêmio deste bilhete já foi pago. Parabéns :)</string>
     <string name="tit_premio_pago">Prêmio Pago</string>
     <string name="label_emitir_comprovante">Emita o seu comprovante da aposta</string>
@@ -443,12 +465,14 @@
     <string name="title_anoValidade">Ano de validade</string>
     <string name="title_salvarCartao">Salvar este cartão para futuras apostas</string>
     <string name="label_salvar_Cartao">Salvar cartão para compras futuras</string>
+    <string name="label_ciente_cpf_titularidadeo">Estou ciente que o cartão utilizado para pagar a aposta deve ser de minha titularidade.</string>
     <string name="title_mesDeValidade">Mês de validade</string>
     <string name="title_anoDeValidade">Ano de validade</string>
     <string name="title_sair">Sair</string>
     <string name="title_minhaArea">Minha área</string>
     <string name="title_lerBilhete">Conferir Bilhete</string>
     <string name="title_repassesSociais">Repasses sociais</string>
+    <string name="title_notificacoes">Notificações</string>
     <string name="title_aguarde">Aguarde</string>
     <string name="title_sorteio">Sorteio</string>
     <string name="title_apostasEncerram">Apostas se encerram em</string>
@@ -733,6 +757,7 @@
     <string name="ol">Olá, %!</string>
     <string name="tv">TextView</string>
     <string name="apresentar_trevo">Apresentar trevo</string>
+    <string name="ic_notificacao">Notificações</string>
     <string name="_7_n_meros">7 números</string>
     <string name="r_0_00">R$ 0,00</string>
     <string name="carrinho_favorito">Carrinho Favorito</string>
@@ -836,6 +861,7 @@
     <string name="posicione_linha_codigo_barras">Posicione a linha abaixo sobre o código de barras e aguarde a focalização da câmera.</string>
     <string name="response">Response</string>
     <string name="evento_entrou_lista_compras">ENTROU_LISTA_COMPRAS</string>
+    <string name="evento_entrou_msg_push">ENTROU_MSG_PUSH</string>
     <string name="de_espacado">&#160;de&#160;</string>
     <string name="evento_entrou_lista_apostas_rapidao">ENTROU_LISTA_APOSTAS_RAPIDAO</string>
     <string name="evento_entrou_adicao_forma_pagamento">ENTROU_ADICAO_FORMA_DE_PAGAMENTO</string>
@@ -988,6 +1014,7 @@
     <string name="espaco_teimosinha">&#160;Teimosinha</string>
     <string name="extra_compra_dto">CompraDTO</string>
     <string name="extra_ordem">ordem</string>
+    <string name="extra_tempo_pix">tempoPix</string>
     <string name="data_dois_pontos_espaco">Data:&#160;</string>
     <string name="textoInfoSelecioneFormaPagamento">textoInfoSelecioneFormaPagamento</string>
     <string name="como_jogar">Como jogar</string>
@@ -1076,6 +1103,9 @@
     <string name="tentar_novamente">Tentar novamente</string>
     <string name="como_voc_prefere_pagar">Preencha os dados de cartão de crédito de sua titularidade</string>
     <string name="selecione_o_meio_de_pagamento">Para pagar suas compras, basta escolher a opção de sua preferência e preencher os dados do cartão de crédito</string>
+    <string name="leia_instrucoes_pix">Antes de prosseguir, leia atentamente as instruções abaixo.</string>
+    <string name="resgate_seleciona_chave_pix">Para resgatar o seu prêmio escolha o tipo de Chave Pix a ser utilizado</string>
+    <string name="copia_codigo_instrucoes_pix">Copie o código abaixo e utilize o Pix Copia e Cola no aplicativo que você fará o pagamento.</string>
     <string name="adicionar_cartao">Adicionar cartão</string>
     <string name="excluir_cartao_interrogacao">Excluir cartão?</string>
     <string name="nao_e_possivel_eliminar_cartao_favorito">Não é possível eliminar o cartão favorito.</string>
@@ -1083,6 +1113,99 @@
     <string name="alterar_favorito_interrogacao">Alterar Favorito?</string>
     <string name="confirmar_alterar_cartao_favorito">Deseja alterar seu cartão preferido? Confirmar?</string>
 
+    <string name="confira_cartoes_salvos_mercado_pago">Confira aqui sua lista de cartões salvos no Mercado Pago</string>
+
+    <string name="confira_cartoes_salvos_recargapa_pay">Confira aqui sua lista de cartões salvos no RecargaPay</string>
+    <string name="compra_processada_por">Compra processada por:</string>
+    <string name="selecione_o_meio_de_pagamento_que_ira_processar_a_compra">Selecione o meio de pagamento que irá processar a compra utilizando o cartão de crédito de sua escolha</string>
+    <string name="bundle_key_config">CONFIG</string>
+    <string name="abre_chave_nsb_fecha_chave">{nsb}</string>
+
+    <string name="situaco">Situação</string>
+    <string name="faixa">Faixa</string>
+    <string name="valor">Valor</string>
+    <string name="mensagem_carrinho_vazio_dialog">Você não fez nenhuma aposta. Escolha a sua modalidade favorita e boa sorte!</string>
+    <string name="title_orientacaoCodigoBarras2">Posicione a câmera sobre o código de barras e aguarde. A leitura é automática.</string>
+
+    <string name="title_orientacaoQrCode">Posicione a câmera sobre o QR Code e aguarde. A leitura é automática.</string>
+    <string name="title_CodigoBarras">Código de barras</string>
+
+    <string name="title_QrCode">QR Code</string>
+    <string name="title_digiteSuaAposta">Digite a sua aposta</string>
+    <string name="leitor_digital">Acessar com biometria</string>
+
+    <string name="entrar">Entrar como</string>
+    <string name="ativar_biometria">Necessário habilitar biometria</string>
+    <string name="habilitar">Habilitar</string>
+    <string name="desativar_biometria">Desativar biometria</string>
+    <string name="desativar_biometria_mensagem">Desaja desativar a biometria e acessar apenas com o Login Caixa?</string>
+    <string name="biometria_popup_titulo">Loterias Caixa</string>
+    <string name="biometria_popup_descricao">Desbloqueie seu celular</string>
+    <string name="trocar_de_usuario"><u>Trocar de usuário</u></string>
+
+    <string name="cartao_de_credito">Cartão de Crédito</string>
+    <string name="como_pagar_pix">Como pagar com pix</string>
+
+    <string name="orientacao_pix_checkbox">Estou ciente que somente será aceito o pagamento realizado em conta de titularidade do apostador.</string>
+    <string name="pagar_agora">Pagar agora!</string>
+    <string name="pix_copia_cola">Pix Copia e Cola</string>
+    <string name="pix_codigo_pago_unica_vez">*O código poderá ser pago somente 1 vez.</string>
+    <string name="pix_voce_tem">Você tem</string>
+    <string name="pix_contador">9m 59seg</string>
+    <string name="pix_para_efetuar_pagamento">Para efetuar o pagamento</string>
+    <string name="popup_pix_nao_autorizado">Pagamento não autorizado</string>
+    <string name="gerar_novo_codigo">_Gerar_ \nnovo Código</string>
+
+    <!-- Popup Pix nao autorizado -->
+    <string name="gerar_novo_codigo_pix">_Gerar_ \nnovo Código Pix</string>
+    <string name="alterar_forma_pagamento">_Alterar_ \nPagamento</string>
+    <string name="popup_pix_nao_autorizado_descricao">CPF do pagamento diferente do CPF do apostador. Não se preocupe, o Pix foi devolvido para a conta de pagamento \n\nVocê pode gerar novo código Pix ou alterar a forma de pagamento para concluir sua compra.</string>
+    <string name="popup_pix_nao_realizado">Pagamento não realizado</string>
+    <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="title_activity_resgate_pix">_Resgate de Prêmio_</string>
+    <string name="popup_pix_cpf_vinculado">Somente será realizado resgate em Chave Pix vinculada ao CPF do apostador.</string>
+
+    <!-- Pix Resgate Prêmio -->
+    <string name="trocar_tipo_chave">Trocar Tipo de\n Chave</string>
+    <string name="trocar_forma_resgate">Trocar Forma\n de Resgate</string>
+    <string name="trocar_chave">Trocar Chave</string>
+    <string name="pix_continuar">Continuar</string>
+    <string name="pix_chave_invalida">Chave Inválida</string>
+    <string name="popup_pix_cpf_nao_vinculado">Não existe Chave Pix vinculada a este CPF</string>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="pix_comprovante_em_breve">Em breve seu prêmio estará disponível em sua conta</string>
+    <string name="chave_sem_vinculo">A chave digitada não está vinculada ao seu CPF</string>
+    <string name="resgate_nao_autorizado">Resgate não autorizado</string>
+    <string name="id_pagamento">ID do Pagamento:</string>
+
+    <string name="visualizar_comprovante">_Visualizar_\ncomprovante</string>
+
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="resgate_pix_concluido">Resgate concluído!</string>
+
+    <string name="salvar_chave_pix_para_resgates_futuros">Salvar Chave Pix para resgates futuros</string>
+    <string name="desistir">Desistir</string>
+    <string name="chaves_favoritas">Chaves Favoritas</string>
+
+    <!-- Popup Pix Estornado -->
+    <string name="titulo_tela_preferencias_notificacao">Preferências de _Notificações_</string>
+    <string name="todas_as_notificacoes">Todas as notificações</string>
+    <string name="pagamentos_resgates">Pagamentos e Resgates</string>
+    <string name="lembretes_sorte">Lembretes da Sorte</string>
+    <string name="resultados_disponiveis">Resultados Disponíveis</string>
+    <string name="dicas_novidades">Dicas e Novidades</string>
+    <string name="alertas_segurancas">Alertas de Segurança ou Disponibilidade de Serviços</string>
+    <string name="confirmacao_e_pendencias_de_pagamentos">Confirmação e pendências de pagamentos e confirmação de resgates realizados</string>
+    <string name="avisos_quando_houver_oportunidade_ganhar_mais">Avisos quando houver oportunidades de ganhar mais (concurso especial, prêmio acumulado)</string>
+    <string name="avisos_resultados_disponiveis">Avisos quando resultados das suas apostas estiverem disponíveis para conferência</string>
+    <string name="novos_produtos_app">Novos produtos ou serviços no App</string>
+    <string name="avisos_melhorar_experiencia">Avisos para proteger você e melhorar sua experiência</string>
+
+
+    <!-- Push Notification -->
     <string-array name="dia_sorte_meses">
         <item>Janeiro</item>
         <item>Fevereiro</item>
@@ -1097,36 +1220,25 @@
         <item>Novembro</item>
         <item>Dezembro</item>
     </string-array>
+    <string-array name="orientacao_pix_list">
+        <item>Copie o código gerado e pague dentro do prazo que será apresentado;</item>
+        <item>Entre no aplicativo da sua instituição financeira e \nacesse o ambiente Pix;</item>
+        <item>Escolha a opção Pix Copia e Cola;</item>
+        <item>Cole o código Pix;</item>
+        <item>Confirme as informações e realize o pagamento.</item>
+    </string-array>
 
-    <string name="confira_cartoes_salvos_mercado_pago">Confira aqui sua lista de cartões salvos no Mercado Pago</string>
-    <string name="confira_cartoes_salvos_recargapa_pay">Confira aqui sua lista de cartões salvos no RecargaPay</string>
-    <string name="compra_processada_por">Compra processada por:</string>
-    <string name="selecione_o_meio_de_pagamento_que_ira_processar_a_compra">Selecione o meio de pagamento que irá processar a compra utilizando o cartão de crédito de sua escolha</string>
-    <string name="bundle_key_config">CONFIG</string>
-    
-    <string name="abre_chave_nsb_fecha_chave">{nsb}</string>
-    <string name="situaco">Situação</string>
-    <string name="faixa">Faixa</string>
-    <string name="valor">Valor</string>
-    <string name="mensagem_carrinho_vazio_dialog">Você não fez nenhuma aposta. Escolha a sua modalidade favorita e boa sorte!</string>
+    <!-- Popup Pix Pagamento Não Realizado -->
+    <string name="tempo_zerado">00:00</string>
+    <string name="codigo_expirado">Código Expirado</string>
 
-    <string name="title_orientacaoCodigoBarras2">Posicione a câmera sobre o código de barras e aguarde. A leitura é automática.</string>
-    <string name="title_orientacaoQrCode">Posicione a câmera sobre o QR Code e aguarde. A leitura é automática.</string>
+    <string name="premio_pix_ja_creditado">Seu prêmio já foi creditado na conta vinculada à Chave informada.</string>
+    <string name="tem_certeza_excluir_chave_favorita_xxxx">Tem certeza que deseja excluir dos favoritos a chave xxxx?</string>
+    <string name="escolha_o_tipo_de_chave">Escolha o tipo de chave</string>
 
-    <string name="title_CodigoBarras">Código de barras</string>
-    <string name="title_QrCode">QR Code</string>
-    <string name="title_digiteSuaAposta">Digite a sua aposta</string>
-
-    <string name="leitor_digital">Acessar com biometria</string>
-    <string name="entrar">Entrar como</string>
-    <string name="ativar_biometria">Necessário habilitar biometria</string>
-    <string name="habilitar">Habilitar</string>
-    <string name="desativar_biometria">Desativar biometria</string>
-    <string name="desativar_biometria_mensagem">Desaja desativar a biometria e acessar apenas com o Login Caixa?</string>
-    <string name="biometria_popup_titulo">Loterias Caixa</string>
-    <string name="biometria_popup_descricao">Desbloqueie seu celular</string>
-    <string name="trocar_de_usuario"><u>Trocar de usuário</u></string>
-
+    <!-- Popup Pix Estornado -->
+    <string name="popup_pix_estorno_pagamento_devolvido">Pagamento Devolvido</string>
+    <string name="popup_pix_estorno_nao_possivel">Não foi possível registrar a aposta.</string>
 
     <!-- Mensagens Disque 180  -->
     <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
@@ -1136,6 +1248,7 @@
     <!-- Meio Pagamento Novo Layout -->
     <string name="cartaoCredito">Cartão de Crédito</string>
     <string name="escolhaUmProcessador">Escolha um dos processadores abaixo e cadastre um cartão de crédito de sua titularidade ou escolha um cartão salvo para continuar.</string>
+    <string name="gere_codigo_pix_copia_cola">Gere um código Pix Copia e Cola para pagar suas apostas.</string>
     <string name="pagarVia">Pagar via:</string>
     <string name="bandeirasAceitas">Bandeiras aceitas</string>
     <string name="semCartaoRecargaPay">Você ainda não possui cartão salvo no processador Recarga Pay</string>
@@ -1167,5 +1280,17 @@
     <string name="deeplink_path_combos">https://loteriasonline.caixa.gov.br/silce-web/#combos</string>
     <string name="deeplink_path_apostas">https://loteriasonline.caixa.gov.br/silce-web/#apostas</string>
     <string name="depplink_path_compras">https://loteriasonline.caixa.gov.br/silce-web/#compras</string>
-    
+
+    <!-- Push Notification -->
+    <string name="default_notification_channel_id">ChannelId</string>
+    <string name="default_notification_name">Loterias</string>
+    <string name="default_notification_channel_descricao">Canal Loterias</string>
+    <string name="icone_notificacoes">Notificações</string>
+    <string name="contador_notificacoes">0</string>
+    <string name="title_activity_mensagem_push">Mensagens</string>
+    <string name="pagamento_nao_identificado_dentro_do_prazo">Não recebemos seu Pix dentro do prazo.\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma aposta e gerar novo código para pagamento.</string>
+    <string name="pix_cancelado_descricao">Não recebemos seu Pix dentro do prazo previsto para efetuar sua aposta e você não está concorrendo. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
+    <string name="pagamento_pix_nao_identificado">Não identificamos o seu pagamento dentro do prazo previsto para efetuar sua aposta e você não está concorrendo. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. E não se preocupe! Caso o pagamento seja identificado, será estornado para a conta pagadora.</string>
+    <string name="pagamento_pix_estornado">Não foi possível completar a sua aposta e seu Pix será devolvido. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
+
 </resources>

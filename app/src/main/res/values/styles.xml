@@ -13,6 +13,12 @@
         <item name="actionButtonStyle">@style/ActionButtonStyleLoterias</item>
         <item name="android:homeAsUpIndicator">@drawable/seta_esquerda</item>
     </style>
+    <style name="pesqpush">
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textColor">#4E596B</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
 
     <style name="AppTheme.BrancoActionBar">
         <item name="windowActionBar">false</item>
@@ -110,7 +116,10 @@
     <style name="FuturaStdBold" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/futura_std_bold</item>
     </style>
-
+    <style name="ExplicativoArialMT" parent="ArialMT">
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/cinza</item>
+    </style>
     <style name="editTextRegisterTheme" parent="ArialMT">
         <item name="android:textColor">@color/cinza</item>
         <item name="android:textColorHint">@color/colorAccent</item>
@@ -248,6 +257,19 @@
         <item name="android:lines">2</item>
     </style>
 
+    <style name="fontForTitle3Premiados">
+        <item name="android:lines">2</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/arialmt</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:textSize">14.2sp</item>
+        <item name="android:textColorLink">@color/branco</item>
+        <item name="android:autoLink">web</item>
+        <item name="android:clickable">true</item>
+        <item name="android:linksClickable">true</item>
+        <item name="android:longClickable">true</item>
+    </style>
+
     <style name="fontForTitleTopoPremiados">
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/futura_std_bold</item>
@@ -271,7 +293,7 @@
         <item name="android:textColor">@color/verdeagua</item>
     </style>
 
-    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar" >
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@color/verde_card</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/futura_std_bold</item>
@@ -286,6 +308,18 @@
         <item name="colorControlNormal">@color/cinza_total</item>
     </style>
 
+    <style name="MyMaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Add attributes here -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="textAppearanceButton">@style/AppTextAppearance.Button</item>
+    </style>
+    <!--To fix rendering in preview -->
+    <style name="AppTextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textAllCaps">true</item>
+    </style>
+
     <style name="SwitchTheme" parent="AppTheme">
         <item name="colorControlActivated">@color/laranjacaixa</item>
         <!-- Bloqueado
@@ -294,6 +328,7 @@
         <item name="trackTint">@color/laranja_fundo_switch</item>
         -->
     </style>
+
     <style name="cef_titulo">
         <item name="android:textSize">
             15sp
@@ -305,6 +340,7 @@
             bold
         </item>
     </style>
+
     <style name="cef_subtitulo">
         <item name="android:textSize">
             12sp
@@ -313,5 +349,59 @@
             @color/cinzaIdcaixa
         </item>
 
+    </style>
+
+    <style name="CustomTabTexAppearance" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+    <style name="Base.Widget.Design.TabLayout" parent="@android:style/Theme.Holo">
+        <item name="android:actionBarTabTextStyle">@style/My.TabText.Style</item>
+    </style>
+    <style name="My.TabText.Style" parent="@android:style/Widget.Holo.ActionBar.TabText">
+        <item name="textAllCaps">false</item>
+    </style>
+    <style name="MessageTitleStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/cinzaescuro</item>
+    </style>
+
+    <style name="MessageContentStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/cinza_total</item>
+    </style>
+    <style name="MessageDateStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/cinza_total</item>
+    </style>
+    <style name="ButtonPushStyleCategoria1" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria2" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/verde_card</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria3" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/mais_milionaria_media</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria4" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">#D4B44B</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
+    </style>
+    <style name="ButtonPushStyleCategoria5" parent="Widget.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="colorPrimary">@color/vermelho_dialog</item>
+        <item name="android:textColor">@color/branco</item>
+        <item name="android:fontFamily">Future LT</item>
     </style>
 </resources>

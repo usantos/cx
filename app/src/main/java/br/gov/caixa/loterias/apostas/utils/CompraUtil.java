@@ -57,9 +57,9 @@ public class CompraUtil {
         });
     }
 
-    private static CompraAsyncResponse trataErroRequisicao(VolleyError error, OnCompraAsync listener) {
+    public static CompraAsyncResponse trataErroRequisicao(VolleyError error, OnCompraAsync listener) {
         if (error != null && error.networkResponse != null && error.networkResponse.statusCode == 303 && error.networkResponse.data != null) {
-            CompraAsyncResponse compraAsyncResponse = buscaCompraAsyncResponse(error);
+            CompraAsyncResponse compraAsyncResponse = converteCompraAsyncResponse(error);
             if (compraAsyncResponse != null) {
                 if (verificaRedirect(compraAsyncResponse)) {
                     listener.redirectCompra(compraAsyncResponse);
@@ -107,7 +107,7 @@ public class CompraUtil {
         }
     }
 
-    private static CompraAsyncResponse buscaCompraAsyncResponse(VolleyError error) {
+    private static CompraAsyncResponse converteCompraAsyncResponse(VolleyError error) {
         String body;
         Gson gsonResponse = new Gson();
         CompraAsyncResponse compraAsyncResponse = null;

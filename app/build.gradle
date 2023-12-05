@@ -49,11 +49,11 @@ android {
         minSdkVersion 22
         targetSdkVersion 33
 
-        // SPRINT 84
-        //                   22                 1.7.0 = 01 007               00
+        // SPRINT 85
+        //                   22                 1.8.0 = 01 008               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220100700
-        versionName "1.7.0"
+        versionCode 220100800
+        versionName "1.8.0"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -131,7 +131,38 @@ android {
                 applicationIdSuffix ".hmp"
                 resValue "string", "app_name", "Loterias_tqs"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.tqs.caixa/silce-servico-rest/rest/v1/\""
+                buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""
+                buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
+                buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
+                buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+                buildConfigField "String", "URL_SSO", "\"https://logindes.caixa.gov.br\""
+                buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
+                buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
+                buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+                buildConfigField "String", "URL_SSO_LOGOUT", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+                buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
+                buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+                buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
+                buildConfigField "String", "RP_CREATE_TOKEN_URL", "\"https://secure-sandbox.recargapay.com\""
+                buildConfigField "String", "APP_CENTER_KEY", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+                buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
+                buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasdes\""
+                buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
+                manifestPlaceholders = [
+                        appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                        hostName             : "br.gov.caixa.caixaloterias",
+                        path                 : "/oauth2Callback",
+                        scheme               : "https"
+                ]
+            }
+
+            tqsexterno {
+                dimension "default"
+                applicationIdSuffix ".hmp"
+                resValue "string", "app_name", "Loterias_tqs"
+                buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.tqs.caixa.gov.br/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""
                 buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
                 buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
@@ -160,9 +191,9 @@ android {
             emulador {
                 dimension "default"
                 applicationIdSuffix ".hmp"
-                resValue "string", "app_name", "Loterias_tqs_emulador"
+                resValue "string", "app_name", "Loterias_emulador"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.tqs.caixa/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""
                 buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
                 buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
@@ -191,9 +222,9 @@ android {
             automacao {
                 dimension "default"
                 applicationIdSuffix ".hmp"
-                resValue "string", "app_name", "Loterias_tqs_automacao"
+                resValue "string", "app_name", "Loterias_automacao"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.des.caixa/silce-servico-rest/rest/v1/\""
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.tqs.caixa/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""
                 buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
                 buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
@@ -219,9 +250,15 @@ android {
                 ]
             }
         }
+    buildFeatures {
+        viewBinding true
     }
+}
 
     dependencies {
+        implementation 'androidx.navigation:navigation-fragment:2.5.3'
+        implementation 'androidx.navigation:navigation-ui:2.5.3'
+
 
         // versions
         def AAVersion = '4.6.0'
@@ -240,6 +277,7 @@ android {
         implementation 'androidx.appcompat:appcompat:1.6.1'
         implementation 'com.google.android.material:material:1.6.0'
         implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
+        implementation 'com.google.android.material:material:1.3.0-alpha02'
         implementation 'androidx.cardview:cardview:1.0.0'
         implementation 'androidx.recyclerview:recyclerview:1.3.0'
 
@@ -315,6 +353,11 @@ android {
 
         //Joda time
         implementation 'net.danlew:android.joda:2.10.9.1'
+
+        // Import the Firebase BoM - Utiliado em conjunto com FMC
+        //implementation platform('com.google.firebase:firebase-bom:32.0.0')
+        // Firebase Cloud Messaging (Java)
+        //implementation 'com.google.firebase:firebase-messaging'
 
         // testImplementation deps
         testImplementation 'junit:junit:4.13.2'

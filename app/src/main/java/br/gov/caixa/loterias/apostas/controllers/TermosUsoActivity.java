@@ -160,6 +160,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_termos_uso);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_toolbar)));
 
         termosUsoButton = findViewById(R.id.buttonTermos);

@@ -1,13 +1,20 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
 import com.microsoft.appcenter.AppCenter;
@@ -30,6 +37,8 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
+import br.gov.caixa.loterias.apostas.utils.MessagingPermission;
+import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.ICallbackQueueIT;
@@ -40,7 +49,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     public static final int SPLASH_TIME = 2000;
     public static final int REQ_LOC = 2;
     private VersionResponse responseVersao;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +67,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
         
         AppCenter.start(getApplication(), BuildConfig.APP_CENTER_KEY, Analytics.class, Crashes.class);
+
+        //Permissao de Notificacao
+        //MessagingPermission messagingPermission = new MessagingPermission(this);
+        //messagingPermission.requestNotificationPermission();
 
         startaFila();
     }

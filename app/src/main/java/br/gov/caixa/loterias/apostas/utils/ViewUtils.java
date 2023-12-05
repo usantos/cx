@@ -225,7 +225,9 @@ public class ViewUtils {
     }
 
 
-    public static Dialog alertTitleButtonYesOrNotListener(Context context, String message, DialogInterface.OnClickListener listenerYes,DialogInterface.OnClickListener  listenerNo) {
+    public static Dialog alertTitleButtonYesOrNotListener(Context context, String message,
+                                                          DialogInterface.OnClickListener listenerYes,
+                                                          DialogInterface.OnClickListener  listenerNo) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
                                  .setCancelable(false)
                                  .setNegativeButton (R.string.label_nao, listenerNo)
@@ -405,15 +407,17 @@ public class ViewUtils {
                         int heightNavigationBar = resources.getDimensionPixelSize(resourceId);
 
                         int heightLayout = constraintLayout.getMeasuredHeight();
-                        int heightElementToExpand = activity.findViewById(idViewToExpand).getMeasuredHeight();
-                        float heightStatusBar = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, resources.getDisplayMetrics());
+                        if(activity.findViewById(idViewToExpand) != null){
+                            int heightElementToExpand = activity.findViewById(idViewToExpand).getMeasuredHeight();
+                            float heightStatusBar = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, resources.getDisplayMetrics());
 
-                        if (!activity.findViewById(idScrollView).canScrollVertically(1)) {
-                            ConstraintSet set = new ConstraintSet();
+                            if (!activity.findViewById(idScrollView).canScrollVertically(1)) {
+                                ConstraintSet set = new ConstraintSet();
 
-                            set.clone(constraintLayout);
-                            set.constrainHeight(idViewToExpand, (heightElementToExpand + heightWindow - (int) heightStatusBar - heightLayout - heightNavigationBar - 14));
-                            set.applyTo(constraintLayout);
+                                set.clone(constraintLayout);
+                                set.constrainHeight(idViewToExpand, (heightElementToExpand + heightWindow - (int) heightStatusBar - heightLayout - heightNavigationBar - 14));
+                                set.applyTo(constraintLayout);
+                            }
                         }
                     }
                 }

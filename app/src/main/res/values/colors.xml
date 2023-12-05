@@ -6,19 +6,27 @@
     <color name="colorAccent">#005ca9</color>
     <color name="azulClaroSelecaotime">#cae1e4</color>
     <color name="azulclaro">#d4dfe2</color>
+    <color name="azulpush">#0066B3</color>
+    <color name="pushbotaoaposteagora">#0164AF</color>
+    <color name="pushbotaoconferiragora">#4BBDAC</color>/
+    <color name="fundobrancocentralmsg">#F4F4F4</color>
     <color name="black_overlay">#66000000</color>
     <color name="branco">#ffffff</color>
     <color name="branco_transparente">#99ffffff</color>
     <color name="cinza">#48586c</color>
     <color name="linhaDivisa">#d0e0e3</color>
     <color name="cinza2">#d4dfe2</color>
+    <color name="cinzaClaro">#EBF2F4</color>
     <color name="cinzaclaro">#eff5f6</color>
     <color name="cinzaescuro">#4e596b</color>
     <color name="cinza_button">#a5aab6</color>
     <color name="cinza_total">#929ea0</color>
     <color name="cinza_divisoria">#B3C6CA</color>
     <color name="verdeazul">#54bbab</color>
+    <color name="verde_acompanha_compras">#52BBAA</color>
     <color name="amarelo">#feb21e</color>
+    <color name="azul_salvar_cartao">#1F5C8F</color>
+    <color name="cinza_salvar_cartao_desabilitado">#939598</color>
 
     <color name="verdesenaclaro">#60a96b</color>
     <color name="verdesenatrevo">#579a66</color>
@@ -149,6 +157,8 @@
     <color name="cinza_borda">#C4C4C4</color>
     <color name="azul_mercado_pago">#50B4E9</color>
     <color name="laranja_recarga_pay">#FE8832</color>
+    <color name="verde_pix">#32BCAD</color>
+    <color name="cinza_pix_disabled">#757575</color>
 
 
     <color name="azul_efetivada">#143DA6</color>
@@ -157,8 +167,9 @@
 
     <color name="azul_minhas_compras">#143DA6</color>
     <color name="vermelho_minhas_compras">#900000</color>
-    <color name="amarelo_minhas_compras">#FDAB01</color>
+    <color name="amarelo_minhas_compras">#EAAA28</color>
     <color name="verde_minhas_compras">#008254</color>
+    <color name="verde_botao_minhas_compras">#4BBDAC</color>
 
     <color name="amarelo_favoritado">#FDB932</color>
 
@@ -182,6 +193,7 @@
     <color name="tarjaAmarela">#FCF7E6</color>
     <color name="bordaDigitacaoCVV">#4BBDAC</color>
     <color name="numeroDigitacaoCVV">#4BB8A9</color>
+    <color name="pesquisa_msgpush">#E5E5E5</color>
 
     <color name="mp_darker_gray">#ABABAB</color>
     <color name="mp_warm_grey">#b7999999</color>

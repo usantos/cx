@@ -7,8 +7,6 @@
     tools:context="br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity"
     android:fitsSystemWindows="true"
     >
-
     <include layout="@layout/app_bar_degrade"/>
     <include layout="@layout/content_lista_compras" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
