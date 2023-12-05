@@ -159,7 +159,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         } else if (SituacaoCompraUtil.isDebitoNaoAutorizado(compraDTO.getSituacao())) {
             showDialogDebitoNaoAutorizado();
         } else if (SituacaoCompraUtil.isEstornada(compraDTO.getSituacao())) {
-            showDialogEstornada();
+            //showDialogEstornada();
+            showDialogCompraCancelada(getString(R.string.pagamento_pix_estornado));
 //        } else if (SituacaoCompraUtil.isDevocaoPix(compraDTO.getSituacao())) {
 //            showDialogDevolucaoPix();
         }
