@@ -1073,16 +1073,18 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @Override
     public Paginacao getPaginacao() {
         Paginacao paginacao = null;
-        switch (parametroSimulacao.getConcurso().getModalidade()){
-            case MAIS_MILIONARIA:
-                paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), 0, R.color.mais_milionaria_escura);
-                break;
-            case TIMEMANIA:
-                paginacao = PaginacaoUtils.getPaginacaoTimemania(getApplicationContext(), R.color.timemaniaescuro);
-                break;
-            case DIA_DE_SORTE:
-                paginacao = PaginacaoUtils.getPaginacaoDiaDeSorte(getApplicationContext(), R.color.diasorteescuro);
-                break;
+        if (parametroSimulacao != null && parametroSimulacao.getConcurso() != null && parametroSimulacao.getConcurso().getModalidade() != null){
+            switch (parametroSimulacao.getConcurso().getModalidade()){
+                case MAIS_MILIONARIA:
+                    paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), 0, R.color.mais_milionaria_escura);
+                    break;
+                case TIMEMANIA:
+                    paginacao = PaginacaoUtils.getPaginacaoTimemania(getApplicationContext(), R.color.timemaniaescuro);
+                    break;
+                case DIA_DE_SORTE:
+                    paginacao = PaginacaoUtils.getPaginacaoDiaDeSorte(getApplicationContext(), R.color.diasorteescuro);
+                    break;
+            }
         }
 
         return paginacao;
