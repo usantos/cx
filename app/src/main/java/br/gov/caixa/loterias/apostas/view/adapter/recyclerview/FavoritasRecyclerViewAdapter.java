@@ -427,9 +427,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     }
 
     private void checarLimiteDiario(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO) {
-        if (SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
-                .compareTo(carrinhoDTO.getValorTotal()
-                        .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico(apostaFavoritaDTO))) < 0) {
+        if (isLimiteDiarioExcedido(carrinhoDTO, apostaFavoritaDTO)) {
             AlertDialogUtils.dismiss();
             ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA014), (dialog, which) -> {
                 AlertDialogUtils.show(context);
@@ -438,6 +436,15 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         } else {
             checarApostasRepetidas(apostaBO, apostaFavoritaDTO, carrinhoDTO);
         }
+    }
+
+    private boolean isLimiteDiarioExcedido(CarrinhoDTO carrinhoDTO, ApostaFavoritaDTO apostaFavoritaDTO) {
+        return SessaoUsuario.getInstance().getParametrosSimulacao() != null &&
+                SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() != null &&
+                carrinhoDTO != null && carrinhoDTO.getValorTotal() != null &&
+                SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
+                .compareTo(carrinhoDTO.getValorTotal()
+                        .add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico(apostaFavoritaDTO))) < 0;
     }
 
     private void checarApostasRepetidas(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO) {
