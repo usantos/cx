@@ -1314,8 +1314,11 @@
     <string name="nome_ou_codigo">Nome ou código</string>
     <string name="apostas_boloes">_Apostas Bolões_</string>
     <string name="descritivo_tela_bolao">Veja aqui os bolões da Mega-Sena em destaque. Em breve, mais modalidades!</string>
-    <string name="cotas_bolao">Cotas Bolão</string>
-    <string name="apostas_individuais">Apostas Individuais</string>
-    <string name="cota_cancelada">Cota Cancelada</string>
+    <string name="cotas_bolao">Cotas bolão</string>
+    <string name="apostas_individuais">Apostas individuais</string>
+    <string name="cota_reservada">Cota reservada</string>
+    <string name="cota_expirada">Cota expirada</string>
+    <string name="carrinho_cotas_expiradas">Você deve retirar as cotas expiradas do carrinho para avançar para pagamento</string>
+    <string name="loteca_nao_favorita">Apostas da Loteca e Bolões não são salvos no carrinho favorito.</string>
 
 </resources>

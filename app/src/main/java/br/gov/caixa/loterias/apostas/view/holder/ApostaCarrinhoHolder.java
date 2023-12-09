@@ -27,8 +27,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
-import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
+import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
@@ -48,7 +48,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private TextView trevosAposta;
 	private TextView valorAposta;
 	private TextView textContadorBolao;
-	private TextView textCotaCancelada;
+	private TextView textCotas;
+	private TextView textQtdCotas;
 	private ExpandableHeightRecyclerView recycleViewDetalheAposta;
 	private RelativeLayout containerFragment;
 	private RelativeLayout layoutCabecalhoLoteca;
@@ -88,7 +89,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		textContadorBolao = view.findViewById(R.id.contadorBolao);
 		imageDetalheBoloes = view.findViewById(R.id.imageViewDetalheBoloes);
 		iconTimer = view.findViewById(R.id.imageViewRelogioBoloes);
-		textCotaCancelada = view.findViewById(R.id.textCotaCancelada);
+		textCotas = view.findViewById(R.id.textCotas);
+		textQtdCotas = view.findViewById(R.id.textQtdCotas);
 	}
 
 	@Override
@@ -114,7 +116,13 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		if (isBolao) {
 			imageDetalheBoloes.setVisibility(View.VISIBLE);
-			startTimer(position);
+			textContadorBolao.setVisibility(View.VISIBLE);
+			iconTimer.setVisibility(View.VISIBLE);
+			textCotas.setVisibility(View.VISIBLE);
+			textQtdCotas.setVisibility(View.VISIBLE);
+			textQtdCotas.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +
+								 aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
+			startTimer(position, aposta.getReservaCotaBolao().getDataHoraExpiracaoReserva());
 		}
 
 		TextView     quantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
@@ -123,7 +131,6 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		LinearLayout layoutTimeCoracao   = this.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
 		TextView     labelTimeCoracao    = this.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
 		TextView     textViewTimeCoracao = this.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
-
 
 		String quantidadeApostadasString;
 		String quantidadeSorteiosString;
@@ -334,22 +341,23 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	}
 
 
-	private void startTimer(int position) {
+	private void startTimer(int position, String dataHoraExpiracaoReserva) {
+		long tempo_inicial_milesec = DateUtils.diffMillisSecondsTimerZone(dataHoraExpiracaoReserva);
 
-		textContadorBolao.setVisibility(View.VISIBLE);
-		iconTimer.setVisibility(View.VISIBLE);
-
-		//Ler de apostas ***
-		long tempo_inicial_milesec = 100 * 1000;
-		if(position == 1) tempo_inicial_milesec = 120 * 1000;
 		ContagemRegressiva contDown = new ContagemRegressiva(textContadorBolao, tempo_inicial_milesec, 1000) {
 			@Override
 			public void onFinish() {
 				try {
-					textContadorBolao.setTextColor(Aplicacao.application.getResources().getColor(R.color.vermelho_cancelada));
+					textViewTipoAposta.setTextColor(ContextCompat.getColor(context, R.color.cor_bola_unselected));
+					textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, R.color.cor_bola_unselected));
+					imageDetalheBoloes.setBackground(VectorUtils.getShape(R.drawable.ic_trevo_carrinho_bolao, R.color.cor_bola_unselected));
+					textQtdCotas.setTextColor(ContextCompat.getColor(context, R.color.cor_bola_unselected));
+					valorAposta.setTextColor(ContextCompat.getColor(context, R.color.cor_bola_unselected));
+					textContadorBolao.setTextColor(ContextCompat.getColor(context, R.color.cor_bola_unselected));
 					textContadorBolao.setText(R.string.tempo_zerado);
-					iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.vermelho_cancelada));
-					textCotaCancelada.setVisibility(View.VISIBLE);
+					iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.cor_bola_unselected));
+					textCotas.setText(R.string.cota_expirada);
+					textCotas.setTextColor(ContextCompat.getColor(context, R.color.vermelho_cancelada));
 				} catch (Exception e){}
 			}
 		};
@@ -363,8 +371,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private ContagemRegressiva.ContagemRegressivaListener onContagemListener(ContagemRegressiva contDown) {
 		return millisUntilFinish -> {
 			if (contDown.estaFaltandoXMin(millisUntilFinish, 1)){
-				textContadorBolao.setTextColor(Aplicacao.application.getResources().getColor(R.color.jr_amarelo));
+				textContadorBolao.setTextColor(ContextCompat.getColor(context, R.color.jr_amarelo));
 				iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.jr_amarelo));
+				textCotas.setTextColor(ContextCompat.getColor(context, R.color.jr_amarelo));
 			}
 		};
 	}
