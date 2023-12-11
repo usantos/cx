@@ -96,7 +96,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	@SerializedName("especialInclusoTeimosinha")
 	private Boolean especialInclusoTeimosinha = null;
 	@SerializedName("indicadorCotaBolao")
-	private Boolean indicadorCotaBolao = null;
+	private Boolean indicadorCotaBolao = false;
 	@SerializedName("reservaCotaBolao")
 	private CotaDTO reservaCotaBolao = null;
 

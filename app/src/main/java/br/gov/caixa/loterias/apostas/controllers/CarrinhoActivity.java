@@ -27,7 +27,6 @@ import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -229,7 +228,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void setaMetodos() {
-        btnAvancaPagamento.setOnClickListener(v -> onClickAvanvaPagamento());
+        btnAvancaPagamento.setOnClickListener(v -> onClickAvancaPagamento());
         btnNovaAposta.setOnClickListener(v -> clickBotaoFazerNovaAposta());
         btnLimpar.setOnClickListener(v -> clickLimparCarrinhoLinearLayout());
         btnFavoritar.setOnClickListener(v -> onClickFavoritar());
@@ -273,7 +272,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         );
     }
 
-    private void onClickAvanvaPagamento() {
+    private void onClickAvancaPagamento() {
        if (verificaCotasExpiradas()) {
            ViewUtils.alertTitleButton(CarrinhoActivity.this,
                    R.string.label_atencao, getString(R.string.carrinho_cotas_expiradas),
@@ -433,31 +432,31 @@ public class CarrinhoActivity extends AppCompatActivity {
     public void setCarrinho(CarrinhoDTO carrinho) {
         this.carrinho = carrinho;
         //TODO - Apagar mock
-        mockBoloes();
+        //mockBoloes();
         CarrinhoSingleton.getInstance().setCarrinho(this.carrinho);
     }
 
     //TODO - *** APAGAR ***
-    private void mockBoloes() {
-        int maxBoloes = 0;
-        if (this.carrinho.getApostas() != null && this.carrinho.getApostas().size()>0) {
-            if (this.carrinho.getApostas().size()<=12)
-                maxBoloes = this.carrinho.getApostas().size();
-            else
-                maxBoloes = 12;
-        }
-        List<IdentificaoDeUmaApostaDas8Modalidades> boloes = new ArrayList<>();
-        for (int i = 0; i <= maxBoloes-1; i++) {
-            IdentificaoDeUmaApostaDas8Modalidades apostaMock = this.carrinho.getApostas().get(i);
-            CotaDTO cotaDTO = new CotaDTO();
-            cotaDTO.setDataHoraExpiracaoReserva("2023-12-09T11:48:00-03:00");
-            cotaDTO.setNumeroCotaReservada(i+1);
-            cotaDTO.setQtdCotaTotalBolao(100-i);
-            apostaMock.setReservaCotaBolao(cotaDTO);
-            boloes.add(apostaMock);
-        }
-        this.carrinho.setBoloes(boloes);
-    }
+//    private void mockBoloes() {
+//        int maxBoloes = 0;
+//        if (this.carrinho.getApostas() != null && this.carrinho.getApostas().size()>0) {
+//            if (this.carrinho.getApostas().size()<=12)
+//                maxBoloes = this.carrinho.getApostas((Contador Regressivo)).size();
+//            else
+//                maxBoloes = 12;
+//        }
+//        List<IdentificaoDeUmaApostaDas8Modalidades> boloes = new ArrayList<>();
+//        for (int i = 0; i <= maxBoloes-1; i++) {
+//            IdentificaoDeUmaApostaDas8Modalidades apostaMock = this.carrinho.getApostas().get(i);
+//            CotaDTO cotaDTO = new CotaDTO();
+//            cotaDTO.setDataHoraExpiracaoReserva("2023-12-09T11:48:00-03:00");
+//            cotaDTO.setNumeroCotaReservada(i+1);
+//            cotaDTO.setQtdCotaTotalBolao(100-i);
+//            apostaMock.setReservaCotaBolao(cotaDTO);
+//            boloes.add(apostaMock);
+//        }
+//        this.carrinho.setBoloes(boloes);
+//    }
 
     private void validarCarrinho() {
         ocorrendoValidacao = true;

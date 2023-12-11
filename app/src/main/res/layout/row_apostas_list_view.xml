@@ -262,7 +262,7 @@
                 android:id="@+id/textQtdCotas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="153dp"
+                android:layout_marginStart="160dp"
                 android:layout_marginTop="29dp"
                 android:text="00/00"
                 android:textColor="@color/cotas_boloes"

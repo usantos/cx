@@ -122,7 +122,12 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			textQtdCotas.setVisibility(View.VISIBLE);
 			textQtdCotas.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +
 								 aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
-			startTimer(position, aposta.getReservaCotaBolao().getDataHoraExpiracaoReserva());
+			String dataHoraExpiracao = aposta.getReservaCotaBolao().getDataHoraExpiracaoReserva();
+			if (dataHoraExpiracao == null || dataHoraExpiracao.length() == 0) {
+				//TODO - Silce deveria tratar
+				dataHoraExpiracao = "2023-01-01T00:00:00-03:00";
+			}
+			startTimer(position, dataHoraExpiracao);
 		}
 
 		TextView     quantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
