@@ -115,7 +115,7 @@ public class FragmentUtils {
 	}
 
 	public static ApostaConfirmadaNumeroDetalhesFragment startApostaConfirmadaDetalhes(FragmentManager fm, int id,
-																					   IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta,
+																					   IdentificaoDeUmaApostaDas8Modalidades aposta,
 																					   ResultadoConcursoDTO resultado,
 																					   ComprovanteApostaDTO comprovante,
 																					   BigDecimal valorPremio) {

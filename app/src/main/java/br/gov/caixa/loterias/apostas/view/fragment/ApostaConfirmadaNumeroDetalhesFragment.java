@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -58,7 +59,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 	public ApostaConfirmadaNumeroDetalhesFragment() {}
 
-	public static ApostaConfirmadaNumeroDetalhesFragment newInstance(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta,
+	public static ApostaConfirmadaNumeroDetalhesFragment newInstance(IdentificaoDeUmaApostaDas8Modalidades aposta,
 																	 ResultadoConcursoDTO resultado,
 																	 ComprovanteApostaDTO comprovante,
 																	 BigDecimal valorPremio) {
@@ -75,8 +76,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		if (getArguments() != null) {
 			String apostaJson = getArguments().getString(ARG_APOSTA);
 			if (apostaJson != null && !apostaJson.isEmpty()){
-				Type apostaType = new TypeToken<IdentificaoDeUmaApostaDas8Modalidades<List<Integer>>>(){}.getType();
-				aposta = new Gson().fromJson(apostaJson, apostaType);
+				aposta = new Gson().fromJson(apostaJson, IdentificaoDeUmaApostaDas8Modalidades.class);
 			}
 		}
 	}
