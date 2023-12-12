@@ -299,15 +299,18 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			numeroStr.append("\n\n\n");
 		}
 
-		if(!isBolao) {
-			this.numerosAposta.setText(removeUltimoTraco(numeroStr.toString()));
-		}
 		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
 			this.trevosAposta.setText(removeUltimoTraco(trevosStr.toString() + "\n"));
 		} else {
 			this.trevosAposta.setVisibility(View.GONE);
 		}
-		ViewUtils.setMoedaFormatHtml(aposta.getValor(), this.valorAposta);
+
+		if (isBolao) {
+			ViewUtils.setMoedaFormatHtml(aposta.getReservaCotaBolao().getVrTotalCota(), this.valorAposta);
+		} else {
+			ViewUtils.setMoedaFormatHtml(aposta.getValor(), this.valorAposta);
+			this.numerosAposta.setText(removeUltimoTraco(numeroStr.toString()));
+		}
 
 		if (animacao) {
 			AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);

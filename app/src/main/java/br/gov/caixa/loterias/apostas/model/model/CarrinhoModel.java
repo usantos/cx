@@ -76,6 +76,7 @@ public class CarrinhoModel {
 		DBLoteriasCrud crud = new DBLoteriasCrud(activity);
 		CarrinhoDTO carrinho = new CarrinhoDTO();
 		carrinho.setApostas(crud.readAllIdentificaoDeUmaApostaDas8Modalidades());
+		carrinho.setApostasIndividuais(crud.readAllIdentificaoDeUmaApostaDas8Modalidades());
 
 		return carrinho;
 	}

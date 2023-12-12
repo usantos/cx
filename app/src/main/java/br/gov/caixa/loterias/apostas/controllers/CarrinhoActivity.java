@@ -99,10 +99,10 @@ public class CarrinhoActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        limparCarrinhoInicial();
-        atualizaParametros();
         desabilitaBoloes();
         desabilitaApostas();
+        limparCarrinhoInicial();
+        atualizaParametros();
     }
 
     private void limparCarrinhoInicial() {
@@ -362,7 +362,14 @@ public class CarrinhoActivity extends AppCompatActivity {
         } catch (Exception e){}
     }
 
-    public void deletaAposta(int position, IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    public void deletaAposta(int position, IdentificaoDeUmaApostaDas8Modalidades aposta, boolean isBolao) {
+        if (isBolao) {
+            synchronized (rvListaBoloes) {
+                listBoloes.remove(position);
+                rvListaBoloes.getAdapter().notifyItemRemoved(position);
+            }
+            return;
+        }
         if (listApostas != null) {
             synchronized (rvListaApostas) {
                 listApostas.remove(position);

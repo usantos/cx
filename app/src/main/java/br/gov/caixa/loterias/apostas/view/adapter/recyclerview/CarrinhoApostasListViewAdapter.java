@@ -71,21 +71,21 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaC
 	private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
 
 		ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), (dialogInterface, i) -> {
-			int          positionAposta      = getPositionAposta(aposta);
+			int positionAposta = getPositionAposta(aposta);
 			if(positionAposta >= 0) {
 				AlertDialogUtils.show(parentActivity);
-				model.deletaApostaCarrinho(aposta, onDeletaApostaCarrinho(aposta, positionAposta));
+				model.deletaApostaCarrinho(aposta, onDeletaApostaCarrinho(aposta, positionAposta, isBolao));
 			}
 		});
 	}
 
-	private OnSilceListener<CarrinhoDTO> onDeletaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades aposta, int positionAposta) {
+	private OnSilceListener<CarrinhoDTO> onDeletaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades aposta, int positionAposta, boolean isBolao) {
 		return new OnSilceListener<CarrinhoDTO>() {
 			@Override
 			public void success(CarrinhoDTO payload) {
 				parentActivity.setCarrinho(payload);
 				deletarApostaBaseLocal(aposta, Boolean.FALSE);
-				parentActivity.deletaAposta(positionAposta, aposta);
+				parentActivity.deletaAposta(positionAposta, aposta, isBolao);
 				deletaCarrinhoFavorito();
 			}
 
@@ -93,7 +93,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaC
 			public void error(VolleyError error) {
 				AlertDialogUtils.dismiss();
 				deletarApostaBaseLocal(aposta, Boolean.TRUE);
-				parentActivity.deletaAposta(positionAposta, aposta);
+				parentActivity.deletaAposta(positionAposta, aposta, isBolao);
 			}
 		};
 	}
