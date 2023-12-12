@@ -29,8 +29,8 @@ public class BolaoRepository extends AppRepository {
 
     public void buscarBoloesDisponiveis(int idMunicipio, int idUf, OnSilceListener<ListaBolaoDTO> listener){
 
-        FiltroMarketPlace filtro = new FiltroMarketPlace(TipoConsultaBolaoEnum.MUNICIPIO,
-                idMunicipio, idUf, PAGINA_INICIAL, QTD_POR_PAGINA);
+        FiltroMarketPlace filtro = new FiltroMarketPlace(TipoConsultaBolaoEnum.NACIONAL,
+                0, 0, PAGINA_INICIAL, QTD_POR_PAGINA);
 
         ApostaBO_.getInstance_(getActivity()).getBoloesDisponiveis(filtro,
                 new RequestListener<BoloesDisponiveisResponse>() {
@@ -89,5 +89,9 @@ public class BolaoRepository extends AppRepository {
                         listener.error(error);
                     }
                 });
+    }
+
+    public void buscaDetalhesBolao(String codigoBolao){
+
     }
 }

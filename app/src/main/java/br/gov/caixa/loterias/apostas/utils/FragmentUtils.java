@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
@@ -23,6 +24,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.OrientacaoPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 
 public class FragmentUtils {
 
@@ -114,5 +116,11 @@ public class FragmentUtils {
 		ChavePixFragment fragment = ChavePixFragment.newInstance(chave);
 		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
+	}
+
+	public static SubBarraModalidadeFragment startFragmentSubBarraModalidade(FragmentManager fm, int id, ModalidadeEnum modalidade, String concurso, String sorteio) {
+		SubBarraModalidadeFragment frag = SubBarraModalidadeFragment.newInstance(modalidade, concurso, sorteio);
+		startFragment(fm, id, frag);
+		return frag;
 	}
 }
