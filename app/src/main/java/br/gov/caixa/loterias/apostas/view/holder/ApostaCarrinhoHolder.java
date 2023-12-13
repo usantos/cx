@@ -115,9 +115,11 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		this.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
 		if (isBolao) {
+			swipeLayout.setSwipeEnabled(false);
 			imageDetalheBoloes.setVisibility(View.VISIBLE);
 			textContadorBolao.setVisibility(View.VISIBLE);
 			iconTimer.setVisibility(View.VISIBLE);
+			iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.bolao_barra_titulo));
 			textCotas.setVisibility(View.VISIBLE);
 			textQtdCotas.setVisibility(View.VISIBLE);
 			textQtdCotas.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +

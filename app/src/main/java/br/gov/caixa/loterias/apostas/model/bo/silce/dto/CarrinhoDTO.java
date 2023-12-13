@@ -56,6 +56,9 @@ public class CarrinhoDTO implements Serializable {
                 if (aposta.getValor() != null){
                     valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
                 }
+                if (aposta.getReservaCotaBolao() != null) {
+                    valorTotalCarrinho = valorTotalCarrinho.add(aposta.getReservaCotaBolao().getVrTotalCota());
+                }
             }
         }
         valorTotal = valorTotalCarrinho;

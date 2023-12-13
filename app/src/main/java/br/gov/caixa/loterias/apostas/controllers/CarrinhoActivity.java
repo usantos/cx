@@ -36,6 +36,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -235,7 +236,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
         layoutManagerBoloes = new LinearLayoutManager(this);
         rvListaBoloes.setLayoutManager(layoutManagerBoloes);
-        rvListaBoloes.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listBoloes, this, true, model, true));
+        rvListaBoloes.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listBoloes, this, false, model, true));
         rvListaBoloes.setExpanded(Boolean.TRUE);
         rvListaBoloes.setItemViewCacheSize(PAGE_SIZE);
 
@@ -273,26 +274,16 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void onClickAvancaPagamento() {
-       if (verificaCotasExpiradas()) {
-           ViewUtils.alertTitleButton(CarrinhoActivity.this,
-                   R.string.label_atencao, getString(R.string.carrinho_cotas_expiradas),
-                   getString(R.string.ok), dialogInterface -> { dialogInterface.dismiss(); });
-       } else {
-           trataPermissao();
-       }
+        trataPermissao();
     }
 
-    private boolean verificaCotasExpiradas() {
-        for (IdentificaoDeUmaApostaDas8Modalidades bolao : listBoloes) {
-            if (DateUtils.diffMillisSecondsTimerZone(bolao.getReservaCotaBolao().getDataHoraExpiracaoReserva()) <= 0) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private void trataPermissao() {
         int statusPermissao = LocalizacaoUtils.checaStatusPermissao(this);
+        if (BuildVersionUtil.isEmulador()) {
+            //TODO - Verificar com AJ
+            statusPermissao = LocalizacaoUtils.LOC_NO_BRASIL;
+        }
         if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA) {
             DialogUtils.showDialogDefault(this, 0,
                                           getResources().getString(R.string.label_atencao),
@@ -367,6 +358,11 @@ public class CarrinhoActivity extends AppCompatActivity {
             synchronized (rvListaBoloes) {
                 listBoloes.remove(position);
                 rvListaBoloes.getAdapter().notifyItemRemoved(position);
+                setValorTotalCarrinho();
+                configuraBotoesSuperiores();
+            }
+            if (listBoloes.size() == 0) {
+                desabilitaBoloes();
             }
             return;
         }
@@ -377,6 +373,9 @@ public class CarrinhoActivity extends AppCompatActivity {
                 offSet--;
                 setValorTotalCarrinho();
                 configuraBotoesSuperiores();
+            }
+            if (listApostas.size() == 0) {
+                desabilitaApostas();
             }
         }
     }
@@ -438,32 +437,8 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     public void setCarrinho(CarrinhoDTO carrinho) {
         this.carrinho = carrinho;
-        //TODO - Apagar mock
-        //mockBoloes();
         CarrinhoSingleton.getInstance().setCarrinho(this.carrinho);
     }
-
-    //TODO - *** APAGAR ***
-//    private void mockBoloes() {
-//        int maxBoloes = 0;
-//        if (this.carrinho.getApostas() != null && this.carrinho.getApostas().size()>0) {
-//            if (this.carrinho.getApostas().size()<=12)
-//                maxBoloes = this.carrinho.getApostas((Contador Regressivo)).size();
-//            else
-//                maxBoloes = 12;
-//        }
-//        List<IdentificaoDeUmaApostaDas8Modalidades> boloes = new ArrayList<>();
-//        for (int i = 0; i <= maxBoloes-1; i++) {
-//            IdentificaoDeUmaApostaDas8Modalidades apostaMock = this.carrinho.getApostas().get(i);
-//            CotaDTO cotaDTO = new CotaDTO();
-//            cotaDTO.setDataHoraExpiracaoReserva("2023-12-09T11:48:00-03:00");
-//            cotaDTO.setNumeroCotaReservada(i+1);
-//            cotaDTO.setQtdCotaTotalBolao(100-i);
-//            apostaMock.setReservaCotaBolao(cotaDTO);
-//            boloes.add(apostaMock);
-//        }
-//        this.carrinho.setBoloes(boloes);
-//    }
 
     private void validarCarrinho() {
         ocorrendoValidacao = true;
