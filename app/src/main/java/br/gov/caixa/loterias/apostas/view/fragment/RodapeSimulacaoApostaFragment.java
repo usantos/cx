@@ -94,11 +94,11 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		}
 	}
 
-	public void apresentaQtdApostas(boolean isShow, int qtdApostas){
+	public void apresentaQtdApostas(boolean isShow, String qtdApostas){
 		if (isShow){
 			circuloQtd.setVisibility(View.VISIBLE);
 			tvQtd.setVisibility(View.VISIBLE);
-			tvQtd.setText(String.valueOf(qtdApostas));
+			tvQtd.setText(qtdApostas);
 		} else {
 			circuloQtd.setVisibility(View.INVISIBLE);
 			tvQtd.setVisibility(View.INVISIBLE);
@@ -129,5 +129,13 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 				}
 			}
 		});
+	}
+
+	public TextView getTvValorAposta(){
+		return tvValorAposta;
+	}
+
+	public TextView getTvValorCarrinho(){
+		return tvValorCarrinho;
 	}
 }
