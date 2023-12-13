@@ -66,7 +66,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 	}
 
 	private void preencheDados() {
-		tvModalidade.setText(ModalidadeEnum.getDescricao(modalidade));
+		tvModalidade.setText(ModalidadeEnum.fromString(modalidade));
 		tvConcurso.setText(concurso);
 		tvSorteio.setText(sorteio);
 	}

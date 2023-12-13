@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient_cinza"
+    android:background="@color/branco"
     tools:context=".view.activity.BolaoActivity">
 
     <include layout="@layout/app_bar_marketplace" />
@@ -26,9 +26,18 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <FrameLayout
+        android:id="@+id/id_fg_rodape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <FrameLayout
         android:id="@+id/id_fg_somador_carrinho"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
