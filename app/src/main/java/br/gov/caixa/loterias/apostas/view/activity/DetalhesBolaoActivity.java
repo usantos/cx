@@ -1,7 +1,12 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -18,6 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.DetalhesBolaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -28,6 +34,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private TextView tvValorPremio, tvDescricaoPremioConcurso;
 	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal;
+	private Button btnAdd, btnDiminui, btnAumenta;
+	private TextView tvValorCotaBtn, tvQtdCotas;
 
 	private String codigoBolao;
 	private ModalidadeEnum modalidade;
@@ -50,11 +58,24 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_apostas bolão_"));
 
 		setViews();
+		setMetodos();
 
 		fragmentSomadorCarrinho();
 		model = new DetalhesBolaoModel(this);
 		AlertDialogUtils.show(this);
 		model.buscaDetalhesBolao(codigoBolao, onBuscaDetalheBolaoListener());
+	}
+
+	private void setMetodos() {
+		btnAdd.setOnClickListener(v -> TestVisao.toast("Falta implementar."));
+		btnDiminui.setOnClickListener(v -> {
+			bolao.diminuiQuantidade();
+			atualizaQuantidadeTextView();
+		});
+		btnAumenta.setOnClickListener(v -> {
+			bolao.aumentaQuantidade();
+			atualizaQuantidadeTextView();
+		});
 	}
 
 	private void setViews() {
@@ -64,6 +85,38 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		tvValorCota = findViewById(R.id.id_valor_cota);
 		tvValorTarifa = findViewById(R.id.id_valor_tarifa_servico);
 		tvValorTotal = findViewById(R.id.id_valor_total);
+		btnAdd = findViewById(R.id.id_btn_add);
+		tvValorCotaBtn = findViewById(R.id.valor_cota);
+		tvQtdCotas = findViewById(R.id.quantidade_cotas);
+		btnDiminui = findViewById(R.id.diminui_cota);
+		btnAumenta = findViewById(R.id.aumenta_cota);
+	}
+
+	public void atualizaQuantidadeTextView() {
+		tvQtdCotas.setText(String.valueOf(bolao.getQtdCotaDesejada()));
+		atualizaBotoesQtdCotas();
+	}
+
+	public void atualizaBotoesQtdCotas() {
+		if (bolao.getQtdCotaDesejada() == 1){
+			btnDiminui.setBackgroundTintList(getCor(R.color.cinzaescuro));
+			btnDiminui.setEnabled(false);
+			btnAumenta.setBackgroundTintList(getCor(R.color.branco));
+			btnAumenta.setEnabled(true);
+		} else if (bolao.getQtdCotaDesejada() == bolao.getQtdCotaDisponivel()){
+			btnAumenta.setBackgroundTintList(getCor(R.color.cinzaescuro));
+			btnAumenta.setEnabled(false);
+			btnDiminui.setBackgroundTintList(getCor(R.color.branco));
+			btnDiminui.setEnabled(true);
+		} else {
+			btnDiminui.setBackgroundTintList(getCor(R.color.branco));
+			btnDiminui.setEnabled(true);
+			btnAumenta.setBackgroundTintList(getCor(R.color.branco));
+			btnAumenta.setEnabled(true);
+		}
+	}
+	private ColorStateList getCor(int cor) {
+		return ContextCompat.getColorStateList(this, cor);
 	}
 
 	private OnSilceListener<DetalheBolaoDTO> onBuscaDetalheBolaoListener() {
@@ -91,6 +144,9 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		tvValorCota.setText("Valor da Cota: " + ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()));
 		tvValorTarifa.setText("Tarifa de Serviço: " + ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()));
 		tvValorTotal.setText("Total: " + ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()));
+		btnAdd.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
+		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
+		atualizaQuantidadeTextView();
 	}
 
 	private void fragmentRodape() {

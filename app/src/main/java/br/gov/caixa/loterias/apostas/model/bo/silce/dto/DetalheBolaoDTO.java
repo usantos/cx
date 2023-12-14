@@ -59,6 +59,8 @@ public class DetalheBolaoDTO {
     private Integer qtdCotaVendidas = null;
     @SerializedName("qtdCotaReservada")
     private Integer qtdCotaReservada = null;
+    @SerializedName("")
+    private Integer qtdCotaDesejada = 1;
     @SerializedName("qtdCotaBaixada")
     private Integer qtdCotaBaixada = null;
     @SerializedName("tipoConcurso")
@@ -81,14 +83,14 @@ public class DetalheBolaoDTO {
     private List<ApostaBolaoDTO> apostas;
 
     public void aumentaQuantidade() {
-        if (qtdCotaReservada < qtdCotaDisponivel){
-            qtdCotaReservada++;
+        if (qtdCotaDesejada < qtdCotaDisponivel){
+            qtdCotaDesejada++;
         }
     }
 
     public void diminuiQuantidade() {
-        if (qtdCotaReservada > 0){
-            qtdCotaReservada--;
+        if (qtdCotaDesejada > 0){
+            qtdCotaDesejada--;
         }
     }
 
@@ -176,6 +178,10 @@ public class DetalheBolaoDTO {
 
     public void setQtdCotaReservada(Integer qtdCotaReservada) {
         this.qtdCotaReservada = qtdCotaReservada;
+    }
+
+    public Integer getQtdCotaDesejada() {
+        return qtdCotaDesejada;
     }
 
     /**
