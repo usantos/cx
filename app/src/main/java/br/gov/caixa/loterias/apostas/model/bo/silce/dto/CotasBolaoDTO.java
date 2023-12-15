@@ -75,7 +75,7 @@ public class CotasBolaoDTO {
     private Integer qtdCotaVendidas = null;
     @SerializedName("qtdCotaReservada")
     private Integer qtdCotaReservada = null;
-    @SerializedName("qtdCotaReservada")
+    @SerializedName("qtdCotasBolao")
     private Integer qtdCotasBolao = 1;
     @SerializedName("vrCotaSemTarifa")
     private BigDecimal vrCotaSemTarifa = null;

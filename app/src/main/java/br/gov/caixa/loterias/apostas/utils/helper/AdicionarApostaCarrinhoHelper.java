@@ -292,7 +292,12 @@ public class AdicionarApostaCarrinhoHelper {
         activity.putExtra("tipoAposta", modalidadeEnum);
         activity.putExtra("valorAposta", valor);
         if(apostaDas8Modalidades != null){
-            activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
+            //activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
+            ParametroSimulacao parametroSimulacao =  ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades);
+            if (parametroSimulacao != null) {
+                activity.putExtra("modalidade", (new Gson()).toJson(parametroSimulacao.getParametroJogo()));
+            } else
+                activity.putExtra("modalidade", "");
         } else {
             if(incluirSurpresinhaDTO != null){
                 activity.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, incluirSurpresinhaDTO).getParametroJogo()));
