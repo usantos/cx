@@ -78,6 +78,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
@@ -113,8 +114,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     protected FrameLayout fragmentSimularApostas;
 
     @ViewById
-    protected TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca, labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, valorApostaCartela, textInfoValorAposta, textViewCarrinhoCartelaCount,
-            textInfoCarrinho, tvQuantidadeApostas, valorAtualCarrinho;
+    protected TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
+            labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, textViewCarrinhoCartelaCount;
 
     @ViewById
     protected LinearLayout toolBarSimularAposta;
@@ -144,6 +145,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
     private PaginacaoFragment paginacaoFragment;
     private TrevosFragment trevosFragment;
+    private RodapeSimulacaoApostaFragment rodapeFragment;
 
     private String dataSorteioAtual;
     private int typeGameColorLight;
@@ -166,7 +168,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     public int qtdDezenasPossiveisSelecionado;
     public int qtdConcursoSelecionado;
     private Boolean flagApostaSalva = false;
-    private int numeroConcursoAtual;
 
     private Boolean isSurpresinha = false;
 
@@ -386,35 +387,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     @Override
-    public void abreCarrinhoApostas() {
-        AlertDialogUtils.show(this);
-        ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-
-        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
-            @Override
-            public void onResponse(CarrinhoDTOResponse response) {
-                AlertDialogUtils.dismiss();
-                Bundle args = new Bundle();
-                args.putSerializable(CARRINHO, (Serializable) response.getPayload());
-                startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtras(args));
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), SimularApostaActivity.this);
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                if (MensagensNetwork.isUnauthorizedError(error)) {
-                    startActivity(new Intent(SimularApostaActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
-                } else {
-                    RedirectNetwork.checkRedirect( error, SimularApostaActivity.this );
-                }
-            }
-        });
-    }
-
-    @Override
     public void adicionarTimeSurpresa(ParametroEquipe equipeSelecionada) {
         Bundle bundle = new Bundle();
         bundle.putString(getResources().getString(R.string.extra_equipe_selecionada), (new Gson()).toJson(equipeSelecionada));
@@ -480,7 +452,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     public TextView getValorApostaCartela() {
-        return valorApostaCartela;
+        return rodapeFragment.getTvValorAposta();
     }
 
     public RelativeLayout getSalvarApostaLayout() {
@@ -545,7 +517,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 } else {
                     RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
                 }
-
             }
         });
     }
@@ -558,7 +529,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             @Override
             public void onResponse(NetworkResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));
-
                 AlertDialogUtils.dismiss();
 
                 atualizaLayoutSalverAposta();
@@ -568,7 +538,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, SimularApostaActivity.this);
-
             }
         });
     }
@@ -610,11 +579,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     public void setMesDeSorteSurpresinha(ParametroMesDeSorte mesDeSorteSurpresinha) {
         this.mesDeSorteSurpresinha = mesDeSorteSurpresinha;
-    }
-
-    @Click
-    protected void simularApostaLayoutCarrinhoApostas() {
-        abreCarrinhoApostas();
     }
 
     @Override
@@ -660,7 +624,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                     }
                 }
             }
-
         }
     }
 
@@ -668,6 +631,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         fragmentManager = getSupportFragmentManager();
         cartelaFragment = new CartelaFragment();
         surpresinhaFragment = SurpresinhaFragment_.builder().build();
+
+        rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(), R.id.id_fg_rodape, new BigDecimal(0), new BigDecimal(0));
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -736,15 +701,12 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas() != null ? parametroSimulacao.getTeimosinhas().get(0) == 0 ? 0 : parametroSimulacao.getTeimosinhas().get(0) : 0;
         dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
 
-
         // Passando um link
         bundle = new Bundle();
         bundle.putInt(getResources().getString(R.string.extra_qtd_dezenas_possiveis_selecionado), qtdDezenasPossiveisSelecionado);
-        bundle.putInt(getResources().getString(R.string.extra_numero_concurso_atual), numeroConcursoAtual);
         bundle.putString(getResources().getString(R.string.extra_data_sorteio_atual), dataSorteioAtual);
         bundle.putSerializable(getResources().getString(R.string.extra_type_game_color_light), typeGameColorLight);
         bundle.putSerializable(getResources().getString(R.string.extra_type_game_color_Dark), typeGameColorDark);
-
 
         cartelaFragment.cartelaFragmentBuilder(bundle);
         surpresinhaFragment.surpresinhaFragmentBuilder(bundle);
@@ -768,7 +730,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private void modalNumeros() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_selecao_prognosticos));
-
         if (parametroSimulacao.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
             DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
                                                getResources().getString(R.string.quant_de_numeros), getResources().getString(R.string.valores_para_apostas_com_2_trevos),
@@ -832,9 +793,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             }
 
             @Override
-            public void cancelar() {
-
-            }
+            public void cancelar() {}
         };
     }
 
@@ -848,11 +807,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private void modalTeimosinhas() {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_popup_teimosinha));
-
-        DialogUtils.showDialogListaEscolha(SimularApostaActivity.this,
-                                           getResources().getString(R.string.teimosinhas_maiusculo), null,
+        DialogUtils.showDialogListaEscolha(SimularApostaActivity.this, getResources().getString(R.string.teimosinhas_maiusculo), null,
                                            qtdConcursosList, onTeimosinhaDialogListener());
-
     }
 
     private OnDialogListener onTeimosinhaDialogListener() {
@@ -865,7 +821,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                     textoBotaoSurpresinhasSelecionado = (String) qtdConcursosList.get(position);
                     qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas().get(position);
                 }
-
             }
 
             @Override
@@ -984,16 +939,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     @Override
     public void atualizaDados(CarrinhoDTO carrinho) {
-
-        ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), valorAtualCarrinho);
+        ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), rodapeFragment.getTvValorCarrinho());
         if (carrinho != null && carrinho.getApostas() != null) {
             if (carrinho.getApostas().size() <= 999) {
-                tvQuantidadeApostas.setText(String.valueOf(carrinho.getApostas().size()));
+                rodapeFragment.apresentaQtdApostas(true, String.valueOf(carrinho.getApostas().size()));
             } else {
-                tvQuantidadeApostas.setText(R.string.mais_999);
+                rodapeFragment.apresentaQtdApostas(true, getString(R.string.mais_999));
             }
         }else {
-            tvQuantidadeApostas.setText(R.string.zero);
+            rodapeFragment.apresentaQtdApostas(true, getString(R.string.zero));
         }
     }
 
@@ -1015,12 +969,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @Override
     public void atualizaValorAposta(ParametroValorApostaDTO valorAposta) {
         BigDecimal valorEmReais = valorAposta.getValor();
-
         if (qtdConcursoSelecionado != 0) {
             valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdConcursoSelecionado).movePointLeft(0));
         }
 
-        ViewUtils.setMoedaFormatHtml(valorEmReais, valorApostaCartela);
+        rodapeFragment.atualizaValorBolao(valorEmReais);
     }
 
     @Override

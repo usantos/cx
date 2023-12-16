@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
@@ -177,12 +178,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private void aumentaQuatidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
 		list.get(position).aumentaQuantidade();
-		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotaReservada(), list.get(position).getQtdCotaDisponivel());
+		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotaDesejada(), list.get(position).getQtdCotaDisponivel());
 	}
 
 	private void diminuiQuatidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
 		list.get(position).diminuiQuantidade();
-		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotaReservada(), list.get(position).getQtdCotaDisponivel());
+		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotaDesejada(), list.get(position).getQtdCotaDisponivel());
 	}
 
 	private void fragmentSomadorCarrinho() {
@@ -224,7 +225,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 	}
 
 	private void detalhesBolao(CotasBolaoDTO bolao) {
-		TestVisao.toast("Funcionalidade ainda nao implementada!");
+		Bundle bundle = new Bundle();
+		bundle.putString(DetalhesBolaoActivity.ARG_CODIGO_BOLAO, bolao.getCodigoBolao());
+		bundle.putString(DetalhesBolaoActivity.ARG_MODALIDADE, new Gson().toJson(bolao.getModalidade()));
+		Intent intent = IntentUtil.getIntentOrigemDestino(this, DetalhesBolaoActivity.class, bundle);
+		startActivity(intent);
 	}
 
 	private void adicionarNoCarrinho(CotasBolaoDTO bolao) {

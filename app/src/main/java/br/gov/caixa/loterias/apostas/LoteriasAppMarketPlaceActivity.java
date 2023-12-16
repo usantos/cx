@@ -1,14 +1,15 @@
 package br.gov.caixa.loterias.apostas;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 
 public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 
@@ -31,6 +32,10 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 	private View.OnClickListener onFiltrarListener(ActivityResultLauncher<Intent> launcher) {
 		return v -> IntentUtil.startActivityForResult(launcher, LoteriasAppMarketPlaceActivity.this,
 												  FiltraMarketplaceActivity.class);
+	}
+
+	public void configBackground(int cor){
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, cor)));
 	}
 
 }

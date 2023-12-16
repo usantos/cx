@@ -807,6 +807,7 @@
     <string name="confirmar">Confirmar</string>
     <string name="evento_entrou_formas_pagamento">ENTROU_FORMAS_DE_PAGAMENTO</string>
     <string name="evento_carregou_boloes_disponiveis">CARREGOU_BOLOES_DISPONIVEIS</string>
+    <string name="evento_carregou_detalhe_bolao">CARREGOU_DETALHE_BOLAO</string>
     <string name="string_true">true</string>
     <string name="string_false">false</string>
     <string name="evento_pagamento_sucesso">EFETUOU_PAGAMENTO_SUCESSO</string>

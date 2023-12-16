@@ -123,7 +123,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private boolean isEscolhaTimeCoracaoSurpresinha;
 	private boolean isAvisou = false;
 	public BigDecimal valorTotalAposta;
-	public int typeGameColorLight, typeGameColorDark, numeroConcursoAtual;
+	public int typeGameColorLight, typeGameColorDark;
 	public Button botaoFinalizar, botaoLimparAposta;
 	public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
 	public ListaDezenaRecyclerView simularDezenasAdapter;
@@ -266,7 +266,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 	public void cartelaFragmentBuilder(Bundle dataBundle) {
 		if (dataBundle != null) {
-			numeroConcursoAtual = dataBundle.getInt("numeroConcursoAtual");
 			dataSorteioAtual = dataBundle.getString("dataSorteioAtual");
 
 

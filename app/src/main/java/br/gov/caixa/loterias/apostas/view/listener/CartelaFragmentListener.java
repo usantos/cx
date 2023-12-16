@@ -12,8 +12,6 @@ public interface CartelaFragmentListener {
 
     void adicionarApostaCarrinho();
 
-    void abreCarrinhoApostas();
-
     void adicionarTimeSurpresa(ParametroEquipe equipeSelecionada);
 
 }

@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumIntegerResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
@@ -910,6 +911,24 @@ public class ApostaBO extends BaseBO {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.BOLOES_DISPONIVEIS,
                 queryParams,
                 BoloesDisponiveisResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
+    public void getDetalhesBolao(String codigoBolao,
+                                     final RequestListener<DetalheBolaoResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+
+        queryParams.put("idBolao", codigoBolao);
+
+
+        final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.DETALHE_BOLAO,
+                queryParams,
+                DetalheBolaoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());

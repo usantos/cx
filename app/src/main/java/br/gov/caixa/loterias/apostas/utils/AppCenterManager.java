@@ -24,6 +24,7 @@ public final class AppCenterManager {
     public static final String ERRO_UNSUPPORTED_ENCODING = "ERRO_UNSUPPORTED_ENCODING";
     public static final String ERRO_SERVICO_SEM_RESPONSEDATA = "ERRO_SERVICO_SEM_RESPONSEDATA";
     public static final String ERRO_BOLOES_DISPONIVEIS = "ERRO_SERVICO_SEM_RESPONSEDATA";
+    public static final String ERRO_DETALHE_BOLAO = "ERRO_SERVICO_DETALHE_BOLAO";
 
     // constants para tag
 

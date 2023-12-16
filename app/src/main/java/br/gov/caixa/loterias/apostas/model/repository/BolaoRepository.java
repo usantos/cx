@@ -13,6 +13,8 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BoloesDisponiveisResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 import br.gov.caixa.loterias.apostas.model.enums.TipoConsultaBolaoEnum;
@@ -29,8 +31,8 @@ public class BolaoRepository extends AppRepository {
 
     public void buscarBoloesDisponiveis(int idMunicipio, int idUf, OnSilceListener<ListaBolaoDTO> listener){
 
-        FiltroMarketPlace filtro = new FiltroMarketPlace(TipoConsultaBolaoEnum.MUNICIPIO,
-                idMunicipio, idUf, PAGINA_INICIAL, QTD_POR_PAGINA);
+        FiltroMarketPlace filtro = new FiltroMarketPlace(TipoConsultaBolaoEnum.NACIONAL,
+                0, 0, PAGINA_INICIAL, QTD_POR_PAGINA);
 
         ApostaBO_.getInstance_(getActivity()).getBoloesDisponiveis(filtro,
                 new RequestListener<BoloesDisponiveisResponse>() {
@@ -89,5 +91,24 @@ public class BolaoRepository extends AppRepository {
                         listener.error(error);
                     }
                 });
+    }
+
+    public void buscaDetalhesBolao(String codigoBolao, OnSilceListener<DetalheBolaoDTO> listener){
+        ApostaBO_.getInstance_(getActivity()).getDetalhesBolao(codigoBolao, new RequestListener<DetalheBolaoResponse>() {
+            @Override
+            public void onResponse(DetalheBolaoResponse response) {
+                AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_carregou_detalhe_bolao));
+                checkRedirect(response);
+
+                listener.success(response.getPayload());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AppCenterManager.registraEventoErro(AppCenterManager.ERRO_DETALHE_BOLAO, error);
+                RedirectNetwork.checkRedirect(error, getActivity());
+                listener.error(error);
+            }
+        });
     }
 }

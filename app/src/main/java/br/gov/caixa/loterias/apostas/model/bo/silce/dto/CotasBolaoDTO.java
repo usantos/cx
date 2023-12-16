@@ -74,7 +74,9 @@ public class CotasBolaoDTO {
     @SerializedName("qtdCotaVendidas")
     private Integer qtdCotaVendidas = null;
     @SerializedName("qtdCotaReservada")
-    private Integer qtdCotaReservada = 1;
+    private Integer qtdCotaReservada = null;
+    @SerializedName("")
+    private Integer qtdCotaDesejada = 1;
     @SerializedName("vrCotaSemTarifa")
     private BigDecimal vrCotaSemTarifa = null;
     @SerializedName("vrCotaComTarifa")
@@ -106,14 +108,14 @@ public class CotasBolaoDTO {
     private Boolean isAbertoParaMostrarDetalhes = Boolean.FALSE;
 
     public void aumentaQuantidade() {
-        if (qtdCotaReservada < qtdCotaDisponivel){
-            qtdCotaReservada++;
+        if (qtdCotaDesejada < qtdCotaDisponivel){
+            qtdCotaDesejada++;
         }
     }
 
     public void diminuiQuantidade() {
-        if (qtdCotaReservada > 0){
-            qtdCotaReservada--;
+        if (qtdCotaDesejada > 0){
+            qtdCotaDesejada--;
         }
     }
 
@@ -232,6 +234,14 @@ public class CotasBolaoDTO {
 
     public void setQtdCotaReservada(Integer qtdCotaReservada) {
         this.qtdCotaReservada = qtdCotaReservada;
+    }
+
+    public Integer getQtdCotaDesejada() {
+        return qtdCotaDesejada;
+    }
+
+    public void setQtdCotaDesejada(Integer qtd) {
+        this.qtdCotaDesejada = qtd;
     }
 
     /**
