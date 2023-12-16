@@ -23,8 +23,6 @@ import io.swagger.annotations.ApiModel;
 public class IdentificaoDeUmBolao extends IdentificaoDeUmaApostaDas8Modalidades implements Serializable {
     @SerializedName("subcanalCarrinhoAposta")
     private int subcanalCarrinhoAposta;
-    @SerializedName("indicadorCotaBolao")
-    private Boolean indicadorCotaBolao;
     @SerializedName("idBolao")
     private String idBolao;
     @SerializedName("qtdCotasBolao")
@@ -41,14 +39,6 @@ public class IdentificaoDeUmBolao extends IdentificaoDeUmaApostaDas8Modalidades 
 
     public void setSubcanalCarrinhoAposta(int subcanalCarrinhoAposta) {
         this.subcanalCarrinhoAposta = subcanalCarrinhoAposta;
-    }
-
-    public Boolean getIndicadorCotaBolao() {
-        return indicadorCotaBolao;
-    }
-
-    public void setIndicadorCotaBolao(Boolean indicadorCotaBolao) {
-        this.indicadorCotaBolao = indicadorCotaBolao;
     }
 
     public String getIdBolao() {

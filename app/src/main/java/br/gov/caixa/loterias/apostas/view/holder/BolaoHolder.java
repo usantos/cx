@@ -33,6 +33,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private Button btnDetalhes;
 	private Button btnDiminui;
 	private Button btnAumenta;
+	private Button btnAdd;
 
 	private OnItemBolaoListener listener;
 
@@ -52,12 +53,14 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		btnDiminui 	= itemView.findViewById(R.id.diminui_cota);
 		btnAumenta 	= itemView.findViewById(R.id.aumenta_cota);
 		qtdCotas 	= itemView.findViewById(R.id.quantidade_cotas);
+		btnAdd		= itemView.findViewById(R.id.adicionar_carrinho);
 
 		this.listener = listener;
 		seta.setOnClickListener(this);
 		btnDetalhes.setOnClickListener(this);
 		btnDiminui.setOnClickListener(this);
 		btnAumenta.setOnClickListener(this);
+		btnAdd.setOnClickListener(this);
 	}
 
 	@Override
@@ -87,6 +90,9 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 				break;
 			case R.id.aumenta_cota:
 				listener.aumenta(this, getAbsoluteAdapterPosition());
+				break;
+			case R.id.adicionar_carrinho:
+				listener.adicionarCarrinho(getAbsoluteAdapterPosition());
 				break;
 		}
 	}

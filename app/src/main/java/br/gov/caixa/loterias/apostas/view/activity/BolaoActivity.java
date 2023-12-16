@@ -81,14 +81,20 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 		fragmentSomadorCarrinho();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		AlertDialogUtils.show(this);
+		model.buscaBoloes(idMunicipio, idUf, onBoloesListener());
+	}
+
 	private OnSilceListener<ApostadorDTO> onBuscaDadosUsuarios() {
 		return new OnSilceListener<ApostadorDTO>() {
 			@Override
 			public void success(ApostadorDTO payload) {
 				idMunicipio = payload.getMunicipioId().getNumero().intValue();
 				idUf = payload.getMunicipioId().getIdUF().intValue();
-
-				model.buscaBoloes(idMunicipio, idUf, onBoloesListener());
+				AlertDialogUtils.dismiss();
 			}
 
 			@Override

@@ -568,6 +568,10 @@ public class CarrinhoActivity extends AppCompatActivity {
         synchronized (rvListaApostas) {
             listApostas.removeAll(listApostas);
             rvListaApostas.getAdapter().notifyDataSetChanged();
+            listBoloes.clear();
+            rvListaBoloes.getAdapter().notifyDataSetChanged();
+            desabilitaApostas();
+            desabilitaBoloes();
         }
         atualizaLayout(offSet);
         configuraBotoesSuperiores();
