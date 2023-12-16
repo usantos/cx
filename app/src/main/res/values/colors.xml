@@ -218,5 +218,8 @@
     <color name="bolao_slider_marcador">#FFFFFF</color>
     <color name="mega_verde_claro_mkp">#04A766</color>
     <color name="mega_verde_escuro_mkp">#00945E</color>
+    <color name="bolao_azul_subtitulo">#095A9C</color>
+    <color name="cor_bola_unselected">#ADC0C4</color>
+    <color name="cotas_boloes">#373E4A</color>
 
 </resources>

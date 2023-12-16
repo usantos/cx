@@ -89,6 +89,17 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	@Expose(serialize = false, deserialize = false)
 	protected transient Integer quantidadeSurpresinhas = null;
 
+	@SerializedName("dataInclusao")
+	private String dataInclusao = null;
+	@SerializedName("combo")
+	private Boolean combo = null;
+	@SerializedName("especialInclusoTeimosinha")
+	private Boolean especialInclusoTeimosinha = null;
+	@SerializedName("indicadorCotaBolao")
+	private Boolean indicadorCotaBolao = false;
+	@SerializedName("reservaCotaBolao")
+	private CotaDTO reservaCotaBolao = null;
+
 	@ApiModelProperty(value = "Gerar aposta espelho")
 	public Boolean getGerarApostaEspelho() {
 		return geraEspelho;
@@ -439,6 +450,46 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 
 	public void setQuantidadeTrevos(Integer quantidadeTrevos) {
 		this.quantidadeTrevos = quantidadeTrevos;
+	}
+
+	public String getDataInclusao() {
+		return dataInclusao;
+	}
+
+	public void setDataInclusao(String dataInclusao) {
+		this.dataInclusao = dataInclusao;
+	}
+
+	public Boolean getCombo() {
+		return combo;
+	}
+
+	public void setCombo(Boolean combo) {
+		this.combo = combo;
+	}
+
+	public Boolean getEspecialInclusoTeimosinha() {
+		return especialInclusoTeimosinha;
+	}
+
+	public void setEspecialInclusoTeimosinha(Boolean especialInclusoTeimosinha) {
+		this.especialInclusoTeimosinha = especialInclusoTeimosinha;
+	}
+
+	public Boolean getIndicadorCotaBolao() {
+		return indicadorCotaBolao;
+	}
+
+	public void setIndicadorCotaBolao(Boolean indicadorCotaBolao) {
+		this.indicadorCotaBolao = indicadorCotaBolao;
+	}
+
+	public CotaDTO getReservaCotaBolao() {
+		return reservaCotaBolao;
+	}
+
+	public void setReservaCotaBolao(CotaDTO reservaCotaBolao) {
+		this.reservaCotaBolao = reservaCotaBolao;
 	}
 
 	@Override

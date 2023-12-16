@@ -248,6 +248,28 @@
                 android:textColor="@color/cinza"
                 android:textSize="14.2sp" />
 
+            <ImageView
+                android:id="@+id/imageViewDetalheBoloes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginStart="160dp"
+                android:background="@drawable/ic_trevo_carrinho_bolao"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/textQtdCotas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="160dp"
+                android:layout_marginTop="29dp"
+                android:text="00/00"
+                android:textColor="@color/cotas_boloes"
+                android:textSize="12sp"
+                android:visibility="gone"
+            />
+
             <TextView
                 android:id="@+id/trevos"
                 style="@style/editTextArialMTTheme"
@@ -264,14 +286,60 @@
             <TextView
                 android:id="@+id/valorAposta"
                 style="@style/editTextArialMTTheme"
-                android:layout_width="100dp"
+                android:layout_width="108dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
-                android:layout_marginEnd="11dp"
+                android:layout_marginEnd="0dp"
                 android:layout_toStartOf="@+id/excluirApostaCarrinhoLayout"
                 android:text="@string/r_0_00"
-                android:textAlignment="textEnd"
+                android:textAlignment="textStart"
+                android:paddingStart="10dp"
                 android:textSize="14.2sp" />
+
+            <ImageView
+                android:id="@+id/imageViewRelogioBoloes"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="83dp"
+                android:layout_toStartOf="@+id/excluirApostaCarrinhoLayout"
+                android:background="@drawable/ic_timer"
+                android:paddingStart="10dp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/contadorBolao"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="-60dp"
+                android:layout_toStartOf="@+id/imageViewRelogioBoloes"
+                android:text="@string/tempo_zerado"
+                android:textStyle="bold"
+                android:textAlignment="textStart"
+                android:textColor="@color/bolao_barra_titulo"
+                android:textSize="12sp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/textCotas"
+                android:layout_height="wrap_content"
+                android:layout_width="108dp"
+                android:layout_marginTop="38dp"
+                android:layout_marginEnd="0dp"
+                android:layout_toStartOf="@+id/excluirApostaCarrinhoLayout"
+                android:text="@string/cota_reservada"
+                android:textStyle="bold"
+                android:textAlignment="textStart"
+                android:textColor="@color/bolao_barra_titulo"
+                android:textSize="12sp"
+                android:singleLine="true"
+                android:ellipsize="none"
+                android:paddingStart="10dp"
+                android:visibility="gone"
+                />
 
             <RelativeLayout
                 android:id="@+id/excluirApostaCarrinhoLayout"
@@ -283,10 +351,10 @@
 
                 <ImageView
                     android:id="@+id/excluirApostaCarrinho"
-                    android:layout_width="15dp"
-                    android:layout_height="20dp"
+                    android:layout_width="18dp"
+                    android:layout_height="22dp"
                     android:layout_marginTop="2dp"
-                    android:src="@drawable/ic_icone_lixeira_verde" />
+                    android:src="@drawable/ic_lixeira_mkp" />
             </RelativeLayout>
         </RelativeLayout>
 

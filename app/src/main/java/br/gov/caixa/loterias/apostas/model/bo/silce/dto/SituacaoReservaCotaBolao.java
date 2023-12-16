@@ -8,6 +8,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Objects;
 
 import io.swagger.annotations.ApiModel;
@@ -17,73 +18,14 @@ import io.swagger.annotations.ApiModelProperty;
  * SituacaoReservaCotaBolao
  */
 @ApiModel(description = "")
-public class SituacaoReservaCotaBolao {
+public class SituacaoReservaCotaBolao implements Serializable {
     @SerializedName("id")
     private Long id = null;
-    @SerializedName("nome")
-    private String nome = null;
+    @SerializedName("valor")
+    private Integer valor = null;
     @SerializedName("descricao")
     private String descricao = null;
-    /**
-     * Gets or Sets _enum
-     */
-    @JsonAdapter(EnumEnum.Adapter.class)
-    public enum EnumEnum {
-        INICIADA("INICIADA"),
 
-        RESERVADA("RESERVADA"),
-
-        CANCELADA("CANCELADA"),
-
-        EM_CONFIRMACAO("EM_CONFIRMACAO"),
-
-        CONFIRMADA("CONFIRMADA");
-
-        private String value;
-
-        EnumEnum(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-        public static EnumEnum fromValue(String text) {
-            for (EnumEnum b : EnumEnum.values()) {
-                if (String.valueOf(b.value).equals(text)) {
-                    return b;
-                }
-            }
-            return null;
-        }
-
-        public static class Adapter extends TypeAdapter<EnumEnum> {
-            @Override
-            public void write(final JsonWriter jsonWriter, final EnumEnum enumeration) throws IOException {
-                jsonWriter.value(enumeration.getValue());
-            }
-
-            @Override
-            public EnumEnum read(final JsonReader jsonReader) throws IOException {
-                String value = jsonReader.nextString();
-                return EnumEnum.fromValue(String.valueOf(value));
-            }
-        }
-    }
-    @SerializedName("enum")
-    private EnumEnum _enum = null;
-
-
-    /**
-     * Get id
-     * @return id
-     **/
     @ApiModelProperty(value = "")
     public Long getId() {
         return id;
@@ -93,23 +35,15 @@ public class SituacaoReservaCotaBolao {
         this.id = id;
     }
 
-    /**
-     * Get nome
-     * @return nome
-     **/
     @ApiModelProperty(value = "")
-    public String getNome() {
-        return nome;
+    public Integer getValor() {
+        return valor;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setValor(Integer valor) {
+        this.valor = valor;
     }
 
-    /**
-     * Get descricao
-     * @return descricao
-     **/
     @ApiModelProperty(value = "")
     public String getDescricao() {
         return descricao;
@@ -118,20 +52,6 @@ public class SituacaoReservaCotaBolao {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
-    /**
-     * Get _enum
-     * @return _enum
-     **/
-    @ApiModelProperty(value = "")
-    public EnumEnum getEnum() {
-        return _enum;
-    }
-
-    public void setEnum(EnumEnum _enum) {
-        this._enum = _enum;
-    }
-
 
     @Override
     public boolean equals(java.lang.Object o) {
@@ -143,14 +63,13 @@ public class SituacaoReservaCotaBolao {
         }
         SituacaoReservaCotaBolao situacaoReservaCotaBolao = (SituacaoReservaCotaBolao) o;
         return Objects.equals(this.id, situacaoReservaCotaBolao.id) &&
-                Objects.equals(this.nome, situacaoReservaCotaBolao.nome) &&
-                Objects.equals(this.descricao, situacaoReservaCotaBolao.descricao) &&
-                Objects.equals(this._enum, situacaoReservaCotaBolao._enum);
+                Objects.equals(this.valor, situacaoReservaCotaBolao.valor) &&
+                Objects.equals(this.descricao, situacaoReservaCotaBolao.descricao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, descricao, _enum);
+        return Objects.hash(id, valor, descricao);
     }
 
 
@@ -160,9 +79,8 @@ public class SituacaoReservaCotaBolao {
         sb.append("class SituacaoReservaCotaBolao {\n");
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
-        sb.append("    nome: ").append(toIndentedString(nome)).append("\n");
+        sb.append("    valor: ").append(toIndentedString(valor)).append("\n");
         sb.append("    descricao: ").append(toIndentedString(descricao)).append("\n");
-        sb.append("    _enum: ").append(toIndentedString(_enum)).append("\n");
         sb.append("}");
         return sb.toString();
     }
