@@ -15,9 +15,13 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmBolao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.repository.BolaoRepository;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 
 public class BolaoModel extends AppModel{
 
@@ -72,4 +76,9 @@ public class BolaoModel extends AppModel{
 			}
 		} );
 	}
+
+	public void addBolaoCarrinho(CotasBolaoDTO bolao) {
+		AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(getActivity(), ApostaUtils.converteBolaoEmAposta(bolao));
+	}
+
 }

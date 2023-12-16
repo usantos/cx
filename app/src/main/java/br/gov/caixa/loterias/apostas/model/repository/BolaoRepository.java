@@ -30,7 +30,6 @@ public class BolaoRepository extends AppRepository {
     }
 
     public void buscarBoloesDisponiveis(int idMunicipio, int idUf, OnSilceListener<ListaBolaoDTO> listener){
-
         FiltroMarketPlace filtro = new FiltroMarketPlace(TipoConsultaBolaoEnum.NACIONAL,
                 0, 0, PAGINA_INICIAL, QTD_POR_PAGINA);
 

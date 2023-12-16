@@ -59,7 +59,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	public void bind(CotasBolaoDTO bolao, int position) {
 		preencheCabecalho(bolao);
 		preencheConteudo(bolao);
-		atualizaQuantidadeTextView(bolao.getQtdCotaDesejada(), bolao.getQtdCotaDisponivel());
+		atualizaQuantidadeTextView(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		btnAddCarrinho.setText(ViewUtils.textFuturaAndFuturaBold(activity,activity.getResources().getString(R.string.adicionarAoCarrinho)));
 	}
 

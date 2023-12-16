@@ -70,13 +70,12 @@ public class CotasBolaoDTO {
     private Boolean operacaoExecutadaComSucesso = null;
     @SerializedName("codigoCota")
     private String codigoCota = null;
-
     @SerializedName("qtdCotaVendidas")
     private Integer qtdCotaVendidas = null;
     @SerializedName("qtdCotaReservada")
     private Integer qtdCotaReservada = null;
-    @SerializedName("")
-    private Integer qtdCotaDesejada = 1;
+    @SerializedName("qtdCotasBolao")
+    private Integer qtdCotasBolao = 1;
     @SerializedName("vrCotaSemTarifa")
     private BigDecimal vrCotaSemTarifa = null;
     @SerializedName("vrCotaComTarifa")
@@ -87,7 +86,6 @@ public class CotasBolaoDTO {
     private BigDecimal vrTotalBolaoComTarifa = null;
     @SerializedName("vrTotalBolaoSemTarifa")
     private BigDecimal vrTotalBolaoSemTarifa = null;
-
     @SerializedName("numeroCota")
     private Integer numeroCota = null;
     @SerializedName("dataHoraReserva")
@@ -108,14 +106,14 @@ public class CotasBolaoDTO {
     private Boolean isAbertoParaMostrarDetalhes = Boolean.FALSE;
 
     public void aumentaQuantidade() {
-        if (qtdCotaDesejada < qtdCotaDisponivel){
-            qtdCotaDesejada++;
+        if (qtdCotasBolao < qtdCotaDisponivel){
+            qtdCotasBolao++;
         }
     }
 
     public void diminuiQuantidade() {
-        if (qtdCotaDesejada > 0){
-            qtdCotaDesejada--;
+        if (qtdCotasBolao > 0){
+            qtdCotasBolao--;
         }
     }
 
@@ -236,12 +234,17 @@ public class CotasBolaoDTO {
         this.qtdCotaReservada = qtdCotaReservada;
     }
 
-    public Integer getQtdCotaDesejada() {
-        return qtdCotaDesejada;
+    /**
+     * Get qtdCotasBolao
+     * @return qtdCotasBolao
+     **/
+    @ApiModelProperty(value = "")
+    public Integer getQtdCotasBolao() {
+        return qtdCotasBolao;
     }
 
-    public void setQtdCotaDesejada(Integer qtd) {
-        this.qtdCotaDesejada = qtd;
+    public void setQtdCotasBolao(Integer qtd) {
+        this.qtdCotasBolao = qtd;
     }
 
     /**
