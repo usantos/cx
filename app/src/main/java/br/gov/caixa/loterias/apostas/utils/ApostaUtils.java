@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmBolao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -422,7 +423,7 @@ public class ApostaUtils {
 	public static IdentificaoDeUmaApostaDas8Modalidades converteBolaoEmAposta(CotasBolaoDTO bolao) {
 		IdentificaoDeUmBolao aposta = new IdentificaoDeUmBolao();
 		aposta.setModalidade(bolao.getModalidade());
-		aposta.setValor(bolao.getValorCota());
+		//aposta.setValor(bolao.getValorCota());
 		aposta.setConcursoAlvo(bolao.getConcurso());
 		aposta.setSubcanalCarrinhoAposta(1);
 		aposta.setIndicadorCotaBolao(true);
@@ -432,6 +433,24 @@ public class ApostaUtils {
 		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
 		tipoConcurso.setValor(bolao.getTipoConcurso().toString());
 		tipoConcurso.setDescricao("");
+		aposta.setTipoConcurso(tipoConcurso);
+
+		aposta.setValor(bolao.getVrCotaComTarifa());
+
+		return aposta;
+	}
+
+	public static IdentificaoDeUmaApostaDas8Modalidades converteDetalheBolaoEmAposta(String codigoBolao, DetalheBolaoDTO bolao) {
+		IdentificaoDeUmBolao aposta = new IdentificaoDeUmBolao();
+		aposta.setModalidade(bolao.getModalidade());
+		aposta.setConcursoAlvo(bolao.getConcurso());
+		aposta.setSubcanalCarrinhoAposta(1);
+		aposta.setIndicadorCotaBolao(true);
+		aposta.setIdBolao(codigoBolao);
+		aposta.setQtdCotasBolao(bolao.getQtdCotaDesejada());
+		aposta.setValorTarifaServico(bolao.getValorTarifaServico());
+		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+		tipoConcurso.setValor(bolao.getTipoConcurso().toString());
 		aposta.setTipoConcurso(tipoConcurso);
 
 		aposta.setValor(bolao.getVrCotaComTarifa());

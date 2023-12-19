@@ -70,12 +70,19 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 		fragmentSomadorCarrinho();
 		model = new DetalhesBolaoModel(this);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 		AlertDialogUtils.show(this);
 		model.buscaDetalhesBolao(codigoBolao, onBuscaDetalheBolaoListener());
 	}
 
 	private void setMetodos() {
-		btnAdd.setOnClickListener(v -> TestVisao.toast("Falta implementar."));
+		btnAdd.setOnClickListener(v -> {
+			model.addBolaoCarrinho(codigoBolao, bolao);
+		});
 		btnDiminui.setOnClickListener(v -> {
 			bolao.diminuiQuantidade();
 			atualizaQuantidadeTextView();
@@ -188,9 +195,6 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		}else {
 			somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
 		}
-	}
-
-	private void adicionarNoCarrinho(CotasBolaoDTO bolao) {
 	}
 
 }
