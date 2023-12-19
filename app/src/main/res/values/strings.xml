@@ -1321,5 +1321,6 @@
     <string name="cota_expirada">Cota expirada</string>
     <string name="carrinho_cotas_expiradas">Você deve retirar as cotas expiradas do carrinho para avançar para pagamento</string>
     <string name="loteca_nao_favorita">Apostas da Loteca e Bolões não são salvos no carrinho favorito.</string>
+    <string name="pagamento_pix_estornado">Não foi possível completar a sua aposta e seu Pix será devolvido. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
 
 </resources>

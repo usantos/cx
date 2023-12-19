@@ -72,6 +72,7 @@ import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
@@ -191,7 +192,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     protected void onResume() {
         super.onResume();
         Paginacao paginacao = getPaginacao();
-        if (paginacao != null && isFragmentCartela()){
+        if (paginacao != null && isFragmentCartela() && !parametroSimulacao.isTipoJogo(ModalidadeEnum.TIMEMANIA)){
             voltaPagina();
         }
     }
@@ -1025,16 +1026,18 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @Override
     public Paginacao getPaginacao() {
         Paginacao paginacao = null;
-        switch (parametroSimulacao.getConcurso().getModalidade()){
-            case MAIS_MILIONARIA:
-                paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), 0, R.color.mais_milionaria_escura);
-                break;
-            case TIMEMANIA:
-                paginacao = PaginacaoUtils.getPaginacaoTimemania(getApplicationContext(), R.color.timemaniaescuro);
-                break;
-            case DIA_DE_SORTE:
-                paginacao = PaginacaoUtils.getPaginacaoDiaDeSorte(getApplicationContext(), R.color.diasorteescuro);
-                break;
+        if (parametroSimulacao != null && parametroSimulacao.getConcurso() != null && parametroSimulacao.getConcurso().getModalidade() != null){
+            switch (parametroSimulacao.getConcurso().getModalidade()){
+                case MAIS_MILIONARIA:
+                    paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), 0, R.color.mais_milionaria_escura);
+                    break;
+                case TIMEMANIA:
+                    paginacao = PaginacaoUtils.getPaginacaoTimemania(getApplicationContext(), R.color.timemaniaescuro);
+                    break;
+                case DIA_DE_SORTE:
+                    paginacao = PaginacaoUtils.getPaginacaoDiaDeSorte(getApplicationContext(), R.color.diasorteescuro);
+                    break;
+            }
         }
 
         return paginacao;
@@ -1048,5 +1051,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     @Override
     public void voltaPagina() {
         paginacaoFragment.voltaPagina();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        InputUtils.closeKeyboard(this);
     }
 }

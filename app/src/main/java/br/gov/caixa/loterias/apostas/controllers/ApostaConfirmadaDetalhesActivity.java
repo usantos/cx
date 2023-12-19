@@ -72,16 +72,15 @@ import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhes;
-import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhes_;
-import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaFragment_;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
@@ -156,8 +155,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private ComprovanteApostaDTOResponse comprovanteApostaDTOResponse;
     private DetalhesPremioDTOResponse detalhesPremioDTOResponse;
     private DetalhesHistoricoPremioDTOResponse detalhesHistoricoPremioDTOResponse;
-    private ApostaConfirmadaPartidaFragment partidaFragment;
-    private ApostaConfirmadaNumeroDetalhes numerosFragment;
+    private ApostaConfirmadaPartidaDetalhesFragment partidaFragment;
+    private ApostaConfirmadaNumeroDetalhesFragment numerosFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -258,39 +257,24 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         switch (aposta.getModalidade()) {
             case LOTOGOL:
                 disableButtonEditar();
-                partidaFragment = ApostaConfirmadaPartidaFragment_.builder()
-                                                                  .valorPremio(valorPremio)
-                                                                  .aposta(aposta).loteca(Boolean.FALSE)
-                                                                  .comprovanteApostaDTO(comprovanteApostaDTO)
-                                                                  .build();
+                partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
+                        R.id.fragmentContainer, aposta, null, comprovanteApostaDTO, valorPremio, false);
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-                getSupportFragmentManager().beginTransaction()
-                                           .replace(R.id.fragmentContainer, partidaFragment)
-                                           .commit();
                 break;
             case LOTECA:
                 disableButtonEditar();
-                partidaFragment = ApostaConfirmadaPartidaFragment_.builder()
-                                                                  .valorPremio(valorPremio)
-                                                                  .aposta(aposta)
-                                                                  .resultadoConcurso(resultadoConcurso)
-                                                                  .loteca(Boolean.TRUE)
-                                                                  .comprovanteApostaDTO(comprovanteApostaDTO)
-                                                                  .build();
+                partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
+                        R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio, true);
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-                getSupportFragmentManager().beginTransaction()
-                                           .replace(R.id.fragmentContainer, partidaFragment)
-                                           .commit();
                 break;
             default:
-                numerosFragment = ApostaConfirmadaNumeroDetalhes_.builder().valorPremio(valorPremio).aposta(aposta).resultadoConcurso(resultadoConcurso).comprovanteApostaDTO(comprovanteApostaDTO).build();
+                numerosFragment = FragmentUtils.startApostaConfirmadaDetalhes(getSupportFragmentManager(),
+                        R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
+
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-                getSupportFragmentManager().beginTransaction()
-                                           .replace(R.id.fragmentContainer, numerosFragment)
-                                           .commit();
                 break;
         }
     }
@@ -482,9 +466,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             }
         } else if (premioPago) {
             if(detalhesPremioDTOResponse != null && detalhesPremioDTOResponse.getPayload() != null){
-                pdfUtils.createComprovantePremioPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                pdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
             } else if (detalhesPremioDTO != null){
-                pdfUtils.createComprovantePremioPdf(detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this);
+                pdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this);
             } else {
                 buscarDetalheComprovantePremioAposta(true);
             }

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
@@ -25,7 +26,6 @@ public class LocalizacaoActivity extends AppCompatActivity {
     private TextView tvVersao, tvMsgGenerica;
     private Button btnGenerico;
     public BroadcastReceiver receiver;
-    private AlertDialog loadViewProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,15 +63,9 @@ public class LocalizacaoActivity extends AppCompatActivity {
     }
 
     private void trataPermissaoDelay() {
-        if (loadViewProgress == null) {
-            loadViewProgress = LoadingViewLoterias.show(LocalizacaoActivity.this);
-        } else if (!loadViewProgress.isShowing()) {
-            loadViewProgress.show();
-        }
+        AlertDialogUtils.show(LocalizacaoActivity.this);
         new Handler().postDelayed(() -> {
-            if (loadViewProgress.isShowing()) {
-                loadViewProgress.dismiss();
-            }
+            AlertDialogUtils.dismiss();
             trataPermissao();
         }, 1000);
 

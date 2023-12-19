@@ -251,6 +251,75 @@ public class HtmlUtils {
         return html;
     }
 
+    public static String getComprovanteCabecalhoRodapePremioPago(DetalhesPremioDTO detalhesPremioDTO, Context context) {
+        String nomeFaixa = context.getResources().getString(R.string.string_vazia);
+        LinkedHashMap<String,String> listaFaixas = PartidaViewDetalhesResultado.obterMapFaixa(new Modalidade(detalhesPremioDTO.getAposta().getModalidade()));
+
+        if (detalhesPremioDTO.getPremio() != null && CollectionUtils.isNotEmpty(detalhesPremioDTO.getPremio().getConcursos())) {
+            for (ConcursoPremiadoDTO concursoPremiadoDTO : detalhesPremioDTO.getPremio().getConcursos()) {
+                if (CollectionUtils.isNotEmpty(concursoPremiadoDTO.getFaixas())) {
+                    for (FaixaPremiadaDTO faixa: concursoPremiadoDTO.getFaixas()) {
+                        nomeFaixa = listaFaixas.get(context.getResources().getString(R.string._000) + faixa.getNumero());
+                    }
+                }
+            }
+        }
+        String nome = DadosUsuarioBO.obterNome().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br)));
+        String nomeUsuario = StringUtils.capitalizer(nome);
+
+        String modalidade = ViewUtils.getNomeModalidadePorAposta(detalhesPremioDTO.getAposta());
+        String hora = DateUtils.getDateToString(
+                DateUtils.stringToDate(detalhesPremioDTO.getPremio().getHoraPagamento(), DateUtils.PATTERN_HH_MM_SS)
+                , DateUtils.PATTERN_HH_MM);
+
+        String html = getContentOfFile(FILE_PATH_COMPROVANTE_CABECALHO_RODAPE_PREMIO, context);
+        html = ViewUtils.replaceNullable(html, HEADER_NOME, nomeUsuario);
+        html = ViewUtils.replaceNullable(html, HEADER_CPF, AppUtils.mascaraCPF(DadosUsuarioBO.obterCpf()));
+        html = ViewUtils.replaceNullable(html, HEADER_TITLE_APP_TXT, context.getString(R.string.app_name));
+        html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_premio, modalidade));
+        html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA1_VALOR, detalhesPremioDTO.getPremio().getDataPagamento());
+        html = ViewUtils.replaceNullable(html,HEADER_COLUNA2_LINHA1_TITULO,"Concurso");
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(detalhesPremioDTO.getAposta().getConcursoInicial()));
+        /*if(detalhesPremioDTO.getAposta().getQuantidadeTeimosinhas() > 0){
+            int concursoFinal = (detalhesPremioDTO.getAposta().getConcursoInicial() + detalhesPremioDTO.getAposta().getQuantidadeTeimosinhas()) - 1;
+            html = ViewUtils.replaceNullable(html,HEADER_COLUNA2_LINHA1_TITULO,"Concursos");
+            html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, detalhesPremioDTO.getAposta().getConcursoInicial() +
+                    " a "+
+                    concursoFinal);
+        } else {
+            html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA1_VALOR, String.valueOf(detalhesPremioDTO.getAposta().getConcursoInicial()));
+            html = ViewUtils.replaceNullable(html,HEADER_COLUNA2_LINHA1_TITULO,"Concurso");
+        }*/
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA2_VALOR, hora);
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_TEXTO, context.getString(R.string.label_local_pagamento));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA2_VALOR, detalhesPremioDTO.getPremio().getLocalPagamento());
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA1_LINHA3_VALOR, modalidade);
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_TEXTO, context.getString(R.string.label_nsu_pagamento));
+        html = ViewUtils.replaceNullable(html, HEADER_COLUNA2_LINHA3_VALOR, String.valueOf(detalhesPremioDTO.getPremio().getNsuPagamento()));
+        //html = ViewUtils.replaceNullable(html, BODY_TITULO, modalidade);
+        html = ViewUtils.replaceNullable(html, BODY_LISTA_ITENS_APOSTA, getBodyList(detalhesPremioDTO.getAposta(), context));
+        html = ViewUtils.replaceNullable(html, BODY_COLUNA1_LINHA1_VALOR_PREMIO, nomeFaixa);
+        html = ViewUtils.replaceNullable(html, BODY_COLUNA2_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getAposta().getValor()));
+        html = ViewUtils.replaceNullable(html, BODY_COLUNA1_LINHA2_VALOR_PREMIO, detalhesPremioDTO.getNsbi());
+        html = ViewUtils.replaceNullable(html, BODY_COLUNA3_LINHA1_VALOR_PREMIO, ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
+        //TODO - Tratativa Loteca
+        /*if(modalidade!= null){
+            if( modalidade.equalsIgnoreCase("loteca")){
+                //t
+                html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+            } else {
+                html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+            }
+        } else {
+            html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+        }*/
+        html = ViewUtils.replaceNullable(html, BODY_SEUS_NUMEROS, "Seus números:");
+
+        return html;
+    }
+
+
     private static String getBodyList(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta, Context context) {
 
         StringBuilder sbHtmlBodyList = new StringBuilder();

@@ -176,7 +176,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     @Click
     protected void dateSelectorBtn() {
-        dialogData.show();
+        if (dialogData != null){
+            dialogData.show();
+        }
     }
 
     private void setaDialogFiltrar() {
@@ -659,8 +661,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     @Override
     public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
-        ((ApostasConfirmadasAdapter)apostasConfirmadasRecyclerView.getAdapter()).atualizaSituacaoAposta(position, situacao);
-        holder.handle(position, holder, situacao);
+        if(apostasConfirmadasRecyclerView != null && apostasConfirmadasRecyclerView.getAdapter() != null){
+            ((ApostasConfirmadasAdapter)apostasConfirmadasRecyclerView.getAdapter()).atualizaSituacaoAposta(position, situacao);
+            holder.handle(position, holder, situacao);
+        }
     }
 
     @Override

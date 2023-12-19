@@ -21,6 +21,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -56,33 +57,36 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TimeCoracaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotogolAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TimeCoracaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
+import br.gov.caixa.loterias.apostas.view.custom.NomeTimemaniaTextWatcher;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
+import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
 	private static final int QUANTIDADE_COLUNA_LISTA = 5;
 	private SensorManager mSensorManager;
-	private boolean isNumerosAleatoriosShake = false;
 	private BigDecimal valorEmReais = BigDecimal.ZERO;
 	private LotecaAdapter lotecaAdapter;
 
@@ -110,7 +114,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private EditText informeNomeTime;
 	private RelativeLayout opcaoOutrosNumerosLayout, rlColunasSuperSete;
 	private LinearLayout selecioneTimeCoracaoLayout;
-	private ExpandableHeightGridView mGridTimeCoracao;
+	private RecyclerView mGridTimeCoracao;
 	private RecyclerView listaDezenas;
 	private ArrayList<ExpandableHeightGridView> listaGridsSuperSete;
 	private ArrayList<SuperSeteAdapter> listaAdaptersSuperSete;
@@ -130,6 +134,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	public String dataSorteioAtual;
 
 	private SimularApostaModel model;
+	private CartelaModel cartelaModel;
 	private View rodape;
 
 	public CartelaFragment() {
@@ -138,10 +143,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 	public void atualizaValorTotalAposta(int numPrognostico, int qtdTeimosinhas) {
 		BigDecimal valorEmReais = BigDecimal.ZERO;
-		if (parametroJogo == null) {
-			SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-			parametroJogo = ViewUtils.getParametroSimulacao(sessaoUsuario, tipoJogo).getParametroJogo();
-		}
+		loadParametroJogo();
 
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 			ParametroValorApostaDTO valorAposta = parametroJogo.getValorApostaBy(numPrognostico, parametroJogo.getTrevos().getQtdMinima());
@@ -184,6 +186,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		valorTotalAposta = valorEmReais;
 	}
 
+	private void loadParametroJogo() {
+		if (parametroJogo == null) {
+			SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+			parametroJogo = ViewUtils.getParametroSimulacao(sessaoUsuario, tipoJogo).getParametroJogo();
+		}
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -191,9 +200,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
 		parentActivity = ((SimularApostaActivity) getActivity());
+		identificarTipoJogo();
 		if (parentActivity != null) {
 			parametroJogo = parentActivity.getParametroSimulacao();
-			identificarTipoJogo();
 		}
 
 		if (parametroJogo != null && dezenas.size() == 0 && parametroJogo.getPrognosticoMaximo() != null
@@ -212,17 +221,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		}
 
 		model = new SimularApostaModel(getActivity());
+		cartelaModel = new CartelaModel();
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		int idList;
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
-			idList = R.id.recyclerViewPartida;
-		} else {
-			idList = R.id.listaDezenas;
-		}
+
+		loadParametroJogo();
 
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
 			opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);
@@ -259,9 +265,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			verificaSeMostraSalvarApostaView();
 		}
 		editaAposta();
-
-		ViewUtils.organizaTabLayout(getActivity(), R.id.cartelaFragmentMainLayout, idList, R.id.cartelaFragmentScrollView);
-//		((ScrollView) view.findViewById(R.id.cartelaFragmentScrollView)).fullScroll(ScrollView.FOCUS_UP);
 	}
 
 	public void cartelaFragmentBuilder(Bundle dataBundle) {
@@ -640,7 +643,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 											@Override
 											public void success(List<Integer> list) {
 												AlertDialogUtils.dismiss();
-												isNumerosAleatoriosShake = false;
 												isEcolhaTimeBtnAtivado = true;
 												dezenasSelecionadas.clear();
 												dezenasSelecionadas.addAll(list);
@@ -650,7 +652,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 											@Override
 											public void error(VolleyError error) {
-												isNumerosAleatoriosShake = false;
 												AlertDialogUtils.dismiss();
 											}
 										});
@@ -665,7 +666,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 													 @Override
 													 public void success(List<List<Integer>> payload) {
 														 AlertDialogUtils.dismiss();
-														 isNumerosAleatoriosShake = false;
 														 isEcolhaTimeBtnAtivado = true;
 
 														 preencheSuperSete(payload);
@@ -675,7 +675,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 													 @Override
 													 public void error(VolleyError error) {
-														 isNumerosAleatoriosShake = false;
 														 AlertDialogUtils.dismiss();
 													 }
 												 });
@@ -759,48 +758,36 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void onChangeInformeNomeTime() {
-		informeNomeTime.addTextChangedListener(new TextWatcher() {
-			private boolean isChanged = false;
+		informeNomeTime.addTextChangedListener(new NomeTimemaniaTextWatcher(getActivity(), informeNomeTime, parametroJogo.getEquipes(),
+				onNomeTimeTextWatchListener()));
+	}
 
+	private NomeTimeTextWatcherListener onNomeTimeTextWatchListener(){
+		return new NomeTimeTextWatcherListener() {
 			@Override
-			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-			}
-
-			@Override
-			public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-				if (isChanged) {
-					return;
-				}
-
-				boolean contemIfem = charSequence.toString().contains("-");
-				isChanged = true;
-
-				List<ParametroEquipe> parametroEquipeList = parametroJogo.getEquipes();
-				listaEquipefiltro.clear();
-				if (StringUtils.isNotEmpty(charSequence.toString()) && !contemIfem) {
-					for (ParametroEquipe parametroEquipe : parametroEquipeList) {
-						if (parametroEquipe.getNome().toUpperCase().contains(charSequence.toString().toUpperCase())) {
-							listaEquipefiltro.add(parametroEquipe);
-						}
-					}
-				} else if (contemIfem) {
-					informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-					listaEquipefiltro.addAll(parametroEquipeList);
+			public void isValido(boolean isValid) {
+				if (isValid){
+					aplicaCheckTimeSelecionado();
 				} else {
-					listaEquipefiltro.addAll(parametroEquipeList);
 					informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 				}
-
-				timeCoracaoAdapter.notifyDataSetChanged();
-				isChanged = false;
 			}
 
 			@Override
-			public void afterTextChanged(Editable editable) {
-
+			public void limparFiltro() {
+				listaEquipefiltro.clear();
 			}
-		});
+
+			@Override
+			public void addFiltro(List<ParametroEquipe> listaFriltrada) {
+				listaEquipefiltro.addAll(listaFriltrada);
+				timeCoracaoAdapter.notifyDataSetChanged();
+			}
+		};
+	}
+
+	private void aplicaCheckTimeSelecionado() {
+		informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
 	}
 
 	private void configuraBotoes(View fragmentView) {
@@ -1223,31 +1210,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void configuraSuperSete(View viewLayout) {
-		listaGridsSuperSete = new ArrayList<>();
-		listaGridsSuperSete.add(viewLayout.findViewById(R.id.ehgv_super_sete_primeiro));
-		listaGridsSuperSete.add(viewLayout.findViewById(R.id.ehgv_super_sete_segundo));
-		listaGridsSuperSete.add(viewLayout.findViewById(R.id.ehgv_super_sete_terceiro));
-		listaGridsSuperSete.add(viewLayout.findViewById(R.id.ehgv_super_sete_quarto));
-		listaGridsSuperSete.add(viewLayout.findViewById(R.id.ehgv_super_sete_quinto));
-		listaGridsSuperSete.add(viewLayout.findViewById(R.id.ehgv_super_sete_sexto));
-		listaGridsSuperSete.add(viewLayout.findViewById(R.id.ehgv_super_sete_setimo));
+		listaGridsSuperSete = cartelaModel.getListGridSuperSete(viewLayout);
 
-		listaAdaptersSuperSete = new ArrayList<>();
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
-		listaAdaptersSuperSete.add(new SuperSeteAdapter(typeGameColorDark, parentActivity));
+		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorDark, parentActivity);
 
-		listaGridsSuperSete.get(0).setAdapter(listaAdaptersSuperSete.get(0));
-		listaGridsSuperSete.get(1).setAdapter(listaAdaptersSuperSete.get(1));
-		listaGridsSuperSete.get(2).setAdapter(listaAdaptersSuperSete.get(2));
-		listaGridsSuperSete.get(3).setAdapter(listaAdaptersSuperSete.get(3));
-		listaGridsSuperSete.get(4).setAdapter(listaAdaptersSuperSete.get(4));
-		listaGridsSuperSete.get(5).setAdapter(listaAdaptersSuperSete.get(5));
-		listaGridsSuperSete.get(6).setAdapter(listaAdaptersSuperSete.get(6));
+		cartelaModel.preencheGridComListaSuperSete(listaGridsSuperSete, listaAdaptersSuperSete);
 
 		for (ExpandableHeightGridView listaNumeros : listaGridsSuperSete) {
 			listaNumeros.setVisibility(View.VISIBLE);
@@ -1342,22 +1309,29 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	 */
 	private void configurarSelecaoTimeCoracao() {
 		listaEquipefiltro = new ArrayList<>(parametroJogo.getEquipes());
-		timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), listaEquipefiltro);
+		timeCoracaoAdapter = new TimeCoracaoAdapter(getActivity(), listaEquipefiltro, onTimeSelecionadoListener());
+		mGridTimeCoracao.setLayoutManager(new GridLayoutManager(getContext(), 3));
 		mGridTimeCoracao.setAdapter(timeCoracaoAdapter);
-		mGridTimeCoracao.setExpanded(true);
-		mGridTimeCoracao.setOnItemClickListener((adapterView, viewItem, i, l) -> {
+	}
+
+	private OnItemClickListener onTimeSelecionadoListener() {
+		return (holder, position) -> {
 			if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
 				equipeSelecionada.setSelecionado(false);
 			}
-			equipeSelecionada = listaEquipefiltro.get(i);
+			equipeSelecionada = listaEquipefiltro.get(position);
 			equipeSelecionada.setSelecionado(true);
 			String nomeTime = String.format("%s-%s", equipeSelecionada.getNome(), equipeSelecionada.getUf());
 			informeNomeTime.setText(nomeTime);
+			aplicaCheckTimeSelecionado();
+			listaEquipefiltro.clear();
+			listaEquipefiltro.addAll(parametroJogo.getEquipes());
 			timeCoracaoAdapter.notifyDataSetChanged();
 			verificaSeMostraBotaoLimparAposta();
 			verificaSeMostraSalvarApostaView();
 			atualizarAdicionarCarinhoCompletarCartela(false);
-		});
+			InputUtils.closeKeyboard(getActivity());
+		};
 	}
 
 	@Override

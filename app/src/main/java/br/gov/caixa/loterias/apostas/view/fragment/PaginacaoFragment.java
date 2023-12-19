@@ -107,16 +107,20 @@ public class PaginacaoFragment extends Fragment {
 	}
 
 	public void proximaPagina(){
-		Pagina proxima = paginacao.getProxima();
-		if (proxima != null){
-			atualizaPaginacao(proxima);
+		if (paginacao != null){
+			Pagina proxima = paginacao.getProxima();
+			if (proxima != null){
+				atualizaPaginacao(proxima);
+			}
 		}
 	}
 
 	public void voltaPagina(){
-		Pagina anterior = paginacao.getAnterior();
-		if (anterior != null){
-			atualizaPaginacao(anterior);
+		if (paginacao != null){
+			Pagina anterior = paginacao.getAnterior();
+			if (anterior != null){
+				atualizaPaginacao(anterior);
+			}
 		}
 	}
 

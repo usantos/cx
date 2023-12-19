@@ -219,14 +219,23 @@ public class MercadoPagoConnection {
 	}
 
 	private static void onErroPayment(Context ctx, MercadoPagoListener listener, String url, VolleyError volleyError) {
-		AppCenterManager.registraErro(String.valueOf(volleyError.networkResponse.statusCode), "MP_" + url);
+		if(isVolleyErrorValid(volleyError)){
+			AppCenterManager.registraErro(String.valueOf(volleyError.networkResponse.statusCode), "MP_" + url);
+		} else {
+			AppCenterManager.registraErro("STATUS_CODE_NAO_IDENTIFICADO", "MP_" + url);
+		}
+
 		String msg;
-		if(Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains(ctx.getResources().getString(R.string.not_found))){
+		if(isVolleyErrorValid(volleyError) && Bin.fromBytes(volleyError.networkResponse.data).toUtf8().contains(ctx.getResources().getString(R.string.not_found))){
 			msg = montarMensagem("MP_PAYMENT_METHOD_NOT_FOUND");
 		}else {
 			msg = montarMensagem("");
 		}
 		listener.onPaymentFailure(msg);
+	}
+
+	private static boolean isVolleyErrorValid(VolleyError volleyError) {
+		return volleyError != null && volleyError.networkResponse != null;
 	}
 
 	private static void onErroCreateToken(VolleyError error, Context ctx, String url2, MercadoPagoListener listener) {

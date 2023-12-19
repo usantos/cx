@@ -1,19 +1,14 @@
 package br.gov.caixa.loterias.apostas.utils;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.view.inputmethod.InputMethodManager;
 
-import androidx.core.app.ActivityCompat;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by lsimas on 10/04/2017.
@@ -21,13 +16,35 @@ import java.util.Locale;
 
 public class AppUtils {
 
-    private AppUtils() {
-    }
-
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
                 && cm.getActiveNetworkInfo().isConnected();
+    }
+
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager != null) {
+            // Obtém todas as redes
+            Network[] networks = connectivityManager.getAllNetworks();
+
+            for (Network network : networks) {
+                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+
+                if (capabilities != null &&
+                        (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))) {
+                    // Há uma conexão de dados móveis ou Wi-Fi ativa ou via cabo
+                    return true;
+                }
+            }
+        }
+
+        // Sem conexão ativa
+        return false;
     }
 
     public static List<Integer> converteListaInteiros(List<Integer> lista){
@@ -73,32 +90,10 @@ public class AppUtils {
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public static void requestFingerprintPermission(Activity activity, int requestCode) {
-        ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.USE_FINGERPRINT}, requestCode);
-    }
-
-    public static boolean checkFingerprintPermission(Activity activity) {
-        return ActivityCompat.checkSelfPermission(activity, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED;
-    }
-
     public static String capitalizeFirstChar(String string) {
         StringBuilder sb = new StringBuilder(string);
         sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
         return sb.toString();
-    }
-
-    public static String capitalizeString(String string) {
-        char[] chars = string.toLowerCase(new Locale("pt", "BR")).toCharArray();
-        boolean found = false;
-        for (int i = 0; i < chars.length; i++) {
-            if (!found && Character.isLetter(chars[i])) {
-                chars[i] = Character.toUpperCase(chars[i]);
-                found = true;
-            } else if (Character.isWhitespace(chars[i]) || chars[i] == '.' || chars[i] == '\'') { // You can add other chars here
-                found = false;
-            }
-        }
-        return String.valueOf(chars);
     }
 
     public static String removeMasckCPF(String cpf) {
@@ -127,26 +122,6 @@ public class AppUtils {
                 lineSB.append(ViewUtils.getNumberIntegerToString(lista.get(i)));
             } else {
                 lineSB.append(String.format(" - %s", ViewUtils.getNumberIntegerToString(lista.get(i))));
-            }
-        }
-        lines.add(lineSB.toString());
-        return lines;
-    }
-
-    public static List<String> listDezenasSurpresinha(int size) {
-
-        List<String> lines = new ArrayList<>();
-        StringBuilder lineSB = new StringBuilder();
-
-        for (int i = 0; i < size; i++) {
-            if (i == 0) {
-                lineSB.append("XX");
-            } else if (i % 5 == 0) {
-                lines.add(lineSB.toString());
-                lineSB = new StringBuilder();
-                lineSB.append("XX");
-            } else {
-                lineSB.append(String.format(" - %s", "XX"));
             }
         }
         lines.add(lineSB.toString());
