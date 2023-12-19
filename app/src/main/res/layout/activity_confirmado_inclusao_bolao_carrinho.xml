@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity">
 
-    <include layout="@layout/app_bar_marketplace_filtrar" />
+    <include layout="@layout/app_bar_marketplace" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_toolbar"

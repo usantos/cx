@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,6 +56,9 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     private String concurso;
     private String dataSorteio;
 
+    private LinearLayout btnVoltarInicio;
+    private TextView tvVoltarInicio;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +70,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
 
         getExtras();
         setViews();
+        setMetodos();
         startFragments();
     }
 
@@ -85,49 +90,20 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     private void getExtras(){
         modalidade = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
         valorAposta = (BigDecimal) getIntent().getSerializableExtra(getResources().getString(R.string.valorAposta));
-        concurso = getIntent().getStringExtra("");
-        dataSorteio = getIntent().getStringExtra("");
+        concurso = getIntent().getStringExtra(getResources().getString(R.string.extra_numero_concurso_atual));
+        dataSorteio = getIntent().getStringExtra(getResources().getString(R.string.extra_data_sorteio_atual));
     }
 
     private void setViews(){
+        btnVoltarInicio = findViewById(R.id.botaoLinearLayoutVoltarPrincipal);
+        tvVoltarInicio = findViewById(R.id.txtVoltarAoInicio);
 
+        tvVoltarInicio.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
     }
 
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.confirmarInclusaoApostaLayoutCarrinhoApostas: {
-                AlertDialogUtils.show(this);
-                ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-
-                apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
-                    @Override
-                    public void onResponse(CarrinhoDTOResponse response) {
-                        AlertDialogUtils.dismiss();
-                        Bundle args = new Bundle();
-                        args.putSerializable(CARRINHO, (Serializable) response.getPayload());
-                        startActivityForResult(new Intent(ConfirmadoInclusaoBolaoCarrinhoActivity.this, CarrinhoActivity.class).putExtras(args),0);
-                        if (response.getRedirect() != null){
-                            RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ConfirmadoInclusaoBolaoCarrinhoActivity.this);
-                        }
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        AlertDialogUtils.dismiss();
-                        if (MensagensNetwork.isUnauthorizedError(error)) {
-                            startActivityForResult((new Intent(ConfirmadoInclusaoBolaoCarrinhoActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true)),0);
-                        } else {
-                            RedirectNetwork.checkRedirect( error, ConfirmadoInclusaoBolaoCarrinhoActivity.this );
-                        }
-                    }
-                });
-            }
-            break;
-            case R.id.botaoLinearLayoutVoltarPrincipal: {
-                PrincipalActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
-            }
-            break;
-        }
+    private void setMetodos() {
+        btnVoltarInicio.setOnClickListener(v ->
+                PrincipalActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start());
     }
 
 }

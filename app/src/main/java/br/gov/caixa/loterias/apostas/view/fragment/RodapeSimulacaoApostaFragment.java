@@ -69,7 +69,9 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if (getArguments() != null) {
 			valorAposta = new BigDecimal(getArguments().getString(ARG_VALOR_APOSTA));
-			valorCarrinho = new BigDecimal(getArguments().getString(ARG_VALOR_CARRINHO));
+			if (getArguments().getString(ARG_VALOR_CARRINHO) != null){
+				valorCarrinho = new BigDecimal(getArguments().getString(ARG_VALOR_CARRINHO));
+			}
 		}
 	}
 
