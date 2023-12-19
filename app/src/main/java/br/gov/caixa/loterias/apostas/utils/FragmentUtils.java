@@ -131,4 +131,10 @@ public class FragmentUtils {
 		startFragment(fm, id, frag);
 		return frag;
 	}
+
+	public static RodapeSimulacaoApostaFragment startRodapeSimulacaoAPosta(FragmentManager fm, int id, BigDecimal valorBolao) {
+		RodapeSimulacaoApostaFragment frag = RodapeSimulacaoApostaFragment.newInstance(valorBolao);
+		startFragment(fm, id, frag);
+		return frag;
+	}
 }

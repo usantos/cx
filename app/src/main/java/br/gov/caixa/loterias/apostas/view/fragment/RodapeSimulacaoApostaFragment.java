@@ -56,6 +56,14 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 		return fragment;
 	}
 
+	public static RodapeSimulacaoApostaFragment newInstance(BigDecimal valorAposta) {
+		RodapeSimulacaoApostaFragment fragment = new RodapeSimulacaoApostaFragment();
+		Bundle                  args     = new Bundle();
+		args.putString(ARG_VALOR_APOSTA, new Gson().toJson(valorAposta));
+		fragment.setArguments(args);
+		return fragment;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -91,6 +99,9 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 	public void atualizaValorCarrinho(BigDecimal valorTotal){
 		if (valorTotal != null && tvValorCarrinho != null){
 			ViewUtils.setMoedaFormatHtml(valorTotal, tvValorCarrinho);
+		} else {
+			view.findViewById(R.id.tv_valor_atual_carrinho).setVisibility(View.INVISIBLE);
+			tvValorCarrinho.setVisibility(View.INVISIBLE);
 		}
 	}
 
