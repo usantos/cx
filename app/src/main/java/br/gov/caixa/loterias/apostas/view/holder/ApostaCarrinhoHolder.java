@@ -129,7 +129,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 				//TODO - Silce deveria tratar
 				dataHoraExpiracao = "2023-01-01T00:00:00-03:00";
 			}
-			startTimer(position, dataHoraExpiracao);
+			startTimer(dataHoraExpiracao);
 		}
 
 		TextView     quantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
@@ -351,7 +351,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	}
 
 
-	private void startTimer(int position, String dataHoraExpiracaoReserva) {
+	private void startTimer(String dataHoraExpiracaoReserva) {
 		long tempo_inicial_milesec = DateUtils.diffMillisSecondsTimerZone(dataHoraExpiracaoReserva);
 
 		ContagemRegressiva contDown = new ContagemRegressiva(textContadorBolao, tempo_inicial_milesec, 1000) {

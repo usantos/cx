@@ -59,7 +59,9 @@
     <string name="verCarrinho">_Ver carrinho_\nde apostas</string>
     <string name="verCarrinhoVazio">OK</string>
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
+    <string name="infoConcluaPagamentoBolao">Conclua o pagamento de suas \napostas dentro do prazo</string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
+    <string name="tituloBolãoFeito">Esse bolão foi para \no seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
     <string name="confirmacao">Confirmação</string>
@@ -1322,5 +1324,6 @@
     <string name="carrinho_cotas_expiradas">Você deve retirar as cotas expiradas do carrinho para avançar para pagamento</string>
     <string name="loteca_nao_favorita">Apostas da Loteca e Bolões não são salvos no carrinho favorito.</string>
     <string name="pagamento_pix_estornado">Não foi possível completar a sua aposta e seu Pix será devolvido. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
+    <string name="extra_data_hora_expiracao_reserva">dataHoraExpiracaoReserva</string>
 
 </resources>

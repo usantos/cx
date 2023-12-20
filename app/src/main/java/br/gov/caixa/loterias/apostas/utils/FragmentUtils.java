@@ -136,6 +136,7 @@ public class FragmentUtils {
 		startFragment(fm, id, frag);
 		return frag;
 	}
+
 	public static ApostaConfirmadaNumeroDetalhesFragment startApostaConfirmadaDetalhes(FragmentManager fm, int id,
 																					   IdentificaoDeUmaApostaDas8Modalidades aposta,
 																					   ResultadoConcursoDTO resultado,
@@ -156,6 +157,12 @@ public class FragmentUtils {
 				.newInstance(aposta, resultado, comprovante, valorPremio, isToteca);
 		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
+	}
+
+	public static RodapeSimulacaoApostaFragment startRodapeSimulacaoAPosta(FragmentManager fm, int id, BigDecimal valorBolao) {
+		RodapeSimulacaoApostaFragment frag = RodapeSimulacaoApostaFragment.newInstance(valorBolao);
+		startFragment(fm, id, frag);
+		return frag;
 	}
 
 }

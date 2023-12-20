@@ -519,12 +519,12 @@ public class ApostaBO extends BaseBO {
 
     //CARRINHO
     public void adicionarApostaNoCarrinho(final IdentificaoDeUmaApostaDas8Modalidades aposta,
-                                          final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
+                                          final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.INCLUIR_APOSTA_CARRINHO_PATH,
                     new LinkedHashMap<>(),
                     aposta,
-                    AgrupadorDTOApostaDTOResponse.class,
+                    CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(),
                     getHeader());
