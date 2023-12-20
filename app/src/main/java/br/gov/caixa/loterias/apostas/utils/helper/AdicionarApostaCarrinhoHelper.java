@@ -34,6 +34,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTORes
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmBolao;
@@ -150,9 +151,9 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void postAdicionarApostaCarrinho(ApostaBO apostaBO) {
-        apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
+        apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
             @Override
-            public void onResponse(AgrupadorDTOApostaDTOResponse result) {
+            public void onResponse(CarrinhoDTOResponse result) {
                 AlertDialogUtils.dismiss();
                 AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
                 if (CarrinhoSingleton.getInstance().getCarrinho() != null &&
@@ -169,7 +170,7 @@ public class AdicionarApostaCarrinhoHelper {
                     CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
                 }
                 CarrinhoSingleton.getInstance().getCarrinho().atualizaValorTotal();
-                telaConfirmarCarrinho(aposta.getModalidade(), aposta);
+                telaConfirmarCarrinho(aposta.getModalidade(), aposta, result);
             }
 
             @Override
@@ -191,9 +192,9 @@ public class AdicionarApostaCarrinhoHelper {
             aposta.setIndicadorSurpresinha(indicadorSurpresinha);
         }
 
-        apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<AgrupadorDTOApostaDTOResponse>() {
+        apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
             @Override
-            public void onResponse(AgrupadorDTOApostaDTOResponse result) {
+            public void onResponse(CarrinhoDTOResponse result) {
                 AlertDialogUtils.dismiss();
                 AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
                 CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
@@ -270,7 +271,12 @@ public class AdicionarApostaCarrinhoHelper {
         } );
     }
 
-    private static void telaConfirmarCarrinho(ModalidadeEnum modalidadeEnum,  Object aposta) {
+
+    private static void telaConfirmarCarrinho(ModalidadeEnum modalidade, Object aposta) {
+        telaConfirmarCarrinho(modalidade,  aposta, null);
+    }
+
+    private static void telaConfirmarCarrinho(ModalidadeEnum modalidadeEnum,  Object aposta, CarrinhoDTOResponse carrinhoDtoResponse) {
         BigDecimal valor = BigDecimal.ZERO;
         Boolean espelho = false;
         IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = null;
@@ -302,7 +308,8 @@ public class AdicionarApostaCarrinhoHelper {
             if (apostaDas8Modalidades instanceof IdentificaoDeUmBolao){
                 telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_numero_concurso_atual), apostaDas8Modalidades.getConcursoAlvo().toString());
                 telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_sorteio_atual), "data");
-                //passar o tempo aqui
+                telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_hora_expiracao_reserva),
+                        buscaBolaoCarrinho(((IdentificaoDeUmBolao) aposta).getIdBolao(), carrinhoDtoResponse));
             } else {
                 //telaConfirmacao.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
                 ParametroSimulacao parametroSimulacao =  ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades);
@@ -574,5 +581,17 @@ public class AdicionarApostaCarrinhoHelper {
 
     private enum ApostaOrigem {
         CARROSEL, LISTA_APOSTA;
+    }
+
+
+    private static String buscaBolaoCarrinho(String bolaoId, CarrinhoDTOResponse carrinhoDtoResponse) {
+        List<IdentificaoDeUmaApostaDas8Modalidades> listBoloes = carrinhoDtoResponse.getPayload().getBoloes();
+
+        for (IdentificaoDeUmaApostaDas8Modalidades bolao: listBoloes) {
+            if (bolao.getReservaCotaBolao().getCodigoBolaoReserva().equals(bolaoId)) {
+                return bolao.getReservaCotaBolao().getDataHoraExpiracaoReserva();
+            }
+        }
+        return null;
     }
 }

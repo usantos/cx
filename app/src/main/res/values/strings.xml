@@ -1323,5 +1323,6 @@
     <string name="cota_expirada">Cota expirada</string>
     <string name="carrinho_cotas_expiradas">Você deve retirar as cotas expiradas do carrinho para avançar para pagamento</string>
     <string name="loteca_nao_favorita">Apostas da Loteca e Bolões não são salvos no carrinho favorito.</string>
+    <string name="extra_data_hora_expiracao_reserva">dataHoraExpiracaoReserva</string>
 
 </resources>
