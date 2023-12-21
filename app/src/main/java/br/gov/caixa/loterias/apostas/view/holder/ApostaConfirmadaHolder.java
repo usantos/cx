@@ -6,12 +6,10 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
@@ -38,7 +36,9 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private View stripe;
 	private TextView modalidadeTxt;
 	private TextView concursoTxt;
-	private View reloadBtn;
+	private AppCompatImageView addCarrinho;
+	private AppCompatImageView detalheAposta;
+	private AppCompatImageView tagBolao;
 	private TextView situacaoTxt;
 	private Button btnAposteAqui;
 	private ProgressBar progressBarSituacao;
@@ -58,10 +58,13 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
 			dataApostaTxt = view.findViewById(R.id.dataApostaTxt);
 			concursoTxt = view.findViewById(R.id.concursoTxt);
-			reloadBtn = view.findViewById(R.id.reloadBtn);
+			addCarrinho = view.findViewById(R.id.id_add_carrinho);
+			detalheAposta = view.findViewById(R.id.id_detalhe_aposta);
+			tagBolao = view.findViewById(R.id.id_tag_bolao);
 			situacaoTxt = view.findViewById(R.id.situacaoTxt);
 			progressBarSituacao = view.findViewById(R.id.progressBarSituacao);
-			reloadBtn.setOnClickListener(this);
+			addCarrinho.setOnClickListener(this);
+			detalheAposta.setOnClickListener(this);
 		} else {
 			btnAposteAqui = view.findViewById(R.id.btnAposteAquiApostasConfirmadas);
 
@@ -92,12 +95,29 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			this.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_espaco) + descricaoStatus.toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
 		}
 
+		checaBolao(aposta);
 		trataStyleSituacao(aposta);
 		preencheTeimosinha(aposta);
 
 		if (precisaConferirSituacaoAutomaticamente(descricaoStatus)){
 			fragment.conferirResultado(position, aposta, this);
 		}
+	}
+
+	private void checaBolao(ApostaDTO aposta) {
+		if (isApostaBolao(aposta)){
+			addCarrinho.setVisibility(View.INVISIBLE);
+			addCarrinho.setOnClickListener(null);
+			tagBolao.setVisibility(View.VISIBLE);
+		} else {
+			addCarrinho.setVisibility(View.VISIBLE);
+			addCarrinho.setOnClickListener(this);
+			tagBolao.setVisibility(View.GONE);
+		}
+	}
+
+	private boolean isApostaBolao(ApostaDTO aposta) {
+		return false;
 	}
 
 	private String getDescricaoString(ApostaDTO aposta, int position) {
@@ -270,13 +290,12 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			if (view.getId() == R.id.row_apostas_confirmadas_empty || view.getId() == R.id.btnAposteAquiApostasConfirmadas) {
 				onApostasConfirmadasListener.onEmptyCellClick();
 			} else {
-
 				switch (view.getId()) {
-					case R.id.reloadBtn:
-						onApostasConfirmadasListener.onReload(getAdapterPosition());
+					case R.id.id_add_carrinho:
+						onApostasConfirmadasListener.onReload(getAbsoluteAdapterPosition());
 						break;
 					default:
-						onApostasConfirmadasListener.onItemClick(getAdapterPosition(), this);
+						onApostasConfirmadasListener.onItemClick(getAbsoluteAdapterPosition(), this);
 						break;
 				}
 			}
