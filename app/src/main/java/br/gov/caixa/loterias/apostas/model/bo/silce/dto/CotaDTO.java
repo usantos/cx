@@ -23,6 +23,10 @@ public class CotaDTO implements Serializable {
     private String dataHoraReserva = null;
     @SerializedName("dataHoraAtual")
     private String dataHoraAtual = null;
+    @SerializedName("dataRegistroBolao")
+    private String dataRegistroBolao = null;
+    @SerializedName("horaRegistroBolao")
+    private String horaRegistroBolao = null;
     @SerializedName("dataHoraExpiracaoReserva")
     private String dataHoraExpiracaoReserva = null;
     @SerializedName("numeroCotaReservada")
@@ -85,6 +89,22 @@ public class CotaDTO implements Serializable {
 
     public void setDataHoraAtual(String dataHoraAtual) {
         this.dataHoraAtual = dataHoraAtual;
+    }
+
+    public String getDataRegistroBolao() {
+        return dataRegistroBolao;
+    }
+
+    public void setDataRegistroBolao(String dataRegistroBolao) {
+        this.dataRegistroBolao = dataRegistroBolao;
+    }
+
+    public String getHoraRegistroBolao() {
+        return horaRegistroBolao;
+    }
+
+    public void setHoraRegistroBolao(String horaRegistroBolao) {
+        this.horaRegistroBolao = horaRegistroBolao;
     }
 
     @ApiModelProperty(value = "Data e hora da expiração da reserva")
@@ -183,6 +203,8 @@ public class CotaDTO implements Serializable {
                 Objects.equals(this.codigoBolaoReserva, cotaDTO.codigoBolaoReserva) &&
                 Objects.equals(this.dataHoraReserva, cotaDTO.dataHoraReserva) &&
                 Objects.equals(this.dataHoraAtual, cotaDTO.dataHoraAtual) &&
+                Objects.equals(this.dataRegistroBolao, cotaDTO.dataRegistroBolao) &&
+                Objects.equals(this.horaRegistroBolao, cotaDTO.horaRegistroBolao) &&
                 Objects.equals(this.dataHoraExpiracaoReserva, cotaDTO.dataHoraExpiracaoReserva) &&
                 Objects.equals(this.numeroCotaReservada, cotaDTO.numeroCotaReservada) &&
                 Objects.equals(this.qtdCotaTotalBolao, cotaDTO.qtdCotaTotalBolao) &&
@@ -196,7 +218,7 @@ public class CotaDTO implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(situacaoReserva, numeroLoterica, codigoBolaoReserva, dataHoraAtual, dataHoraExpiracaoReserva, numeroCotaReservada, qtdCotaTotalBolao, vrCotaReservada, vrTarifaServico, vrTotalCota, numeroTerminalLoterico, dataHoraAlteracaoSituacao, descricaoCotaBolao);
+        return Objects.hash(situacaoReserva, numeroLoterica, codigoBolaoReserva, dataHoraAtual, dataRegistroBolao, horaRegistroBolao, dataHoraExpiracaoReserva, numeroCotaReservada, qtdCotaTotalBolao, vrCotaReservada, vrTarifaServico, vrTotalCota, numeroTerminalLoterico, dataHoraAlteracaoSituacao, descricaoCotaBolao);
     }
 
 
@@ -209,6 +231,8 @@ public class CotaDTO implements Serializable {
         sb.append("    codigoBolaoReserva: ").append(toIndentedString(codigoBolaoReserva)).append("\n");
         sb.append("    dataHoraReserva: ").append(toIndentedString(dataHoraReserva)).append("\n");
         sb.append("    dataHoraAtual: ").append(toIndentedString(dataHoraAtual)).append("\n");
+        sb.append("    dataRegistroBolao: ").append(toIndentedString(dataRegistroBolao)).append("\n");
+        sb.append("    horaRegistroBolao: ").append(toIndentedString(horaRegistroBolao)).append("\n");
         sb.append("    dataHoraExpiracaoReserva: ").append(toIndentedString(dataHoraExpiracaoReserva)).append("\n");
         sb.append("    numeroCotaReservada: ").append(toIndentedString(numeroCotaReservada)).append("\n");
         sb.append("    qtdCotaTotalBolao: ").append(toIndentedString(qtdCotaTotalBolao)).append("\n");
