@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
  * ApostaBolaoDTO
  */
 @ApiModel(description = "")
-public class ApostaBolaoDTO {
+public class ApostaBolaoDTO implements Serializable {
 
     @SerializedName("indicadorSurpresinha")
     private Boolean isSurpresinha = null;

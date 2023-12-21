@@ -9,8 +9,7 @@ import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-/**
- * CotaDTO
+/**DTO
  */
 @ApiModel(description = "")
 public class CotaDTO implements Serializable {
@@ -40,8 +39,8 @@ public class CotaDTO implements Serializable {
     private Integer numeroTerminalLoterico = null;
     @SerializedName("dataHoraAlteracaoSituacao")
     private String dataHoraAlteracaoSituacao = null;
-//    @SerializedName("descricaoCotaBolao")
-//    private Bolao descricaoCotaBolao = null;
+    @SerializedName("descricaoCotaBolao")
+    private DescricaoCotaBolao descricaoCotaBolao = null;
 
 
     @ApiModelProperty(value = "Situação da reserva")
@@ -160,14 +159,14 @@ public class CotaDTO implements Serializable {
         this.dataHoraAlteracaoSituacao = dataHoraAlteracaoSituacao;
     }
 
-//    @ApiModelProperty(value = "Descrição da cota de bolão")
-//    public Bolao getDescricaoCotaBolao() {
-//        return descricaoCotaBolao;
-//    }
-//
-//    public void setDescricaoCotaBolao(Bolao descricaoCotaBolao) {
-//        this.descricaoCotaBolao = descricaoCotaBolao;
-//    }
+    @ApiModelProperty(value = "Descrição da cota de bolão")
+    public DescricaoCotaBolao getDescricaoCotaBolao() {
+        return descricaoCotaBolao;
+    }
+
+    public void setDescricaoCotaBolao(DescricaoCotaBolao descricaoCotaBolao) {
+        this.descricaoCotaBolao = descricaoCotaBolao;
+    }
 
 
     @Override
@@ -191,16 +190,13 @@ public class CotaDTO implements Serializable {
                 Objects.equals(this.vrTarifaServico, cotaDTO.vrTarifaServico) &&
                 Objects.equals(this.vrTotalCota, cotaDTO.vrTotalCota) &&
                 Objects.equals(this.numeroTerminalLoterico, cotaDTO.numeroTerminalLoterico) &&
-                Objects.equals(this.dataHoraAlteracaoSituacao, cotaDTO.dataHoraAlteracaoSituacao);// &&
-                //Objects.equals(this.descricaoCotaBolao, cotaDTO.descricaoCotaBolao);
+                Objects.equals(this.dataHoraAlteracaoSituacao, cotaDTO.dataHoraAlteracaoSituacao) &&
+                Objects.equals(this.descricaoCotaBolao, cotaDTO.descricaoCotaBolao);
     }
 
     @Override
     public int hashCode() {
-        //return Objects.hash(situacaoReserva, numeroLoterica, codigoBolaoReserva, dataHoraAtual, dataHoraExpiracaoReserva, numeroCotaReservada, qtdCotaTotalBolao, vrCotaReservada, vrTarifaServico, vrTotalCota, numeroTerminalLoterico, dataHoraAlteracaoSituacao, descricaoCotaBolao);
-        //return Objects.hash(situacaoReserva, numeroLoterica, codigoBolaoReserva, dataHoraReserva, dataHoraExpiracaoReserva, numeroCotaReservada, qtdCotaTotalBolao, vrCotaReservada, vrTarifaServico, vrTotalCota, numeroTerminalLoterico, dataHoraAlteracaoSituacao);
-        //return Objects.hash(situacaoReserva,codigoBolaoReserva);
-        return Objects.hash(situacaoReserva, numeroLoterica, codigoBolaoReserva, dataHoraReserva, dataHoraAtual, dataHoraExpiracaoReserva, numeroCotaReservada, qtdCotaTotalBolao, vrCotaReservada, vrTarifaServico, vrTotalCota, numeroTerminalLoterico, dataHoraAlteracaoSituacao);
+        return Objects.hash(situacaoReserva, numeroLoterica, codigoBolaoReserva, dataHoraAtual, dataHoraExpiracaoReserva, numeroCotaReservada, qtdCotaTotalBolao, vrCotaReservada, vrTarifaServico, vrTotalCota, numeroTerminalLoterico, dataHoraAlteracaoSituacao, descricaoCotaBolao);
     }
 
 
@@ -221,7 +217,7 @@ public class CotaDTO implements Serializable {
         sb.append("    vrTotalCota: ").append(toIndentedString(vrTotalCota)).append("\n");
         sb.append("    numeroTerminalLoterico: ").append(toIndentedString(numeroTerminalLoterico)).append("\n");
         sb.append("    dataHoraAlteracaoSituacao: ").append(toIndentedString(dataHoraAlteracaoSituacao)).append("\n");
-        //sb.append("    descricaoCotaBolao: ").append(toIndentedString(descricaoCotaBolao)).append("\n");
+        sb.append("    descricaoCotaBolao: ").append(toIndentedString(descricaoCotaBolao)).append("\n");
         sb.append("}");
         return sb.toString();
     }
