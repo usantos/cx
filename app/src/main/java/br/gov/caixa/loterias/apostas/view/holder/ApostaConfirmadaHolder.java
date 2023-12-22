@@ -117,7 +117,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	}
 
 	private boolean isApostaBolao(ApostaDTO aposta) {
-		return false;
+		return aposta.getIndicadorCotaBolao() != null && aposta.getIndicadorCotaBolao();
 	}
 
 	private String getDescricaoString(ApostaDTO aposta, int position) {
@@ -226,6 +226,10 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			this.concursoTxt.setText(itemView.getContext().getString(R.string.label_aposta_concursos,
 														 aposta.getConcursoInicial(),
 														 quantidade));
+		} else if (isApostaBolao(aposta)){
+			this.concursoTxt.setText("Cota " + aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +
+					aposta.getReservaCotaBolao().getQtdCotaTotalBolao() + "\n" +
+					itemView.getContext().getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
 		} else {
 			this.concursoTxt.setText(itemView.getContext().getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
 		}
