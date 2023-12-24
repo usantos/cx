@@ -34,7 +34,7 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 												  FiltraMarketplaceActivity.class);
 	}
 
-	public void configBackground(int cor){
+	public void configBackgroundColorMenu(int cor){
 		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, cor)));
 	}
 
