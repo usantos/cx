@@ -80,6 +80,7 @@ import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
@@ -162,6 +163,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private DetalhesHistoricoPremioDTOResponse detalhesHistoricoPremioDTOResponse;
     private ApostaConfirmadaPartidaDetalhesFragment partidaFragment;
     private ApostaConfirmadaNumeroDetalhesFragment numerosFragment;
+    private ApostaConfirmadaBolaoDetalhesFragment numerosBolaoFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -270,9 +272,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 break;
             default:
-                numerosFragment = FragmentUtils.startApostaConfirmadaDetalhes(getSupportFragmentManager(),
-                        R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
-
+                if (aposta.getIndicadorCotaBolao()){
+                    numerosBolaoFragment = FragmentUtils.startApostaConfirmadaBolaoDetalhes(getSupportFragmentManager(),
+                            R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
+                } else {
+                    numerosFragment = FragmentUtils.startApostaConfirmadaDetalhes(getSupportFragmentManager(),
+                            R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
+                }
 
                 linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 break;

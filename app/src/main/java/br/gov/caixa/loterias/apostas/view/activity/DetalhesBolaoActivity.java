@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -25,6 +26,8 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
+import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
@@ -162,10 +165,18 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private void preencheJogos() {
 		if (bolao.getApostas() != null && !bolao.getApostas().isEmpty()){
-			listaAdapter = new JogosBolaoRecyclerView(bolao.getApostas());
+			listaAdapter = new JogosBolaoRecyclerView(R.color.mega_verde_escuro_mkp, bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
 			listaJogos.setAdapter(listaAdapter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(this));
 		}
+	}
+
+	private DezenaConfig getDezenaConfig() {
+		ShapeConfig shapeConfig = new ShapeConfig(R.color.mega_verde_escuro_mkp, R.color.branco);
+
+		return new DezenaConfig(false, R.color.mega_verde_escuro_mkp,
+				R.layout.item_dezena_detalhe,
+				shapeConfig,false);
 	}
 
 	private void fragmentRodape() {

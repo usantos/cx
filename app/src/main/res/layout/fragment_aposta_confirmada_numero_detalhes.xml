@@ -5,15 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/id_tag_bolao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_tag_bolao_outline"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_premio_pago"
         android:layout_width="match_parent"
@@ -98,33 +89,11 @@
                 tools:text="1234" />
 
             <TextView
-                android:id="@+id/cotaLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/arialmt"
-                android:layout_below="@id/concursoTxt"
-                tools:text="Cota"
-                android:visibility="gone"
-                android:layout_marginTop="8dp"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/cotaTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cotaLabel"
-                android:fontFamily="@font/arialmt"
-                android:visibility="gone"
-                android:textSize="12sp"
-                tools:text="1/25" />
-
-            <TextView
                 android:id="@+id/quantidadeApostadasTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@id/cotaLabel"
+                android:layout_toEndOf="@id/concursoTxt"
                 android:layout_below="@id/concursoTxt"
                 android:fontFamily="@font/arialmt"
                 android:textSize="12sp"

@@ -11,7 +11,7 @@ import java.util.TimeZone;
 
 public class DataUtil {
 	public static final String YYYY_MM_DD = "yyyy-MM-dd";
-	public static final String DD_MM_YYYY = "dd-MM-yyyy";
+	public static final String DD_MM_YYYY = "dd/MM/yyyy";
 	public static final String HH_MM_SS = "HH:mm:ss";
 
 	public static String getStringDataFormatted(String patter, String stringData) {

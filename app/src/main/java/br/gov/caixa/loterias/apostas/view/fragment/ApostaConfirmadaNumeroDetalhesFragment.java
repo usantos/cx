@@ -55,8 +55,6 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	private TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt,
 			apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta,
 			tv_colunas_2, tv_resultado_super_sete, tv_tit_time_mes, tv_time_mes, tv_val_premio, tv_val_premio_tit;
-	private TextView cotaLabel, cotaValue;
-	private ImageView tagBolao;
 	private RelativeLayout informacaoAdicionalLayout, rl_fg_numeros_1, rl_fg_numeros_2 ,rl_container_result_1, rl_container_result_2,
 			rl_time_mes;
 	private ConstraintLayout cl_premio_pago, clResgatePremio;
@@ -112,13 +110,6 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 	private void preencheDadosAposta() {
 		concursoTxt.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
-		if (aposta.getIndicadorCotaBolao()){
-			cotaLabel.setText("Cota");
-			cotaValue.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada()+ "/" + aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
-			tagBolao.setVisibility(View.VISIBLE);
-			cotaLabel.setVisibility(View.VISIBLE);
-			cotaValue.setVisibility(View.VISIBLE);
-		}
 		preencheData();
 
 		preenchSituacaoPremio();
@@ -134,48 +125,22 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	}
 
 	private void preencheData() {
-		if (aposta.getIndicadorCotaBolao()){
-			dataApostaTxt.setText(getDataBolao(aposta));
+		if (StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
+			dataApostaTxt.setText(aposta.getDataEfetivacao());
 		} else {
-			if (StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
-				dataApostaTxt.setText(aposta.getDataEfetivacao());
-			} else {
-				dataApostaTxt.setText(aposta.getDataEfetivacao() + "\n" + aposta.getHoraEfetivacao());
-			}
+			dataApostaTxt.setText(aposta.getDataEfetivacao() + "\n" + aposta.getHoraEfetivacao());
 		}
 		dataApostaTxt.setVisibility(View.VISIBLE);
 	}
 
-	private String getDataBolao(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
-		String dataString = DataUtil.formatStringData(DataUtil.DD_MM_YYYY, aposta.getReservaCotaBolao().getDataHoraReserva());
-		String horaString = DataUtil.formatStringData(DataUtil.HH_MM_SS, aposta.getReservaCotaBolao().getDataHoraReserva());
-
-		return dataString + "\n" + horaString;
-	}
-
 	private void configuraNumeros() {
-		if (aposta.getIndicadorCotaBolao()){
-			configuraFragmentBolao();
-		} else {
-			if (!aposta.getNumerosSelecionados().isEmpty()) {
-				if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
-					configuraFragmentSuperSete(aposta);
-				} else {
-					configuraFragmentNumeros(aposta);
-				}
+		if (!aposta.getNumerosSelecionados().isEmpty()) {
+			if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
+				configuraFragmentSuperSete(aposta);
+			} else {
+				configuraFragmentNumeros(aposta);
 			}
 		}
-	}
-
-	private void configuraFragmentBolao() {
-		numerosSorteadosPrimeiro = getResultadoConcurso() != null ? getResultadoConcurso().getListaSorteadosPrimeiroSorteio() : null;
-		Fragment fragmentResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
-				numerosSorteadosPrimeiro, numerosSorteadosPrimeiro,
-				getEstiloNumeros(aposta), null);
-		getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.rl_fg_numeros_1, fragmentResultado).commit();
-		rl_fg_numeros_1.setVisibility(View.VISIBLE);
-
-		aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao();
 	}
 
 	private void configuraFragmentNumeros(IdentificaoDeUmaApostaDas8Modalidades aposta) {
@@ -418,10 +383,6 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		tv_val_premio_tit = view.findViewById(R.id.tv_val_premio_tit);
 		cl_premio_pago = view.findViewById(R.id.cl_premio_pago);
 		clResgatePremio = view.findViewById(R.id.clResgatePremio);
-
-		tagBolao = view.findViewById(R.id.id_tag_bolao);
-		cotaLabel = view.findViewById(R.id.cotaLabel);
-		cotaValue = view.findViewById(R.id.cotaTxt);
 	}
 
 	public void atualizaValorPremio(BigDecimal valor){
