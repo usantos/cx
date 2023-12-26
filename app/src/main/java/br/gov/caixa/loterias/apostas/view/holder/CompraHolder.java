@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 	private LinearLayout itemComprasContentModalideLinearLayout;
 	private TextView tvTeimosinhas;
 	private DetalhesComprasActivity activity;
+	private ImageView tagBolao;
 
 	public CompraHolder(View itemView, DetalhesComprasActivity activity) {
 		super(itemView);
@@ -45,6 +47,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		seusNumerosItemListaComprasTextView = itemView.findViewById(R.id.seusNumerosItemListaComprasTextView);
 		itemComprasContentModalideLinearLayout = itemView.findViewById(R.id.itemComprasContentModalideLinearLayout);
 		tvTeimosinhas = itemView.findViewById(R.id.tv_teimosinhas);
+		tagBolao = itemView.findViewById(R.id.image_tag_bolao);
 		this.activity = activity;
 	}
 
@@ -68,6 +71,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		this.tipoPremioListaComprasTextView.setTextColor(colorText);
 
 		if (aposta.getIndicadorCotaBolao()) {
+			tagBolao.setVisibility(View.VISIBLE);
 			this.dataConcursoListaComprasTextView.setText(aposta.getReservaCotaBolao().getDataRegistroBolao());
 			this.concursoListaComprasTextView
 					.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
