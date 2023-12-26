@@ -222,5 +222,6 @@
     <color name="bolao_azul_subtitulo">#095A9C</color>
     <color name="cor_bola_unselected">#ADC0C4</color>
     <color name="cotas_boloes">#373E4A</color>
+    <color name="azul_detalhe_aposta">#4FA7B2</color>
 
 </resources>

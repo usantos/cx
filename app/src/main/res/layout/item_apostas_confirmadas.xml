@@ -48,8 +48,9 @@
             android:layout_marginTop="16dp"
             android:textColor="@color/azulescuroapostafavorita"
             android:textSize="12sp"
+            android:textAlignment="center"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/reloadBtn"
+            app:layout_constraintEnd_toStartOf="@id/id_detalhe_aposta"
             tools:text="Conc. 0000 a 0000" />
 
         <TextView
@@ -89,23 +90,33 @@
             app:layout_constraintTop_toTopOf="@id/situacaoTxt"
             app:layout_constraintEnd_toEndOf="@id/concursoTxt" />
 
-        <ImageView
-            android:id="@+id/reloadBtn"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icon_add_carrinho"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/id_detalhe_aposta"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/ic_numero_bilhete"
+            app:tint="@color/azul_detalhe_aposta"
             android:layout_marginEnd="16dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/setaImg"
+            app:layout_constraintEnd_toStartOf="@id/id_add_carrinho"
             />
 
-        <ImageView
-            android:id="@+id/setaImg"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/id_tag_bolao"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:rotation="90"
-            android:src="@drawable/shape_23_copy_3"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_tag_bolao"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/id_add_carrinho"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/ic_adicionar_carrinho"
+            app:tint="@color/azul_detalhe_aposta"
             android:layout_marginEnd="16dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

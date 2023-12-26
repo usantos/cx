@@ -831,6 +831,7 @@
     <string name="yyyy">yyyy</string>
     <string name="underline_com_espaco">&#160;_&#160;</string>
     <string name="dd_mm">dd/MM</string>
+    <string name="dd_mm_yyyy">dd/MM/yyyy</string>
     <string name="dd_mm_yyyy_hh_mm_ss">dd/MM/yyyy HH:mm:ss</string>
     <string name="eeee">EEEE</string>
     <string name="hh_mm_ss">HH:mm:ss</string>

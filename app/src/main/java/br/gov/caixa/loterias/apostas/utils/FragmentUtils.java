@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
@@ -143,6 +144,17 @@ public class FragmentUtils {
 																					   ComprovanteApostaDTO comprovante,
 																					   BigDecimal valorPremio) {
 		ApostaConfirmadaNumeroDetalhesFragment fragment = ApostaConfirmadaNumeroDetalhesFragment
+				.newInstance(aposta, resultado, comprovante, valorPremio);
+		FragmentUtils.startFragment(fm, id, fragment);
+		return fragment;
+	}
+
+	public static ApostaConfirmadaBolaoDetalhesFragment startApostaConfirmadaBolaoDetalhes(FragmentManager fm, int id,
+																						   IdentificaoDeUmaApostaDas8Modalidades aposta,
+																						   ResultadoConcursoDTO resultado,
+																						   ComprovanteApostaDTO comprovante,
+																						   BigDecimal valorPremio) {
+		ApostaConfirmadaBolaoDetalhesFragment fragment = ApostaConfirmadaBolaoDetalhesFragment
 				.newInstance(aposta, resultado, comprovante, valorPremio);
 		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
