@@ -134,12 +134,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected TextView validadePremioText, editarTxt;
 
     @ViewById
-    protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout, favoriteBtn, layoutTextoSalveAposta;
+    protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout,
+            favoriteBtn, layoutTextoSalveAposta, editarApostaBtn;
 
     @ViewById
     protected LinearLayout  ll_adic_fav;
     @ViewById
-    protected ConstraintLayout v_bottom;
+    protected ConstraintLayout v_bottom, informacaoApostaLayout;
 
     @ViewById
     protected EditText nomeApostaEditTxt;
@@ -246,7 +247,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             ll_adic_fav.setVisibility(View.GONE);
             id_view_divisao.setVisibility(View.GONE);
         } else if (aposta.getIndicadorCotaBolao()){
-            v_bottom.setVisibility(View.GONE);
+            editarApostaBtn.setVisibility(View.GONE);
             ll_adic_fav.setVisibility(View.GONE);
         } else {
             id_view_divisao.setVisibility(View.VISIBLE);
@@ -261,15 +262,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 disableButtonEditar();
                 partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
                         R.id.fragmentContainer, aposta, null, comprovanteApostaDTO, valorPremio, false);
-
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 break;
             case LOTECA:
                 disableButtonEditar();
                 partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
                         R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio, true);
 
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 break;
             default:
                 if (aposta.getIndicadorCotaBolao()){
@@ -279,10 +277,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                     numerosFragment = FragmentUtils.startApostaConfirmadaDetalhes(getSupportFragmentManager(),
                             R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
                 }
-
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 break;
         }
+        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
+        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
     }
 
     private int getCorEscura() {
@@ -291,6 +289,14 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
         estilo = new EstiloModalidade(aposta);
         return estilo.getCorEscura();
+    }
+
+    private int getCorClara() {
+        if (estilo != null){
+            return estilo.getCorClara();
+        }
+        estilo = new EstiloModalidade(aposta);
+        return estilo.getCorClara();
     }
 
     @Click
@@ -308,7 +314,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 Bundle args = new Bundle();
                 args.putSerializable(CARRINHO, (Serializable) response.getPayload());
                 startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtras(args));
-
             }
 
             @Override
@@ -317,7 +322,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
                 } else {
-                    RedirectNetwork.checkRedirect( error, ApostaConfirmadaDetalhesActivity.this );
+                    RedirectNetwork.checkRedirect( error, ApostaConfirmadaDetalhesActivity.this);
                 }
             }
         });

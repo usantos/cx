@@ -135,19 +135,30 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private void initList() {
-		List dezenas = getDezenas(getResultadoConcurso().getListaSorteadosPrimeiroSorteio());
-		ListaDezenaRecyclerView numerosAdapter = new ListaDezenaRecyclerView(dezenas,
-				getResultadoConcurso().getListaSorteadosPrimeiroSorteio(), getDezenaConfig(), null);
-		listViewSorteados.setAdapter(numerosAdapter);
+		List<Integer> listSorteados = new ArrayList<>();
+		if (temResultadoSorteio()){
+			listSorteados = getResultadoConcurso().getListaSorteadosPrimeiroSorteio();
+			List dezenas = getDezenas(listSorteados);
+			ListaDezenaRecyclerView numerosAdapter = new ListaDezenaRecyclerView(dezenas,listSorteados
+					, getDezenaConfig(), null);
+			listViewSorteados.setAdapter(numerosAdapter);
 
-		listViewSorteados.setLayoutManager(new GridLayoutManager(getContext(), 6));
-		listViewSorteados.setNestedScrollingEnabled(false);
+			listViewSorteados.setLayoutManager(new GridLayoutManager(getContext(), 6));
+			listViewSorteados.setNestedScrollingEnabled(false);
+		} else {
+			listViewSorteados.setVisibility(View.INVISIBLE);
+		}
 
 		JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(R.color.branco,
 				aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
-				getResultadoConcurso().getListaSorteadosPrimeiroSorteio(), getDezenaConfig());
+				listSorteados, getDezenaConfig());
 		listViewJogos.setAdapter(adpterJogos);
 		listViewJogos.setLayoutManager(new LinearLayoutManager(getContext()));
+	}
+
+	private boolean temResultadoSorteio() {
+		return getResultadoConcurso() != null && getResultadoConcurso().getListaSorteadosPrimeiroSorteio() != null
+				&& !getResultadoConcurso().getListaSorteadosPrimeiroSorteio().isEmpty();
 	}
 
 	private DezenaConfig getDezenaConfig() {
