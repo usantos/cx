@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.view.custom;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,14 +23,20 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasResultadoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
@@ -98,32 +106,29 @@ public class ComprasDezenasView extends LinearLayout {
                 }
             } else if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
                 configuraMaisMilionariaFragment(aposta);
-                dezenasRecyclerView.setVisibility(View.GONE);
             } else {
-                if (!aposta.getListaNumerosSelecionados().isEmpty()) {
-                    dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getListaNumerosSelecionados())));
+                if(aposta.getIndicadorCotaBolao()) {
+                    JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(R.color.branco,
+                            aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
+                            new ArrayList<>(), getDezenaConfig());
+                    dezenasRecyclerView.setAdapter(adpterJogos);
                     dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                } else {
+                    dezenasRecyclerView.setAdapter(new ListaDezenaRecyclerView(getDezenas(aposta.getListaNumerosSelecionados()), new ArrayList<>(), getDezenaConfig(), null));
+                    dezenasRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
                 }
             }
         }
     }
 
     private void configuraMaisMilionariaFragment(ApostaDTO aposta) {
-        FragmentManager fm = activity.getSupportFragmentManager();
-        int             newContainerId = getNewContainerId(fm);
-        rl_container_fragment.setId(newContainerId);
+        dezenasRecyclerView.setAdapter(new ListaDezenaRecyclerView(getDezenas(aposta.getListaNumerosSelecionados()), new ArrayList<>(), getDezenaConfig(), null));
+        dezenasRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 6));
 
-        List numeros = AppUtils.converteListaInteiros(aposta.getListaNumerosSelecionados());
         List trevos = AppUtils.converteListaInteiros(aposta.getListaTrevosSelecionados());
-
-        NumerosFragment fragment = NumerosFragment.newInstance("",
-                                                                     numeros, new ArrayList<>(),
-                                                                     configuraEstiloNumeros(aposta), null);
-        fm.beginTransaction().replace(newContainerId, fragment).commit();
-        rl_container_fragment.setVisibility(VISIBLE);
-
-
-        int             newContainerTrevosId = getNewContainerId(fm);
+        rl_container_fragment.setVisibility(GONE);
+        final FragmentManager fm = activity.getSupportFragmentManager();
+        int newContainerTrevosId = getNewContainerId(fm);
         rl_trevos_fragment.setId(newContainerTrevosId);
         NumerosFragment trevosFrag = NumerosFragment.newInstance(activity.getResources().getString(R.string.trevosTitulo),
                                                                trevos, trevos,
@@ -165,5 +170,26 @@ public class ComprasDezenasView extends LinearLayout {
         }
 
         return (int) Utils.getIdUnico();
+    }
+
+    private DezenaConfig getDezenaConfig() {
+        ShapeConfig shapeConfig = new ShapeConfig(R.color.branco, R.color.mega_verde_escuro_mkp);
+
+        return new DezenaConfig(false, R.color.branco,
+                R.layout.item_dezena_detalhe,
+                shapeConfig,false);
+    }
+
+    private List<Dezena> getDezenas(List<Integer> listaInteiros) {
+        List<Dezena> dezenas = new ArrayList<>();
+        for (int i = 0; i < listaInteiros.size(); i++) {
+            if (listaInteiros.get(i) == 100 || listaInteiros.get(i) == 0){
+                dezenas.add(new Dezena("" + listaInteiros.get(i), Boolean.FALSE, "00"));
+            } else {
+                dezenas.add(new Dezena("" + listaInteiros.get(i), Boolean.FALSE, "" + listaInteiros.get(i)));
+            }
+
+        }
+        return dezenas;
     }
 }

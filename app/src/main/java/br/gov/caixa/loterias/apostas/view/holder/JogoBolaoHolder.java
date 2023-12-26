@@ -43,8 +43,12 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 		txtNumero.setTextColor(ContextCompat.getColor(context, corTitulo));
 
 		List<Dezena> dezenas = new ArrayList<>();
-		for (int i = 1; i <= aposta.getDezenas().size(); i++) {
-			dezenas.add(new Dezena("" + i, Boolean.FALSE, "" + i));
+		for (int i = 0; i < aposta.getDezenas().size(); i++) {
+			if (aposta.getDezenas().get(i) == 100 || aposta.getDezenas().get(i) == 0){
+				dezenas.add(new Dezena("" + aposta.getDezenas().get(i), Boolean.FALSE, "00" ));
+			} else {
+				dezenas.add(new Dezena("" + aposta.getDezenas().get(i), Boolean.FALSE, "" + aposta.getDezenas().get(i)));
+			}
 		}
 
 
