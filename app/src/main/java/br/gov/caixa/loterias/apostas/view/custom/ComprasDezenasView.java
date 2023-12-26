@@ -21,6 +21,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -29,6 +30,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasResultadoAdapter;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
@@ -104,6 +106,12 @@ public class ComprasDezenasView extends LinearLayout {
                     dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getListaNumerosSelecionados())));
                     dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
+                if(aposta.getIndicadorCotaBolao()) {
+                    //dezenasRecyclerView.setAdapter(new DezenasAdapter(AppUtils.listIntegerToListString(aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getDezenas())));
+                    //dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                    dezenasRecyclerView.setVisibility(View.GONE);
+                    configuraBolaoFragment(aposta);
+                }
             }
         }
     }
@@ -155,6 +163,24 @@ public class ComprasDezenasView extends LinearLayout {
         fm.beginTransaction().replace(newContainerId, fragment).commit();
         rl_container_fragment.setVisibility(View.VISIBLE);
 
+    }
+
+    private void configuraBolaoFragment(ApostaDTO aposta) {
+        FragmentManager fm = activity.getSupportFragmentManager();
+        int newContainerId = getNewContainerId(fm);
+        rl_container_fragment.setId(newContainerId);
+        rl_container_fragment.setVisibility(VISIBLE);
+
+        List<ApostaBolaoDTO> listApostasBolao =  aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao();
+
+        for (int i = 0; i < listApostasBolao.size(); i++) {
+            List numeros = AppUtils.converteListaInteiros(aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(i).getDezenas());
+
+            NumerosFragment fragment = NumerosFragment.newInstance("Jogo "+(i+1),
+                    numeros, new ArrayList<>(),
+                    configuraEstiloNumeros(aposta), null);
+            fm.beginTransaction().replace(newContainerId, fragment).commit();
+        }
     }
 
     private int getNewContainerId(FragmentManager fm){

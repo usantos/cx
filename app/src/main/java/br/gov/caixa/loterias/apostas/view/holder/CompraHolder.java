@@ -24,6 +24,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 	private TextView tipoPremioListaComprasTextView;
 	private TextView dataConcursoListaComprasTextView;
 	private TextView concursoListaComprasTextView;
+	private TextView cotaListaComprasTextView;
 	private TextView statusResultadoApostaListaComprasTextView;
 	private LinearLayout topListItemComprasLinearLayout;
 	private LinearLayout bottomListItemComprasLinearLayout;
@@ -37,6 +38,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		tipoPremioListaComprasTextView = itemView.findViewById(R.id.TipoPremioListaComprasTextView);
 		dataConcursoListaComprasTextView = itemView.findViewById(R.id.dataConcursoListaComprasTextView);
 		concursoListaComprasTextView = itemView.findViewById(R.id.concursoListaComprasTextView);
+		cotaListaComprasTextView = itemView.findViewById(R.id.cotaListaComprasTextView);
 		statusResultadoApostaListaComprasTextView = itemView.findViewById(R.id.statusResultadoApostaListaComprasTextView);
 		topListItemComprasLinearLayout = itemView.findViewById(R.id.topListItemComprasLinearLayout);
 		bottomListItemComprasLinearLayout = itemView.findViewById(R.id.bottomListItemComprasLinearLayout);
@@ -65,13 +67,27 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 
 		this.tipoPremioListaComprasTextView.setTextColor(colorText);
 
-		this.dataConcursoListaComprasTextView.setText(aposta.getDataEfetivacao());
+		if (aposta.getIndicadorCotaBolao()) {
+			this.dataConcursoListaComprasTextView.setText(aposta.getReservaCotaBolao().getDataRegistroBolao());
+			this.concursoListaComprasTextView
+					.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
+							itemView.getContext().getString(R.string.label_aposta_concurso_bold,
+							aposta.getConcursoInicial())));
+			this.cotaListaComprasTextView.setVisibility(View.VISIBLE);
+			this.cotaListaComprasTextView.setTextColor(colorText);
+			this.cotaListaComprasTextView.
+					setText(itemView.getContext().getString(R.string.label_cota_concurso_bold) +
+							String.format("%02d/%02d",
+									aposta.getReservaCotaBolao().getNumeroCotaReservada(),
+									aposta.getReservaCotaBolao().getQtdCotaTotalBolao()));
+		} else {
+			this.dataConcursoListaComprasTextView.setText(aposta.getDataEfetivacao());
+			this.concursoListaComprasTextView
+					.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
+							itemView.getContext().getString(R.string.label_aposta_concurso_bold,
+									aposta.getConcursoInicial())));
+		}
 		this.dataConcursoListaComprasTextView.setTextColor(colorText);
-
-		this.concursoListaComprasTextView
-				.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
-														   itemView.getContext().getString(R.string.label_aposta_concurso_bold,
-																			  aposta.getConcursoInicial())));
 		this.concursoListaComprasTextView.setTextColor(colorText);
 
 		this.statusResultadoApostaListaComprasTextView.setText(aposta.getSituacao().getDescricao());

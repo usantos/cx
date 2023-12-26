@@ -122,8 +122,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.bolao_barra_titulo));
 			textCotas.setVisibility(View.VISIBLE);
 			textQtdCotas.setVisibility(View.VISIBLE);
-			textQtdCotas.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +
-								 aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
+			textQtdCotas.setText(String.format("%02d/%02d",
+					aposta.getReservaCotaBolao().getNumeroCotaReservada(),
+					aposta.getReservaCotaBolao().getQtdCotaTotalBolao()));
 			String dataHoraExpiracao = aposta.getReservaCotaBolao().getDataHoraExpiracaoReserva();
 			if (dataHoraExpiracao == null || dataHoraExpiracao.length() == 0) {
 				//TODO - Silce deveria tratar

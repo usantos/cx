@@ -69,6 +69,15 @@
                     tools:text="Conc. 2587" />
 
                 <TextView
+                    android:id="@+id/cotaListaComprasTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/arialmt"
+                    android:textSize="14.2sp"
+                    tools:text="Cota: 01/05"
+                    android:visibility="gone"/>
+
+                <TextView
                     android:id="@+id/tv_teimosinhas"
                     android:layout_marginTop="30dp"
                     android:layout_width="match_parent"

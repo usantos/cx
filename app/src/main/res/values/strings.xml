@@ -1325,5 +1325,6 @@
     <string name="loteca_nao_favorita">Apostas da Loteca e Bolões não são salvos no carrinho favorito.</string>
     <string name="pagamento_pix_estornado">Não foi possível completar a sua aposta e seu Pix será devolvido. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
     <string name="extra_data_hora_expiracao_reserva">dataHoraExpiracaoReserva</string>
+    <string name="label_cota_concurso_bold">Cota: </string>
 
 </resources>
