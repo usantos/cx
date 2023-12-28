@@ -72,6 +72,12 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	protected String dataEfetivacao = null;
 	@SerializedName("horaEfetivacao")
 	protected String horaEfetivacao = null;
+	@SerializedName("dataCompra")
+	protected String dataCompra = null;
+	@SerializedName("horaCompra")
+	protected String horaCompra = null;
+	@SerializedName("subcanalPagamento")
+	protected String subcanalPagamento = null;
 	//@SerializedName("loterica")
 	//protected LotericaDTO loterica = null;
 	@SerializedName("vinculoEspelho")
@@ -350,7 +356,31 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		this.horaEfetivacao = horaEfetivacao;
 	}
 
-	/**
+	public String getDataCompra() {
+		return dataCompra;
+	}
+
+	public void setDataCompra(String dataCompra) {
+		this.dataCompra = dataCompra;
+	}
+
+	public String getHoraCompra() {
+		return horaCompra;
+	}
+
+	public void setHoraCompra(String horaCompra) {
+		this.horaCompra = horaCompra;
+	}
+
+	public String getSubcanalPagamento() {
+		return subcanalPagamento;
+	}
+
+	public void setSubcanalPagamento(String subcanalPagamento) {
+		this.subcanalPagamento = subcanalPagamento;
+	}
+
+/**
 
 	 @ApiModelProperty(value = "")
 	 public LotericaDTO getLoterica() {
@@ -573,6 +603,9 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 				"  troca: " + troca + "\n" +
 				"  dataEfetivacao: " + dataEfetivacao + "\n" +
 				"  horaEfetivacao: " + horaEfetivacao + "\n" +
+				"  dataCompra: " + dataCompra + "\n" +
+				"  horaCompra: " + horaCompra + "\n" +
+				"  subcanalPagamento: " + subcanalPagamento + "\n" +
 				//"  loterica: " + loterica + "\n" +
 				"  vinculoEspelho: " + vinculoEspelho + "\n" +
 				"  quantidadeNumeros: " + quantidadeNumeros + "\n" +
@@ -590,6 +623,9 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		identificaoDeUmaApostaDas8Modalidades.setEspelho(aposta.getEspelho());
 		identificaoDeUmaApostaDas8Modalidades.setGerarEspelho(aposta.getGerarApostaEspelho());
 		identificaoDeUmaApostaDas8Modalidades.setHoraEfetivacao(aposta.getHoraEfetivacao());
+		identificaoDeUmaApostaDas8Modalidades.setDataCompra(aposta.getDataCompra());
+		identificaoDeUmaApostaDas8Modalidades.setHoraCompra(aposta.getHoraCompra());
+		identificaoDeUmaApostaDas8Modalidades.setSubcanalPagamento(aposta.getSubcanalPagamento());
 		identificaoDeUmaApostaDas8Modalidades.setId(aposta.getId());
 		//identificaoDeUmaApostaDas8Modalidades.setLoterica( aposta.getLoterica() );
 		identificaoDeUmaApostaDas8Modalidades.setTipoConcurso(aposta.getTipoConcurso());
