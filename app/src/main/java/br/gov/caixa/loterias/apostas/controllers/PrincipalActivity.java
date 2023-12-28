@@ -648,7 +648,8 @@ public class PrincipalActivity extends AppCompatActivity
                     getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
 
-            if (data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA){
+            if (data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA &&
+                    ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()){
                 buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
                                                                           getResources()
                                                                                   .getString(R.string.apostas_boloes)));

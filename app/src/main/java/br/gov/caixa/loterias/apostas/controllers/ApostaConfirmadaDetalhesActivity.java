@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -279,8 +280,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 }
                 break;
         }
-        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
+        if (aposta.getIndicadorCotaBolao()){
+            linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, R.color.megasenaescuro));
+        } else {
+            linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
+        }
+        informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
     }
 
     private int getCorEscura() {
