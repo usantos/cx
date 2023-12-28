@@ -1316,7 +1316,7 @@
     <string name="numeros_quero">Números que eu quero</string>
     <string name="numeros_nao_quero">Números que eu não quero</string>
     <string name="nome_ou_codigo">Nome ou código</string>
-    <string name="apostas_boloes">_Apostas Bolões_</string>
+    <string name="apostas_boloes">_Apostas Bolões_\na partir de R$10,00</string>
     <string name="descritivo_tela_bolao">Veja aqui os bolões da Mega-Sena em destaque. Em breve, mais modalidades!</string>
     <string name="cotas_bolao">Cotas bolão</string>
     <string name="apostas_individuais">Apostas individuais</string>
@@ -1327,5 +1327,6 @@
     <string name="pagamento_pix_estornado">Não foi possível completar a sua aposta e seu Pix será devolvido. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
     <string name="extra_data_hora_expiracao_reserva">dataHoraExpiracaoReserva</string>
     <string name="label_cota_concurso_bold">Cota: </string>
+    <string name="label_voltar_apostas_individuais">_Voltar Apostas Individuais_</string>
 
 </resources>

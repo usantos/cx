@@ -56,6 +56,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private ActivityResultLauncher<Intent> launcher;
 
 	private TextView todosBoloesTxt;
+	private TextView toolBarTxt;
 	private int idMunicipio;
 	private int idUf;
 
@@ -66,7 +67,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 		configToolbar(R.id.toolbar);
 		launcher = IntentUtil.registerLauncherActivityForResult(this, OnActivityForResult());
 		configFiltrar(launcher);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_Voltar Apostas Individuais_"));
+		setTitle("");
+		toolBarTxt = findViewById(R.id.toolbar_title);
+		toolBarTxt.setText(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.label_voltar_apostas_individuais)));
+		toolBarTxt.setVisibility(View.VISIBLE);
+
 
 		todosBoloesTxt = findViewById(R.id.txt_todos_boloes);
 
