@@ -280,12 +280,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 }
                 break;
         }
-        if (aposta.getIndicadorCotaBolao()){
-            linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, R.color.megasenaescuro));
-        } else {
-            linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-        }
-        informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
+        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
+        informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
     }
 
     private int getCorEscura() {

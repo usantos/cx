@@ -372,9 +372,15 @@ public class EstiloModalidade {
                 break;
             default: {
                 //MEGASENA
-                corClara = R.color.megasenaclaro;
-                corMedia = R.color.megasenamedio;
-                corEscura = R.color.megasenaescuro;
+                if (aposta.getIndicadorCotaBolao()){
+                    corClara = R.color.mega_verde_claro_mkp;
+                    corMedia = R.color.mega_verde_claro_mkp;
+                    corEscura = R.color.mega_verde_escuro_mkp;
+                } else {
+                    corClara = R.color.megasenaclaro;
+                    corMedia = R.color.megasenamedio;
+                    corEscura = R.color.megasenaescuro;
+                }
                 imagemCalendario = R.drawable.icon_data_megasena;
                 imagemRelogio = R.drawable.icon_horario_megasena;
                 trevoBackground = R.drawable.background_trapeze_megasena;

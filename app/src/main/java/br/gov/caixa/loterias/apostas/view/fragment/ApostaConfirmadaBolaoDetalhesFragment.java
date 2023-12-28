@@ -144,9 +144,8 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 			listViewSorteados.setAdapter(numerosAdapter);
 
 			listViewSorteados.setLayoutManager(new GridLayoutManager(getContext(), 6));
-			listViewSorteados.setNestedScrollingEnabled(false);
 		} else {
-			listViewSorteados.setVisibility(View.INVISIBLE);
+			((TextView)view.findViewById(R.id.id_seus_numeros)).setText("");
 		}
 
 		JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(R.color.branco,
