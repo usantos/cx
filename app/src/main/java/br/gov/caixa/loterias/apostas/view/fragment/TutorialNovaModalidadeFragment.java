@@ -10,10 +10,12 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.view.adapter.fragment.TutorialPagerAdapter;
 import br.gov.caixa.loterias.apostas.view.listener.OnTutorialListener;
 import me.relex.circleindicator.CircleIndicator;
@@ -102,6 +104,9 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 					btnPrincipal.setVisibility(View.VISIBLE);
 					btnPular.setText(R.string.tutorial_fechar);
 					checkBox.setVisibility(View.VISIBLE);
+					if (listener.getModalidade() == ModalidadeEnum.BOLAO){
+						checkBox.setTextColor(ContextCompat.getColor(getContext(), R.color.azulBolao));
+					}
 				} else {
 					btnPrincipal.setVisibility(View.GONE);
 					btnPular.setText(R.string.tutorial_pular);

@@ -86,4 +86,9 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 		}
 		return fragmentList;
 	}
+
+	@Override
+	public ModalidadeEnum getModalidade() {
+		return modalidade;
+	}
 }

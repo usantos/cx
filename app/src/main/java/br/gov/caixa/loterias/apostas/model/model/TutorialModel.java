@@ -21,7 +21,6 @@ import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 import br.gov.caixa.loterias.apostas.view.activity.TutorialActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.TutorialPassoFragment;
 
-
 public class TutorialModel extends AppModel{
 
 	public TutorialModel(Activity activity) {
@@ -41,10 +40,12 @@ public class TutorialModel extends AppModel{
 				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_final, false));
 				break;
 			case  BOLAO:
-				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_introducao_tutorial_mais_milionaria, true));
-				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_1, false));
-				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_passo_5, false));
-				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_mm_final, false));
+				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_introducao_tutorial_bolao, true));
+				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_bolao_passo_1, true));
+				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_bolao_passo_2, true));
+				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_bolao_passo_3, true));
+				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_bolao_passo_4, true));
+				fragmentList.add(TutorialPassoFragment.newInstance(R.layout.fragment_tutorial_bolao_final, true));
 				break;
 			default:
 				// BOLAO
