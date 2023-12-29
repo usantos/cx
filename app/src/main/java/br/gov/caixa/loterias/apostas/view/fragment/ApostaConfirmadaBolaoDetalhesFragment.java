@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
@@ -153,6 +154,19 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 				listSorteados, getDezenaConfig());
 		listViewJogos.setAdapter(adpterJogos);
 		listViewJogos.setLayoutManager(new LinearLayoutManager(getContext()));
+
+		if (isSituacaoConcursoNaoApurado() || isApostaPequena()){
+			view.findViewById(R.id.id_view_base).setVisibility(View.VISIBLE);
+		}
+	}
+
+	private boolean isApostaPequena() {
+		List<ApostaBolaoDTO> list = aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao();
+		return list.size() == 1 || (list.size() < 4 && list.get(0).getDezenas().size() <= 6);
+	}
+
+	private boolean isSituacaoConcursoNaoApurado() {
+		return aposta.getSituacao().getValor() == 101;
 	}
 
 	private boolean temResultadoSorteio() {
