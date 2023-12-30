@@ -11,7 +11,7 @@
         android:id="@+id/id_cabecalho"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_gradient_filtro_vazio"
+        android:background="#EDF6FB"
         android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
