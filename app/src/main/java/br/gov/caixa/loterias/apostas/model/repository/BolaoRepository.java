@@ -31,25 +31,9 @@ public class BolaoRepository extends AppRepository {
 
     public void buscarBoloesDisponiveis(int idMunicipio, int idUf, OnSilceListener<ListaBolaoDTO> listener){
         FiltroMarketPlace filtro = new FiltroMarketPlace(TipoConsultaBolaoEnum.NACIONAL,
-                0, 0, PAGINA_INICIAL, QTD_POR_PAGINA);
+                idMunicipio, idUf, PAGINA_INICIAL, QTD_POR_PAGINA);
 
-        ApostaBO_.getInstance_(getActivity()).getBoloesDisponiveis(filtro,
-                new RequestListener<BoloesDisponiveisResponse>() {
-                    @Override
-                    public void onResponse(BoloesDisponiveisResponse response) {
-                        AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_carregou_boloes_disponiveis));
-                        checkRedirect(response);
-
-                        listener.success(response.getPayload());
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        AppCenterManager.registraEventoErro(AppCenterManager.ERRO_BOLOES_DISPONIVEIS, error);
-                        RedirectNetwork.checkRedirect(error, getActivity());
-                        listener.error(error);
-                    }
-                });
+        buscaBoloes(listener, filtro);
     }
 
     public void buscarFiltrada(int idMunicipio, int idUf, FiltroAplicadoMarketplace filtroAplicado, OnSilceListener<ListaBolaoDTO> listener){
@@ -73,23 +57,7 @@ public class BolaoRepository extends AppRepository {
             filtro.setValorMaximoCota(new BigDecimal(filtroAplicado.getValorMaximoAposta()));
         }
 
-        ApostaBO_.getInstance_(getActivity()).getBoloesDisponiveis(filtro,
-                new RequestListener<BoloesDisponiveisResponse>() {
-                    @Override
-                    public void onResponse(BoloesDisponiveisResponse response) {
-                        AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_carregou_boloes_disponiveis));
-                        checkRedirect(response);
-
-                        listener.success(response.getPayload());
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        AppCenterManager.registraEventoErro(AppCenterManager.ERRO_BOLOES_DISPONIVEIS, error);
-                        RedirectNetwork.checkRedirect(error, getActivity());
-                        listener.error(error);
-                    }
-                });
+        buscaBoloes(listener, filtro);
     }
 
     public void buscaDetalhesBolao(String codigoBolao, OnSilceListener<DetalheBolaoDTO> listener){
@@ -109,5 +77,25 @@ public class BolaoRepository extends AppRepository {
                 listener.error(error);
             }
         });
+    }
+
+    private void buscaBoloes(OnSilceListener<ListaBolaoDTO> listener, FiltroMarketPlace filtro) {
+        ApostaBO_.getInstance_(getActivity()).getBoloesDisponiveis(filtro,
+                new RequestListener<BoloesDisponiveisResponse>() {
+                    @Override
+                    public void onResponse(BoloesDisponiveisResponse response) {
+                        AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_carregou_boloes_disponiveis));
+                        checkRedirect(response);
+
+                        listener.success(response.getPayload());
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        AppCenterManager.registraEventoErro(AppCenterManager.ERRO_BOLOES_DISPONIVEIS, error);
+                        RedirectNetwork.checkRedirect(error, getActivity());
+                        listener.error(error);
+                    }
+                });
     }
 }
