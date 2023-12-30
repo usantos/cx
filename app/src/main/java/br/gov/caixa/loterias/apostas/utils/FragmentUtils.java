@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ChavePixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.OrientacaoPixFragment;
@@ -177,4 +178,9 @@ public class FragmentUtils {
 		return frag;
 	}
 
+	public static FiltroVazioFragment startFiltroVazio(FragmentManager fm, int idFrag) {
+		FiltroVazioFragment frag = FiltroVazioFragment.newInstance();
+		startFragment(fm, idFrag, frag);
+		return frag;
+	}
 }

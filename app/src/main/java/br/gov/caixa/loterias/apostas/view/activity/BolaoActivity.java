@@ -1,12 +1,14 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -33,16 +35,17 @@ import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrosselBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
+import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoCarrosselHolder;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
+import br.gov.caixa.loterias.apostas.view.listener.OnEstadoVazioListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
-public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
-
+public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnEstadoVazioListener {
 	private DiscreteScrollView carrosselView;
 	private CarrosselBolaoAdapter carrosselAdapter;
 
@@ -59,6 +62,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private TextView toolBarTxt;
 	private int idMunicipio;
 	private int idUf;
+
+	private NestedScrollView schollView;
+	private FrameLayout frameEstadoVazio;
+	private FiltroVazioFragment filtroVazioFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +84,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 		listView = findViewById(R.id.lista_bolao);
 		carrosselView = findViewById(R.id.bolao_carousel);
+		schollView = findViewById(R.id.id_scrollview);
+		frameEstadoVazio = findViewById(R.id.id_fraf_estado_vazio);
 
 		model = new BolaoModel(this);
 
@@ -111,7 +120,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 	}
 
 	private void apresentanEstadoVazio() {
-		ViewUtils.alertTitleButton(BolaoActivity.this, R.string.label_atencao, "Sua busca não retornou resultados.", "Ok");
+		if (filtroVazioFragment == null){
+			filtroVazioFragment = FragmentUtils.startFiltroVazio(getSupportFragmentManager(), R.id.id_fraf_estado_vazio);
+		} else {
+			frameEstadoVazio.setVisibility(View.VISIBLE);
+			schollView.setVisibility(View.GONE);
+		}
 	}
 
 	private OnSilceListener<ListaBolaoDTO> onBoloesListener() {
@@ -247,4 +261,15 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 		model.addBolaoCarrinho(bolao);
 	}
 
+	@Override
+	public void alterar() {
+		IntentUtil.startActivityForResult(launcher, BolaoActivity.this,
+				FiltraMarketplaceActivity.class);
+	}
+
+	@Override
+	public void continuar() {
+		frameEstadoVazio.setVisibility(View.GONE);
+		schollView.setVisibility(View.VISIBLE);
+	}
 }

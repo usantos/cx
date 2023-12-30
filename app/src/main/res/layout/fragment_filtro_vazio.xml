@@ -87,7 +87,7 @@
         android:textAllCaps="false"
         android:textColor="@color/branco"
         android:textSize="16sp"
-        tools:text="_Alterar_\na pesquisa com novos filtros"
+        android:text="@string/alterar_pesquisa"
         android:layout_marginStart="88dp"
         android:layout_marginEnd="88dp"
         android:layout_marginBottom="16dp"

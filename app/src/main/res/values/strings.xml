@@ -1328,5 +1328,6 @@
     <string name="extra_data_hora_expiracao_reserva">dataHoraExpiracaoReserva</string>
     <string name="label_cota_concurso_bold">Cota: </string>
     <string name="label_voltar_apostas_individuais">_Voltar Apostas Individuais_</string>
+    <string name="alterar_pesquisa">_Alterar_\na pesquisa com novos filtros</string>
 
 </resources>
