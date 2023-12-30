@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
+import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -18,6 +19,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmBolao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
+import br.gov.caixa.loterias.apostas.model.enums.TipoConsultaBolaoEnum;
 import br.gov.caixa.loterias.apostas.model.repository.BolaoRepository;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -26,15 +28,15 @@ import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 public class BolaoModel extends AppModel{
 
 	private BolaoRepository bolaoRepository;
+	private PaginacaoFiltro paginacaoFiltro;
 
 	public BolaoModel(Activity activity) {
 		super(activity);
-
 		this.bolaoRepository = new BolaoRepository(activity);
 	}
 
-	public void buscaBoloes(int idMunicipio, int idUf, OnSilceListener<ListaBolaoDTO> listener) {
-		bolaoRepository.buscarBoloesDisponiveis(idMunicipio, idUf, listener);
+	public void buscaBoloes(OnSilceListener<ListaBolaoDTO> listener) {
+		bolaoRepository.buscarBoloesDisponiveis(paginacaoFiltro, listener);
 	}
 
 	public List<CotasBolaoDTO> getCarrosselList(List<CotasBolaoDTO> listaCompleta) {
@@ -54,8 +56,8 @@ public class BolaoModel extends AppModel{
 		return new ArrayList<>();
 	}
 
-	public void buscaFiltradaBoloes(int idMunicipio, int idUf, FiltroAplicadoMarketplace filtroMarketplace, OnSilceListener<ListaBolaoDTO> listener) {
-		bolaoRepository.buscarFiltrada(idMunicipio, idUf, filtroMarketplace, listener);
+	public void buscaFiltradaBoloes(FiltroAplicadoMarketplace filtroMarketplace, OnSilceListener<ListaBolaoDTO> listener) {
+		bolaoRepository.buscarFiltrada(paginacaoFiltro, filtroMarketplace, listener);
 	}
 
 	public void buscaDadosUsuario(OnSilceListener<ApostadorDTO> listener) {
@@ -81,4 +83,22 @@ public class BolaoModel extends AppModel{
 		AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(getActivity(), ApostaUtils.converteBolaoEmAposta(bolao));
 	}
 
+	public void initPaginacaoFiltro(int idMunicipio, int idUF) {
+		this.paginacaoFiltro = new PaginacaoFiltro(TipoConsultaBolaoEnum.MUNICIPIO, idMunicipio, idUF);
+	}
+
+	public void atualizaPaginacao(ListaBolaoDTO payload) {
+		this.paginacaoFiltro.setQtdTotalPaginas(payload.getUltimaPagina());
+		if (paginacaoFiltro.getPagina() < paginacaoFiltro.getQtdTotalPaginas()){
+			paginacaoFiltro.setTemMaisRegistros(true);
+			paginacaoFiltro.proxPagina();
+		} else {
+			paginacaoFiltro.setTemMaisRegistros(false);
+			paginacaoFiltro.proxArea();
+		}
+	}
+
+	public boolean isAcabouRegistros() {
+		return paginacaoFiltro.acabouRegistros();
+	}
 }
