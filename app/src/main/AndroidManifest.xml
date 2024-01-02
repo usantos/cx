@@ -41,6 +41,7 @@
         <activity
             android:name=".view.activity.BolaoActivity"
             android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".controllers.FiltraMarketplaceActivity"

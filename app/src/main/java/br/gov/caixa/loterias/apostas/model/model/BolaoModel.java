@@ -29,6 +29,7 @@ public class BolaoModel extends AppModel{
 
 	private BolaoRepository bolaoRepository;
 	private PaginacaoFiltro paginacaoFiltro;
+	private int idMunicipio, idUf;
 
 	public BolaoModel(Activity activity) {
 		super(activity);
@@ -36,21 +37,34 @@ public class BolaoModel extends AppModel{
 	}
 
 	public void buscaBoloes(OnSilceListener<ListaBolaoDTO> listener) {
+		if (paginacaoFiltro == null){
+			paginacaoFiltro = new PaginacaoFiltro(TipoConsultaBolaoEnum.MUNICIPIO, idMunicipio, idUf);
+		} else {
+			proxConsulta();
+		}
 		bolaoRepository.buscarBoloesDisponiveis(paginacaoFiltro, listener);
+	}
+
+	private void proxConsulta() {
+		if (paginacaoFiltro.getPagina() < paginacaoFiltro.getQtdTotalPaginas()){
+			paginacaoFiltro.proxPagina();
+		} else {
+			// configura proximo tipo de consulta
+			paginacaoFiltro.proxArea();
+		}
 	}
 
 	public List<CotasBolaoDTO> getCarrosselList(List<CotasBolaoDTO> listaCompleta) {
 		if (listaCompleta != null && !listaCompleta.isEmpty() && listaCompleta.size() >= 4){
-			return listaCompleta.subList(0, 4);
+			return new ArrayList<>(listaCompleta.subList(0, 4));
 		}
 
 		return listaCompleta;
 	}
 
 	public List<CotasBolaoDTO> getBolaoList(List<CotasBolaoDTO> listaCompleta) {
-
 		if (listaCompleta != null && !listaCompleta.isEmpty() && listaCompleta.size() > 4){
-			return listaCompleta.subList(4, listaCompleta.size());
+			return new ArrayList<>(listaCompleta.subList(4, listaCompleta.size()));
 		}
 
 		return new ArrayList<>();
@@ -83,18 +97,23 @@ public class BolaoModel extends AppModel{
 		AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(getActivity(), ApostaUtils.converteBolaoEmAposta(bolao));
 	}
 
-	public void initPaginacaoFiltro(int idMunicipio, int idUF) {
-		this.paginacaoFiltro = new PaginacaoFiltro(TipoConsultaBolaoEnum.MUNICIPIO, idMunicipio, idUF);
+	public void setIdMunicipioUF(int idMunicipio, int idUF) {
+		this.idMunicipio = idMunicipio;
+		this.idUf = idUF;
+	}
+
+	private void initPaginacao(){
+		this.paginacaoFiltro = new PaginacaoFiltro(TipoConsultaBolaoEnum.MUNICIPIO, idMunicipio, idUf);
 	}
 
 	public void atualizaPaginacao(ListaBolaoDTO payload) {
+		if (paginacaoFiltro == null){
+			initPaginacao();
+		}
 		this.paginacaoFiltro.setQtdTotalPaginas(payload.getUltimaPagina());
-		if (paginacaoFiltro.getPagina() < paginacaoFiltro.getQtdTotalPaginas()){
-			paginacaoFiltro.setTemMaisRegistros(true);
-			paginacaoFiltro.proxPagina();
-		} else {
-			paginacaoFiltro.setTemMaisRegistros(false);
-			paginacaoFiltro.proxArea();
+		if ((paginacaoFiltro.getTipoConsulta() == TipoConsultaBolaoEnum.NACIONAL) &&
+				payload.getPaginaAtual() == payload.getUltimaPagina()){
+			paginacaoFiltro.setAcabouRegistros(true);
 		}
 	}
 

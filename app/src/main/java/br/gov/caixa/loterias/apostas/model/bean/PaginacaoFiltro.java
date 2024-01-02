@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.apostas.model.bean;
 import br.gov.caixa.loterias.apostas.model.enums.TipoConsultaBolaoEnum;
 
 public class PaginacaoFiltro {
-    private static final int QTD_POR_PAGINA = 30;
+    public static final int QTD_POR_PAGINA = 10;
     private static final int PAG_INICIAL = 1;
 
     private TipoConsultaBolaoEnum tipoConsulta;
@@ -12,7 +12,6 @@ public class PaginacaoFiltro {
     private int qtdPorPagina;
     private int pagina;
     private int qtdTotalPaginas;
-    private boolean temMaisRegistros;
     private boolean semRegistros = false;
 
     public PaginacaoFiltro(TipoConsultaBolaoEnum tipoConsulta, int idMunicipio, int idUf){
@@ -22,7 +21,6 @@ public class PaginacaoFiltro {
         this.pagina = PAG_INICIAL;
         this.qtdPorPagina = QTD_POR_PAGINA;
         this.qtdTotalPaginas = -1;
-        this.temMaisRegistros = true;
     }
 
     public TipoConsultaBolaoEnum getTipoConsulta() {
@@ -53,18 +51,14 @@ public class PaginacaoFiltro {
         this.qtdTotalPaginas = qtdTotalPaginas;
     }
 
-    public void setTemMaisRegistros(boolean temMaisRegistros) {
-        this.temMaisRegistros = temMaisRegistros;
-    }
-
     public void proxPagina() {
-        if (temMaisRegistros || pagina < qtdTotalPaginas){
+        if (pagina < qtdTotalPaginas){
             pagina++;
         }
     }
 
     public void proxArea() {
-        if (!temMaisRegistros && tipoConsulta != TipoConsultaBolaoEnum.LOTERICO){
+        if (tipoConsulta != TipoConsultaBolaoEnum.LOTERICO){
             switch (tipoConsulta){
                 case MUNICIPIO:
                     tipoConsulta = TipoConsultaBolaoEnum.UF;
@@ -83,11 +77,11 @@ public class PaginacaoFiltro {
         }
     }
 
-    public boolean isTemMaisRegistros() {
-        return temMaisRegistros;
-    }
-
     public boolean acabouRegistros(){
         return semRegistros;
+    }
+
+    public void setAcabouRegistros(boolean acabou) {
+        this.semRegistros = acabou;
     }
 }

@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.mock.BolaoListMock;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
@@ -24,12 +25,17 @@ import br.gov.caixa.loterias.apostas.model.enums.TipoConsultaBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 
 public class BolaoRepository extends AppRepository {
+
+    private static final BolaoListMock mock = BolaoListMock.getInstance();
     public BolaoRepository(Activity activity) {
         super(activity);
     }
 
     public void buscarBoloesDisponiveis(PaginacaoFiltro paginacao, OnSilceListener<ListaBolaoDTO> listener){
-        buscaBoloes(getFiltroMarketPlace(paginacao), listener);
+
+        listener.success(mock.filtro(paginacao));
+
+        //buscaBoloes(getFiltroMarketPlace(paginacao), listener);
     }
 
     public void buscarFiltrada(PaginacaoFiltro paginacao, FiltroAplicadoMarketplace filtroAplicado, OnSilceListener<ListaBolaoDTO> listener){

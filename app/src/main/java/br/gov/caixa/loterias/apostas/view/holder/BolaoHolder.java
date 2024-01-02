@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
@@ -66,7 +67,11 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
 		modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
-		loterica.setText(bolao.getNomeFantasia().substring(0,13).concat("..."));
+		if (bolao.getNomeFantasia().length() > 13){
+			loterica.setText(bolao.getNomeFantasia().substring(0,13).concat("..."));
+		} else {
+			loterica.setText(bolao.getNomeFantasia());
+		}
 		concurso.setText(String.valueOf(bolao.getConcurso()));
 		cidade.setText(bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
 		valor.setText(String.valueOf(bolao.getVrCotaComTarifa()));

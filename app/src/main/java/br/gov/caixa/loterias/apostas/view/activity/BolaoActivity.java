@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.activity;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
@@ -32,7 +33,6 @@ import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrosselBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
@@ -61,13 +61,15 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 	private TextView todosBoloesTxt;
 	private TextView toolBarTxt;
+	private TextView txtFimLista;
 	private int idMunicipio = -1;
 	private int idUf = -1;
 
-	private NestedScrollView schollView;
+	private NestedScrollView scrollView;
 	private FrameLayout frameEstadoVazio;
 	private FiltroVazioFragment filtroVazioFragment;
 	private FiltroAplicadoMarketplace filtro;
+	private List<CotasBolaoDTO> cotas;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +88,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 		listView = findViewById(R.id.lista_bolao);
 		carrosselView = findViewById(R.id.bolao_carousel);
-		schollView = findViewById(R.id.id_scrollview);
+		scrollView = findViewById(R.id.id_scrollview);
 		frameEstadoVazio = findViewById(R.id.id_fraf_estado_vazio);
+		txtFimLista = findViewById(R.id.id_fim_lista);
 
 		model = new BolaoModel(this);
 
@@ -103,6 +106,16 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		} else {
 			buscaBoloes();
 		}
+		scrollView.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
+			View view = v.getChildAt(v.getChildCount() - 1);
+			int  diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+			// if diff is zero, then the bottom has been reached
+			if (diff == 0) {
+				if (!model.isAcabouRegistros()){
+					buscarMaisBoloes();
+				}
+			}
+		});
 	}
 
 	private void buscaBoloes() {
@@ -115,7 +128,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 			public void success(ApostadorDTO payload) {
 				idMunicipio = payload.getMunicipioId().getNumero().intValue();
 				idUf = payload.getMunicipioId().getIdUF().intValue();
-				model.initPaginacaoFiltro(idMunicipio, idUf);
+				model.setIdMunicipioUF(idMunicipio, idUf);
 				buscaBoloes();
 			}
 
@@ -132,7 +145,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 			filtroVazioFragment = FragmentUtils.startFiltroVazio(getSupportFragmentManager(), R.id.id_fraf_estado_vazio);
 		} else {
 			frameEstadoVazio.setVisibility(View.VISIBLE);
-			schollView.setVisibility(View.GONE);
+			scrollView.setVisibility(View.GONE);
 		}
 	}
 
@@ -141,36 +154,59 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 			@Override
 			public void success(ListaBolaoDTO payload) {
 				model.atualizaPaginacao(payload);
-				if (naoTemOndeBuscar()) {
+				setCotas(payload);
+
+				if (naoTemOndeBuscar()){
+					if (!payload.getCotas().isEmpty()){
+						preencheListas();
+					}
 					AlertDialogUtils.dismiss();
-					apresentanEstadoVazio();
-				} else if (payload.getCotas().isEmpty()){
-					if (filtro != null){
-						buscaBoloesFiltro();
-					} else {
-						buscaBoloes();
-					}
+					txtFimLista.setVisibility(View.VISIBLE);
 				} else {
-					carrosselList = model.getCarrosselList(payload.getCotas());
-					carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener());
-					carrosselView.setAdapter(carrosselAdapter);
-					carrosselView.setItemTransformer(new ScaleTransformer.Builder()
-							.setMinScale(0.8f)
-							.build());
-
-
-					bolaoList = model.getBolaoList(payload.getCotas());
-					listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
-					listView.setAdapter(listAdapter);
-
-					if (bolaoList.isEmpty()) {
-						todosBoloesTxt.setVisibility(View.INVISIBLE);
-					} else {
-						todosBoloesTxt.setVisibility(View.VISIBLE);
-					}
-
+					preencheListas();
 					AlertDialogUtils.dismiss();
 				}
+
+
+//				if (naoTemOndeBuscar()) {
+//					AlertDialogUtils.dismiss();
+//					txtFimLista.setVisibility(View.VISIBLE);
+//				} else if (payload.getCotas().isEmpty() || payload.getCotas().size() < PaginacaoFiltro.QTD_POR_PAGINA){
+//					for (CotasBolaoDTO cota : payload.getCotas()){
+//						cotas.add(cota);
+//					}
+//					if (payload.getPaginaAtual() == payload.getUltimaPagina())
+//					buscarMaisBoloes();
+//				} else {
+//					if (cotas == null){
+//						cotas = payload.getCotas();
+//					} else {
+//						for (CotasBolaoDTO cota : payload.getCotas()){
+//							cotas.add(cota);
+//						}
+//					}
+//
+//					if (carrosselList == null || carrosselList.size() < 4){
+//						carrosselList = model.getCarrosselList(cotas);
+//						carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener());
+//						carrosselView.setAdapter(carrosselAdapter);
+//						carrosselView.setItemTransformer(new ScaleTransformer.Builder()
+//								.setMinScale(0.8f)
+//								.build());
+//					}
+//
+//					bolaoList = model.getBolaoList(cotas);
+//					listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
+//					listView.setAdapter(listAdapter);
+//
+//					if (bolaoList.isEmpty()) {
+//						todosBoloesTxt.setVisibility(View.INVISIBLE);
+//					} else {
+//						todosBoloesTxt.setVisibility(View.VISIBLE);
+//					}
+//
+//					AlertDialogUtils.dismiss();
+//				}
 			}
 
 			@Override
@@ -179,6 +215,45 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				apresentanEstadoVazio();
 			}
 		};
+	}
+
+	private void preencheListas() {
+		if (carrosselList == null || carrosselList.size() < 4){
+			carrosselList = model.getCarrosselList(cotas);
+			carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener());
+			carrosselView.setAdapter(carrosselAdapter);
+			carrosselView.setItemTransformer(new ScaleTransformer.Builder()
+					.setMinScale(0.8f)
+					.build());
+		}
+
+		bolaoList = model.getBolaoList(cotas);
+		listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
+		listView.setAdapter(listAdapter);
+
+		if (bolaoList.isEmpty()) {
+			todosBoloesTxt.setVisibility(View.INVISIBLE);
+		} else {
+			todosBoloesTxt.setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void setCotas(ListaBolaoDTO payload) {
+		if (cotas == null){
+			cotas = payload.getCotas();
+		} else {
+			for (CotasBolaoDTO cota : payload.getCotas()){
+				cotas.add(cota);
+			}
+		}
+	}
+
+	private void buscarMaisBoloes() {
+		if (filtro != null){
+			buscaBoloesFiltro();
+		} else {
+			buscaBoloes();
+		}
 	}
 
 	private boolean naoTemOndeBuscar() {
@@ -294,6 +369,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	@Override
 	public void continuar() {
 		frameEstadoVazio.setVisibility(View.GONE);
-		schollView.setVisibility(View.VISIBLE);
+		scrollView.setVisibility(View.VISIBLE);
 	}
 }
