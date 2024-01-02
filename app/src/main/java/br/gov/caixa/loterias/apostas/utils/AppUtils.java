@@ -128,4 +128,18 @@ public class AppUtils {
         return lines;
     }
 
+    public static String listaIntToString(List<Integer> integerList) {
+        StringBuilder sb = new StringBuilder();
+
+        for (Integer numero : integerList) {
+            if (numero == 100) {
+                sb.append("00 ");
+            } else {
+                sb.append(String.format("%02d ",numero));
+            }
+        }
+        return sb.toString().trim();
+    }
+
+
 }

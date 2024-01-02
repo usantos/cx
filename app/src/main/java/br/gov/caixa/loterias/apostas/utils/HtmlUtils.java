@@ -311,7 +311,6 @@ public class HtmlUtils {
 
 
     private static String getBodyList(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta, Context context) {
-
         StringBuilder sbHtmlBodyList = new StringBuilder();
         String htmlBodyList = "";
         switch (aposta.getModalidade()) {
@@ -336,6 +335,9 @@ public class HtmlUtils {
                     sbHtmlBodyList.append(htmlBodyList);
                     htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA2, context);
                 }
+
+                sbHtmlBodyList.append(forcaQuebraPagina());
+
                 return sbHtmlBodyList.toString();
                 
             case LOTOGOL:
@@ -375,14 +377,15 @@ public class HtmlUtils {
                 if (aposta.getIndicadorCotaBolao()) {
                     for (int i = 0; i < aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().size(); i++) {
                         numerosSelecionados += "Aposta "+(i+1)+":<br>"+
-                            aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(i).getDezenas().toString().replaceAll("[\\[,\\]]", "")+
+                            AppUtils.listaIntToString(aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(i).getDezenas()) +
                             "<br><br>";
+                        if (i == 4) {
+                            //Pode ter que inserir </div> e <div formatacao...
+                            numerosSelecionados += forcaQuebraPagina();
+                        }
                     }
                 } else {
-                    numerosSelecionados = aposta.getListaNumerosSelecionados().toString().replaceAll("[\\[,\\]]", "");
-                }
-                if (numerosSelecionados.contains("100")){
-                    numerosSelecionados = numerosSelecionados.replaceAll("100", "00");
+                    numerosSelecionados = AppUtils.listaIntToString(aposta.getListaNumerosSelecionados());
                 }
                 //htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
                 //htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA, numerosSelecionados);
@@ -390,6 +393,7 @@ public class HtmlUtils {
                 htmlBodyList = numerosSelecionados;
 
                 sbHtmlBodyList.append(htmlBodyList);
+
                 if (aposta.getTimeDoCoracao() != null) {
                     htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA,
@@ -522,4 +526,7 @@ public class HtmlUtils {
         return stringBuilder.toString();
     }
 
+    private static String forcaQuebraPagina() {
+        return "<div class=\"page-break\"></div><br><br><br><br>";
+    }
 }
