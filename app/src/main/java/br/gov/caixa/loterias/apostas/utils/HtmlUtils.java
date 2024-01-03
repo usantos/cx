@@ -61,6 +61,7 @@ public class HtmlUtils {
     private static final String HEADER_TITLE_APP_TXT = "{header_title_app_txt}";
     private static final String HEADER_TIPO_COMPROVANTE_TXT = "{header_tipo_comprovante_txt}";
     private static final String BASE_64_LOGO = "{base_64_logo}";
+    private static final String HEADER_IMPRIME_PAGINA = "{header_imprime_pagina}";
     private static final String HEADER_NOME = "{header_nome}";
     private static final String HEADER_CPF = "{header_cpf}";
     private static final String HEADER_MODALIDADE = "{header_modalidade}";
@@ -142,6 +143,9 @@ public class HtmlUtils {
 
         html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_aposta, modalidade));
         html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
+
+        //html = ViewUtils.replaceNullable(html, HEADER_IMPRIME_PAGINA, imprimePagina());
+
         html = ViewUtils.replaceNullable(html, HEADER_NOME, nomeUsuario);
         html = ViewUtils.replaceNullable(html, HEADER_CPF, AppUtils.mascaraCPF(DadosUsuarioBO.obterCpf()));
         html = ViewUtils.replaceNullable(html, HEADER_MODALIDADE, modalidade);
@@ -162,9 +166,9 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, BASE_64_CODIGO_BARRAS_APOSTA, getBarcode(comprovanteApostaDTO.getNsbi()));
         html = ViewUtils.replaceNullable(html, BODY_CODIGO_NSBI, comprovanteApostaDTO.getNsbi());
 
-        //int totalPaginas = contaPaginas(html, "#numero_pagina");
-        //html = substituiNumeracaoPaginas(html, totalPaginas,
-        //        "#numero_pagina", "#pagina_total");
+        int totalPaginas = contaPaginas(html, "#X");
+        html = substituiNumeracaoPaginas(html, totalPaginas, "#X", "#Y");
+
         return html;
     }
 
@@ -337,6 +341,7 @@ public class HtmlUtils {
                 }
 
                 sbHtmlBodyList.append(forcaQuebraPagina());
+                sbHtmlBodyList.append(imprimePagina());
 
                 return sbHtmlBodyList.toString();
                 
@@ -379,9 +384,10 @@ public class HtmlUtils {
                         numerosSelecionados += "Aposta "+(i+1)+":<br>"+
                             AppUtils.listaIntToString(aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(i).getDezenas()) +
                             "<br><br>";
-                        if (i == 4) {
+                        //if (i == 1) {
                             numerosSelecionados += forcaQuebraPagina();
-                        }
+                            numerosSelecionados += imprimePagina();
+                        //}
                         htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
                         htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA, numerosSelecionados);
                     }
@@ -390,8 +396,6 @@ public class HtmlUtils {
                     htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA, numerosSelecionados);
                 }
-
-                //htmlBodyList = numerosSelecionados;
 
                 sbHtmlBodyList.append(htmlBodyList);
 
@@ -528,7 +532,14 @@ public class HtmlUtils {
     }
 
     private static String forcaQuebraPagina() {
-        return "<div class=\"page-break\"></div><br><br><br><br>";
+        return "<div class=\"page-break\"></div>" +
+                "<br><br><br>";
+    }
+
+    private static String imprimePagina() {
+        return "<div style=\"color:#4E596B; margin-left: 770px; text-align: left; width: 100%; \">" +
+               "<p>Página #X de #Y</p>" +
+               "</div>";
     }
 
     private static int contaPaginas(String html, String texto) {
@@ -545,7 +556,7 @@ public class HtmlUtils {
                                                     String texto_numero_pagina,
                                                     String texto_pagina_total) {
 
-        for (int i = 0; i < totalPaginas; i++) {
+        for (int i = 1; i <= totalPaginas; i++) {
             html = html.replaceFirst(texto_numero_pagina, String.valueOf(i));
         }
 
