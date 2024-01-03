@@ -152,7 +152,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Não encontramos nenhum bolão que corresponda a sua pesquisa!"
+            android:text="Não encontramos nenhum bolão que corresponda à sua pesquisa!"
             android:textColor="@color/azulpush"
             android:textStyle="bold"
             android:textSize="16sp"
