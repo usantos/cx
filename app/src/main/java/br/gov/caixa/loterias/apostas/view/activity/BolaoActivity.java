@@ -64,6 +64,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private TextView txtFimLista;
 	private int idMunicipio = -1;
 	private int idUf = -1;
+	private boolean acumulouBoloesParaApresentar;
 
 	private NestedScrollView scrollView;
 	private FrameLayout frameEstadoVazio;
@@ -157,27 +158,27 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				setCotas(payload);
 
 				if (naoTemOndeBuscar()){
-					if (!payload.getCotas().isEmpty()){
+					if (!payload.getCotas().isEmpty() || acumulouBoloesParaApresentar){
 						preencheListas();
 					}
+					if (!cotas.isEmpty()){
+						txtFimLista.setVisibility(View.VISIBLE);
+					}
+
 					AlertDialogUtils.dismiss();
-					txtFimLista.setVisibility(View.VISIBLE);
+				} else if (payload.getCotas().isEmpty() || payload.getCotas().size() < PaginacaoFiltro.QTD_POR_PAGINA){
+					acumulouBoloesParaApresentar = true;
+					buscarMaisBoloes();
 				} else {
 					preencheListas();
 					AlertDialogUtils.dismiss();
 				}
 
-//				if (payload.getCotas().isEmpty() || payload.getCotas().size() < PaginacaoFiltro.QTD_POR_PAGINA){
-//					for (CotasBolaoDTO cota : payload.getCotas()){
-//						cotas.add(cota);
-//					}
-//					if (payload.getPaginaAtual() == payload.getUltimaPagina())
-//					buscarMaisBoloes();
-//				} else {
-//
-//					preencheListas()
-//					AlertDialogUtils.dismiss();
-//				}
+				if (bolaoList == null || bolaoList.isEmpty()) {
+					todosBoloesTxt.setVisibility(View.INVISIBLE);
+				} else {
+					todosBoloesTxt.setVisibility(View.VISIBLE);
+				}
 			}
 
 			@Override
@@ -202,11 +203,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
 		listView.setAdapter(listAdapter);
 
-		if (bolaoList.isEmpty()) {
-			todosBoloesTxt.setVisibility(View.INVISIBLE);
-		} else {
-			todosBoloesTxt.setVisibility(View.VISIBLE);
-		}
+		acumulouBoloesParaApresentar = false;
 	}
 
 	private void setCotas(ListaBolaoDTO payload) {

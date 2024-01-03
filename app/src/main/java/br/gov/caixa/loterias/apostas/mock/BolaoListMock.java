@@ -34,7 +34,7 @@ public class BolaoListMock {
 		List<CotasBolaoDTO> list = new ArrayList<>();
 
 		list.addAll(getCotasMunicipioUF());
-		//list.addAll(getCotasNacional());
+		list.addAll(getCotasNacional());
 
 		return list;
 	}
@@ -71,7 +71,9 @@ public class BolaoListMock {
 			if (i <= 14){
 				// 14 municipios do usuario
 				municipios.add(createCotaBolao(idMun, idUf));
-			} else if (i > 14 && i <= 17){
+			}
+			else
+				if (i > 14 && i <= 17){
 				// 3 municipios
 				municipios.add(createCotaBolao(20L, idUf));
 			} else if (i > 17 && i <= 19) {
@@ -80,9 +82,6 @@ public class BolaoListMock {
 			} else if (i > 19 && i <= 21) {
 				// 2 municipios
 				municipios.add(createCotaBolao(40L, idUf));
-			} else {
-				// 3 municipios
-				municipios.add(createCotaBolao(50L, idUf));
 			}
 		}
 
