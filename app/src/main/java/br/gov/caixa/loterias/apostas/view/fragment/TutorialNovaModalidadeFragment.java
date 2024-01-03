@@ -10,12 +10,14 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.fragment.TutorialPagerAdapter;
 import br.gov.caixa.loterias.apostas.view.listener.OnTutorialListener;
 import me.relex.circleindicator.CircleIndicator;
@@ -71,6 +73,13 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 		setViews(view);
 		setMetodos();
 
+		if (listener.getModalidade() != null && listener.getModalidade() == ModalidadeEnum.BOLAO){
+			ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) btnPrincipal.getLayoutParams();
+			layoutParams.setMargins(0,0,0,200);
+			btnPrincipal.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pushbotaoaposteagora));
+			btnPrincipal.setLayoutParams(layoutParams);
+		}
+
 		return view;
 	}
 
@@ -94,18 +103,28 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 			@Override
 			public void onPageSelected(int position) {
 				if(isIntroducao(position)){
+					if (listener.getModalidade() != null && listener.getModalidade() == ModalidadeEnum.BOLAO){
+						ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) btnPrincipal.getLayoutParams();
+						layoutParams.setMargins(0,0,0,200);
+						btnPrincipal.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pushbotaoaposteagora));
+						btnPrincipal.setLayoutParams(layoutParams);
+					}
 					btnPrincipal.setText(getResources().getString(R.string.vamos_comecar));
 					btnPrincipal.setVisibility(View.VISIBLE);
 					btnPular.setText(R.string.tutorial_pular);
-					btnPular.setText(R.string.tutorial_fechar);
 					checkBox.setVisibility(View.GONE);
 				} else if (isFinal(position)){
 					btnPrincipal.setText(getResources().getString(R.string.label_aposte_agora));
 					btnPrincipal.setVisibility(View.VISIBLE);
 					btnPular.setText(R.string.tutorial_fechar);
 					checkBox.setVisibility(View.VISIBLE);
-					if (listener.getModalidade() == ModalidadeEnum.BOLAO){
-						checkBox.setTextColor(ContextCompat.getColor(getContext(), R.color.azulBolao));
+					if (listener.getModalidade() != null && listener.getModalidade() == ModalidadeEnum.BOLAO){
+						ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) btnPrincipal.getLayoutParams();
+						layoutParams.setMargins(0,0,0,200);
+						btnPrincipal.setText(ViewUtils.textFuturaAndFuturaBoldTitle(getContext(), "_Escolher_\nmeu bolão"));
+						btnPrincipal.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pushbotaoaposteagora));
+						btnPrincipal.setLayoutParams(layoutParams);
+						checkBox.setTextColor(ContextCompat.getColor(getContext(), R.color.pushbotaoaposteagora));
 					}
 				} else {
 					btnPrincipal.setVisibility(View.GONE);

@@ -10,7 +10,6 @@
         android:layout_height="match_parent"
         android:scaleType="centerInside"
         app:lottie_fileName="tutorial_bolao_final.json"
-        app:lottie_speed="0.5"
-        app:lottie_loop="true"/>
+        app:lottie_speed="0.5"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
