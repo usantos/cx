@@ -112,7 +112,8 @@ public class BolaoModel extends AppModel{
 		}
 		this.paginacaoFiltro.setQtdTotalPaginas(payload.getUltimaPagina());
 		if ((paginacaoFiltro.getTipoConsulta() == TipoConsultaBolaoEnum.NACIONAL) &&
-				payload.getPaginaAtual() == payload.getUltimaPagina()){
+				(payload.getPaginaAtual() == payload.getUltimaPagina() ||
+						payload.getUltimaPagina() == 0 || payload.getCotas().isEmpty())){
 			paginacaoFiltro.setAcabouRegistros(true);
 		}
 	}

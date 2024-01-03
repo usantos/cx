@@ -34,7 +34,7 @@ public class BolaoListMock {
 		List<CotasBolaoDTO> list = new ArrayList<>();
 
 		list.addAll(getCotasMunicipioUF());
-		list.addAll(getCotasNacional());
+		//list.addAll(getCotasNacional());
 
 		return list;
 	}
@@ -220,10 +220,12 @@ public class BolaoListMock {
 		}
 
 		List<CotasBolaoDTO> listaFinal = new ArrayList<>();
-		int max = ultimaPagina == paginacao.getPagina() ? listTotal.size() : (paginacao.getQtdPorPagina() * paginacao.getPagina());
-		int index = (paginacao.getPagina() * paginacao.getQtdPorPagina()) - paginacao.getQtdPorPagina();
-		for (int i = index; i < max; i++) {
-			listaFinal.add(listTotal.get(i));
+		if (listTotal.size() > 0){
+			int max = ultimaPagina == paginacao.getPagina() ? listTotal.size() : (paginacao.getQtdPorPagina() * paginacao.getPagina());
+			int index = (paginacao.getPagina() * paginacao.getQtdPorPagina()) - paginacao.getQtdPorPagina();
+			for (int i = index; i < max; i++) {
+				listaFinal.add(listTotal.get(i));
+			}
 		}
 
 		payload.setCotas(listaFinal);
