@@ -387,7 +387,7 @@ public class HtmlUtils {
                             "<br/><br/>";
                         //if (i == 4) {
                             numerosSelecionados += forcaQuebraPagina();
-                            numerosSelecionados += imprimePagina();
+                            numerosSelecionados += imprimePaginacaoBolao();
                         //}
                         htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
                         htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA, numerosSelecionados);
@@ -541,6 +541,12 @@ public class HtmlUtils {
         return "<div style=\"color:#4E596B; text-align: right; width: 100%; margin-right: 10px; \">" +
                "<p>Página #X de #Y</p>" +
                "</div>";
+    }
+
+    private static String imprimePaginacaoBolao() {
+        return "<div style=\"color:#4E596B; text-align: left; float: right; width: 185px;\">" +
+                "<p>Página #X de #Y</p>" +
+                "</div>";
     }
 
     private static int contaPaginas(String html, String texto) {
