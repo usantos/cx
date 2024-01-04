@@ -31,7 +31,7 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 
 	private ViewPager viewPager;
 	private CircleIndicator circleIndicator;
-	private Button btnPrincipal, btnPular;
+	private Button btnPrincipal, btnPular, btnFechar;
 	private AppCompatCheckBox checkBox;
 
 	private OnTutorialListener listener;
@@ -73,14 +73,19 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 		setViews(view);
 		setMetodos();
 
+		btnPrincipal.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "_Vamos começar_"));
 		if (listener.getModalidade() != null && listener.getModalidade() == ModalidadeEnum.BOLAO){
-			ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) btnPrincipal.getLayoutParams();
-			layoutParams.setMargins(0,0,0,200);
-			btnPrincipal.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pushbotaoaposteagora));
-			btnPrincipal.setLayoutParams(layoutParams);
+			configuraBotaoPrincipalBolao();
 		}
 
 		return view;
+	}
+
+	private void configuraBotaoPrincipalBolao() {
+		ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) btnPrincipal.getLayoutParams();
+		layoutParams.setMargins(0,0,0,200);
+		btnPrincipal.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.pushbotaoaposteagora));
+		btnPrincipal.setLayoutParams(layoutParams);
 	}
 
 	private void setViews(View view) {
@@ -89,6 +94,7 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 		btnPrincipal 	= view.findViewById(R.id.btn_principal);
 		btnPular 		= view.findViewById(R.id.tv_pular);
 		checkBox 		= view.findViewById(R.id.checkboxMostrar);
+		btnFechar 		= view.findViewById(R.id.tv_fechar);
 	}
 
 	private void setMetodos() {
@@ -103,33 +109,26 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 			@Override
 			public void onPageSelected(int position) {
 				if(isIntroducao(position)){
-					if (listener.getModalidade() != null && listener.getModalidade() == ModalidadeEnum.BOLAO){
-						ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) btnPrincipal.getLayoutParams();
-						layoutParams.setMargins(0,0,0,200);
-						btnPrincipal.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pushbotaoaposteagora));
-						btnPrincipal.setLayoutParams(layoutParams);
-					}
 					btnPrincipal.setText(getResources().getString(R.string.vamos_comecar));
 					btnPrincipal.setVisibility(View.VISIBLE);
 					btnPular.setText(R.string.tutorial_pular);
 					checkBox.setVisibility(View.GONE);
+					btnFechar.setVisibility(View.VISIBLE);
 				} else if (isFinal(position)){
-					btnPrincipal.setText(getResources().getString(R.string.label_aposte_agora));
+					btnPrincipal.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "_Aposte agora_"));
 					btnPrincipal.setVisibility(View.VISIBLE);
 					btnPular.setText(R.string.tutorial_fechar);
 					checkBox.setVisibility(View.VISIBLE);
+					btnFechar.setVisibility(View.GONE);
 					if (listener.getModalidade() != null && listener.getModalidade() == ModalidadeEnum.BOLAO){
-						ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) btnPrincipal.getLayoutParams();
-						layoutParams.setMargins(0,0,0,200);
-						btnPrincipal.setText(ViewUtils.textFuturaAndFuturaBoldTitle(getContext(), "_Escolher_\nmeu bolão"));
-						btnPrincipal.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.pushbotaoaposteagora));
-						btnPrincipal.setLayoutParams(layoutParams);
+						btnPrincipal.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "_Escolher_ \nmeu bolão"));
 						checkBox.setTextColor(ContextCompat.getColor(getContext(), R.color.pushbotaoaposteagora));
 					}
 				} else {
 					btnPrincipal.setVisibility(View.GONE);
 					btnPular.setText(R.string.tutorial_pular);
 					checkBox.setVisibility(View.GONE);
+					btnFechar.setVisibility(View.VISIBLE);
 				}
 				listener.getFragments().get(position).startAnimacao();
 			}
@@ -153,6 +152,9 @@ public class TutorialNovaModalidadeFragment extends Fragment {
 			} else {
 				listener.apostar(checkBox.isChecked());
 			}
+		});
+		btnFechar.setOnClickListener(v -> {
+			listener.pular(false);
 		});
 	}
 
