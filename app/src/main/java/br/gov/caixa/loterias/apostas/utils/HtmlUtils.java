@@ -144,8 +144,6 @@ public class HtmlUtils {
         html = ViewUtils.replaceNullable(html, HEADER_TIPO_COMPROVANTE_TXT, context.getString(R.string.label_comprovante_aposta, modalidade));
         html = ViewUtils.replaceNullable(html, BASE_64_LOGO, getBase64Logo(context));
 
-        //html = ViewUtils.replaceNullable(html, HEADER_IMPRIME_PAGINA, imprimePagina());
-
         html = ViewUtils.replaceNullable(html, HEADER_NOME, nomeUsuario);
         html = ViewUtils.replaceNullable(html, HEADER_CPF, AppUtils.mascaraCPF(DadosUsuarioBO.obterCpf()));
         html = ViewUtils.replaceNullable(html, HEADER_MODALIDADE, modalidade);
@@ -313,6 +311,9 @@ public class HtmlUtils {
 
         html = ViewUtils.replaceNullable(html, BODY_CODIGO_NSBI, detalhesPremioDTO.getNsbi());
 
+        int totalPaginas = contaPaginas(html, "#X");
+        html = substituiNumeracaoPaginas(html, totalPaginas, "#X", "#Y");
+
         return html;
     }
 
@@ -337,7 +338,7 @@ public class HtmlUtils {
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_PARTIDA2,
                                                              context.getString(R.string.label_corpo_equipe, equipe2.getVitoria() ? PONTO_MARCADOR : " ", Utils.getEquipeComUf(partidaLotecaDTO.getEquipe2())));
                     sbHtmlBodyList.append(htmlBodyList);
-                    //htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA2, context);
+                    htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA2, context);
                 }
 
                 sbHtmlBodyList.append(forcaQuebraPagina());
@@ -381,10 +382,10 @@ public class HtmlUtils {
                 String numerosSelecionados = "";
                 if (aposta.getIndicadorCotaBolao()) {
                     for (int i = 0; i < aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().size(); i++) {
-                        numerosSelecionados += "Aposta "+(i+1)+":<br>"+
+                        numerosSelecionados += "Aposta "+(i+1)+":<br/>"+
                             AppUtils.listaIntToString(aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(i).getDezenas()) +
-                            "<br><br>";
-                        //if (i == 1) {
+                            "<br/><br/>";
+                        //if (i == 4) {
                             numerosSelecionados += forcaQuebraPagina();
                             numerosSelecionados += imprimePagina();
                         //}
@@ -533,11 +534,11 @@ public class HtmlUtils {
 
     private static String forcaQuebraPagina() {
         return "<div class=\"page-break\"></div>" +
-                "<br><br><br>";
+                "<br/><br/><br/>";
     }
 
     private static String imprimePagina() {
-        return "<div style=\"color:#4E596B; margin-left: 770px; text-align: left; width: 100%; \">" +
+        return "<div style=\"color:#4E596B; text-align: right; width: 100%; margin-right: 10px; \">" +
                "<p>Página #X de #Y</p>" +
                "</div>";
     }
