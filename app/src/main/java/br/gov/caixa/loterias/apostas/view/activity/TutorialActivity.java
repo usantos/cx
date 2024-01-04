@@ -67,4 +67,9 @@ public class TutorialActivity extends AppCompatActivity implements OnTutorialLis
 	public List<TutorialPassoFragment> getFragments() {
 		return model.getFragments(modalidade);
 	}
+
+	@Override
+	public ModalidadeEnum getModalidade() {
+		return modalidade;
+	}
 }

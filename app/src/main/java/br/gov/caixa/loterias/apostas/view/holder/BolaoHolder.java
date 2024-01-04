@@ -11,10 +11,13 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import java.math.BigDecimal;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
@@ -69,7 +72,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		loterica.setText(bolao.getNomeFantasia().substring(0,13).concat("..."));
 		concurso.setText(String.valueOf(bolao.getConcurso()));
 		cidade.setText(bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
-		valor.setText(String.valueOf(bolao.getVrCotaComTarifa()));
+		atualizaValorTotal(bolao);
 		valorPremio.setText(String.valueOf(bolao.getVrPremioEstimado()));
 		atualizaBotoesQtdCotas(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		mostrarDetalhes(bolao.isAbertoParaMostrarDetalhes());
@@ -131,6 +134,18 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 			btnAumenta.setBackgroundTintList(getCor(R.color.megasenaclaro));
 			btnAumenta.setEnabled(true);
 		}
+	}
+
+	@Override
+	public void atualizaValorTotal(CotasBolaoDTO bolao) {
+		valor.setText(getMoedaFormat(bolao));
+	}
+
+	private static String getMoedaFormat(CotasBolaoDTO bolao) {
+		Double qtdApostas = Double.valueOf(bolao.getQtdCotasBolao() - 1);
+		BigDecimal valor = bolao.getVrUltimaCotaComTarifa().add(BigDecimal.valueOf(bolao.getVrCotaComTarifa().doubleValue() * qtdApostas));
+
+		return ViewUtils.getMoedaFormat(valor);
 	}
 
 	private ColorStateList getCor(int cor) {
