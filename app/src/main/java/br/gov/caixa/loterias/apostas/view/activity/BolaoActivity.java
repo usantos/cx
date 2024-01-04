@@ -190,11 +190,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private void aumentaQuatidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
 		list.get(position).aumentaQuantidade();
 		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotasBolao(), list.get(position).getQtdCotaDisponivel());
+		holder.atualizaValorTotal(list.get(position));
 	}
 
 	private void diminuiQuatidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
 		list.get(position).diminuiQuantidade();
 		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotasBolao(), list.get(position).getQtdCotaDisponivel());
+		holder.atualizaValorTotal(list.get(position));
 	}
 
 	private void fragmentSomadorCarrinho() {

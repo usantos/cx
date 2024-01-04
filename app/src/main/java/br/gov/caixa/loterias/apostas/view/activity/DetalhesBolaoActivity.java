@@ -108,6 +108,13 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	public void atualizaQuantidadeTextView() {
 		tvQtdCotas.setText(String.valueOf(bolao.getQtdCotaDesejada()));
 		atualizaBotoesQtdCotas();
+		atualizaValorAposta();
+	}
+
+	private void atualizaValorAposta() {
+		Double qtdApostas = Double.valueOf(bolao.getQtdCotaDesejada() - 1);
+		BigDecimal valor = bolao.getVrUltimaCotaComTarifa().add(BigDecimal.valueOf(bolao.getVrCotaComTarifa().doubleValue() * qtdApostas));
+		rodapeFragment.atualizaValorBolao(valor);
 	}
 
 	public void atualizaBotoesQtdCotas() {

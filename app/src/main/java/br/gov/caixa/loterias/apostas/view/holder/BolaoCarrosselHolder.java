@@ -7,7 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+
+import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
@@ -68,17 +71,28 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		concurso.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
 														   itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso())));
 		loterica.setText(bolao.getNomeFantasia()+ "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
-		valorCota.setText(ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()));
+		atualizaValorTotal(bolao);
+	}
+
+	@NonNull
+	private static String getMoedaFormat(CotasBolaoDTO bolao) {
+		Double qtdApostas = Double.valueOf(bolao.getQtdCotasBolao() - 1);
+		BigDecimal valor = bolao.getVrUltimaCotaComTarifa().add(BigDecimal.valueOf(bolao.getVrCotaComTarifa().doubleValue() * qtdApostas));
+
+		return ViewUtils.getMoedaFormat(valor);
 	}
 
 	private void preencheCabecalho(CotasBolaoDTO bolao) {
 		modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
 	}
 
+	public void atualizaValorTotal(CotasBolaoDTO bolao){
+		valorCota.setText(getMoedaFormat(bolao));
+	}
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
-
 			case R.id.detalhes:
 				listener.detalhes(getAbsoluteAdapterPosition());
 				break;

@@ -86,6 +86,8 @@ public class CotasBolaoDTO {
     private BigDecimal vrTotalBolaoComTarifa = null;
     @SerializedName("vrTotalBolaoSemTarifa")
     private BigDecimal vrTotalBolaoSemTarifa = null;
+    @SerializedName("vrUltimaCotaComTarifa")
+    private BigDecimal vrUltimaCotaComTarifa = null;
     @SerializedName("numeroCota")
     private Integer numeroCota = null;
     @SerializedName("dataHoraReserva")
@@ -819,6 +821,9 @@ public class CotasBolaoDTO {
         return o.toString().replace("\n", "\n    ");
     }
 
+    public BigDecimal getVrUltimaCotaComTarifa() {
+        return vrUltimaCotaComTarifa;
+    }
 }
 
 
