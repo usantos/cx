@@ -385,10 +385,10 @@ public class HtmlUtils {
                         numerosSelecionados += "Aposta "+(i+1)+":<br/>"+
                             AppUtils.listaIntToString(aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(i).getDezenas()) +
                             "<br/><br/>";
-                        //if (i == 4) {
+                        if (i == 4) {
                             numerosSelecionados += forcaQuebraPagina();
                             numerosSelecionados += imprimePaginacaoBolao();
-                        //}
+                        }
                         htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_NUMERICO, context);
                         htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_INFORMACAO_APOSTA, numerosSelecionados);
                     }

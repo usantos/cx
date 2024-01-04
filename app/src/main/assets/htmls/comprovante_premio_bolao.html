@@ -10,8 +10,6 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 40px;
-      text-align center;
    }
    #footer {
       position: fixed;
@@ -33,13 +31,13 @@
 </head>
 <body style="font-family: Helvetica;">
 <div id="header">
-   <div style="width: 595px">
+   <div style="width: 100%">
       <p style="color:#0267b2; font-size: 14px; margin: 0px;"><b>Loterias</b></p>
       <div style="width: 75%; float: left;">
          <b style="color:#0267b2;font-size: 14px;">{header_tipo_comprovante_txt}</b>
       </div>
       <div style="width: 25%; float: right;">
-         <img src="data:image/png;base64,{base_64_logo}" width="89px" height="20px" style="float: right;" />
+         <img src="data:image/png;base64,{base_64_logo}" width="89px" height="20px" style="float: right; margin-right: 10px;" />
       </div>
    </div>
    <hr size="2" width="100%" align="left" color="orange" style="margin-top:25px">
@@ -111,7 +109,7 @@
          <p style="margin: 0; font-size: 10px; line-height: 10px;"> Ouvidoria</p>
       </div>
    </div>
-   <p>Página <span id="page-number"></span> de <span id="total-pages"></span></p>
+   <!-- p>Página <span id="page-number"></span> de <span id="total-pages"></span></p -->
 </div>
 </body>
 </html>
