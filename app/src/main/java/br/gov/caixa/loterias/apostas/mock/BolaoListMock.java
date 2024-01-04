@@ -1,11 +1,14 @@
 package br.gov.caixa.loterias.apostas.mock;
 
+import android.os.Build;
+
 import androidx.annotation.NonNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
@@ -13,6 +16,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 
 public class BolaoListMock {
 
@@ -47,13 +51,13 @@ public class BolaoListMock {
 		for (int i = 1; i <= 16; i++) {
 			if (i <= 8) {
 				// 8 uf SP
-				ufs.add(createCotaBolao(60L, 100L));
+				ufs.add(createCotaBolao(60, 100L));
 			} else if (i > 8 && i <= 12) {
 				// 4 Parana
-				ufs.add(createCotaBolao(70L, 120L));
+				ufs.add(createCotaBolao(70, 120L));
 			} else {
 				// 4 RJ
-				ufs.add(createCotaBolao(80L, 130L));
+				ufs.add(createCotaBolao(80, 130L));
 			}
 		}
 
@@ -64,7 +68,7 @@ public class BolaoListMock {
 		List<CotasBolaoDTO> municipios = new ArrayList<>();
 
 		// 24 municipios DF
-		Long idMun = 10L;
+		Integer idMun = 10;
 		Long idUf = 53L;
 
 		for (int i = 1; i <= 24; i++) {
@@ -75,13 +79,13 @@ public class BolaoListMock {
 			else
 				if (i > 14 && i <= 17){
 				// 3 municipios
-				municipios.add(createCotaBolao(20L, idUf));
+				municipios.add(createCotaBolao(20, idUf));
 			} else if (i > 17 && i <= 19) {
 				// 2 municipios
-				municipios.add(createCotaBolao(30L, idUf));
+				municipios.add(createCotaBolao(30, idUf));
 			} else if (i > 19 && i <= 21) {
 				// 2 municipios
-				municipios.add(createCotaBolao(40L, idUf));
+				municipios.add(createCotaBolao(40, idUf));
 			}
 		}
 
@@ -89,17 +93,17 @@ public class BolaoListMock {
 	}
 
 	@NonNull
-	private static CotasBolaoDTO createCotaBolao(Long idMun, Long idUf) {
+	private static CotasBolaoDTO createCotaBolao(Integer idMun, Long idUf) {
 		CotasBolaoDTO cota = new CotasBolaoDTO();
-		cota.setIdMunicipio(idMun);
+		cota.setIdMunicipio(new Long(idMun));
 		cota.setNumeroUF(idUf);
 		cota.setModalidade(ModalidadeEnum.MEGA_SENA);
 		cota.setVrCotaComTarifa(new BigDecimal(10));
 		cota.setQtdCotasBolao(1);
 		cota.setQtdCotaDisponivel(5);
+		cota.setQtdCotaDisponivel(idMun);
 
-
-		if (idMun.equals(10L)){
+		if (idMun.equals(10)){
 			cota.setNomeFantasia("Gaminha");
 			MunicipioDTO municipioDTO = new MunicipioDTO();
 			municipioDTO.setNome("Brasilia");
@@ -109,7 +113,7 @@ public class BolaoListMock {
 
 			cota.setMunicipio(municipioDTO);
 			cota.setUf(uf);
-		} else if (idMun.equals(20L)) {
+		} else if (idMun.equals(20)) {
 			cota.setNomeFantasia("Santinha");
 			MunicipioDTO municipioDTO = new MunicipioDTO();
 			municipioDTO.setNome("Brasilia");
@@ -119,7 +123,7 @@ public class BolaoListMock {
 
 			cota.setMunicipio(municipioDTO);
 			cota.setUf(uf);
-		} else if (idMun.equals(30L)) {
+		} else if (idMun.equals(30)) {
 			cota.setNomeFantasia("Guara");
 			MunicipioDTO municipioDTO = new MunicipioDTO();
 			municipioDTO.setNome("Brasilia");
@@ -129,7 +133,7 @@ public class BolaoListMock {
 
 			cota.setMunicipio(municipioDTO);
 			cota.setUf(uf);
-		} else if (idMun.equals(40L)) {
+		} else if (idMun.equals(40)) {
 			cota.setNomeFantasia("BSB");
 			MunicipioDTO municipioDTO = new MunicipioDTO();
 			municipioDTO.setNome("Brasilia");
@@ -139,7 +143,7 @@ public class BolaoListMock {
 
 			cota.setMunicipio(municipioDTO);
 			cota.setUf(uf);
-		} else if (idMun.equals(50L)) {
+		} else if (idMun.equals(50)) {
 			cota.setNomeFantasia("Ceilondres");
 			MunicipioDTO municipioDTO = new MunicipioDTO();
 			municipioDTO.setNome("Brasilia");
@@ -149,7 +153,7 @@ public class BolaoListMock {
 
 			cota.setMunicipio(municipioDTO);
 			cota.setUf(uf);
-		} else if (idMun.equals(60L)) {
+		} else if (idMun.equals(60)) {
 			cota.setNomeFantasia("Sampa");
 			MunicipioDTO municipioDTO = new MunicipioDTO();
 			municipioDTO.setNome("Sao Paulo");
@@ -159,7 +163,7 @@ public class BolaoListMock {
 
 			cota.setMunicipio(municipioDTO);
 			cota.setUf(uf);
-		} else if (idMun.equals(70L)) {
+		} else if (idMun.equals(70)) {
 			cota.setNomeFantasia("Paranaue");
 			MunicipioDTO municipioDTO = new MunicipioDTO();
 			municipioDTO.setNome("Curitiba");
@@ -169,7 +173,7 @@ public class BolaoListMock {
 
 			cota.setMunicipio(municipioDTO);
 			cota.setUf(uf);
-		} else if (idMun.equals(80L)) {
+		} else if (idMun.equals(80)) {
 			cota.setNomeFantasia("ErreJota");
 			MunicipioDTO municipioDTO = new MunicipioDTO();
 			municipioDTO.setNome("Rio de Janeiro");
@@ -184,44 +188,47 @@ public class BolaoListMock {
 		return  cota;
 	}
 
-
-	public ListaBolaoDTO filtro(PaginacaoFiltro paginacao){
+	public ListaBolaoDTO filtro(FiltroMarketPlace filtro) {
 		ListaBolaoDTO payload = new ListaBolaoDTO();
 		List<CotasBolaoDTO> listTotal = new ArrayList<>();
 
-		for(CotasBolaoDTO cota: cotas){
-
-			switch (paginacao.getTipoConsulta()){
+		for(CotasBolaoDTO cota: cotas) {
+			switch (filtro.getTipoConsulta()) {
 				case MUNICIPIO:
-					if (cota.getIdMunicipio().intValue() == paginacao.getIdMunicipio()){
+					if (cota.getIdMunicipio().intValue() == filtro.getIdMunicipio()) {
 						listTotal.add(cota);
 					}
 					break;
 				case UF:
-					if (paginacao.getIdMunicipio() != cota.getIdMunicipio().intValue() &&
-						paginacao.getIdUf() == cota.getNumeroUF().intValue()){
+					if (filtro.getIdMunicipio() != cota.getIdMunicipio().intValue() &&
+							filtro.getIdUf() == cota.getNumeroUF().intValue()) {
 						listTotal.add(cota);
 					}
 					break;
 				case NACIONAL:
-					if (paginacao.getIdUf() != cota.getNumeroUF().intValue()){
+					if (filtro.getIdUf() != cota.getNumeroUF().intValue()) {
 						listTotal.add(cota);
 					}
 					break;
 				default:
-
 			}
 		}
 
-		int ultimaPagina = listTotal.size() / paginacao.getQtdPorPagina();
-		if ((ultimaPagina * paginacao.getQtdPorPagina()) < listTotal.size()){
+		if (filtro.getQtdMaximaCota() > 0 ){
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+				listTotal = listTotal.stream().filter(cota -> cota.getQtdCotaDisponivel() <= filtro.getQtdMaximaCota()).collect(Collectors.toList());
+			}
+		}
+
+		int ultimaPagina = listTotal.size() / filtro.getQtdPorPagina();
+		if ((ultimaPagina * filtro.getQtdPorPagina()) < listTotal.size()){
 			ultimaPagina++;
 		}
 
 		List<CotasBolaoDTO> listaFinal = new ArrayList<>();
 		if (listTotal.size() > 0){
-			int max = ultimaPagina == paginacao.getPagina() ? listTotal.size() : (paginacao.getQtdPorPagina() * paginacao.getPagina());
-			int index = (paginacao.getPagina() * paginacao.getQtdPorPagina()) - paginacao.getQtdPorPagina();
+			int max = ultimaPagina == filtro.getPagina() ? listTotal.size() : (filtro.getQtdPorPagina() * filtro.getPagina());
+			int index = (filtro.getPagina() * filtro.getQtdPorPagina()) - filtro.getQtdPorPagina();
 			for (int i = index; i < max; i++) {
 				listaFinal.add(listTotal.get(i));
 			}
@@ -229,7 +236,7 @@ public class BolaoListMock {
 
 		payload.setCotas(listaFinal);
 		payload.setTotalRegistros(listTotal.size());
-		payload.setPaginaAtual(paginacao.getPagina());
+		payload.setPaginaAtual(filtro.getPagina());
 		payload.setUltimaPagina(ultimaPagina);
 
 		return payload;
