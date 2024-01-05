@@ -137,6 +137,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private void apresentanEstadoVazio() {
 		if (filtroVazioFragment == null){
 			filtroVazioFragment = FragmentUtils.startFiltroVazio(getSupportFragmentManager(), R.id.id_fraf_estado_vazio);
+			frameEstadoVazio.setVisibility(View.VISIBLE);
+			scrollView.setVisibility(View.GONE);
 		} else {
 			frameEstadoVazio.setVisibility(View.VISIBLE);
 			scrollView.setVisibility(View.GONE);
@@ -288,6 +290,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 	private OnActivityForResult OnActivityForResult() {
 		return result -> {
+			frameEstadoVazio.setVisibility(View.GONE);
+			scrollView.setVisibility(View.VISIBLE);
+
 			if (result.getResultCode() == Activity.RESULT_OK) {
 				Intent data = result.getData();
 				filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
@@ -295,6 +300,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				AlertDialogUtils.show(BolaoActivity.this);
 				model.zeraPaginacao();
 				cotasFiltradas = null;
+
 				buscaBoloesFiltro();
 			}
 		};

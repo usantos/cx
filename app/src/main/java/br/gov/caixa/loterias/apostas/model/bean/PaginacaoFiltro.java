@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.apostas.model.bean;
 import br.gov.caixa.loterias.apostas.model.enums.TipoConsultaBolaoEnum;
 
 public class PaginacaoFiltro {
-    public static final int QTD_POR_PAGINA = 10;
+    public static final int QTD_POR_PAGINA = 30;
     private static final int PAG_INICIAL = 1;
 
     private TipoConsultaBolaoEnum tipoConsulta;

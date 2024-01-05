@@ -9,7 +9,6 @@ import com.android.volley.VolleyError;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.mock.BolaoListMock;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
@@ -21,12 +20,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
-import br.gov.caixa.loterias.apostas.model.enums.TipoConsultaBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 
 public class BolaoRepository extends AppRepository {
 
-    private static final BolaoListMock mock = BolaoListMock.getInstance();
     public BolaoRepository(Activity activity) {
         super(activity);
     }
@@ -46,8 +43,8 @@ public class BolaoRepository extends AppRepository {
             }
         }
 
-        listener.success(mock.filtro(filtro));
-//        buscaBoloes(filtro, listener);
+        //listener.success(BolaoListMock.getInstance().filtro(filtro));
+        buscaBoloes(filtro, listener);
     }
 
     private FiltroMarketPlace getFiltroMarketPlace(PaginacaoFiltro paginacao) {
