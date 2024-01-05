@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
@@ -215,9 +216,15 @@ public class BolaoListMock {
 		}
 
 		if (filtro.getQtdMaximaCota() > 0 ){
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-				listTotal = listTotal.stream().filter(cota -> cota.getQtdCotaDisponivel() <= filtro.getQtdMaximaCota()).collect(Collectors.toList());
+			int min = filtro.getQtdMinimaCota();
+			int max = filtro.getQtdMaximaCota();
+			List<CotasBolaoDTO> filtradas = new ArrayList<>();
+			for (CotasBolaoDTO cota: listTotal){
+				if (cota.getQtdCotaDisponivel() >= min && cota.getQtdCotaDisponivel() <= max){
+					filtradas.add(cota);
+				}
 			}
+			listTotal = filtradas;
 		}
 
 		int ultimaPagina = listTotal.size() / filtro.getQtdPorPagina();

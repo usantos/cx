@@ -37,12 +37,25 @@ public class BolaoModel extends AppModel{
 	}
 
 	public void buscaBoloes(OnSilceListener<ListaBolaoDTO> listener) {
+		preparaPaginacao();
+		bolaoRepository.buscarBoloesDisponiveis(paginacaoFiltro, null, listener);
+	}
+
+	private void preparaPaginacao() {
 		if (paginacaoFiltro == null){
-			paginacaoFiltro = new PaginacaoFiltro(TipoConsultaBolaoEnum.MUNICIPIO, idMunicipio, idUf);
+			initPaginacao();
 		} else {
 			proxConsulta();
 		}
-		bolaoRepository.buscarBoloesDisponiveis(paginacaoFiltro, listener);
+	}
+
+	public void buscaFiltradaBoloes(FiltroAplicadoMarketplace filtroMarketplace, OnSilceListener<ListaBolaoDTO> listener) {
+		preparaPaginacao();
+		bolaoRepository.buscarBoloesDisponiveis(paginacaoFiltro, filtroMarketplace, listener);
+	}
+
+	public void zeraPaginacao(){
+		paginacaoFiltro = null;
 	}
 
 	private void proxConsulta() {
@@ -68,10 +81,6 @@ public class BolaoModel extends AppModel{
 		}
 
 		return new ArrayList<>();
-	}
-
-	public void buscaFiltradaBoloes(FiltroAplicadoMarketplace filtroMarketplace, OnSilceListener<ListaBolaoDTO> listener) {
-		bolaoRepository.buscarFiltrada(paginacaoFiltro, filtroMarketplace, listener);
 	}
 
 	public void buscaDadosUsuario(OnSilceListener<ApostadorDTO> listener) {
@@ -107,11 +116,9 @@ public class BolaoModel extends AppModel{
 	}
 
 	public void atualizaPaginacao(ListaBolaoDTO payload) {
-		if (paginacaoFiltro == null){
-			initPaginacao();
-		}
 		this.paginacaoFiltro.setQtdTotalPaginas(payload.getUltimaPagina());
-		if ((paginacaoFiltro.getTipoConsulta() == TipoConsultaBolaoEnum.NACIONAL) &&
+		if ((paginacaoFiltro.getTipoConsulta() == TipoConsultaBolaoEnum.NACIONAL ||
+				paginacaoFiltro.getTipoConsulta() == TipoConsultaBolaoEnum.LOTERICO) &&
 				(payload.getPaginaAtual() == payload.getUltimaPagina() ||
 						payload.getUltimaPagina() == 0 || payload.getCotas().isEmpty())){
 			paginacaoFiltro.setAcabouRegistros(true);

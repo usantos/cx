@@ -31,27 +31,23 @@ public class BolaoRepository extends AppRepository {
         super(activity);
     }
 
-    public void buscarBoloesDisponiveis(PaginacaoFiltro paginacao, OnSilceListener<ListaBolaoDTO> listener){
-
-        listener.success(mock.filtro(paginacao));
-
-        //buscaBoloes(getFiltroMarketPlace(paginacao), listener);
-    }
-
-    public void buscarFiltrada(PaginacaoFiltro paginacao, FiltroAplicadoMarketplace filtroAplicado, OnSilceListener<ListaBolaoDTO> listener){
+    public void buscarBoloesDisponiveis(PaginacaoFiltro paginacao, FiltroAplicadoMarketplace filtroAplicado, OnSilceListener<ListaBolaoDTO> listener){
         FiltroMarketPlace filtro = getFiltroMarketPlace(paginacao);
 
-        filtro.setQtdMinimaCota(filtroAplicado.getQtdMinCotas().intValue());
-        filtro.setQtdMaximaCota(filtroAplicado.getQtdMaxCotas().intValue());
+        if (filtroAplicado != null){
+            filtro.setQtdMinimaCota(filtroAplicado.getQtdMinCotas().intValue());
+            filtro.setQtdMaximaCota(filtroAplicado.getQtdMaxCotas().intValue());
 
-        if (filtroAplicado.getValorMinimoAposta() != null && !filtroAplicado.getValorMinimoAposta().isEmpty()){
-            filtro.setValorMinimoCota(new BigDecimal(filtroAplicado.getValorMinimoAposta()));
-        }
-        if (filtroAplicado.getValorMaximoAposta() != null && !filtroAplicado.getValorMaximoAposta().isEmpty()){
-            filtro.setValorMaximoCota(new BigDecimal(filtroAplicado.getValorMaximoAposta()));
+            if (filtroAplicado.getValorMinimoAposta() != null && !filtroAplicado.getValorMinimoAposta().isEmpty()){
+                filtro.setValorMinimoCota(new BigDecimal(filtroAplicado.getValorMinimoAposta()));
+            }
+            if (filtroAplicado.getValorMaximoAposta() != null && !filtroAplicado.getValorMaximoAposta().isEmpty()){
+                filtro.setValorMaximoCota(new BigDecimal(filtroAplicado.getValorMaximoAposta()));
+            }
         }
 
-        buscaBoloes(filtro, listener);
+        listener.success(mock.filtro(filtro));
+//        buscaBoloes(filtro, listener);
     }
 
     private FiltroMarketPlace getFiltroMarketPlace(PaginacaoFiltro paginacao) {
