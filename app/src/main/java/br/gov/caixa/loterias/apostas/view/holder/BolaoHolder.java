@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
@@ -67,14 +68,20 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
 		modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
+		concurso.setText(String.valueOf(bolao.getConcurso()));
 		if (bolao.getNomeFantasia().length() > 13){
 			loterica.setText(bolao.getNomeFantasia().substring(0,13).concat("..."));
 		} else {
 			loterica.setText(bolao.getNomeFantasia());
 		}
-		concurso.setText(String.valueOf(bolao.getConcurso()));
-		cidade.setText(bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
-		valor.setText(String.valueOf(bolao.getVrCotaComTarifa()));
+		String cidadeUf = bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla();
+		if (cidadeUf.length() > 13) {
+			cidade.setText(cidadeUf.substring(0,13).concat("..."));
+		} else {
+			cidade.setText(cidadeUf);
+		}
+		//valor.setText(String.valueOf(bolao.getVrCotaComTarifa()));
+		valor.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrCotaComTarifa().doubleValue()));
 		valorPremio.setText(String.valueOf(bolao.getVrPremioEstimado()));
 		atualizaBotoesQtdCotas(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		mostrarDetalhes(bolao.isAbertoParaMostrarDetalhes());

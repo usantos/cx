@@ -423,7 +423,6 @@ public class ApostaUtils {
 	public static IdentificaoDeUmaApostaDas8Modalidades converteBolaoEmAposta(CotasBolaoDTO bolao) {
 		IdentificaoDeUmBolao aposta = new IdentificaoDeUmBolao();
 		aposta.setModalidade(bolao.getModalidade());
-		//aposta.setValor(bolao.getValorCota());
 		aposta.setConcursoAlvo(bolao.getConcurso());
 		aposta.setSubcanalCarrinhoAposta(1);
 		aposta.setIndicadorCotaBolao(true);
@@ -436,6 +435,7 @@ public class ApostaUtils {
 		aposta.setTipoConcurso(tipoConcurso);
 
 		aposta.setValor(bolao.getVrCotaComTarifa());
+		aposta.setDataSorteio(bolao.getDataSorteio());
 
 		return aposta;
 	}

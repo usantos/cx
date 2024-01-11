@@ -72,6 +72,8 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	protected String dataEfetivacao = null;
 	@SerializedName("horaEfetivacao")
 	protected String horaEfetivacao = null;
+	@SerializedName("dataSorteio")
+	private String dataSorteio = null;
 	//@SerializedName("loterica")
 	//protected LotericaDTO loterica = null;
 	@SerializedName("vinculoEspelho")
@@ -350,7 +352,15 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		this.horaEfetivacao = horaEfetivacao;
 	}
 
-	/**
+	public String getDataSorteio() {
+		return dataSorteio;
+	}
+
+	public void setDataSorteio(String dataSorteio) {
+		this.dataSorteio = dataSorteio;
+	}
+
+/**
 
 	 @ApiModelProperty(value = "")
 	 public LotericaDTO getLoterica() {
@@ -573,6 +583,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 				"  troca: " + troca + "\n" +
 				"  dataEfetivacao: " + dataEfetivacao + "\n" +
 				"  horaEfetivacao: " + horaEfetivacao + "\n" +
+				"  dataSorteio: " + dataSorteio + "\n" +
 				//"  loterica: " + loterica + "\n" +
 				"  vinculoEspelho: " + vinculoEspelho + "\n" +
 				"  quantidadeNumeros: " + quantidadeNumeros + "\n" +
@@ -587,6 +598,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		identificaoDeUmaApostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
 		identificaoDeUmaApostaDas8Modalidades.setConcursoInicial(aposta.getConcursoInicial());
 		identificaoDeUmaApostaDas8Modalidades.setDataEfetivacao(aposta.getDataEfetivacao());
+		identificaoDeUmaApostaDas8Modalidades.setDataSorteio(aposta.getDataSorteio());
 		identificaoDeUmaApostaDas8Modalidades.setEspelho(aposta.getEspelho());
 		identificaoDeUmaApostaDas8Modalidades.setGerarEspelho(aposta.getGerarApostaEspelho());
 		identificaoDeUmaApostaDas8Modalidades.setHoraEfetivacao(aposta.getHoraEfetivacao());
