@@ -5,14 +5,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
@@ -107,4 +113,27 @@ public class FragmentUtils {
 		FragmentUtils.startFragment(fm, id, fragment);
 		return fragment;
 	}
+
+	public static ApostaConfirmadaNumeroDetalhesFragment startApostaConfirmadaDetalhes(FragmentManager fm, int id,
+																					   IdentificaoDeUmaApostaDas8Modalidades aposta,
+																					   ResultadoConcursoDTO resultado,
+																					   ComprovanteApostaDTO comprovante,
+																					   BigDecimal valorPremio) {
+		ApostaConfirmadaNumeroDetalhesFragment fragment = ApostaConfirmadaNumeroDetalhesFragment
+				.newInstance(aposta, resultado, comprovante, valorPremio);
+		FragmentUtils.startFragment(fm, id, fragment);
+		return fragment;
+	}
+
+	public static ApostaConfirmadaPartidaDetalhesFragment startApostaConfirmadaPartidaDetalhes(FragmentManager fm, int id,
+																							  IdentificaoDeUmaApostaDas8Modalidades aposta,
+																					   ResultadoConcursoDTO resultado,
+																					   ComprovanteApostaDTO comprovante,
+																					   BigDecimal valorPremio, boolean isToteca) {
+		ApostaConfirmadaPartidaDetalhesFragment fragment = ApostaConfirmadaPartidaDetalhesFragment
+				.newInstance(aposta, resultado, comprovante, valorPremio, isToteca);
+		FragmentUtils.startFragment(fm, id, fragment);
+		return fragment;
+	}
+
 }

@@ -117,7 +117,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void trataSucesso (VersionResponse response) {
-        if (!response.getPayload()) {
+        if (response == null || response.getPayload() == null || !response.getPayload()) {
             startActivity(new Intent(SplashScreenActivity.this, AtualizacaoActivity.class));
         } else {
             // chama configuracoes do app

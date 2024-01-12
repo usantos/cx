@@ -1,19 +1,14 @@
 package br.gov.caixa.loterias.apostas.utils;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.view.inputmethod.InputMethodManager;
 
-import androidx.core.app.ActivityCompat;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by lsimas on 10/04/2017.
@@ -25,6 +20,31 @@ public class AppUtils {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
                 && cm.getActiveNetworkInfo().isConnected();
+    }
+
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager != null) {
+            // Obtém todas as redes
+            Network[] networks = connectivityManager.getAllNetworks();
+
+            for (Network network : networks) {
+                NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+
+                if (capabilities != null &&
+                        (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))) {
+                    // Há uma conexão de dados móveis ou Wi-Fi ativa ou via cabo
+                    return true;
+                }
+            }
+        }
+
+        // Sem conexão ativa
+        return false;
     }
 
     public static List<Integer> converteListaInteiros(List<Integer> lista){
