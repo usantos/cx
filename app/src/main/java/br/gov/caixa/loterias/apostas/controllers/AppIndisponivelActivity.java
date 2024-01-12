@@ -38,8 +38,10 @@ public class AppIndisponivelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_indisponivel);
 
-        setaViews();
         pegaExtras();
+        setaViews();
+        atualizaMsg();
+        logAppCenter();
         setaMetodos();
     }
 
@@ -49,7 +51,16 @@ public class AppIndisponivelActivity extends AppCompatActivity {
         buttonTentarNovamente = findViewById(R.id.tenteNovamenteButton);
 
         txtVersion.setText( TextUtils.concat( getResources().getString(R.string.v) ,BuildConfig.VERSION_NAME));
-        atualizaMsg();
+    }
+
+    private void logAppCenter() {
+        if (!AppUtils.isNetworkConnected(AppIndisponivelActivity.this)){
+
+        } else if (isBuscaParametro){
+
+        } else {
+
+        }
     }
 
     private void pegaExtras() {

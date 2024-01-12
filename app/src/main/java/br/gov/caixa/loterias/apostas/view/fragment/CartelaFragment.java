@@ -80,7 +80,6 @@ import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
-import br.gov.caixa.loterias.apostas.view.listener.TextWatcherListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {

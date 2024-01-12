@@ -432,7 +432,16 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	}
 
 	private void atualizaValoresSingleton(){
-		valorSelecionadoMin = rapidaoConfigSingleton.getRapidaoConfig().getValorMinimo().doubleValue();
-		valorSelecionadoMax = rapidaoConfigSingleton.getRapidaoConfig().getValorMaximo().doubleValue();
+		if (rapidaoConfigSingleton.getRapidaoConfig() != null && rapidaoConfigSingleton.getRapidaoConfig().getValorMinimo() != null){
+			valorSelecionadoMin = rapidaoConfigSingleton.getRapidaoConfig().getValorMinimo().doubleValue();
+		} else {
+			valorSelecionadoMin = valorMinimo;
+		}
+
+		if (rapidaoConfigSingleton.getRapidaoConfig() != null && rapidaoConfigSingleton.getRapidaoConfig().getValorMaximo() != null){
+			valorSelecionadoMax = rapidaoConfigSingleton.getRapidaoConfig().getValorMaximo().doubleValue();
+		} else {
+			valorSelecionadoMax = limiteDiario;
+		}
 	}
 }
