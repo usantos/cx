@@ -307,7 +307,8 @@ public class AdicionarApostaCarrinhoHelper {
         if(apostaDas8Modalidades != null){
             if (apostaDas8Modalidades instanceof IdentificaoDeUmBolao){
                 telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_numero_concurso_atual), apostaDas8Modalidades.getConcursoAlvo().toString());
-                telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_sorteio_atual), "data");
+                //telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_sorteio_atual), "data");
+                telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_sorteio_atual), apostaDas8Modalidades.getDataSorteio().substring(0,5));
                 telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_hora_expiracao_reserva),
                         buscaBolaoCarrinho(((IdentificaoDeUmBolao) aposta).getIdBolao(), carrinhoDtoResponse));
             } else {
