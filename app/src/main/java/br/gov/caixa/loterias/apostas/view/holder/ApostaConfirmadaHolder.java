@@ -228,7 +228,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 														 quantidade));
 		} else if (isApostaBolao(aposta)){
 			this.concursoTxt.setText("Cota " + aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +
-					aposta.getReservaCotaBolao().getQtdCotaTotalBolao() + "\n" +
+					aposta.getReservaCotaBolao().getQtdCotaTotalBolao() + "\n\n" +
 					itemView.getContext().getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
 		} else {
 			this.concursoTxt.setText(itemView.getContext().getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
