@@ -33,6 +33,8 @@ public class SilceResponse<T> implements Serializable {
     protected RedirectEnum redirect = null;
     @SerializedName("errosValidacao")
     protected List<ErroValidacao> errosValidacao = null;
+    @SerializedName("versao")
+    private String versao = null;
     @SerializedName("payload")
     protected T payload = null;
 
@@ -97,6 +99,19 @@ public class SilceResponse<T> implements Serializable {
     }
 
     /**
+     * Versão do serviço
+     * @return versao
+     **/
+    @ApiModelProperty(value = "Versão do serviço")
+    public String getVersao() {
+        return versao;
+    }
+
+    public void setVersao(String versao) {
+        this.versao = versao;
+    }
+
+    /**
      **/
     @ApiModelProperty(value = "")
     public T getPayload() {
@@ -116,13 +131,14 @@ public class SilceResponse<T> implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SilceResponse comprovanteApostaDTOResponse = (SilceResponse) o;
-        return (this.codigo == null ? comprovanteApostaDTOResponse.codigo == null : this.codigo.equals(comprovanteApostaDTOResponse.codigo)) &&
-                (this.mensagem == null ? comprovanteApostaDTOResponse.mensagem == null : this.mensagem.equals(comprovanteApostaDTOResponse.mensagem)) &&
-                (this.tipo == null ? comprovanteApostaDTOResponse.tipo == null : this.tipo.equals(comprovanteApostaDTOResponse.tipo)) &&
-                (this.redirect == null ? comprovanteApostaDTOResponse.redirect == null : this.redirect.equals(comprovanteApostaDTOResponse.redirect)) &&
-                (this.errosValidacao == null ? comprovanteApostaDTOResponse.errosValidacao == null : this.errosValidacao.equals(comprovanteApostaDTOResponse.errosValidacao)) &&
-                (this.payload == null ? comprovanteApostaDTOResponse.payload == null : this.payload.equals(comprovanteApostaDTOResponse.payload));
+        SilceResponse silceResponse = (SilceResponse) o;
+        return (this.codigo == null ? silceResponse.codigo == null : this.codigo.equals(silceResponse.codigo)) &&
+                (this.mensagem == null ? silceResponse.mensagem == null : this.mensagem.equals(silceResponse.mensagem)) &&
+                (this.tipo == null ? silceResponse.tipo == null : this.tipo.equals(silceResponse.tipo)) &&
+                (this.redirect == null ? silceResponse.redirect == null : this.redirect.equals(silceResponse.redirect)) &&
+                (this.errosValidacao == null ? silceResponse.errosValidacao == null : this.errosValidacao.equals(silceResponse.errosValidacao)) &&
+                (this.versao == null ? silceResponse.versao == null : this.versao.equals(silceResponse.versao)) &&
+                (this.payload == null ? silceResponse.payload == null : this.payload.equals(silceResponse.payload));
     }
 
     @Override
@@ -133,6 +149,7 @@ public class SilceResponse<T> implements Serializable {
         result = 31 * result + (this.tipo == null ? 0 : this.tipo.hashCode());
         result = 31 * result + (this.redirect == null ? 0 : this.redirect.hashCode());
         result = 31 * result + (this.errosValidacao == null ? 0 : this.errosValidacao.hashCode());
+        result = 31 * result + (this.versao == null ? 0 : this.versao.hashCode());
         result = 31 * result + (this.payload == null ? 0 : this.payload.hashCode());
         return result;
     }
@@ -146,6 +163,7 @@ public class SilceResponse<T> implements Serializable {
                 "  tipo: " + tipo + "\n" +
                 "  redirect: " + redirect + "\n" +
                 "  errosValidacao: " + errosValidacao + "\n" +
+                "  versao: " + versao + "\n" +
                 "  payload: " + payload + "\n" +
                 "}\n";
         return sb;

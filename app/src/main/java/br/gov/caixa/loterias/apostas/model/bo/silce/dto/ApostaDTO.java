@@ -80,6 +80,11 @@ public class ApostaDTO<T> implements Serializable {
     protected T numerosSelecionados = null;
     @SerializedName(value = "numerosSelecionadosMaisMilionariaTrevo")
     protected T trevosSelecionados = null;
+    @SerializedName("indicadorCotaBolao")
+    private Boolean indicadorCotaBolao = false;
+    @SerializedName("reservaCotaBolao")
+    private CotaDTO reservaCotaBolao = null;
+
     /**
      * Identificador da Aposta
      **/
@@ -413,6 +418,21 @@ public class ApostaDTO<T> implements Serializable {
         this.quantidadeNumeros = quantidadeNumeros;
     }
 
+    public Boolean getIndicadorCotaBolao() {
+        return indicadorCotaBolao;
+    }
+
+    public void setIndicadorCotaBolao(Boolean indicadorCotaBolao) {
+        this.indicadorCotaBolao = indicadorCotaBolao;
+    }
+
+    public CotaDTO getReservaCotaBolao() {
+        return reservaCotaBolao;
+    }
+
+    public void setReservaCotaBolao(CotaDTO reservaCotaBolao) {
+        this.reservaCotaBolao = reservaCotaBolao;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -445,7 +465,9 @@ public class ApostaDTO<T> implements Serializable {
                 (this.horaEfetivacao == null ? apostaDTO.horaEfetivacao == null : this.horaEfetivacao.equals(apostaDTO.horaEfetivacao)) &&
                 (this.loterica == null ? apostaDTO.loterica == null : this.loterica.equals(apostaDTO.loterica)) &&
                 (this.vinculoEspelho == null ? apostaDTO.vinculoEspelho == null : this.vinculoEspelho.equals(apostaDTO.vinculoEspelho)) &&
-                (this.quantidadeNumeros == null ? apostaDTO.quantidadeNumeros == null : this.quantidadeNumeros.equals(apostaDTO.quantidadeNumeros));
+                (this.quantidadeNumeros == null ? apostaDTO.quantidadeNumeros == null : this.quantidadeNumeros.equals(apostaDTO.quantidadeNumeros)) &&
+                (this.indicadorCotaBolao == null ? apostaDTO.indicadorCotaBolao == null : this.indicadorCotaBolao.equals(apostaDTO.indicadorCotaBolao)) &&
+                (this.reservaCotaBolao == null ? apostaDTO.reservaCotaBolao == null : this.reservaCotaBolao.equals(apostaDTO.reservaCotaBolao));
     }
 
     @Override
@@ -474,6 +496,8 @@ public class ApostaDTO<T> implements Serializable {
         result = 31 * result + (this.loterica == null ? 0 : this.loterica.hashCode());
         result = 31 * result + (this.vinculoEspelho == null ? 0 : this.vinculoEspelho.hashCode());
         result = 31 * result + (this.quantidadeNumeros == null ? 0 : this.quantidadeNumeros.hashCode());
+        result = 31 * result + (this.indicadorCotaBolao == null ? 0 : this.indicadorCotaBolao.hashCode());
+        result = 31 * result + (this.reservaCotaBolao == null ? 0 : this.reservaCotaBolao.hashCode());
         return result;
     }
 
@@ -504,6 +528,8 @@ public class ApostaDTO<T> implements Serializable {
                 "  loterica: " + loterica + "\n" +
                 "  vinculoEspelho: " + vinculoEspelho + "\n" +
                 "  quantidadeNumeros: " + quantidadeNumeros + "\n" +
+                "  indicadorCotaBolao: " + indicadorCotaBolao + "\n" +
+                "  reservaCotaBolao: " + reservaCotaBolao + "\n" +
                 "}\n";
         return sb;
     }

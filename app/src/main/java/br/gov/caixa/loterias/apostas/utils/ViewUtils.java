@@ -467,12 +467,12 @@ public class ViewUtils {
         }
     }
 
-    public static SpannableStringBuilder textColor(Context context, String texto,int idCor) {
+    public static SpannableStringBuilder textColor(Context context, String texto, int idCor) {
 
         return textColor(context,texto,idCor,true);
     }
 
-    public static SpannableStringBuilder textColor(Context context, String texto,int idCor, Boolean colorBold) {
+    public static SpannableStringBuilder textColor(Context context, String texto, int idCor, Boolean colorBold) {
         Typeface font = ViewUtils.getFontFuturaBold(context);
 
         PositionStringBold positionStringBold = positionString(texto);

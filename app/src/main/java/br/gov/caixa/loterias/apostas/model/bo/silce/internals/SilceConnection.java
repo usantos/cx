@@ -182,8 +182,6 @@ public class SilceConnection {
 
     private <T> String prepareBody(T body) {
         try {
-            String teste = (new Gson()).toJson(body);
-
             //{"apostas":[]}
 
             String bodyString = "";

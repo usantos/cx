@@ -72,6 +72,14 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	protected String dataEfetivacao = null;
 	@SerializedName("horaEfetivacao")
 	protected String horaEfetivacao = null;
+	@SerializedName("dataSorteio")
+	private String dataSorteio = null;
+	@SerializedName("dataCompra")
+	protected String dataCompra = null;
+	@SerializedName("horaCompra")
+	protected String horaCompra = null;
+	@SerializedName("subcanalPagamento")
+	protected String subcanalPagamento = null;
 	//@SerializedName("loterica")
 	//protected LotericaDTO loterica = null;
 	@SerializedName("vinculoEspelho")
@@ -88,6 +96,17 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	protected transient Long idDB;
 	@Expose(serialize = false, deserialize = false)
 	protected transient Integer quantidadeSurpresinhas = null;
+
+	@SerializedName("dataInclusao")
+	private String dataInclusao = null;
+	@SerializedName("combo")
+	private Boolean combo = null;
+	@SerializedName("especialInclusoTeimosinha")
+	private Boolean especialInclusoTeimosinha = null;
+	@SerializedName("indicadorCotaBolao")
+	private Boolean indicadorCotaBolao = false;
+	@SerializedName("reservaCotaBolao")
+	private CotaDTO reservaCotaBolao = null;
 
 	@ApiModelProperty(value = "Gerar aposta espelho")
 	public Boolean getGerarApostaEspelho() {
@@ -339,7 +358,39 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		this.horaEfetivacao = horaEfetivacao;
 	}
 
-	/**
+	public String getDataSorteio() {
+		return dataSorteio;
+	}
+
+	public void setDataSorteio(String dataSorteio) {
+		this.dataSorteio = dataSorteio;
+	}
+
+	public String getDataCompra() {
+		return dataCompra;
+	}
+
+	public void setDataCompra(String dataCompra) {
+		this.dataCompra = dataCompra;
+	}
+
+	public String getHoraCompra() {
+		return horaCompra;
+	}
+
+	public void setHoraCompra(String horaCompra) {
+		this.horaCompra = horaCompra;
+	}
+
+	public String getSubcanalPagamento() {
+		return subcanalPagamento;
+	}
+
+	public void setSubcanalPagamento(String subcanalPagamento) {
+		this.subcanalPagamento = subcanalPagamento;
+	}
+
+/**
 
 	 @ApiModelProperty(value = "")
 	 public LotericaDTO getLoterica() {
@@ -441,6 +492,46 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		this.quantidadeTrevos = quantidadeTrevos;
 	}
 
+	public String getDataInclusao() {
+		return dataInclusao;
+	}
+
+	public void setDataInclusao(String dataInclusao) {
+		this.dataInclusao = dataInclusao;
+	}
+
+	public Boolean getCombo() {
+		return combo;
+	}
+
+	public void setCombo(Boolean combo) {
+		this.combo = combo;
+	}
+
+	public Boolean getEspecialInclusoTeimosinha() {
+		return especialInclusoTeimosinha;
+	}
+
+	public void setEspecialInclusoTeimosinha(Boolean especialInclusoTeimosinha) {
+		this.especialInclusoTeimosinha = especialInclusoTeimosinha;
+	}
+
+	public Boolean getIndicadorCotaBolao() {
+		return indicadorCotaBolao;
+	}
+
+	public void setIndicadorCotaBolao(Boolean indicadorCotaBolao) {
+		this.indicadorCotaBolao = indicadorCotaBolao;
+	}
+
+	public CotaDTO getReservaCotaBolao() {
+		return reservaCotaBolao;
+	}
+
+	public void setReservaCotaBolao(CotaDTO reservaCotaBolao) {
+		this.reservaCotaBolao = reservaCotaBolao;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -522,6 +613,10 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 				"  troca: " + troca + "\n" +
 				"  dataEfetivacao: " + dataEfetivacao + "\n" +
 				"  horaEfetivacao: " + horaEfetivacao + "\n" +
+				"  dataSorteio: " + dataSorteio + "\n" +
+				"  dataCompra: " + dataCompra + "\n" +
+				"  horaCompra: " + horaCompra + "\n" +
+				"  subcanalPagamento: " + subcanalPagamento + "\n" +
 				//"  loterica: " + loterica + "\n" +
 				"  vinculoEspelho: " + vinculoEspelho + "\n" +
 				"  quantidadeNumeros: " + quantidadeNumeros + "\n" +
@@ -536,9 +631,13 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 		identificaoDeUmaApostaDas8Modalidades.setConcursoAlvo(aposta.getConcursoAlvo());
 		identificaoDeUmaApostaDas8Modalidades.setConcursoInicial(aposta.getConcursoInicial());
 		identificaoDeUmaApostaDas8Modalidades.setDataEfetivacao(aposta.getDataEfetivacao());
+		identificaoDeUmaApostaDas8Modalidades.setDataSorteio(aposta.getDataSorteio());
 		identificaoDeUmaApostaDas8Modalidades.setEspelho(aposta.getEspelho());
 		identificaoDeUmaApostaDas8Modalidades.setGerarEspelho(aposta.getGerarApostaEspelho());
 		identificaoDeUmaApostaDas8Modalidades.setHoraEfetivacao(aposta.getHoraEfetivacao());
+		identificaoDeUmaApostaDas8Modalidades.setDataCompra(aposta.getDataCompra());
+		identificaoDeUmaApostaDas8Modalidades.setHoraCompra(aposta.getHoraCompra());
+		identificaoDeUmaApostaDas8Modalidades.setSubcanalPagamento(aposta.getSubcanalPagamento());
 		identificaoDeUmaApostaDas8Modalidades.setId(aposta.getId());
 		//identificaoDeUmaApostaDas8Modalidades.setLoterica( aposta.getLoterica() );
 		identificaoDeUmaApostaDas8Modalidades.setTipoConcurso(aposta.getTipoConcurso());

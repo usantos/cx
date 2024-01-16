@@ -22,6 +22,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_aposta_confirmada_detalhes" />
+    <include layout="@layout/content_detalhes_aposta_confirmada" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

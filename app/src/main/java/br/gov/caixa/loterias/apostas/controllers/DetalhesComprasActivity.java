@@ -93,7 +93,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     int ordemCompra;
     long tempo_acabar_pix;
     private Dialog dialogDevolucaoPix;
-
+    private ImageButton ibFavoritar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -413,7 +413,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             processadaPor.setText(getString(R.string.id_pagamento)+"\n"+compraDTO.getE2eId());
         }
 
-        ImageButton ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
+        ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
         ibFavoritar.setVisibility(View.VISIBLE);
         ibFavoritar.setOnClickListener(v -> {
                     configuraVisibilidadeMantSurpresinha(listaAposta);
@@ -482,6 +482,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 tiposApostas = new ArrayList<>();
                 for(ApostaDTO aposta : listaAposta){
                     tiposApostas.add(aposta.getModalidade().toString());
+                    if (aposta.getIndicadorCotaBolao()) {
+                        ibFavoritar.setVisibility(View.GONE);
+                    }
                 }
 
                 configuraAdapter(listaAposta);

@@ -7,6 +7,7 @@
     <color name="azulClaroSelecaotime">#cae1e4</color>
     <color name="azulclaro">#d4dfe2</color>
     <color name="azulpush">#0066B3</color>
+    <color name="azulBolao">#2F5095</color>
     <color name="pushbotaoaposteagora">#0164AF</color>
     <color name="pushbotaoconferiragora">#4BBDAC</color>/
     <color name="fundobrancocentralmsg">#F4F4F4</color>
@@ -201,5 +202,26 @@
     <color name="mp_error_red_pink">#F04449</color>
 
     <color name="azul_botao_pix">#0077DB</color>
+
+    <!--  Novas cores MARKETPLACE  -->
+    <color name="bolao_barra_titulo">#0066B3</color>
+    <color name="bolao_laranja">#F79C31</color>
+    <color name="bolao_botao_cinza">#B1AEAE</color>
+    <color name="bolao_linha">#D9D9D9</color>
+    <color name="bolao_hint">#3A4859</color>
+    <color name="bolao_gray_stroke">#E8E6E6</color>
+    <color name="bolao_black_loterias">#1F2A47</color>
+    <color name="bolao_trilha_slider_ativa">#D9D9D9</color> <!--Figma #757575-->
+    <color name="bolao_slider_trilha_ativa">#54BBAB</color>
+    <color name="bolao_slider_trilha_inativa">#D9D9D9</color>
+    <color name="bolao_slider_areola">#54BBAB</color>
+    <color name="bolao_slider_marcador">#FFFFFF</color>
+    <color name="mega_verde_claro_mkp">#04A766</color>
+    <color name="mega_verde_escuro_mkp">#00945E</color>
+    <color name="mega_verde_opaco_mkp">#0F885C</color>
+    <color name="bolao_azul_subtitulo">#095A9C</color>
+    <color name="cor_bola_unselected">#ADC0C4</color>
+    <color name="cotas_boloes">#373E4A</color>
+    <color name="azul_detalhe_aposta">#4FA7B2</color>
 
 </resources>

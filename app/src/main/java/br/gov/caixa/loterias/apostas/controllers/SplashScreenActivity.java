@@ -138,6 +138,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(ParametrosConfiguraveisDTOResponse result) {
 
+                    if (temInformacaoBolao(result)){
+                        ConfiguracaoAppSingleton.getInstance().setBolaoHabilitado(result.getPayload().getMapa().getBolaoHabilitado());
+                    }
+
                     if (temDadosResposta(result)){
                         setMostraMenuApostas(result.getPayload().getMapa().getHabilitaMenuApostas());
                     }else {
@@ -158,6 +162,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         }catch (Exception e){
             setMenuApostasDefault();
         }
+    }
+
+    private boolean temInformacaoBolao(ParametrosConfiguraveisDTOResponse result) {
+        return temDadosPayloadMapa(result) && result.getPayload().getMapa().getBolaoHabilitado() != null;
     }
 
     private boolean precisaAtualizarPublicKey(ParametrosConfiguraveisDTOResponse result) {

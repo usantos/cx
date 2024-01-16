@@ -15,9 +15,9 @@ public class LotericaDTOResponseManual {
     @SerializedName("lotericas")
     private List<LotericaDTO> lotericas = null;
     @SerializedName("municipio")
-    private Municipio municipio = null;
+    private MunicipioToDelete municipio = null;
     @SerializedName("uf")
-    private UnidadeFederacao uf = null;
+    private UnidadeFederacaoToDelete uf = null;
     @SerializedName("bairro")
     private BairroDTO bairro = null;
 
@@ -29,19 +29,19 @@ public class LotericaDTOResponseManual {
         this.lotericas = lotericas;
     }
 
-    public Municipio getMunicipio() {
+    public MunicipioToDelete getMunicipio() {
         return municipio;
     }
 
-    public void setMunicipio(Municipio municipio) {
+    public void setMunicipio(MunicipioToDelete municipio) {
         this.municipio = municipio;
     }
 
-    public UnidadeFederacao getUf() {
+    public UnidadeFederacaoToDelete getUf() {
         return uf;
     }
 
-    public void setUf(UnidadeFederacao uf) {
+    public void setUf(UnidadeFederacaoToDelete uf) {
         this.uf = uf;
     }
 

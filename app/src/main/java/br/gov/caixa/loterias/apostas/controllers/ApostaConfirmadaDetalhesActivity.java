@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.android.volley.NetworkResponse;
@@ -79,6 +81,7 @@ import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
@@ -129,16 +132,21 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected Toolbar toolbar;
 
     @ViewById
-    protected TextView validadePremioText, comprovanteText, editarTxt;
+    protected TextView validadePremioText, editarTxt;
 
     @ViewById
-    protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout, favoriteBtn, comprovanteLayout, layoutTextoSalveAposta;
+    protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout,
+            favoriteBtn, layoutTextoSalveAposta, editarApostaBtn;
 
     @ViewById
     protected LinearLayout  ll_adic_fav;
+    @ViewById
+    protected ConstraintLayout v_bottom, informacaoApostaLayout;
 
     @ViewById
     protected EditText nomeApostaEditTxt;
+    @ViewById
+    protected View id_view_divisao;
 
     private EstiloModalidade estilo;
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
@@ -157,6 +165,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private DetalhesHistoricoPremioDTOResponse detalhesHistoricoPremioDTOResponse;
     private ApostaConfirmadaPartidaDetalhesFragment partidaFragment;
     private ApostaConfirmadaNumeroDetalhesFragment numerosFragment;
+    private ApostaConfirmadaBolaoDetalhesFragment numerosBolaoFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -171,7 +180,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setaViews(){
-        estilo = new EstiloModalidade(aposta.getModalidade());
+        estilo = new EstiloModalidade(aposta);
         setTheme(estilo.getThemeId());
 
         setTitle(ViewUtils.getNomeModalidadePorAposta(aposta));
@@ -229,17 +238,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
-        if (premioPago) {
-            if (detalhesPremioDTO != null) {
-                comprovanteText.setText(detalhesPremioDTO.getNsbi());
-            } else {
-                comprovanteText.setText(getString(R.string.label_nsu_pagamento_nsu, String.valueOf(detalhesHistoricoPremioDTO.getPremioDTO().getNsuPagamento())));
-            }
-        } else if (StringUtils.isNotEmpty(comprovanteApostaDTO.getNsbi())) {
-            comprovanteText.setText(comprovanteApostaDTO.getNsbi());
-        } else {
-            comprovanteLayout.setVisibility(View.INVISIBLE);
-        }
 
         if (CollectionUtils.isEmpty(aposta.getNumerosSelecionados())) {
             favoriteBtn.setVisibility(View.GONE);
@@ -248,6 +246,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
         if(aposta.getModalidade() == ModalidadeEnum.LOTECA){
             ll_adic_fav.setVisibility(View.GONE);
+            id_view_divisao.setVisibility(View.GONE);
+        } else if (aposta.getIndicadorCotaBolao()){
+            editarApostaBtn.setVisibility(View.GONE);
+            ll_adic_fav.setVisibility(View.GONE);
+        } else {
+            id_view_divisao.setVisibility(View.VISIBLE);
         }
 
     }
@@ -259,32 +263,41 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 disableButtonEditar();
                 partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
                         R.id.fragmentContainer, aposta, null, comprovanteApostaDTO, valorPremio, false);
-
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 break;
             case LOTECA:
                 disableButtonEditar();
                 partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
                         R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio, true);
 
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
                 break;
             default:
-                numerosFragment = FragmentUtils.startApostaConfirmadaDetalhes(getSupportFragmentManager(),
-                        R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
-
-
-                linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
+                if (aposta.getIndicadorCotaBolao()){
+                    numerosBolaoFragment = FragmentUtils.startApostaConfirmadaBolaoDetalhes(getSupportFragmentManager(),
+                            R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
+                } else {
+                    numerosFragment = FragmentUtils.startApostaConfirmadaDetalhes(getSupportFragmentManager(),
+                            R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
+                }
                 break;
         }
+        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
+        informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
     }
 
     private int getCorEscura() {
         if (estilo != null){
             return estilo.getCorEscura();
         }
-        estilo = new EstiloModalidade(aposta.getModalidade());
+        estilo = new EstiloModalidade(aposta);
         return estilo.getCorEscura();
+    }
+
+    private int getCorClara() {
+        if (estilo != null){
+            return estilo.getCorClara();
+        }
+        estilo = new EstiloModalidade(aposta);
+        return estilo.getCorClara();
     }
 
     @Click
@@ -302,7 +315,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 Bundle args = new Bundle();
                 args.putSerializable(CARRINHO, (Serializable) response.getPayload());
                 startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtras(args));
-
             }
 
             @Override
@@ -311,7 +323,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 if (MensagensNetwork.isUnauthorizedError(error)) {
                     startActivity(new Intent(ApostaConfirmadaDetalhesActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
                 } else {
-                    RedirectNetwork.checkRedirect( error, ApostaConfirmadaDetalhesActivity.this );
+                    RedirectNetwork.checkRedirect( error, ApostaConfirmadaDetalhesActivity.this);
                 }
             }
         });

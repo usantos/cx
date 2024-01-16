@@ -59,7 +59,9 @@
     <string name="verCarrinho">_Ver carrinho_\nde apostas</string>
     <string name="verCarrinhoVazio">OK</string>
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
+    <string name="infoConcluaPagamentoBolao">Conclua o pagamento de suas \napostas dentro do prazo</string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
+    <string name="tituloBolãoFeito">Esse bolão foi para \no seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
     <string name="confirmacao">Confirmação</string>
@@ -806,6 +808,8 @@
     <string name="evento_entrou_carrinho_online">ENTROU_CARRINHO_DE_APOSTAS_ONLINE</string>
     <string name="confirmar">Confirmar</string>
     <string name="evento_entrou_formas_pagamento">ENTROU_FORMAS_DE_PAGAMENTO</string>
+    <string name="evento_carregou_boloes_disponiveis">CARREGOU_BOLOES_DISPONIVEIS</string>
+    <string name="evento_carregou_detalhe_bolao">CARREGOU_DETALHE_BOLAO</string>
     <string name="string_true">true</string>
     <string name="string_false">false</string>
     <string name="evento_pagamento_sucesso">EFETUOU_PAGAMENTO_SUCESSO</string>
@@ -827,6 +831,7 @@
     <string name="yyyy">yyyy</string>
     <string name="underline_com_espaco">&#160;_&#160;</string>
     <string name="dd_mm">dd/MM</string>
+    <string name="dd_mm_yyyy">dd/MM/yyyy</string>
     <string name="dd_mm_yyyy_hh_mm_ss">dd/MM/yyyy HH:mm:ss</string>
     <string name="eeee">EEEE</string>
     <string name="hh_mm_ss">HH:mm:ss</string>
@@ -1300,5 +1305,30 @@
     <string name="alerta_precisa_estar_no_brasil">As apostas só podem ocorrer em território nacional. Suas apostas serão mantidas no carrinho para a conclusão da compra quando você estiver no país.</string>
     <string name="posso_consultar_sua_localizacao">As apostas só podem ocorrer em território nacional. Portanto, você somente conseguirá pagar uma compra se estiver no Brasil, não havendo impedimento para utilizar os demais serviços.\nPodemos consultar a sua localização?</string>
     <string name="pagamento_pix_estornado">Não foi possível completar a sua aposta e seu Pix será devolvido. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
+
+    <!-- Strings de boloes mkp -->
+    <string name="filtrar">_Filtrar_</string>
+    <string name="valor_minimo_aposta">Valor Mínimo Aposta</string>
+    <string name="valor_maximo_aposta">Valor Máximo Aposta</string>
+    <string name="quantidade_cotas">Quantidade de Cotas</string>
+    <string name="quantidade_dezenas">Quantidade de Dezenas</string>
+    <string name="limpar_filtros">Limpar Filtros</string>
+    <string name="aplicar">Aplicar</string>
+    <string name="numeros_quero">Números que eu quero</string>
+    <string name="numeros_nao_quero">Números que eu não quero</string>
+    <string name="nome_ou_codigo">Nome ou código</string>
+    <string name="apostas_boloes">_Apostas Bolões_\na partir de R$10,00</string>
+    <string name="descritivo_tela_bolao">Veja aqui os bolões da Mega-Sena em destaque. Em breve, mais modalidades!</string>
+    <string name="cotas_bolao">Cotas bolão</string>
+    <string name="apostas_individuais">Apostas individuais</string>
+    <string name="cota_reservada">Cota reservada</string>
+    <string name="cota_expirada">Cota expirada</string>
+    <string name="carrinho_cotas_expiradas">Você deve retirar as cotas expiradas do carrinho para avançar para pagamento</string>
+    <string name="loteca_nao_favorita">Apostas da Loteca e Bolões não são salvos no carrinho favorito.</string>
+    <string name="pagamento_pix_estornado">Não foi possível completar a sua aposta e seu Pix será devolvido. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
+    <string name="extra_data_hora_expiracao_reserva">dataHoraExpiracaoReserva</string>
+    <string name="label_cota_concurso_bold">Cota: </string>
+    <string name="label_voltar_apostas_individuais">_Voltar Apostas Individuais_</string>
+    <string name="alterar_pesquisa">_Alterar_\na pesquisa com novos filtros</string>
 
 </resources>

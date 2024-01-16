@@ -20,6 +20,8 @@ public class ParametrosConfiguraveisDTO {
     private Boolean habilitaMenuApostas;
     @SerializedName("recuperarMeioPagamento")
     private Boolean atualizaPublicKey;
+    @SerializedName("habilitaVendaCotasBolao")
+    private Boolean bolaoHabilitado;
 
     public Boolean getMicroServico() {
         return isMicroServico;
@@ -76,5 +78,13 @@ public class ParametrosConfiguraveisDTO {
     @Override
     public int hashCode() {
         return Objects.hash(mostrar6meses, urlBase, isMicroServico);
+    }
+
+    public Boolean getBolaoHabilitado() {
+        return bolaoHabilitado;
+    }
+
+    public void setBolaoHabilitado(Boolean bolaoHabilitado) {
+        this.bolaoHabilitado = bolaoHabilitado;
     }
 }

@@ -10,7 +10,7 @@ import android.widget.EditText;
 import java.util.Arrays;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.view.listener.TextWatcherAfterChangedListener;
+import br.gov.caixa.loterias.apostas.view.listener.TextWatcherChangedListener;
 
 
 public class MaskEditUtil {
@@ -32,7 +32,7 @@ public class MaskEditUtil {
      * @param mask
      * @return
      */
-    public static TextWatcher mask(final EditText ediTxt, final String mask, TextWatcherAfterChangedListener listener) {
+    public static TextWatcher mask(final EditText ediTxt, final String mask, TextWatcherChangedListener listener) {
         return new TextWatcher() {
             boolean isUpdating;
             String old = "";
@@ -91,7 +91,7 @@ public class MaskEditUtil {
         return s.replaceAll("[.]", "").replaceAll("[-]", "").replaceAll("[/]", "").replaceAll("[(]", "").replaceAll("[ ]","").replaceAll("[)]", "");
     }
 
-    public static TextWatcher textWatcherAfterChangedListener(TextWatcherAfterChangedListener listener) {
+    public static TextWatcher textWatcherAfterChangedListener(TextWatcherChangedListener listener) {
         return new TextWatcher() {
 
             @Override
@@ -108,4 +108,21 @@ public class MaskEditUtil {
             }
         };
     }
+
+    public static TextWatcher textWatcherOnTextTChangedListener(TextWatcherChangedListener listener) {
+        return new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(final Editable s) {}
+
+            @Override
+            public void beforeTextChanged(final CharSequence s, final int start, final int count, final int after) {}
+
+            @Override
+            public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
+                listener.onChanged(s.toString());
+            }
+        };
+    }
+
 }

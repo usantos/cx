@@ -38,4 +38,12 @@ public class LoteriasAppActivity extends AppCompatActivity {
 		return true;
 	}
 
+	public Toolbar getToolbar(){
+		return this.toolbar;
+	}
+
+	public void setToolbar(Toolbar toolbar){
+		this.toolbar = toolbar;
+	}
+
 }
