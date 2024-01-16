@@ -364,6 +364,8 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 
 	public void setDataSorteio(String dataSorteio) {
 		this.dataSorteio = dataSorteio;
+	}
+
 	public String getDataCompra() {
 		return dataCompra;
 	}
