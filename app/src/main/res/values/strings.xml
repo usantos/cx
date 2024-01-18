@@ -1315,7 +1315,7 @@
     <string name="aplicar">Aplicar</string>
     <string name="numeros_quero">Números que eu quero</string>
     <string name="numeros_nao_quero">Números que eu não quero</string>
-    <string name="nome_ou_codigo">Nome ou código</string>
+    <string name="nome_ou_codigo">Código E. Lotérico</string>
     <string name="apostas_boloes">_Apostas Bolões_\na partir de R$10,00</string>
     <string name="descritivo_tela_bolao">Veja aqui os bolões da Mega-Sena em destaque. Em breve, mais modalidades!</string>
     <string name="cotas_bolao">Cotas bolão</string>
@@ -1329,5 +1329,6 @@
     <string name="label_cota_concurso_bold">Cota: </string>
     <string name="label_voltar_apostas_individuais">_Voltar Apostas Individuais_</string>
     <string name="alterar_pesquisa">_Alterar_\na pesquisa com novos filtros</string>
+    <string name="descritivo_loterica">Insira somente os números do segundo campo, com 6 dígitos. Exemplo: E. Lotérico 10.000004-01, digite 000004</string>
 
 </resources>

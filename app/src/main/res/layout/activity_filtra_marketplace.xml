@@ -391,6 +391,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 />
 
+            <TextView
+                android:id="@+id/text_loterica_descritivo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:text="@string/descritivo_loterica"
+                android:textColor="@color/bolao_hint"
+                android:textSize="13sp"
+                android:textAlignment="gravity"
+                app:layout_constraintTop_toBottomOf="@+id/edit_loterica"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
             <AutoCompleteTextView
                 android:id="@+id/autoComplete_loterica"
                 android:layout_width="match_parent"
@@ -434,7 +450,7 @@
 
             <Button
                 android:id="@+id/btn_limpar_filtros"
-                android:layout_width="140dp"
+                android:layout_width="130dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginBottom="20dp"
@@ -450,7 +466,7 @@
 
             <Button
                 android:id="@+id/btn_aplicar"
-                android:layout_width="210dp"
+                android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:layout_below="@id/btn_limpar_filtros"
                 android:layout_marginBottom="20dp"

@@ -41,6 +41,9 @@ public class BolaoRepository extends AppRepository {
             if (filtroAplicado.getValorMaximoAposta() != null && !filtroAplicado.getValorMaximoAposta().isEmpty()){
                 filtro.setValorMaximoCota(new BigDecimal(filtroAplicado.getValorMaximoAposta()));
             }
+            if (filtroAplicado.getLotericaDTO() != null && filtroAplicado.getLotericaDTO().getId() > 0) {
+                filtro.setNumeroLoterico(filtroAplicado.getLotericaDTO().getId());
+            }
         }
 
         //listener.success(BolaoListMock.getInstance().filtro(filtro));
