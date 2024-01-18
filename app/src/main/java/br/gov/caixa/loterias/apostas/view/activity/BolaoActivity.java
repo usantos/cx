@@ -193,7 +193,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 						} else {
 							preencheListas(cotasFiltradas);
 							if (!cotasFiltradas.isEmpty()){
-								txtFimLista.setVisibility(View.VISIBLE);
+								if (cotasFiltradas.size() > 4) {
+									txtFimLista.setVisibility(View.VISIBLE);
+								}
 							}
 						}
 						AlertDialogUtils.dismiss();
