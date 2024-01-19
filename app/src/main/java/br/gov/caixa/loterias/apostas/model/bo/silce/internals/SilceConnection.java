@@ -328,6 +328,8 @@ public class SilceConnection {
         String baseUrlCarrinho;
         if(BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")) {
             baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
+            //***APAGAR APENAS PARA TESTE***
+            baseUrlCarrinho = "https://apim-lce-des.azure-api.net/loterias-web/carrinho/v1";
         } else {
             baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
         }
