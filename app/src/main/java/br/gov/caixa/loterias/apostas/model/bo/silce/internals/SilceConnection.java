@@ -95,7 +95,7 @@ public class SilceConnection {
             if (!precisaRefreshToken) {
                 req.getHeaders().put("cookie", "security=false");
                 req.getHeaders().put("Subcanal", "3");
-                //Necessario no Carrinho Nuvem
+                //Apenas para teste
                 req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
             }
 
@@ -328,7 +328,7 @@ public class SilceConnection {
         String baseUrlCarrinho;
         if(BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")) {
             baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
-            //***APAGAR APENAS PARA TESTE***
+            //Apenas para teste
             baseUrlCarrinho = "https://apim-lce-des.azure-api.net/loterias-web/carrinho/v1";
         } else {
             baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
