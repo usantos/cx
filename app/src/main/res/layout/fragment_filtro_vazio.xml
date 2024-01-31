@@ -143,6 +143,7 @@
             app:layout_constraintEnd_toEndOf="@id/id_trevo"/>
         
         <ImageView
+            android:id="@+id/id_lupa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/lupa_filtro"
@@ -150,9 +151,10 @@
             app:layout_constraintBottom_toBottomOf="@id/id_trevo"/>
 
         <TextView
+            android:id="@+id/id_descricao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Não encontramos nenhum bolão que corresponda à sua pesquisa!"
+            android:text="@string/descricao_filtro_vazio"
             android:textColor="@color/azulpush"
             android:textStyle="bold"
             android:textSize="16sp"
