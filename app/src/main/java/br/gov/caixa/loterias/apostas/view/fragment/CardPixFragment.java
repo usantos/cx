@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 public class CardPixFragment extends Fragment {
 	private static final String ARG_TELA = "ARG_TELA";
@@ -27,6 +28,7 @@ public class CardPixFragment extends Fragment {
 
 	private int numeroTela = 0;
 	private GerarPixDTO pixDTO;
+	private CopiaColaPixFragment copiaColaPixFragment;
 
 	public CardPixFragment() {}
 
@@ -86,7 +88,7 @@ public class CardPixFragment extends Fragment {
 			view.findViewById(R.id.valor_pix).setVisibility(View.GONE);
 			FragmentUtils.startOrientacaoPix(getActivity().getSupportFragmentManager(),R.id.corpo);
 		} else if (isTela(TELA_COPIA_COLA)){
-			FragmentUtils.startCopiaColaPix(pixDTO, getActivity().getSupportFragmentManager(), R.id.corpo);
+			copiaColaPixFragment = FragmentUtils.startCopiaColaPix(pixDTO, getActivity().getSupportFragmentManager(), R.id.corpo);
 		} else if (isTela(TELA_RESGATE)){
 			view.findViewById(R.id.valor_pix).setVisibility(View.GONE);
 		}
@@ -94,5 +96,11 @@ public class CardPixFragment extends Fragment {
 
 	private boolean isTela(int tela) {
 		return numeroTela == tela;
+	}
+
+	public void checkStatusPix(OnCompraAsync listener) {
+		if (copiaColaPixFragment != null){
+			copiaColaPixFragment.checkaStatusPix(listener);
+		}
 	}
 }

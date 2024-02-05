@@ -46,7 +46,11 @@ public class PixModel extends AppModel {
 		});
 	}
 
-	public void verificaStatusPix(GerarPixDTO pix, OnCompraAsync listener){
+	public void verificaStatusPixPeriodicamente(GerarPixDTO pix, OnCompraAsync listener){
+		CompraPixUtil.checkStatusCompraPeriodicamente(getActivity(), pix, pix.getIdCompra(), listener);
+	}
+
+	public void verificaStatusPix(GerarPixDTO pix, OnCompraAsync listener) {
 		CompraPixUtil.checkStatusCompra(getActivity(), pix, pix.getIdCompra(), listener);
 	}
 }
