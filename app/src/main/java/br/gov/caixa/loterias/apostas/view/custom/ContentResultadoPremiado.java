@@ -24,7 +24,8 @@ public class ContentResultadoPremiado extends LinearLayout {
 
     @ViewById
     protected LinearLayout premioInfoLinearLayout,topoModalidadeResultadoLinearLayout,
-            fundoBackgroundTrapezeResultadoLinearLayout, topoResultadoPremioLinearLayout, premioGanhoLinearLayout;
+            fundoBackgroundTrapezeResultadoLinearLayout, topoResultadoPremioLinearLayout, premioGanhoLinearLayout,
+            cabecalhoListaFaixaPremiacaoLinearLayout, cabecalhoListaFaixaPremiacaoBolao;
 
     @ViewById
     protected TextView valorEstimativaConcursoAtualTextView,valorPremioTituloTextView,
@@ -95,5 +96,10 @@ public class ContentResultadoPremiado extends LinearLayout {
 
     public ConstraintLayout getButtonVerDetalheAposta() {
         return clVerDetalheAposta;
+    }
+
+    public void setCabecalhoBolao() {
+        cabecalhoListaFaixaPremiacaoLinearLayout.setVisibility(GONE);
+        cabecalhoListaFaixaPremiacaoBolao.setVisibility(VISIBLE);
     }
 }
