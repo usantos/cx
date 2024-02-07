@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.SSLPiniingUtil;
 
 import static com.android.volley.Request.Method.DELETE;
 import static com.android.volley.Request.Method.GET;
@@ -274,34 +275,6 @@ public class MicroServicoConnection {
     }
 
     public void nuke() {
-            if (BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")) {
-                try {
-                    SSLContext context1 = SSLContext.getInstance("TLS");
-                    context1.init(null, new X509TrustManager[]{new X509TrustManager() {
-                        public void checkClientTrusted(X509Certificate[] chain,
-                                                       String authType) {
-                        }
-
-                        public void checkServerTrusted(X509Certificate[] chain,
-                                                       String authType) {
-                        }
-
-                        public X509Certificate[] getAcceptedIssuers() {
-                            return new X509Certificate[0];
-                        }
-                    }}, new SecureRandom());
-                    HttpsURLConnection.setDefaultSSLSocketFactory(context1.getSocketFactory());
-                    HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-                        @Override
-                        public boolean verify(String arg0, SSLSession arg1) {
-                            return true;
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-
+        SSLPiniingUtil.pinagem();
     }
 }

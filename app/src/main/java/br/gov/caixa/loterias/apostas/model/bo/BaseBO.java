@@ -56,6 +56,7 @@ public class BaseBO {
     @AfterInject
     protected void init(){
         silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+        silceConnection.nuke();
     }
 
     protected <T> Response.ErrorListener interceptError(final GsonRequest request, final Map<String, String> headers, final RequestListener<T> listener){

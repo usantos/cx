@@ -20,6 +20,7 @@ import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.SSLPiniingUtil;
 
 import static com.android.volley.Request.Method.DELETE;
 import static com.android.volley.Request.Method.GET;
@@ -260,5 +261,9 @@ public class SilceConnection {
             }
         }
         return sb.toString();
+    }
+
+    public void nuke() {
+        SSLPiniingUtil.pinagem();
     }
 }
