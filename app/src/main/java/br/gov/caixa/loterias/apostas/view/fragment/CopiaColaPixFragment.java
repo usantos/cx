@@ -221,6 +221,11 @@ public class CopiaColaPixFragment extends Fragment {
 			@Override
 			public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
 				RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+				if (pixDTO.estaNoPrazo()){
+					iconAtualizar.setEnabled(true);
+					iconAtualizar.setVisibility(View.VISIBLE);
+					progressBar.setVisibility(View.GONE);
+				}
 			}
 
 			@Override
