@@ -66,7 +66,7 @@ public class CompraPixUtil {
             if (response.getPayload() != null && response.getPayload().getIdSituacaoCompra() == 8){
                 listener.successCompra();
             } else {
-                checkStatusCompraPeriodicamente(context, pix, pix.getIdCompra(), listener);
+                listener.errorCompra(error);
             }
         }
     }
