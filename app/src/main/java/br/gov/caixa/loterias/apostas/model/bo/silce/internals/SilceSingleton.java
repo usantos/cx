@@ -10,13 +10,26 @@ import org.androidannotations.annotations.EBean;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
+import android.content.Context;
+
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.SSLPinningUtil;
+import br.gov.caixa.loterias.apostas.utils.TestVisao;
+
 @EBean(scope = Singleton)
 public class SilceSingleton {
     private RequestQueue queue;
 
     @AfterInject
     protected void init(){
-        this.queue = new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
+        Context ctx = Aplicacao.application.getApplicationContext();
+
+        if (BuildVersionUtil.isPRD()){
+            this.queue = SSLPinningUtil.testePinagem(ctx);
+        } else {
+            this.queue = new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
+        }
         this.queue.start();
     }
 
