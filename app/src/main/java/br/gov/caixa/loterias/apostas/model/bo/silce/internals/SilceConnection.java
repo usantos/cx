@@ -11,10 +11,13 @@ import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
@@ -32,6 +35,39 @@ public class SilceConnection {
     private static final String TAG = SilceConnection.class.getName();
     private static final int TIMEOUT = 30000;
     private static final String TAG_REQUEST = "TAG_REQUEST";
+
+    private static final String PUBLICO = "/publico";
+    private static final String LOGADO = "/logado";
+    private static final List<String> listPublico = Arrays.asList(
+                                        "/equipes-esportivas/listaEquipes",
+                                        "/parametros-simulacao",
+                                        "/combos");
+    private static final List<String> listLogadoExato = Arrays.asList(
+                                        "/carrinhos",
+                                        "/carrinhos/atualiza-teimosinha-aposta",
+                                        "/carrinhos/incluir-aposta",
+                                        "/carrinhos/incluir-apostas",
+                                        "/carrinhos/incluir-combo",
+                                        "/carrinhos/incluir-surpresinha",
+                                        "/carrinhos/incluir-surpresinhas",
+                                        "/carrinhos/iniciar-pagamento-externo",
+                                        "/carrinhos/limpar",
+                                        "/carrinhos/limpar-carrinho-favorito",
+                                        "/carrinhos/registrar-apostas",
+                                        "/carrinhos/registrar-apostas-async",
+                                        "/carrinhos/registrar-apostas-sem-carrinho",
+                                        "/carrinhos/salvar-carrinho-favorito",
+                                        "/carrinhos/validar",
+                                        "/carrinhos/validar-aposta-identica",
+                                        "/carrinhos/verifica-compra-processamento",
+                                        "/usuarios/verificar-cadastro");
+    private static final List<String> listLogadoParcial = Arrays.asList(
+                                        "/apostas-favoritas",
+                                        "/carrinhos-favoritos",
+                                        "/carrinhos/apostas",
+                                        "/carrinhos/combos",
+                                        "/carrinhos/incluir-aposta-favorita",
+                                        "/carrinhos/incluir-carrinho-favorito");
 
     private RequestQueue requestQueue;
     private SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
@@ -59,6 +95,8 @@ public class SilceConnection {
             if (!precisaRefreshToken) {
                 req.getHeaders().put("cookie", "security=false");
                 req.getHeaders().put("Subcanal", "3");
+                //Apenas para teste
+                req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
             }
 
         } catch (Exception e) {
@@ -79,6 +117,8 @@ public class SilceConnection {
                     req.getHeaders().put("Authorization", "Bearer " + keycloakBO.getAccessToken());
                     req.getHeaders().put("cookie", "security=false");
                     req.getHeaders().put("Subcanal", "3");
+                    //Necessario no Carrinho Nuvem
+                    req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -177,6 +217,12 @@ public class SilceConnection {
     }
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
+
+        String novoCaminho = alteraCaminhoCarrinho(path);
+        if (novoCaminho != null) {
+            return novoCaminho + fillParamToString(queryParams);
+        }
+
         return fillUrl(path) + fillParamStr(queryParams);
     }
 
@@ -260,5 +306,50 @@ public class SilceConnection {
             }
         }
         return sb.toString();
+    }
+
+    private String fillParamToString(Map<String, String> queryParams) {
+        if ((queryParams == null) || (queryParams.isEmpty())) {
+            return "";
+        }
+        StringBuilder singleParam = new StringBuilder();
+        for (Map.Entry<String, String> param : queryParams.entrySet()) {
+            if (param.getValue() != null) {
+                singleParam.append(param.getKey()).append("==").append(param.getValue()).append("&&");
+            }
+        }
+        return "/?q=" + singleParam.toString();
+    }
+
+    private String alteraCaminhoCarrinho(String path) {
+
+        String baseUrlCarrinho;
+        if(BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")) {
+            baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
+            //Apenas para teste
+            baseUrlCarrinho = "https://apim-lce-des.azure-api.net/loterias-web/carrinho/v1";
+        } else {
+            baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
+        }
+
+        if (baseUrlCarrinho.equals("-")) {
+            return null;
+        }
+
+        if (listPublico.contains(path)) {
+            return baseUrlCarrinho + PUBLICO + path;
+        }
+
+        if (listLogadoExato.contains(path)) {
+            return baseUrlCarrinho + LOGADO + path;
+        }
+
+        for(String parcial : listLogadoParcial) {
+            if (parcial.startsWith(path)) {
+                return baseUrlCarrinho + LOGADO + path;
+            }
+        }
+
+        return null;
     }
 }

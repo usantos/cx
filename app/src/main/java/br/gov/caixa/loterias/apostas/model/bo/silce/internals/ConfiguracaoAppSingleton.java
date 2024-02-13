@@ -11,6 +11,9 @@ public class ConfiguracaoAppSingleton {
     private Boolean isAtualizaPublicKey;
     private Boolean isBolaoHabilitado;
 
+    private String urlBaseCarrinhoPiloto;
+    private String urlBaseCarrinhoProducao;
+
     private static ConfiguracaoAppSingleton configuracaoAppSingleton;
 
     private ConfiguracaoAppSingleton(){ }
@@ -22,6 +25,8 @@ public class ConfiguracaoAppSingleton {
             configuracaoAppSingleton.isMicroServico = IS_MICRO_SERVICO_DEFAULT;
             configuracaoAppSingleton.isAtualizaPublicKey = Boolean.FALSE;
             configuracaoAppSingleton.isBolaoHabilitado = Boolean.FALSE;
+            configuracaoAppSingleton.urlBaseCarrinhoPiloto="-";
+            configuracaoAppSingleton.urlBaseCarrinhoProducao="-";
         }
         return configuracaoAppSingleton;
     }
@@ -64,5 +69,20 @@ public class ConfiguracaoAppSingleton {
 
     public void setBolaoHabilitado(Boolean bolaoHabilitado) {
         isBolaoHabilitado = bolaoHabilitado;
+
+    public String getUrlBaseCarrinhoPiloto() {
+        return urlBaseCarrinhoPiloto;
+    }
+
+    public void setUrlBaseCarrinhoPiloto(String urlBaseCarrinhoPiloto) {
+        this.urlBaseCarrinhoPiloto = urlBaseCarrinhoPiloto;
+    }
+
+    public String getUrlBaseCarrinhoProducao() {
+        return urlBaseCarrinhoProducao;
+    }
+
+    public void setUrlBaseCarrinhoProducao(String urlBaseCarrinhoProducao) {
+        this.urlBaseCarrinhoProducao = urlBaseCarrinhoProducao;
     }
 }
