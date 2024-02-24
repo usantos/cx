@@ -172,7 +172,8 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         if (isTimeCoracao || isMesSorte) {
             holder.maisInformacoesLayout.setVisibility(View.VISIBLE);
             holder.labelInformacaoText.setText(isTimeCoracao ? R.string.label_time_coracao_dois_pontos : R.string.label_mes_sorte_dois_pontos);
-            holder.informacaoText.setText(isTimeCoracao ? listaApostaFavorita.get(position).getTimeDoCoracao().getNome() : listaApostaFavorita.get(position).getMesDeSorte().getNome());
+            holder.informacaoText.setText(isTimeCoracao ? listaApostaFavorita.get(position).getTimeDoCoracao().getNome()  + "/" + listaApostaFavorita.get(position).getTimeDoCoracao().getUf()
+                    : listaApostaFavorita.get(position).getMesDeSorte().getNome());
         }else{
             holder.maisInformacoesLayout.setVisibility(View.GONE);
         }
