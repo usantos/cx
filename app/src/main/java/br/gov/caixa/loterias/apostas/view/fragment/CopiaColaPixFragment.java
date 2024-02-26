@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
+import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
@@ -43,6 +45,7 @@ import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 
@@ -51,10 +54,11 @@ public class CopiaColaPixFragment extends Fragment {
 	private static final String ARG_PIX_COPIA_COLA = "ARG_MILLIS_FIM";
 
 	private View view;
-	private Button btnCopia;
+	private Button btnCopia, btnMinhasCompras;
 	private EditText edtNumeroPix;
 	private TextView timerView, voceTemView, txtEfetuarPagamento, txtAlerta;
-	private ImageView iconTimer;
+	private ImageView iconTimer, iconAtualizar;
+	private ProgressBar progressBar;
 
 	private String numeroPix;
 
@@ -109,6 +113,10 @@ public class CopiaColaPixFragment extends Fragment {
 		txtEfetuarPagamento = view.findViewById(R.id.txt_para_efetuar_pagamento);
 		iconTimer = view.findViewById(R.id.img_timer);
 		txtAlerta = view.findViewById(R.id.txt_alerta_codigo);
+		iconAtualizar = view.findViewById(R.id.icon_atualizar);
+		progressBar = view.findViewById(R.id.pb_loading);
+		btnMinhasCompras = view.findViewById(R.id.btn_minhas_compras);
+		btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBoldTitle(getContext(), getString(R.string.ir_para_minhas_compras)));
 
 		numeroPix = pixDTO.getPixCopiaECola();
 		if (numeroPix != null) {
@@ -139,6 +147,10 @@ public class CopiaColaPixFragment extends Fragment {
 					btnCopia.setEnabled(false);
 					btnCopia.setVisibility(View.GONE);
 					copiaTesto(getString(R.string.codigo_expirado));
+					iconAtualizar.setVisibility(View.INVISIBLE);
+					iconAtualizar.setEnabled(false);
+					progressBar.setVisibility(View.GONE);
+					btnMinhasCompras.setVisibility(View.VISIBLE);
 					if (listener != null){
 						listener.onFinish();
 					}
@@ -176,30 +188,63 @@ public class CopiaColaPixFragment extends Fragment {
 					btnCopia.setEnabled(true);
 				});
 				Utils.delay(10,() -> {
-					model.verificaStatusPix(pixDTO,onCheckPixPagoListener());
+					model.verificaStatusPixPeriodicamente(pixDTO,onCheckPixPagoListener());
 				});
 				jaCopiou = true;
 			}
 		});
+
+		btnMinhasCompras.setOnClickListener(v -> {
+			Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ListaComprasActivity.class);
+			startActivity(intent);
+		});
+
+		iconAtualizar.setOnClickListener(v -> {
+			iconAtualizar.setEnabled(false);
+			iconAtualizar.setVisibility(View.INVISIBLE);
+			progressBar.setVisibility(View.VISIBLE);
+			checkaStatusPix(onCheckStatusPix());
+		});
+	}
+
+	public void checkaStatusPix(OnCompraAsync listener){
+		model.verificaStatusPix(pixDTO, listener);
+	}
+
+	private OnCompraAsync onCheckStatusPix() {
+		return new OnCompraAsync() {
+			@Override
+			public void successCompra() {
+				sussecoCompra();
+			}
+
+			@Override
+			public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
+				RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+				if (pixDTO.estaNoPrazo()){
+					iconAtualizar.setEnabled(true);
+					iconAtualizar.setVisibility(View.VISIBLE);
+					progressBar.setVisibility(View.GONE);
+				}
+			}
+
+			@Override
+			public void errorCompra(VolleyError volleyError) {
+				RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+				if (pixDTO.estaNoPrazo()){
+					iconAtualizar.setEnabled(true);
+					iconAtualizar.setVisibility(View.VISIBLE);
+					progressBar.setVisibility(View.GONE);
+				}
+			}
+		};
 	}
 
 	private OnCompraAsync onCheckPixPagoListener() {
 		return new OnCompraAsync() {
 			@Override
 			public void successCompra() {
-				new CompraModel(getActivity()).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
-
-				AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
-				RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
-
-				CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
-				CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(getActivity());
-				crud.deletaTodos();
-
-				Bundle bundle   = new Bundle();
-				bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
-				Intent activity = IntentUtil.getIntentOrigemDestino(getActivity(), ConfirmacaoPagamentoActivity.class, bundle);
-				startActivity(activity);
+				sussecoCompra();
 			}
 
 			@Override
@@ -214,6 +259,22 @@ public class CopiaColaPixFragment extends Fragment {
 		};
 	}
 
+	private void sussecoCompra() {
+		new CompraModel(getActivity()).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
+
+		AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
+		RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
+
+		CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+		CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(getActivity());
+		crud.deletaTodos();
+
+		Bundle bundle   = new Bundle();
+		bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
+		Intent activity = IntentUtil.getIntentOrigemDestino(getActivity(), ConfirmacaoPagamentoActivity.class, bundle);
+		startActivity(activity);
+	}
+
 	private void copiaTesto(String value) {
 		ClipData         clip      = ClipData.newPlainText("label", value);
 		ClipboardManager clipBoard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -224,7 +285,7 @@ public class CopiaColaPixFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		if (jaCopiou){
-			model.verificaStatusPix(pixDTO, onCheckPixPagoListener());
+			model.verificaStatusPixPeriodicamente(pixDTO, onCheckPixPagoListener());
 		}
 	}
 }
