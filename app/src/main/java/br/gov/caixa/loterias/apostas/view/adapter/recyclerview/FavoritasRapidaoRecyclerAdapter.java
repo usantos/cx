@@ -76,7 +76,7 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
             final ApostaFavoritaDTO aposta = listaApostaFavorita.get( position );
 
             if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.TIMEMANIA) {
-                numeroStr.append(context.getResources().getString(R.string.barra_n_time_do_coracao_dois_pontos)).append(aposta.getTimeDoCoracao().getNome());
+                numeroStr.append(context.getResources().getString(R.string.barra_n_time_do_coracao_dois_pontos)).append(aposta.getTimeDoCoracao().getNome() + "/" + aposta.getTimeDoCoracao().getUf());
             }
 
             if (ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()) == ModalidadeEnum.DIA_DE_SORTE) {

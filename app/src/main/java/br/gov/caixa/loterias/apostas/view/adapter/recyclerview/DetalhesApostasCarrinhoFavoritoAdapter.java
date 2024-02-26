@@ -62,7 +62,12 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 		if (apostaAtual.getModalidade().getValor() == 9){
 			holder.tvModalidade.setText(activity.getResources().getString(R.string.label_mais_milionaria_acentuado));
 		} else {
-			holder.tvModalidade.setText(apostaAtual.getModalidade().getDescricao());
+			//Timemania
+			if (apostaAtual.getModalidade().getValor() == 20) {
+				holder.tvModalidade.setText(apostaAtual.getModalidade().getDescricao() + "\n\n" +
+						apostaAtual.getTimeDoCoracao().getNome()  + "/" + apostaAtual.getTimeDoCoracao().getUf());
+			} else
+				holder.tvModalidade.setText(apostaAtual.getModalidade().getDescricao());
 		}
 		if (apostaAtual.getModalidade().getValor() == 7) {
 			holder.tvModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorEscura()));
