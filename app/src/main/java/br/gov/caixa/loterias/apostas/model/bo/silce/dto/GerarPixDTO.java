@@ -102,8 +102,14 @@ public class GerarPixDTO {
     }
 
     public Boolean estaNoPrazo(){
-        DateTime agora = new DateTime();
-        return agora.isBefore(DateTime.parse(this.getDataHoraExpiracao()));
+        final DateTimeZone zoneBrasil = DateTimeZone.forID("America/Sao_Paulo");
+        DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+
+        DateTime agora = DateTime.now(zoneBrasil);
+
+        final DateTime expiracao = inputFormatter.withZone(zoneBrasil).parseDateTime(this.getDataHoraExpiracao());
+
+        return agora.isBefore(expiracao);
     }
 
     @Override

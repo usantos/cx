@@ -153,6 +153,40 @@
                         android:textSize="14sp" />
                 </RelativeLayout>
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintAvisoResgate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:background="@drawable/btn_round_outlined"
+                    android:backgroundTint="@color/pesquisa_msgpush"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/id_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_money_premio"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Resgate permitido somente na agência devido à incidência de IR sobre o valor total do prêmio."
+                        android:textColor="@color/bolao_barra_titulo"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/id_money"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
         </RelativeLayout>
 

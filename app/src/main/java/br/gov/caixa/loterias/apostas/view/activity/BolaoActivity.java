@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.enums.FiltroBolaoResultadoEnum;
 import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -134,7 +135,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		};
 	}
 
-	private void apresentanEstadoVazio() {
+	private void initFragmentFiltroVazio() {
 		if (filtroVazioFragment == null){
 			filtroVazioFragment = FragmentUtils.startFiltroVazio(getSupportFragmentManager(), R.id.id_fraf_estado_vazio);
 			frameEstadoVazio.setVisibility(View.VISIBLE);
@@ -143,6 +144,17 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 			frameEstadoVazio.setVisibility(View.VISIBLE);
 			scrollView.setVisibility(View.GONE);
 		}
+
+	}
+
+	private void apresentanEstadoVazio() {
+		initFragmentFiltroVazio();
+		filtroVazioFragment.estadoVazio();
+	}
+
+	private void apresentaEstadoErro() {
+		initFragmentFiltroVazio();
+		filtroVazioFragment.estadoErro();
 	}
 
 	private OnSilceListener<ListaBolaoDTO> onBoloesListener() {
@@ -229,7 +241,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 			@Override
 			public void error(VolleyError error) {
 				AlertDialogUtils.dismiss();
-				apresentanEstadoVazio();
+				apresentaEstadoErro();
 			}
 		};
 	}
@@ -401,14 +413,28 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	}
 
 	@Override
-	public void alterar() {
-		IntentUtil.startActivityForResult(launcher, BolaoActivity.this,
-				FiltraMarketplaceActivity.class);
+	public void alterar(FiltroBolaoResultadoEnum tipoFiltro) {
+		switch (tipoFiltro){
+			case VAZIO:
+				IntentUtil.startActivityForResult(launcher, BolaoActivity.this,
+						FiltraMarketplaceActivity.class);
+				break;
+			case ERRO:
+				buscaBoloesFiltro();
+				break;
+		}
 	}
 
 	@Override
-	public void continuar() {
-		frameEstadoVazio.setVisibility(View.GONE);
-		scrollView.setVisibility(View.VISIBLE);
+	public void continuar(FiltroBolaoResultadoEnum tipoFiltro) {
+		switch (tipoFiltro){
+			case VAZIO:
+				frameEstadoVazio.setVisibility(View.GONE);
+				scrollView.setVisibility(View.VISIBLE);
+				break;
+			case ERRO:
+				buscaBoloes();
+				break;
+		}
 	}
 }
