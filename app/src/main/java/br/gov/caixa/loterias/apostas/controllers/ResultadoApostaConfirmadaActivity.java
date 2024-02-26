@@ -34,6 +34,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
@@ -42,6 +43,7 @@ import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -69,7 +71,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     protected TextView mercadoPagoText, agenciaCaixaText, lotericaText;
 
     @ViewById
-    protected ConstraintLayout constraintLayoutPix;
+    protected ConstraintLayout constraintLayoutPix, constraintAvisoResgate;
 
     @Extra
     protected DetalhesPremioDTO detalhesPremioDTO;
@@ -137,6 +139,11 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             }
 
         }
+
+        if (isBolao(detalhesPremioDTO.getAposta())){
+            contentResultadoPremiado.setCabecalhoBolao();
+        }
+
         createListPremiacao();
         trataFormasDeResgate();
         RateUtils.avaliarAplicativo(this, true);
@@ -176,6 +183,10 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                 ViewUtils.alertTitleButton(getContext(), R.string.label_atencao, msgError, getContext().getResources().getString( R.string.ok ));
             }
         });
+    }
+
+    private void apresentaInfoResgateIR(){
+        constraintAvisoResgate.setVisibility(View.VISIBLE);
     }
 
     @Click(R.id.botaoAposteAgora)
@@ -241,12 +252,24 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                     break;
             }
         }
+        if (detalhesPremioDTO.getMensagemInformativaIR() != null && !detalhesPremioDTO.getMensagemInformativaIR().isEmpty()){
+            apresentaInfoResgateIR();
+        }
+    }
+
+    private boolean isBolao(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta != null && aposta.getIndicadorCotaBolao() != null && aposta.getIndicadorCotaBolao();
     }
 
     private void createListPremiacao() {
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
 
-        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidade.getCorEscura()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
+        if (isBolao(detalhesPremioDTO.getAposta())){
+
+            listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoBolaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidade.getCorEscura()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
+        } else {
+            listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidade.getCorEscura()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
+        }
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

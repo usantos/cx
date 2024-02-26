@@ -31,6 +31,8 @@ public class DetalhesPremioDTO implements Serializable {
     protected List<TipoPagamentoDTO> meiosResgate = null;
     @SerializedName("nsbi")
     protected String nsbi = null;
+    @SerializedName("mensagemInformativaIR")
+    private String mensagemInformativaIR;
 
     /**
      **/
@@ -78,6 +80,9 @@ public class DetalhesPremioDTO implements Serializable {
         this.nsbi = nsbi;
     }
 
+    public String getMensagemInformativaIR() {
+        return mensagemInformativaIR;
+    }
 
     @Override
     public boolean equals(Object o) {
