@@ -38,7 +38,7 @@ public class StringUtils {
     }
 
     public static String formatToCurrency(double value) {
-        DecimalFormat df = new DecimalFormat("###,##0.00");
+        DecimalFormat df = new DecimalFormat("###,###,##0.00");
         df.setDecimalFormatSymbols(new DecimalFormatSymbols(new Locale("pt", "BR")));
         return df.format(value);
     }
