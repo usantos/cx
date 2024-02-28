@@ -755,7 +755,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition != 0 && groupPosition != 8) {
+        if (groupPosition != 0 && groupPosition != 4 && groupPosition != 8) {
             drawerLayout.closeDrawer(GravityCompat.START, false);
         }
         switch (groupPosition) {
@@ -771,8 +771,8 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
                 break;
-            case 4: startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
-                break;
+            //case 4: startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+            //    break;
             case 5: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
                 break;
             case 6: startActivity(new Intent(PrincipalActivity.this, TermosAceiteActivity.class));
@@ -851,6 +851,22 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    private void trataMenuJogoResponsavel(int itemPosition) {
+        switch (itemPosition) {
+            case 0:
+                startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                break;
+            case 1:
+                startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
+                break;
+            case 2:
+                startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                break;
+            default:
+                break;
+        }
+    }
+
 //    private void trataMenuNotificacoes(int itemPosition) {
 //        switch (itemPosition) {
 //            case 0:
@@ -879,11 +895,14 @@ public class PrincipalActivity extends AppCompatActivity
         AbrirMenusGroup(groupPosition));
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            if (groupPosition == 4) {
+                trataMenuJogoResponsavel(childPosition);
+            } else {
             //if (groupPosition == 8) {
             //    trataMenuNotificacoes(childPosition);
             //} else {
                 AbrirMenusItens(childPosition);
-            //}
+            }
             return false;
         });
     }

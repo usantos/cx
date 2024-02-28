@@ -1337,4 +1337,7 @@
     <string name="descricao_filtro_vazio">Não encontramos nenhum bolão que corresponda à sua pesquisa!</string>
     <string name="descricao_erro_filtro">Ocorreu um erro.\nTente novamente</string>
 
+    <!-- Jogo Responsavel -->
+    <string name="btn_autoavaliacao_start">Iniciar</string>
+
 </resources>

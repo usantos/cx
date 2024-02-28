@@ -1,0 +1,25 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.AutoavaliacaoStartActivity"
+    android:background="@drawable/background_gradient_verde">
+
+    <Button
+        android:id="@+id/btnAutoavaliacaoStart"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/button_rouded_border_white"
+        android:text="@string/btn_autoavaliacao_start"
+        android:textSize="18sp"
+        android:textColor="@color/branco"
+        android:textAllCaps="false"
+
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
