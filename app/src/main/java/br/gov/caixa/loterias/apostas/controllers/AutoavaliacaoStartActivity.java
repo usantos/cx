@@ -19,13 +19,13 @@ public class AutoavaliacaoStartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_autoavaliacao_start);
 
-
+        configButton();
     }
 
     private void configButton() {
         btnIniciar = findViewById(R.id.btnAutoavaliacaoStart);
         btnIniciar.setOnClickListener(v -> {
-            Intent intent = IntentUtil.getIntentOrigemDestino(AutoavaliacaoStartActivity.this, AutoavaliacaoFormActivity.class);
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, AutoavaliacaoFormActivity.class);
             startActivity(intent);
         });
     }
