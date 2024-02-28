@@ -1338,10 +1338,13 @@
     <string name="descricao_erro_filtro">Ocorreu um erro.\nTente novamente</string>
 
     <!-- Jogo Responsavel -->
+    <string name="autoavaliacao_apostador">Autoavaliação para o Apostador</string>
     <string name="btn_autoavaliacao_start">Iniciar</string>
     <string name="tv_autoavaliacao_1">Este app é válido para qualquer tipo de aposta a a dinheiro, e tem como base os critérios de avaliação breve da prevalência de Transtorno do jogo, por meio da escala de rastreio</string>
     <string name="tv_autoavaliacao_2">NODS*-CLIP Problem Gambling Screen</string>
     <string name="tv_autoavaliacao_3">*Volberg, R. A., Munck, I. M., &amp; Petry, N. M. (2011). A quick and simple screening method for pathological and problem gamblers in addiction programs and practices. The American Journal on Addictions, 20, 220–227.</string>
+    <string name="anterio">Anterior</string>
+    <string name="proximo">Proximo</string>
 
 
 

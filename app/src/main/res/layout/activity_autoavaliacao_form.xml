@@ -39,10 +39,11 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/imagemAutoavaliacao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_autoavaliacao"
-                android:layout_marginTop="45dp"
+                android:layout_marginTop="35dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -52,15 +53,15 @@
                 android:id="@+id/tvAuto1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="160dp"
+                android:layout_marginTop="35dp"
                 android:layout_marginStart="26dp"
                 android:layout_marginEnd="26dp"
-                android:text="@string/tv_autoavaliacao_1"
+                android:text="Ao longo da sua vida, ja houve períodos de 2 semanas em que você gastou muito tempo pensando sobre as suas experiências com jogo, planejando futuros investimentos ou apostas "
                 android:textSize="16sp"
                 android:textColor="@color/blue_caixa"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagemAutoavaliacao"
                 />
 
             <TextView
@@ -91,6 +92,70 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 />
+
+            <TextView
+                android:id="@+id/tvAutoPergunta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="26dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginEnd="26dp"
+                android:text="Ao longo da sua vida, ja houve períodos de 2 semanas em que você gastou muito tempo pensando sobre as suas experiências com jogo, planejando futuros investimentos ou apostas "
+                android:textSize="16sp"
+                android:textColor="@color/blue_caixa"
+                app:layout_constraintTop_toBottomOf="@+id/tvAuto3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@+id/tvAutoPergunta"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <RadioButton
+                    android:id="@+id/rbYes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_sim"
+                    android:textColor="@color/blue_caixa"/>
+
+                <RadioButton
+                    android:id="@+id/rbNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_nao"
+                    android:textColor="@color/blue_caixa"/>
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btnAutoAnterior"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="26dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/anterio"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+            <Button
+                android:id="@+id/btnAutoProximo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="26dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/proximo"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
