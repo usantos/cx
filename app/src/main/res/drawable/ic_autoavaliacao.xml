@@ -4,10 +4,6 @@
     android:height="69dp"
     android:viewportWidth="66"
     android:viewportHeight="69">
-  <path
-      android:strokeWidth="1"
-      android:pathData="M65.467,34.781C65.467,53.421 50.907,68.5 32.984,68.5C15.061,68.5 0.5,53.421 0.5,34.781C0.5,16.141 15.061,1.062 32.984,1.062C50.907,1.062 65.467,16.141 65.467,34.781Z"
-      android:strokeColor="#0066B3">
     <aapt:attr name="android:fillColor">
       <gradient 
           android:startX="32.866"
@@ -16,9 +12,14 @@
           android:endY="84.651"
           android:type="linear">
         <item android:offset="0" android:color="#FFD7E8F4"/>
-        <item android:offset="1" android:color="#00D7E8F4"/>
+        <item android:offset="1" android:color="#FFD7E8F4"/>
       </gradient>
     </aapt:attr>
+  <path
+      android:strokeWidth="1"
+      android:strokeColor="#0066B3"
+      android:pathData="M65.467,34.781C65.467,53.421 50.907,68.5 32.984,68.5C15.061,68.5 0.5,53.421 0.5,34.781C0.5,16.141 15.061,1.062 32.984,1.062C50.907,1.062 65.467,16.141 65.467,34.781Z"
+      >
   </path>
   <group>
     <clip-path

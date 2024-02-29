@@ -6,6 +6,41 @@
     tools:context="br.gov.caixa.loterias.apostas.controllers.AutoavaliacaoStartActivity"
     android:background="@drawable/background_gradient_verde">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_loterias_caixa"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/imgVolantes"
+        />
+
+    <ImageView
+        android:id="@+id/imgVolantes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_volantes"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tvAutoIniciar"
+        />
+
+    <TextView
+        android:id="@+id/tvAutoIniciar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:text="@string/autoavaliacao_apostador_bold"
+        android:textSize="18dp"
+        android:textColor="@color/branco"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnAutoavaliacaoStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
     <Button
         android:id="@+id/btnAutoavaliacaoStart"
         android:layout_width="280dp"
