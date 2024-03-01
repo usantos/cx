@@ -20,7 +20,7 @@ public class ParametrosConfiguraveisDTO {
     private Boolean habilitaMenuApostas;
     @SerializedName("recuperarMeioPagamento")
     private Boolean atualizaPublicKey;
-    @SerializedName("habilitaVendaCotasBolao")
+    @SerializedName("habilitaRevendaBolaoApp")
     private Boolean bolaoHabilitado;
 
     public Boolean getMicroServico() {

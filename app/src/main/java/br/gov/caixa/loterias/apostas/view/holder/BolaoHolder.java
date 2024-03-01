@@ -83,8 +83,10 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		} else {
 			cidade.setText(cidadeUf);
 		}
+		if (bolao.getVrPremioEstimado() != null) {
+			valorPremio.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrPremioEstimado().doubleValue()));
+		}
 		valor.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrCotaComTarifa().doubleValue()));
-		valorPremio.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrPremioEstimado().doubleValue()));
 		atualizaBotoesQtdCotas(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		mostrarDetalhes(bolao.isAbertoParaMostrarDetalhes());
 		qtdCotas.setText(Integer.toString(bolao.getQtdCotasBolao()));
