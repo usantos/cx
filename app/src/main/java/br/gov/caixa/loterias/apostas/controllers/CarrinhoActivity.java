@@ -281,10 +281,9 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     private void trataPermissao() {
         int statusPermissao = LocalizacaoUtils.checaStatusPermissao(this);
-        //if (BuildConfig.DEBUG && BuildVersionUtil.isEmulador()) {
-        //    statusPermissao = LocalizacaoUtils.LOC_NO_BRASIL;
-        //}
-        if (//statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA ||
+
+        if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA ||
+            statusPermissao == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE ||
             statusPermissao == LocalizacaoUtils.LOC_DESATIVADA) {
             DialogUtils.showDialogDefault(this, 0,
                                           getResources().getString(R.string.label_atencao),
@@ -294,8 +293,12 @@ public class CarrinhoActivity extends AppCompatActivity {
                                           new OnDialogListenerLeftRight() {
                                               @Override
                                               public void left() {
-                                                  //LocalizacaoUtils.solicitaPermissao(CarrinhoActivity.this);
-                                                  LocalizacaoUtils.redirecionaConfiguracaoGPS(CarrinhoActivity.this);
+                                                  if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA)
+                                                      LocalizacaoUtils.solicitaPermissao(CarrinhoActivity.this);
+                                                  if (statusPermissao == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE)
+                                                      LocalizacaoUtils.intentConfigPermissao(CarrinhoActivity.this);
+                                                  if (statusPermissao == LocalizacaoUtils.LOC_DESATIVADA)
+                                                      LocalizacaoUtils.intentConfigGps(CarrinhoActivity.this);
                                               }
 
                                               @Override
@@ -303,8 +306,6 @@ public class CarrinhoActivity extends AppCompatActivity {
                                                   showAlertLocalizacao();
                                               }
                                           });
-        } else if (statusPermissao == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE){
-            showAlertLocalizacao();
         } else {
             if (statusPermissao == LocalizacaoUtils.LOC_NO_BRASIL) {
                 onFluxoLocalizacaoNoBrasil();
