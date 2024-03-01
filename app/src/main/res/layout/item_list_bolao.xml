@@ -99,7 +99,7 @@
             android:id="@+id/valor_estimado_premio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="R$ 000.000.000,00"
+            android:text="R$ 0,00"
             android:textColor="@color/mega_verde_claro_mkp"
             android:textStyle="bold"
             android:textSize="22sp"

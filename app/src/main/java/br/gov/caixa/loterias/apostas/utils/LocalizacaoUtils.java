@@ -168,12 +168,7 @@ public class LocalizacaoUtils {
                 new String[]{ACCESS_FINE_LOCATION}, PERMISSAO_LOCALIZACAO_COD);
     }
 
-    public static void redirecionaConfiguracaoGPS(Activity activity) {
-        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        activity.startActivity(intent);
-    }
-
-        private static LocationListener getListener(){
+    private static LocationListener getListener(){
       return  new LocationListener() {
           @Override
           public void onLocationChanged(Location location) {
