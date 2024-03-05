@@ -21,6 +21,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoRespostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BoloesDisponiveisResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
@@ -942,6 +943,20 @@ public class ApostaBO extends BaseBO {
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.AUTOAVALIACAO_PERGUNTAS,
                 new LinkedHashMap<>(),
                 AutoavaliacaoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
+    public void postAutoavaliacaoRespostas(
+                                   final List<AutoavaliacaoRespostaDTO> listAutoavaliacaoRespostaDTO,
+                                   final RequestListener<AutoavaliacaoResponse> listener) {
+
+        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.AUTOAVALIACAO_RESPOSTAS,
+                new LinkedHashMap<>(),
+                listAutoavaliacaoRespostaDTO, AutoavaliacaoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());

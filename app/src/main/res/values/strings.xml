@@ -1346,6 +1346,10 @@
     <string name="tv_autoavaliacao_3">*Volberg, R. A., Munck, I. M., &amp; Petry, N. M. (2011). A quick and simple screening method for pathological and problem gamblers in addiction programs and practices. The American Journal on Addictions, 20, 220–227.</string>
     <string name="anterio">Anterior</string>
     <string name="proximo">Próximo</string>
+    <string name="fechar">Fechar</string>
+    <string name="concluido">Concluido</string>
+    <string name="autoavaliacao_parabens">_Parabéns!_\nO seu hábito de apostar não está interferindo em sua vida, você é um jogador responsável.</string>
+    <string name="autoavaliacao_atencao">_Muita atenção!_\nSe você respondeu "sim" para um ou mais dessas questões, recomendamos que você procure avaliação adicional.</string>
 
 
 

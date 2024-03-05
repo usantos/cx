@@ -7,13 +7,14 @@
     android:background="@drawable/background_gradient_verde">
 
     <ImageView
+        android:id="@+id/imgTrevo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_loterias_caixa"
-        android:layout_marginBottom="40dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/imgVolantes"
+        app:layout_constraintTop_toTopOf="parent"
         />
 
     <ImageView
@@ -21,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_volantes"
-        android:layout_marginBottom="40dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tvAutoIniciar"
+        app:layout_constraintTop_toBottomOf="@+id/imgTrevo"
         />
 
     <TextView
@@ -52,7 +53,7 @@
         android:textColor="@color/branco"
         android:textAllCaps="false"
 
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

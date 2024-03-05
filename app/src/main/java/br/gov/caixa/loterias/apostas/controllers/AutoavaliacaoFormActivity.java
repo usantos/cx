@@ -1,20 +1,43 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoPerguntaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoRespostaDTO;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
+    private List<AutoavaliacaoPerguntaDTO> listPergunta;
+    private List<AutoavaliacaoRespostaDTO> listResposta;
+    private int indiceTelaAtual = 0;
+    private TextView tvAutoPergunta;
+    private RadioGroup rgAutoavaliacao;
+    private Button btnProximo;
+    private Button btnAnterior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,25 +46,176 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autoavaliacao_apostador))));
 
+        configurar();
         buscaPerguntas();
     }
 
-    public void buscaPerguntas() {
-        ApostaBO_.getInstance_(this).getAutoavaliacaoPerguntas(new RequestListener<AutoavaliacaoResponse>() {
-            @Override
-            public void onResponse(AutoavaliacaoResponse result) {
-                String xxx = "OK";
-            }
+    private void configurar() {
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                String xxx = "ERRO";
+        tvAutoPergunta = findViewById(R.id.tvAutoPergunta);
+        rgAutoavaliacao = findViewById(R.id.rgAutoavaliacao);
 
+        btnProximo = findViewById(R.id.btnAutoProximo);
+        btnProximo.setOnClickListener(v -> {
+            clickProximo();
+        });
+        desabilitaProximo();
+
+        btnAnterior = findViewById(R.id.btnAutoAnterior);
+        btnAnterior.setOnClickListener(v -> {
+            clickAnterior();
+        });
+
+        rgAutoavaliacao.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                habilitaProximo();
             }
         });
     }
 
+    private void clickProximo() {
+
+        //Clicou Concluido
+        if (indiceTelaAtual == (listPergunta.size() -1)) {
+            salvaNoListResposta();
+            salvarRespostas();
+            return;
+        }
+
+        if (indiceTelaAtual < (listPergunta.size() -1)) {
+            salvaNoListResposta();
+
+            rgAutoavaliacao.clearCheck();
+            desabilitaProximo();
+
+            indiceTelaAtual++;
+            tvAutoPergunta.setText(listPergunta.get(indiceTelaAtual).getDescricaoPergunta());
+
+            //Ultima tela
+            if (indiceTelaAtual == (listPergunta.size() -1)) {
+                alteraBtnToConcluido();
+            }
+        }
+
+    }
+
+
+    private void clickAnterior() {
+
+        if (indiceTelaAtual > 0) {
+            //Ultima tela
+            if (indiceTelaAtual == (listPergunta.size() -1)) {
+                alteraBtnToProximo();
+            }
+
+            rgAutoavaliacao.clearCheck();
+            indiceTelaAtual--;
+            tvAutoPergunta.setText(listPergunta.get(indiceTelaAtual).getDescricaoPergunta());
+        }
+    }
+
+
+    private void salvaNoListResposta() {
+
+        boolean indicadorResposta = false;
+        int selectedId = rgAutoavaliacao.getCheckedRadioButtonId();
+        if (selectedId == R.id.rbYes) {
+            indicadorResposta = true;
+        }
+
+        listResposta.set(indiceTelaAtual, new AutoavaliacaoRespostaDTO(
+                        listPergunta.get(indiceTelaAtual).getId(),
+                        "",
+                        indicadorResposta));
+    }
+
+    private void desabilitaProximo() {
+        btnProximo.setEnabled(false);
+        btnProximo.setTextColor(getResources().getColor(R.color.verdeazul_inativo));
+        btnProximo.setBackground(getResources().getDrawable(R.drawable.background_border_verde));
+        Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_right);
+        icone.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.verdeazul_inativo), PorterDuff.Mode.SRC_IN));
+
+    }
+
+    private void habilitaProximo() {
+        btnProximo.setEnabled(true);
+        btnProximo.setTextColor(getResources().getColor(R.color.branco));
+        btnProximo.setBackground(getResources().getDrawable(R.drawable.button_rounded_verdeazul));
+        Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_right);
+        icone.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
+
+    }
+
+    private void alteraBtnToConcluido() {
+        btnProximo.setText(R.string.concluido);
+        btnProximo.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.ic_sucesso),null);
+    }
+
+    private void alteraBtnToProximo() {
+        btnProximo.setText(R.string.proximo);
+        Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_right);
+        icone.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
+        btnProximo.setCompoundDrawablesWithIntrinsicBounds(null,null, icone,null);
+    }
+
+    private void alteraBtnToFechar() {
+        btnAnterior.setText(R.string.fechar);
+        btnAnterior.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.close),null);
+        btnAnterior.setOnClickListener(v -> {
+            startActivity(new Intent(this, PrincipalActivity_.class));
+            finish();
+        });
+    }
+
+    private Boolean verificaRespostasTudoNao() {
+        for (AutoavaliacaoRespostaDTO autoResposta :listResposta) {
+            if (autoResposta.getIndicadorResposta()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void buscaPerguntas() {
+        ApostaBO_.getInstance_(this).getAutoavaliacaoPerguntas(new RequestListener<AutoavaliacaoResponse>() {
+            @Override
+            public void onResponse(AutoavaliacaoResponse result) {
+                listPergunta = result.getPayload().getRetornoPerguntaResposta();
+                listResposta = new ArrayList<>(Collections.nCopies(listPergunta.size(), (AutoavaliacaoRespostaDTO) null));
+                tvAutoPergunta.setText(listPergunta.get(indiceTelaAtual).getDescricaoPergunta());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+    }
+
+
+    private void salvarRespostas() {
+        ApostaBO_.getInstance_(this).postAutoavaliacaoRespostas(listResposta, new RequestListener<AutoavaliacaoResponse>() {
+            @Override
+            public void onResponse(AutoavaliacaoResponse result) {
+                rgAutoavaliacao.setVisibility(View.GONE);
+                tvAutoPergunta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                if (verificaRespostasTudoNao()) {
+                    tvAutoPergunta.setText(ViewUtils.textFuturaAndFuturaBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_parabens)));
+                } else {
+                    tvAutoPergunta.setText(ViewUtils.textFuturaAndFuturaBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_atencao)));
+                }
+                alteraBtnToFechar();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //redirect!!!
+            }
+        });
+    }
 }
+

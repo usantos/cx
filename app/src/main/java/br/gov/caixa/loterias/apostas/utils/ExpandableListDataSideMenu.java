@@ -21,7 +21,7 @@ public class ExpandableListDataSideMenu {
 
     public static final String MENU_JOGO_RESPONSAVEL_POLITICA = "Política de jogo responsável";
     public static final String MENU_JOGO_RESPONSAVEL_AVALIACAO = "Autoavaliação do apostador";
-    public static final String MENU_JOGO_RESPONSAVEL_SUSPENSAO = "Autosuspensão temporária";
+    public static final String MENU_JOGO_RESPONSAVEL_SUSPENSAO = "Autossuspensão temporária";
 
     //public static final String MENU_NOTIFICACOES1 = "Mensagens";
     //public static final String MENU_NOTIFICACOES2 = "Preferências";

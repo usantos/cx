@@ -226,6 +226,7 @@
 
     <!--  Novas cores -->
     <color name="blue_caixa">#0066B3</color>
+    <color name="verdeazul_inativo">#DDF1EE</color>
 
 
 </resources>
