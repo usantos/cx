@@ -171,7 +171,7 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
         btnAnterior.setBackground(getResources().getDrawable(R.drawable.background_border_verdeazul_disable));
         Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_left);
         icone.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.verdeazul_inativo), PorterDuff.Mode.SRC_IN));
-        btnAnterior.setCompoundDrawablesWithIntrinsicBounds(null,null, icone,null);
+        btnAnterior.setCompoundDrawablesWithIntrinsicBounds(icone,null, null,null);
     }
 
     private void habilitaAnterior() {
@@ -180,7 +180,7 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
         btnAnterior.setBackground(getResources().getDrawable(R.drawable.background_border_verde));
         Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_left);
         icone.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.verdeazul), PorterDuff.Mode.SRC_IN));
-        btnAnterior.setCompoundDrawablesWithIntrinsicBounds(null,null, icone,null);
+        btnAnterior.setCompoundDrawablesWithIntrinsicBounds(icone,null, null,null);
     }
 
 
