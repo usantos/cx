@@ -25,6 +25,10 @@ public class AutoavaliacaoStartActivity extends AppCompatActivity {
         configurar();
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
     private void configurar() {
 
         tvIniciar = findViewById(R.id.tvAutoIniciar);

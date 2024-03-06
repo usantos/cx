@@ -194,6 +194,10 @@ public class PrincipalActivity extends AppCompatActivity
         RateUtils.avaliarAplicativo(this);
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
 
+        if (SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
+            startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
+        }
+
 //        if (TestVisao.isTeste()){
 //            buttonHomeBet.setOnLongClickListener(v -> {
 //                nextActivity(IntroducaoTutorialActivity.class);

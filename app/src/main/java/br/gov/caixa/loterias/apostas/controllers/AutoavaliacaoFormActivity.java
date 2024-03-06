@@ -23,11 +23,14 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoPerguntaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoRespostaDTO;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.fragment.BottomSheetFragment;
 
 public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
@@ -40,6 +43,8 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
     private Button btnAnterior;
     private Button btnFechar;
     private Button btnAjuda;
+    private BottomSheetFragment bottomSheetFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,14 +80,15 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
         btnFechar = findViewById(R.id.btnAutoFechar);
         btnFechar.setOnClickListener(v -> {
-            //startActivity(new Intent(this, PrincipalActivity_.class));
             finish();
         });
 
         btnAjuda = findViewById(R.id.btnAutoAjuda);
         btnAjuda.setOnClickListener(v -> {
             //startActivity(new Intent(this, PrincipalActivity_.class));
-            finish();
+            bottomSheetFragment = new BottomSheetFragment();
+            bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+            //finish();
         });
 
         desabilitaAnterior();
@@ -135,6 +141,12 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
             rgAutoavaliacao.clearCheck();
             indiceTelaAtual--;
             tvAutoPergunta.setText(listPergunta.get(indiceTelaAtual).getDescricaoPergunta());
+
+            //Primeira tela
+            if (indiceTelaAtual == 0) {
+                desabilitaAnterior();
+                desabilitaProximo();
+            }
         }
     }
 
@@ -222,9 +234,11 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
     }
 
     private void buscaPerguntas() {
+        AlertDialogUtils.show(this);
         ApostaBO_.getInstance_(this).getAutoavaliacaoPerguntas(new RequestListener<AutoavaliacaoResponse>() {
             @Override
             public void onResponse(AutoavaliacaoResponse result) {
+                AlertDialogUtils.dismiss();
                 listPergunta = result.getPayload().getRetornoPerguntaResposta();
                 listResposta = new ArrayList<>(Collections.nCopies(listPergunta.size(), (AutoavaliacaoRespostaDTO) null));
                 tvAutoPergunta.setText(listPergunta.get(indiceTelaAtual).getDescricaoPergunta());
@@ -232,15 +246,19 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, AutoavaliacaoFormActivity.this);
             }
         });
     }
 
 
     private void salvarRespostas() {
+        AlertDialogUtils.show(this);
         ApostaBO_.getInstance_(this).postAutoavaliacaoRespostas(listResposta, new RequestListener<AutoavaliacaoResponse>() {
             @Override
             public void onResponse(AutoavaliacaoResponse result) {
+                AlertDialogUtils.dismiss();
                 rgAutoavaliacao.setVisibility(View.GONE);
                 tvAutoPergunta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 if (verificaRespostasTudoNao()) {
@@ -255,7 +273,8 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                //redirect!!!
+                AlertDialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, AutoavaliacaoFormActivity.this);
             }
         });
     }

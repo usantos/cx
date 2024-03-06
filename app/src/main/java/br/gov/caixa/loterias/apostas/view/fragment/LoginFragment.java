@@ -205,6 +205,9 @@ public class LoginFragment extends Fragment {
                     if(response.getPayload().getLimiteDiario() != null){
                         SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
                     }
+                    SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
+                    SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
+
                     crud.deleteAll();
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                     UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
