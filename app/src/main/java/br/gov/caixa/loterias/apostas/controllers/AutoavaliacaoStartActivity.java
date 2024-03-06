@@ -28,13 +28,12 @@ public class AutoavaliacaoStartActivity extends AppCompatActivity {
     private void configurar() {
 
         tvIniciar = findViewById(R.id.tvAutoIniciar);
-        tvIniciar.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.autoavaliacao_apostador_bold)));
-        //tvIniciar.setText(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.autoavaliacao_apostador_bold)));
 
         btnIniciar = findViewById(R.id.btnAutoavaliacaoStart);
         btnIniciar.setOnClickListener(v -> {
             Intent intent = IntentUtil.getIntentOrigemDestino(this, AutoavaliacaoFormActivity.class);
             startActivity(intent);
+            finish();
         });
     }
 }

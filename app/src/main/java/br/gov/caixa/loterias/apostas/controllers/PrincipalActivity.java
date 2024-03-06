@@ -865,6 +865,9 @@ public class PrincipalActivity extends AppCompatActivity
             default:
                 break;
         }
+
+        sideMenuExpandableListView.collapseGroup(itemPosition);
+        drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
 //    private void trataMenuNotificacoes(int itemPosition) {

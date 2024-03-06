@@ -38,6 +38,8 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
     private RadioGroup rgAutoavaliacao;
     private Button btnProximo;
     private Button btnAnterior;
+    private Button btnFechar;
+    private Button btnAjuda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,11 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
         buscaPerguntas();
     }
 
-    private void configurar() {
+    @Override
+    public void onBackPressed() {
+    }
 
+    private void configurar() {
         tvAutoPergunta = findViewById(R.id.tvAutoPergunta);
         rgAutoavaliacao = findViewById(R.id.rgAutoavaliacao);
 
@@ -62,12 +67,26 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
         btnProximo.setOnClickListener(v -> {
             clickProximo();
         });
-        desabilitaProximo();
 
         btnAnterior = findViewById(R.id.btnAutoAnterior);
         btnAnterior.setOnClickListener(v -> {
             clickAnterior();
         });
+
+        btnFechar = findViewById(R.id.btnAutoFechar);
+        btnFechar.setOnClickListener(v -> {
+            //startActivity(new Intent(this, PrincipalActivity_.class));
+            finish();
+        });
+
+        btnAjuda = findViewById(R.id.btnAutoAjuda);
+        btnAjuda.setOnClickListener(v -> {
+            //startActivity(new Intent(this, PrincipalActivity_.class));
+            finish();
+        });
+
+        desabilitaAnterior();
+        desabilitaProximo();
 
         rgAutoavaliacao.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -91,6 +110,7 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
             rgAutoavaliacao.clearCheck();
             desabilitaProximo();
+            habilitaAnterior();
 
             indiceTelaAtual++;
             tvAutoPergunta.setText(listPergunta.get(indiceTelaAtual).getDescricaoPergunta());
@@ -133,13 +153,32 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
                         indicadorResposta));
     }
 
+    private void desabilitaAnterior() {
+        btnAnterior.setEnabled(false);
+        btnAnterior.setTextColor(getResources().getColor(R.color.verdeazul_inativo));
+        btnAnterior.setBackground(getResources().getDrawable(R.drawable.background_border_verdeazul_disable));
+        Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_left);
+        icone.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.verdeazul_inativo), PorterDuff.Mode.SRC_IN));
+        btnAnterior.setCompoundDrawablesWithIntrinsicBounds(null,null, icone,null);
+    }
+
+    private void habilitaAnterior() {
+        btnAnterior.setEnabled(true);
+        btnAnterior.setTextColor(getResources().getColor(R.color.verdeazul));
+        btnAnterior.setBackground(getResources().getDrawable(R.drawable.background_border_verde));
+        Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_left);
+        icone.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.verdeazul), PorterDuff.Mode.SRC_IN));
+        btnAnterior.setCompoundDrawablesWithIntrinsicBounds(null,null, icone,null);
+    }
+
+
     private void desabilitaProximo() {
         btnProximo.setEnabled(false);
         btnProximo.setTextColor(getResources().getColor(R.color.verdeazul_inativo));
-        btnProximo.setBackground(getResources().getDrawable(R.drawable.background_border_verde));
+        btnProximo.setBackground(getResources().getDrawable(R.drawable.background_border_verdeazul_disable));
         Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_right);
         icone.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.verdeazul_inativo), PorterDuff.Mode.SRC_IN));
-
+        btnProximo.setCompoundDrawablesWithIntrinsicBounds(null,null, icone,null);
     }
 
     private void habilitaProximo() {
@@ -148,7 +187,7 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
         btnProximo.setBackground(getResources().getDrawable(R.drawable.button_rounded_verdeazul));
         Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_right);
         icone.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
-
+        btnProximo.setCompoundDrawablesWithIntrinsicBounds(null,null, icone,null);
     }
 
     private void alteraBtnToConcluido() {
@@ -164,12 +203,13 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
     }
 
     private void alteraBtnToFechar() {
-        btnAnterior.setText(R.string.fechar);
-        btnAnterior.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.close),null);
-        btnAnterior.setOnClickListener(v -> {
-            startActivity(new Intent(this, PrincipalActivity_.class));
-            finish();
-        });
+        btnAnterior.setVisibility(View.GONE);
+        btnFechar.setVisibility(View.VISIBLE);
+    }
+
+    private void alteraBtnToAjuda() {
+        btnProximo.setVisibility(View.GONE);
+        btnAjuda.setVisibility(View.VISIBLE);
     }
 
     private Boolean verificaRespostasTudoNao() {
@@ -204,9 +244,11 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
                 rgAutoavaliacao.setVisibility(View.GONE);
                 tvAutoPergunta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 if (verificaRespostasTudoNao()) {
+                    btnProximo.setVisibility(View.GONE);
                     tvAutoPergunta.setText(ViewUtils.textFuturaAndFuturaBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_parabens)));
                 } else {
                     tvAutoPergunta.setText(ViewUtils.textFuturaAndFuturaBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_atencao)));
+                    alteraBtnToAjuda();
                 }
                 alteraBtnToFechar();
             }
