@@ -177,16 +177,20 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         if(ConfiguracaoAppSingleton.getInstance().isMicroServico()){
             apresentaBySituacao(aposta.getSituacao());
         }
-        setupToolbar();
 
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
 
+        getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupToolbar();
         if (CollectionUtils.isEmpty(aposta.getNumerosSelecionados())) {
             favoriteBtn.setVisibility(View.GONE);
         }
-
-        getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
         if(aposta.getModalidade() == ModalidadeEnum.LOTECA){
             ll_adic_fav.setVisibility(View.GONE);
             id_view_divisao.setVisibility(View.GONE);
@@ -196,15 +200,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         } else {
             id_view_divisao.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     private void setaViews(){
         estilo = new EstiloModalidade(aposta);
         setTheme(estilo.getThemeId());
-
-        setTitle(ViewUtils.getNomeModalidadePorAposta(aposta));
     }
 
     private void setaMetodos(){
@@ -643,6 +643,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setElevation(0);
         }
+        setTitle(ViewUtils.getNomeModalidadePorAposta(aposta));
     }
 
     private void getApostaDetalhePremio(Long apostaId, final Context contextParam, ComprovanteApostaDTO comprovante) {
