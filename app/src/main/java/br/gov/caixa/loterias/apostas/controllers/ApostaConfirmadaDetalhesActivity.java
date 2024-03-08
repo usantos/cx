@@ -174,6 +174,30 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         setaMetodos();
         setaViews();
 
+        if(ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+            apresentaBySituacao(aposta.getSituacao());
+        }
+        setupToolbar();
+
+        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+        parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
+
+        if (CollectionUtils.isEmpty(aposta.getNumerosSelecionados())) {
+            favoriteBtn.setVisibility(View.GONE);
+        }
+
+        getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
+        if(aposta.getModalidade() == ModalidadeEnum.LOTECA){
+            ll_adic_fav.setVisibility(View.GONE);
+            id_view_divisao.setVisibility(View.GONE);
+        } else if (aposta.getIndicadorCotaBolao()){
+            editarApostaBtn.setVisibility(View.GONE);
+            ll_adic_fav.setVisibility(View.GONE);
+        } else {
+            id_view_divisao.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     private void setaViews(){
@@ -224,33 +248,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
 
         chamadasParaComprovante();
-    }
-
-    @AfterViews
-    protected void init() {
-        if(ConfiguracaoAppSingleton.getInstance().isMicroServico()){
-            apresentaBySituacao(aposta.getSituacao());
-        }
-        setupToolbar();
-
-        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
-
-        if (CollectionUtils.isEmpty(aposta.getNumerosSelecionados())) {
-            favoriteBtn.setVisibility(View.GONE);
-        }
-
-        getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
-        if(aposta.getModalidade() == ModalidadeEnum.LOTECA){
-            ll_adic_fav.setVisibility(View.GONE);
-            id_view_divisao.setVisibility(View.GONE);
-        } else if (aposta.getIndicadorCotaBolao()){
-            editarApostaBtn.setVisibility(View.GONE);
-            ll_adic_fav.setVisibility(View.GONE);
-        } else {
-            id_view_divisao.setVisibility(View.VISIBLE);
-        }
-
     }
 
     private void chooseFragmentToPresent() {
