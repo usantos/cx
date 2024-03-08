@@ -4,14 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -24,15 +27,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.OptionsMenu;
-import org.androidannotations.annotations.OptionsMenuItem;
-import org.androidannotations.annotations.ViewById;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -94,56 +88,38 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
  * Class ApostaConfirmadaDetalhesActivity
  */
 
-@EActivity(R.layout.activity_aposta_confirmada_detalhes)
-@OptionsMenu(R.menu.menu_apostas_confirmadas)
 public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implements ConferirResultadoHandler {
+    public static final String ARG_COMPROVANTE = "ARG_COMPROVANTE";
+    public static final String ARG_DETALHES_PREMIO = "ARG_DETALHES_PREMIO";
+    public static final String ARG_RESULTADO_CONCURSO = "ARG_RESULTADO_CONCURSO";
+    public static final String ARG_DETALHES_HISTORICO = "ARG_DETALHES_HISTORICO";
+    public static final String ARG_SITUACAO = "ARG_SITUACAO";
 
     private ApostaFavoritaModel model;
+    private ApostaBO apostaBO;
 
+    private ComprovanteApostaDTO comprovanteApostaDTO;
+    private DetalhesPremioDTO detalhesPremioDTO;
+    private ResultadoConcursoDTO resultadoConcurso;
+    private DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO;
+    private DTOEnumLong situacaoAposta;
 
-    @Bean
-    protected ApostaBO apostaBO;
+    private FrameLayout fragmentContainer, linearLayoutBottom;
 
-    @Extra
-    protected ComprovanteApostaDTO comprovanteApostaDTO;
+    private Toolbar toolbar;
 
-    @Extra
-    protected DetalhesPremioDTO detalhesPremioDTO;
+    private TextView validadePremioText, editarTxt;
 
-    @Extra
-    protected ResultadoConcursoDTO resultadoConcurso;
+    private RelativeLayout layoutnomeApostaLayout, favoritadoLayout,
+            favoriteBtn, layoutTextoSalveAposta, editarApostaBtn,
+            carrinhoApostasBtn, adicionarCarrinhoBtn;
+    private ImageView salvarApostaImg;
 
-    @Extra
-    protected DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO;
+    private LinearLayout  ll_adic_fav;
+    private ConstraintLayout comprovanteLayout, informacaoApostaLayout;
 
-    @Extra
-    protected DTOEnumLong situacaoAposta;
-
-    @ViewById
-    protected FrameLayout fragmentContainer;
-
-    @ViewById
-    protected FrameLayout linearLayoutBottom;
-
-    @ViewById
-    protected Toolbar toolbar;
-
-    @ViewById
-    protected TextView validadePremioText, editarTxt;
-
-    @ViewById
-    protected RelativeLayout layoutnomeApostaLayout, favoritadoLayout,
-            favoriteBtn, layoutTextoSalveAposta, editarApostaBtn;
-
-    @ViewById
-    protected LinearLayout  ll_adic_fav;
-    @ViewById
-    protected ConstraintLayout v_bottom, informacaoApostaLayout;
-
-    @ViewById
-    protected EditText nomeApostaEditTxt;
-    @ViewById
-    protected View id_view_divisao;
+    private EditText nomeApostaEditTxt;
+    private View id_view_divisao;
 
     private EstiloModalidade estilo;
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
@@ -167,12 +143,16 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_aposta_confirmada_detalhes);
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
 
         model = new ApostaFavoritaModel(ApostaConfirmadaDetalhesActivity.this);
+        apostaBO = ApostaBO_.getInstance_(this);
 
-        setaMetodos();
+        pegaExtras();
         setaViews();
+        setupToolbar();
+        setaMetodos();
 
         if(ConfiguracaoAppSingleton.getInstance().isMicroServico()){
             apresentaBySituacao(aposta.getSituacao());
@@ -187,7 +167,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     @Override
     protected void onResume() {
         super.onResume();
-        setupToolbar();
         if (CollectionUtils.isEmpty(aposta.getNumerosSelecionados())) {
             favoriteBtn.setVisibility(View.GONE);
         }
@@ -202,12 +181,16 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
     }
 
-    private void setaViews(){
-        estilo = new EstiloModalidade(aposta);
-        setTheme(estilo.getThemeId());
-    }
+    private void pegaExtras(){
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            comprovanteApostaDTO = (ComprovanteApostaDTO) bundle.getSerializable(ARG_COMPROVANTE);
+            detalhesPremioDTO = (DetalhesPremioDTO) bundle.getSerializable(ARG_DETALHES_PREMIO);
+            resultadoConcurso = (ResultadoConcursoDTO) bundle.getSerializable(ARG_RESULTADO_CONCURSO);
+            detalhesHistoricoPremioDTO = (DetalhesHistoricoPremioDTO) bundle.getSerializable(ARG_DETALHES_HISTORICO);
+            situacaoAposta = (DTOEnumLong) bundle.getSerializable(ARG_SITUACAO);
+        }
 
-    private void setaMetodos(){
         if (comprovanteApostaDTO != null) {
             premioPago = false;
             isHistorico = false;
@@ -250,6 +233,41 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         chamadasParaComprovante();
     }
 
+    private void setaViews(){
+        estilo = new EstiloModalidade(aposta.getModalidade());
+        setTheme(estilo.getThemeId());
+
+        fragmentContainer       = findViewById(R.id.fragmentContainer);
+        linearLayoutBottom      = findViewById(R.id.linearLayoutBottom);
+        toolbar                 = findViewById(R.id.toolbar);
+        validadePremioText      = findViewById(R.id.validadePremioText);
+        editarTxt               = findViewById(R.id.editarTxt);
+        layoutnomeApostaLayout  = findViewById(R.id.layoutnomeApostaLayout);
+        favoritadoLayout        = findViewById(R.id.favoritadoLayout);
+        favoriteBtn             = findViewById(R.id.favoriteBtn);
+        layoutTextoSalveAposta  = findViewById(R.id.layoutTextoSalveAposta);
+        editarApostaBtn         = findViewById(R.id.editarApostaBtn);
+        ll_adic_fav             = findViewById(R.id.ll_adic_fav);
+        informacaoApostaLayout  = findViewById(R.id.informacaoApostaLayout);
+        nomeApostaEditTxt       = findViewById(R.id.nomeApostaEditTxt);
+        id_view_divisao         = findViewById(R.id.id_view_divisao);
+        comprovanteLayout       = findViewById(R.id.comprovanteLayout);
+        carrinhoApostasBtn      = findViewById(R.id.carrinhoApostasBtn);
+        adicionarCarrinhoBtn    = findViewById(R.id.adicionarCarrinhoBtn);
+        salvarApostaImg         = findViewById(R.id.salvarApostaImg);
+    }
+
+    private void setaMetodos(){
+        carrinhoApostasBtn.setOnClickListener(v -> carrinhoApostasBtn());
+        favoriteBtn.setOnClickListener(v-> favoriteBtn());
+        favoritadoLayout.setOnClickListener(v -> favoritadoLayout());
+        layoutTextoSalveAposta.setOnClickListener(v -> layoutTextoSalveAposta());
+        editarApostaBtn.setOnClickListener(v -> editarApostaBtn());
+        adicionarCarrinhoBtn.setOnClickListener(v -> adicionarCarrinhoBtn());
+        comprovanteLayout.setOnClickListener(v -> comprovanteLayout());
+        salvarApostaImg.setOnClickListener(v -> salvarApostaImg());
+    }
+
     private void chooseFragmentToPresent() {
 
         switch (aposta.getModalidade()) {
@@ -275,6 +293,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 break;
         }
         linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
+        fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
         informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
     }
 
@@ -294,8 +313,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         return estilo.getCorClara();
     }
 
-    @Click
-    protected void carrinhoApostasBtn() {
+    private void carrinhoApostasBtn() {
         AlertDialogUtils.show(this);
         ApostaBO apostaBO = ApostaBO_.getInstance_(this);
 
@@ -323,8 +341,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         });
     }
 
-    @Click
-    protected void favoriteBtn() {
+    private void favoriteBtn() {
         if (layoutnomeApostaLayout.getVisibility() == View.VISIBLE){
             layoutnomeApostaLayout.setVisibility(View.GONE);
         } else {
@@ -337,8 +354,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         favoriteBtn.setVisibility(View.VISIBLE);
     }
 
-    @Click
-    protected void favoritadoLayout() {
+    private void favoritadoLayout() {
         if(favoritadoLayout.getVisibility() == View.VISIBLE){
             favoritadoLayout.setVisibility(View.INVISIBLE);
             layoutnomeApostaLayout.setVisibility(View.VISIBLE);
@@ -346,14 +362,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
     }
 
-    @Click
-    protected void layoutTextoSalveAposta() {
+    private void layoutTextoSalveAposta() {
         layoutnomeApostaLayout.setVisibility(View.VISIBLE);
         layoutTextoSalveAposta.setClickable(false);
     }
 
-    @Click
-    protected void editarApostaBtn() {
+    private void editarApostaBtn() {
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
             SimularApostaActivity_.intent(this).aposta(aposta)
                                   .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
@@ -362,8 +376,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
     }
 
-    @Click
-    protected void adicionarCarrinhoBtn() {
+    private void adicionarCarrinhoBtn() {
         ModalidadeEnum modalidade = (aposta!= null && aposta.getModalidade()!= null) ? aposta.getModalidade(): null;
         if (modalidade != null && !modalidade.equals(ModalidadeEnum.LOTECA)){
             if (!modalidade.equals(ModalidadeEnum.SUPER_7)) {
@@ -377,8 +390,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
     }
 
-    @Click
-    protected void salvarApostaImg() {
+    private void salvarApostaImg() {
         if (StringUtils.isNotEmpty(nomeApostaEditTxt.getText().toString())) {
             AlertDialogUtils.show(this);
 
@@ -462,8 +474,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         });
     }
 
-    @Click
-    protected void comprovanteLayout() {
+    private void comprovanteLayout() {
         if (premioPago && isHistorico) {
             if (detalhesHistoricoPremioDTOResponse != null && detalhesHistoricoPremioDTOResponse.getPayload() != null){
                 PdfUtils.createComprovanteHistoricoPremioPdf(detalhesHistoricoPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
@@ -560,18 +571,27 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         });
     }
 
-    @OptionsMenuItem(R.id.action_duvida)
-    protected void menuDuvida(MenuItem menuDuvida) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_apostas_confirmadas, menu);
+
+        MenuItem menuDuvida = menu.findItem(R.id.action_duvida);
         Drawable drawable = menuDuvida.getIcon();
         if (drawable != null && estilo != null) {
             ViewUtils.setColorDrawable(this, drawable, estilo.getMenuItemColor());
         }
+
+        return true;
     }
 
-    @OptionsItem(R.id.action_duvida)
-    protected void onMenuDuvida() {
-        Intent intent = new Intent(getBaseContext(), TermosUsoActivity.class);
-        startActivity(intent);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_duvida){
+            Intent intent = new Intent(getBaseContext(), TermosUsoActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -637,6 +657,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setupToolbar() {
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {

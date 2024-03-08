@@ -408,7 +408,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".controllers.ApostaConfirmadaDetalhesActivity_"
+            android:name=".controllers.ApostaConfirmadaDetalhesActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".controllers.ResultadoApostaConfirmadaActivity_"
