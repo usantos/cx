@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -101,8 +100,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private ApostaFavoritaModel model;
 
-    @Bean
-    protected PdfUtils pdfUtils;
 
     @Bean
     protected ApostaBO apostaBO;
@@ -472,25 +469,25 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     protected void comprovanteLayout() {
         if (premioPago && isHistorico) {
             if (detalhesHistoricoPremioDTOResponse != null && detalhesHistoricoPremioDTOResponse.getPayload() != null){
-                pdfUtils.createComprovanteHistoricoPremioPdf(detalhesHistoricoPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                PdfUtils.createComprovanteHistoricoPremioPdf(detalhesHistoricoPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
             } else {
                 buscaDetalheComprovanteHistoricoAposta(true);
             }
         } else if (premioPago) {
             if(detalhesPremioDTOResponse != null && detalhesPremioDTOResponse.getPayload() != null){
-                pdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                PdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
             } else if (detalhesPremioDTO != null){
-                pdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this);
+                PdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this);
             } else {
                 buscarDetalheComprovantePremioAposta(true);
             }
         } else {
             if (comprovanteParaPdf != null){
-                pdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
+                PdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
             } else if (comprovanteApostaDTOResponse != null && comprovanteApostaDTOResponse.getPayload() != null){
-                pdfUtils.createComprovanteApostaPdf(comprovanteApostaDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                PdfUtils.createComprovanteApostaPdf(comprovanteApostaDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
             } else if (comprovanteApostaDTO != null){
-                pdfUtils.createComprovanteApostaPdf(comprovanteApostaDTO, ApostaConfirmadaDetalhesActivity.this);
+                PdfUtils.createComprovanteApostaPdf(comprovanteApostaDTO, ApostaConfirmadaDetalhesActivity.this);
             } else {
                 buscaDetalhesComprovanteAposta(true);
             }

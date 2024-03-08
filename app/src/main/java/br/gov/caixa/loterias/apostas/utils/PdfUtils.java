@@ -1,13 +1,9 @@
 package br.gov.caixa.loterias.apostas.utils;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.print.PdfConverter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import org.androidannotations.annotations.EBean;
 
@@ -30,7 +26,7 @@ public class PdfUtils {
     public static final String ARQUIVO_COMPROV_APOSTA = "Aposta";
 
 
-    public void createComprovanteApostaPdf(ComprovanteApostaDTO comprovanteApostaDTO, AppCompatActivity activity) {
+    public static void createComprovanteApostaPdf(ComprovanteApostaDTO comprovanteApostaDTO, AppCompatActivity activity) {
         try {
             String html = HtmlUtils.getComprovanteCabecalhoRodapeAposta(comprovanteApostaDTO, activity);
 
@@ -78,7 +74,7 @@ public class PdfUtils {
         }
     }
 
-    public void createComprovanteHistoricoPremioPdf(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, AppCompatActivity activity) {
+    public static void createComprovanteHistoricoPremioPdf(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, AppCompatActivity activity) {
         try {
             String html = HtmlUtils.getComprovanteCabecalhoRodapePremioHistorico(detalhesHistoricoPremioDTO, activity);
 
