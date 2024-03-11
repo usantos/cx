@@ -292,8 +292,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 }
                 break;
         }
-        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-        fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
+        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
+        fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
     }
 
@@ -657,7 +657,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setupToolbar() {
-        toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
+        toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
