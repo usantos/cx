@@ -261,4 +261,8 @@ public class SilceConnection {
         }
         return sb.toString();
     }
+
+//    public void nuke() {
+//        SSLPiniingUtil.pinagem();
+//    }
 }
