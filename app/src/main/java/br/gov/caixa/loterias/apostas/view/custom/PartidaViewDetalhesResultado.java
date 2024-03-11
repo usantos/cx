@@ -55,16 +55,11 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
     public static LinkedHashMap<String, String> obterMapFaixa(Modalidade modalidade) {
         LinkedHashMap<String, String> mapFaixa = new LinkedHashMap<>();
-        String modalidadeTratada = modalidade.getNome()
-                .toUpperCase()
-                .replace(" ", "")
-                .replace("_", "")
-                .replace("-", "");
 
         String numerosAcertados = " números acertados";
 
-        switch (modalidadeTratada) {
-            case "DIADESORTE":
+        switch (modalidade.getTipoModalidade()) {
+            case DIA_DE_SORTE:
                 mapFaixa.put("0001", "7" + numerosAcertados);
                 mapFaixa.put("0002", "6" + numerosAcertados);
                 mapFaixa.put("0003", "5" + numerosAcertados);
@@ -73,7 +68,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                         (modalidade.getResultadoConcursoDTO() == null ? "" :
                                 modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome()));
                 break;
-            case "DUPLASENA":
+            case DUPLA_SENA:
                 mapFaixa.put("0001", "Sena - 6" + numerosAcertados);
                 mapFaixa.put("0002", "Quina - 5" + numerosAcertados);
                 mapFaixa.put("0003", "Quadra - 4" + numerosAcertados);
@@ -83,24 +78,23 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0007", "Quadra - 4" + numerosAcertados);
                 mapFaixa.put("0008", "Terno - 3" + numerosAcertados);
                 break;
-            case "LOTECA":
+            case LOTECA:
                 mapFaixa.put("0001", "1º (14 jogos acertados)");
                 mapFaixa.put("0002", "2º (13 jogos acertados)");
                 break;
-            case "LOTOFACIL":
-            case "LOTOFÁCIL":
+            case LOTOFACIL:
                 mapFaixa.put("0001", "15" + numerosAcertados);
                 mapFaixa.put("0002", "14" + numerosAcertados);
                 mapFaixa.put("0003", "13" + numerosAcertados);
                 mapFaixa.put("0004", "12" + numerosAcertados);
                 mapFaixa.put("0005", "11" + numerosAcertados);
                 break;
-            case "LOTOGOL":
+            case LOTOGOL:
                 mapFaixa.put("0001", "1º (5 acertos)");
                 mapFaixa.put("0002", "2º (4 acertos)");
                 mapFaixa.put("0003", "3º (3 acertos)");
                 break;
-            case "LOTOMANIA":
+            case LOTOMANIA:
                 mapFaixa.put("0001", "20" + numerosAcertados);
                 mapFaixa.put("0002", "19" + numerosAcertados);
                 mapFaixa.put("0003", "18" + numerosAcertados);
@@ -109,18 +103,18 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0006", "15" + numerosAcertados);
                 mapFaixa.put("0007", "0" + " acertos");
                 break;
-            case "MEGASENA":
+            case MEGA_SENA:
                 mapFaixa.put("0001", "Sena - 6" + numerosAcertados);
                 mapFaixa.put("0002", "Quina - 5" + numerosAcertados);
                 mapFaixa.put("0003", "Quadra - 4" + numerosAcertados);
                 break;
-            case "QUINA":
+            case QUINA:
                 mapFaixa.put("0001", "Quina - 5" + numerosAcertados);
                 mapFaixa.put("0002", "Quadra - 4" + numerosAcertados);
                 mapFaixa.put("0003", "Terno - 3" + numerosAcertados);
                 mapFaixa.put("0004", "Duque - 2" + numerosAcertados);
                 break;
-            case "TIMEMANIA":
+            case TIMEMANIA:
                 mapFaixa.put("0001", "7" + numerosAcertados);
                 mapFaixa.put("0002", "6" + numerosAcertados);
                 mapFaixa.put("0003", "5" + numerosAcertados);
@@ -131,8 +125,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                                 modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome()+"/"+
                                 modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getUf()));
                 break;
-            case "SUPERSETE":
-            case "SUPER7":
+            case SUPER_7:
                 mapFaixa.put("0001", "7" + numerosAcertados);
                 mapFaixa.put("0002", "6" + numerosAcertados);
                 mapFaixa.put("0003", "5" + numerosAcertados);
@@ -144,8 +137,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("4", "4" + numerosAcertados);
                 mapFaixa.put("5", "3" + numerosAcertados);
                 break;
-            case "MAISMILIONARIA":
-            case "MAISMILIONÁRIA":
+            case MAIS_MILIONARIA:
                 mapFaixa.put("1", "6 números +2 trevos acertados");
                 mapFaixa.put("2", "6 números +1 ou 6 +0 trevos acertados");
                 mapFaixa.put("3", "5 números +2 trevos acertados");
@@ -499,7 +491,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        layoutParams2.setMargins(0, 18, 0, 0);
+        layoutParams2.setMargins(0, 18, 0, 180);
         text.setLayoutParams(layoutParams2);
         text.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
         this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(text);
