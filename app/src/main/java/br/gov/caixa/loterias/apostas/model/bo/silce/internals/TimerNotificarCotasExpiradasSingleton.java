@@ -86,8 +86,8 @@ public class TimerNotificarCotasExpiradasSingleton {
     }
 
     private void notificationCotasPrestesExpirar() {
-        Toast.makeText(context, context.getString(R.string.cotas_prestes_expirar),
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, context.getString(R.string.cotas_prestes_expirar),
+        //        Toast.LENGTH_SHORT).show();
         MessagingUtils.criaNotificacaoSobreposta(context, "", context.getString(R.string.cotas_prestes_expirar));
     }
 }

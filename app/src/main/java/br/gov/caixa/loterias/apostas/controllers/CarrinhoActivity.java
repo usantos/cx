@@ -784,8 +784,8 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void notificationCotasExcluidas() {
-        Toast.makeText(this, getString(R.string.cotas_expiradas_excluidas_carrinho),
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, getString(R.string.cotas_expiradas_excluidas_carrinho),
+        //        Toast.LENGTH_SHORT).show();
         MessagingUtils.criaNotificacaoNova(this, "", this.getString(R.string.cotas_expiradas_excluidas_carrinho));
     }
 }
