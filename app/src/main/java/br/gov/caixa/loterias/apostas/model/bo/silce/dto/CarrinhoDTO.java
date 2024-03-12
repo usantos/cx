@@ -35,6 +35,8 @@ public class CarrinhoDTO implements Serializable {
     protected List<IdentificaoDeUmaApostaDas8Modalidades> boloes = null;
     @SerializedName("id")
     protected Long id = null;
+    @SerializedName("msgCotaExcluida")
+    protected Boolean msgCotaExcluida = null;
 
     /**
      * Valor total das apostas do carrinho
@@ -104,6 +106,13 @@ public class CarrinhoDTO implements Serializable {
         this.id = id;
     }
 
+    public Boolean getMsgCotaExcluida() {
+        return msgCotaExcluida;
+    }
+
+    public void setMsgCotaExcluida(Boolean msgCotaExcluida) {
+        this.msgCotaExcluida = msgCotaExcluida;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -118,6 +127,7 @@ public class CarrinhoDTO implements Serializable {
                (this.apostas == null ? carrinhoDTO.apostas == null : this.apostas.equals(carrinhoDTO.apostas)) &&
                (this.apostasIndividuais == null ? carrinhoDTO.apostasIndividuais == null : this.apostasIndividuais.equals(carrinhoDTO.apostasIndividuais)) &&
                (this.boloes == null ? carrinhoDTO.boloes == null : this.boloes.equals(carrinhoDTO.boloes)) &&
+               (this.msgCotaExcluida == null ? carrinhoDTO.msgCotaExcluida == null : this.msgCotaExcluida.equals(carrinhoDTO.msgCotaExcluida)) &&
                (this.id == null ? carrinhoDTO.id == null : this.id.equals(carrinhoDTO.id));
     }
 
@@ -128,6 +138,7 @@ public class CarrinhoDTO implements Serializable {
         result = 31 * result + (this.apostas == null ? 0 : this.apostas.hashCode());
         result = 31 * result + (this.apostasIndividuais == null ? 0 : this.apostasIndividuais.hashCode());
         result = 31 * result + (this.boloes == null ? 0 : this.boloes.hashCode());
+        result = 31 * result + (this.msgCotaExcluida == null ? 0 : this.msgCotaExcluida.hashCode());
         result = 31 * result + (this.id == null ? 0 : this.id.hashCode());
         return result;
     }
@@ -140,6 +151,7 @@ public class CarrinhoDTO implements Serializable {
                 "  apostas: " + apostas + "\n" +
                 "  apostasIndividuais: " + apostasIndividuais + "\n" +
                 "  boloes: " + boloes + "\n" +
+                "  msgCotaExcluida: " + msgCotaExcluida + "\n" +
                 "  id: " + id + "\n" +
                 "}\n";
         return sb;

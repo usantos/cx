@@ -1293,7 +1293,7 @@
     <string name="depplink_path_compras">https://loteriasonline.caixa.gov.br/silce-web/#compras</string>
 
     <!-- Push Notification -->
-    <string name="default_notification_channel_id">ChannelId</string>
+    <string name="default_notification_channel_id">CanalLoteriasId</string>
     <string name="default_notification_name">Loterias</string>
     <string name="default_notification_channel_descricao">Canal Loterias</string>
     <string name="icone_notificacoes">Notificações</string>
@@ -1336,5 +1336,8 @@
     <string name="ir_para_minhas_compras">Ir para as\n_Minhas Compras_</string>
     <string name="descricao_filtro_vazio">Não encontramos nenhum bolão que corresponda à sua pesquisa!</string>
     <string name="descricao_erro_filtro">Ocorreu um erro.\nTente novamente</string>
+
+    <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
+    <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>
 
 </resources>

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,15 +22,15 @@ import com.android.volley.VolleyError;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
@@ -37,11 +38,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
+import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
@@ -80,6 +81,8 @@ public class CarrinhoActivity extends AppCompatActivity {
     private TextView textCotasBolao, textApostasIndividuais;
     private View viewDivBottomBolao, viewDivBottom;
 
+    private Timer timer;
+    private Handler handler = new Handler();
 
     private String origem;
 
@@ -94,6 +97,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_carrinho);
         model = new CarrinhoModel(CarrinhoActivity.this);
         pegaExtras();
+        timerExcluiCotasExpiradas();
         setaViews();
         setaMetodos();
     }
@@ -112,6 +116,10 @@ public class CarrinhoActivity extends AppCompatActivity {
         synchronized (rvListaApostas) {
             listApostas.removeAll(listApostas);
             rvListaApostas.getAdapter().notifyDataSetChanged();
+
+            //Importante pro refresh dos Boloes
+            listBoloes.clear();
+            rvListaBoloes.getAdapter().notifyDataSetChanged();
         }
     }
 
@@ -420,6 +428,10 @@ public class CarrinhoActivity extends AppCompatActivity {
 
                 setCarrinho(payload);
                 atualizaLayout(offSet);
+
+                if (payload.getMsgCotaExcluida() != null && payload.getMsgCotaExcluida()) {
+                    notificationCotasExcluidas();
+                }
             }
 
             @Override
@@ -720,5 +732,60 @@ public class CarrinhoActivity extends AppCompatActivity {
                 postResume();
             }
         };
+    }
+
+    public void timerExcluiCotasExpiradas() {
+
+        timer = new Timer();
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Tarefa
+                        VerificaCotasExpiradas();
+                    }
+                });
+            }
+        };
+        timer.schedule(task, 0, 60000);; //1 minuto
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
+    private void VerificaCotasExpiradas() {
+
+        CarrinhoDTO carrinhoDTO = CarrinhoSingleton.getInstance().getCarrinho();
+        if (carrinhoDTO == null || carrinhoDTO.getBoloes() == null ||
+                carrinhoDTO.getBoloes().size() == 0) {
+            return;
+        }
+
+        List<IdentificaoDeUmaApostaDas8Modalidades> listBolao = carrinhoDTO.getBoloes();
+
+        for (IdentificaoDeUmaApostaDas8Modalidades bolao : listBolao) {
+            String dataHoraExpiracao = bolao.getReservaCotaBolao().getDataHoraExpiracaoReserva();
+            if (dataHoraExpiracao != null || dataHoraExpiracao.length() > 0) {
+                long tempo_restante_milesec = DateUtils.diffMillisSecondsTimerZone(dataHoraExpiracao);
+                if (tempo_restante_milesec <= 0) {
+                    //notificationCotasExcluidas();
+                    onResume();
+                    break;
+                }
+            }
+        }
+    }
+
+    private void notificationCotasExcluidas() {
+        Toast.makeText(this, getString(R.string.cotas_expiradas_excluidas_carrinho),
+                Toast.LENGTH_SHORT).show();
+        MessagingUtils.criaNotificacaoNova(this, "", this.getString(R.string.cotas_expiradas_excluidas_carrinho));
     }
 }

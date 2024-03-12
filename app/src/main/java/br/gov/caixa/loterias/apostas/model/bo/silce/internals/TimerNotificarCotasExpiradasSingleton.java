@@ -4,14 +4,15 @@ import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 
 
 public class TimerNotificarCotasExpiradasSingleton {
@@ -50,8 +51,7 @@ public class TimerNotificarCotasExpiradasSingleton {
                 }
             };
 
-            //timer.schedule(task, 0, 60000);; //1 minuto
-            timer.schedule(task, 0, 120000);; //2 min
+            timer.schedule(task, 0, 60000);; //1 minuto
         }
 
     }
@@ -78,11 +78,16 @@ public class TimerNotificarCotasExpiradasSingleton {
             if (dataHoraExpiracao != null || dataHoraExpiracao.length() > 0) {
                 long tempo_restante_milesec = DateUtils.diffMillisSecondsTimerZone(dataHoraExpiracao);
                 if (tempo_restante_milesec > 0 && tempo_restante_milesec < 120000) {
-                    Toast.makeText(context, "Tempo faltante="+tempo_restante_milesec,
-                            Toast.LENGTH_SHORT).show();
+                    notificationCotasPrestesExpirar();
                     break;
                 }
             }
         }
+    }
+
+    private void notificationCotasPrestesExpirar() {
+        Toast.makeText(context, context.getString(R.string.cotas_prestes_expirar),
+                Toast.LENGTH_SHORT).show();
+        MessagingUtils.criaNotificacaoSobreposta(context, "", context.getString(R.string.cotas_prestes_expirar));
     }
 }
