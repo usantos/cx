@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -42,6 +43,7 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
     private Button btnProximo;
     private Button btnAnterior;
     private Button btnFechar;
+    private Button btnFecharTop;
     private Button btnAjuda;
     private BottomSheetFragment bottomSheetFragment;
 
@@ -67,6 +69,14 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
     private void configurar() {
         tvAutoPergunta = findViewById(R.id.tvAutoPergunta);
         rgAutoavaliacao = findViewById(R.id.rgAutoavaliacao);
+
+        if (!SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
+            btnFecharTop = findViewById(R.id.btnAutoFecharTop);
+            btnFecharTop.setVisibility(View.VISIBLE);
+            btnFecharTop.setOnClickListener(v -> {
+                finish();
+            });
+        }
 
         btnProximo = findViewById(R.id.btnAutoProximo);
         btnProximo.setOnClickListener(v -> {
@@ -217,6 +227,7 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
     private void alteraBtnToFechar() {
         btnAnterior.setVisibility(View.GONE);
         btnFechar.setVisibility(View.VISIBLE);
+        btnFecharTop.setVisibility(View.GONE);
     }
 
     private void alteraBtnToAjuda() {
