@@ -93,6 +93,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
@@ -960,6 +961,7 @@ public class PrincipalActivity extends AppCompatActivity
     protected void onDestroy() {
         dbLoteriasHelper.close();
         AlertDialogUtils.dismiss();
+        //MessagingUtils.limpaNotificacoesDoApp(this);
         super.onDestroy();
     }
 

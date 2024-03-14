@@ -61,6 +61,11 @@ public class MessagingUtils {
         notificationManager.notify(NOTIFICATION_VARIAVEL, builder.build());
     }
 
+    public static void limpaNotificacoesDoApp(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
+
 //    private static void promptUserToEnableNotifications(Activity activity) {
 //
 //        new AlertDialog.Builder(activity)

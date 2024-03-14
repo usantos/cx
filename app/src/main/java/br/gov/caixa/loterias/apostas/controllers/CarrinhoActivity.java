@@ -283,7 +283,30 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void onClickAvancaPagamento() {
-        trataPermissao();
+        if (temCotasExpiradas()) {
+            AlertDialogUtils.show(CarrinhoActivity.this);
+            vLoading.setVisibility(View.VISIBLE);
+            model.buscaCarrinhoSilce(new OnSilceListener<CarrinhoDTO>() {
+                @Override
+                public void success(CarrinhoDTO payload) {
+                    vLoading.setVisibility(View.GONE);
+                    AlertDialogUtils.dismiss();
+                    setCarrinho(payload);
+                    if (payload.getMsgCotaExcluida() != null && payload.getMsgCotaExcluida()) {
+                        notificationCotasExcluidas();
+                    }
+                    trataPermissao();
+                }
+                @Override
+                public void error(VolleyError error) {
+                    vLoading.setVisibility(View.GONE);
+                    AlertDialogUtils.dismiss();
+                    trataPermissao();
+                }
+            });
+        } else {
+            trataPermissao();
+        }
     }
 
 
@@ -744,7 +767,9 @@ public class CarrinhoActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //Tarefa
-                        VerificaCotasExpiradas();
+                        if (temCotasExpiradas()) {
+                            onResume();
+                        }
                     }
                 });
             }
@@ -760,12 +785,12 @@ public class CarrinhoActivity extends AppCompatActivity {
         }
     }
 
-    private void VerificaCotasExpiradas() {
+    private boolean temCotasExpiradas() {
 
         CarrinhoDTO carrinhoDTO = CarrinhoSingleton.getInstance().getCarrinho();
         if (carrinhoDTO == null || carrinhoDTO.getBoloes() == null ||
                 carrinhoDTO.getBoloes().size() == 0) {
-            return;
+            return false;
         }
 
         List<IdentificaoDeUmaApostaDas8Modalidades> listBolao = carrinhoDTO.getBoloes();
@@ -775,12 +800,11 @@ public class CarrinhoActivity extends AppCompatActivity {
             if (dataHoraExpiracao != null || dataHoraExpiracao.length() > 0) {
                 long tempo_restante_milesec = DateUtils.diffMillisSecondsTimerZone(dataHoraExpiracao);
                 if (tempo_restante_milesec <= 0) {
-                    //notificationCotasExcluidas();
-                    onResume();
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     private void notificationCotasExcluidas() {
