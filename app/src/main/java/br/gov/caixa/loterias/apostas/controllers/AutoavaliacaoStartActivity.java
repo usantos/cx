@@ -2,12 +2,14 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity;
@@ -16,6 +18,7 @@ public class AutoavaliacaoStartActivity extends AppCompatActivity {
 
     private TextView tvIniciar;
     private Button btnIniciar;
+    private Button btnFechar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,5 +42,13 @@ public class AutoavaliacaoStartActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        if (!SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
+            btnFechar = findViewById(R.id.btnAutoFecharStart);
+            btnFechar.setVisibility(View.VISIBLE);
+            btnFechar.setOnClickListener(v -> {
+                finish();
+            });
+        }
     }
 }
