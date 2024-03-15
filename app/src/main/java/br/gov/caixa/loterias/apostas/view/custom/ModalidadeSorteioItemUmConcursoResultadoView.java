@@ -67,7 +67,6 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
             }
         }
 
-
         this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
         numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
@@ -84,7 +83,6 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 
 
         this.partidaViewDetalhesResultadoView.setLayout(modalidade);
-
     }
 
     public ModalidadeSorteioItemUmConcursoResultadoView(Context context) {
