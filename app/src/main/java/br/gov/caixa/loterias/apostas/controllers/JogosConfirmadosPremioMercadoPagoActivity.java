@@ -164,7 +164,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
             public void onResponse(DetalhesPremioDTOResponse result) {
                 loadViewProgress.dismiss();
                 detalhesPremioDTO = result.getPayload();
-                comprovanteLayout.setOnClickListener(view -> PdfUtils.createComprovantePremioPdf(detalhesPremioDTO, JogosConfirmadosPremioMercadoPagoActivity.this));
+                comprovanteLayout.setOnClickListener(view -> PdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTO, JogosConfirmadosPremioMercadoPagoActivity.this));
             }
 
             @Override
