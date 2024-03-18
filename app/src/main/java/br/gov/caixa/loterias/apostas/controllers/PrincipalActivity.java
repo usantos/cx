@@ -872,7 +872,7 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
                 break;
             case 2:
-                startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                startActivity(new Intent(PrincipalActivity.this, AutoSuspensaoActivity.class));
                 break;
             default:
                 break;
