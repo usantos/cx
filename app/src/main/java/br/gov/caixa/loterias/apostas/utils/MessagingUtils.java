@@ -1,57 +1,94 @@
 package br.gov.caixa.loterias.apostas.utils;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import android.provider.Settings;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 //import com.google.firebase.messaging.FirebaseMessaging;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 
 public class MessagingUtils {
 
     private static final String TAG = "MessagingUtils";
+    private static final int NOTIFICATION_ID = 1; //Mesmo ID sobrepoe se existir a mensagem
+    private static final int NOTIFICATION_VARIAVEL = (int) System.currentTimeMillis();
 
-    private static void promptUserToEnableNotifications(Activity activity) {
+    //IMPORTANCE Utilizado antes do Android 8 (API 26)
+    private static final int IMPORTANCE = NotificationManager.IMPORTANCE_HIGH; //IMPORTANCE_DEFAULT;
+    //PRIORITI Utilizado durante e após o Android 8 (API 26)
+    private static final int PRIORITY  = NotificationCompat.PRIORITY_HIGH; //PRIORITY_DEFAULT;
 
-        new AlertDialog.Builder(activity)
-                .setTitle("Habilitar notificações")
-                .setMessage("As notificações estão desativadas. Você gostaria de ativá-las?")
-                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        openNotificationSettings(activity);
-                    }
-                })
-                .setNegativeButton("Não", null)
-                .show();
+    public static void criaCanalNotificacaoApp(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = context.getString(R.string.default_notification_channel_id);
+            String channelName = context.getString(R.string.default_notification_name);
+            String channelDescription = context.getString(R.string.default_notification_channel_descricao);
+
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, IMPORTANCE);
+            channel.setDescription(channelDescription);
+            channel.setSound(null, null); // Adicionado para suprimir o som
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
-    private static void openNotificationSettings(Activity activity) {
+    public static void criaNotificacaoSobreposta(Context context, String titulo, String texto) {
+        String channelId = context.getString(R.string.default_notification_channel_id);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.trevo)
+                .setContentTitle(titulo)
+                .setContentText(texto)
+                .setPriority(PRIORITY);
 
-        Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra(Settings.EXTRA_APP_PACKAGE, activity.getPackageName())
-                .putExtra(Settings.EXTRA_CHANNEL_ID, activity.getString(R.string.default_notification_channel_id));
-        activity.startActivity(intent);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
     }
+
+    public static void criaNotificacaoNova(Context context, String titulo, String texto) {
+        String channelId = context.getString(R.string.default_notification_channel_id);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.trevo)
+                .setContentTitle(titulo)
+                .setContentText(texto)
+                .setPriority(PRIORITY);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.notify(NOTIFICATION_VARIAVEL, builder.build());
+    }
+
+    public static void limpaNotificacoesDoApp(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
+
+//    private static void promptUserToEnableNotifications(Activity activity) {
+//
+//        new AlertDialog.Builder(activity)
+//                .setTitle("Habilitar notificações")
+//                .setMessage("As notificações estão desativadas. Você gostaria de ativá-las?")
+//                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        openNotificationSettings(activity);
+//                    }
+//                })
+//                .setNegativeButton("Não", null)
+//                .show();
+//    }
+//
+//    private static void openNotificationSettings(Activity activity) {
+//
+//        Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+//                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                .putExtra(Settings.EXTRA_APP_PACKAGE, activity.getPackageName())
+//                .putExtra(Settings.EXTRA_CHANNEL_ID, activity.getString(R.string.default_notification_channel_id));
+//        activity.startActivity(intent);
+//    }
 
 
     public static void getMessageTeoken() {
