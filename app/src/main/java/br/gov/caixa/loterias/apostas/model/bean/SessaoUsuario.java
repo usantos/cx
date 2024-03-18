@@ -22,6 +22,9 @@ public class SessaoUsuario {
     private boolean precisaMontarCarrossel = true;
     private boolean passouPelaQueueIT = false;
 
+    private Boolean suspensaoTemporariaApostador;
+    private Boolean responderAutoavaliacao;
+
     private Date dataUltimaRequisicao;
     public static int SECONDS = 180;
 
@@ -111,5 +114,27 @@ public class SessaoUsuario {
 
     public void setPassouPelaQueueIT(boolean passouPelaQueueIT) {
         this.passouPelaQueueIT = passouPelaQueueIT;
+    }
+
+    public Boolean getSuspensaoTemporariaApostador() {
+        if (suspensaoTemporariaApostador == null) {
+            return false;
+        }
+        return suspensaoTemporariaApostador;
+    }
+
+    public void setSuspensaoTemporariaApostador(Boolean suspensaoTemporariaApostador) {
+        this.suspensaoTemporariaApostador = suspensaoTemporariaApostador;
+    }
+
+    public Boolean getResponderAutoavaliacao() {
+        if (responderAutoavaliacao == null) {
+            return false;
+        }
+        return responderAutoavaliacao;
+    }
+
+    public void setResponderAutoavaliacao(Boolean responderAutoavaliacao) {
+        this.responderAutoavaliacao = responderAutoavaliacao;
     }
 }

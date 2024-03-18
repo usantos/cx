@@ -86,7 +86,10 @@ public class TokenActivity extends AppCompatActivity {
                                         if(response!= null && response.getPayload() != null && response.getPayload().getLimiteDiario() != null){
                                             SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
                                         }
-                                        SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
+                                        //SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
+                                        SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
+                                        SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
+
                                         CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                                         UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
 
