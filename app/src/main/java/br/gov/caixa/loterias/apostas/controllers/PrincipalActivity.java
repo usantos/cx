@@ -96,7 +96,6 @@ import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
@@ -648,7 +647,7 @@ public class PrincipalActivity extends AppCompatActivity
                     getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
 
-            if (data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA &&
+            if (modalidadeBolaoHabilitada(data.get(adapterPosition).getTipoModalidade()) &&
                     ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()){
                 buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
                                                                           getResources()
@@ -658,6 +657,11 @@ public class PrincipalActivity extends AppCompatActivity
                 buttonHomeBolao.setVisibility(View.GONE);
             }
         }
+    }
+
+    private boolean modalidadeBolaoHabilitada(ModalidadeEnum modalidade) {
+        return modalidade == ModalidadeEnum.MEGA_SENA ||
+                modalidade == ModalidadeEnum.QUINA;
     }
 
     @Click(R.id.buttonHomeBet)
