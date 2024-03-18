@@ -42,6 +42,7 @@ import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
+import br.gov.caixa.loterias.apostas.utils.PermissaoUtil;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
@@ -293,9 +294,8 @@ public class CarrinhoActivity extends AppCompatActivity {
                                           new OnDialogListenerLeftRight() {
                                               @Override
                                               public void left() {
-                                                  if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA)
-                                                      LocalizacaoUtils.solicitaPermissao(CarrinhoActivity.this);
-                                                  if (statusPermissao == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE)
+                                                  if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA ||
+                                                          statusPermissao == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE)
                                                       LocalizacaoUtils.intentConfigPermissao(CarrinhoActivity.this);
                                                   if (statusPermissao == LocalizacaoUtils.LOC_DESATIVADA)
                                                       LocalizacaoUtils.intentConfigGps(CarrinhoActivity.this);
@@ -322,7 +322,11 @@ public class CarrinhoActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] >= 0) {
                 trataPermissao();
             } else {
-                showAlertLocalizacao();
+                if(LocalizacaoUtils.checaNegadaDefinitivamente(CarrinhoActivity.this)){
+                    LocalizacaoUtils.intentConfigPermissao(CarrinhoActivity.this);
+                } else {
+                    showAlertLocalizacao();
+                }
             }
         }
     }
@@ -330,12 +334,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     private void showAlertLocalizacao() {
         ViewUtils.alertTitleButton(this, R.string.label_atencao,
                                    getString(R.string.alerta_precisa_estar_no_brasil),
-                                   getResources().getString(R.string.title_entendi), new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
-                    }
-                });
+                                   getResources().getString(R.string.title_entendi), dialog -> PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start());
     }
 
     private void onFluxoLocalizacaoNoBrasil(){

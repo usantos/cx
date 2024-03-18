@@ -25,4 +25,22 @@ public class PermissaoUtil {
 		return true;
 	}
 
+	public static boolean checkList(Activity activity, String[] permissoes, int code){
+
+		if (!isListGranted(activity, permissoes)){
+			ActivityCompat.requestPermissions(activity, permissoes, code);
+			return false;
+		}
+		return true;
+	}
+
+	public static boolean isListGranted(Activity activity, String[] permissions) {
+		for (String permission : permissions) {
+			if (ContextCompat.checkSelfPermission(activity, permission) != PackageManager.PERMISSION_GRANTED) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 }
