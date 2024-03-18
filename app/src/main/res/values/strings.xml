@@ -1337,4 +1337,22 @@
     <string name="descricao_filtro_vazio">Não encontramos nenhum bolão que corresponda à sua pesquisa!</string>
     <string name="descricao_erro_filtro">Ocorreu um erro.\nTente novamente</string>
 
+    <!-- Jogo Responsavel -->
+    <string name="autoavaliacao_apostador">Autoavaliação para o Apostador</string>
+    <string name="autoavaliacao_bem_vindo">Bem-vindo ao processo de\nautoavaliação Loterias CAIXA!</string>
+    <string name="autoavaliacao_texto">A partir de agora, uma vez por ano, será necessário que você responda poucas e rápidas perguntas para que possamos entender seu perfil e orientá-lo sobre como evitar ou tratar, se for o caso, o desenvolvimento do transtorno do jogo compulsivo.</string>
+    <string name="btn_autoavaliacao_start">Seguir para autoavaliação</string>
+    <string name="tv_autoavaliacao_1">Este app é válido para qualquer tipo de aposta a a dinheiro, e tem como base os critérios de avaliação breve da prevalência de Transtorno do jogo, por meio da escala de rastreio</string>
+    <string name="tv_autoavaliacao_2">NODS*-CLIP Problem Gambling Screen</string>
+    <string name="tv_autoavaliacao_3">*Volberg, R. A., Munck, I. M., &amp; Petry, N. M. (2011). A quick and simple screening method for pathological and problem gamblers in addiction programs and practices. The American Journal on Addictions, 20, 220–227.</string>
+    <string name="anterior">Anterior</string>
+    <string name="proximo">Próximo</string>
+    <string name="fechar">Fechar</string>
+    <string name="concluido">Concluido</string>
+    <string name="autoavaliacao_ajuda">Onde Procurar Ajuda</string>
+    <string name="autoavaliacao_parabens">_Parabéns!_\nO seu hábito de apostar não está interferindo em sua vida, você é um jogador responsável.</string>
+    <string name="autoavaliacao_atencao">_Muita atenção!_\nSe você respondeu "sim" para um ou mais dessas questões, recomendamos que você procure avaliação adicional.</string>
+
+
+
 </resources>

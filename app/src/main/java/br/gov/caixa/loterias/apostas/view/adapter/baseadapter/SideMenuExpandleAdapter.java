@@ -97,8 +97,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
 
         ImageView imagemMaisOpcoes = convertView.findViewById(R.id.imagemMaisOpcoes);
 
-        ImageView imageViewGroup = convertView
-                .findViewById(R.id.imagemItemGroupSideMenu);
+        ImageView imageViewGroup = convertView.findViewById(R.id.imagemItemGroupSideMenu);
         switch (listPosition) {
             case 0:
                 imageViewGroup.setImageResource(R.drawable.menu1_area);
@@ -109,7 +108,6 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 imagemMaisOpcoes.setSelected(isExpanded);
                 break;
-
              case 1:
                 imageViewGroup.setImageResource(R.drawable.menu3_resultados);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
@@ -118,7 +116,6 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
-
             case 2:
                 imageViewGroup.setImageResource(R.drawable.menu4_rapidao);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
@@ -138,10 +135,11 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
             case 4:
                 imageViewGroup.setImageResource(R.drawable.menu6_jogo_responsavel);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
-                listTitleTextView.setHint("botão");
+                listTitleTextView.setHint("este botão possue subitem");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
-                imagemMaisOpcoes.setVisibility(View.GONE);
+                imagemMaisOpcoes.setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
+                imagemMaisOpcoes.setSelected(isExpanded);
                 break;
             case 5:
                 imageViewGroup.setImageResource(R.drawable.menu7_repasses);

@@ -37,6 +37,12 @@ public class UsuarioLogado {
     private BigDecimal limiteDiario = null;
     @SerializedName("ultimaNotificacao")
     private NotificacaoDTO ultimaNotificacao = null;
+    @SerializedName("pagamentoNaoIdentificado")
+    private Boolean pagamentoNaoIdentificado = null;
+    @SerializedName("suspensaoTemporariaApostador")
+    private Boolean suspensaoTemporariaApostador = null;
+    @SerializedName("responderAutoavaliacao")
+    private Boolean responderAutoavaliacao = null;
 
     public NotificacaoDTO getUltimaNotificacao() {
         return ultimaNotificacao;
@@ -123,6 +129,32 @@ public class UsuarioLogado {
         this.primeiroNome = primeiroNome;
     }
 
+    @ApiModelProperty(value = "")
+    public Boolean getPagamentoNaoIdentificado() {
+        return pagamentoNaoIdentificado;
+    }
+
+    public void setPagamentoNaoIdentificado(Boolean pagamentoNaoIdentificado) {
+        this.pagamentoNaoIdentificado = pagamentoNaoIdentificado;
+    }
+
+    @ApiModelProperty(value = "")
+    public Boolean getSuspensaoTemporariaApostador() {
+        return suspensaoTemporariaApostador;
+    }
+
+    public void setSuspensaoTemporariaApostador(Boolean suspensaoTemporariaApostador) {
+        this.suspensaoTemporariaApostador = suspensaoTemporariaApostador;
+    }
+
+    @ApiModelProperty(value = "")
+    public Boolean getResponderAutoavaliacao() {
+        return responderAutoavaliacao;
+    }
+
+    public void setResponderAutoavaliacao(Boolean responderAutoavaliacao) {
+        this.responderAutoavaliacao = responderAutoavaliacao;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -139,6 +171,9 @@ public class UsuarioLogado {
                 (this.tempoExpirarSegundos == null ? usuarioLogado.tempoExpirarSegundos == null : this.tempoExpirarSegundos.equals(usuarioLogado.tempoExpirarSegundos)) &&
                 (this.carrinho == null ? usuarioLogado.carrinho == null : this.carrinho.equals(usuarioLogado.carrinho)) &&
                 (this.primeiroNome == null ? usuarioLogado.primeiroNome == null : this.primeiroNome.equals(usuarioLogado.primeiroNome)) &&
+                (this.pagamentoNaoIdentificado == null ? usuarioLogado.pagamentoNaoIdentificado == null : this.pagamentoNaoIdentificado.equals(usuarioLogado.pagamentoNaoIdentificado)) &&
+                (this.suspensaoTemporariaApostador == null ? usuarioLogado.suspensaoTemporariaApostador == null : this.suspensaoTemporariaApostador.equals(usuarioLogado.suspensaoTemporariaApostador)) &&
+                (this.responderAutoavaliacao == null ? usuarioLogado.responderAutoavaliacao == null : this.responderAutoavaliacao.equals(usuarioLogado.responderAutoavaliacao)) &&
                 (this.limiteDiario == null ? usuarioLogado.limiteDiario == null : this.limiteDiario.equals(usuarioLogado.limiteDiario));
 
     }
@@ -152,6 +187,10 @@ public class UsuarioLogado {
         result = 31 * result + (this.tempoExpirarSegundos == null ? 0 : this.tempoExpirarSegundos.hashCode());
         result = 31 * result + (this.carrinho == null ? 0 : this.carrinho.hashCode());
         result = 31 * result + (this.primeiroNome == null ? 0 : this.primeiroNome.hashCode());
+        result = 31 * result + (this.limiteDiario == null ? 0 : this.limiteDiario.hashCode());
+        result = 31 * result + (this.pagamentoNaoIdentificado == null ? 0 : this.pagamentoNaoIdentificado.hashCode());
+        result = 31 * result + (this.suspensaoTemporariaApostador == null ? 0 : this.suspensaoTemporariaApostador.hashCode());
+        result = 31 * result + (this.responderAutoavaliacao == null ? 0 : this.responderAutoavaliacao.hashCode());
         result = 31 * result + (this.limiteDiario == null ? 0 : this.limiteDiario.hashCode());
         return result;
     }
@@ -167,6 +206,9 @@ public class UsuarioLogado {
                 "  carrinho: " + carrinho + "\n" +
                 "  primeiroNome: " + primeiroNome + "\n" +
                 "  limiteDiario: " + limiteDiario + "\n" +
+                "  pagamentoNaoIdentificado: " + pagamentoNaoIdentificado + "\n" +
+                "  suspensaoTemporariaApostador: " + suspensaoTemporariaApostador + "\n" +
+                "  responderAutoavaliacao: " + responderAutoavaliacao + "\n" +
                 "}\n";
         return sb;
     }
