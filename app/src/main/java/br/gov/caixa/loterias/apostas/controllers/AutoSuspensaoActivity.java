@@ -4,14 +4,18 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
@@ -19,6 +23,7 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -34,17 +39,14 @@ import br.gov.caixa.loterias.apostas.view.fragment.BottomSheetFragment;
 
 public class AutoSuspensaoActivity extends AppCompatActivity {
 
-    private List<AutoavaliacaoPerguntaDTO> listPergunta;
-    private List<AutoavaliacaoRespostaDTO> listResposta;
-    private int indiceTelaAtual = 0;
-    private TextView tvAutoPergunta;
-    private RadioGroup rgAutoavaliacao;
-    private Button btnProximo;
-    private Button btnAnterior;
-    private Button btnFechar;
-    private Button btnFecharTop;
-    private Button btnAjuda;
-    private BottomSheetFragment bottomSheetFragment;
+    private TextView tvSuspensao1,tvSuspensao2,tvSuspensao3,tvSuspensao4;
+    private TextView tvPergunta;
+    private RadioGroup rgAutosuspensao1,rgAutosuspensao2;
+    private CheckBox chkSuspensaoCiente;
+    private Button btnConfirmar;
+    private Button btnEntendi;
+    private Button btnDesistir, btnSuspender;
+    private CardView cardView;
 
 
     @Override
@@ -55,216 +57,137 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autoavaliacao_suspensao))));
+        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autosuspensao_suspensao))));
 
         configurar();
+        desabilitaConfirmar();
     }
 
 
     private void configurar() {
-        tvAutoPergunta = findViewById(R.id.tvAutoPergunta);
-        rgAutoavaliacao = findViewById(R.id.rgAutoavaliacao);
+        cardView = findViewById(R.id.cardSuspensao);
+        tvSuspensao1 = findViewById(R.id.tvSuspensao1);
+        tvSuspensao2 = findViewById(R.id.tvSuspensao2);
+        tvSuspensao3 = findViewById(R.id.tvSuspensao3);
+        tvSuspensao4 = findViewById(R.id.tvSuspensao4);
+        tvPergunta   = findViewById(R.id.tvPerguntaSuspensao);
 
-        if (!SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
-            btnFecharTop = findViewById(R.id.btnAutoFecharTop);
-            btnFecharTop.setVisibility(View.VISIBLE);
-            btnFecharTop.setOnClickListener(v -> {
-                finish();
-            });
-        }
+        rgAutosuspensao1 = findViewById(R.id.rgSuspensao1);
+        rgAutosuspensao2 = findViewById(R.id.rgSuspensao2);
 
-        btnProximo = findViewById(R.id.btnAutoProximo);
-        btnProximo.setOnClickListener(v -> {
-            clickProximo();
-        });
-
-        btnAnterior = findViewById(R.id.btnAutoAnterior);
-        btnAnterior.setOnClickListener(v -> {
-            clickAnterior();
-        });
-
-        btnFechar = findViewById(R.id.btnAutoFechar);
-        btnFechar.setOnClickListener(v -> {
+        btnDesistir = findViewById(R.id.btnDesistir);
+        btnDesistir.setOnClickListener(v -> {
             finish();
         });
 
-        btnAjuda = findViewById(R.id.btnAutoAjuda);
-        btnAjuda.setOnClickListener(v -> {
-            //startActivity(new Intent(this, PrincipalActivity_.class));
-            bottomSheetFragment = new BottomSheetFragment();
-            bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
-            //finish();
+        btnEntendi = findViewById(R.id.btnSuspensaoEntendi);
+        btnEntendi.setOnClickListener(v -> {
+            finish();
         });
 
-        desabilitaAnterior();
-        desabilitaProximo();
+        btnSuspender = findViewById(R.id.btnSuspender);
+        btnSuspender.setOnClickListener(v -> {
+            salvarSuspensao();
+        });
 
-        rgAutoavaliacao.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        btnConfirmar = findViewById(R.id.btnSuspensaoConfimar);
+        btnConfirmar.setOnClickListener(v -> {
+            clickConfirmar();
+        });
+
+        chkSuspensaoCiente = findViewById(R.id.chkSuspensaoCiente);
+        chkSuspensaoCiente.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    habilitaConfirmar();
+                } else {
+                    desabilitaConfirmar();
+                }
+            }
+        });
+
+        AtomicBoolean isClearingCheck = new AtomicBoolean(false);
+        //Controla RadioGroups
+        RadioGroup.OnCheckedChangeListener listener = new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                habilitaProximo();
-            }
-        });
-    }
 
-    private void clickProximo() {
+                if (isClearingCheck.get()) return;
 
-        //Clicou Concluido
-        if (indiceTelaAtual == (listPergunta.size() -1)) {
-            salvaNoListResposta();
-            salvarRespostas();
-            return;
-        }
-
-        if (indiceTelaAtual < (listPergunta.size() -1)) {
-            salvaNoListResposta();
-
-            rgAutoavaliacao.clearCheck();
-            desabilitaProximo();
-            habilitaAnterior();
-
-            indiceTelaAtual++;
-            tvAutoPergunta.setText(listPergunta.get(indiceTelaAtual).getDescricaoPergunta());
-
-            //Ultima tela
-            if (indiceTelaAtual == (listPergunta.size() -1)) {
-                alteraBtnToConcluido();
-            }
-        }
-
-    }
-
-
-    private void clickAnterior() {
-
-        if (indiceTelaAtual > 0) {
-            //Ultima tela
-            if (indiceTelaAtual == (listPergunta.size() -1)) {
-                alteraBtnToProximo();
-            }
-
-            rgAutoavaliacao.clearCheck();
-            indiceTelaAtual--;
-            tvAutoPergunta.setText(listPergunta.get(indiceTelaAtual).getDescricaoPergunta());
-
-            //Primeira tela
-            if (indiceTelaAtual == 0) {
-                desabilitaAnterior();
-                desabilitaProximo();
-            }
-        }
-    }
-
-
-    private void salvaNoListResposta() {
-
-        boolean indicadorResposta = false;
-        int selectedId = rgAutoavaliacao.getCheckedRadioButtonId();
-        if (selectedId == R.id.rbYes) {
-            indicadorResposta = true;
-        }
-
-        listResposta.set(indiceTelaAtual, new AutoavaliacaoRespostaDTO(
-                        listPergunta.get(indiceTelaAtual).getId(),
-                        "",
-                        indicadorResposta));
-    }
-
-    private void desabilitaAnterior() {
-        btnAnterior.setEnabled(false);
-        btnAnterior.setTextColor(getResources().getColor(R.color.verdeazul_inativo));
-        btnAnterior.setBackground(getResources().getDrawable(R.drawable.background_border_verdeazul_disable));
-        Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_left);
-        icone.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.verdeazul_inativo), PorterDuff.Mode.SRC_IN));
-        btnAnterior.setCompoundDrawablesWithIntrinsicBounds(icone,null, null,null);
-    }
-
-    private void habilitaAnterior() {
-        btnAnterior.setEnabled(true);
-        btnAnterior.setTextColor(getResources().getColor(R.color.verdeazul));
-        btnAnterior.setBackground(getResources().getDrawable(R.drawable.background_border_verde));
-        Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_left);
-        icone.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.verdeazul), PorterDuff.Mode.SRC_IN));
-        btnAnterior.setCompoundDrawablesWithIntrinsicBounds(icone,null, null,null);
-    }
-
-
-    private void desabilitaProximo() {
-        btnProximo.setEnabled(false);
-        btnProximo.setTextColor(getResources().getColor(R.color.verdeazul_inativo));
-        btnProximo.setBackground(getResources().getDrawable(R.drawable.background_border_verdeazul_disable));
-        Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_right);
-        icone.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.verdeazul_inativo), PorterDuff.Mode.SRC_IN));
-        btnProximo.setCompoundDrawablesWithIntrinsicBounds(null,null, icone,null);
-    }
-
-    private void habilitaProximo() {
-        btnProximo.setEnabled(true);
-        btnProximo.setTextColor(getResources().getColor(R.color.branco));
-        btnProximo.setBackground(getResources().getDrawable(R.drawable.button_rounded_verdeazul));
-        Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_right);
-        icone.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
-        btnProximo.setCompoundDrawablesWithIntrinsicBounds(null,null, icone,null);
-    }
-
-    private void alteraBtnToConcluido() {
-        btnProximo.setText(R.string.concluido);
-        btnProximo.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.ic_sucesso),null);
-    }
-
-    private void alteraBtnToProximo() {
-        btnProximo.setText(R.string.proximo);
-        Drawable icone = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_chevron_right);
-        icone.setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
-        btnProximo.setCompoundDrawablesWithIntrinsicBounds(null,null, icone,null);
-    }
-
-    private void alteraBtnToFechar() {
-        btnAnterior.setVisibility(View.GONE);
-        btnFechar.setVisibility(View.VISIBLE);
-        btnFecharTop.setVisibility(View.GONE);
-    }
-
-    private void alteraBtnToAjuda() {
-        btnProximo.setVisibility(View.GONE);
-        btnAjuda.setVisibility(View.VISIBLE);
-    }
-
-    private Boolean verificaRespostasTudoNao() {
-        for (AutoavaliacaoRespostaDTO autoResposta :listResposta) {
-            if (autoResposta.getIndicadorResposta()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
-
-    private void salvarRespostas() {
-        AlertDialogUtils.show(this);
-        ApostaBO_.getInstance_(this).postAutoavaliacaoRespostas(listResposta, new RequestListener<AutoavaliacaoResponse>() {
-            @Override
-            public void onResponse(AutoavaliacaoResponse result) {
-                AlertDialogUtils.dismiss();
-                rgAutoavaliacao.setVisibility(View.GONE);
-                tvAutoPergunta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                if (verificaRespostasTudoNao()) {
-                    btnProximo.setVisibility(View.GONE);
-                    tvAutoPergunta.setText(ViewUtils.textFuturaAndFuturaBold(AutoSuspensaoActivity.this, getString(R.string.autoavaliacao_parabens)));
-                } else {
-                    tvAutoPergunta.setText(ViewUtils.textFuturaAndFuturaBold(AutoSuspensaoActivity.this, getString(R.string.autoavaliacao_atencao)));
-                    alteraBtnToAjuda();
+                isClearingCheck.set(true);
+                if (group == rgAutosuspensao1 && checkedId != -1) {
+                    rgAutosuspensao2.clearCheck();
+                } else if (group == rgAutosuspensao2 && checkedId != -1) {
+                    rgAutosuspensao1.clearCheck();
                 }
-                alteraBtnToFechar();
-            }
+                isClearingCheck.set(false);
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, AutoSuspensaoActivity.this);
+                if (checkedId != -1) {
+                    habilitaConfirmar();
+                }
             }
-        });
+        };
+        rgAutosuspensao1.setOnCheckedChangeListener(listener);
+        rgAutosuspensao2.setOnCheckedChangeListener(listener);
+    }
+
+    private void clickConfirmar() {
+        btnConfirmar.setVisibility(View.GONE);
+        tvSuspensao1.setVisibility(View.GONE);
+        tvSuspensao3.setVisibility(View.GONE);
+        tvSuspensao4.setVisibility(View.GONE);
+        tvPergunta.setVisibility(View.GONE);
+        rgAutosuspensao1.setVisibility(View.GONE);
+        rgAutosuspensao2.setVisibility(View.GONE);
+        chkSuspensaoCiente.setVisibility(View.GONE);
+        tvSuspensao2.setText(R.string.tv_confirma_suspensao);
+        btnDesistir.setVisibility(View.VISIBLE);
+        btnSuspender.setVisibility(View.VISIBLE);
+    }
+
+    private void desabilitaConfirmar() {
+        btnConfirmar.setEnabled(false);
+        btnConfirmar.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.button_rounded_cinza));
+    }
+
+    private void habilitaConfirmar() {
+        //Habilita apenas se tiver RadioGroup selecionado e se chkSuspensaoCiente está checado
+        if ((rgAutosuspensao1.getCheckedRadioButtonId() != -1 ||
+            rgAutosuspensao2.getCheckedRadioButtonId() != -1) &&
+            chkSuspensaoCiente.isChecked()) {
+            btnConfirmar.setEnabled(true);
+            btnConfirmar.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.button_rounded_verdeazul));
+        }
+    }
+
+    private void salvarSuspensao() {
+//        AlertDialogUtils.show(this);
+//        ApostaBO_.getInstance_(this).postAutoavaliacaoRespostas(listResposta, new RequestListener<AutoavaliacaoResponse>() {
+//            @Override
+//            public void onResponse(AutoavaliacaoResponse result) {
+//                AlertDialogUtils.dismiss();
+////                rgAutosuspensao.setVisibility(View.GONE);
+////                if (verificaRespostasTudoNao()) {
+////                    btnProximo.setVisibility(View.GONE);
+////                } else {
+////                    alteraBtnToAjuda();
+////                }
+////                alteraBtnToFechar();
+//            }
+//
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                AlertDialogUtils.dismiss();
+//                RedirectNetwork.checkRedirect(error, AutoSuspensaoActivity.this);
+//            }
+//        });
+
+        //cardView.set
+        btnDesistir.setVisibility(View.GONE);
+        btnSuspender.setVisibility(View.GONE);
+        tvSuspensao2.setText(R.string.tv_suspenso_ate);
+        btnEntendi.setVisibility(View.VISIBLE);
     }
 }
 
