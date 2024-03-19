@@ -6,7 +6,6 @@
     android:background="@color/colorAccent"
     tools:context="br.gov.caixa.loterias.apostas.view.fragment.LoginFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -31,6 +30,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_border"
             android:text="@string/label_experimente"
+            android:fontFamily="@font/caixa_std_bold"
             android:textAllCaps="false"
             android:textColor="@color/branco"
             android:textSize="16sp"
@@ -57,6 +57,7 @@
             android:outlineProvider="none"
             android:text="@string/label_faca_login_cadastre"
             android:textAllCaps="false"
+            android:fontFamily="@font/caixa_std_bold"
             android:textColor="@color/branco"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -69,6 +70,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
             android:text="@string/voc_utilizar_o_sistema_nico_de_cadastro_da_caixa"
+            android:fontFamily="@font/caixa_std_regular"
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="14sp"
@@ -82,6 +84,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="35dp"
             android:text="@string/trocar_de_usuario"
+            android:fontFamily="@font/caixa_std_regular"
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="15sp"
@@ -125,12 +128,12 @@
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/iface" />
 
-
             <TextView
                 android:id="@+id/textViewBiometria"
                 android:layout_width="207dp"
                 android:layout_height="wrap_content"
                 android:text="@string/leitor_digital"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textAlignment="center"
                 android:textColor="@color/branco"
                 android:textSize="18dp" />
@@ -145,8 +148,6 @@
             tools:ignore="UseSwitchCompatOrMaterialXml" />
         </LinearLayout>
 
-
-
         <TextView
             android:id="@+id/textVersao"
             android:layout_width="wrap_content"
@@ -156,13 +157,11 @@
             android:layout_marginBottom="26dp"
             android:clickable="true"
             android:text="@string/placeholder_versao"
+            android:fontFamily="@font/caixa_std_regular"
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="12sp" />
 
-
-
     </RelativeLayout>
-
-
+    
 </FrameLayout>
