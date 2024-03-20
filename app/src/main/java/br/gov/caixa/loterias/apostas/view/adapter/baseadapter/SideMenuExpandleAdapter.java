@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 
 
 public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
@@ -55,6 +57,10 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         }
         TextView expandedListTextView = convertView
                 .findViewById(R.id.titleItemSideMenu);
+        Typeface fonte = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+        if (fonte != null){
+            expandedListTextView.setTypeface(fonte);
+        }
         expandedListTextView.setText(expandedListText);
         return convertView;
     }
@@ -91,7 +97,11 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         }
         TextView listTitleTextView = convertView
                 .findViewById(R.id.titleItemGroupSideMenu);
-        listTitleTextView.setTypeface(null, Typeface.BOLD);
+
+        Typeface fonte = FonteUtils.getFonte(FontCaixaEnum.SEMI_BOLD);
+        if (fonte != null){
+            listTitleTextView.setTypeface(fonte);
+        }
         listTitleTextView.setText(listTitle);
 
 
