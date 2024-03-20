@@ -1366,7 +1366,7 @@
     <string name="tv_estou_ciente">Estou ciente e concordo com as informações acima</string>
     <string name="suspender_apostas">Suspender Apostas</string>
     <string name="tv_confirma_suspensao">A suspensão temporária de compras é irreversível enquanto durar o período selecionado.\n\nVocê confirma a suspensão por XX ?</string>
-    <string name="tv_suspenso_ate">A suspensão realizada com o prazo de XX \n\nUsuário suspenso até o dia DD/MM/AAAA, HH/MM</string>
+    <string name="tv_suspenso_ate">A suspensão realizada com o prazo de XX\n\nUsuário suspenso até o dia\nYY</string>
 
     <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
     <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>

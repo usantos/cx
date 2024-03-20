@@ -1,15 +1,12 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -20,22 +17,18 @@ import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoPerguntaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoRespostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoRequest;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.fragment.BottomSheetFragment;
 
 public class AutoSuspensaoActivity extends AppCompatActivity {
 
@@ -56,13 +49,18 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autosuspensao_suspensao))));
 
         configurar();
         desabilitaConfirmar();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 
     private void configurar() {
         cardView = findViewById(R.id.cardSuspensao);
@@ -141,9 +139,14 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         rgAutosuspensao1.setVisibility(View.GONE);
         rgAutosuspensao2.setVisibility(View.GONE);
         chkSuspensaoCiente.setVisibility(View.GONE);
-        tvSuspensao2.setText(R.string.tv_confirma_suspensao);
         btnDesistir.setVisibility(View.VISIBLE);
         btnSuspender.setVisibility(View.VISIBLE);
+
+        tvSuspensao2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        String texto = getString(R.string.tv_confirma_suspensao);
+        texto = texto.replace("XX", textoSelecionadoRB());
+        tvSuspensao2.setText(texto);
+        diminuiCardView();
     }
 
     private void desabilitaConfirmar() {
@@ -161,33 +164,72 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         }
     }
 
-    private void salvarSuspensao() {
-//        AlertDialogUtils.show(this);
-//        ApostaBO_.getInstance_(this).postAutoavaliacaoRespostas(listResposta, new RequestListener<AutoavaliacaoResponse>() {
-//            @Override
-//            public void onResponse(AutoavaliacaoResponse result) {
-//                AlertDialogUtils.dismiss();
-////                rgAutosuspensao.setVisibility(View.GONE);
-////                if (verificaRespostasTudoNao()) {
-////                    btnProximo.setVisibility(View.GONE);
-////                } else {
-////                    alteraBtnToAjuda();
-////                }
-////                alteraBtnToFechar();
-//            }
-//
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                AlertDialogUtils.dismiss();
-//                RedirectNetwork.checkRedirect(error, AutoSuspensaoActivity.this);
-//            }
-//        });
+    private String textoSelecionadoRB() {
+        int selcionadoRg1 = rgAutosuspensao1.getCheckedRadioButtonId();
+        if (selcionadoRg1 != -1) {
+            RadioButton selecionado = findViewById(selcionadoRg1);
+            return selecionado.getText().toString();
+        }
+        int selcionadoRg2 = rgAutosuspensao2.getCheckedRadioButtonId();
+        if (selcionadoRg2 != -1) {
+            RadioButton selecionado = findViewById(selcionadoRg2);
+            return selecionado.getText().toString();
+        }
+        return null;
+    }
 
-        //cardView.set
-        btnDesistir.setVisibility(View.GONE);
-        btnSuspender.setVisibility(View.GONE);
-        tvSuspensao2.setText(R.string.tv_suspenso_ate);
-        btnEntendi.setVisibility(View.VISIBLE);
+    private int textoSelecionadoToHoras(String texto) {
+        if (texto.equalsIgnoreCase(getString(R.string.tv_24_horas))) {
+            return 24;
+        } else if (texto.equalsIgnoreCase(getString(R.string.tv_48_horas))) {
+            return 48;
+        } else if (texto.equalsIgnoreCase(getString(R.string.tv_7_dias))) {
+            return 168;
+        } else if (texto.equalsIgnoreCase(getString(R.string.tv_15_dias))) {
+            return 360;
+        } else if (texto.equalsIgnoreCase(getString(R.string.tv_30_dias))) {
+            return 720;
+        }
+        return 0;
+    }
+
+    private void diminuiCardView() {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) cardView.getLayoutParams();
+        layoutParams.bottomMargin = 1100;
+        cardView.setLayoutParams(layoutParams);
+    }
+
+    private void salvarSuspensao() {
+
+        //*** Verificar usuario Logado***
+        String cpf = DadosUsuarioBO.obterCpf();
+
+        String textoSelecionado = textoSelecionadoRB();
+        int horasSelecionada = textoSelecionadoToHoras(textoSelecionado);
+
+        AutoSuspensaoRequest autoSuspensaoRequest =
+                new AutoSuspensaoRequest("07567572826", horasSelecionada);
+
+        AlertDialogUtils.show(this);
+        ApostaBO_.getInstance_(this).postAutoSuspensaoApostador(autoSuspensaoRequest, new RequestListener<AutoSuspensaoResponse>() {
+            @Override
+            public void onResponse(AutoSuspensaoResponse result) {
+                AlertDialogUtils.dismiss();
+                btnDesistir.setVisibility(View.GONE);
+                btnSuspender.setVisibility(View.GONE);
+                btnEntendi.setVisibility(View.VISIBLE);
+                String texto = getString(R.string.tv_suspenso_ate);
+                texto = texto.replace("XX", textoSelecionado);
+                texto = texto.replace("YY", DateUtils.calculaDataHoraFutura(horasSelecionada));
+                tvSuspensao2.setText(texto);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, AutoSuspensaoActivity.this);
+            }
+        });
     }
 }
 
