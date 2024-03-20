@@ -17,13 +17,13 @@ public enum FontCaixaEnum {
     SEMI_BOLD(R.font.caixa_std_semi_bold),
     SEMI_BOLD_ITALIC(R.font.caixa_std_semi_bold_italic);
 
-    private int valor;
+    private int id;
 
     FontCaixaEnum(int valor){
-        this.valor = valor;
+        this.id = valor;
     }
 
-    public int getValor() {
-        return valor;
+    public int getId() {
+        return id;
     }
 }
