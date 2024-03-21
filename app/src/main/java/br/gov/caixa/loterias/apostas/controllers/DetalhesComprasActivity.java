@@ -432,6 +432,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         GerarPixDTO gerarPixDTO = new GerarPixDTO();
         gerarPixDTO.setPixCopiaECola(compraDTO.getPixCopiaECola());
         gerarPixDTO.setDataHoraExpiracao(compraDTO.getDataHoraExpiracaoPagamento());
+        gerarPixDTO.setDetalhesCompras(true);
         fragCopiaCola = FragmentUtils.startCopiaColaPix(gerarPixDTO, getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe);
     }
 

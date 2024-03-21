@@ -57,6 +57,7 @@ public class CopiaColaPixFragment extends Fragment {
 	private Button btnCopia, btnMinhasCompras;
 	private EditText edtNumeroPix;
 	private TextView timerView, voceTemView, txtEfetuarPagamento, txtAlerta;
+	private TextView tvAtencao, tvAtencaoDescricao;
 	private ImageView iconTimer, iconAtualizar;
 	private ProgressBar progressBar;
 
@@ -118,6 +119,13 @@ public class CopiaColaPixFragment extends Fragment {
 		btnMinhasCompras = view.findViewById(R.id.btn_minhas_compras);
 		btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBoldTitle(getContext(), getString(R.string.ir_para_minhas_compras)));
 
+		if (pixDTO.isDetalhesCompras()) {
+			tvAtencao = view.findViewById(R.id.id_atencao);
+			tvAtencaoDescricao = view.findViewById(R.id.atencao_descricao);
+			tvAtencao.setVisibility(View.GONE);
+			tvAtencaoDescricao.setVisibility(View.GONE);
+		}
+
 		numeroPix = pixDTO.getPixCopiaECola();
 		if (numeroPix != null) {
 			edtNumeroPix.setText(numeroPix.substring(0, 19) + "...");
@@ -150,7 +158,9 @@ public class CopiaColaPixFragment extends Fragment {
 					iconAtualizar.setVisibility(View.INVISIBLE);
 					iconAtualizar.setEnabled(false);
 					progressBar.setVisibility(View.GONE);
-					btnMinhasCompras.setVisibility(View.VISIBLE);
+					if (!pixDTO.isDetalhesCompras()) {
+						btnMinhasCompras.setVisibility(View.VISIBLE);
+					}
 					if (listener != null){
 						listener.onFinish();
 					}
