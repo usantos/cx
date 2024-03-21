@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
@@ -161,6 +162,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		return new OnSilceListener<ListaBolaoDTO>() {
 			@Override
 			public void success(ListaBolaoDTO payload) {
+
+				if (payload == null) {
+					payload = simulaPayloadZerado();
+				}
+
 				model.atualizaPaginacao(payload);
 				setCotasDisponiveis(payload);
 
@@ -192,10 +198,24 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		};
 	}
 
+	private ListaBolaoDTO simulaPayloadZerado() {
+		ListaBolaoDTO payload = new ListaBolaoDTO();
+		payload.setTotalRegistros(0);
+		payload.setPaginaAtual(1);
+		payload.setUltimaPagina(0);
+		payload.setCotas(new ArrayList<CotasBolaoDTO>());
+		return payload;
+	}
+
 	private OnSilceListener<ListaBolaoDTO> onBoloesFiltradosListener() {
 		return new OnSilceListener<ListaBolaoDTO>() {
 			@Override
 			public void success(ListaBolaoDTO payload) {
+
+				if (payload == null) {
+					payload = simulaPayloadZerado();
+				}
+
 				model.atualizaPaginacao(payload);
 
 				if (payload.getCotas().isEmpty()){
