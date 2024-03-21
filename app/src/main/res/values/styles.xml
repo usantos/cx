@@ -250,14 +250,14 @@
 
     <style name="fontForTitle1Premiados">
         <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">@font/arialmt</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
         <item name="android:textColor">@color/branco</item>
         <item name="android:textSize">14.2sp</item>
     </style>
 
     <style name="fontForTitle2Premiados">
         <item name="android:textStyle">normal</item>
-        <item name="android:fontFamily">@font/arialmt</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
         <item name="android:textColor">@color/branco</item>
         <item name="android:textSize">14.2sp</item>
         <item name="android:lines">2</item>
@@ -266,7 +266,7 @@
     <style name="fontForTitle3Premiados">
         <item name="android:lines">2</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">@font/arialmt</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
         <item name="android:textColor">@color/branco</item>
         <item name="android:textSize">14.2sp</item>
         <item name="android:textColorLink">@color/branco</item>
@@ -278,7 +278,7 @@
 
     <style name="fontForTitleTopoPremiados">
         <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">@font/futura_std_bold</item>
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
         <item name="android:textColor">@color/branco</item>
         <item name="android:textSize">15.8sp</item>
     </style>

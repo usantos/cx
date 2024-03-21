@@ -98,10 +98,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.listener = listener;
 	}
 
-	public HomeViewHolder(View itemView) {
-		super(itemView);
-	}
-
 	@Override
 	public void bind(Modalidade modalidade, int position) {
 		this.modalidade = modalidade;

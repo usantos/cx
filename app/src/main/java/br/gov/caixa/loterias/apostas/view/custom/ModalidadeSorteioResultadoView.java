@@ -40,9 +40,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
     protected ScrollView scrollResultados;
 
     @AfterViews
-    protected void init() {
-
-    }
+    protected void init() {}
 
     public void setLayout(Modalidade modalidade) {
 

@@ -24,7 +24,6 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public final class NumerosResultadosAdapter extends RecyclerView.Adapter<NumerosResultadosAdapter.ViewHolder> {
 
-
     private final Context context;
     private final List<Integer> numeroslista;
     private final ModalidadeEnum modalidade;
