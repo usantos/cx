@@ -151,6 +151,10 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void postAdicionarApostaCarrinho(ApostaBO apostaBO) {
+        if (SessaoUsuario.getInstance().getSuspensaoTemporariaApostador()) {
+            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getString(R.string.autosuspensao_alerta), activity.getString(R.string.btn_entendi));
+            return;
+        }
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse result) {
