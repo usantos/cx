@@ -171,12 +171,16 @@ public class CarrinhoActivity extends AppCompatActivity {
         if (!DadosUsuarioBO.checarUsuarioLogado(this)) {
             btnFavoritar.setVisibility(View.GONE);
         } else {
-            if (carrinho != null && carrinho.getApostas() != null && carrinho.getApostas().size() > 0) {
-                if (carrinho.getBoloes().size() == 0) {
-                    btnFavoritar.setVisibility(View.VISIBLE);
-                }
+            if (podeHabilitarFavoritar()) {
+                btnFavoritar.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    private boolean podeHabilitarFavoritar(){
+        return (carrinho != null && carrinho.getApostas() != null && !carrinho.getApostas().isEmpty()) &&
+                (carrinho.getBoloes() == null || (carrinho.getBoloes() != null && carrinho.getBoloes().isEmpty()));
+
     }
 
     private void setaDialogFavoritar() {
@@ -213,7 +217,6 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void setaViews() {
-
         textCotasBolao = findViewById(R.id.tv_cotas_bolao);
         textApostasIndividuais = findViewById(R.id.tv_apostas_individuais);
         viewDivBottomBolao = findViewById(R.id.v_div_bottom_cotas);
@@ -597,7 +600,9 @@ public class CarrinhoActivity extends AppCompatActivity {
 
         carrinho.getApostas().removeAll(carrinho.getApostas());
         carrinho.getApostasIndividuais().removeAll(carrinho.getApostasIndividuais());
-        carrinho.getBoloes().removeAll(carrinho.getBoloes());
+        if (temBolao()){
+            carrinho.getBoloes().removeAll(carrinho.getBoloes());
+        }
         carrinho.setValorTotal(BigDecimal.ZERO);
         CarrinhoSingleton.getInstance().setCarrinho(carrinho);
         synchronized (rvListaApostas) {
@@ -612,6 +617,10 @@ public class CarrinhoActivity extends AppCompatActivity {
         configuraBotoesSuperiores();
     }
 
+    private boolean temBolao(){
+        return carrinho != null && carrinho.getBoloes() != null;
+    }
+
     private void montarLayout() {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         BigDecimal valorCarrinho = sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta();
@@ -620,8 +629,8 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     public void configuraRecyclerViewCarrinhoBoloes() {
-        if (listBoloes.size() == 0) {
-            if (carrinho.getBoloes() != null && carrinho.getBoloes().size()>0) {
+        if (listBoloes != null && listBoloes.size() == 0) {
+            if (temBolao() && carrinho.getBoloes().size() > 0) {
                 listBoloes.addAll(carrinho.getBoloes());
             }
         }
@@ -671,7 +680,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void habilitaBoloes() {
-        if (carrinho != null && carrinho.getBoloes() != null && carrinho.getBoloes().size() > 0) {
+        if (temBolao() && carrinho.getBoloes().size() > 0) {
             textCotasBolao.setVisibility(View.VISIBLE);
             viewDivBottomBolao.setVisibility(View.VISIBLE);
             rvListaBoloes.setVisibility(View.VISIBLE);
@@ -696,7 +705,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         if (carrinho.getApostas().size() > 0) {
             btnLimpar.setVisibility(View.VISIBLE);
             if (DadosUsuarioBO.checarUsuarioLogado(this)) {
-                if (carrinho.getBoloes().size() == 0) {
+                if (podeHabilitarFavoritar()) {
                     btnFavoritar.setVisibility(View.VISIBLE);
                 }
             }
