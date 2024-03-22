@@ -30,11 +30,9 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmBolao;
@@ -55,6 +53,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+
 
 /**
  * Created by joafilho on 10/04/2018.
@@ -151,10 +150,6 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void postAdicionarApostaCarrinho(ApostaBO apostaBO) {
-        if (SessaoUsuario.getInstance().getSuspensaoTemporariaApostador()) {
-            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getString(R.string.autosuspensao_alerta), activity.getString(R.string.btn_entendi));
-            return;
-        }
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse result) {
@@ -599,5 +594,23 @@ public class AdicionarApostaCarrinhoHelper {
             }
         }
         return null;
+    }
+
+    public static Boolean usuarioEstaSuspenso(Activity actv) {
+        if (SessaoUsuario.getInstance().getSuspensaoTemporariaApostador()) {
+            activity = actv;
+            //AlertDialogUtils.dismiss();
+            ViewUtils.alertTitleButton(activity, R.string.label_atencao,
+                    activity.getString(R.string.autosuspensao_alerta),
+                    activity.getString(R.string.btn_entendi),
+                    dialogInterface -> {
+                        dialogInterface.dismiss();
+                        activity.finish();
+                        return;
+                    }
+            );
+            return true;
+        }
+        return false;
     }
 }
