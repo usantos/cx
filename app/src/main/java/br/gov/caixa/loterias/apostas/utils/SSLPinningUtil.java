@@ -183,9 +183,6 @@ public class SSLPinningUtil {
         return sslContext.getSocketFactory();
     }
 
-
-
-
     public static RequestQueue getRequestQueue(Context ctx) {
         // Carregar o certificado do recurso raw
         InputStream inputStream = ctx.getResources().openRawResource(R.raw.cert_invalido);
