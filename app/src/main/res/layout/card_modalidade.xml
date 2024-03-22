@@ -279,7 +279,7 @@
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="12sp"
                                     android:fontFamily="@font/caixa_std_semi_bold"
-                                    tools:text="Sábado, 18 de julho" />
+                                    tools:text="Segunda-feira\n 25/03/2024 às 18:00" />
 
                             </LinearLayout>
 
