@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
@@ -63,7 +64,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		preencheCabecalho(bolao);
 		preencheConteudo(bolao);
 		atualizaQuantidadeTextView(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
-		btnAddCarrinho.setText(ViewUtils.textFuturaAndFuturaBold(activity,activity.getResources().getString(R.string.adicionarAoCarrinho)));
+		btnAddCarrinho.setText(FonteUtils.textCaixaSTDBold(activity,activity.getResources().getString(R.string.adicionarAoCarrinho)));
 	}
 
 	private void preencheConteudo(CotasBolaoDTO bolao) {

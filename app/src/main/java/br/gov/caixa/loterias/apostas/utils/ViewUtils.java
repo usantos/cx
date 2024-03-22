@@ -500,7 +500,7 @@ public class ViewUtils {
         return spannableStringBuilder;
     }
 
-    private static PositionStringBold positionString(String texto) {
+    public static PositionStringBold positionString(String texto) {
         String[] listaString = texto.split("_");
         int start = listaString[0].length();
         int end = listaString[1].length() + start;
