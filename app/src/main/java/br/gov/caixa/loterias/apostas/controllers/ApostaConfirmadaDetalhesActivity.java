@@ -377,17 +377,20 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void adicionarCarrinhoBtn() {
-        ModalidadeEnum modalidade = (aposta!= null && aposta.getModalidade()!= null) ? aposta.getModalidade(): null;
-        if (modalidade != null && !modalidade.equals(ModalidadeEnum.LOTECA)){
-            if (!modalidade.equals(ModalidadeEnum.SUPER_7)) {
-                aposta.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
-            } else {
-                AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, apostaMatriz);
-                return;
-            }
-        }
+        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(ApostaConfirmadaDetalhesActivity.this, 1)) {
 
-        AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
+            ModalidadeEnum modalidade = (aposta!= null && aposta.getModalidade()!= null) ? aposta.getModalidade(): null;
+            if (modalidade != null && !modalidade.equals(ModalidadeEnum.LOTECA)){
+                if (!modalidade.equals(ModalidadeEnum.SUPER_7)) {
+                    aposta.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
+                } else {
+                    AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, apostaMatriz);
+                    return;
+                }
+            }
+
+            AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
+        }
     }
 
     private void salvarApostaImg() {

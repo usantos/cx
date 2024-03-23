@@ -99,6 +99,7 @@ import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
@@ -922,11 +923,13 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-    private void redirecionaRapidao(){
-        if (DadosUsuarioBO.checarTutorialRapidao()){
-            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-        }else {
-            startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
+    private void redirecionaRapidao() {
+        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this, 2)) {
+            if (DadosUsuarioBO.checarTutorialRapidao()) {
+                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+            } else {
+                startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
+            }
         }
     }
 

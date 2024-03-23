@@ -22,6 +22,8 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
@@ -597,16 +599,27 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     public static Boolean usuarioEstaSuspenso(Activity actv) {
+        return usuarioEstaSuspenso(actv, 0);
+    }
+
+    public static Boolean usuarioEstaSuspenso(Activity actv, int acaoPosDismiss) {
         if (SessaoUsuario.getInstance().getSuspensaoTemporariaApostador()) {
-            activity = actv;
-            //AlertDialogUtils.dismiss();
-            ViewUtils.alertTitleButton(activity, R.string.label_atencao,
-                    activity.getString(R.string.autosuspensao_alerta),
-                    activity.getString(R.string.btn_entendi),
+            ViewUtils.alertTitleButton(actv, R.string.label_atencao,
+                    actv.getString(R.string.autosuspensao_alerta),
+                    actv.getString(R.string.btn_entendi),
                     dialogInterface -> {
                         dialogInterface.dismiss();
-                        activity.finish();
-                        return;
+                        switch (acaoPosDismiss) {
+                            case 0:
+                                actv.finish();
+                                return;
+                            case 1:
+                                PrincipalActivity_.intent(actv).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                                actv.finish();
+                                return;
+                            default:
+                                return;
+                        }
                     }
             );
             return true;

@@ -408,8 +408,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
             @Override
             public void onReload(int position) {
-                ApostaDTO apostaDTO = apostasList.get(position);
-                AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
+                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
+                    ApostaDTO apostaDTO = apostasList.get(position);
+                    AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
+                }
             }
 
             @Override
