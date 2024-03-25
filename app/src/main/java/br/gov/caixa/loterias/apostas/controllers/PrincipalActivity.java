@@ -722,7 +722,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.relativeLayoutContentRapidao)
     protected void clickRelativeLayoutContentRapidao() {
-        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
         redirecionaRapidao();
     }
 
@@ -924,12 +924,15 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void redirecionaRapidao() {
-        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this, 2)) {
+        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
+            AnimacaoFecharMenuRapido(actionApresentarTrevo);
             if (DadosUsuarioBO.checarTutorialRapidao()) {
                 startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
             } else {
                 startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
             }
+        } else {
+            AnimacaoFecharMenuRapido(actionApresentarTrevo);
         }
     }
 
