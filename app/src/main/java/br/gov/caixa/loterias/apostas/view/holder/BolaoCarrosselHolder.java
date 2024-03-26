@@ -3,11 +3,16 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import java.math.BigDecimal;
@@ -15,7 +20,9 @@ import java.math.BigDecimal;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
@@ -28,12 +35,16 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private TextView concurso;
 	private TextView loterica;
 	private TextView valorCota;
-
 	private TextView qtdCotas;
 	private Button btnDetalhes;
 	private Button btnDiminui;
 	private Button btnAumenta;
 	private Button btnAddCarrinho;
+	private RelativeLayout trapezio;
+	private ConstraintLayout cabecalho;
+	private View linhaNumero;
+
+	private EstiloModalidadeMKP estilo;
 
 	private OnItemCarrosselBolaoListener listener;
 
@@ -51,6 +62,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		btnAumenta 		= itemView.findViewById(R.id.aumenta_cota);
 		qtdCotas 		= itemView.findViewById(R.id.quantidade_cotas);
 		btnAddCarrinho 	= itemView.findViewById(R.id.btn_add_carrinho);
+		trapezio		= itemView.findViewById(R.id.layout_money);
+		cabecalho		= itemView.findViewById(R.id.cabecalho_bolao);
+		linhaNumero		= itemView.findViewById(R.id.linha_numero);
 
 		this.listener = listener;
 		btnDetalhes.setOnClickListener(this);
@@ -61,10 +75,26 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
+		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
+		aplicaEstilo();
 		preencheCabecalho(bolao);
 		preencheConteudo(bolao);
 		atualizaQuantidadeTextView(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		btnAddCarrinho.setText(FonteUtils.textCaixaSTDBold(activity,activity.getResources().getString(R.string.adicionarAoCarrinho)));
+	}
+
+	private void aplicaEstilo() {
+		int corClara = ContextCompat.getColor(activity, estilo.getCorClara());
+		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
+		trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
+		cabecalho.setBackgroundColor(corClara);
+		valorPremio.setTextColor(corEscura);
+		btnDetalhes.setTextColor(corEscura);
+		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
+		btnDiminui.setBackgroundColor(corEscura);
+		btnAumenta.setBackgroundColor(corEscura);
+		btnAddCarrinho.setBackground(VectorUtils.getShape(R.drawable.rounded_card, estilo.getCorEscura()));
+		linhaNumero.setBackgroundColor(corEscura);
 	}
 
 	private void preencheConteudo(CotasBolaoDTO bolao) {
@@ -118,19 +148,19 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	@Override
 	public void atualizaBotoesQtdCotas(int quantidade, int maxPermitido) {
 		if (quantidade == QUANTIDADE_MINIMA){
-			btnDiminui.setBackgroundTintList(getCor(R.color.cinzaescuro));
+			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinzaescuro));
 			btnDiminui.setEnabled(false);
-			btnAumenta.setBackgroundTintList(getCor(R.color.megasenaclaro));
+			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnAumenta.setEnabled(true);
 		} else if (quantidade == maxPermitido){
-			btnAumenta.setBackgroundTintList(getCor(R.color.cinzaescuro));
+			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinzaescuro));
 			btnAumenta.setEnabled(false);
-			btnDiminui.setBackgroundTintList(getCor(R.color.megasenaclaro));
+			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnDiminui.setEnabled(true);
 		} else {
-			btnDiminui.setBackgroundTintList(getCor(R.color.megasenaclaro));
+			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnDiminui.setEnabled(true);
-			btnAumenta.setBackgroundTintList(getCor(R.color.megasenaclaro));
+			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnAumenta.setEnabled(true);
 		}
 	}
