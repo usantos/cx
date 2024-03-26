@@ -114,7 +114,19 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	}
 
 	private void preencheCabecalho(CotasBolaoDTO bolao) {
-		modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
+		if (isEspecial(bolao.getTipoConcurso())){
+			if (estilo.getImagemEspecialCarrossel() != -1){
+				trapezio.setVisibility(View.INVISIBLE);
+				cabecalho.setBackground(ContextCompat.getDrawable(activity, estilo.getImagemEspecialCarrossel()));
+			}
+			modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()));
+		} else {
+			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
+		}
+	}
+
+	private boolean isEspecial(int tipoConcurso){
+		return tipoConcurso == 2;
 	}
 
 	public void atualizaValorTotal(CotasBolaoDTO bolao){

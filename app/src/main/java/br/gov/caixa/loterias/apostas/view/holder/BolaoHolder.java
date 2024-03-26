@@ -78,7 +78,11 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	public void bind(CotasBolaoDTO bolao, int position) {
 		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
 		aplicaEstilo();
-		modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
+		if (isEspecial(bolao.getTipoConcurso())){
+			modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()));
+		} else {
+			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
+		}
 		concurso.setText(String.valueOf(bolao.getConcurso()));
 		if (bolao.getNomeFantasia().length() > 13){
 			loterica.setText(bolao.getNomeFantasia().substring(0,13).concat("..."));
@@ -98,6 +102,10 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		atualizaBotoesQtdCotas(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		mostrarDetalhes(bolao.isAbertoParaMostrarDetalhes());
 		qtdCotas.setText(Integer.toString(bolao.getQtdCotasBolao()));
+	}
+
+	private boolean isEspecial(int tipoConcurso){
+		return tipoConcurso == 2;
 	}
 
 	private void aplicaEstilo() {

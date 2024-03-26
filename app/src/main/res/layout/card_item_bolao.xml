@@ -31,17 +31,19 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/background_trapeze_megasena_mkp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"/>
 
-                <ImageView
-                    android:id="@+id/trevoImagem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="23dp"
-                    android:layout_marginTop="24dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_money_bolao" />
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/trevoImagem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_money_bolao"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/layout_money"
+                app:layout_constraintEnd_toEndOf="@id/layout_money"/>
 
             <TextView
                 android:id="@+id/textViewCardBolaoTitle"
