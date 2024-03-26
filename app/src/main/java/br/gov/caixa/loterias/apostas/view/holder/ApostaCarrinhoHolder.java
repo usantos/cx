@@ -110,18 +110,18 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
 		this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
 		this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-		this.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorAposta(aposta));
+		this.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
 		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 		this.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
 		if (isBolao) {
 			swipeLayout.setSwipeEnabled(false);
-			imageDetalheBoloes.setVisibility(View.VISIBLE);
-			textContadorBolao.setVisibility(View.VISIBLE);
-			iconTimer.setVisibility(View.VISIBLE);
+			//imageDetalheBoloes.setVisibility(View.VISIBLE);
+			//textContadorBolao.setVisibility(View.VISIBLE);
+			//iconTimer.setVisibility(View.VISIBLE);
+			//textCotas.setVisibility(View.VISIBLE);
+			//textQtdCotas.setVisibility(View.VISIBLE);
 			iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.bolao_barra_titulo));
-			textCotas.setVisibility(View.VISIBLE);
-			textQtdCotas.setVisibility(View.VISIBLE);
 			textQtdCotas.setText(String.format("%02d/%02d",
 					aposta.getReservaCotaBolao().getNumeroCotaReservada(),
 					aposta.getReservaCotaBolao().getQtdCotaTotalBolao()));
