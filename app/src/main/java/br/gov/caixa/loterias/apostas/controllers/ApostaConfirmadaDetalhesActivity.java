@@ -664,7 +664,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setElevation(0);
         }
-        setTitle(ViewUtils.getNomeModalidadePorAposta(aposta));
+        setTitle(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
     }
 
     private void getApostaDetalhePremio(Long apostaId, final Context contextParam, ComprovanteApostaDTO comprovante) {

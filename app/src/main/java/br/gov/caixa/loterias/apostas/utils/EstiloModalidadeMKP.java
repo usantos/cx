@@ -15,6 +15,8 @@ public class EstiloModalidadeMKP {
     private final int trapezio;
     private final int shapeBtnDetalhes;
     private final int imagemEspecialCarrossel;
+    private final int imagemTriangulo;
+    private final int imagemTrianguloOutline;
 
     public EstiloModalidadeMKP(ModalidadeEnum modalidade) {
         switch (modalidade) {
@@ -24,6 +26,8 @@ public class EstiloModalidadeMKP {
                 trapezio = R.drawable.background_trapeze_quina_mkp;
                 shapeBtnDetalhes = R.drawable.btn_rounded_quina_outlined;
                 imagemEspecialCarrossel = R.drawable.cabecalho_quina_sao_joao_caurossel;
+                imagemTriangulo = R.drawable.ic_tag_bolao_quina;
+                imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_quina;
                 break;
             case DUPLA_SENA:
                 corClara = R.color.dupla_sena_claro_mkp;
@@ -31,6 +35,8 @@ public class EstiloModalidadeMKP {
                 trapezio = R.drawable.background_trapeze_dupla_sena_mkp;
                 shapeBtnDetalhes = R.drawable.btn_rounded_dupla_sena_outlined;
                 imagemEspecialCarrossel = -1;
+                imagemTriangulo = R.drawable.ic_tag_bolao_dupla_sena;
+                imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dupla_sena;
                 break;
             case LOTOFACIL:
                 corClara = R.color.lotofacil_claro_mkp;
@@ -38,6 +44,8 @@ public class EstiloModalidadeMKP {
                 trapezio = R.drawable.background_trapeze_lotofacil_mkp;
                 shapeBtnDetalhes = R.drawable.btn_rounded_lotofacil_outlined;
                 imagemEspecialCarrossel = -1;
+                imagemTriangulo = R.drawable.ic_tag_bolao_loto_facil;
+                imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loto_facil;
                 break;
             default: {
                 //MEGASENA
@@ -46,6 +54,8 @@ public class EstiloModalidadeMKP {
                 trapezio = R.drawable.background_trapeze_megasena_mkp;
                 shapeBtnDetalhes = R.drawable.btn_rounded_green_outlined;
                 imagemEspecialCarrossel = -1;
+                imagemTriangulo = R.drawable.ic_tag_bolao;
+                imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline;
             }
         }
 
@@ -69,5 +79,13 @@ public class EstiloModalidadeMKP {
 
     public int getImagemEspecialCarrossel() {
         return imagemEspecialCarrossel;
+    }
+
+    public int getImagemTriangulo() {
+        return imagemTriangulo;
+    }
+
+    public int getImagemTrianguloOutline() {
+        return imagemTrianguloOutline;
     }
 }

@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
@@ -46,6 +47,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private OnApostaConfirmadaListener onApostasConfirmadasListener;
 	private Activity parentActivity;
 	private ApostasConfirmadasFragment fragment;
+	private EstiloModalidadeMKP estiloModalidadeMKP;
 
 	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity, ApostasConfirmadasFragment fragment) {
 		super(view);
@@ -77,6 +79,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	@Override
 	public void bind(ApostaDTO aposta, int position) {
 		EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
+		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
 		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
 
@@ -108,6 +111,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		if (isApostaBolao(aposta)){
 			addCarrinho.setVisibility(View.INVISIBLE);
 			addCarrinho.setOnClickListener(null);
+			tagBolao.setImageResource(estiloModalidadeMKP.getImagemTriangulo());
 			tagBolao.setVisibility(View.VISIBLE);
 		} else {
 			addCarrinho.setVisibility(View.VISIBLE);

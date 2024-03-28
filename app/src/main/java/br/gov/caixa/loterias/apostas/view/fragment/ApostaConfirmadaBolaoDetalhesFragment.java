@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -30,6 +31,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.DataUtil;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
@@ -46,6 +48,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	private View view;
     private TextView concursoTxt, cotaTxt, dataApostaTxt, statusApostaTxt, tv_val_premio, tv_val_premio_tit;
 	private RecyclerView listViewSorteados, listViewJogos;
+	private ImageView imgTriangulo;
 
     public ApostaConfirmadaBolaoDetalhesFragment() {}
 
@@ -85,6 +88,9 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private void preencheDadosAposta() {
+		EstiloModalidadeMKP estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
+		imgTriangulo.setImageResource(estiloModalidadeMKP.getImagemTrianguloOutline());
+
 		concursoTxt.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
 		cotaTxt.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" + aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
 		dataApostaTxt.setText(getDataBolao(aposta));
@@ -202,6 +208,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private void setaViews() {
+        imgTriangulo = view.findViewById(R.id.id_tag_bolao);
         concursoTxt = view.findViewById(R.id.concursoTxt);
 		cotaTxt = view.findViewById(R.id.cotaTxt);
         dataApostaTxt = view.findViewById(R.id.dataApostaTxt);
