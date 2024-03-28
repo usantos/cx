@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +24,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.DetalhesBolaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
@@ -41,11 +44,13 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private TextView tvValorCotaBtn, tvQtdCotas;
 	private RecyclerView listaJogos;
 	private JogosBolaoRecyclerView listaAdapter;
+	private ConstraintLayout layoutQtdCotas;
 
 	private String codigoBolao;
 	private ModalidadeEnum modalidade;
 	private DetalhesBolaoModel model;
 	private DetalheBolaoDTO bolao;
+	private EstiloModalidadeMKP estilo;
 
 	private SomadorCarrinhoFragment somadorCarrinhoFragment;
 	private RodapeSimulacaoApostaFragment rodapeFragment;
@@ -59,6 +64,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 		codigoBolao = getIntent().getStringExtra(ARG_CODIGO_BOLAO);
 		modalidade = new Gson().fromJson(getIntent().getStringExtra(ARG_MODALIDADE), ModalidadeEnum.class);
+		estilo = new EstiloModalidadeMKP(modalidade);
 
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_apostas bolão_"));
 
@@ -67,6 +73,14 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 		fragmentSomadorCarrinho();
 		model = new DetalhesBolaoModel(this);
+		aplicaEstilo();
+	}
+
+	private void aplicaEstilo() {
+		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+		tvMunicipio.setTextColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+		layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorEscura()));
+		btnAdd.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorEscura()));
 	}
 
 	@Override
@@ -103,6 +117,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		btnDiminui = findViewById(R.id.diminui_cota);
 		btnAumenta = findViewById(R.id.aumenta_cota);
 		listaJogos = findViewById(R.id.id_lista_jogos);
+		layoutQtdCotas = findViewById(R.id.id_layout_qtd_cotas);
 	}
 
 	public void atualizaQuantidadeTextView() {
@@ -198,7 +213,11 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private void fragmentSubBarraModalidade() {
 		FragmentUtils.startFragmentSubBarraModalidade(getSupportFragmentManager(),R.id.id_fg_sub_barra,
 				bolao.getModalidade(), bolao.getConcurso().toString(),
-				bolao.getDataSorteio().substring(0,5));
+				bolao.getDataSorteio().substring(0,5), isEspecial());
+	}
+
+	private boolean isEspecial() {
+		return bolao.getTipoConcurso().intValue() == 2;
 	}
 
 	private void fragmentSomadorCarrinho() {
