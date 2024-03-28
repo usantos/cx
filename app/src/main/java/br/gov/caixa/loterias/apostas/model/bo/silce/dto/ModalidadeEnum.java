@@ -218,4 +218,19 @@ public enum ModalidadeEnum implements Serializable {
         }
         return "";
     }
+
+    public static String getDescricaoEspecialDuasLinhas(ModalidadeEnum modalidade) {
+        switch (modalidade) {
+            case QUINA:
+                return "Quina de \nSão João";
+            case LOTOFACIL:
+                return "Lotofácil da \nIndependência";
+            case MEGA_SENA:
+                return "Mega da \nVirada";
+            case DUPLA_SENA:
+                return "Dupla de \nPáscoa";
+        }
+        return "";
+    }
+
 }

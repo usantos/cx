@@ -3,6 +3,8 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -39,6 +42,8 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private Button btnDiminui;
 	private Button btnAumenta;
 	private Button btnAdd;
+	private View linhaNumero;
+	private EstiloModalidadeMKP estilo;
 
 	private OnItemBolaoListener listener;
 
@@ -59,6 +64,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		btnAumenta 	= itemView.findViewById(R.id.aumenta_cota);
 		qtdCotas 	= itemView.findViewById(R.id.quantidade_cotas);
 		btnAdd		= itemView.findViewById(R.id.adicionar_carrinho);
+		linhaNumero		= itemView.findViewById(R.id.linha_numero);
 
 		this.listener = listener;
 		seta.setOnClickListener(this);
@@ -70,7 +76,13 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
-		modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
+		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
+		aplicaEstilo();
+		if (isEspecial(bolao.getTipoConcurso())){
+			modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()));
+		} else {
+			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
+		}
 		concurso.setText(String.valueOf(bolao.getConcurso()));
 		if (bolao.getNomeFantasia().length() > 13){
 			loterica.setText(bolao.getNomeFantasia().substring(0,13).concat("..."));
@@ -90,6 +102,22 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		atualizaBotoesQtdCotas(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		mostrarDetalhes(bolao.isAbertoParaMostrarDetalhes());
 		qtdCotas.setText(Integer.toString(bolao.getQtdCotasBolao()));
+	}
+
+	private boolean isEspecial(int tipoConcurso){
+		return tipoConcurso == 2;
+	}
+
+	private void aplicaEstilo() {
+		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
+		modalidade.setTextColor(corEscura);
+		valor.setTextColor(corEscura);
+		valorPremio.setTextColor(corEscura);
+		btnDetalhes.setTextColor(corEscura);
+		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
+		btnDiminui.setBackgroundColor(corEscura);
+		btnAumenta.setBackgroundColor(corEscura);
+		linhaNumero.setBackgroundColor(corEscura);
 	}
 
 	@Override
@@ -132,19 +160,19 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	@Override
 	public void atualizaBotoesQtdCotas(int quantidade, int maxPermitido) {
 		if (quantidade == QUANTIDADE_MINIMA){
-			btnDiminui.setBackgroundTintList(getCor(R.color.cinzaescuro));
+			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinzaescuro));
 			btnDiminui.setEnabled(false);
-			btnAumenta.setBackgroundTintList(getCor(R.color.megasenaclaro));
+			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnAumenta.setEnabled(true);
 		} else if (quantidade == maxPermitido){
-			btnAumenta.setBackgroundTintList(getCor(R.color.cinzaescuro));
+			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinzaescuro));
 			btnAumenta.setEnabled(false);
-			btnDiminui.setBackgroundTintList(getCor(R.color.megasenaclaro));
+			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnDiminui.setEnabled(true);
 		} else {
-			btnDiminui.setBackgroundTintList(getCor(R.color.megasenaclaro));
+			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnDiminui.setEnabled(true);
-			btnAumenta.setBackgroundTintList(getCor(R.color.megasenaclaro));
+			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnAumenta.setEnabled(true);
 		}
 	}
