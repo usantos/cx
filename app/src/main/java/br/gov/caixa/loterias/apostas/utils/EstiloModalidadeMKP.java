@@ -17,6 +17,7 @@ public class EstiloModalidadeMKP {
     private final int imagemEspecialCarrossel;
     private final int imagemTriangulo;
     private final int imagemTrianguloOutline;
+    private final int imagemEspecialDetalheAposta;
 
     public EstiloModalidadeMKP(ModalidadeEnum modalidade) {
         switch (modalidade) {
@@ -28,6 +29,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = R.drawable.cabecalho_quina_sao_joao_caurossel;
                 imagemTriangulo = R.drawable.ic_tag_bolao_quina;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_quina;
+                imagemEspecialDetalheAposta = R.drawable.cabecalho_quina_de_sao_joao_detalhe_aposta;
                 break;
             case DUPLA_SENA:
                 corClara = R.color.dupla_sena_claro_mkp;
@@ -37,6 +39,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = -1;
                 imagemTriangulo = R.drawable.ic_tag_bolao_dupla_sena;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dupla_sena;
+                imagemEspecialDetalheAposta = R.drawable.cabecalho_mega_da_virada_detalhe_aposta;
                 break;
             case LOTOFACIL:
                 corClara = R.color.lotofacil_claro_mkp;
@@ -46,6 +49,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = -1;
                 imagemTriangulo = R.drawable.ic_tag_bolao_loto_facil;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loto_facil;
+                imagemEspecialDetalheAposta = R.drawable.cabecalho_mega_da_virada_detalhe_aposta;
                 break;
             default: {
                 //MEGASENA
@@ -56,6 +60,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = -1;
                 imagemTriangulo = R.drawable.ic_tag_bolao;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline;
+                imagemEspecialDetalheAposta = R.drawable.cabecalho_mega_da_virada_detalhe_aposta;
             }
         }
 
@@ -87,5 +92,9 @@ public class EstiloModalidadeMKP {
 
     public int getImagemTrianguloOutline() {
         return imagemTrianguloOutline;
+    }
+
+    public int getImagemEspecialDetalheAposta() {
+        return imagemEspecialDetalheAposta;
     }
 }

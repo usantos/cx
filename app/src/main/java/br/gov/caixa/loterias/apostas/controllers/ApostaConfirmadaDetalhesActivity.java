@@ -67,6 +67,7 @@ import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -122,6 +123,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private View id_view_divisao;
 
     private EstiloModalidade estilo;
+    private EstiloModalidadeMKP estiloMKP;
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
     private IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaMatriz;
 
@@ -234,7 +236,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setaViews(){
-        estilo = new EstiloModalidade(aposta.getModalidade());
+        //estilo = new EstiloModalidade(aposta.getModalidade());
+        estilo = new EstiloModalidade(aposta); //Colocar EstiloModalidadeMKP
+        estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade()); //Colocar EstiloModalidadeMKP
         setTheme(estilo.getThemeId());
 
         fragmentContainer       = findViewById(R.id.fragmentContainer);
@@ -298,19 +302,35 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private int getCorEscura() {
-        if (estilo != null){
+        if (isApostaBolao(aposta)) {
+            if (estiloMKP != null) {
+                return estiloMKP.getCorEscura();
+            }
+            estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
+            return estiloMKP.getCorEscura();
+        } else {
+            if (estilo != null) {
+                return estilo.getCorEscura();
+            }
+            estilo = new EstiloModalidade(aposta);
             return estilo.getCorEscura();
         }
-        estilo = new EstiloModalidade(aposta);
-        return estilo.getCorEscura();
     }
 
     private int getCorClara() {
-        if (estilo != null){
+        if (isApostaBolao(aposta)) {
+            if (estiloMKP != null) {
+                return estiloMKP.getCorClara();
+            }
+            estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
+            return estiloMKP.getCorClara();
+        } else {
+            if (estilo != null) {
+                return estilo.getCorClara();
+            }
+            estilo = new EstiloModalidade(aposta);
             return estilo.getCorClara();
         }
-        estilo = new EstiloModalidade(aposta);
-        return estilo.getCorClara();
     }
 
     private void carrinhoApostasBtn() {
@@ -657,7 +677,15 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setupToolbar() {
-        toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
+        if (isApostaBolao(aposta)) {
+            if (isEspecial(aposta.getTipoConcurso().getValor())) {
+                toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalheAposta());
+            } else {
+                toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
+            }
+        } else {
+            toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
+        }
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
@@ -711,6 +739,14 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         if(!situacao.getDescricao().equalsIgnoreCase("Premiada")){
             inibirTeim();
         }
+    }
+
+    private boolean isApostaBolao(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta.getIndicadorCotaBolao() != null && aposta.getIndicadorCotaBolao();
+    }
+
+    private boolean isEspecial(String tipoConcurso){
+        return tipoConcurso.equalsIgnoreCase("2");
     }
 
     @Override

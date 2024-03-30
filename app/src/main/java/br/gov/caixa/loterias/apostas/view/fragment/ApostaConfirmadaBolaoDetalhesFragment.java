@@ -49,6 +49,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
     private TextView concursoTxt, cotaTxt, dataApostaTxt, statusApostaTxt, tv_val_premio, tv_val_premio_tit;
 	private RecyclerView listViewSorteados, listViewJogos;
 	private ImageView imgTriangulo;
+	private EstiloModalidadeMKP estiloMKP;
 
     public ApostaConfirmadaBolaoDetalhesFragment() {}
 
@@ -70,6 +71,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 			String apostaJson = getArguments().getString(ARG_APOSTA);
 			if (apostaJson != null && !apostaJson.isEmpty()){
 				aposta = new Gson().fromJson(apostaJson, IdentificaoDeUmaApostaDas8Modalidades.class);
+				estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 			}
 		}
 	}
@@ -181,7 +183,8 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private DezenaConfig getDezenaConfig() {
-		ShapeConfig shapeConfig = new ShapeConfig(R.color.branco, R.color.mega_verde_escuro_mkp);
+		//ShapeConfig shapeConfig = new ShapeConfig(R.color.branco, R.color.mega_verde_escuro_mkp);
+		ShapeConfig shapeConfig = new ShapeConfig(R.color.branco, estiloMKP.getCorEscura());
 
 		return new DezenaConfig(false, R.color.branco,
 				R.layout.item_dezena_detalhe,
