@@ -47,7 +47,9 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 	private View view;
     private TextView concursoTxt, cotaTxt, dataApostaTxt, statusApostaTxt, tv_val_premio, tv_val_premio_tit;
-	private RecyclerView listViewSorteados, listViewJogos;
+	private TextView tvNumerosSorteados, tvNumerosSorteados2;
+	private TextView tvDuplaSena1, tvDuplaSena2;
+	private RecyclerView listViewSorteados, listViewSorteados2, listViewJogos, listViewJogos2;
 	private ImageView imgTriangulo;
 	private EstiloModalidadeMKP estiloMKP;
 
@@ -144,15 +146,39 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private void initList() {
+		boolean temResultadoSegundoSorteio = temResultadoSegundoSorteio();
+		List<Integer> listSorteados2 = new ArrayList<>();
 		List<Integer> listSorteados = new ArrayList<>();
-		if (temResultadoSorteio()){
+		if (temResultadoSorteio()) {
+			if (temResultadoSegundoSorteio) {
+				tvNumerosSorteados.setText(getString(R.string.numeros_sorteados) + "\n\n" +
+										   getString(R.string.primeiro_sorteiro));
+				tvDuplaSena1.setVisibility(View.VISIBLE);
+				tvDuplaSena1.setText(getString(R.string.seus_jogos) + "\n\n" +
+						getString(R.string.primeiro_sorteiro));
+			}
+
 			listSorteados = getResultadoConcurso().getListaSorteadosPrimeiroSorteio();
 			List dezenas = getDezenas(listSorteados);
-			ListaDezenaRecyclerView numerosAdapter = new ListaDezenaRecyclerView(dezenas,listSorteados
+			ListaDezenaRecyclerView numerosAdapter = new ListaDezenaRecyclerView(dezenas, listSorteados
 					, getDezenaConfig(), null);
 			listViewSorteados.setAdapter(numerosAdapter);
-
 			listViewSorteados.setLayoutManager(new GridLayoutManager(getContext(), 6));
+
+			if (temResultadoSegundoSorteio) {
+				tvDuplaSena2.setVisibility(View.VISIBLE);
+				tvDuplaSena2.setText(getString(R.string.segundo_sorteiro));
+
+				tvNumerosSorteados2.setVisibility(View.VISIBLE);
+				listViewSorteados2.setVisibility(View.VISIBLE);
+
+				listSorteados2 = getResultadoConcurso().getListaSorteadosSegundoSorteio();
+				List dezenas2 = getDezenas(listSorteados2);
+				ListaDezenaRecyclerView numerosAdapter2 = new ListaDezenaRecyclerView(dezenas2, listSorteados2
+						, getDezenaConfig(), null);
+				listViewSorteados2.setAdapter(numerosAdapter2);
+				listViewSorteados2.setLayoutManager(new GridLayoutManager(getContext(), 6));
+			}
 		} else {
 			((TextView)view.findViewById(R.id.id_seus_numeros)).setText("");
 		}
@@ -162,6 +188,15 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 				listSorteados, getDezenaConfig());
 		listViewJogos.setAdapter(adpterJogos);
 		listViewJogos.setLayoutManager(new LinearLayoutManager(getContext()));
+
+		if (temResultadoSegundoSorteio) {
+			listViewJogos2.setVisibility(View.VISIBLE);
+			JogosBolaoRecyclerView adpterJogos2 = new JogosBolaoRecyclerView(R.color.branco,
+					aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
+					listSorteados2, getDezenaConfig());
+			listViewJogos2.setAdapter(adpterJogos2);
+			listViewJogos2.setLayoutManager(new LinearLayoutManager(getContext()));
+		}
 
 		if (isSituacaoConcursoNaoApurado() || isApostaPequena()){
 			view.findViewById(R.id.id_view_base).setVisibility(View.VISIBLE);
@@ -180,6 +215,11 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	private boolean temResultadoSorteio() {
 		return getResultadoConcurso() != null && getResultadoConcurso().getListaSorteadosPrimeiroSorteio() != null
 				&& !getResultadoConcurso().getListaSorteadosPrimeiroSorteio().isEmpty();
+	}
+
+	private boolean temResultadoSegundoSorteio() {
+		return getResultadoConcurso() != null && getResultadoConcurso().getListaSorteadosSegundoSorteio() != null
+				&& !getResultadoConcurso().getListaSorteadosSegundoSorteio().isEmpty();
 	}
 
 	private DezenaConfig getDezenaConfig() {
@@ -219,8 +259,15 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
         tv_val_premio = view.findViewById(R.id.tv_val_premio);
         tv_val_premio_tit = view.findViewById(R.id.tv_val_premio_tit);
 
+		tvDuplaSena1 = view.findViewById(R.id.id_dupla_sena1);
+		tvNumerosSorteados = view.findViewById(R.id.id_seus_numeros);
+		tvDuplaSena2 = view.findViewById(R.id.id_dupla_sena2);
+		tvNumerosSorteados2 = view.findViewById(R.id.id_seus_numeros2);
+
 		listViewSorteados = view.findViewById(R.id.id_lista_sorteados);
+		listViewSorteados2 = view.findViewById(R.id.id_lista_sorteados2);
 		listViewJogos = view.findViewById(R.id.id_lista_jogos);
+		listViewJogos2 = view.findViewById(R.id.id_lista_jogos2);
 
 		cl_premio_pago = view.findViewById(R.id.cl_premio_pago);
 		clResgatePremio = view.findViewById(R.id.clResgatePremio);
