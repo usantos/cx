@@ -679,7 +679,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private void setupToolbar() {
         if (isApostaBolao(aposta)) {
             if (isEspecial(aposta.getTipoConcurso().getValor())) {
-                toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalheAposta());
+                toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
             } else {
                 toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
             }
