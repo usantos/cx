@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.google.gson.Gson;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 
 
 public class SubBarraModalidadeFragment extends Fragment {
@@ -27,7 +29,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private  View view;
 	private TextView tvModalidade, tvConcurso, tvSorteio;
 	private ConstraintLayout background;
-	private RelativeLayout trapezio;
+	private ImageView trapezio;
 
 	private String concurso;
 	private String sorteio;
@@ -72,7 +74,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 		tvConcurso = view.findViewById(R.id.id_concurso);
 		tvSorteio = view.findViewById(R.id.id_sorteio);
 		background = view.findViewById(R.id.layout_fragmento);
-		trapezio = view.findViewById(R.id.layout_money);
+		trapezio = view.findViewById(R.id.back_money);
 
 		preencheDados();
 		aplicaEstilo();
@@ -82,7 +84,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 
 	private void aplicaEstilo() {
 		background.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorClara()));
-		trapezio.setBackground(ContextCompat.getDrawable(getContext(), estilo.getTrapezio()));
+		trapezio.setBackground(VectorUtils.getShape(R.drawable.ic_trapezio_mkp, estilo.getCorEscura()));
 		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1){
 			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
 		}
@@ -90,7 +92,11 @@ public class SubBarraModalidadeFragment extends Fragment {
 
 	private void preencheDados() {
 		if (isEspecial){
-			tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade));
+			if (modalidade == ModalidadeEnum.LOTOFACIL){
+				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade));
+			} else {
+				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade));
+			}
 		} else {
 			tvModalidade.setText(ModalidadeEnum.fromString(modalidade));
 		}

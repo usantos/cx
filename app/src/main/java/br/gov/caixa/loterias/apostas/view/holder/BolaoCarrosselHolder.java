@@ -119,7 +119,11 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 				trapezio.setVisibility(View.INVISIBLE);
 				cabecalho.setBackground(ContextCompat.getDrawable(activity, estilo.getImagemEspecialCarrossel()));
 			}
-			modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()));
+			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()));
+			} else {
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()));
+			}
 		} else {
 			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
 		}

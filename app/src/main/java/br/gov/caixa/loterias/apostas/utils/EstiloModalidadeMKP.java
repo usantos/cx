@@ -21,7 +21,7 @@ public class EstiloModalidadeMKP {
         switch (modalidade) {
             case QUINA:
                 corClara = R.color.quina_claro_mkp;
-                corEscura = R.color.quina_claro_mkp;
+                corEscura = R.color.quina_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_quina_mkp;
                 shapeBtnDetalhes = R.drawable.btn_rounded_quina_outlined;
                 imagemEspecialCarrossel = R.drawable.cabecalho_quina_sao_joao_caurossel;

@@ -60,7 +60,6 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detalhes_bolao);
 		configToolbar(R.id.toolbar);
-		configBackgroundColorMenu(R.color.mega_verde_escuro_mkp);
 
 		codigoBolao = getIntent().getStringExtra(ARG_CODIGO_BOLAO);
 		modalidade = new Gson().fromJson(getIntent().getStringExtra(ARG_MODALIDADE), ModalidadeEnum.class);
@@ -77,6 +76,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	}
 
 	private void aplicaEstilo() {
+		configBackgroundColorMenu(estilo.getCorEscura());
 		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorEscura()));
 		tvMunicipio.setTextColor(ContextCompat.getColor(this, estilo.getCorEscura()));
 		layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorEscura()));
@@ -174,7 +174,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private void preencheDados() {
 		ViewUtils.setMoedaFormatHtml(bolao.getVrPremioEstimado(), tvValorPremio);
-		tvDescricaoPremioConcurso.setText(ViewUtils.textColor(this, getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso()), R.color.mega_verde_claro_mkp, false));
+		tvDescricaoPremioConcurso.setText(ViewUtils.textColor(this, getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso()), estilo.getCorClara(), false));
 		tvMunicipio.setText(bolao.getMunicipio().getNome() + "\n" + bolao.getMunicipio().getUf().getNome().trim() + "-" + bolao.getMunicipio().getUf().getSigla() );
 		tvValorCota.setText("Valor da Cota: " + ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()));
 		tvValorTarifa.setText("Tarifa de Serviço: " + ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()));
@@ -187,16 +187,16 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private void preencheJogos() {
 		if (bolao.getApostas() != null && !bolao.getApostas().isEmpty()){
-			listaAdapter = new JogosBolaoRecyclerView(R.color.mega_verde_escuro_mkp, bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
+			listaAdapter = new JogosBolaoRecyclerView(estilo.getCorEscura(), bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
 			listaJogos.setAdapter(listaAdapter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(this));
 		}
 	}
 
 	private DezenaConfig getDezenaConfig() {
-		ShapeConfig shapeConfig = new ShapeConfig(R.color.mega_verde_escuro_mkp, R.color.branco);
+		ShapeConfig shapeConfig = new ShapeConfig(estilo.getCorEscura(), R.color.branco);
 
-		return new DezenaConfig(false, R.color.mega_verde_escuro_mkp,
+		return new DezenaConfig(false, estilo.getCorEscura(),
 				R.layout.item_dezena_detalhe,
 				shapeConfig,false);
 	}
