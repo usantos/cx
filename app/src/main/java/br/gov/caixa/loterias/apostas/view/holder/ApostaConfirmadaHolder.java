@@ -81,7 +81,12 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
 		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
-		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
+		int color;
+		if (isApostaBolao(aposta)) {
+			color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorEscura());
+		} else {
+			color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
+		}
 
 		String descricaoStatus = getDescricaoString(aposta, position);
 
