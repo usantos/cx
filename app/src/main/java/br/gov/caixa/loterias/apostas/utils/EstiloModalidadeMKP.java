@@ -47,6 +47,56 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = R.drawable.cabecalho_lotofacil_independencia_carrossel;
                 imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
                 break;
+            case MAIS_MILIONARIA:
+                corClara = R.color.milionaria_claro_mkp;
+                corEscura = R.color.milionaria_escuro_mkp;
+                trapezio = R.drawable.background_trapeze_milionaria_mkp;
+                shapeBtnDetalhes = R.drawable.btn_rounded_milionaria_outlined;
+                imagemTriangulo = R.drawable.ic_tag_bolao_milionaria;
+                imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_milionaria;
+                imagemEspecialCarrossel = -1;
+                imagemEspecialDetalhes = -1;
+                break;
+            case SUPER_7:
+                corClara = R.color.super_sete_claro_mkp;
+                corEscura = R.color.super_sete_escuro_mkp;
+                trapezio = R.drawable.background_trapeze_super_sete_mkp;
+                shapeBtnDetalhes = R.drawable.btn_rounded_super_sete_outlined;
+                imagemTriangulo = R.drawable.ic_tag_bolao_super_sete;
+                imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_super_sete;
+                imagemEspecialCarrossel = -1;
+                imagemEspecialDetalhes = -1;
+                break;
+            case LOTECA:
+                corClara = R.color.loteca_claro_mkp;
+                corEscura = R.color.loteca_escuro_mkp;
+                trapezio = R.drawable.background_trapeze_loteca_mkp;
+                shapeBtnDetalhes = R.drawable.btn_rounded_loteca_outlined;
+                imagemTriangulo = R.drawable.ic_tag_bolao_loteca;
+                imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loteca;
+                imagemEspecialCarrossel = -1;
+                imagemEspecialDetalhes = -1;
+                break;
+            case TIMEMANIA:
+                corClara = R.color.timemania_claro_mkp;
+                corEscura = R.color.timemania_escuro_mkp;
+                trapezio = R.drawable.background_trapeze_timemania_mkp;
+                shapeBtnDetalhes = R.drawable.btn_rounded_timemania_outlined;
+                imagemTriangulo = R.drawable.ic_tag_bolao_timemania;
+                imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_timemania;
+                imagemEspecialCarrossel = -1;
+                imagemEspecialDetalhes = -1;
+                break;
+            case DIA_DE_SORTE:
+                corClara = R.color.dia_sorte_claro_mkp;
+                corEscura = R.color.dia_sorte_escuro_mkp;
+                trapezio = R.drawable.background_trapeze_dia_sorte_mkp;
+                shapeBtnDetalhes = R.drawable.btn_rounded_dia_sorte_outlined;
+                imagemTriangulo = R.drawable.ic_tag_bolao_dia_sorte;
+                imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dia_sorte;
+                imagemEspecialCarrossel = -1;
+                imagemEspecialDetalhes = -1;
+                break;
             default:
                 //MEGASENA
                 corClara = R.color.mega_verde_claro_mkp;
