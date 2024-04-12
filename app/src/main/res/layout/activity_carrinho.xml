@@ -50,6 +50,7 @@
                 android:gravity="start"
                 android:paddingLeft="20dp"
                 android:text="@string/label_lembrar_valor_minimo"
+                android:textColor="@color/black"
                 android:textAlignment="textStart"
                 android:textSize="14.2sp"
                 app:layout_constraintTop_toBottomOf="@id/tv_confirm_aposta" />
@@ -116,9 +117,10 @@
                 style="@style/editTextArialMTTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="4dp"
                 android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/v_div_bottom" />
+                app:layout_constraintTop_toBottomOf="@id/v_div_bottom"
+                tools:layout_editor_absoluteX="0dp" />
 
             <ProgressBar
                 android:id="@+id/pb_loading"
@@ -137,13 +139,11 @@
 
     <Button
         android:id="@+id/btn_nova_aposta"
-        android:layout_width="183dp"
+        android:layout_width="240dp"
         android:layout_height="56dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="14dp"
         android:background="@drawable/button_white_with_green_border"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp"
         android:text="@string/continuarApostando"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/verdeazul"
@@ -155,17 +155,16 @@
 
     <Button
         android:id="@+id/btn_avancar_pagamento"
-        android:layout_width="184dp"
-        android:layout_height="84dp"
+        android:layout_width="240dp"
+        android:layout_height="70dp"
         android:layout_below="@id/btn_nova_aposta"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="51dp"
         android:background="@color/verdeazul"
         android:text="@string/avancarFormaPagamento"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/branco"
-        android:textSize="17sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

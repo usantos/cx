@@ -41,6 +41,7 @@ import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 
 import static br.gov.caixa.loterias.apostas.controllers.DetalhesCarrinhoFavoritoActivity.ID_CARRINHO;
 
@@ -361,7 +362,9 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 					detalhesCarrinho(layoutDetalhes);
 					break;
 				case R.id.ib_transformar_carrinho:
-					transformaCarrinho();
+					if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(activity)) {
+						transformaCarrinho();
+					}
 					break;
 				case R.id.cl_card_carrinho_favorito:
 					buscaApostas(layoutDetalhes, clCard, true);

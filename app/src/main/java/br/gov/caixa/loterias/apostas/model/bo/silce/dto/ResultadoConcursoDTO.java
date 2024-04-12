@@ -176,6 +176,14 @@ public class ResultadoConcursoDTO<T> implements Serializable {
         this.numerosSorteadosSegundoSorteio = numerosSorteadosSegundoSorteio;
     }
 
+    public List<Integer> getListaSorteadosSegundoSorteio(){
+        if(numerosSorteadosSegundoSorteio != null){
+            return AppUtils.converteListaInteiros((List<Integer>) numerosSorteadosSegundoSorteio);
+        } else  {
+            return  null;
+        }
+    }
+
     /**
      * Resultado das partidas de futebol da Lotogol
      **/

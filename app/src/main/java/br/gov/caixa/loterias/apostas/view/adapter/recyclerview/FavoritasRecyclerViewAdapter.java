@@ -49,6 +49,7 @@ import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.custom.AdicionarCarrinhoFavoritasView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
@@ -153,7 +154,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         holder.excluirRelativeLayoutFavoritos.setOnClickListener(v -> deleteFavoritaCallWebservice(position));
 
         holder.editarRelativeLayoutAddCarrinho.setOnClickListener(view -> {
-            adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(activity), listaApostaFavorita.get(position));
+            if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(activity)) {
+                adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(activity), listaApostaFavorita.get(position));
+            }
         });
 
         holder.layoutSalvarNomeAposta.setOnClickListener(v -> {

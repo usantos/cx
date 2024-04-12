@@ -122,4 +122,11 @@ public class DateUtils {
         return diffInSeconds * 1000;
     }
 
+    public static String calculaDataHoraFutura(int horas) {
+        Calendar calendario = Calendar.getInstance();
+        calendario.add(Calendar.HOUR_OF_DAY, horas);
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        return formato.format(calendario.getTime());
+    }
+
 }

@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
@@ -12,7 +15,9 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
@@ -29,6 +34,8 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     private LinearLayout btnVoltarInicio;
     private TextView tvVoltarInicio;
     private TextView tvContador;
+    private ConstraintLayout background, timer;
+    private EstiloModalidadeMKP estilo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,18 +43,25 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         setContentView(R.layout.activity_confirmado_inclusao_bolao_carrinho);
 
         configToolbar(R.id.toolbar);
-        configBackgroundColorMenu(R.color.mega_verde_escuro_mkp);
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_apostas bolão_"));
 
         getExtras();
+        estilo = new EstiloModalidadeMKP(modalidade);
         setViews();
         setMetodos();
         startFragments();
+        aplicaEstilo();
+    }
+
+    private void aplicaEstilo() {
+        configBackgroundColorMenu(estilo.getCorEscura());
+        background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+        timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border,estilo.getCorClara()));
     }
 
     private void startFragments() {
         subBarFragment = FragmentUtils.startFragmentSubBarraModalidade(getSupportFragmentManager(),
-                R.id.id_fragment_sub_barra, modalidade, concurso, dataSorteio);
+                R.id.id_fragment_sub_barra, modalidade, concurso, dataSorteio, false);
         rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(),
                 R.id.id_fragment_rodape, valorAposta);
     }
@@ -70,6 +84,8 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         btnVoltarInicio = findViewById(R.id.botaoLinearLayoutVoltarPrincipal);
         tvVoltarInicio = findViewById(R.id.txtVoltarAoInicio);
         tvContador = findViewById(R.id.txt_contador);
+        background = findViewById(R.id.layout_corpo);
+        timer = findViewById(R.id.timer);
 
         tvVoltarInicio.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
     }

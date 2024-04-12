@@ -171,7 +171,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     public void setLayout(Modalidade modalidade) {
         if (modalidade.getTipoModalidade() != ModalidadeEnum.DUPLA_SENA) {
             TextView title1 = new TextView(getContext());
-            title1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_bold)));
+            title1.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_premiacao_bold)));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -204,7 +204,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
             TextView title4 = new TextView(getContext());
-            title4.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_segundo_sorteio_bold)));
+            title4.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_segundo_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams4 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -477,7 +477,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
     private void adicionarArrecadacaoTotal(BigDecimal valor) {
         TextView title = new TextView(getContext());
-        title.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_arrecadacao_total_bold)));
+        title.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_arrecadacao_total_bold)));
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 

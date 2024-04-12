@@ -99,6 +99,7 @@ import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
@@ -669,7 +670,9 @@ public class PrincipalActivity extends AppCompatActivity
 
     private boolean modalidadeBolaoHabilitada(ModalidadeEnum modalidade) {
         return modalidade == ModalidadeEnum.MEGA_SENA ||
-                modalidade == ModalidadeEnum.QUINA;
+                modalidade == ModalidadeEnum.QUINA ||
+                modalidade == ModalidadeEnum.DUPLA_SENA ||
+                modalidade == ModalidadeEnum.LOTOFACIL;
     }
 
     @Click(R.id.buttonHomeBet)
@@ -721,7 +724,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.relativeLayoutContentRapidao)
     protected void clickRelativeLayoutContentRapidao() {
-        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
         redirecionaRapidao();
     }
 
@@ -872,7 +875,7 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
                 break;
             case 2:
-                startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                startActivity(new Intent(PrincipalActivity.this, AutoSuspensaoActivity.class));
                 break;
             default:
                 break;
@@ -922,11 +925,16 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-    private void redirecionaRapidao(){
-        if (DadosUsuarioBO.checarTutorialRapidao()){
-            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-        }else {
-            startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
+    private void redirecionaRapidao() {
+        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
+            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+            if (DadosUsuarioBO.checarTutorialRapidao()) {
+                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+            } else {
+                startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
+            }
+        } else {
+            AnimacaoFecharMenuRapido(actionApresentarTrevo);
         }
     }
 

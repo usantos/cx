@@ -20,6 +20,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoRequest;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoRespostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BoloesDisponiveisResponse;
@@ -957,6 +959,20 @@ public class ApostaBO extends BaseBO {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.AUTOAVALIACAO_RESPOSTAS,
                 new LinkedHashMap<>(),
                 listAutoavaliacaoRespostaDTO, AutoavaliacaoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
+    public void postAutoSuspensaoApostador(
+            final AutoSuspensaoRequest autoSuspensaoRequest,
+            final RequestListener<AutoSuspensaoResponse> listener) {
+
+        final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.AUTOSUSPENSAO_APOSTADOR,
+                new LinkedHashMap<>(),
+                autoSuspensaoRequest, AutoSuspensaoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());

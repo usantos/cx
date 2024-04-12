@@ -178,6 +178,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 						txtFimLista.setVisibility(View.VISIBLE);
 					}
 
+					if (cotasDisponiveis == null || cotasDisponiveis.isEmpty()){
+						apresentanEstadoVazio();
+					}
 					AlertDialogUtils.dismiss();
 				} else if (payload.getCotas().isEmpty() || payload.getCotas().size() < PaginacaoFiltro.QTD_POR_PAGINA){
 					acumulouBoloesParaApresentar = true;
