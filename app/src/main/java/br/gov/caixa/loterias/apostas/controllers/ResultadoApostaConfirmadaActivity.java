@@ -39,6 +39,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -83,6 +84,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     @Extra
     protected ComprovanteApostaDTO comprovante;
     private EstiloModalidade estiloModalidade;
+    private EstiloModalidadeMKP estiloModalidadeMKP;
 
     @AfterViews
     protected void init() {
@@ -90,6 +92,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
         estiloModalidade = new EstiloModalidade(modalidadeEnum);
+        estiloModalidadeMKP = new EstiloModalidadeMKP(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
@@ -106,9 +109,15 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
         }
 
+        if (isBolao(detalhesPremioDTO.getAposta())) {
+            contentResultadoPremiado.getImgTrevoResultado().setImageDrawable(getDrawable(R.drawable.ic_money_bolao));
+            contentResultadoPremiado.getImgTagBolao().setVisibility(View.VISIBLE);
+            contentResultadoPremiado.getImgTagBolao().setImageDrawable(getDrawable(estiloModalidadeMKP.getImagemTrianguloOutline()));
+        }
+
         contentResultadoPremiado.getPremioInfoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
 
-        contentResultadoPremiado.getTituloModalidadeTextView().setText(ModalidadeEnum.fromString(detalhesPremioDTO.getAposta().getModalidade()).toLowerCase());
+        contentResultadoPremiado.getTituloModalidadeTextView().setText(ViewUtils.getNomeModalidadePorAposta(detalhesPremioDTO.getAposta()).toLowerCase());
 
         contentResultadoPremiado.getButtonVerDetalheAposta().setOnClickListener(v -> finish());
 

@@ -1,8 +1,10 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,6 +41,9 @@ public class ContentResultadoPremiado extends LinearLayout {
 
     @ViewById
     protected Button botaoAposteAgora ;
+
+    @ViewById
+    protected ImageView imgTrevoResultado, imgTagBolao;
 
     public ContentResultadoPremiado(Context context) {
         super(context);
@@ -85,6 +90,14 @@ public class ContentResultadoPremiado extends LinearLayout {
     }
 
     public Button getBotaoAposteAgora(){ return botaoAposteAgora; }
+
+    public ImageView getImgTrevoResultado() {
+        return imgTrevoResultado;
+    }
+
+    public ImageView getImgTagBolao() {
+        return imgTagBolao;
+    }
 
     public ExpandableHeightRecyclerView getListaFaixaPremiacaoExpandableHeightRecyclerView() {
         return listaFaixaPremiacaoExpandableHeightRecyclerView;
