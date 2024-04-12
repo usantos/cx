@@ -13,7 +13,7 @@
         android:text="@string/valor_atual_do_carrinho"
         android:textColor="@color/branco"
         android:textSize="12sp"
-        android:fontFamily="@font/font_family_futura"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/guideline2"
         app:layout_constraintStart_toEndOf="@+id/tv_valor_total"
@@ -27,8 +27,7 @@
         android:text="R$ 00,00"
         android:textColor="@color/branco"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:lineSpacingExtra="1sp"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -62,8 +61,7 @@
         android:text="@string/contador_notificacoes"
         android:textColor="#004680"
         android:textSize="7sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/font_family_futura"
+        android:fontFamily="@font/caixa_std_bold"
         android:lineHeight="10dp"
         app:layout_constraintTop_toTopOf="@id/circulo_quantidade"
         app:layout_constraintStart_toStartOf="@id/circulo_quantidade"
@@ -77,7 +75,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.8" />
-    app:layout_constraintGuide_percent="0.85" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

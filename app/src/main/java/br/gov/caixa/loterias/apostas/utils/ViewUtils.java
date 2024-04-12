@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 
 /**
  * Created by lsimas on 05/04/2017.
@@ -457,6 +458,19 @@ public class ViewUtils {
     public static SpannableStringBuilder textFuturaAndFuturaBold(Context context, String texto) {
         try{
             Typeface font = ViewUtils.getFontFuturaBold(context);
+
+            PositionStringBold positionStringBold = positionString(texto);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+            spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            return spannableStringBuilder;
+        }catch (Exception e){
+            return  new SpannableStringBuilder().append(texto);
+        }
+    }
+
+    public static SpannableStringBuilder textCaixaSTDBold(Context context, String texto) {
+        try{
+            Typeface font = FonteUtils.getFonte(FontCaixaEnum.BOLD);
 
             PositionStringBold positionStringBold = positionString(texto);
             SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));

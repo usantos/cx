@@ -833,8 +833,10 @@
     <string name="dd_mm">dd/MM</string>
     <string name="dd_mm_yyyy">dd/MM/yyyy</string>
     <string name="dd_mm_yyyy_hh_mm_ss">dd/MM/yyyy HH:mm:ss</string>
+    <string name="dd_mm_yyyy_hh_mm">dd/MM/yyyy HH:mm</string>
     <string name="eeee">EEEE</string>
     <string name="hh_mm_ss">HH:mm:ss</string>
+    <string name="hh_mm">HH:mm</string>
     <string name="as_espacado">&#160;às&#160;</string>
     <string name="sorteio">Sorteio</string>
     <string name="resultado">Resultado</string>

@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/branco"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:layout_marginTop="10dp"
                 android:textSize="14sp"
                 android:text="Colunas"/>
@@ -44,7 +44,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/branco"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:textSize="10sp"
                         android:text="1"/>
                     <TextView
@@ -53,7 +53,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:background="@drawable/rounded_textview"
                         android:backgroundTint="@color/branco"
                         android:textColor="@color/supersetemedio"
@@ -70,7 +70,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/branco"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:textSize="10sp"
                         android:text="2"/>
                     <TextView
@@ -79,7 +79,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:background="@drawable/rounded_textview"
                         android:backgroundTint="@color/branco"
                         android:textColor="@color/supersetemedio"
@@ -96,7 +96,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/branco"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:textSize="10sp"
                         android:text="3"/>
                     <TextView
@@ -105,7 +105,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:background="@drawable/rounded_textview"
                         android:backgroundTint="@color/branco"
                         android:textColor="@color/supersetemedio"
@@ -122,7 +122,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/branco"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:textSize="10sp"
                         android:text="4"/>
                     <TextView
@@ -131,7 +131,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:background="@drawable/rounded_textview"
                         android:backgroundTint="@color/branco"
                         android:textColor="@color/supersetemedio"
@@ -154,7 +154,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/branco"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:textSize="10sp"
                         android:text="5"/>
                     <TextView
@@ -163,7 +163,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:background="@drawable/rounded_textview"
                         android:backgroundTint="@color/branco"
                         android:textColor="@color/supersetemedio"
@@ -180,7 +180,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/branco"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:textSize="10sp"
                         android:text="6"/>
                     <TextView
@@ -189,7 +189,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:background="@drawable/rounded_textview"
                         android:backgroundTint="@color/branco"
                         android:textColor="@color/supersetemedio"
@@ -206,7 +206,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/branco"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:textSize="10sp"
                         android:text="7"/>
                     <TextView
@@ -215,7 +215,7 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
                         android:textSize="12sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:background="@drawable/rounded_textview"
                         android:backgroundTint="@color/branco"
                         android:textColor="@color/supersetemedio"
