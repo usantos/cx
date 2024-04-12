@@ -122,5 +122,7 @@ class ServerMethods {
      static final String AUTOAVALIACAO_PERGUNTAS = "/autoavaliacoes/recuperar-perguntas";
      static final String AUTOAVALIACAO_RESPOSTAS = "/autoavaliacoes/grava-resposta";
 
+     static final String AUTOSUSPENSAO_APOSTADOR = "/usuarios/suspender-conta-apostador";
+
      private ServerMethods(){}
 }

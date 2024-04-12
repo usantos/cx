@@ -1352,6 +1352,21 @@
     <string name="autoavaliacao_ajuda">Onde Procurar Ajuda</string>
     <string name="autoavaliacao_parabens">_Parabéns!_\nO seu hábito de apostar não está interferindo em sua vida, você é um jogador responsável.</string>
     <string name="autoavaliacao_atencao">_Muita atenção!_\nSe você respondeu "sim" para um ou mais dessas questões, recomendamos que você procure avaliação adicional.</string>
+    <string name="autosuspensao_suspensao">Auto-suspensão Jogo Responsável</string>
+    <string name="tv_autosuspensao_1">1.Essa ação acarretará na impossibilidade de efetuar compras de apostas no Portal loterias na internet e app loterias durante o periodo selecionado</string>
+    <string name="tv_autosuspensao_2">1.1 O periodo de suspensão de suspensão pode ser de de 24 hs, 48 hs, 7 dias, 15 dias ou 30 dias, o critério do apostador </string>
+    <string name="tv_autosuspensao_3">1.2 A suspensão passa a valer a partir da confirmação da solicitação</string>
+    <string name="tv_autosuspensao_4">1.3 A suspensão temporária de compras é irreversível enquanto durar o periodo selecionado</string>
+    <string name="tv_suspensao_pergunta">Selecione abaixo o período de suspensão das compras</string>
+    <string name="tv_24_horas">24 horas</string>
+    <string name="tv_48_horas">48 horas</string>
+    <string name="tv_7_dias">7 dias</string>
+    <string name="tv_15_dias">15 dias</string>
+    <string name="tv_30_dias">30 dias</string>
+    <string name="tv_estou_ciente">Estou ciente e concordo com as informações acima</string>
+    <string name="suspender_apostas">Suspender Apostas</string>
+    <string name="tv_confirma_suspensao">A suspensão temporária de compras é irreversível enquanto durar o período selecionado.\n\nVocê confirma a suspensão por XX ?</string>
+    <string name="tv_suspenso_ate">A suspensão realizada com o prazo de XX\n\nUsuário suspenso até o dia\nYY</string>
 
     <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
     <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>
