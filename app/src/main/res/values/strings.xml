@@ -1336,6 +1336,9 @@
     <string name="ir_para_minhas_compras">Ir para as\n_Minhas Compras_</string>
     <string name="descricao_filtro_vazio">Não encontramos nenhum bolão que corresponda à sua pesquisa!</string>
     <string name="descricao_erro_filtro">Ocorreu um erro.\nTente novamente</string>
+    <string name="primeiro_sorteiro">Primeiro sorteio</string>
+    <string name="segundo_sorteiro">Segundo sorteio</string>
+    <string name="seus_jogos">Seus jogos</string>
 
     <!-- Jogo Responsavel -->
     <string name="autoavaliacao_apostador">Autoavaliação para o Apostador</string>

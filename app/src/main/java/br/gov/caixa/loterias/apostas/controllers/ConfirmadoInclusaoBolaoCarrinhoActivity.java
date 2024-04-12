@@ -47,7 +47,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
 
     private void startFragments() {
         subBarFragment = FragmentUtils.startFragmentSubBarraModalidade(getSupportFragmentManager(),
-                R.id.id_fragment_sub_barra, modalidade, concurso, dataSorteio);
+                R.id.id_fragment_sub_barra, modalidade, concurso, dataSorteio, false);
         rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(),
                 R.id.id_fragment_rodape, valorAposta);
     }
