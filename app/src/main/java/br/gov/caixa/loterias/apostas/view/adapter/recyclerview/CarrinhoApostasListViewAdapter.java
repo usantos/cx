@@ -52,7 +52,12 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaC
 
 	@Override
 	public ApostaCarrinhoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view, parent, false);
+		View view;
+		if (isBolao) {
+			view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view_boloes, parent, false);
+		} else {
+			view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view, parent, false);
+		}
 		return new ApostaCarrinhoHolder(view, parentActivity, animacao, isBolao, onApostaCarrinhoListener());
 	}
 

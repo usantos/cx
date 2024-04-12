@@ -365,7 +365,7 @@ public class ViewUtils {
         }
 
         String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
-        valorTextView.setText(fromHtml(complemento + valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
+        valorTextView.setText(fromHtml(complemento + "<strong> " + valorFormatoMoedaArray[0] + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
     /**
