@@ -670,7 +670,9 @@ public class PrincipalActivity extends AppCompatActivity
 
     private boolean modalidadeBolaoHabilitada(ModalidadeEnum modalidade) {
         return modalidade == ModalidadeEnum.MEGA_SENA ||
-                modalidade == ModalidadeEnum.QUINA;
+                modalidade == ModalidadeEnum.QUINA ||
+                modalidade == ModalidadeEnum.DUPLA_SENA ||
+                modalidade == ModalidadeEnum.LOTOFACIL;
     }
 
     @Click(R.id.buttonHomeBet)
