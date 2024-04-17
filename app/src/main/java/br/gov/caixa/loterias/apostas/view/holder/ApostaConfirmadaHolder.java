@@ -82,21 +82,19 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
 		int color;
-		if (isApostaBolao(aposta)) {
-			color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorEscura());
-		} else {
-			color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
-		}
+		color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorClara());
+//		if (isApostaBolao(aposta)) {
+//			color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorEscura());
+//		} else {
+//			color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
+//		}
+		this.color = color;
+		this.stripe.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
+		this.modalidadeTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
+		this.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
+		this.dataApostaTxt.setText(aposta.getDataCompra());
 
 		String descricaoStatus = getDescricaoString(aposta, position);
-
-		this.color = color;
-		this.stripe.setBackgroundColor(color);
-		this.modalidadeTxt.setTextColor(color);
-		this.dataApostaTxt.setText(aposta.getDataCompra());
-		this.dataApostaTxt.setTextColor(color);
-		this.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta));
-		this.situacaoTxt.setTextColor(color);
 		if (descricaoStatus.isEmpty()){
 			this.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.falha_comunicacao_situacao_aposta));
 		} else {
@@ -156,7 +154,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			if (parametroJogo != null){
 				// 4 = aposta efetivada
 				if (aposta.getSituacao().getValor() == 4) {
-					this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
+					//this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
 					descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
 
 					conferirResultado(position, aposta);
@@ -237,7 +235,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 														 quantidade));
 		} else if (isApostaBolao(aposta)){
 			this.concursoTxt.setText("Cota " + aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +
-					aposta.getReservaCotaBolao().getQtdCotaTotalBolao() + "\n\n" +
+					aposta.getReservaCotaBolao().getQtdCotaTotalBolao() + "\n" +
 					itemView.getContext().getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
 		} else {
 			this.concursoTxt.setText(itemView.getContext().getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
@@ -277,7 +275,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
 		holder.stripe.setBackgroundColor(holder.color);
 		holder.modalidadeTxt.setTextColor(holder.color);
-		holder.situacaoTxt.setTextColor(holder.color);
+		//holder.situacaoTxt.setTextColor(holder.color);
 
 		if (situacao.getDescricao().equalsIgnoreCase(itemView.getContext().getResources().getString(R.string.premiada_maiusculo))) {
 			holder.situacaoTxt.setTypeface(null, Typeface.BOLD);

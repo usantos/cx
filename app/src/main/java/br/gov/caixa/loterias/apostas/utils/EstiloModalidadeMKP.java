@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 
 public class EstiloModalidadeMKP {
@@ -14,6 +13,7 @@ public class EstiloModalidadeMKP {
     private final int imagemTriangulo;
     private final int imagemTrianguloOutline;
     private final int imagemEspecialDetalhes;
+    private final int corLetraLista;
 
     public EstiloModalidadeMKP(ModalidadeEnum modalidade) {
         switch (modalidade) {
@@ -26,6 +26,7 @@ public class EstiloModalidadeMKP {
                 imagemTriangulo = R.drawable.ic_tag_bolao_quina;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_quina;
                 imagemEspecialDetalhes = R.drawable.cabecalho_quina_sao_joao_card_detalhes;
+                corLetraLista = R.color.quina_claro_mkp;
                 break;
             case DUPLA_SENA:
                 corClara = R.color.dupla_sena_claro_mkp;
@@ -36,6 +37,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dupla_sena;
                 imagemEspecialCarrossel = R.drawable.cabecalho_dupla_pascoa_carrossel;
                 imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_detalhes;
+                corLetraLista = R.color.dupla_sena_claro_mkp;
                 break;
             case LOTOFACIL:
                 corClara = R.color.lotofacil_claro_mkp;
@@ -46,6 +48,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loto_facil;
                 imagemEspecialCarrossel = R.drawable.cabecalho_lotofacil_independencia_carrossel;
                 imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
+                corLetraLista = R.color.lotofacil_claro_mkp;
                 break;
             case MAIS_MILIONARIA:
                 corClara = R.color.milionaria_claro_mkp;
@@ -56,6 +59,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_milionaria;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                corLetraLista = R.color.milionaria_claro_mkp;
                 break;
             case SUPER_7:
                 corClara = R.color.super_sete_claro_mkp;
@@ -66,6 +70,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_super_sete;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                corLetraLista = R.color.super_sete_letra_mkp;
                 break;
             case LOTECA:
                 corClara = R.color.loteca_claro_mkp;
@@ -76,6 +81,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loteca;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                corLetraLista = R.color.loteca_claro_mkp;
                 break;
             case TIMEMANIA:
                 corClara = R.color.timemania_claro_mkp;
@@ -86,6 +92,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_timemania;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                corLetraLista = R.color.timemania_letra_mkp;
                 break;
             case DIA_DE_SORTE:
                 corClara = R.color.dia_sorte_claro_mkp;
@@ -96,6 +103,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dia_sorte;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                corLetraLista = R.color.dia_sorte_letra_mkp;
                 break;
             default:
                 //MEGASENA
@@ -107,6 +115,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline;
                 imagemEspecialCarrossel = R.drawable.cabecalho_mega_virada_carrossel;
                 imagemEspecialDetalhes = R.drawable.cabecalho_mega_virada_detalhes;
+                corLetraLista = R.color.mega_verde_claro_mkp;
         }
 
     }
@@ -140,5 +149,9 @@ public class EstiloModalidadeMKP {
     }
     public int getImagemEspecialDetalhes() {
         return imagemEspecialDetalhes;
+    }
+
+    public int getCorLetraLista() {
+        return corLetraLista;
     }
 }
