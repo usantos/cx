@@ -20,13 +20,13 @@
             android:layout_height="56dp">
 
             <ImageView
+                android:id="@+id/imgTrevoResultado"
                 android:layout_width="22sp"
                 android:layout_height="22dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/trevo" />
         </LinearLayout>
-
 
         <TextView
             android:id="@+id/tituloModalidadeTextView"
@@ -36,6 +36,18 @@
             android:fontFamily="@font/futura_std_bold"
             android:textColor="@color/branco"
             android:textSize="16sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/imgTagBolao"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_tag_bolao_outline"
+            android:visibility="gone" />
 
     </LinearLayout>
 
