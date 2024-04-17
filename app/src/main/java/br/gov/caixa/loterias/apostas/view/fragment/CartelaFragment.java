@@ -741,13 +741,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		preencherVisibilidaeGridView(View.VISIBLE, View.VISIBLE, View.GONE, View.GONE);
 		informeNomeTime = selecioneTimeCoracaoLayout.findViewById(R.id.informe_nome_time);
 		onChangeInformeNomeTime();
-		EscudoBO.getInstance().carregaEscudos(getContext(), new OnEscudoListener() {
-			@Override
-			public void aposCarregarEscudos() {
-				configurarSelecaoTimeCoracao();
-			}
-		});
-		//configurarSelecaoTimeCoracao();
+		EscudoBO.getInstance().carregaEscudos(getContext(), () -> configurarSelecaoTimeCoracao());
+		configurarSelecaoTimeCoracao();
 		atualizaStatusBotaoFinalizar(false);
 		verificaSeMostraBotaoLimparAposta();
 		verificaSeMostraSalvarApostaView();
