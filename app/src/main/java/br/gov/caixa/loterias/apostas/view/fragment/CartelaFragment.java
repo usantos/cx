@@ -1475,7 +1475,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				parentActivity.atualizaTextoBotoesQtdSelecionadas();
 				atualizaStatusBotaoFinalizar(false);
 				ViewUtils.setMoedaFormatHtml(aposta.getValor(), valorAposta);
-
+				if (mostraLimparSuperSete()) {
+					botaoLimparAposta.setVisibility(View.VISIBLE);
+				} else {
+					botaoLimparAposta.setVisibility(View.GONE);
+				}
 			} else {
 				if (CollectionUtils.isNotEmpty(aposta.getListaNumerosSelecionados())) {
 					dezenasSelecionadas = aposta.getListaNumerosSelecionados();
