@@ -29,8 +29,11 @@ public class ItemListaFaixaPremiacaoBolao extends LinearLayout {
     public void init() {
     }
 
-    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int color) {
-        conteudoLinha.setBackgroundColor(color);
+    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int colorBack, int colorText) {
+        conteudoLinha.setBackgroundColor(colorBack);
+        faixaPremio.setTextColor(colorText);
+        valorCota.setTextColor(colorText);
+        valorTotal.setTextColor(colorText);
 
         if (faixaPremiadaDTO.getNome() != null && !faixaPremiadaDTO.getNome().isEmpty()){
             faixaPremio.setText(faixaPremiadaDTO.getNome());

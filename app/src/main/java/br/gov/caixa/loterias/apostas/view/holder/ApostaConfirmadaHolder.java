@@ -273,8 +273,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	}
 
 	public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
-		holder.stripe.setBackgroundColor(holder.color);
-		holder.modalidadeTxt.setTextColor(holder.color);
+		//holder.stripe.setBackgroundColor(holder.color);
+		//holder.modalidadeTxt.setTextColor(holder.color);
 		//holder.situacaoTxt.setTextColor(holder.color);
 
 		if (situacao.getDescricao().equalsIgnoreCase(itemView.getContext().getResources().getString(R.string.premiada_maiusculo))) {
