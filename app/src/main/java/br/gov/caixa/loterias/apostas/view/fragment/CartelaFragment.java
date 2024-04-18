@@ -516,7 +516,9 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private void limparTimeSelecionado() {
 		if (equipeSelecionada != null) {
 			equipeSelecionada.setSelecionado(false);
-			informeNomeTime.setText(StringUtils.EMPTY);
+			if (informeNomeTime != null){
+				informeNomeTime.setText(StringUtils.EMPTY);
+			}
 		}
 
 		if (timeCoracaoAdapter != null) {
