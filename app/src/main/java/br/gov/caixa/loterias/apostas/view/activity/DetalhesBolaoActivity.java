@@ -37,6 +37,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	public static final String ARG_CODIGO_BOLAO = "ARG_CODIGO_BOLAO";
 	public static final String ARG_MODALIDADE = "ARG_MODALIDADE";
+	public static final String ARG_MODO_VISUALIZACAO = "ARG_MODO_VISUALIZACAO";
 
 	private TextView tvValorPremio, tvDescricaoPremioConcurso;
 	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal;
