@@ -32,8 +32,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     private String dataHoraExpiracao;
 
     private LinearLayout btnVoltarInicio;
-    private TextView tvVoltarInicio;
-    private TextView tvContador;
+    private TextView tvVoltarInicio, tvContador, tvDescricaoInclusao, tvConclusaoPagamento;
     private ConstraintLayout background, timer;
     private EstiloModalidadeMKP estilo;
 
@@ -57,6 +56,12 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         configBackgroundColorMenu(estilo.getCorEscura());
         background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
         timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border,estilo.getCorClara()));
+        aplicaEstiloFonte();
+    }
+
+    private void aplicaEstiloFonte() {
+        tvDescricaoInclusao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonte()));
+        tvConclusaoPagamento.setTextColor(ContextCompat.getColor(this, estilo.getCorFonte()));
     }
 
     private void startFragments() {
@@ -86,6 +91,8 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         tvContador = findViewById(R.id.txt_contador);
         background = findViewById(R.id.layout_corpo);
         timer = findViewById(R.id.timer);
+        tvDescricaoInclusao = findViewById(R.id.textTituloTela);
+        tvConclusaoPagamento = findViewById(R.id.textObservacaoConfirmacao);
 
         tvVoltarInicio.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
     }
