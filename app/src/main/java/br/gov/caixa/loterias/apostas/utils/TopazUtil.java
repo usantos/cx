@@ -33,7 +33,8 @@ public class TopazUtil {
 				Manifest.permission.READ_CONTACTS,
 				Manifest.permission.BLUETOOTH,
 				Manifest.permission.BLUETOOTH_CONNECT,
-				Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE
+				Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE,
+				Manifest.permission.POST_NOTIFICATIONS
 		};
 	}
 
