@@ -32,10 +32,10 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     private String dataHoraExpiracao;
 
     private LinearLayout btnVoltarInicio;
-    private TextView tvVoltarInicio;
-    private TextView tvContador;
+    private TextView tvVoltarInicio, tvContador, tvDescricaoInclusao, tvConclusaoPagamento;
     private ConstraintLayout background, timer;
     private EstiloModalidadeMKP estilo;
+    private Boolean isEspecial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +57,17 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         configBackgroundColorMenu(estilo.getCorEscura());
         background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
         timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border,estilo.getCorClara()));
+        aplicaEstiloFonte();
+    }
+
+    private void aplicaEstiloFonte() {
+        tvDescricaoInclusao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonte()));
+        tvConclusaoPagamento.setTextColor(ContextCompat.getColor(this, estilo.getCorFonte()));
     }
 
     private void startFragments() {
         subBarFragment = FragmentUtils.startFragmentSubBarraModalidade(getSupportFragmentManager(),
-                R.id.id_fragment_sub_barra, modalidade, concurso, dataSorteio, false);
+                R.id.id_fragment_sub_barra, modalidade, concurso, dataSorteio, isEspecial);
         rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(),
                 R.id.id_fragment_rodape, valorAposta);
     }
@@ -78,6 +84,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         concurso = getIntent().getStringExtra(getResources().getString(R.string.extra_numero_concurso_atual));
         dataSorteio = getIntent().getStringExtra(getResources().getString(R.string.extra_data_sorteio_atual));
         dataHoraExpiracao = getIntent().getStringExtra(getResources().getString(R.string.extra_data_hora_expiracao_reserva));
+        isEspecial = getIntent().getBooleanExtra(getResources().getString(R.string.extra_especial_reserva), false);
     }
 
     private void setViews(){
@@ -86,6 +93,8 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         tvContador = findViewById(R.id.txt_contador);
         background = findViewById(R.id.layout_corpo);
         timer = findViewById(R.id.timer);
+        tvDescricaoInclusao = findViewById(R.id.textTituloTela);
+        tvConclusaoPagamento = findViewById(R.id.textObservacaoConfirmacao);
 
         tvVoltarInicio.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
     }

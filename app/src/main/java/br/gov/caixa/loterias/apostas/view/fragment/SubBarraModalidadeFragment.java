@@ -27,7 +27,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private static final String ARG_ESPECIAL = "AR_ESPECIAL";
 
 	private  View view;
-	private TextView tvModalidade, tvConcurso, tvSorteio;
+	private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio;
 	private ConstraintLayout background;
 	private ImageView trapezio;
 
@@ -75,11 +75,22 @@ public class SubBarraModalidadeFragment extends Fragment {
 		tvSorteio = view.findViewById(R.id.id_sorteio);
 		background = view.findViewById(R.id.layout_fragmento);
 		trapezio = view.findViewById(R.id.back_money);
+		labelConcurso = view.findViewById(R.id.label_concurso);
+		labelSorteio = view.findViewById(R.id.label_sorteio);
 
 		preencheDados();
 		aplicaEstilo();
+		aplicaEstiloFonte();
 
 		return view;
+	}
+
+	private void aplicaEstiloFonte() {
+		tvModalidade.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonte()));
+		tvConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonte()));
+		tvSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonte()));
+		labelConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonte()));
+		labelSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonte()));
 	}
 
 	private void aplicaEstilo() {
