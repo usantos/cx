@@ -216,8 +216,8 @@
     <color name="bolao_slider_trilha_inativa">#D9D9D9</color>
     <color name="bolao_slider_areola">#54BBAB</color>
     <color name="bolao_slider_marcador">#FFFFFF</color>
-    <color name="mega_verde_claro_mkp">#04A766</color>
-    <color name="mega_verde_escuro_mkp">#00945E</color>
+    <color name="mega_verde_claro_mkp">#00A651</color>
+    <color name="mega_verde_escuro_mkp">#00984A</color>
     <color name="quina_claro_mkp">#2E3192</color>
     <color name="quina_escuro_mkp">#2A2A86</color>
     <color name="dupla_sena_claro_mkp">#A62B43</color>
