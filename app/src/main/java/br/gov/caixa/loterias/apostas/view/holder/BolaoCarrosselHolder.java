@@ -86,9 +86,12 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private void aplicaEstilo() {
 		int corClara = ContextCompat.getColor(activity, estilo.getCorClara());
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
+		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
+		int corFonte = ContextCompat.getColor(activity, estilo.getCorFonte());
 		trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
 		cabecalho.setBackgroundColor(corClara);
-		valorPremio.setTextColor(corEscura);
+		modalidade.setTextColor(corFonte);
+		valorPremio.setTextColor(corLetraLista);
 		btnDetalhes.setTextColor(corEscura);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);
@@ -120,12 +123,12 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 				cabecalho.setBackground(ContextCompat.getDrawable(activity, estilo.getImagemEspecialCarrossel()));
 			}
 			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
-				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()));
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 			} else {
-				modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()));
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
 			}
 		} else {
-			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
+			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
 		}
 	}
 

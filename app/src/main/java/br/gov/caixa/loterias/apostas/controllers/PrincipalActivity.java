@@ -656,8 +656,7 @@ public class PrincipalActivity extends AppCompatActivity
                     getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
 
-            if (modalidadeBolaoHabilitada(data.get(adapterPosition).getTipoModalidade()) &&
-                    ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()){
+            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()){
                 buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
                                                                           getResources()
                                                                                   .getString(R.string.apostas_boloes)));
@@ -666,13 +665,6 @@ public class PrincipalActivity extends AppCompatActivity
                 buttonHomeBolao.setVisibility(View.GONE);
             }
         }
-    }
-
-    private boolean modalidadeBolaoHabilitada(ModalidadeEnum modalidade) {
-        return modalidade == ModalidadeEnum.MEGA_SENA ||
-                modalidade == ModalidadeEnum.QUINA ||
-                modalidade == ModalidadeEnum.DUPLA_SENA ||
-                modalidade == ModalidadeEnum.LOTOFACIL;
     }
 
     @Click(R.id.buttonHomeBet)
