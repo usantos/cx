@@ -2,7 +2,9 @@ package br.gov.caixa.loterias.apostas.view.activity;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -26,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.model.DetalhesBolaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
@@ -37,6 +40,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	public static final String ARG_CODIGO_BOLAO = "ARG_CODIGO_BOLAO";
 	public static final String ARG_MODALIDADE = "ARG_MODALIDADE";
+	public static final String ARG_MODO_VISUALIZACAO = "ARG_MODO_VISUALIZACAO";
 
 	private TextView tvValorPremio, tvDescricaoPremioConcurso;
 	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal;
@@ -45,9 +49,11 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private RecyclerView listaJogos;
 	private JogosBolaoRecyclerView listaAdapter;
 	private ConstraintLayout layoutQtdCotas;
+	private FrameLayout frameSomador, frameRodape;
 
 	private String codigoBolao;
 	private ModalidadeEnum modalidade;
+	private ModoVisualizacaoBolaoEnum modoVisualizacao;
 	private DetalhesBolaoModel model;
 	private DetalheBolaoDTO bolao;
 	private EstiloModalidadeMKP estilo;
@@ -61,8 +67,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		setContentView(R.layout.activity_detalhes_bolao);
 		configToolbar(R.id.toolbar);
 
-		codigoBolao = getIntent().getStringExtra(ARG_CODIGO_BOLAO);
-		modalidade = new Gson().fromJson(getIntent().getStringExtra(ARG_MODALIDADE), ModalidadeEnum.class);
+		getExtras();
 		estilo = new EstiloModalidadeMKP(modalidade);
 
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_apostas bolão_"));
@@ -73,6 +78,22 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		fragmentSomadorCarrinho();
 		model = new DetalhesBolaoModel(this);
 		aplicaEstilo();
+		aplicaModoVisualizacao();
+	}
+
+	private void aplicaModoVisualizacao() {
+		if (modoVisualizacao != null && modoVisualizacao == ModoVisualizacaoBolaoEnum.LEITURA){
+			btnAdd.setVisibility(View.GONE);
+			layoutQtdCotas.setVisibility(View.GONE);
+			frameSomador.setVisibility(View.VISIBLE);
+			frameRodape.setVisibility(View.GONE);
+		}
+	}
+
+	private void getExtras() {
+		codigoBolao = getIntent().getStringExtra(ARG_CODIGO_BOLAO);
+		modalidade = new Gson().fromJson(getIntent().getStringExtra(ARG_MODALIDADE), ModalidadeEnum.class);
+		modoVisualizacao = new Gson().fromJson(getIntent().getStringExtra(ARG_MODO_VISUALIZACAO), ModoVisualizacaoBolaoEnum.class);
 	}
 
 	private void aplicaEstilo() {
@@ -118,6 +139,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		btnAumenta = findViewById(R.id.aumenta_cota);
 		listaJogos = findViewById(R.id.id_lista_jogos);
 		layoutQtdCotas = findViewById(R.id.id_layout_qtd_cotas);
+		frameSomador = findViewById(R.id.id_fg_somador_carrinho);
+		frameRodape = findViewById(R.id.id_fg_rodape);
 	}
 
 	public void atualizaQuantidadeTextView() {

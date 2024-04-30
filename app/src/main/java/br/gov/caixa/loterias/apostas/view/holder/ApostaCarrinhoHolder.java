@@ -41,6 +41,7 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacaoSwipeList;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaCarrinhoListener;
+import br.gov.caixa.loterias.apostas.view.listener.BolaoCarrinhoListener;
 
 public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8Modalidades> {
 	private TextView textViewTipoAposta;
@@ -63,9 +64,10 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private AppCompatActivity activity;
 	private boolean animacao, isBolao;
 	private ApostaCarrinhoListener listener;
+	private BolaoCarrinhoListener listenerBolao;
 
 
-	public ApostaCarrinhoHolder(View view, AppCompatActivity activity, boolean animacao, boolean isBolao, ApostaCarrinhoListener listener) {
+	public ApostaCarrinhoHolder(View view, AppCompatActivity activity, boolean animacao, boolean isBolao, ApostaCarrinhoListener listener, BolaoCarrinhoListener listenerBolao) {
 		super(view);
 
 		this.animacao = animacao;
@@ -74,6 +76,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		this.context = view.getContext();
 		this.activity = activity;
 		this.listener = listener;
+		this.listenerBolao = listenerBolao;
 
 		textViewTipoAposta = view.findViewById(R.id.tipoAposta);
 		numerosAposta = view.findViewById(R.id.numerosText);
@@ -166,6 +169,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		}
 
 		this.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(view -> listener.onDeletaAposta(aposta));
+		if (isBolao) {
+			imageDetalheBoloes.setOnClickListener(view -> listenerBolao.onCotaClick(aposta));
+		}
 
 		if (aposta.getPartidasLoteca() != null && !aposta.getPartidasLoteca().isEmpty()) {
 			DetalheApostaLotecaAdapter detalheApostaLotecaAdapter = new DetalheApostaLotecaAdapter(aposta.getPartidasLoteca());
