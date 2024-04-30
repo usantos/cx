@@ -92,10 +92,11 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		cabecalho.setBackgroundColor(corClara);
 		modalidade.setTextColor(corFonte);
 		valorPremio.setTextColor(corLetraLista);
-		btnDetalhes.setTextColor(corEscura);
+		btnDetalhes.setTextColor(corLetraLista);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);
 		btnAumenta.setBackgroundColor(corEscura);
+		btnAddCarrinho.setTextColor(corFonte);
 		btnAddCarrinho.setBackground(VectorUtils.getShape(R.drawable.rounded_card, estilo.getCorEscura()));
 		linhaNumero.setBackgroundColor(corEscura);
 	}

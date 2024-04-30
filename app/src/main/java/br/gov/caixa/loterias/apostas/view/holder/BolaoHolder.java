@@ -110,10 +110,11 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	private void aplicaEstilo() {
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
-		modalidade.setTextColor(corEscura);
-		valor.setTextColor(corEscura);
-		valorPremio.setTextColor(corEscura);
-		btnDetalhes.setTextColor(corEscura);
+		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
+		modalidade.setTextColor(corLetraLista);
+		valor.setTextColor(corLetraLista);
+		valorPremio.setTextColor(corLetraLista);
+		btnDetalhes.setTextColor(corLetraLista);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);
 		btnAumenta.setBackgroundColor(corEscura);
