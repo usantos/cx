@@ -70,7 +70,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		getExtras();
 		estilo = new EstiloModalidadeMKP(modalidade);
 
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_apostas bolão_"));
+		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_bolões_"));
 
 		setViews();
 		setMetodos();

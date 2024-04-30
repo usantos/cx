@@ -105,7 +105,7 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 				R.color.milionaria_escuro_mkp, R.color.milionaria_escuro_mkp);
 
 		return new DezenaConfig(false, R.color.milionaria_escuro_mkp,
-				R.layout.item_dezena_trevo,
+				R.layout.item_dezena_detalhe,
 				shapeConfig, false);
 	}
 
