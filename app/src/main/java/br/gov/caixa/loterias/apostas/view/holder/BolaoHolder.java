@@ -160,12 +160,12 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	@Override
 	public void atualizaBotoesQtdCotas(int quantidade, int maxPermitido) {
 		if (quantidade == QUANTIDADE_MINIMA){
-			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinzaescuro));
+			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinza_desativado_mkp));
 			btnDiminui.setEnabled(false);
 			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnAumenta.setEnabled(true);
 		} else if (quantidade == maxPermitido){
-			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinzaescuro));
+			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinza_desativado_mkp));
 			btnAumenta.setEnabled(false);
 			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnDiminui.setEnabled(true);
