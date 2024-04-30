@@ -210,7 +210,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private void preencheJogos() {
 		if (bolao.getApostas() != null && !bolao.getApostas().isEmpty()){
-			listaAdapter = new JogosBolaoRecyclerView(estilo.getCorEscura(), bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
+			listaAdapter = new JogosBolaoRecyclerView(bolao.getModalidade(), estilo.getCorEscura(), bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
 			listaJogos.setAdapter(listaAdapter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(this));
 		}
@@ -245,7 +245,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private void fragmentSomadorCarrinho() {
 		if(somadorCarrinhoFragment == null){
-			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, true);
+			somadorCarrinhoFragment = FragmentUtils.startSomadorCarrinhoFragment(getSupportFragmentManager(), somadorCarrinhoFragment, R.id.id_fg_somador_carrinho, false);
 		}else {
 			somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
 		}

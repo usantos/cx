@@ -308,6 +308,7 @@
     <string name="label_veja_retirar_premio">Veja como retirar o seu prêmio:</string>
     <string name="label_time_coracao">Time do coração&#160;</string>
     <string name="label_time_coracao_dois_pontos">Time do coração:&#160;</string>
+    <string name="label_dia_sorte_dois_pontos">Mês da sorte:&#160;</string>
     <string name="label_empty"> </string>
     <string name="label_rapidao">Rapidão</string>
     <string name="label_apostas_fav_rapidao_empty">Você ainda não possui apostas favoritas. É muito fácil! Simule uma aposta e adicione como favorita.</string>

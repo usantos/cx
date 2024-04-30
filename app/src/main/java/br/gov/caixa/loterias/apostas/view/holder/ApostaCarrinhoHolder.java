@@ -202,8 +202,15 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		if (ModalidadeEnum.TIMEMANIA == aposta.getModalidade()) {
 			layoutTimeCoracao.setVisibility(View.VISIBLE);
 			if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
-				textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome() + "/" +
-						aposta.getTimeDoCoracao().getUf());
+				String timeCoracao = "";
+				if (aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getNome() != null){
+					timeCoracao = aposta.getTimeDoCoracao().getNome();
+				}
+				if (aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getUf() != null){
+					timeCoracao = timeCoracao + "/" + aposta.getTimeDoCoracao().getUf();
+				}
+
+				textViewTimeCoracao.setText(timeCoracao);
 				if (aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
 					textViewTimeCoracao.setText(context.getResources().getString(R.string.tres_interrogacoes));
 				}
@@ -219,7 +226,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			if (aposta.getTrevosSelecionados() != null && !((List<Integer>)aposta.getTrevosSelecionados()).isEmpty()){
 				List<Integer> trevos = (List<Integer>) aposta.getTrevosSelecionados();
 				quantidade = trevos.size();
-			} else {
+			} else if (aposta.getQuantidadeTrevos() != null){
 				quantidade = aposta.getQuantidadeTrevos();
 			}
 			String                 qtd     = "_"+quantidade+"_";
@@ -308,7 +315,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			numeroStr.append("\n\n\n");
 		}
 
-		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && !aposta.getIndicadorCotaBolao()){
 			this.trevosAposta.setText(removeUltimoTraco(trevosStr.toString() + "\n"));
 		} else {
 			this.trevosAposta.setVisibility(View.GONE);

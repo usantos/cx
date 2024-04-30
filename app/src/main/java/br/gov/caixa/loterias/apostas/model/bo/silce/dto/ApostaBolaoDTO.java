@@ -23,6 +23,10 @@ public class ApostaBolaoDTO implements Serializable {
     private List<Integer> trevos = null;
     @SerializedName("operacaoExecutadaComSucesso")
     private Boolean operacaoExecutadaComSucesso = null;
+    @SerializedName("timeDoCoracao")
+    private TimeDoCoracaoDTO timeCoracao;
+    @SerializedName("mesDeSorte")
+    private MesDeSorteDTO mesSorte;
 
     public Boolean isSurpresinha() {
         return isSurpresinha;
@@ -54,6 +58,14 @@ public class ApostaBolaoDTO implements Serializable {
 
     public void setOperacaoExecutadaComSucesso(Boolean operacaoExecutadaComSucesso) {
         this.operacaoExecutadaComSucesso = operacaoExecutadaComSucesso;
+    }
+
+    public TimeDoCoracaoDTO getTimeCoracao(){
+        return this.timeCoracao;
+    }
+
+    public MesDeSorteDTO getMesSorte(){
+        return this.mesSorte;
     }
 
     @Override

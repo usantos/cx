@@ -108,7 +108,7 @@ public class ComprasDezenasView extends LinearLayout {
                 configuraMaisMilionariaFragment(aposta);
             } else {
                 if(aposta.getIndicadorCotaBolao()) {
-                    JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(R.color.branco,
+                    JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(aposta.getModalidade(), R.color.branco,
                             aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
                             new ArrayList<>(), getDezenaConfig());
                     dezenasRecyclerView.setAdapter(adpterJogos);
