@@ -183,7 +183,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 			((TextView)view.findViewById(R.id.id_seus_numeros)).setText("");
 		}
 
-		JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(R.color.branco,
+		JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(aposta.getModalidade(), R.color.branco,
 				aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
 				listSorteados, getDezenaConfig());
 		listViewJogos.setAdapter(adpterJogos);
@@ -191,7 +191,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 		if (temResultadoSegundoSorteio) {
 			listViewJogos2.setVisibility(View.VISIBLE);
-			JogosBolaoRecyclerView adpterJogos2 = new JogosBolaoRecyclerView(R.color.branco,
+			JogosBolaoRecyclerView adpterJogos2 = new JogosBolaoRecyclerView(aposta.getModalidade(), R.color.branco,
 					aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
 					listSorteados2, getDezenaConfig());
 			listViewJogos2.setAdapter(adpterJogos2);
