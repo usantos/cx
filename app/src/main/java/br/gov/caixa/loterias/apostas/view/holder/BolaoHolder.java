@@ -110,13 +110,17 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	private void aplicaEstilo() {
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
-		modalidade.setTextColor(corEscura);
-		valor.setTextColor(corEscura);
-		valorPremio.setTextColor(corEscura);
-		btnDetalhes.setTextColor(corEscura);
+		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
+		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
+		modalidade.setTextColor(corLetraLista);
+		valor.setTextColor(corLetraLista);
+		valorPremio.setTextColor(corLetraLista);
+		btnDetalhes.setTextColor(corLetraLista);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);
+		btnDiminui.setTextColor(corFonteFundoEscuro);
 		btnAumenta.setBackgroundColor(corEscura);
+		btnAumenta.setTextColor(corFonteFundoEscuro);
 		linhaNumero.setBackgroundColor(corEscura);
 	}
 
@@ -160,12 +164,12 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	@Override
 	public void atualizaBotoesQtdCotas(int quantidade, int maxPermitido) {
 		if (quantidade == QUANTIDADE_MINIMA){
-			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinzaescuro));
+			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinza_desativado_mkp));
 			btnDiminui.setEnabled(false);
 			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnAumenta.setEnabled(true);
 		} else if (quantidade == maxPermitido){
-			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinzaescuro));
+			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinza_desativado_mkp));
 			btnAumenta.setEnabled(false);
 			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnDiminui.setEnabled(true);
