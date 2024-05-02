@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 
 public class EstiloModalidadeMKP {
