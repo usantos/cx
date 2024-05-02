@@ -58,7 +58,18 @@ public class TimeDoCoracaoDTO implements Serializable {
     }
 
     public String getNomeComUf(){
-        return this.nome + " - " + this.uf;
+        String descricao = "";
+        if (nome != null){
+            descricao = nome;
+        }
+        if (uf != null){
+            if (descricao.isEmpty()){
+                descricao = "-";
+            }else {
+                descricao = descricao + "-" + uf;
+            }
+        }
+        return descricao;
     }
 
     @Override
