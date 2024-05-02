@@ -16,6 +16,8 @@ public class EstiloModalidadeMKP {
     private final int imagemEspecialDetalhes;
     private final int corLetraLista;
     private final int corFonte;
+    private final int corFonteFundoClaro;
+    private final int corFonteFundoEscuro;
 
     public EstiloModalidadeMKP(ModalidadeEnum modalidade) {
         switch (modalidade) {
@@ -30,6 +32,8 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDetalhes = R.drawable.cabecalho_quina_sao_joao_card_detalhes;
                 corLetraLista = R.color.quina_claro_mkp;
                 corFonte = R.color.branco;
+                corFonteFundoClaro = R.color.branco;
+                corFonteFundoEscuro = R.color.branco;
                 break;
             case DUPLA_SENA:
                 corClara = R.color.dupla_sena_claro_mkp;
@@ -42,6 +46,8 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_detalhes;
                 corLetraLista = R.color.dupla_sena_claro_mkp;
                 corFonte = R.color.branco;
+                corFonteFundoClaro = R.color.branco;
+                corFonteFundoEscuro = R.color.branco;
                 break;
             case LOTOFACIL:
                 corClara = R.color.lotofacil_claro_mkp;
@@ -54,6 +60,8 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
                 corLetraLista = R.color.lotofacil_claro_mkp;
                 corFonte = R.color.branco;
+                corFonteFundoClaro = R.color.branco;
+                corFonteFundoEscuro = R.color.branco;
                 break;
             case MAIS_MILIONARIA:
                 corClara = R.color.milionaria_claro_mkp;
@@ -66,6 +74,8 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDetalhes = -1;
                 corLetraLista = R.color.milionaria_claro_mkp;
                 corFonte = R.color.branco;
+                corFonteFundoClaro = R.color.branco;
+                corFonteFundoEscuro = R.color.branco;
                 break;
             case SUPER_7:
                 corClara = R.color.super_sete_claro_mkp;
@@ -78,6 +88,8 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDetalhes = -1;
                 corLetraLista = R.color.super_sete_letra_mkp;
                 corFonte = R.color.super_sete_letra_mkp;
+                corFonteFundoClaro = R.color.super_sete_letra_mkp;
+                corFonteFundoEscuro = R.color.branco;
                 break;
             case LOTECA:
                 corClara = R.color.loteca_claro_mkp;
@@ -90,6 +102,8 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDetalhes = -1;
                 corLetraLista = R.color.loteca_claro_mkp;
                 corFonte = R.color.branco;
+                corFonteFundoClaro = R.color.branco;
+                corFonteFundoEscuro = R.color.branco;
                 break;
             case TIMEMANIA:
                 corClara = R.color.timemania_claro_mkp;
@@ -102,6 +116,8 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDetalhes = -1;
                 corLetraLista = R.color.timemania_letra_mkp;
                 corFonte = R.color.timemania_letra_mkp;
+                corFonteFundoClaro = R.color.timemania_letra_mkp;
+                corFonteFundoEscuro = R.color.timemania_letra_mkp;
                 break;
             case DIA_DE_SORTE:
                 corClara = R.color.dia_sorte_claro_mkp;
@@ -114,6 +130,8 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDetalhes = -1;
                 corLetraLista = R.color.dia_sorte_letra_mkp;
                 corFonte = R.color.dia_sorte_letra_mkp;
+                corFonteFundoClaro = R.color.dia_sorte_letra_mkp;
+                corFonteFundoEscuro = R.color.branco;
                 break;
             default:
                 //MEGASENA
@@ -127,6 +145,8 @@ public class EstiloModalidadeMKP {
                 imagemEspecialDetalhes = R.drawable.cabecalho_mega_virada_detalhes;
                 corLetraLista = R.color.mega_verde_claro_mkp;
                 corFonte = R.color.branco;
+                corFonteFundoClaro = R.color.branco;
+                corFonteFundoEscuro = R.color.branco;
         }
 
     }
@@ -168,5 +188,13 @@ public class EstiloModalidadeMKP {
 
     public int getCorFonte() {
         return corFonte;
+    }
+
+    public int getCorFonteFundoClaro() {
+        return corFonteFundoClaro;
+    }
+
+    public int getCorFonteFundoEscuro() {
+        return corFonteFundoEscuro;
     }
 }

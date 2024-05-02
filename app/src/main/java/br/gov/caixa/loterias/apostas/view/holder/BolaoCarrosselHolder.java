@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private RelativeLayout trapezio;
 	private ConstraintLayout cabecalho;
 	private View linhaNumero;
+	private ImageView icMoneyBolao;
 
 	private EstiloModalidadeMKP estilo;
 
@@ -63,6 +65,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		qtdCotas 		= itemView.findViewById(R.id.quantidade_cotas);
 		btnAddCarrinho 	= itemView.findViewById(R.id.btn_add_carrinho);
 		trapezio		= itemView.findViewById(R.id.layout_money);
+		icMoneyBolao	= itemView.findViewById(R.id.trevoImagem);
 		cabecalho		= itemView.findViewById(R.id.cabecalho_bolao);
 		linhaNumero		= itemView.findViewById(R.id.linha_numero);
 
@@ -88,16 +91,21 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
 		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
 		int corFonte = ContextCompat.getColor(activity, estilo.getCorFonte());
+		int corFonteFundoClaro = ContextCompat.getColor(activity, estilo.getCorFonteFundoClaro());
+		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
 		trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
+		icMoneyBolao.setImageDrawable(VectorUtils.getShape(R.drawable.ic_money_bolao, estilo.getCorFonteFundoEscuro()));
 		cabecalho.setBackgroundColor(corClara);
-		modalidade.setTextColor(corFonte);
+		modalidade.setTextColor(corFonteFundoClaro);
 		valorPremio.setTextColor(corLetraLista);
 		btnDetalhes.setTextColor(corLetraLista);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);
+		btnDiminui.setTextColor(corFonteFundoEscuro);
 		btnAumenta.setBackgroundColor(corEscura);
-		btnAddCarrinho.setTextColor(corFonte);
+		btnAumenta.setTextColor(corFonteFundoEscuro);
 		btnAddCarrinho.setBackground(VectorUtils.getShape(R.drawable.rounded_card, estilo.getCorEscura()));
+		btnAddCarrinho.setTextColor(corFonteFundoEscuro);
 		linhaNumero.setBackgroundColor(corEscura);
 	}
 
