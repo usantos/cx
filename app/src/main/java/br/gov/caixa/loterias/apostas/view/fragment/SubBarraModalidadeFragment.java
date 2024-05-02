@@ -30,6 +30,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio;
 	private ConstraintLayout background;
 	private ImageView trapezio;
+	private ImageView icMoneyBolao;
 
 	private String concurso;
 	private String sorteio;
@@ -75,6 +76,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 		tvSorteio = view.findViewById(R.id.id_sorteio);
 		background = view.findViewById(R.id.layout_fragmento);
 		trapezio = view.findViewById(R.id.back_money);
+		icMoneyBolao = view.findViewById(R.id.trevoImagem);
 		labelConcurso = view.findViewById(R.id.label_concurso);
 		labelSorteio = view.findViewById(R.id.label_sorteio);
 
@@ -96,6 +98,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private void aplicaEstilo() {
 		background.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorClara()));
 		trapezio.setBackground(VectorUtils.getShape(R.drawable.ic_trapezio_mkp, estilo.getCorEscura()));
+		icMoneyBolao.setImageDrawable(VectorUtils.getShape(R.drawable.ic_money_bolao, estilo.getCorFonteFundoEscuro()));
 		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1){
 			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
 		}

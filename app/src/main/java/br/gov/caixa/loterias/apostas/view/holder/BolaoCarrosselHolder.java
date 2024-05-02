@@ -90,7 +90,6 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		int corClara = ContextCompat.getColor(activity, estilo.getCorClara());
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
 		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
-		int corFonte = ContextCompat.getColor(activity, estilo.getCorFonte());
 		int corFonteFundoClaro = ContextCompat.getColor(activity, estilo.getCorFonteFundoClaro());
 		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
 		trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));

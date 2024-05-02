@@ -73,7 +73,11 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 		txtIndividualidade.setTextColor(ContextCompat.getColor(context, corTitulo));
 		switch (modalidade){
 			case TIMEMANIA:
-				apresentaDiaSorteTimeMania(context.getString(R.string.label_time_coracao_dois_pontos), aposta.getTimeCoracao().getNomeComUf());
+				String time = "-";
+				if (aposta.getTimeCoracao() != null && aposta.getTimeCoracao().getNomeComUf() != null){
+					time = aposta.getTimeCoracao().getNomeComUf();
+				}
+				apresentaDiaSorteTimeMania(context.getString(R.string.label_time_coracao_dois_pontos), time);
 				break;
 			case DIA_DE_SORTE:
 				String mes = "-";
