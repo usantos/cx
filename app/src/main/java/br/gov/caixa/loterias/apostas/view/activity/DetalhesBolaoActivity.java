@@ -46,6 +46,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal;
 	private Button btnAdd, btnDiminui, btnAumenta;
 	private TextView tvValorCotaBtn, tvQtdCotas;
+	private TextView tvLabelQtdCotas;
 	private RecyclerView listaJogos;
 	private JogosBolaoRecyclerView listaAdapter;
 	private ConstraintLayout layoutQtdCotas;
@@ -100,9 +101,12 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		configBackgroundColorMenu(estilo.getCorEscura());
 		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		tvMunicipio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
-		layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorEscura()));
-		btnAdd.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorEscura()));
-		btnAdd.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+		layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
+		tvValorCotaBtn.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+		tvLabelQtdCotas.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+		tvQtdCotas.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+		btnAdd.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
+		btnAdd.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
 	}
 
 	@Override
@@ -135,6 +139,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		tvValorTotal = findViewById(R.id.id_valor_total);
 		btnAdd = findViewById(R.id.id_btn_add);
 		tvValorCotaBtn = findViewById(R.id.valor_cota);
+		tvLabelQtdCotas = findViewById(R.id.label_quantidade_cotas);
 		tvQtdCotas = findViewById(R.id.quantidade_cotas);
 		btnDiminui = findViewById(R.id.diminui_cota);
 		btnAumenta = findViewById(R.id.aumenta_cota);
@@ -158,21 +163,23 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	public void atualizaBotoesQtdCotas() {
 		if (bolao.getQtdCotaDesejada() == 1){
-			btnDiminui.setBackgroundTintList(getCor(R.color.cinza2));
+			btnDiminui.setBackgroundTintList(getCor(R.color.cinza_desativado_mkp));
 			btnDiminui.setEnabled(false);
-			btnAumenta.setBackgroundTintList(getCor(R.color.branco));
+			btnAumenta.setBackgroundTintList(getCor(estilo.getCorFonteFundoClaro()));
 			btnAumenta.setEnabled(true);
 		} else if (bolao.getQtdCotaDesejada() == bolao.getQtdCotaDisponivel()){
-			btnAumenta.setBackgroundTintList(getCor(R.color.cinza2));
+			btnAumenta.setBackgroundTintList(getCor(R.color.cinza_desativado_mkp));
 			btnAumenta.setEnabled(false);
-			btnDiminui.setBackgroundTintList(getCor(R.color.branco));
+			btnDiminui.setBackgroundTintList(getCor(estilo.getCorFonteFundoClaro()));
 			btnDiminui.setEnabled(true);
 		} else {
-			btnDiminui.setBackgroundTintList(getCor(R.color.branco));
+			btnDiminui.setBackgroundTintList(getCor(estilo.getCorFonteFundoClaro()));
 			btnDiminui.setEnabled(true);
-			btnAumenta.setBackgroundTintList(getCor(R.color.branco));
+			btnAumenta.setBackgroundTintList(getCor(estilo.getCorFonteFundoClaro()));
 			btnAumenta.setEnabled(true);
 		}
+		btnDiminui.setTextColor(ContextCompat.getColor(this, estilo.getCorClara()));
+		btnAumenta.setTextColor(ContextCompat.getColor(this, estilo.getCorClara()));
 	}
 	private ColorStateList getCor(int cor) {
 		return ContextCompat.getColorStateList(this, cor);
