@@ -14,7 +14,6 @@ public class EstiloModalidadeMKP {
     private final int imagemTrianguloOutline;
     private final int imagemEspecialDetalhes;
     private final int corLetraLista;
-    private final int corFonte;
     private final int corFonteFundoClaro;
     private final int corFonteFundoEscuro;
 
@@ -30,7 +29,6 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_quina;
                 imagemEspecialDetalhes = R.drawable.cabecalho_quina_sao_joao_card_detalhes;
                 corLetraLista = R.color.quina_claro_mkp;
-                corFonte = R.color.branco;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 break;
@@ -44,7 +42,6 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = R.drawable.cabecalho_dupla_pascoa_carrossel;
                 imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_detalhes;
                 corLetraLista = R.color.dupla_sena_claro_mkp;
-                corFonte = R.color.branco;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 break;
@@ -58,7 +55,6 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = R.drawable.cabecalho_lotofacil_independencia_carrossel;
                 imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
                 corLetraLista = R.color.lotofacil_claro_mkp;
-                corFonte = R.color.branco;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 break;
@@ -72,7 +68,6 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
                 corLetraLista = R.color.milionaria_claro_mkp;
-                corFonte = R.color.branco;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 break;
@@ -86,7 +81,6 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
                 corLetraLista = R.color.super_sete_letra_mkp;
-                corFonte = R.color.super_sete_letra_mkp;
                 corFonteFundoClaro = R.color.super_sete_letra_mkp;
                 corFonteFundoEscuro = R.color.branco;
                 break;
@@ -100,7 +94,6 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
                 corLetraLista = R.color.loteca_claro_mkp;
-                corFonte = R.color.branco;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 break;
@@ -114,7 +107,6 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
                 corLetraLista = R.color.timemania_letra_mkp;
-                corFonte = R.color.timemania_letra_mkp;
                 corFonteFundoClaro = R.color.timemania_letra_mkp;
                 corFonteFundoEscuro = R.color.timemania_letra_mkp;
                 break;
@@ -128,7 +120,6 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
                 corLetraLista = R.color.dia_sorte_letra_mkp;
-                corFonte = R.color.dia_sorte_letra_mkp;
                 corFonteFundoClaro = R.color.dia_sorte_letra_mkp;
                 corFonteFundoEscuro = R.color.branco;
                 break;
@@ -143,7 +134,6 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = R.drawable.cabecalho_mega_virada_carrossel;
                 imagemEspecialDetalhes = R.drawable.cabecalho_mega_virada_detalhes;
                 corLetraLista = R.color.mega_verde_claro_mkp;
-                corFonte = R.color.branco;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
         }
@@ -183,10 +173,6 @@ public class EstiloModalidadeMKP {
 
     public int getCorLetraLista() {
         return corLetraLista;
-    }
-
-    public int getCorFonte() {
-        return corFonte;
     }
 
     public int getCorFonteFundoClaro() {

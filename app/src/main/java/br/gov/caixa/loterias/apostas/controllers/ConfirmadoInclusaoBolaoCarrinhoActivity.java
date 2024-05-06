@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     private ConstraintLayout background, timer;
     private EstiloModalidadeMKP estilo;
     private Boolean isEspecial;
+    private ImageView imageSetaApontandoCarrinho;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +58,20 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
 
     private void aplicaEstilo() {
         configBackgroundColorMenu(estilo.getCorEscura());
-        background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-        timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border,estilo.getCorClara()));
+        background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+        if (modalidade.name().toUpperCase().equals("DIA_DE_SORTE") ||
+            modalidade.name().toUpperCase().equals("TIMEMANIA")) {
+            timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorFonteFundoClaro()));
+            imageSetaApontandoCarrinho.setImageDrawable(VectorUtils.getShape(R.drawable.rectangle_5_copy, estilo.getCorFonteFundoClaro()));
+        } else {
+            timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorEscura()));
+        }
         aplicaEstiloFonte();
     }
 
     private void aplicaEstiloFonte() {
-        tvDescricaoInclusao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonte()));
-        tvConclusaoPagamento.setTextColor(ContextCompat.getColor(this, estilo.getCorFonte()));
+        tvDescricaoInclusao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+        tvConclusaoPagamento.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
     }
 
     private void startFragments() {
@@ -95,6 +104,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         timer = findViewById(R.id.timer);
         tvDescricaoInclusao = findViewById(R.id.textTituloTela);
         tvConclusaoPagamento = findViewById(R.id.textObservacaoConfirmacao);
+        imageSetaApontandoCarrinho = findViewById(R.id.imageSetaApontandoCarrinho);
 
         tvVoltarInicio.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
     }

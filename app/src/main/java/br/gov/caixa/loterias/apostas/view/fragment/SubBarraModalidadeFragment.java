@@ -88,11 +88,11 @@ public class SubBarraModalidadeFragment extends Fragment {
 	}
 
 	private void aplicaEstiloFonte() {
-		tvModalidade.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonte()));
-		tvConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonte()));
-		tvSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonte()));
-		labelConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonte()));
-		labelSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonte()));
+		tvModalidade.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		tvConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		tvSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		labelConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		labelSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 	}
 
 	private void aplicaEstilo() {
