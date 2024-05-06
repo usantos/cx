@@ -31,7 +31,8 @@ public class ContentResultadoPremiado extends LinearLayout {
 
     @ViewById
     protected TextView valorEstimativaConcursoAtualTextView,valorPremioTituloTextView,
-            tituloModalidadeTextView, proximoSorteioTextView, nsbBilhete, idPodeComemorar;
+            tituloModalidadeTextView, proximoSorteioTextView, nsbBilhete, idPodeComemorar,
+            tvFaixaPremiacao, tvValorPremioCota, tvValorPremioLiquido;
 
     @ViewById
     protected ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
@@ -114,5 +115,17 @@ public class ContentResultadoPremiado extends LinearLayout {
     public void setCabecalhoBolao() {
         cabecalhoListaFaixaPremiacaoLinearLayout.setVisibility(GONE);
         cabecalhoListaFaixaPremiacaoBolao.setVisibility(VISIBLE);
+    }
+
+    public TextView getTvFaixaPremiacao() {
+        return tvFaixaPremiacao;
+    }
+
+    public TextView getTvValorPremioCota() {
+        return tvValorPremioCota;
+    }
+
+    public TextView getTvValorPremioLiquido() {
+        return tvValorPremioLiquido;
     }
 }

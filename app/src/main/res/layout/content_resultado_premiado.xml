@@ -216,6 +216,7 @@
                     android:visibility="gone">
 
                     <TextView
+                        android:id="@+id/tvFaixaPremiacao"
                         style="@style/ArialMT"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -228,6 +229,7 @@
                         android:textSize="@dimen/text_size_header" />
 
                     <TextView
+                        android:id="@+id/tvValorPremioCota"
                         style="@style/ArialMT"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -240,6 +242,7 @@
                         android:textSize="@dimen/text_size_header" />
 
                     <TextView
+                        android:id="@+id/tvValorPremioLiquido"
                         style="@style/ArialMT"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
