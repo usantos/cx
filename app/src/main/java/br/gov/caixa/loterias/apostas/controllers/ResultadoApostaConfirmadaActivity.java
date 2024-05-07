@@ -97,7 +97,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
-        if (modalidadeEnum == ModalidadeEnum.MAIS_MILIONARIA){
+        if (modalidadeEnum == ModalidadeEnum.MAIS_MILIONARIA && !isBolao(detalhesPremioDTO.getAposta())){
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackground(getDrawable(R.drawable.header_interno__milionaria));
             contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setVisibility(View.GONE);
             contentResultadoPremiado.getTituloModalidadeTextView().setVisibility(View.GONE);

@@ -107,9 +107,9 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private void preencheDados() {
 		if (isEspecial){
 			if (modalidade == ModalidadeEnum.LOTOFACIL){
-				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade));
+				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
 			} else {
-				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade));
+				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
 			}
 		} else {
 			tvModalidade.setText(ModalidadeEnum.fromString(modalidade));
