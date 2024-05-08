@@ -207,8 +207,7 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         String textoSelecionado = textoSelecionadoRB();
         int horasSelecionada = textoSelecionadoToHoras(textoSelecionado);
 
-        AutoSuspensaoRequest autoSuspensaoRequest =
-                new AutoSuspensaoRequest("07567572826", horasSelecionada);
+        AutoSuspensaoRequest autoSuspensaoRequest = new AutoSuspensaoRequest(cpf, horasSelecionada);
 
         AlertDialogUtils.show(this);
         ApostaBO_.getInstance_(this).postAutoSuspensaoApostador(autoSuspensaoRequest, new RequestListener<AutoSuspensaoResponse>() {
