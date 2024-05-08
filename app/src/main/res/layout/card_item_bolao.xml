@@ -56,7 +56,7 @@
                 android:autoSizeMinTextSize="8sp"
                 android:autoSizeStepGranularity="1sp"
                 android:autoSizeTextType="uniform"
-                android:fontFamily="@font/caixa_std_bold"
+                android:fontFamily="@font/futura_std_bold"
                 android:text="@string/mega_sena"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
