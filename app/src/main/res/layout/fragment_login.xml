@@ -19,7 +19,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="53dp"
-            android:background="@drawable/logo"/>
+            android:background="@drawable/logo" />
 
         <Button
             android:id="@+id/buttonAposteAgora"
@@ -49,17 +49,17 @@
             android:id="@+id/buttonFacaLogin"
             android:layout_width="290dp"
             android:layout_height="56dp"
-            android:layout_alignLeft="@+id/buttonAposteAgora"
-            android:layout_alignStart="@+id/buttonAposteAgora"
             android:layout_below="@+id/imageView3"
+            android:layout_alignStart="@+id/buttonAposteAgora"
+            android:layout_alignLeft="@+id/buttonAposteAgora"
             android:layout_marginTop="30dp"
             android:background="@color/laranjacaixa"
+            android:outlineProvider="none"
             android:text="@string/label_faca_login_cadastre"
             android:textAllCaps="false"
             android:textColor="@color/branco"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:outlineProvider="none"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textViewSSO"

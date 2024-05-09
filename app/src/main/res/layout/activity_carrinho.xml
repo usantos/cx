@@ -54,21 +54,71 @@
                 android:textSize="14.2sp"
                 app:layout_constraintTop_toBottomOf="@id/tv_confirm_aposta" />
 
+            <TextView
+                android:id="@+id/tv_cotas_bolao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="start"
+                android:paddingLeft="20dp"
+                android:text="@string/cotas_bolao"
+                android:textColor="@color/bolao_azul_subtitulo"
+                android:textAlignment="textStart"
+                android:textSize="14.2sp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/tv_info_valor_minimo" />
+
+            <View
+                android:id="@+id/v_div_bottom_cotas"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="1dp"
+                android:background="@color/cinzaclaro"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/tv_cotas_bolao" />
+
+            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
+                android:id="@+id/erv_boloes_listas"
+                style="@style/editTextArialMTTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/v_div_bottom_cotas" />
+
+
+            <TextView
+                android:id="@+id/tv_apostas_individuais"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="start"
+                android:paddingLeft="20dp"
+                android:text="@string/apostas_individuais"
+                android:textColor="@color/bolao_azul_subtitulo"
+                android:textAlignment="textStart"
+                android:textSize="14.2sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/erv_boloes_listas" />
+
             <View
                 android:id="@+id/v_div_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginTop="5dp"
                 android:background="@color/cinzaclaro"
-                app:layout_constraintTop_toTopOf="@+id/erv_apostas_listas" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_apostas_individuais" />
 
             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/erv_apostas_listas"
                 style="@style/editTextArialMTTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/tv_info_valor_minimo" />
+                app:layout_constraintTop_toBottomOf="@id/v_div_bottom" />
 
             <ProgressBar
                 android:id="@+id/pb_loading"
@@ -94,7 +144,7 @@
         android:background="@drawable/button_white_with_green_border"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
-        android:text="@string/fazerNovaAposta"
+        android:text="@string/continuarApostando"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/verdeazul"
         android:textSize="16sp"

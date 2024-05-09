@@ -4,6 +4,12 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -101,6 +107,19 @@ public class DateUtils {
 
     public static long getDiffSeconds(Date date){
         return (new Date().getTime() - date.getTime())/1000;
+    }
+
+    public static long diffMillisSecondsTimerZone(String dataHoraExpiracao) {
+        DateTimeZone timeZone = DateTimeZone.forID("America/Sao_Paulo");
+        DateTime agora = DateTime.now(timeZone);
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ");
+        DateTime expiracao = formatter.parseDateTime(dataHoraExpiracao);
+
+        Duration duration = new Duration(agora, expiracao);
+        long diffInSeconds = duration.getStandardSeconds();
+
+        return diffInSeconds * 1000;
     }
 
 }

@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dezenasRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false" />
+        android:nestedScrollingEnabled="false"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <RelativeLayout
         android:id="@+id/rl_container_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/dezenasRecyclerView"
+        />
 
     <RelativeLayout
         android:id="@+id/rl_trevos_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/rl_container_fragment"
+        />
 
     <LinearLayout
         android:id="@+id/detalheLayout"
@@ -29,7 +37,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone"
-        tools:visibility="visible">
+        tools:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/rl_trevos_fragment"
+        >
 
         <TextView
             android:id="@+id/labelDetalheTxt"
@@ -49,4 +59,4 @@
             android:textStyle="bold"
             tools:text="Fevereiro" />
     </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

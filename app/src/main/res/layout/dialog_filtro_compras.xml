@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparente"
             android:src="@drawable/ic_funil_limpar"
-            android:tint="@color/branco"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

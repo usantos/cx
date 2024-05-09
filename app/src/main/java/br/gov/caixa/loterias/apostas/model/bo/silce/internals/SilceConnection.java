@@ -182,8 +182,6 @@ public class SilceConnection {
 
     private <T> String prepareBody(T body) {
         try {
-            String teste = (new Gson()).toJson(body);
-
             //{"apostas":[]}
 
             String bodyString = "";
@@ -263,4 +261,8 @@ public class SilceConnection {
         }
         return sb.toString();
     }
+
+//    public void nuke() {
+//        SSLPiniingUtil.pinagem();
+//    }
 }

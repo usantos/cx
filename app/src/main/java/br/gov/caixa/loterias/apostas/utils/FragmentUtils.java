@@ -10,6 +10,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
@@ -17,6 +18,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
@@ -24,11 +26,14 @@ import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ChavePixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.OrientacaoPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 
 public class FragmentUtils {
 
@@ -38,9 +43,23 @@ public class FragmentUtils {
 		fragmentTransaction.commit();
 	}
 
+	public static void startFragmentAllowingStateLoss(FragmentManager fm, int id, Fragment fragment){
+		FragmentTransaction fragmentTransaction = fm.beginTransaction();
+		fragmentTransaction.replace(id, fragment);
+		fragmentTransaction.commitAllowingStateLoss();
+	}
+
 	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, String TAG) {
 		if(fragment == null){
 			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), TAG);
+			FragmentUtils.startFragment(fm, id, fragment);
+		}
+		return fragment;
+	}
+
+	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, Boolean irCarrinho) {
+		if(fragment == null){
+			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), irCarrinho);
 			FragmentUtils.startFragment(fm, id, fragment);
 		}
 		return fragment;
@@ -104,7 +123,7 @@ public class FragmentUtils {
 
 	public static CopiaColaPixFragment startCopiaColaPix(GerarPixDTO pixDTO, FragmentManager fm, int id) {
 		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance(pixDTO);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
@@ -114,6 +133,18 @@ public class FragmentUtils {
 		return fragment;
 	}
 
+	public static SubBarraModalidadeFragment startFragmentSubBarraModalidade(FragmentManager fm, int id, ModalidadeEnum modalidade, String concurso, String sorteio) {
+		SubBarraModalidadeFragment frag = SubBarraModalidadeFragment.newInstance(modalidade, concurso, sorteio);
+		startFragment(fm, id, frag);
+		return frag;
+	}
+
+	public static RodapeSimulacaoApostaFragment startRodapeSimulacaoAPosta(FragmentManager fm, int id, BigDecimal valorBolao, BigDecimal valorTotal) {
+		RodapeSimulacaoApostaFragment frag = RodapeSimulacaoApostaFragment.newInstance(valorBolao, valorTotal);
+		startFragment(fm, id, frag);
+		return frag;
+	}
+
 	public static ApostaConfirmadaNumeroDetalhesFragment startApostaConfirmadaDetalhes(FragmentManager fm, int id,
 																					   IdentificaoDeUmaApostaDas8Modalidades aposta,
 																					   ResultadoConcursoDTO resultado,
@@ -121,7 +152,18 @@ public class FragmentUtils {
 																					   BigDecimal valorPremio) {
 		ApostaConfirmadaNumeroDetalhesFragment fragment = ApostaConfirmadaNumeroDetalhesFragment
 				.newInstance(aposta, resultado, comprovante, valorPremio);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
+		return fragment;
+	}
+
+	public static ApostaConfirmadaBolaoDetalhesFragment startApostaConfirmadaBolaoDetalhes(FragmentManager fm, int id,
+																						   IdentificaoDeUmaApostaDas8Modalidades aposta,
+																						   ResultadoConcursoDTO resultado,
+																						   ComprovanteApostaDTO comprovante,
+																						   BigDecimal valorPremio) {
+		ApostaConfirmadaBolaoDetalhesFragment fragment = ApostaConfirmadaBolaoDetalhesFragment
+				.newInstance(aposta, resultado, comprovante, valorPremio);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
@@ -132,8 +174,19 @@ public class FragmentUtils {
 																					   BigDecimal valorPremio, boolean isToteca) {
 		ApostaConfirmadaPartidaDetalhesFragment fragment = ApostaConfirmadaPartidaDetalhesFragment
 				.newInstance(aposta, resultado, comprovante, valorPremio, isToteca);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
+	public static RodapeSimulacaoApostaFragment startRodapeSimulacaoAPosta(FragmentManager fm, int id, BigDecimal valorBolao) {
+		RodapeSimulacaoApostaFragment frag = RodapeSimulacaoApostaFragment.newInstance(valorBolao);
+		startFragment(fm, id, frag);
+		return frag;
+	}
+
+	public static FiltroVazioFragment startFiltroVazio(FragmentManager fm, int idFrag) {
+		FiltroVazioFragment frag = FiltroVazioFragment.newInstance();
+		startFragment(fm, idFrag, frag);
+		return frag;
+	}
 }

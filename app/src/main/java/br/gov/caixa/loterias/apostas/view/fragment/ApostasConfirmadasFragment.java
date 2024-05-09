@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -34,7 +35,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivity_;
+import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -64,6 +65,7 @@ import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
@@ -452,7 +454,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     @Override
                     public void onResponse(DetalhesPremioDTOResponse result) {
                         AlertDialogUtils.dismiss();
-                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesPremioDTO(result.getPayload()).start();
+                        Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+                                ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+                        startActivity(intent);
                     }
 
                     @Override
@@ -467,10 +471,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         AlertDialogUtils.dismiss();
                         ComprovanteApostaDTO comprovante = result.getPayload();
                         if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
-                            // ja carregou a situacao no microservico
                             comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
                         }
-                        ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(comprovante).start();
+                        startDetalheComprovante(comprovante);
                     }
 
                     @Override
@@ -482,12 +485,20 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
     }
 
+    private void startDetalheComprovante(ComprovanteApostaDTO comprovante) {
+        Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+                ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+        startActivity(intent);
+    }
+
     private void handleOnItemClickHistorico(ApostaDTO apostaDTO) {
         if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA_HISTORICO.getValor())) {
             apostaBO.getApostaHistoricoComprovante(apostaDTO.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
                 @Override
                 public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
-                    ApostaConfirmadaDetalhesActivity_.intent(getActivity()).detalhesHistoricoPremioDTO(result.getPayload()).start();
+                    Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+                            ApostaConfirmadaDetalhesActivity.ARG_DETALHES_HISTORICO, result.getPayload());
+                    startActivity(intent);
                 }
 
                 @Override
@@ -501,7 +512,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             ComprovanteApostaDTO                  comprovanteApostaDTO  = new ComprovanteApostaDTO();
             comprovanteApostaDTO.setAposta(apostaDas8Modalidades);
             AlertDialogUtils.dismiss();
-            ApostaConfirmadaDetalhesActivity_.intent(getActivity()).comprovanteApostaDTO(comprovanteApostaDTO).start();
+            startDetalheComprovante(comprovanteApostaDTO);
         }
     }
 

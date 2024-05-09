@@ -50,7 +50,7 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 	@Override
 	public void onBindViewHolder(@NonNull DezenaHolder holder, int position) {
 		Dezena dezena = dezenas.get(position);
-		if (dezenasSelecionadas.contains(Integer.valueOf(dezena.getValue()))) {
+		if (dezenasSelecionadas!= null && dezenasSelecionadas.contains(Integer.valueOf(dezena.getValue()))) {
 			dezena.setSelected(Boolean.TRUE);
 		} else {
 			dezena.setSelected(Boolean.FALSE);

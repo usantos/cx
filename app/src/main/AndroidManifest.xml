@@ -39,6 +39,20 @@
         android:usesCleartextTraffic="false"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".view.activity.BolaoActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".controllers.FiltraMarketplaceActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.DetalhesBolaoActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+        <activity
             android:name=".PreferenciasNotificacoesActivity"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -71,6 +85,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".TutorialMaisMilionariaActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.activity.TutorialActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -190,6 +208,11 @@
         <activity
             android:name=".controllers.ConfirmadoInclusaoCarrinhoActivity"
             android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".controllers.ConfirmadoInclusaoBolaoCarrinhoActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".controllers.CarrinhoActivity"
@@ -385,7 +408,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".controllers.ApostaConfirmadaDetalhesActivity_"
+            android:name=".controllers.ApostaConfirmadaDetalhesActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
             android:name=".controllers.ResultadoApostaConfirmadaActivity_"

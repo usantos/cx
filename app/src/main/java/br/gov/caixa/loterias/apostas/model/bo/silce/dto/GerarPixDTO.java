@@ -41,6 +41,8 @@ public class GerarPixDTO {
     private Long idCompra = null;
     @SerializedName("valorCobranca")
     private BigDecimal valorTotal;
+    @SerializedName("isDetalhesCompras")
+    private Boolean isDetalhesCompras = false;
 
     public String getPixCopiaECola() {
         return pixCopiaECola;
@@ -78,6 +80,14 @@ public class GerarPixDTO {
         this.valorTotal = valorTotal;
     }
 
+    public Boolean isDetalhesCompras() {
+        return isDetalhesCompras;
+    }
+
+    public void setDetalhesCompras(Boolean detalhesCompras) {
+        isDetalhesCompras = detalhesCompras;
+    }
+
     public int getTimerSeconds() {
         DateTime agora     = new DateTime();
         DateTime expiracao = DateTime.parse(this.getDataHoraExpiracao());
@@ -102,8 +112,14 @@ public class GerarPixDTO {
     }
 
     public Boolean estaNoPrazo(){
-        DateTime agora = new DateTime();
-        return agora.isBefore(DateTime.parse(this.getDataHoraExpiracao()));
+        final DateTimeZone zoneBrasil = DateTimeZone.forID("America/Sao_Paulo");
+        DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS");
+
+        DateTime agora = DateTime.now(zoneBrasil);
+
+        final DateTime expiracao = inputFormatter.withZone(zoneBrasil).parseDateTime(this.getDataHoraExpiracao());
+
+        return agora.isBefore(expiracao);
     }
 
     @Override
@@ -113,12 +129,12 @@ public class GerarPixDTO {
         if (o == null || getClass() != o.getClass())
             return false;
         GerarPixDTO that = (GerarPixDTO) o;
-        return pixCopiaECola.equals(that.pixCopiaECola) && txId.equals(that.txId) && qrcodeArrByte.equals(that.qrcodeArrByte) && dataHoraExpiracao.equals(that.dataHoraExpiracao) && idCompra.equals(that.idCompra);
+        return pixCopiaECola.equals(that.pixCopiaECola) && txId.equals(that.txId) && qrcodeArrByte.equals(that.qrcodeArrByte) && dataHoraExpiracao.equals(that.dataHoraExpiracao) && idCompra.equals(that.idCompra) && isDetalhesCompras.equals(that.isDetalhesCompras);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pixCopiaECola, txId, qrcodeArrByte, dataHoraExpiracao, idCompra);
+        return Objects.hash(pixCopiaECola, txId, qrcodeArrByte, dataHoraExpiracao, idCompra, isDetalhesCompras);
     }
 
     @Override
@@ -129,6 +145,7 @@ public class GerarPixDTO {
                 ", qrcodeArrByte='" + qrcodeArrByte + '\'' +
                 ", dataHoraExpiracao='" + dataHoraExpiracao + '\'' +
                 ", idCompra=" + idCompra +
+                ", isDetalhesCompras=" + isDetalhesCompras +
                 '}';
     }
 }

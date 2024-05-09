@@ -60,7 +60,7 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 	public void apostar(Boolean naoVerNovamente) {
 
 		if (naoVerNovamente) {
-			DadosUsuarioBO.updateTutorialMaisMilionaria(naoVerNovamente);
+			DadosUsuarioBO.updateTutorial(naoVerNovamente, DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL);
 		}
 
 		Intent activity = new Intent(TutorialMaisMilionariaActivity.this, SimularApostaActivity_.class);
@@ -74,7 +74,7 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 	@Override
 	public void pular(boolean naoVerNovamente) {
 		if (naoVerNovamente) {
-			DadosUsuarioBO.updateTutorialMaisMilionaria(naoVerNovamente);
+			DadosUsuarioBO.updateTutorial(naoVerNovamente, DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL);
 		}
 		finish();
 	}
@@ -85,5 +85,10 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 			initFragmentList();
 		}
 		return fragmentList;
+	}
+
+	@Override
+	public ModalidadeEnum getModalidade() {
+		return modalidade;
 	}
 }

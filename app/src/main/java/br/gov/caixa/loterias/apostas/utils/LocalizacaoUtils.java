@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.R;
 public class LocalizacaoUtils {
 
     public static final String ACCESS_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    public static final String ACCESS_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
 
     public static final int VERSAO_MIN_LOCALIZACAO = android.os.Build.VERSION_CODES.M;
     public static final int LOC_NAO_PERMITIDA = 102;
@@ -59,13 +60,15 @@ public class LocalizacaoUtils {
         }
     }
 
-    public static int checaStatusGps(Activity activity){
+    public static int checaStatusGps(Activity activity) {
         if (LocalizacaoUtils.verificaGpsAtivo(activity)) {
             int statusGps = LocalizacaoUtils.verificaRegiao(activity);
-            if(statusGps == LocalizacaoUtils.LOC_NO_BRASIL){
+            if (statusGps == LocalizacaoUtils.LOC_NO_BRASIL) {
                 return LOC_NO_BRASIL;
+            } else if (statusGps == LOC_NAO_PERMITIDA){
+                return LOC_NAO_PERMITIDA;
             } else {
-                if(statusGps == LocalizacaoUtils.LOC_FORA_DO_BRASIL) {
+                if (statusGps == LocalizacaoUtils.LOC_FORA_DO_BRASIL) {
                     return LOC_FORA_DO_BRASIL;
                 } else {
                     return LOC_ERRO;
@@ -76,20 +79,24 @@ public class LocalizacaoUtils {
         }
     }
 
-    public static boolean verificaGpsAtivo(Activity activity){
-        final LocationManager manager = (LocationManager) activity.getSystemService( Context.LOCATION_SERVICE );
-        return manager.isProviderEnabled( LocationManager.GPS_PROVIDER );
+    public static boolean verificaGpsAtivo(Activity activity) {
+        final LocationManager manager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        return manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
-    @SuppressLint("MissingPermission")
-    public static int verificaRegiao(Activity activity){
-        final LocationManager manager  = (LocationManager) activity.getSystemService( Context.LOCATION_SERVICE );
-        String bestProvider;
-        LocationListener      listener = getListener();
 
-        Criteria              criteria = new Criteria();
+    public static int verificaRegiao(Activity activity) {
+        final LocationManager manager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        String bestProvider;
+        LocationListener listener = getListener();
+
+        Criteria criteria = new Criteria();
         bestProvider = manager.getBestProvider(criteria, false);
 
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return LOC_NAO_PERMITIDA;
+        }
         manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 10, listener);
         manager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 10000, 10, listener);
         manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 10, listener);
@@ -152,6 +159,9 @@ public class LocalizacaoUtils {
     public static boolean checaPermissao(Activity activity) {
         return (ContextCompat.checkSelfPermission(activity,
                 ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) &&
+                (ContextCompat.checkSelfPermission(activity,
+                ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED);
     }
 
@@ -160,12 +170,13 @@ public class LocalizacaoUtils {
     }
 
     public static Boolean checaNegadaDefinitivamente(Activity activity) {
-        return ActivityCompat.shouldShowRequestPermissionRationale(activity, ACCESS_FINE_LOCATION);
+        return ActivityCompat.shouldShowRequestPermissionRationale(activity, ACCESS_FINE_LOCATION) ||
+                ActivityCompat.shouldShowRequestPermissionRationale(activity, ACCESS_COARSE_LOCATION);
     }
 
     public static void solicitaPermissao(Activity activity) {
         ActivityCompat.requestPermissions(activity,
-                new String[]{ACCESS_FINE_LOCATION}, PERMISSAO_LOCALIZACAO_COD);
+                new String[]{ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION}, PERMISSAO_LOCALIZACAO_COD);
     }
 
     private static LocationListener getListener(){

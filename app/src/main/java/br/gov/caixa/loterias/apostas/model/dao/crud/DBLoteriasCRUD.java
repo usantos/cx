@@ -23,12 +23,14 @@ abstract public class DBLoteriasCRUD {
 	}
 
 	protected void closeDBLoteriasHelper() {
-		if (this.dbLoteriasHelper != null) {
-			this.db.close();
+		if (this.dbLoteriasHelper != null){
 			this.dbLoteriasHelper.close();
-
-			this.db = null;
 			this.dbLoteriasHelper = null;
+		}
+
+		if (this.db != null) {
+			this.db.close();
+			this.db = null;
 		}
 	}
 

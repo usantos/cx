@@ -9,6 +9,7 @@ public class ConfiguracaoAppSingleton {
     private Boolean isMicroServico;
     private Boolean mostraMenuAposta;
     private Boolean isAtualizaPublicKey;
+    private Boolean isBolaoHabilitado;
 
     private static ConfiguracaoAppSingleton configuracaoAppSingleton;
 
@@ -20,6 +21,7 @@ public class ConfiguracaoAppSingleton {
             configuracaoAppSingleton.mostraMenuAposta = MOSTRA_MENU_APOSTAS_DEFAULT;
             configuracaoAppSingleton.isMicroServico = IS_MICRO_SERVICO_DEFAULT;
             configuracaoAppSingleton.isAtualizaPublicKey = Boolean.FALSE;
+            configuracaoAppSingleton.isBolaoHabilitado = Boolean.FALSE;
         }
         return configuracaoAppSingleton;
     }
@@ -54,5 +56,13 @@ public class ConfiguracaoAppSingleton {
 
     public void setAtualizaPublicKey(Boolean atualiza){
         isAtualizaPublicKey = atualiza;
+    }
+
+    public Boolean isBolaoHabilitado() {
+        return isBolaoHabilitado;
+    }
+
+    public void setBolaoHabilitado(Boolean bolaoHabilitado) {
+        isBolaoHabilitado = bolaoHabilitado;
     }
 }

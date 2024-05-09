@@ -245,7 +245,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             @Override
             public void onResponse(LotericaDTOResponse response) {
                 loadViewProgress.dismiss();
-                if (response.getPayload() != null && response.getPayload().getLotericas() != null) {
+                if (response.getPayload() != null) { // && response.getPayload().getLotericas() != null) {
 //                    popularRadio(response.getPayload().getLotericas());
                 } else {
                     ViewUtils.alert(CadastrarPasso2Activity.this, response.getMensagem());

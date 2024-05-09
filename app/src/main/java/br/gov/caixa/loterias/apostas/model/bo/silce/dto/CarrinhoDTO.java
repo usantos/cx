@@ -29,6 +29,13 @@ public class CarrinhoDTO implements Serializable {
     @SerializedName("apostas")
     protected List<IdentificaoDeUmaApostaDas8Modalidades> apostas = null;
 
+    @SerializedName("apostasIndividuais")
+    protected List<IdentificaoDeUmaApostaDas8Modalidades> apostasIndividuais = null;
+    @SerializedName("cotas")
+    protected List<IdentificaoDeUmaApostaDas8Modalidades> boloes = null;
+    @SerializedName("id")
+    protected Long id = null;
+
     /**
      * Valor total das apostas do carrinho
      **/
@@ -48,6 +55,9 @@ public class CarrinhoDTO implements Serializable {
             for (IdentificaoDeUmaApostaDas8Modalidades aposta : getApostas()) {
                 if (aposta.getValor() != null){
                     valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
+                }
+                if (aposta.getReservaCotaBolao() != null) {
+                    valorTotalCarrinho = valorTotalCarrinho.add(aposta.getReservaCotaBolao().getVrTotalCota());
                 }
             }
         }
@@ -70,6 +80,30 @@ public class CarrinhoDTO implements Serializable {
         this.apostas = apostas;
     }
 
+    public List<IdentificaoDeUmaApostaDas8Modalidades> getApostasIndividuais() {
+        return apostasIndividuais;
+    }
+
+    public void setApostasIndividuais(List<IdentificaoDeUmaApostaDas8Modalidades> apostasIndividuais) {
+        this.apostasIndividuais = apostasIndividuais;
+    }
+
+    public List<IdentificaoDeUmaApostaDas8Modalidades> getBoloes() {
+        return boloes;
+    }
+
+    public void setBoloes(List<IdentificaoDeUmaApostaDas8Modalidades> boloes) {
+        this.boloes = boloes;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -81,7 +115,10 @@ public class CarrinhoDTO implements Serializable {
         }
         CarrinhoDTO carrinhoDTO = (CarrinhoDTO) o;
         return (this.valorTotal == null ? carrinhoDTO.valorTotal == null : this.valorTotal.equals(carrinhoDTO.valorTotal)) &&
-                (this.apostas == null ? carrinhoDTO.apostas == null : this.apostas.equals(carrinhoDTO.apostas));
+               (this.apostas == null ? carrinhoDTO.apostas == null : this.apostas.equals(carrinhoDTO.apostas)) &&
+               (this.apostasIndividuais == null ? carrinhoDTO.apostasIndividuais == null : this.apostasIndividuais.equals(carrinhoDTO.apostasIndividuais)) &&
+               (this.boloes == null ? carrinhoDTO.boloes == null : this.boloes.equals(carrinhoDTO.boloes)) &&
+               (this.id == null ? carrinhoDTO.id == null : this.id.equals(carrinhoDTO.id));
     }
 
     @Override
@@ -89,6 +126,9 @@ public class CarrinhoDTO implements Serializable {
         int result = 17;
         result = 31 * result + (this.valorTotal == null ? 0 : this.valorTotal.hashCode());
         result = 31 * result + (this.apostas == null ? 0 : this.apostas.hashCode());
+        result = 31 * result + (this.apostasIndividuais == null ? 0 : this.apostasIndividuais.hashCode());
+        result = 31 * result + (this.boloes == null ? 0 : this.boloes.hashCode());
+        result = 31 * result + (this.id == null ? 0 : this.id.hashCode());
         return result;
     }
 
@@ -98,6 +138,9 @@ public class CarrinhoDTO implements Serializable {
         String sb = "class CarrinhoDTO {\n" +
                 "  valorTotal: " + valorTotal + "\n" +
                 "  apostas: " + apostas + "\n" +
+                "  apostasIndividuais: " + apostasIndividuais + "\n" +
+                "  boloes: " + boloes + "\n" +
+                "  id: " + id + "\n" +
                 "}\n";
         return sb;
     }

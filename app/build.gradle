@@ -49,11 +49,10 @@ android {
         minSdkVersion 22
         targetSdkVersion 33
 
-        // SPRINT 85
-        //                   22                 1.8.1 = 01 008               01
+        //                   22                 1.12.1 = 01 012               01
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220100802
-        versionName "1.8.1"
+        versionCode 220101201
+        versionName "1.12.1"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -100,7 +99,7 @@ android {
             prd {
                 dimension "default"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://mobileloterias.caixa.gov.br/silce-servico-rest/rest/v1/\""
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://www.loteriasonline.caixa.gov.br/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://www.loteriasonline.caixa.gov.br/silce-servico-rest/rest/v2\""
                 buildConfigField "String", "PUBLIC_KEY_MP", "\"APP_USR-7cebaf99-f15f-4ef2-a9b4-61d3ca29b279\""
                 buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
@@ -280,6 +279,7 @@ android {
         implementation 'com.google.android.material:material:1.3.0-alpha02'
         implementation 'androidx.cardview:cardview:1.0.0'
         implementation 'androidx.recyclerview:recyclerview:1.3.0'
+        implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
 
         //Multidex (necessário quando há mais de 64k métodos)

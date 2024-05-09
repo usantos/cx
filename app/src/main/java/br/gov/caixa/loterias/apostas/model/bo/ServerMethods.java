@@ -51,6 +51,9 @@ class ServerMethods {
      static final String LOTERICAS_PATH = "/lotericas";
      static final String LOTERICAS_HABILITADAS_PATH = "/lotericas/buscas-habilitadas";
      static final String LOTERICAS_CODIGO_COMPLETO_PATH = "/lotericas/codigo-completo";
+     static final String LOTERICAS_NOME_FANTASIA_PATH = "/lotericas/nome-fantasia";
+     static final String LOTERICAS_NOME_LOTERICO_PATH = "/lotericas/nome-loterico";
+
      static final String GERAR_APOSTAS_RAPIDAO_PATH = "/rapidoes/gerar-apostas";
      static final String RAPIDOES_PATH = "/rapidoes";
      static final String MODALIDADES_PATH = "/modalidades";
@@ -70,7 +73,6 @@ class ServerMethods {
      static final String APOSTAS_CONFIRMADAS_HISTORICO_COMPROVANTE_PREMIO_PATH = "/historico-apostas/{id}/comprovante-premio";
      static final String APOSTAS_VERIFICA_APRESENTA_HISTORICO_PATH = "/parametros/configuraveis-app";
 
-     static final String EQUIPES_ESPORTIVAS_ESCUDO_PATH = "/equipes-esportivas/{id}/escudo";
      static final String BILHETES_CONFERIR_BILHETE_PATH = "/bilhetes/conferir-bilhete";
      static final String BILHETES_CONFERIR_BILHETE_NOVO_PATH = "/bilhetes/conferir-bilhete-qrcode";
 
@@ -81,7 +83,9 @@ class ServerMethods {
      static final String DUVIDAS_SECOES_PATH = "/duvidas/secoes";
      static final String DUVIDAS_PATH = "/duvidas";
 
+     static final String EQUIPES_ESPORTIVAS_ESCUDO_PATH = "/equipes-esportivas/{id}/escudo";
      static final String EQUIPES_ESPORTIVAS_POR_MODALIDADE_EQUIPE_PATH = "/equipes-esportivas/{idEquipe}/{idModalidade}/escudo";
+     static final String EQUIPES_ESPORTIVAS_LISTA_EQUIPES_PATH = "/equipes-esportivas/listaEquipes";
 
 
      static final String RESULTADOS_MODALIDADE_CONCURSO_PATH = "resultados/{modalidade}/{concurso}";
@@ -111,6 +115,9 @@ class ServerMethods {
      static final String TOKEN_CADASTRO_MP_PATH = "/usuarios/gerar-token-cadastro-mercado-pago";
 
      static final String TOKEN_APOSTADOR_RP_PATH = "/usuarios/gerar-token-apostador-recarga-pay";
+
+     static final String BOLOES_DISPONIVEIS = "/boloes/recuperar-boloes-disponiveis";
+     static final String DETALHE_BOLAO = "/boloes/detalhar-bolao";
 
      private ServerMethods(){}
 }

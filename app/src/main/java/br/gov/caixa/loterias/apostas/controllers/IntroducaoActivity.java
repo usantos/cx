@@ -12,6 +12,7 @@ import androidx.viewpager.widget.ViewPager;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao1Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao2Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao3Fragment;
@@ -97,11 +98,11 @@ public class IntroducaoActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
-                    return Introducao1Fragment.newInstance(0, "Page # 1");
+                    return Introducao1Fragment.newInstance(0, "Página # 1 de 3");
                 case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return Introducao2Fragment.newInstance(1, "Page # 2");
+                    return Introducao2Fragment.newInstance(1, "Página # 2 de 3");
                 case 2: // Fragment # 1 - This will show SecondFragment
-                    return Introducao3Fragment.newInstance(2, "Page # 3");
+                    return Introducao3Fragment.newInstance(2, "Página # 3 de 3");
                 case 3: // Fragment # 1 - This will show SecondFragment
                     return LoginFragment.newInstance();
                 default:
@@ -112,7 +113,7 @@ public class IntroducaoActivity extends AppCompatActivity {
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Page " + position;
+            return "Página " + position + "de 3";
         }
 
     }
@@ -121,5 +122,6 @@ public class IntroducaoActivity extends AppCompatActivity {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_pulou_tour));
         pulouTour = true;
         vpPager.setCurrentItem(3, true);
+        TopazUtil.check(this);
     }
 }

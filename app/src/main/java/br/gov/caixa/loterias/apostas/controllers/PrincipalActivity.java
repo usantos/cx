@@ -61,7 +61,6 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
-import br.gov.caixa.loterias.apostas.PreferenciasNotificacoesActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
@@ -99,6 +98,7 @@ import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
@@ -128,9 +128,9 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected DrawerLayout drawerLayout;
     @ViewById
-    protected Button buttonHomeBet;
+    protected Button buttonHomeBet, buttonHomeBolao;
     @ViewById
-    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
+    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, recolherMenu;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             rlJogoResponsavel,
@@ -193,6 +193,7 @@ public class PrincipalActivity extends AppCompatActivity
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+
 //        if (TestVisao.isTeste()){
 //            buttonHomeBet.setOnLongClickListener(v -> {
 //                nextActivity(IntroducaoTutorialActivity.class);
@@ -646,6 +647,16 @@ public class PrincipalActivity extends AppCompatActivity
             buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
                     getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+
+            if (data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA &&
+                    ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()){
+                buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
+                                                                          getResources()
+                                                                                  .getString(R.string.apostas_boloes)));
+                buttonHomeBolao.setVisibility(View.VISIBLE);
+            } else {
+                buttonHomeBolao.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -654,11 +665,24 @@ public class PrincipalActivity extends AppCompatActivity
         nextActivity(TutorialMaisMilionariaActivity.class);
     }
 
+    @Click(R.id.buttonHomeBolao)
+    protected void clickButtonBolao() {
+        if(DadosUsuarioBO.checarUsuarioLogado(this)){
+            if (!DadosUsuarioBO.checarTutorial(DadosUsuarioBO.BOLAO_TUTORIAL)){
+                startActivity(IntentUtil.getIntentTutorial(this, ModalidadeEnum.BOLAO));
+            } else {
+                startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
+            }
+        } else {
+            RedirectNetwork.connectKeycloak(this);
+        }
+    }
+
     private void nextActivity(Class clazz) {
         int              selecionada   = Integer.parseInt(buttonHomeBet.getTag().toString());
         ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
-        if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorialMaisMilionaria()){
+        if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
             Intent activity = new Intent(PrincipalActivity.this, clazz);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
@@ -723,6 +747,11 @@ public class PrincipalActivity extends AppCompatActivity
             AnimacaoFecharMenuRapido(relativeContentPrincipal);
             startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
         }
+    }
+
+    @Click(R.id.recolherMenu)
+    protected void clickRecolherMenu() {
+        onBackPressed();
     }
 
     private void AbrirMenusGroup(int groupPosition) {
@@ -875,7 +904,7 @@ public class PrincipalActivity extends AppCompatActivity
 
         if (installed) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=5561996565008&text=Disque180"));
+            intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=5561996100180&text=Disque180"));
             startActivity(intent);
         }
         else
@@ -929,5 +958,7 @@ public class PrincipalActivity extends AppCompatActivity
         AlertDialogUtils.dismiss();
         super.onDestroy();
     }
+
+
 
 }

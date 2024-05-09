@@ -42,10 +42,9 @@ public class ExpandableListDataSideMenu {
         List<String> termo = new ArrayList<>();
         List<String> duvidas = new ArrayList<>();
         List<String> JogoResponsavel = new ArrayList<>();
-        //List<String> notificacoes = new ArrayList<>();
+        //List<String> Notificacoes = new ArrayList<>();
         //notificacoes.add(MENU_NOTIFICACOES1);
         //notificacoes.add(MENU_NOTIFICACOES2);
-
 
         expandableListDetail.put("Minha área", minhaArea);
         expandableListDetail.put("Resultados", Resultados);

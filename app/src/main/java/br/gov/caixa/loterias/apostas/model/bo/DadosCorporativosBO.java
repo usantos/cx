@@ -34,18 +34,6 @@ import static org.androidannotations.annotations.EBean.Scope.Singleton;
 @EBean(scope = Singleton)
 public class DadosCorporativosBO extends BaseBO{
 
-    private static LinkedHashMap<String, String> header;
-
-    private LinkedHashMap<String, String> getHeader(){
-        if(header == null){
-            this.header = new LinkedHashMap<>();
-        }
-        this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
-
-        return header;
-    }
-
-
     public void ufs(final RequestListener<UnidadeFederacaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         silceConnection.get(ServerMethods.UFS_PATH,
@@ -191,6 +179,34 @@ public class DadosCorporativosBO extends BaseBO{
                             listener.getSilceListener(),
                             listener.getErrorListener(),
                             new LinkedHashMap<>(), listener);
+    }
+
+    public void buscarLoteriasNomeFantasia(String nomeFantasia, final RequestListener<LotericaDTOResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("nomeFantasia", nomeFantasia);
+
+        GsonRequest request = silceConnection.buildGetRequest(ServerMethods.LOTERICAS_NOME_FANTASIA_PATH,
+                queryParams,
+                LotericaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
+    }
+
+    public void buscarLoteriasNomeCodigo(String nomeCodigo, final RequestListener<LotericaDTOResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("nomeCodigo", nomeCodigo);
+
+        GsonRequest request = silceConnection.buildGetRequest(ServerMethods.LOTERICAS_NOME_LOTERICO_PATH,
+                queryParams,
+                LotericaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        silceConnection.request(request, listener);
     }
 
     public void validaTermoAceito(final RequestListener<ResourceResponse> listener) {

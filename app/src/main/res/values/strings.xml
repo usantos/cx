@@ -10,8 +10,9 @@
     <string name="title_activity_minhas_apostas">Minhas _apostas_</string>
     <string name="title_activity_dados_pessoais">_Dados Pessoais_</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open">Menu principal</string>
+    <string name="navigation_drawer_close">Fechar menu</string>
+    <string name="olausuario">Início menu principal</string>
 
     <string name="action_settings">Configurações</string>
     <string name="action_duvidas">Dúvidas</string>
@@ -58,7 +59,9 @@
     <string name="verCarrinho">_Ver carrinho_\nde apostas</string>
     <string name="verCarrinhoVazio">OK</string>
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
+    <string name="infoConcluaPagamentoBolao">Conclua o pagamento de suas \napostas dentro do prazo</string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
+    <string name="tituloBolãoFeito">Esse bolão foi para \no seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
     <string name="confirmacao">Confirmação</string>
@@ -66,6 +69,7 @@
     <string name="label_acompanhe_suas_compras_pix">_Acompanhe_\nsuas compras</string>
     <string name="avancarFormaPagamento">_Avançar_\npara a forma de pagamento</string>
     <string name="fazerNovaAposta">Fazer nova aposta</string>
+    <string name="continuarApostando">Continuar apostando</string>
 
     <string name="adicionarFormaPagamento">_Adicionar_\nforma de pagamento</string>
     <string name="tituloFormaPagamento">Agora é pra valer!</string>
@@ -804,6 +808,8 @@
     <string name="evento_entrou_carrinho_online">ENTROU_CARRINHO_DE_APOSTAS_ONLINE</string>
     <string name="confirmar">Confirmar</string>
     <string name="evento_entrou_formas_pagamento">ENTROU_FORMAS_DE_PAGAMENTO</string>
+    <string name="evento_carregou_boloes_disponiveis">CARREGOU_BOLOES_DISPONIVEIS</string>
+    <string name="evento_carregou_detalhe_bolao">CARREGOU_DETALHE_BOLAO</string>
     <string name="string_true">true</string>
     <string name="string_false">false</string>
     <string name="evento_pagamento_sucesso">EFETUOU_PAGAMENTO_SUCESSO</string>
@@ -825,6 +831,7 @@
     <string name="yyyy">yyyy</string>
     <string name="underline_com_espaco">&#160;_&#160;</string>
     <string name="dd_mm">dd/MM</string>
+    <string name="dd_mm_yyyy">dd/MM/yyyy</string>
     <string name="dd_mm_yyyy_hh_mm_ss">dd/MM/yyyy HH:mm:ss</string>
     <string name="eeee">EEEE</string>
     <string name="hh_mm_ss">HH:mm:ss</string>
@@ -845,6 +852,10 @@
     <string name="evento_entrou_tour_tela_2">ENTROU_TOUR_TELA2</string>
     <string name="evento_entrou_tour_tela_3">ENTROU_TOUR_TELA3</string>
     <string name="evento_entrou_tour_tela_4">ENTROU_TOUR_TELA4</string>
+    <string name="evento_pagina_1de4">Logo imagem CEF Loterias, Página 1 de 4</string>
+    <string name="evento_pagina_2de4">Página 2 de 4</string>
+    <string name="evento_pagina_3de4">Página 3 de 4</string>
+    <string name="evento_pagina_4de4">Página 4 de 4</string>
     <string name="evento_pulou_tour">PULOU_TOUR</string>
     <string name="teste_xxx">Teste xxx</string>
     <string name="tipo_caixa">tipoCaixa</string>
@@ -1091,7 +1102,7 @@
     <string name="Trevos">Trevos</string>
     <string name="vamos_comecar">Vamos começar?</string>
     <string name="tutorial_fechar">Fechar</string>
-    <string name="tutorial_pular">Pular</string>
+    <string name="tutorial_pular">Pular para\no final</string>
     <string name="bundle_key_url">url</string>
     <string name="url_ajuda_mercado_pago">https://www.mercadopago.com.br/ajuda#from-section=menu</string>
     <string name="url_ajuda_recarga_pay"><![CDATA[https://recargapay.com.br/ajuda_caixa_form?reason=loterias-caixa&sub_reason=Problemas-com-meu-pagamento&subject=Ajuda%20com%20meu%20pagamento]]></string>
@@ -1241,8 +1252,8 @@
     <string name="popup_pix_estorno_nao_possivel">Não foi possível registrar a aposta.</string>
 
     <!-- Mensagens Disque 180  -->
-    <string name="tituloMsgDisque180">Central de Atendimento à Mulher - Ligue 180</string>
-    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência.</string>
+    <string name="tituloMsgDisque180">Central de Atendimento à Mulher</string>
+    <string name="textoMsgDisque180">Denuncie e busque ajuda a vítimas de violência pelo WhatsApp do canal 180.</string>
     <string name="falha_comunicacao_situacao_aposta">Falha de comunicação! Clique para conferir.</string>
 
     <!-- Meio Pagamento Novo Layout -->
@@ -1291,6 +1302,39 @@
     <string name="pagamento_nao_identificado_dentro_do_prazo">Não recebemos seu Pix dentro do prazo.\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma aposta e gerar novo código para pagamento.</string>
     <string name="pix_cancelado_descricao">Não recebemos seu Pix dentro do prazo previsto para efetuar sua aposta e você não está concorrendo. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
     <string name="pagamento_pix_nao_identificado">Não identificamos o seu pagamento dentro do prazo previsto para efetuar sua aposta e você não está concorrendo. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento. E não se preocupe! Caso o pagamento seja identificado, será estornado para a conta pagadora.</string>
+    <string name="alerta_precisa_estar_no_brasil">As apostas só podem ocorrer em território nacional. Suas apostas serão mantidas no carrinho para a conclusão da compra quando você estiver no país.</string>
+    <string name="posso_consultar_sua_localizacao">As apostas só podem ocorrer em território nacional. Portanto, você somente conseguirá pagar uma compra se estiver no Brasil, não havendo impedimento para utilizar os demais serviços.\nPodemos consultar a sua localização?</string>
+
+    <!-- Strings de boloes mkp -->
+    <string name="filtrar">_Filtrar_</string>
+    <string name="valor_minimo_aposta">Valor Mínimo Aposta</string>
+    <string name="valor_maximo_aposta">Valor Máximo Aposta</string>
+    <string name="quantidade_cotas">Quantidade de Cotas</string>
+    <string name="quantidade_dezenas">Quantidade de Dezenas</string>
+    <string name="limpar_filtros">Limpar Filtros</string>
+    <string name="aplicar">Aplicar</string>
+    <string name="numeros_quero">Números que eu quero</string>
+    <string name="numeros_nao_quero">Números que eu não quero</string>
+    <string name="nome_ou_codigo">Código E. Lotérico</string>
+    <string name="apostas_boloes">_Apostas Bolões_\na partir de R$10,00</string>
+    <string name="descritivo_tela_bolao">Veja aqui os bolões da Mega-Sena em destaque. Em breve, mais modalidades!</string>
+    <string name="cotas_bolao">Cotas bolão</string>
+    <string name="apostas_individuais">Apostas individuais</string>
+    <string name="cota_reservada">Cota reservada</string>
+    <string name="cota_expirada">Cota expirada</string>
+    <string name="carrinho_cotas_expiradas">Você deve retirar as cotas expiradas do carrinho para avançar para pagamento</string>
+    <string name="loteca_nao_favorita">Apostas da Loteca e Bolões não são salvos no carrinho favorito.</string>
     <string name="pagamento_pix_estornado">Não foi possível completar a sua aposta e seu Pix será devolvido. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
+    <string name="extra_data_hora_expiracao_reserva">dataHoraExpiracaoReserva</string>
+    <string name="label_cota_concurso_bold">Cota: </string>
+    <string name="label_voltar_apostas_individuais">_Voltar Apostas Individuais_</string>
+    <string name="alterar_pesquisa">_Alterar_\na pesquisa com novos filtros</string>
+    <string name="pesquisar_novamente">_Pesquisar Novamente_\ncom os mesmos parâmetros</string>
+    <string name="descritivo_loterica">Insira somente os números do segundo campo, com 6 dígitos. Exemplo: E. Lotérico 10.000004-01, digite 000004</string>
+
+    <string name="atencao_descricao_gerar_pix">Caso precise recuperar este código ou consultar o status da compra acesse o menu \"Minhas Compras\" \n\nSe o prazo do pagamento estiver expirado, salve a compra como favorita para coloca-la novamente no carrinho.</string>
+    <string name="ir_para_minhas_compras">Ir para as\n_Minhas Compras_</string>
+    <string name="descricao_filtro_vazio">Não encontramos nenhum bolão que corresponda à sua pesquisa!</string>
+    <string name="descricao_erro_filtro">Ocorreu um erro.\nTente novamente</string>
 
 </resources>

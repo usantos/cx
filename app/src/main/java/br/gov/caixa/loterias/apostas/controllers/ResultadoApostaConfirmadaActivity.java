@@ -3,11 +3,14 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Context;
 import android.content.Intent;
 
+import android.os.Build;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -31,6 +34,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
@@ -39,6 +43,7 @@ import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -61,6 +66,12 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @ViewById
     protected RelativeLayout lotericaLayout, agenciaCaixaLayout, mercadoPagoLayout, pixLayout;
+
+    @ViewById
+    protected TextView mercadoPagoText, agenciaCaixaText, lotericaText;
+
+    @ViewById
+    protected ConstraintLayout constraintLayoutPix, constraintAvisoResgate;
 
     @Extra
     protected DetalhesPremioDTO detalhesPremioDTO;
@@ -128,6 +139,11 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             }
 
         }
+
+        if (isBolao(detalhesPremioDTO.getAposta())){
+            contentResultadoPremiado.setCabecalhoBolao();
+        }
+
         createListPremiacao();
         trataFormasDeResgate();
         RateUtils.avaliarAplicativo(this, true);
@@ -136,6 +152,9 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.lotericaLayout)
     protected void clickLotericaLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            lotericaText.setBackgroundColor(getColor(R.color.azul_botao_pix));
+        }
         apresentaOrientacoesResgate(true);
     }
 
@@ -166,6 +185,10 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         });
     }
 
+    private void apresentaInfoResgateIR(){
+        constraintAvisoResgate.setVisibility(View.VISIBLE);
+    }
+
     @Click(R.id.botaoAposteAgora)
     protected void clickBotaoAposteAgora() {
 
@@ -177,17 +200,26 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Click(R.id.agenciaCaixaLayout)
     protected void clickAgenciaCaixaLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            agenciaCaixaText.setBackgroundColor(getColor(R.color.azul_botao_pix));
+        }
         apresentaOrientacoesResgate(false);
     }
 
     @Click(R.id.pixLayout)
     protected void clickPixLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            constraintLayoutPix.setBackgroundColor(getColor(R.color.azul_botao_pix));
+        }
         Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);
         startActivity(intent);
     }
 
     @Click(R.id.mercadoPagoLayout)
     protected void clickMercadoPagoLayout() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mercadoPagoText.setBackgroundColor(getColor(R.color.azul_botao_pix));
+        }
         Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, JogosConfirmadosPremioMercadoPagoActivity.class);
         intent.putExtra( getResources().getString(R.string.extra_valor_premio), ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()) );
         intent.putExtra( getResources().getString(R.string.extra_id_aposta), detalhesPremioDTO.getAposta().getId() );
@@ -220,12 +252,24 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                     break;
             }
         }
+        if (detalhesPremioDTO.getMensagemInformativaIR() != null && !detalhesPremioDTO.getMensagemInformativaIR().isEmpty()){
+            apresentaInfoResgateIR();
+        }
+    }
+
+    private boolean isBolao(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta != null && aposta.getIndicadorCotaBolao() != null && aposta.getIndicadorCotaBolao();
     }
 
     private void createListPremiacao() {
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
 
-        listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidade.getCorEscura()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
+        if (isBolao(detalhesPremioDTO.getAposta())){
+
+            listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoBolaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidade.getCorEscura()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
+        } else {
+            listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidade.getCorEscura()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
+        }
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -237,4 +281,18 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     private Context getContext() {
         return ResultadoApostaConfirmadaActivity.this;
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            constraintLayoutPix.setBackgroundColor(getColor(R.color.verdeazul));
+            mercadoPagoText.setBackgroundColor(getColor(R.color.verdeazul));
+            agenciaCaixaText.setBackgroundColor(getColor(R.color.verdeazul));
+            lotericaText.setBackgroundColor(getColor(R.color.verdeazul));
+        }
+
+    }
+
 }

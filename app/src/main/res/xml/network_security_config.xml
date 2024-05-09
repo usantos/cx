@@ -5,4 +5,10 @@
         <domain includeSubdomains="true"> simlo.tqs.caixa.gov.br </domain>
         <domain includeSubdomains="true"> sispl-api-apostas-des-esteiras.nprd2.caixa </domain>
     </domain-config>
+<!--    <base-config>-->
+<!--        <trust-anchors>-->
+<!--            <certificates src="system"/>-->
+<!--            <certificates src="user"/>-->
+<!--        </trust-anchors>-->
+<!--    </base-config>-->
 </network-security-config>
