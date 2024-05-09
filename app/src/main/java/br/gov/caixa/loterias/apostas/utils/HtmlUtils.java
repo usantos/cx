@@ -156,8 +156,13 @@ public class HtmlUtils {
             html = ViewUtils.replaceNullable(html,HEADER_CONCURSO_TITULO,"Concurso:");
             html = ViewUtils.replaceNullable(html, HEADER_CONCURSO_VALOR, String.valueOf(comprovanteApostaDTO.getAposta().getConcursoInicial()));
         }
-        html = ViewUtils.replaceNullable(html, HEADER_DATA_APOSTA, comprovanteApostaDTO.getAposta().getDataCompra());
-        html = ViewUtils.replaceNullable(html, HEADER_HORA_APOSTA, comprovanteApostaDTO.getAposta().getHoraCompra());
+        if (comprovanteApostaDTO.getAposta().getIndicadorCotaBolao()){
+            html = ViewUtils.replaceNullable(html, HEADER_DATA_APOSTA, comprovanteApostaDTO.getAposta().getReservaCotaBolao().getDataRegistroBolao());
+            html = ViewUtils.replaceNullable(html, HEADER_HORA_APOSTA, comprovanteApostaDTO.getAposta().getReservaCotaBolao().getHoraRegistroBolao());
+        }else {
+            html = ViewUtils.replaceNullable(html, HEADER_DATA_APOSTA, comprovanteApostaDTO.getAposta().getDataEfetivacao());
+            html = ViewUtils.replaceNullable(html, HEADER_HORA_APOSTA, comprovanteApostaDTO.getAposta().getHoraEfetivacao());
+        }
         html = ViewUtils.replaceNullable(html, HEADER_SUBCANAL, comprovanteApostaDTO.getAposta().getSubcanalPagamento());
 
         html = ViewUtils.replaceNullable(html, BODY_LISTA_ITENS_APOSTA, getBodyList(comprovanteApostaDTO.getAposta(), context));

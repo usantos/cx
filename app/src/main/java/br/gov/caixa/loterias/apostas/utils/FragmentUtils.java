@@ -43,6 +43,12 @@ public class FragmentUtils {
 		fragmentTransaction.commit();
 	}
 
+	public static void startFragmentAllowingStateLoss(FragmentManager fm, int id, Fragment fragment){
+		FragmentTransaction fragmentTransaction = fm.beginTransaction();
+		fragmentTransaction.replace(id, fragment);
+		fragmentTransaction.commitAllowingStateLoss();
+	}
+
 	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, String TAG) {
 		if(fragment == null){
 			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), TAG);
@@ -117,7 +123,7 @@ public class FragmentUtils {
 
 	public static CopiaColaPixFragment startCopiaColaPix(GerarPixDTO pixDTO, FragmentManager fm, int id) {
 		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance(pixDTO);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
@@ -147,7 +153,7 @@ public class FragmentUtils {
 																					   BigDecimal valorPremio) {
 		ApostaConfirmadaNumeroDetalhesFragment fragment = ApostaConfirmadaNumeroDetalhesFragment
 				.newInstance(aposta, resultado, comprovante, valorPremio);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
@@ -158,7 +164,7 @@ public class FragmentUtils {
 																						   BigDecimal valorPremio) {
 		ApostaConfirmadaBolaoDetalhesFragment fragment = ApostaConfirmadaBolaoDetalhesFragment
 				.newInstance(aposta, resultado, comprovante, valorPremio);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
@@ -169,7 +175,7 @@ public class FragmentUtils {
 																					   BigDecimal valorPremio, boolean isToteca) {
 		ApostaConfirmadaPartidaDetalhesFragment fragment = ApostaConfirmadaPartidaDetalhesFragment
 				.newInstance(aposta, resultado, comprovante, valorPremio, isToteca);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
