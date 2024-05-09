@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -214,6 +215,7 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
             @Override
             public void onResponse(AutoSuspensaoResponse result) {
                 AlertDialogUtils.dismiss();
+                SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(true);
                 btnDesistir.setVisibility(View.GONE);
                 btnSuspender.setVisibility(View.GONE);
                 btnEntendi.setVisibility(View.VISIBLE);
