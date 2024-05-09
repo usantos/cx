@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -43,6 +44,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private RelativeLayout trapezio;
 	private ConstraintLayout cabecalho;
 	private View linhaNumero;
+	private ImageView icMoneyBolao;
 
 	private EstiloModalidadeMKP estilo;
 
@@ -63,6 +65,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		qtdCotas 		= itemView.findViewById(R.id.quantidade_cotas);
 		btnAddCarrinho 	= itemView.findViewById(R.id.btn_add_carrinho);
 		trapezio		= itemView.findViewById(R.id.layout_money);
+		icMoneyBolao	= itemView.findViewById(R.id.trevoImagem);
 		cabecalho		= itemView.findViewById(R.id.cabecalho_bolao);
 		linhaNumero		= itemView.findViewById(R.id.linha_numero);
 
@@ -86,14 +89,22 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private void aplicaEstilo() {
 		int corClara = ContextCompat.getColor(activity, estilo.getCorClara());
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
+		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
+		int corFonteFundoClaro = ContextCompat.getColor(activity, estilo.getCorFonteFundoClaro());
+		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
 		trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
+		icMoneyBolao.setImageDrawable(VectorUtils.getShape(R.drawable.ic_money_bolao, estilo.getCorFonteFundoEscuro()));
 		cabecalho.setBackgroundColor(corClara);
-		valorPremio.setTextColor(corEscura);
-		btnDetalhes.setTextColor(corEscura);
+		modalidade.setTextColor(corFonteFundoClaro);
+		valorPremio.setTextColor(corLetraLista);
+		btnDetalhes.setTextColor(corLetraLista);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);
+		btnDiminui.setTextColor(corFonteFundoEscuro);
 		btnAumenta.setBackgroundColor(corEscura);
+		btnAumenta.setTextColor(corFonteFundoEscuro);
 		btnAddCarrinho.setBackground(VectorUtils.getShape(R.drawable.rounded_card, estilo.getCorEscura()));
+		btnAddCarrinho.setTextColor(corFonteFundoEscuro);
 		linhaNumero.setBackgroundColor(corEscura);
 	}
 
@@ -120,12 +131,12 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 				cabecalho.setBackground(ContextCompat.getDrawable(activity, estilo.getImagemEspecialCarrossel()));
 			}
 			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
-				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()));
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 			} else {
-				modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()));
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
 			}
 		} else {
-			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
+			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
 		}
 	}
 
@@ -164,12 +175,12 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	@Override
 	public void atualizaBotoesQtdCotas(int quantidade, int maxPermitido) {
 		if (quantidade == QUANTIDADE_MINIMA){
-			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinzaescuro));
+			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinza_desativado_mkp));
 			btnDiminui.setEnabled(false);
 			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnAumenta.setEnabled(true);
 		} else if (quantidade == maxPermitido){
-			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinzaescuro));
+			btnAumenta.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, R.color.cinza_desativado_mkp));
 			btnAumenta.setEnabled(false);
 			btnDiminui.setBackground(VectorUtils.getShape(R.drawable.ic_botao_surpresinha, estilo.getCorEscura()));
 			btnDiminui.setEnabled(true);

@@ -313,6 +313,7 @@ public class AdicionarApostaCarrinhoHelper {
                 }
                 telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_hora_expiracao_reserva),
                         buscaBolaoCarrinho(((IdentificaoDeUmBolao) aposta).getIdBolao(), carrinhoDtoResponse));
+                telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_especial_reserva), ((IdentificaoDeUmBolao) aposta).getTipoConcurso().getValor().equals("2"));
             } else {
                 //telaConfirmacao.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
                 ParametroSimulacao parametroSimulacao =  ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades);

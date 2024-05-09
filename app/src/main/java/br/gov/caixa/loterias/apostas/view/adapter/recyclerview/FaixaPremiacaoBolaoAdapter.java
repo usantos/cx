@@ -34,11 +34,11 @@ public class FaixaPremiacaoBolaoAdapter extends RecyclerView.Adapter<FaixaPremia
 
     @Override
     public void onBindViewHolder(FaixaPremiacaoHolder holder, int position) {
-        if (position % 2 == 0){
-            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), darkColor);
-        } else {
-            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), color);
-        }
+        //if (position % 2 == 0){
+        //    holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), darkColor);
+        //} else {
+            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), color, darkColor);
+        //}
     }
 
     @Override

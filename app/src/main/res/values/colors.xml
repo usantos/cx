@@ -216,14 +216,27 @@
     <color name="bolao_slider_trilha_inativa">#D9D9D9</color>
     <color name="bolao_slider_areola">#54BBAB</color>
     <color name="bolao_slider_marcador">#FFFFFF</color>
-    <color name="mega_verde_claro_mkp">#04A766</color>
-    <color name="mega_verde_escuro_mkp">#00945E</color>
+    <color name="mega_verde_claro_mkp">#00A651</color>
+    <color name="mega_verde_escuro_mkp">#00984A</color>
     <color name="quina_claro_mkp">#2E3192</color>
     <color name="quina_escuro_mkp">#2A2A86</color>
     <color name="dupla_sena_claro_mkp">#A62B43</color>
     <color name="dupla_sena_escuro_mkp">#97263C</color>
     <color name="lotofacil_claro_mkp">#91278F</color>
     <color name="lotofacil_escuro_mkp">#851F82</color>
+    <color name="milionaria_claro_mkp">#2A3580</color>
+    <color name="milionaria_escuro_mkp">#262F76</color>
+    <color name="dia_sorte_claro_mkp">#E3C021</color>
+    <color name="dia_sorte_escuro_mkp">#AE9319</color>
+    <color name="dia_sorte_letra_mkp">#7E6906</color>
+    <color name="super_sete_claro_mkp">#BED730</color>
+    <color name="super_sete_escuro_mkp">#839F38</color>
+    <color name="super_sete_letra_mkp">#038141</color>
+    <color name="timemania_claro_mkp">#FFF200</color>
+    <color name="timemania_escuro_mkp">#E5DB1A</color>
+    <color name="timemania_letra_mkp">#038141</color>
+    <color name="loteca_claro_mkp">#ED1C24</color>
+    <color name="loteca_escuro_mkp">#C61017</color>
     <color name="mega_verde_opaco_mkp">#0F885C</color>
     <color name="bolao_azul_subtitulo">#095A9C</color>
     <color name="cor_bola_unselected">#ADC0C4</color>
@@ -234,6 +247,7 @@
     <color name="blue_caixa">#0066B3</color>
     <color name="verdeazul_inativo">#DDF1EE</color>
     <color name="cinza_desativado">#8FB5BC</color>
+    <color name="cinza_desativado_mkp">#E5E5E5</color>
 
 
 </resources>

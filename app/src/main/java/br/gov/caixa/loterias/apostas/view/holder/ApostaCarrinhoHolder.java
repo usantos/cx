@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
@@ -41,6 +42,7 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacaoSwipeList;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaCarrinhoListener;
+import br.gov.caixa.loterias.apostas.view.listener.BolaoCarrinhoListener;
 
 public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8Modalidades> {
 	private TextView textViewTipoAposta;
@@ -63,9 +65,10 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private AppCompatActivity activity;
 	private boolean animacao, isBolao;
 	private ApostaCarrinhoListener listener;
+	private BolaoCarrinhoListener listenerBolao;
 
 
-	public ApostaCarrinhoHolder(View view, AppCompatActivity activity, boolean animacao, boolean isBolao, ApostaCarrinhoListener listener) {
+	public ApostaCarrinhoHolder(View view, AppCompatActivity activity, boolean animacao, boolean isBolao, ApostaCarrinhoListener listener, BolaoCarrinhoListener listenerBolao) {
 		super(view);
 
 		this.animacao = animacao;
@@ -74,6 +77,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		this.context = view.getContext();
 		this.activity = activity;
 		this.listener = listener;
+		this.listenerBolao = listenerBolao;
 
 		textViewTipoAposta = view.findViewById(R.id.tipoAposta);
 		numerosAposta = view.findViewById(R.id.numerosText);
@@ -95,7 +99,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 	@Override
 	public void bind(IdentificaoDeUmaApostaDas8Modalidades aposta, int position) {
-		EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
+		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(aposta.getModalidade());
 
 		if (position >= 4) {
 			animacao = false;
@@ -107,9 +111,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.dadosApostaCarrinho));
 		swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
 
-		this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
-		this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
-		this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+		this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
+		this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
+		this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
 		this.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
 		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 		this.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
@@ -166,6 +170,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		}
 
 		this.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(view -> listener.onDeletaAposta(aposta));
+		if (isBolao) {
+			imageDetalheBoloes.setOnClickListener(view -> listenerBolao.onCotaClick(aposta));
+		}
 
 		if (aposta.getPartidasLoteca() != null && !aposta.getPartidasLoteca().isEmpty()) {
 			DetalheApostaLotecaAdapter detalheApostaLotecaAdapter = new DetalheApostaLotecaAdapter(aposta.getPartidasLoteca());
@@ -196,8 +203,15 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		if (ModalidadeEnum.TIMEMANIA == aposta.getModalidade()) {
 			layoutTimeCoracao.setVisibility(View.VISIBLE);
 			if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
-				textViewTimeCoracao.setText(aposta.getTimeDoCoracao().getNome() + "/" +
-						aposta.getTimeDoCoracao().getUf());
+				String timeCoracao = "-";
+				if (aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getNome() != null){
+					timeCoracao = aposta.getTimeDoCoracao().getNome();
+				}
+				if (aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getUf() != null){
+					timeCoracao = timeCoracao + "/" + aposta.getTimeDoCoracao().getUf();
+				}
+
+				textViewTimeCoracao.setText(timeCoracao);
 				if (aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
 					textViewTimeCoracao.setText(context.getResources().getString(R.string.tres_interrogacoes));
 				}
@@ -213,7 +227,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			if (aposta.getTrevosSelecionados() != null && !((List<Integer>)aposta.getTrevosSelecionados()).isEmpty()){
 				List<Integer> trevos = (List<Integer>) aposta.getTrevosSelecionados();
 				quantidade = trevos.size();
-			} else {
+			} else if (aposta.getQuantidadeTrevos() != null){
 				quantidade = aposta.getQuantidadeTrevos();
 			}
 			String                 qtd     = "_"+quantidade+"_";
@@ -235,8 +249,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 						this.textViewNumeroConcurso.setVisibility(View.GONE);
 						this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 						this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
-						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-						this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
+						this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
 					} else {
 						IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica = aposta;
 						if (apostaNumerica.getListaNumerosSelecionados() != null) {
@@ -270,9 +284,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 				case IndicadorSurpresinha.SURPRESINHA_NUMERICA:
 					this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 					this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-					this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-					this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-					this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+					this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
+					this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
+					this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
 
 					for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
 						if (i == aposta.getQuantidadeNumeros() - 1) {
@@ -302,7 +316,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			numeroStr.append("\n\n\n");
 		}
 
-		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && !aposta.getIndicadorCotaBolao()){
 			this.trevosAposta.setText(removeUltimoTraco(trevosStr.toString() + "\n"));
 		} else {
 			this.trevosAposta.setVisibility(View.GONE);

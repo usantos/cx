@@ -39,8 +39,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoBolaoAdapter;
@@ -83,6 +85,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     @Extra
     protected ComprovanteApostaDTO comprovante;
     private EstiloModalidade estiloModalidade;
+    private EstiloModalidadeMKP estiloModalidadeMKP;
 
     @AfterViews
     protected void init() {
@@ -90,25 +93,43 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
         estiloModalidade = new EstiloModalidade(modalidadeEnum);
+        estiloModalidadeMKP = new EstiloModalidadeMKP(modalidadeEnum);
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
-        if (modalidadeEnum == ModalidadeEnum.MAIS_MILIONARIA){
+        if (modalidadeEnum == ModalidadeEnum.MAIS_MILIONARIA && !isBolao(detalhesPremioDTO.getAposta())){
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackground(getDrawable(R.drawable.header_interno__milionaria));
             contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setVisibility(View.GONE);
             contentResultadoPremiado.getTituloModalidadeTextView().setVisibility(View.GONE);
-            contentResultadoPremiado.getPremioGanhoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, R.color.mais_milionaria_clara));
-            contentResultadoPremiado.getTopoResultadoPremioLinearLayout().setBackgroundColor(ContextCompat.getColor(this, R.color.mais_milionaria_clara));
+            //contentResultadoPremiado.getPremioGanhoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, R.color.mais_milionaria_clara));
+            //contentResultadoPremiado.getTopoResultadoPremioLinearLayout().setBackgroundColor(ContextCompat.getColor(this, R.color.mais_milionaria_clara));
         } else {
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
-            contentResultadoPremiado.getPremioGanhoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
-            contentResultadoPremiado.getTopoResultadoPremioLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+            //contentResultadoPremiado.getPremioGanhoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+            //contentResultadoPremiado.getTopoResultadoPremioLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
             contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
         }
 
+        if (isBolao(detalhesPremioDTO.getAposta())) {
+            contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
+            contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidadeMKP.getTrapezio()));
+            contentResultadoPremiado.getImgTrevoResultado().setImageDrawable(VectorUtils.getShape(R.drawable.ic_money_bolao, estiloModalidadeMKP.getCorFonteFundoEscuro()));
+            contentResultadoPremiado.getImgTagBolao().setVisibility(View.VISIBLE);
+            contentResultadoPremiado.getImgTagBolao().setImageDrawable(getDrawable(estiloModalidadeMKP.getImagemTrianguloOutline()));
+            contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
+        }
+
+        //cores
+        contentResultadoPremiado.getTituloModalidadeTextView().setTextColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro()));
+        contentResultadoPremiado.getPodeComemorar().setTextColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro()));
+        contentResultadoPremiado.getValorPremioTituloTextView().setTextColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro()));
+        contentResultadoPremiado.getTopoResultadoPremioLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
+        contentResultadoPremiado.getPremioGanhoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
+
+
         contentResultadoPremiado.getPremioInfoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
 
-        contentResultadoPremiado.getTituloModalidadeTextView().setText(ModalidadeEnum.fromString(detalhesPremioDTO.getAposta().getModalidade()).toLowerCase());
+        contentResultadoPremiado.getTituloModalidadeTextView().setText(ViewUtils.getNomeModalidadePorAposta(detalhesPremioDTO.getAposta()).toLowerCase());
 
         contentResultadoPremiado.getButtonVerDetalheAposta().setOnClickListener(v -> finish());
 
@@ -142,6 +163,9 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         if (isBolao(detalhesPremioDTO.getAposta())){
             contentResultadoPremiado.setCabecalhoBolao();
+            contentResultadoPremiado.getTvFaixaPremiacao().setTextColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro()));
+            contentResultadoPremiado.getTvValorPremioCota().setTextColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro()));
+            contentResultadoPremiado.getTvValorPremioLiquido().setTextColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro()));
         }
 
         createListPremiacao();
@@ -265,8 +289,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
 
         if (isBolao(detalhesPremioDTO.getAposta())){
-
-            listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoBolaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidade.getCorEscura()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
+            listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoBolaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()), ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro())));
         } else {
             listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidade.getCorEscura()), ContextCompat.getColor(this, estiloModalidade.getCorEscura())));
         }
