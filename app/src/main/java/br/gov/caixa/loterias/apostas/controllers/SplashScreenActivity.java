@@ -155,6 +155,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     if (temDadosPayloadMapa(result)) {
                         ConfiguracaoAppSingleton.getInstance().setUrlBaseCarrinhoPiloto(result.getPayload().getMapa().getUrlBaseCarrinhoPiloto());
                         ConfiguracaoAppSingleton.getInstance().setUrlBaseCarrinhoProducao(result.getPayload().getMapa().getUrlBaseCarrinhoProducao());
+                        ConfiguracaoAppSingleton.getInstance().setGrupoDeCpfsQueAcessamOServicoDaAzure(result.getPayload().getMapa().getGrupoDeCpfsQueAcessamOServicoDaAzure());
                     }
 
                 }

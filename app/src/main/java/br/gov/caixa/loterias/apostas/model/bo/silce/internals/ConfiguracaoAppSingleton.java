@@ -13,6 +13,7 @@ public class ConfiguracaoAppSingleton {
 
     private String urlBaseCarrinhoPiloto;
     private String urlBaseCarrinhoProducao;
+    private Integer grupoDeCpfsQueAcessamOServicoDaAzure;
 
     private static ConfiguracaoAppSingleton configuracaoAppSingleton;
 
@@ -27,6 +28,7 @@ public class ConfiguracaoAppSingleton {
             configuracaoAppSingleton.isBolaoHabilitado = Boolean.FALSE;
             configuracaoAppSingleton.urlBaseCarrinhoPiloto="-";
             configuracaoAppSingleton.urlBaseCarrinhoProducao="-";
+            configuracaoAppSingleton.grupoDeCpfsQueAcessamOServicoDaAzure = 0;
         }
         return configuracaoAppSingleton;
     }
@@ -69,6 +71,7 @@ public class ConfiguracaoAppSingleton {
 
     public void setBolaoHabilitado(Boolean bolaoHabilitado) {
         isBolaoHabilitado = bolaoHabilitado;
+    }
 
     public String getUrlBaseCarrinhoPiloto() {
         return urlBaseCarrinhoPiloto;
@@ -84,5 +87,13 @@ public class ConfiguracaoAppSingleton {
 
     public void setUrlBaseCarrinhoProducao(String urlBaseCarrinhoProducao) {
         this.urlBaseCarrinhoProducao = urlBaseCarrinhoProducao;
+    }
+
+    public Integer getGrupoDeCpfsQueAcessamOServicoDaAzure() {
+        return grupoDeCpfsQueAcessamOServicoDaAzure;
+    }
+
+    public void setGrupoDeCpfsQueAcessamOServicoDaAzure(Integer grupoDeCpfsQueAcessamOServicoDaAzure) {
+        this.grupoDeCpfsQueAcessamOServicoDaAzure = grupoDeCpfsQueAcessamOServicoDaAzure;
     }
 }

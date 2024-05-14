@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
@@ -324,8 +325,10 @@ public class SilceConnection {
     private String alteraCaminhoCarrinho(String path) {
 
         String baseUrlCarrinho;
+
         if(BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")) {
             baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
+
             //Apenas para teste
             baseUrlCarrinho = "https://apim-lce-des.azure-api.net/loterias-web/carrinho/v1";
         } else {
@@ -337,19 +340,54 @@ public class SilceConnection {
         }
 
         if (listPublico.contains(path)) {
-            return baseUrlCarrinho + PUBLICO + path;
+            if (finalCPFAcessaNuvem()) {
+                return baseUrlCarrinho + PUBLICO + path;
+            }
+            return null;
         }
 
         if (listLogadoExato.contains(path)) {
-            return baseUrlCarrinho + LOGADO + path;
+            if (finalCPFAcessaNuvem()) {
+                return baseUrlCarrinho + LOGADO + path;
+            }
+            return null;
         }
 
         for(String parcial : listLogadoParcial) {
             if (parcial.startsWith(path)) {
-                return baseUrlCarrinho + LOGADO + path;
+                if (finalCPFAcessaNuvem()) {
+                    return baseUrlCarrinho + LOGADO + path;
+                }
+                return null;
             }
         }
 
         return null;
+    }
+
+    private boolean finalCPFAcessaNuvem() {
+
+        int finalCpfAcessamNuvem = ConfiguracaoAppSingleton.getInstance().getGrupoDeCpfsQueAcessamOServicoDaAzure();
+
+        //Apenas para teste
+        //finalCpfAcessamNuvem = 100;
+
+        if (finalCpfAcessamNuvem == 0) {
+            return false;
+        }
+
+        String cpf = DadosUsuarioBO.obterCpf();
+        if (cpf != null && !cpf.isEmpty() && cpf.length() >= 2) {
+            //Verifica se o final do CPF < finalCpfAcessamNuvem
+            if (Integer.parseInt(cpf.substring(cpf.length() -2)) < finalCpfAcessamNuvem) {
+                return true;
+            }
+        }
+
+        if (finalCpfAcessamNuvem == 100) {
+            return true;
+        }
+
+        return false;
     }
 }
