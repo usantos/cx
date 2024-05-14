@@ -278,11 +278,11 @@
                 android:layout_marginBottom="14dp"
                 android:layout_marginEnd="0dp"
                 android:text="@string/r_0_00"
-                android:textAlignment="textStart"
+                android:textAlignment="textEnd"
                 android:paddingStart="10dp"
                 android:textSize="14.2sp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/numerosText"/>
+                app:layout_constraintEnd_toStartOf="@+id/excluirApostaCarrinhoLayout"/>
 
             <RelativeLayout
                 android:id="@+id/excluirApostaCarrinhoLayout"
