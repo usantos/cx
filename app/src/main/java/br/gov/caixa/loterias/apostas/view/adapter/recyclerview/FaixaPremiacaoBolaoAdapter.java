@@ -37,7 +37,7 @@ public class FaixaPremiacaoBolaoAdapter extends RecyclerView.Adapter<FaixaPremia
         //if (position % 2 == 0){
         //    holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), darkColor);
         //} else {
-            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), color, darkColor);
+            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), color, darkColor, position);
         //}
     }
 

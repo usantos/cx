@@ -29,7 +29,7 @@ public class ItemListaFaixaPremiacaoBolao extends LinearLayout {
     public void init() {
     }
 
-    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int colorBack, int colorText) {
+    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int colorBack, int colorText, int position) {
         conteudoLinha.setBackgroundColor(colorBack);
         faixaPremio.setTextColor(colorText);
         valorCota.setTextColor(colorText);
@@ -50,7 +50,9 @@ public class ItemListaFaixaPremiacaoBolao extends LinearLayout {
         } else {
             valorCota.setText("-");
         }
-        valorTotal.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido()));
+        if (position == 0) {
+            valorTotal.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido()));
+        }
     }
 
     public ItemListaFaixaPremiacaoBolao(Context context) {
