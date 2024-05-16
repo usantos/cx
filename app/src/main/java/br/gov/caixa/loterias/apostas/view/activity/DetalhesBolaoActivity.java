@@ -99,6 +99,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private void aplicaEstilo() {
 		configBackgroundColorMenu(estilo.getCorEscura());
+		configColorTextMenu(estilo.getCorFonteFundoEscuro());
+
 		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		tvMunicipio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
