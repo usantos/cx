@@ -27,6 +27,7 @@ public class MicroServicoSingleton {
         if (BuildVersionUtil.isPRD()){
             this.queue = SSLPinningUtil.getRequestQueue(ctx);
         } else {
+            SSLPinningUtil.pinagemTQS();
             this.queue = new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
         }
         this.queue.start();
