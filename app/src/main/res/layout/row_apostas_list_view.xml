@@ -100,7 +100,7 @@
         <LinearLayout
             android:id="@+id/layoutTimeCoracao"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="13dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
@@ -138,7 +138,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/contentTest"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="14dp"
             android:background="@color/branco">
@@ -243,50 +243,49 @@
                 app:layout_constraintTop_toBottomOf="@+id/modalidadeConcursoLayout"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <TextView
-                android:id="@+id/numerosText"
-                style="@style/editTextArialMTTheme"
-                android:layout_width="155dp"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/cinza"
-                android:paddingStart="8dp"
-                android:textSize="14sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/modalidadeConcursoLayout"
-                />
-
-            <TextView
-                android:id="@+id/trevos"
-                style="@style/editTextArialMTTheme"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/cinza"
-                android:textSize="14.2sp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/numerosText"
-                app:layout_constraintStart_toEndOf="@+id/modalidadeConcursoLayout"
-                app:layout_constraintEnd_toStartOf="@+id/valorAposta"
-                />
-
-            <TextView
-                android:id="@+id/valorAposta"
-                style="@style/editTextArialMTTheme"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
-                android:layout_marginEnd="0dp"
-                android:text="@string/r_0_00"
-                android:textAlignment="textStart"
-                android:paddingStart="10dp"
-                android:textSize="14.2sp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/excluirApostaCarrinhoLayout"/>
+                app:layout_constraintStart_toEndOf="@id/modalidadeConcursoLayout"
+                app:layout_constraintEnd_toStartOf="@id/excluirApostaCarrinhoLayout">
 
-            <RelativeLayout
+                <TextView
+                    android:id="@+id/numerosText"
+                    style="@style/editTextArialMTTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="155dp"
+                    android:text=""
+                    tools:text="01 - 02 - 03 - 04 - 05 - 06"
+                    android:textColor="@color/cinza"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/trevos"
+                    style="@style/editTextArialMTTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/cinza"
+                    android:textSize="14.2sp"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/numerosText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
                 android:id="@+id/excluirApostaCarrinhoLayout"
-                android:layout_width="44dp"
+                android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:clickable="true"
                 android:gravity="center_horizontal"
@@ -294,13 +293,29 @@
                 app:layout_constraintTop_toTopOf="parent"
                 >
 
+                <TextView
+                    android:id="@+id/valorAposta"
+                    style="@style/editTextArialMTTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/r_0_00"
+                    android:textAlignment="textEnd"
+                    android:textSize="14.2sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
                 <ImageView
                     android:id="@+id/excluirApostaCarrinho"
                     android:layout_width="18dp"
                     android:layout_height="22dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
                     android:src="@drawable/ic_lixeira_mkp" />
-            </RelativeLayout>
+
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout
@@ -314,7 +329,6 @@
                 android:background="@color/cinzaclaro"/>
 
         </RelativeLayout>
-
 
     </LinearLayout>
 

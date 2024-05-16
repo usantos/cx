@@ -99,7 +99,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 	@Override
 	public void bind(IdentificaoDeUmaApostaDas8Modalidades aposta, int position) {
-		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(aposta.getModalidade());
+		EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
+		EstiloModalidadeMKP estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
 		if (position >= 4) {
 			animacao = false;
@@ -111,20 +112,19 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.dadosApostaCarrinho));
 		swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
 
-		this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
-		this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
-		this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
+		this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
+		this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
+		this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 		this.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
 		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 		this.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
 		if (isBolao) {
+			this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+			this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+			this.valorAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+
 			swipeLayout.setSwipeEnabled(false);
-			//imageDetalheBoloes.setVisibility(View.VISIBLE);
-			//textContadorBolao.setVisibility(View.VISIBLE);
-			//iconTimer.setVisibility(View.VISIBLE);
-			//textCotas.setVisibility(View.VISIBLE);
-			//textQtdCotas.setVisibility(View.VISIBLE);
 			iconTimer.setBackground(VectorUtils.getShape(R.drawable.ic_timer, R.color.bolao_barra_titulo));
 			textQtdCotas.setText(String.format("%02d/%02d",
 					aposta.getReservaCotaBolao().getNumeroCotaReservada(),
@@ -249,8 +249,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 						this.textViewNumeroConcurso.setVisibility(View.GONE);
 						this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 						this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
-						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
-						this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
+						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+						this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 					} else {
 						IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica = aposta;
 						if (apostaNumerica.getListaNumerosSelecionados() != null) {
@@ -284,9 +284,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 				case IndicadorSurpresinha.SURPRESINHA_NUMERICA:
 					this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 					this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-					this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
-					this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
-					this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
+					this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+					this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+					this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 
 					for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
 						if (i == aposta.getQuantidadeNumeros() - 1) {
