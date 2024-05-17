@@ -58,6 +58,8 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
 
     private void aplicaEstilo() {
         configBackgroundColorMenu(estilo.getCorEscura());
+        configColorTextMenu(estilo.getCorFonteFundoEscuro());
+
         background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
         if (modalidade.name().toUpperCase().equals("DIA_DE_SORTE") ||
             modalidade.name().toUpperCase().equals("TIMEMANIA")) {
