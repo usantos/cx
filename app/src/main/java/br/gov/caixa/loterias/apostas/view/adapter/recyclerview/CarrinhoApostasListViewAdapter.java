@@ -87,6 +87,8 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaC
 		bundle.putString(DetalhesBolaoActivity.ARG_CODIGO_BOLAO, aposta.getReservaCotaBolao().getCodigoBolaoReserva());
 		bundle.putString(DetalhesBolaoActivity.ARG_MODALIDADE, new Gson().toJson(aposta.getModalidade()));
 		bundle.putString(DetalhesBolaoActivity.ARG_MODO_VISUALIZACAO, new Gson().toJson(ModoVisualizacaoBolaoEnum.LEITURA));
+		bundle.putString(DetalhesBolaoActivity.ARG_NUMERO_COTA, aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +
+				aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
 		Intent intent = IntentUtil.getIntentOrigemDestino(parentActivity, DetalhesBolaoActivity.class, bundle);
 		parentActivity.startActivity(intent);
 	}
