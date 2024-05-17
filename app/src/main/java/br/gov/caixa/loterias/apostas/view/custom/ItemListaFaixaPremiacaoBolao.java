@@ -9,6 +9,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 import javax.annotation.Nullable;
@@ -29,7 +30,7 @@ public class ItemListaFaixaPremiacaoBolao extends LinearLayout {
     public void init() {
     }
 
-    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int colorBack, int colorText, int position) {
+    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int colorBack, int colorText, int position, BigDecimal valorLiquidoPremio) {
         conteudoLinha.setBackgroundColor(colorBack);
         faixaPremio.setTextColor(colorText);
         valorCota.setTextColor(colorText);
@@ -42,7 +43,6 @@ public class ItemListaFaixaPremiacaoBolao extends LinearLayout {
             faixaPremio.setText("-");
         }
 
-
         if (faixaPremiadaDTO.getValorPremioCota() != null){
             valorCota.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorPremioCota()));
         } else if (faixaPremiadaDTO.getValorLiquido() != null){
@@ -51,7 +51,7 @@ public class ItemListaFaixaPremiacaoBolao extends LinearLayout {
             valorCota.setText("-");
         }
         if (position == 0) {
-            valorTotal.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido()));
+            valorTotal.setText(ViewUtils.getMoedaFormat(valorLiquidoPremio));
         }
     }
 
