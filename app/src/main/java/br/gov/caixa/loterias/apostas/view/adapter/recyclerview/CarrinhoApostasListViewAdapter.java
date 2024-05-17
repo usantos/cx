@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -21,10 +24,14 @@ import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaCarrinhoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaCarrinhoListener;
+import br.gov.caixa.loterias.apostas.view.listener.BolaoCarrinhoListener;
 
 public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaCarrinhoHolder> {
 	private Context context;
@@ -55,10 +62,12 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaC
 		View view;
 		if (isBolao) {
 			view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view_boloes, parent, false);
+			return new ApostaCarrinhoHolder(view, parentActivity, animacao, isBolao, onApostaCarrinhoListener(), onBolaoCarrinhoListener());
+
 		} else {
 			view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view, parent, false);
+			return new ApostaCarrinhoHolder(view, parentActivity, animacao, isBolao, onApostaCarrinhoListener(), null);
 		}
-		return new ApostaCarrinhoHolder(view, parentActivity, animacao, isBolao, onApostaCarrinhoListener());
 	}
 
 	@Override
@@ -67,6 +76,21 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaC
 		EstiloModalidade                            estilo = new EstiloModalidade(aposta.getModalidade());
 
 		holder.bind(aposta, position);
+	}
+
+	private BolaoCarrinhoListener onBolaoCarrinhoListener() {
+		return aposta -> detalheCotaBolao(aposta);
+	}
+
+	private void detalheCotaBolao(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+		Bundle bundle = new Bundle();
+		bundle.putString(DetalhesBolaoActivity.ARG_CODIGO_BOLAO, aposta.getReservaCotaBolao().getCodigoBolaoReserva());
+		bundle.putString(DetalhesBolaoActivity.ARG_MODALIDADE, new Gson().toJson(aposta.getModalidade()));
+		bundle.putString(DetalhesBolaoActivity.ARG_MODO_VISUALIZACAO, new Gson().toJson(ModoVisualizacaoBolaoEnum.LEITURA));
+		bundle.putString(DetalhesBolaoActivity.ARG_NUMERO_COTA, aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +
+				aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
+		Intent intent = IntentUtil.getIntentOrigemDestino(parentActivity, DetalhesBolaoActivity.class, bundle);
+		parentActivity.startActivity(intent);
 	}
 
 	private ApostaCarrinhoListener onApostaCarrinhoListener() {

@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,10 +33,12 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     private String dataHoraExpiracao;
 
     private LinearLayout btnVoltarInicio;
-    private TextView tvVoltarInicio;
-    private TextView tvContador;
+    private TextView tvVoltarInicio, tvContador, tvDescricaoInclusao, tvConclusaoPagamento;
     private ConstraintLayout background, timer;
     private EstiloModalidadeMKP estilo;
+    private Boolean isEspecial;
+    private ImageView imageSetaApontandoCarrinho;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +58,27 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
 
     private void aplicaEstilo() {
         configBackgroundColorMenu(estilo.getCorEscura());
-        background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-        timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border,estilo.getCorClara()));
+        configColorTextMenu(estilo.getCorFonteFundoEscuro());
+
+        background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+        if (modalidade.name().toUpperCase().equals("DIA_DE_SORTE") ||
+            modalidade.name().toUpperCase().equals("TIMEMANIA")) {
+            timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorFonteFundoClaro()));
+            imageSetaApontandoCarrinho.setImageDrawable(VectorUtils.getShape(R.drawable.rectangle_5_copy, estilo.getCorFonteFundoClaro()));
+        } else {
+            timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorEscura()));
+        }
+        aplicaEstiloFonte();
+    }
+
+    private void aplicaEstiloFonte() {
+        tvDescricaoInclusao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+        tvConclusaoPagamento.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
     }
 
     private void startFragments() {
         subBarFragment = FragmentUtils.startFragmentSubBarraModalidade(getSupportFragmentManager(),
-                R.id.id_fragment_sub_barra, modalidade, concurso, dataSorteio, false);
+                R.id.id_fragment_sub_barra, modalidade, concurso, dataSorteio, isEspecial);
         rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(),
                 R.id.id_fragment_rodape, valorAposta);
     }
@@ -78,6 +95,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         concurso = getIntent().getStringExtra(getResources().getString(R.string.extra_numero_concurso_atual));
         dataSorteio = getIntent().getStringExtra(getResources().getString(R.string.extra_data_sorteio_atual));
         dataHoraExpiracao = getIntent().getStringExtra(getResources().getString(R.string.extra_data_hora_expiracao_reserva));
+        isEspecial = getIntent().getBooleanExtra(getResources().getString(R.string.extra_especial_reserva), false);
     }
 
     private void setViews(){
@@ -86,6 +104,9 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         tvContador = findViewById(R.id.txt_contador);
         background = findViewById(R.id.layout_corpo);
         timer = findViewById(R.id.timer);
+        tvDescricaoInclusao = findViewById(R.id.textTituloTela);
+        tvConclusaoPagamento = findViewById(R.id.textObservacaoConfirmacao);
+        imageSetaApontandoCarrinho = findViewById(R.id.imageSetaApontandoCarrinho);
 
         tvVoltarInicio.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
     }

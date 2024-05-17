@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         tools:text="Modalidade"
         android:textColor="@color/branco"
-        android:textStyle="bold"
+        android:fontFamily="@font/futura_std_bold"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

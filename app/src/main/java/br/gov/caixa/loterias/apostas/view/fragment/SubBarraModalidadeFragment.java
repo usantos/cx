@@ -27,9 +27,10 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private static final String ARG_ESPECIAL = "AR_ESPECIAL";
 
 	private  View view;
-	private TextView tvModalidade, tvConcurso, tvSorteio;
+	private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio;
 	private ConstraintLayout background;
 	private ImageView trapezio;
+	private ImageView icMoneyBolao;
 
 	private String concurso;
 	private String sorteio;
@@ -75,16 +76,29 @@ public class SubBarraModalidadeFragment extends Fragment {
 		tvSorteio = view.findViewById(R.id.id_sorteio);
 		background = view.findViewById(R.id.layout_fragmento);
 		trapezio = view.findViewById(R.id.back_money);
+		icMoneyBolao = view.findViewById(R.id.trevoImagem);
+		labelConcurso = view.findViewById(R.id.label_concurso);
+		labelSorteio = view.findViewById(R.id.label_sorteio);
 
 		preencheDados();
 		aplicaEstilo();
+		aplicaEstiloFonte();
 
 		return view;
+	}
+
+	private void aplicaEstiloFonte() {
+		tvModalidade.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		tvConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		tvSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		labelConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		labelSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 	}
 
 	private void aplicaEstilo() {
 		background.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorClara()));
 		trapezio.setBackground(VectorUtils.getShape(R.drawable.ic_trapezio_mkp, estilo.getCorEscura()));
+		icMoneyBolao.setImageDrawable(VectorUtils.getShape(R.drawable.ic_money_bolao, estilo.getCorFonteFundoEscuro()));
 		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1){
 			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
 		}
@@ -93,9 +107,9 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private void preencheDados() {
 		if (isEspecial){
 			if (modalidade == ModalidadeEnum.LOTOFACIL){
-				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade));
+				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
 			} else {
-				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade));
+				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
 			}
 		} else {
 			tvModalidade.setText(ModalidadeEnum.fromString(modalidade));
