@@ -37,6 +37,8 @@ public class SilceConnection {
     private static final int TIMEOUT = 30000;
     private static final String TAG_REQUEST = "TAG_REQUEST";
 
+    private static final String AZURE_API = "azure-api.net";
+
     private static final String PUBLICO = "/publico";
     private static final String LOGADO = "/logado";
     private static final List<String> listPublico = Arrays.asList(
@@ -159,7 +161,13 @@ public class SilceConnection {
                                                    Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        //Apenas para teste
+        GsonRequest request;
+        if (url.contains(AZURE_API)) {
+            request = new GsonRequest<>(POST, url, body, responseDataClass, headers, listener, errorListener);
+        } else {
+            request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        }
 
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
@@ -172,7 +180,13 @@ public class SilceConnection {
                                                   Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        //Apenas para teste
+        GsonRequest request;
+        if (url.contains(AZURE_API)) {
+            request = new GsonRequest<>(PUT, url, body, responseDataClass, headers, listener, errorListener);
+        } else {
+            request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        }
 
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
@@ -370,7 +384,7 @@ public class SilceConnection {
         int finalCpfAcessamNuvem = ConfiguracaoAppSingleton.getInstance().getGrupoDeCpfsQueAcessamOServicoDaAzure();
 
         //Apenas para teste
-        //finalCpfAcessamNuvem = 100;
+        finalCpfAcessamNuvem = 100;
 
         if (finalCpfAcessamNuvem == 0) {
             return false;
