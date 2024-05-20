@@ -272,7 +272,7 @@ public class CopiaColaPixFragment extends Fragment {
 	private void sussecoCompra() {
 		new CompraModel(getActivity()).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
 
-		AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
+		AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_pagamento_sucesso));
 		RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
 
 		CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());

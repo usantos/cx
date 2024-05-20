@@ -110,13 +110,25 @@
                 app:layout_constraintStart_toStartOf="@id/id_municipio"
                 />
 
+            <TextView
+                android:id="@+id/id_numero_qtd_cotas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Cota: 20/100"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:layout_marginTop="4dp"
+                app:layout_constraintTop_toBottomOf="@id/id_valor_total"
+                app:layout_constraintStart_toStartOf="@id/id_municipio"
+                />
+
             <View
                 android:id="@+id/id_linha_divisoria2"
                 android:layout_width="match_parent"
                 android:layout_height="0.8dp"
                 android:background="@color/cinza2"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/id_valor_total"
+                app:layout_constraintTop_toBottomOf="@id/id_numero_qtd_cotas"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <androidx.recyclerview.widget.RecyclerView

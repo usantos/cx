@@ -69,9 +69,9 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
     private void configurar() {
         tvAutoPergunta = findViewById(R.id.tvAutoPergunta);
         rgAutoavaliacao = findViewById(R.id.rgAutoavaliacao);
+        btnFecharTop = findViewById(R.id.btnAutoFecharTop);
 
         if (!SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
-            btnFecharTop = findViewById(R.id.btnAutoFecharTop);
             btnFecharTop.setVisibility(View.VISIBLE);
             btnFecharTop.setOnClickListener(v -> {
                 finish();

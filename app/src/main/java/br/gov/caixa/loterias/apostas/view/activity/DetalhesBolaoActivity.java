@@ -41,9 +41,10 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	public static final String ARG_CODIGO_BOLAO = "ARG_CODIGO_BOLAO";
 	public static final String ARG_MODALIDADE = "ARG_MODALIDADE";
 	public static final String ARG_MODO_VISUALIZACAO = "ARG_MODO_VISUALIZACAO";
+	public static final String ARG_NUMERO_COTA = "ARG_NUMERO_COTA";
 
 	private TextView tvValorPremio, tvDescricaoPremioConcurso;
-	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal;
+	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota;
 	private Button btnAdd, btnDiminui, btnAumenta;
 	private TextView tvValorCotaBtn, tvQtdCotas;
 	private TextView tvLabelQtdCotas;
@@ -61,6 +62,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private SomadorCarrinhoFragment somadorCarrinhoFragment;
 	private RodapeSimulacaoApostaFragment rodapeFragment;
+	private String numeroCota;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 			layoutQtdCotas.setVisibility(View.GONE);
 			frameSomador.setVisibility(View.VISIBLE);
 			frameRodape.setVisibility(View.GONE);
+			tvNumeroCota.setVisibility(View.VISIBLE);
+			tvNumeroCota.setText("Cota: " + numeroCota);
 		}
 	}
 
@@ -95,10 +99,13 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		codigoBolao = getIntent().getStringExtra(ARG_CODIGO_BOLAO);
 		modalidade = new Gson().fromJson(getIntent().getStringExtra(ARG_MODALIDADE), ModalidadeEnum.class);
 		modoVisualizacao = new Gson().fromJson(getIntent().getStringExtra(ARG_MODO_VISUALIZACAO), ModoVisualizacaoBolaoEnum.class);
+		numeroCota = getIntent().getStringExtra(ARG_NUMERO_COTA);
 	}
 
 	private void aplicaEstilo() {
 		configBackgroundColorMenu(estilo.getCorEscura());
+		configColorTextMenu(estilo.getCorFonteFundoEscuro());
+
 		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		tvMunicipio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
@@ -135,6 +142,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		tvDescricaoPremioConcurso = findViewById(R.id.id_descricao_valor_premio);
 		tvMunicipio = findViewById(R.id.id_municipio);
 		tvValorCota = findViewById(R.id.id_valor_cota);
+		tvNumeroCota = findViewById(R.id.id_numero_qtd_cotas);
 		tvValorTarifa = findViewById(R.id.id_valor_tarifa_servico);
 		tvValorTotal = findViewById(R.id.id_valor_total);
 		btnAdd = findViewById(R.id.id_btn_add);

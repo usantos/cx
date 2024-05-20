@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixaPremiadaDTO;
@@ -17,10 +18,13 @@ public class FaixaPremiacaoBolaoAdapter extends RecyclerView.Adapter<FaixaPremia
     private List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList;
     private int color;
     private int darkColor;
-    public FaixaPremiacaoBolaoAdapter(List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList, int color, int darkColor) {
+    private BigDecimal valorLiquidoPremio;
+
+    public FaixaPremiacaoBolaoAdapter(List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList, int color, int darkColor, BigDecimal valorLiquidoPremio) {
         this.itemListaFaixaPremiacaoList = itemListaFaixaPremiacaoList;
         this.color = color;
         this.darkColor = darkColor;
+        this.valorLiquidoPremio = valorLiquidoPremio;
     }
 
     @Override
@@ -37,7 +41,7 @@ public class FaixaPremiacaoBolaoAdapter extends RecyclerView.Adapter<FaixaPremia
         //if (position % 2 == 0){
         //    holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), darkColor);
         //} else {
-            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), color, darkColor);
+            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), color, darkColor, position, valorLiquidoPremio);
         //}
     }
 
