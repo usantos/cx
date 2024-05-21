@@ -82,6 +82,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerNotificarCotasExpiradasSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
@@ -92,12 +93,13 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
@@ -193,6 +195,12 @@ public class PrincipalActivity extends AppCompatActivity
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+
+        if (SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
+            startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
+        }
+
+        TimerNotificarCotasExpiradasSingleton.getInstance(this).iniciarVerificacao();
 
 //        if (TestVisao.isTeste()){
 //            buttonHomeBet.setOnLongClickListener(v -> {
@@ -648,7 +656,7 @@ public class PrincipalActivity extends AppCompatActivity
                     getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
 
-            if (data.get(adapterPosition).getTipoModalidade() == ModalidadeEnum.MEGA_SENA &&
+            if (data.get(adapterPosition).getTipoModalidade() != ModalidadeEnum.LOTOMANIA &&
                     ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()){
                 buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
                                                                           getResources()
@@ -709,7 +717,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Click(R.id.relativeLayoutContentRapidao)
     protected void clickRelativeLayoutContentRapidao() {
-        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
         redirecionaRapidao();
     }
 
@@ -755,7 +763,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition != 0 && groupPosition != 8) {
+        if (groupPosition != 0 && groupPosition != 4 && groupPosition != 8) {
             drawerLayout.closeDrawer(GravityCompat.START, false);
         }
         switch (groupPosition) {
@@ -771,8 +779,8 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
             }
                 break;
-            case 4: startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
-                break;
+            //case 4: startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+            //    break;
             case 5: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
                 break;
             case 6: startActivity(new Intent(PrincipalActivity.this, TermosAceiteActivity.class));
@@ -851,6 +859,25 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
+    private void trataMenuJogoResponsavel(int itemPosition) {
+        switch (itemPosition) {
+            case 0:
+                startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                break;
+            case 1:
+                startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
+                break;
+            case 2:
+                startActivity(new Intent(PrincipalActivity.this, AutoSuspensaoActivity.class));
+                break;
+            default:
+                break;
+        }
+
+        sideMenuExpandableListView.collapseGroup(itemPosition);
+        drawerLayout.closeDrawer(GravityCompat.START, false);
+    }
+
 //    private void trataMenuNotificacoes(int itemPosition) {
 //        switch (itemPosition) {
 //            case 0:
@@ -879,20 +906,28 @@ public class PrincipalActivity extends AppCompatActivity
         AbrirMenusGroup(groupPosition));
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            if (groupPosition == 4) {
+                trataMenuJogoResponsavel(childPosition);
+            } else {
             //if (groupPosition == 8) {
             //    trataMenuNotificacoes(childPosition);
             //} else {
                 AbrirMenusItens(childPosition);
-            //}
+            }
             return false;
         });
     }
 
-    private void redirecionaRapidao(){
-        if (DadosUsuarioBO.checarTutorialRapidao()){
-            startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-        }else {
-            startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
+    private void redirecionaRapidao() {
+        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
+            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+            if (DadosUsuarioBO.checarTutorialRapidao()) {
+                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+            } else {
+                startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
+            }
+        } else {
+            AnimacaoFecharMenuRapido(actionApresentarTrevo);
         }
     }
 
@@ -956,6 +991,7 @@ public class PrincipalActivity extends AppCompatActivity
     protected void onDestroy() {
         dbLoteriasHelper.close();
         AlertDialogUtils.dismiss();
+        //MessagingUtils.limpaNotificacoesDoApp(this);
         super.onDestroy();
     }
 

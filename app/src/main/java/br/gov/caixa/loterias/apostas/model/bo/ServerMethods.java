@@ -119,5 +119,10 @@ class ServerMethods {
      static final String BOLOES_DISPONIVEIS = "/boloes/recuperar-boloes-disponiveis";
      static final String DETALHE_BOLAO = "/boloes/detalhar-bolao";
 
+     static final String AUTOAVALIACAO_PERGUNTAS = "/autoavaliacoes/recuperar-perguntas";
+     static final String AUTOAVALIACAO_RESPOSTAS = "/autoavaliacoes/grava-resposta";
+
+     static final String AUTOSUSPENSAO_APOSTADOR = "/usuarios/suspender-conta-apostador";
+
      private ServerMethods(){}
 }

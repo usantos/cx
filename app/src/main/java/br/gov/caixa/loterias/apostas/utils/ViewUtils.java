@@ -58,6 +58,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 
 /**
  * Created by lsimas on 05/04/2017.
@@ -365,7 +366,7 @@ public class ViewUtils {
         }
 
         String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
-        valorTextView.setText(fromHtml(complemento + valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
+        valorTextView.setText(fromHtml(complemento + "<strong> " + valorFormatoMoedaArray[0] + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
     /**
@@ -467,6 +468,19 @@ public class ViewUtils {
         }
     }
 
+    public static SpannableStringBuilder textCaixaSTDBold(Context context, String texto) {
+        try{
+            Typeface font = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+
+            PositionStringBold positionStringBold = positionString(texto);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+            spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            return spannableStringBuilder;
+        }catch (Exception e){
+            return  new SpannableStringBuilder().append(texto);
+        }
+    }
+
     public static SpannableStringBuilder textColor(Context context, String texto, int idCor) {
 
         return textColor(context,texto,idCor,true);
@@ -500,7 +514,7 @@ public class ViewUtils {
         return spannableStringBuilder;
     }
 
-    private static PositionStringBold positionString(String texto) {
+    public static PositionStringBold positionString(String texto) {
         String[] listaString = texto.split("_");
         int start = listaString[0].length();
         int end = listaString[1].length() + start;

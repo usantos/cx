@@ -94,6 +94,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/title_sair"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:hint="sair do app"
@@ -109,6 +110,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
                     tools:text="@string/placeholder_versao"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:hint="Versão"
                     android:textColor="@android:color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -116,6 +118,9 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.google.android.material.navigation.NavigationView>
+
 </androidx.drawerlayout.widget.DrawerLayout>

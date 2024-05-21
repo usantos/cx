@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/descricaoDetalheCarrinhoRelativeLayout"
+        android:id="@+id/layout_corpo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/mega_verde_escuro_mkp"
@@ -64,7 +64,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/button_white_with_rouded_black_border"
-            android:backgroundTint="@color/mega_verde_opaco_mkp"
             android:layout_marginTop="16dp"
             android:padding="16dp"
             app:layout_constraintTop_toTopOf="@id/imageSetaApontandoCarrinho"
@@ -106,6 +105,7 @@
             android:text="@string/infoConcluaPagamentoBolao"
             android:textAlignment="center"
             android:textColor="@color/branco"
+            android:textStyle="bold"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

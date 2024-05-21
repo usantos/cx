@@ -133,8 +133,9 @@ public class FragmentUtils {
 		return fragment;
 	}
 
-	public static SubBarraModalidadeFragment startFragmentSubBarraModalidade(FragmentManager fm, int id, ModalidadeEnum modalidade, String concurso, String sorteio) {
-		SubBarraModalidadeFragment frag = SubBarraModalidadeFragment.newInstance(modalidade, concurso, sorteio);
+	public static SubBarraModalidadeFragment startFragmentSubBarraModalidade(FragmentManager fm, int id, ModalidadeEnum modalidade,
+																			 String concurso, String sorteio, boolean especial) {
+		SubBarraModalidadeFragment frag = SubBarraModalidadeFragment.newInstance(modalidade, concurso, sorteio, especial);
 		startFragment(fm, id, frag);
 		return frag;
 	}

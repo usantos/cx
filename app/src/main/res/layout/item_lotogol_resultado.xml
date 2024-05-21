@@ -29,13 +29,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_image"
-        android:textStyle="bold"/>
+        android:fontFamily="@font/caixa_std_bold"/>
     
     <TextView
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:text="@string/_0"
-        android:fontFamily="@font/futura_std_bold"
+        android:fontFamily="@font/caixa_std_bold"
         android:textSize="14.1sp"
         android:textColor="@color/lotogolclaro"
         android:textAlignment="center"

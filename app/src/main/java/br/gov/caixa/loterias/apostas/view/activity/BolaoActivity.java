@@ -34,6 +34,7 @@ import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrosselBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
@@ -178,6 +179,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 						txtFimLista.setVisibility(View.VISIBLE);
 					}
 
+					if (cotasDisponiveis == null || cotasDisponiveis.isEmpty()){
+						apresentanEstadoVazio();
+					}
 					AlertDialogUtils.dismiss();
 				} else if (payload.getCotas().isEmpty() || payload.getCotas().size() < PaginacaoFiltro.QTD_POR_PAGINA){
 					acumulouBoloesParaApresentar = true;
@@ -424,6 +428,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		Bundle bundle = new Bundle();
 		bundle.putString(DetalhesBolaoActivity.ARG_CODIGO_BOLAO, bolao.getCodigoBolao());
 		bundle.putString(DetalhesBolaoActivity.ARG_MODALIDADE, new Gson().toJson(bolao.getModalidade()));
+		bundle.putString(DetalhesBolaoActivity.ARG_MODO_VISUALIZACAO, new Gson().toJson(ModoVisualizacaoBolaoEnum.SIMULACAO));
 		Intent intent = IntentUtil.getIntentOrigemDestino(this, DetalhesBolaoActivity.class, bundle);
 		startActivity(intent);
 	}

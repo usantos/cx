@@ -90,33 +90,6 @@ public enum ModalidadeEnum implements Serializable {
         }
     }
 
-    public static String fromStringComprovante(ModalidadeEnum modalidade) {
-        switch (modalidade) {
-            case QUINA:
-                return "Quina";
-            case LOTECA:
-                return "Loteca";
-            case LOTOGOL:
-                return "Lotogol";
-            case LOTOFACIL:
-                return "Lotofácil";
-            case LOTOMANIA:
-                return "Lotomania";
-            case MEGA_SENA:
-                return "Mega Sena";
-            case TIMEMANIA:
-                return "Timemania";
-            case DUPLA_SENA:
-                return "Dupla Sena";
-            case DIA_DE_SORTE:
-                return "Dia de Sorte";
-            case SUPER_7:
-                return "Super Sete";
-
-        }
-        return "";
-    }
-
     public static ModalidadeEnum fromModalidadeDTO(ModalidadeDTO modalidade) {
         switch (modalidade.getValor()) {
             case 2:
@@ -218,4 +191,19 @@ public enum ModalidadeEnum implements Serializable {
         }
         return "";
     }
+
+    public static String getDescricaoEspecialDuasLinhas(ModalidadeEnum modalidade) {
+        switch (modalidade) {
+            case QUINA:
+                return "Quina de \nSão João";
+            case LOTOFACIL:
+                return "Lotofácil da \nIndependência";
+            case MEGA_SENA:
+                return "Mega da \nVirada";
+            case DUPLA_SENA:
+                return "Dupla de \nPáscoa";
+        }
+        return "";
+    }
+
 }

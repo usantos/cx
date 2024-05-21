@@ -42,7 +42,7 @@
                     android:id="@+id/labelTimeCoracaoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/futura_std_book"
+                    android:fontFamily="@font/caixa_std_book"
                     android:text="@string/label_time_coracao"
                     android:textColor="@color/branco"
                     android:textSize="14.2sp" />
@@ -51,7 +51,7 @@
                     android:id="@+id/textTimeCoracao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textColor="@color/branco"
                     android:textSize="14.2sp"
                     tools:text="Flamengo" />
@@ -71,4 +71,5 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
+
 </RelativeLayout>

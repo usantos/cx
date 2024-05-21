@@ -9,6 +9,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 import javax.annotation.Nullable;
@@ -29,8 +30,11 @@ public class ItemListaFaixaPremiacaoBolao extends LinearLayout {
     public void init() {
     }
 
-    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int color) {
-        conteudoLinha.setBackgroundColor(color);
+    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int colorBack, int colorText, int position, BigDecimal valorLiquidoPremio) {
+        conteudoLinha.setBackgroundColor(colorBack);
+        faixaPremio.setTextColor(colorText);
+        valorCota.setTextColor(colorText);
+        valorTotal.setTextColor(colorText);
 
         if (faixaPremiadaDTO.getNome() != null && !faixaPremiadaDTO.getNome().isEmpty()){
             faixaPremio.setText(faixaPremiadaDTO.getNome());
@@ -39,7 +43,6 @@ public class ItemListaFaixaPremiacaoBolao extends LinearLayout {
             faixaPremio.setText("-");
         }
 
-
         if (faixaPremiadaDTO.getValorPremioCota() != null){
             valorCota.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorPremioCota()));
         } else if (faixaPremiadaDTO.getValorLiquido() != null){
@@ -47,7 +50,9 @@ public class ItemListaFaixaPremiacaoBolao extends LinearLayout {
         } else {
             valorCota.setText("-");
         }
-        valorTotal.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido()));
+        if (position == 0) {
+            valorTotal.setText(ViewUtils.getMoedaFormat(valorLiquidoPremio));
+        }
     }
 
     public ItemListaFaixaPremiacaoBolao(Context context) {

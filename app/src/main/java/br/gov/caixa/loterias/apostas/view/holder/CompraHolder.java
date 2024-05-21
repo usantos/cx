@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostaLotogolDetalhesComprasAdapter;
@@ -72,6 +73,10 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 
 		if (aposta.getIndicadorCotaBolao()) {
 			tagBolao.setVisibility(View.VISIBLE);
+
+			EstiloModalidadeMKP estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
+			tagBolao.setImageResource(estiloModalidadeMKP.getImagemTrianguloOutline());
+
 			this.dataConcursoListaComprasTextView.setText(aposta.getReservaCotaBolao().getDataRegistroBolao());
 			this.concursoListaComprasTextView
 					.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),

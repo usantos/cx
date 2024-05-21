@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
@@ -46,6 +47,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private OnApostaConfirmadaListener onApostasConfirmadasListener;
 	private Activity parentActivity;
 	private ApostasConfirmadasFragment fragment;
+	private EstiloModalidadeMKP estiloModalidadeMKP;
 
 	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity, ApostasConfirmadasFragment fragment) {
 		super(view);
@@ -77,18 +79,22 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	@Override
 	public void bind(ApostaDTO aposta, int position) {
 		EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
+		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
-		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
+		int color;
+		color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorClara());
+//		if (isApostaBolao(aposta)) {
+//			color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorEscura());
+//		} else {
+//			color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
+//		}
+		this.color = color;
+		this.stripe.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
+		this.modalidadeTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
+		this.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
+		this.dataApostaTxt.setText(aposta.getDataCompra());
 
 		String descricaoStatus = getDescricaoString(aposta, position);
-
-		this.color = color;
-		this.stripe.setBackgroundColor(color);
-		this.modalidadeTxt.setTextColor(color);
-		this.dataApostaTxt.setText(aposta.getDataCompra());
-		this.dataApostaTxt.setTextColor(color);
-		this.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta));
-		this.situacaoTxt.setTextColor(color);
 		if (descricaoStatus.isEmpty()){
 			this.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.falha_comunicacao_situacao_aposta));
 		} else {
@@ -108,6 +114,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		if (isApostaBolao(aposta)){
 			addCarrinho.setVisibility(View.INVISIBLE);
 			addCarrinho.setOnClickListener(null);
+			tagBolao.setImageResource(estiloModalidadeMKP.getImagemTriangulo());
 			tagBolao.setVisibility(View.VISIBLE);
 		} else {
 			addCarrinho.setVisibility(View.VISIBLE);
@@ -147,7 +154,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			if (parametroJogo != null){
 				// 4 = aposta efetivada
 				if (aposta.getSituacao().getValor() == 4) {
-					this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
+					//this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
 					descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
 
 					conferirResultado(position, aposta);
@@ -228,7 +235,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 														 quantidade));
 		} else if (isApostaBolao(aposta)){
 			this.concursoTxt.setText("Cota " + aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +
-					aposta.getReservaCotaBolao().getQtdCotaTotalBolao() + "\n\n" +
+					aposta.getReservaCotaBolao().getQtdCotaTotalBolao() + "\n" +
 					itemView.getContext().getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
 		} else {
 			this.concursoTxt.setText(itemView.getContext().getString(R.string.label_aposta_concurso, aposta.getConcursoInicial()));
@@ -266,13 +273,13 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	}
 
 	public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
-		holder.stripe.setBackgroundColor(holder.color);
-		holder.modalidadeTxt.setTextColor(holder.color);
-		holder.situacaoTxt.setTextColor(holder.color);
+		//holder.stripe.setBackgroundColor(holder.color);
+		//holder.modalidadeTxt.setTextColor(holder.color);
+		//holder.situacaoTxt.setTextColor(holder.color);
 
 		if (situacao.getDescricao().equalsIgnoreCase(itemView.getContext().getResources().getString(R.string.premiada_maiusculo))) {
 			holder.situacaoTxt.setTypeface(null, Typeface.BOLD);
-			holder.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+			//holder.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
 			holder.situacaoTxt.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_underline) + situacao.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))) + itemView.getContext().getResources().getString(R.string.underline)));
 		} else {
 			holder.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_espaco)

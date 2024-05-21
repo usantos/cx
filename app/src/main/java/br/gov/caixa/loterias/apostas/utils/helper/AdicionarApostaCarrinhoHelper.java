@@ -22,6 +22,8 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
@@ -30,11 +32,9 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmBolao;
@@ -55,6 +55,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+
 
 /**
  * Created by joafilho on 10/04/2018.
@@ -312,6 +313,7 @@ public class AdicionarApostaCarrinhoHelper {
                 }
                 telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_hora_expiracao_reserva),
                         buscaBolaoCarrinho(((IdentificaoDeUmBolao) aposta).getIdBolao(), carrinhoDtoResponse));
+                telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_especial_reserva), ((IdentificaoDeUmBolao) aposta).getTipoConcurso().getValor().equals("2"));
             } else {
                 //telaConfirmacao.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
                 ParametroSimulacao parametroSimulacao =  ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades);
@@ -595,5 +597,34 @@ public class AdicionarApostaCarrinhoHelper {
             }
         }
         return null;
+    }
+
+    public static Boolean usuarioEstaSuspenso(Activity actv) {
+        return usuarioEstaSuspenso(actv, 0);
+    }
+
+    public static Boolean usuarioEstaSuspenso(Activity actv, int acaoPosDismiss) {
+        if (SessaoUsuario.getInstance().getSuspensaoTemporariaApostador()) {
+            ViewUtils.alertTitleButton(actv, R.string.label_atencao,
+                    actv.getString(R.string.autosuspensao_alerta),
+                    actv.getString(R.string.btn_entendi),
+                    dialogInterface -> {
+                        dialogInterface.dismiss();
+                        switch (acaoPosDismiss) {
+                            case 0:
+                                actv.finish();
+                                return;
+                            case 1:
+                                PrincipalActivity_.intent(actv).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                                actv.finish();
+                                return;
+                            default:
+                                return;
+                        }
+                    }
+            );
+            return true;
+        }
+        return false;
     }
 }

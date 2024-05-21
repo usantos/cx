@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <!--  Permission to Topaz OFD  -->
@@ -107,6 +108,18 @@
             android:name=".controllers.JogoResponsavelActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.JogoResponsavel" />
+        <activity
+            android:name=".controllers.AutoavaliacaoStartActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controllers.AutoavaliacaoFormActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".controllers.AutoSuspensaoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".controllers.ConfiguracaoRapidaoActivity"
             android:screenOrientation="portrait"

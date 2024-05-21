@@ -53,6 +53,7 @@
                     android:layout_height="32dp"
                     android:background="@null"
                     android:gravity="center"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/label_ultimo_resultado"
                     android:textAllCaps="false"
                     android:textColor="@color/branco" />
@@ -95,6 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/amarelo"
+                android:fontFamily="@font/caixa_std_regular"
                 tools:text="Teste Teste Teste" />
         </LinearLayout>
 
@@ -136,11 +138,12 @@
                         android:autoSizeTextType="uniform"
                         android:textColor="@color/branco"
                         android:textSize="18.0sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="@string/mega_sena" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
@@ -179,8 +182,8 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/branco"
                         android:textSize="18.0sp"
-                        android:textStyle="bold"
-                        tools:text="@string/mega_sena" />
+                        tools:text="@string/mega_sena"
+                        android:fontFamily="@font/caixa_std_bold"/>
                 </LinearLayout>
 
                 <RelativeLayout
@@ -202,7 +205,7 @@
                             android:textAlignment="center"
                             android:textColor="@color/megasenaclaro"
                             android:textSize="25sp"
-                            android:textStyle="bold"
+                            android:fontFamily="@font/caixa_std_bold"
                             tools:text="R$ 0,00" />
 
                         <TextView
@@ -214,7 +217,9 @@
                             android:textAlignment="center"
                             android:textColor="@color/cinzaescuro"
                             android:textSize="13.8sp"
-                            tools:text="Prêmio estimado do concurso " />
+                            tools:text="Prêmio estimado do concurso "
+                            android:fontFamily="@font/caixa_std_regular" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -261,6 +266,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/title_sorteio"
+                                    android:fontFamily="@font/caixa_std_regular"
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="12sp" />
 
@@ -272,9 +278,11 @@
                                     android:gravity="bottom"
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="12sp"
-                                    android:textStyle="bold"
-                                    tools:text="Sábado, 18 de julho" />
+                                    android:fontFamily="@font/caixa_std_semi_bold"
+                                    tools:text="Segunda-feira\n 25/03/2024 às 18:00" />
+
                             </LinearLayout>
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -306,6 +314,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/title_apostasEncerram"
+                                    android:fontFamily="@font/caixa_std_regular"
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="12sp" />
 
@@ -317,15 +326,16 @@
                                     android:gravity="bottom"
                                     android:textColor="@color/cinzaescuro"
                                     android:textSize="12sp"
-                                    android:textStyle="bold"
+                                    android:fontFamily="@font/caixa_std_semi_bold"
                                     tools:text="0 dias e 0 horas" />
+
                             </LinearLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>
 
                 </RelativeLayout>
-
 
             </LinearLayout>
 

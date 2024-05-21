@@ -46,7 +46,7 @@
                             android:text="@string/label_rapidao"
                             android:textColor="@color/laranjacaixa"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:fontFamily="@font/caixa_std_bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -55,6 +55,7 @@
                             android:layout_below="@+id/tituloRapidao"
                             android:gravity="end"
                             android:text="@string/label_faca_apostas_apenas_um_clique"
+                            android:fontFamily="@font/caixa_std_regular"
                             android:textColor="@color/cinza"
                             android:textSize="13sp" />
                     </RelativeLayout>
@@ -104,7 +105,7 @@
                             android:text="@string/label_ler_bilhestes"
                             android:textColor="@color/vermelhoBilhetes"
                             android:textSize="14sp"
-                            android:textStyle="bold"/>
+                            android:fontFamily="@font/caixa_std_bold"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -112,6 +113,7 @@
                             android:layout_below="@+id/tituloLerBilhetes"
                             android:layout_alignParentEnd="true"
                             android:gravity="end"
+                            android:fontFamily="@font/caixa_std_regular"
                             android:text="@string/label_apostou_loterica_confira_resultados"
                             android:textColor="@color/cinza"
                             android:textSize="13sp" />
@@ -160,7 +162,7 @@
                             android:text="@string/jr_titulo_maiusculo"
                             android:textColor="@color/jr_radio_text_selected"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:fontFamily="@font/caixa_std_bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -168,6 +170,7 @@
                             android:layout_below="@+id/tv_titulo_jr"
                             android:layout_alignParentEnd="true"
                             android:gravity="right"
+                            android:fontFamily="@font/caixa_std_regular"
                             android:text="@string/jr_desc_menu_trevo"
                             android:textColor="@color/cinza"
                             android:textSize="13sp" />
@@ -217,7 +220,7 @@
                             android:text="@string/label_favoritas"
                             android:textColor="@color/azulfavoritas"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:fontFamily="@font/caixa_std_bold"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -225,6 +228,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_below="@+id/tituloFavoritas"
                             android:gravity="right"
+                            android:fontFamily="@font/caixa_std_regular"
                             android:text="@string/label_suas_apostas_sorte_apenas_clique"
                             android:textColor="@color/cinza"
                             android:textSize="13sp" />
@@ -272,7 +276,7 @@
                             android:layout_alignParentTop="true"
                             android:textColor="@color/verdeazul"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:fontFamily="@font/caixa_std_bold" />
 
                         <TextView
                             android:id="@+id/textoRepassados"
@@ -282,6 +286,7 @@
                             android:gravity="right"
                             android:layout_below="@+id/valorRepassesPrincipal"
                             android:textColor="@color/cinza"
+                            android:fontFamily="@font/caixa_std_regular"
                             android:textSize="14sp" />
                     </RelativeLayout>
 
@@ -333,7 +338,7 @@
                             android:gravity="right"
                             android:textColor="@color/rosa_radio_text"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:fontFamily="@font/caixa_std_bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -341,6 +346,7 @@
                             android:layout_below="@+id/tvMsgDisque180"
                             android:layout_alignParentEnd="true"
                             android:gravity="right"
+                            android:fontFamily="@font/caixa_std_regular"
                             android:text="@string/textoMsgDisque180"
                             android:textColor="@color/cinza"
                             android:textSize="13sp" />
@@ -384,6 +390,7 @@
         android:layout_marginBottom="2dp"
         android:textColor="@color/azulescuro"
         android:textSize="10sp"
+        android:fontFamily="@font/caixa_std_regular"
         tools:text="valor mínimo da compra: R$0,00"
         android:layout_alignParentBottom="true"
         android:visibility="invisible"
@@ -412,6 +419,7 @@
         android:textAllCaps="false"
         android:textColor="@color/branco"
         android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_regular"
         tools:text="Aposta\npor R$ 2,00" />
 
     <Button
@@ -428,7 +436,8 @@
         android:textColor="@color/laranjacaixa"
         android:textSize="16sp"
         android:visibility="gone"
-        android:text="" />
+        android:text=""
+        android:fontFamily="@font/caixa_std_regular" />
 
     <RelativeLayout
         android:id="@+id/id_fg_somador_carrinho"

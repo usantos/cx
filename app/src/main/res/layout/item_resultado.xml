@@ -19,7 +19,7 @@
             android:textColor="@color/branco"
             android:textSize="14.2sp"
             android:layout_marginTop="15dp"
-            android:fontFamily="@font/arialmt"/>
+            android:fontFamily="@font/caixa_std_regular"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

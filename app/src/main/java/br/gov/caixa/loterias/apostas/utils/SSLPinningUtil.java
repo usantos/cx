@@ -36,47 +36,7 @@ import br.gov.caixa.loterias.apostas.R;
 
 public class SSLPinningUtil {
 
-//    public static void pinagem(){
-//        if (BuildVersionUtil.isPRD()) {
-//            Toast.makeText(Aplicacao.application.getApplicationContext(), "PRD", Toast.LENGTH_LONG).show();
-//            pinagemPRD();
-//        } else {
-//            Toast.makeText(Aplicacao.application.getApplicationContext(), "TQS", Toast.LENGTH_LONG).show();
-//            pinagemTQS();
-//        }
-//    }
-
-    private static void pinagemPRD(){
-        try {
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-
-            InputStream caInput = new BufferedInputStream(Aplicacao.application.getResources().openRawResource(R.raw.certificado));
-            Certificate ca = cf.generateCertificate(caInput);
-            caInput.close();
-
-            String keyStoreType = KeyStore.getDefaultType();
-            KeyStore trusted = KeyStore.getInstance(keyStoreType);
-            trusted.load(null, null);
-            trusted.setCertificateEntry("ca", ca);
-
-            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-            tmf.init(trusted);
-
-            SSLContext context = SSLContext.getInstance("TLS");
-            context.init(null, tmf.getTrustManagers(), null);
-
-            SSLSocketFactory sf = context.getSocketFactory();
-            Volley.newRequestQueue(Aplicacao.application.getApplicationContext(), new HurlStack(null, sf));
-        } catch (CertificateException e){
-            e.printStackTrace();
-        } catch (IOException | NoSuchAlgorithmException | KeyManagementException |
-                 KeyStoreException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static void pinagemTQS(){
+    public static void pinagemTQS(){
         try {
             SSLContext context1 = SSLContext.getInstance("TLS");
             context1.init(null, new X509TrustManager[]{new X509TrustManager() {
@@ -97,24 +57,6 @@ public class SSLPinningUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static RequestQueue testePinagem(Context ctx) {
-        HurlStack hurlStack = new HurlStack() {
-            @Override
-            protected HttpURLConnection createConnection(URL url) throws IOException {
-                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) super.createConnection(url);
-                try {
-                    httpsURLConnection.setSSLSocketFactory(getSSLSocketFactory(ctx));
-                    httpsURLConnection.setHostnameVerifier(getHostnameVerifier());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return httpsURLConnection;
-            }
-        };
-
-        return Volley.newRequestQueue(ctx, hurlStack);
     }
 
     private static HostnameVerifier getHostnameVerifier() {
@@ -182,9 +124,6 @@ public class SSLPinningUtil {
 
         return sslContext.getSocketFactory();
     }
-
-
-
 
     public static RequestQueue getRequestQueue(Context ctx) {
         // Carregar o certificado do recurso raw

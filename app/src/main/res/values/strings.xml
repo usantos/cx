@@ -308,6 +308,7 @@
     <string name="label_veja_retirar_premio">Veja como retirar o seu prêmio:</string>
     <string name="label_time_coracao">Time do coração&#160;</string>
     <string name="label_time_coracao_dois_pontos">Time do coração:&#160;</string>
+    <string name="label_dia_sorte_dois_pontos">Mês da sorte:&#160;</string>
     <string name="label_empty"> </string>
     <string name="label_rapidao">Rapidão</string>
     <string name="label_apostas_fav_rapidao_empty">Você ainda não possui apostas favoritas. É muito fácil! Simule uma aposta e adicione como favorita.</string>
@@ -833,8 +834,10 @@
     <string name="dd_mm">dd/MM</string>
     <string name="dd_mm_yyyy">dd/MM/yyyy</string>
     <string name="dd_mm_yyyy_hh_mm_ss">dd/MM/yyyy HH:mm:ss</string>
+    <string name="dd_mm_yyyy_hh_mm">dd/MM/yyyy HH:mm</string>
     <string name="eeee">EEEE</string>
     <string name="hh_mm_ss">HH:mm:ss</string>
+    <string name="hh_mm">HH:mm</string>
     <string name="as_espacado">&#160;às&#160;</string>
     <string name="sorteio">Sorteio</string>
     <string name="resultado">Resultado</string>
@@ -1293,7 +1296,7 @@
     <string name="depplink_path_compras">https://loteriasonline.caixa.gov.br/silce-web/#compras</string>
 
     <!-- Push Notification -->
-    <string name="default_notification_channel_id">ChannelId</string>
+    <string name="default_notification_channel_id">CanalLoteriasId</string>
     <string name="default_notification_name">Loterias</string>
     <string name="default_notification_channel_descricao">Canal Loterias</string>
     <string name="icone_notificacoes">Notificações</string>
@@ -1316,8 +1319,8 @@
     <string name="numeros_quero">Números que eu quero</string>
     <string name="numeros_nao_quero">Números que eu não quero</string>
     <string name="nome_ou_codigo">Código E. Lotérico</string>
-    <string name="apostas_boloes">_Apostas Bolões_\na partir de R$10,00</string>
-    <string name="descritivo_tela_bolao">Veja aqui os bolões da Mega-Sena em destaque. Em breve, mais modalidades!</string>
+    <string name="apostas_boloes">_Compre seu bolão_</string>
+    <string name="descritivo_tela_bolao">Veja aqui os bolões em destaque. Você também pode personalizar sua busca no campo filtros</string>
     <string name="cotas_bolao">Cotas bolão</string>
     <string name="apostas_individuais">Apostas individuais</string>
     <string name="cota_reservada">Cota reservada</string>
@@ -1326,6 +1329,7 @@
     <string name="loteca_nao_favorita">Apostas da Loteca e Bolões não são salvos no carrinho favorito.</string>
     <string name="pagamento_pix_estornado">Não foi possível completar a sua aposta e seu Pix será devolvido. \n\nVocê pode salvar esta compra como carrinho favorito para refazer a mesma compra e gerar novo código para pagamento.</string>
     <string name="extra_data_hora_expiracao_reserva">dataHoraExpiracaoReserva</string>
+    <string name="extra_especial_reserva">isEspecialReserva</string>
     <string name="label_cota_concurso_bold">Cota: </string>
     <string name="label_voltar_apostas_individuais">_Voltar Apostas Individuais_</string>
     <string name="alterar_pesquisa">_Alterar_\na pesquisa com novos filtros</string>
@@ -1336,5 +1340,43 @@
     <string name="ir_para_minhas_compras">Ir para as\n_Minhas Compras_</string>
     <string name="descricao_filtro_vazio">Não encontramos nenhum bolão que corresponda à sua pesquisa!</string>
     <string name="descricao_erro_filtro">Ocorreu um erro.\nTente novamente</string>
+    <string name="primeiro_sorteiro">Primeiro sorteio</string>
+    <string name="segundo_sorteiro">Segundo sorteio</string>
+    <string name="seus_jogos">Seus jogos</string>
+
+    <!-- Jogo Responsavel -->
+    <string name="autoavaliacao_apostador">Autoavaliação para o Apostador</string>
+    <string name="autoavaliacao_bem_vindo">Bem-vindo ao processo de\nautoavaliação Loterias CAIXA!</string>
+    <string name="autoavaliacao_texto">A partir de agora, uma vez por ano, será necessário que você responda poucas e rápidas perguntas para que possamos entender seu perfil e orientá-lo sobre como evitar ou tratar, se for o caso, o desenvolvimento do transtorno do jogo compulsivo.</string>
+    <string name="btn_autoavaliacao_start">Seguir para autoavaliação</string>
+    <string name="tv_autoavaliacao_1">Este app é válido para qualquer tipo de aposta a a dinheiro, e tem como base os critérios de avaliação breve da prevalência de Transtorno do jogo, por meio da escala de rastreio</string>
+    <string name="tv_autoavaliacao_2">NODS*-CLIP Problem Gambling Screen</string>
+    <string name="tv_autoavaliacao_3">*Volberg, R. A., Munck, I. M., &amp; Petry, N. M. (2011). A quick and simple screening method for pathological and problem gamblers in addiction programs and practices. The American Journal on Addictions, 20, 220–227.</string>
+    <string name="anterior">Anterior</string>
+    <string name="proximo">Próximo</string>
+    <string name="fechar">Fechar</string>
+    <string name="concluido">Concluido</string>
+    <string name="autoavaliacao_ajuda">Onde Procurar Ajuda</string>
+    <string name="autoavaliacao_parabens">_Parabéns!_\nO seu hábito de apostar não está interferindo em sua vida, você é um jogador responsável.</string>
+    <string name="autoavaliacao_atencao">_Muita atenção!_\nSe você respondeu "sim" para um ou mais dessas questões, recomendamos que você procure avaliação adicional.</string>
+    <string name="autosuspensao_suspensao">Auto-suspensão Jogo Responsável</string>
+    <string name="tv_autosuspensao_1">1.Essa ação acarretará na impossibilidade de efetuar compras de apostas no Portal loterias na internet e app loterias durante o periodo selecionado</string>
+    <string name="tv_autosuspensao_2">1.1 O periodo de suspensão pode ser de 24 hs, 48 hs, 7 dias, 15 dias ou 30 dias, o critério do apostador </string>
+    <string name="tv_autosuspensao_3">1.2 A suspensão passa a valer a partir da confirmação da solicitação</string>
+    <string name="tv_autosuspensao_4">1.3 A suspensão temporária de compras é irreversível enquanto durar o periodo selecionado</string>
+    <string name="tv_suspensao_pergunta">Selecione abaixo o período de suspensão das compras</string>
+    <string name="tv_24_horas">24 horas</string>
+    <string name="tv_48_horas">48 horas</string>
+    <string name="tv_7_dias">7 dias</string>
+    <string name="tv_15_dias">15 dias</string>
+    <string name="tv_30_dias">30 dias</string>
+    <string name="tv_estou_ciente">Estou ciente e concordo com as informações acima</string>
+    <string name="suspender_apostas">Suspender Apostas</string>
+    <string name="tv_confirma_suspensao">A suspensão temporária de compras é irreversível enquanto durar o período selecionado.\n\nVocê confirma a suspensão por XX ?</string>
+    <string name="tv_suspenso_ate">A suspensão realizada com o prazo de XX\n\nUsuário suspenso até o dia\nYY</string>
+
+    <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
+    <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>
+    <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
 
 </resources>

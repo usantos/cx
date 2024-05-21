@@ -18,6 +18,11 @@ public class ExpandableListDataSideMenu {
     public static final String MENU_FAVORITAS = "Apostas favoritas";
     public static final String MENU_CARRINHOS_FAVORITOS = "Carrinhos favoritos";
     public static final String MENU_MEUS_CARTOES = "Meus cartões";
+
+    public static final String MENU_JOGO_RESPONSAVEL_POLITICA = "Política de jogo responsável";
+    public static final String MENU_JOGO_RESPONSAVEL_AVALIACAO = "Autoavaliação do apostador";
+    public static final String MENU_JOGO_RESPONSAVEL_SUSPENSAO = "Autossuspensão temporária";
+
     //public static final String MENU_NOTIFICACOES1 = "Mensagens";
     //public static final String MENU_NOTIFICACOES2 = "Preferências";
 
@@ -41,7 +46,12 @@ public class ExpandableListDataSideMenu {
         List<String> sociais = new ArrayList<>();
         List<String> termo = new ArrayList<>();
         List<String> duvidas = new ArrayList<>();
-        List<String> JogoResponsavel = new ArrayList<>();
+
+        List<String> jogoResponsavel = new ArrayList<>();
+        jogoResponsavel.add(MENU_JOGO_RESPONSAVEL_POLITICA);
+        jogoResponsavel.add(MENU_JOGO_RESPONSAVEL_AVALIACAO);
+        jogoResponsavel.add(MENU_JOGO_RESPONSAVEL_SUSPENSAO);
+
         //List<String> Notificacoes = new ArrayList<>();
         //notificacoes.add(MENU_NOTIFICACOES1);
         //notificacoes.add(MENU_NOTIFICACOES2);
@@ -50,7 +60,7 @@ public class ExpandableListDataSideMenu {
         expandableListDetail.put("Resultados", Resultados);
         expandableListDetail.put("Rapidão", Rapidao);
         expandableListDetail.put("Conferir bilhetes", bilhetes);
-        expandableListDetail.put("Jogo responsável", JogoResponsavel);
+        expandableListDetail.put("Jogo responsável", jogoResponsavel);
         expandableListDetail.put("Repasses sociais", sociais);
         expandableListDetail.put("Termo de aceite", termo);
         expandableListDetail.put("Dúvidas", duvidas);

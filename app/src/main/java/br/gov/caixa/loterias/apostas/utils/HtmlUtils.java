@@ -528,7 +528,8 @@ public class HtmlUtils {
                 stringBuilder.append(String.format("<td style=\"border-right: 1px solid orange; border-bottom: 1px solid orange;\">%s</td>", ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorPremioCota())));
                 if (firstTime) {
                     firstTime = false;
-                    stringBuilder.append(String.format("<th rowspan=\"%d\" style=\"border-right: 1px solid orange;\">%s</th>", concursoPremiadoDTO.getFaixas().size(), ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido())));
+                    //stringBuilder.append(String.format("<th rowspan=\"%d\" style=\"border-right: 1px solid orange;\">%s</th>", concursoPremiadoDTO.getFaixas().size(), ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido())));
+                    stringBuilder.append(String.format("<th rowspan=\"%d\" style=\"border-right: 1px solid orange;\">%s</th>", concursoPremiadoDTO.getFaixas().size(), ViewUtils.getMoedaFormat(concursoPremiadoDTO.getValorLiquido())));
                 }
             }
             stringBuilder.append("</tr>");

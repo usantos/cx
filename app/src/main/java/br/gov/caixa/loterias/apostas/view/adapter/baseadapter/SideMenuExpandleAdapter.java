@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 
 
 public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
@@ -55,6 +57,10 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         }
         TextView expandedListTextView = convertView
                 .findViewById(R.id.titleItemSideMenu);
+        Typeface fonte = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+        if (fonte != null){
+            expandedListTextView.setTypeface(fonte);
+        }
         expandedListTextView.setText(expandedListText);
         return convertView;
     }
@@ -91,14 +97,17 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         }
         TextView listTitleTextView = convertView
                 .findViewById(R.id.titleItemGroupSideMenu);
-        listTitleTextView.setTypeface(null, Typeface.BOLD);
+
+        Typeface fonte = FonteUtils.getFonte(FontCaixaEnum.SEMI_BOLD);
+        if (fonte != null){
+            listTitleTextView.setTypeface(fonte);
+        }
         listTitleTextView.setText(listTitle);
 
 
         ImageView imagemMaisOpcoes = convertView.findViewById(R.id.imagemMaisOpcoes);
 
-        ImageView imageViewGroup = convertView
-                .findViewById(R.id.imagemItemGroupSideMenu);
+        ImageView imageViewGroup = convertView.findViewById(R.id.imagemItemGroupSideMenu);
         switch (listPosition) {
             case 0:
                 imageViewGroup.setImageResource(R.drawable.menu1_area);
@@ -109,7 +118,6 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 imagemMaisOpcoes.setSelected(isExpanded);
                 break;
-
              case 1:
                 imageViewGroup.setImageResource(R.drawable.menu3_resultados);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
@@ -118,7 +126,6 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 imagemMaisOpcoes.setVisibility(View.GONE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
-
             case 2:
                 imageViewGroup.setImageResource(R.drawable.menu4_rapidao);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
@@ -138,10 +145,11 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
             case 4:
                 imageViewGroup.setImageResource(R.drawable.menu6_jogo_responsavel);
                 listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
-                listTitleTextView.setHint("botão");
+                listTitleTextView.setHint("este botão possue subitem");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
-                imagemMaisOpcoes.setVisibility(View.GONE);
+                imagemMaisOpcoes.setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
+                imagemMaisOpcoes.setSelected(isExpanded);
                 break;
             case 5:
                 imageViewGroup.setImageResource(R.drawable.menu7_repasses);

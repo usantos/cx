@@ -98,10 +98,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.listener = listener;
 	}
 
-	public HomeViewHolder(View itemView) {
-		super(itemView);
-	}
-
 	@Override
 	public void bind(Modalidade modalidade, int position) {
 		this.modalidade = modalidade;
@@ -198,7 +194,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		}
 		String dmy = formatterDataBr.format(dataSorteioFormatada);
 		String dataDia[] = formatterDia.format(dataSorteioFormatada).split( itemView.getContext().getResources().getString(R.string.virgula));
-		String dia_dmy = dataDia[0] + itemView.getContext().getResources().getString(R.string.virgula_espaco)+ dmy;
+		String dia_dmy = dataDia[0] + ",\n" + dmy;
 		String horaMinSeg = formatterTime.format(dataSorteioFormatada);
 		this.dataSorteio.setText(ViewUtils.capitalized(dia_dmy) +
 										   itemView.getContext().getResources().getString(R.string.as_espacado) +
