@@ -102,7 +102,6 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         setaViews();
         pegaExtras();
         setaMetodos();
-        verificaStatusPopUp();
     }
 
     private void setaViews(){
@@ -167,19 +166,51 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void showDialogCompraCancelada() {
-        DialogUtils.showDialogDebitoNaoAutorizado(this,
-                                                  getResources().getString(R.string.mensagem_compra_cancelada_dialog),
-                                                  getResources().getString(R.string.salvar_carrinho),
-                                                  false,
-                                                  onCompraCancelaDialogListener());
+        if (contemBolao()){
+            DialogUtils.showDialogDebitoNaoAutorizado(this,
+                    getResources().getString(R.string.mensagem_compra_cancelada_dialog),
+                    false,
+                    getResources().getString(R.string.salvar_carrinho),
+                    false,
+                    onCompraCancelaDialogListener());
+        } else {
+            DialogUtils.showDialogDebitoNaoAutorizado(this,
+                    getResources().getString(R.string.mensagem_compra_cancelada_dialog),
+                    true,
+                    getResources().getString(R.string.salvar_carrinho),
+                    false,
+                    onCompraCancelaDialogListener());
+        }
     }
 
     private void showDialogCompraCancelada(String descricao) {
-        DialogUtils.showDialogDebitoNaoAutorizado(this,
-                                                  descricao,
-                                                  getResources().getString(R.string.salvar_carrinho),
-                                                  false,
-                                                  onCompraCancelaDialogListener());
+        if (contemBolao()){
+            DialogUtils.showDialogDebitoNaoAutorizado(this,
+                    descricao,
+                    false,
+                    getResources().getString(R.string.salvar_carrinho),
+                    false,
+                    onCompraCancelaDialogListener());
+        } else {
+            DialogUtils.showDialogDebitoNaoAutorizado(this,
+                    descricao,
+                    true,
+                    getResources().getString(R.string.salvar_carrinho),
+                    false,
+                    onCompraCancelaDialogListener());
+        }
+    }
+
+    private boolean contemBolao() {
+        if (listaAposta != null){
+            for(ApostaDTO aposta : listaAposta){
+                if (aposta.getIndicadorCotaBolao()) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private OnDialogSituacaoCompraListener onCompraCancelaDialogListener() {
@@ -492,6 +523,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalhesComprasActivity.this);
                 }
+                verificaStatusPopUp();
             }
 
             @Override

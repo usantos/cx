@@ -68,7 +68,7 @@ public class DialogUtils {
         dialog.show();
     }
 
-    public static void showDialogDebitoNaoAutorizado(Context context, String descricao, String nomeBotao, boolean showButtonAjuda, OnDialogSituacaoCompraListener listener) {
+    public static void showDialogDebitoNaoAutorizado(Context context, String descricao, boolean showBtnOk, String nomeBotao, boolean showButtonAjuda, OnDialogSituacaoCompraListener listener) {
 
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.custom_dialog_compra_cancelada);
@@ -87,6 +87,9 @@ public class DialogUtils {
             dialog.dismiss();
         });
 
+        if (!showBtnOk){
+            dialogButtonOk.setVisibility(View.GONE);
+        }
         if (!showButtonAjuda){
             dialogButtonAjuda.setVisibility(View.GONE);
         }
