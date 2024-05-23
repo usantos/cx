@@ -3,30 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/branco"
-    android:paddingTop="0dp">
+    >
 
-
-    <FrameLayout
-        android:id="@+id/frame_filtro_modalidade"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardFiltroModalidade"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/custom_border_radius_cinza"
-        android:layout_margin="10dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/branco"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/tv_filtro_modalidade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Modalidade"
-            android:textColor="@color/mega_verde_claro_mkp"
-            android:layout_gravity="center"
-        />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-    </FrameLayout>
+            <ImageView
+                android:id="@+id/imgCheckMkp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="3dp"
+                android:src="@drawable/check_mkp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/imgTrevoMkp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/trevo_megasena"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textBottomFiltroModalidade"/>
+
+            <TextView
+                android:id="@+id/textBottomFiltroModalidade"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/custom_bottom_rouded"
+                android:text="Modalidade"
+                android:textSize="14sp"
+                android:textColor="@color/branco"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
