@@ -5,6 +5,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,23 +21,35 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidadesAdapter.ViewHolder> {
 
 	private List<ModalidadeDisponivelCota> listModalidadeDisponivel;
-	//private OnItemBolaoListener listener;
+	private OnItemClickListener listener;
 	private Activity activity;
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
 
 		private Activity activityHolder;
 		private TextView textBottomFiltroModalidade;
+		private ImageView imgTrevoMkp;
 
-		public ViewHolder(Activity activityHolder, View view) {
+		public ViewHolder(Activity activityHolder, View view, OnItemClickListener onItemClickListener) {
 			super(view);
 
 			this.activityHolder = activityHolder;
 			textBottomFiltroModalidade = view.findViewById(R.id.textBottomFiltroModalidade);
+			imgTrevoMkp = view.findViewById(R.id.imgTrevoMkp);
+
+			view.setOnClickListener(v -> {
+				if (onItemClickListener != null) {
+					int position = getAbsoluteAdapterPosition();
+					if (position != RecyclerView.NO_POSITION) {
+						onItemClickListener.itemClick(this, getAbsoluteAdapterPosition());
+					}
+				}
+			});
 		}
 
 		public Activity getActivityHolder() {
@@ -44,10 +57,9 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		}
 	}
 
-	//public ListaModalidadesAdapter(List<CotasBolaoDTO> bolaoList, OnItemBolaoListener listener, Activity activity){
-	public ListaModalidadesAdapter(List<ModalidadeDisponivelCota> listModalidadeDisponivel, Activity activity){
+	public ListaModalidadesAdapter(List<ModalidadeDisponivelCota> listModalidadeDisponivel, OnItemClickListener listener, Activity activity){
 		this.listModalidadeDisponivel = listModalidadeDisponivel;
-		//this.listener = listener;
+		this.listener = listener;
 		this.activity = activity;
 	}
 
@@ -55,7 +67,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filtra_modalidade, parent, false);
-		return new ViewHolder(activity, view);
+		return new ViewHolder(activity, view, listener);
 	}
 
 	@Override
@@ -64,6 +76,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		ModalidadeEnum modalidade = itemModalidade.getModalidade();
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
 
+		holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(holder.getActivityHolder(), estilo.getTrevoFundoClaro()));
 		holder.textBottomFiltroModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
 		holder.textBottomFiltroModalidade.setTextColor(estilo.getCorFonteFundoEscuro());
 		GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(holder.getActivityHolder(), R.drawable.custom_bottom_rouded);

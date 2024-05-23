@@ -133,8 +133,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         btnAplicar.setOnClickListener(v -> aplicarFiltro());
 
         List<ModalidadeDisponivelCota> listModalidadeDisponivel = SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas();
-        //listAdapter = new ListaModalidadesAdapter(listModalidadeDisponivel, onItemBolaoListener(), this);
-        listAdapter = new ListaModalidadesAdapter(listModalidadeDisponivel,this);
+        listAdapter = new ListaModalidadesAdapter(listModalidadeDisponivel, onItemClickListenerModalidade(),this);
         listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         listView.setAdapter(listAdapter);
 
@@ -151,6 +150,11 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         });
 
         editLoterica.addTextChangedListener(textWatcher);
+    }
+
+    private OnItemClickListener onItemClickListenerModalidade() {
+        return (holder, position) -> {
+        };
     }
 
     private OnItemClickListener onItemClickListener() {
