@@ -27,6 +27,8 @@ public class ApostaBolaoDTO implements Serializable {
     private TimeDoCoracaoDTO timeCoracao;
     @SerializedName("mesDeSorte")
     private MesDeSorteDTO mesSorte;
+    @SerializedName("partidasLoteca")
+    private List<PartidaLotecaDTO> partidasLoteca;
 
     public Boolean isSurpresinha() {
         return isSurpresinha;
@@ -66,6 +68,14 @@ public class ApostaBolaoDTO implements Serializable {
 
     public MesDeSorteDTO getMesSorte(){
         return this.mesSorte;
+    }
+
+    public List<PartidaLotecaDTO> getPartidasLoteca() {
+        return partidasLoteca;
+    }
+
+    public void setPartidasLoteca(List<PartidaLotecaDTO> partidasLoteca) {
+        this.partidasLoteca = partidasLoteca;
     }
 
     @Override
