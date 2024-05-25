@@ -7,12 +7,12 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardFiltroModalidade"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:layout_margin="8dp"
         app:cardBackgroundColor="@color/branco"
         app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+        app:cardElevation="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,6 +22,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
+
+            <View
+                android:id="@+id/viewTopFiltroModalidade"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/custom_top_rouded"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/textBottomFiltroModalidade"/>
+                />
 
             <ImageView
                 android:id="@+id/imgCheckMkp"
@@ -36,8 +45,8 @@
 
             <ImageView
                 android:id="@+id/imgTrevoMkp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
                 android:src="@drawable/trevo_megasena_fundo_branco"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,12 +54,29 @@
                 app:layout_constraintBottom_toTopOf="@+id/textBottomFiltroModalidade"/>
 
             <TextView
+                android:id="@+id/textCenterFiltroModalidade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/todas_modalidades"
+                android:textSize="14sp"
+                android:textColor="@color/blue_caixa"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+                />
+
+            <TextView
                 android:id="@+id/textBottomFiltroModalidade"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="33dp"
                 android:background="@drawable/custom_bottom_rouded"
                 android:text="Modalidade"
                 android:textSize="14sp"
+                android:textStyle="bold"
                 android:textColor="@color/branco"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"

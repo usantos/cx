@@ -1380,5 +1380,6 @@
     <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
     <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>
     <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
+    <string name="todas_modalidades">todas as\nmodalidades</string>
 
 </resources>

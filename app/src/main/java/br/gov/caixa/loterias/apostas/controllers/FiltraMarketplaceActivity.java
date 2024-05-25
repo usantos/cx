@@ -7,7 +7,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,24 +21,17 @@ import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.FiltroMarketplaceModel;
-import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
-import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaModalidadesAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotericaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.MoedaMaskTextWatcher;
@@ -70,8 +62,9 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private FiltroMarketplaceModel model;
 
-//    private AutoCompleteTextView autoCompleteLoterica;
-//    private LotericaArrayAdapter lotericaArrayAdapter;
+    private List<ModalidadeDisponivelCota> listModalidadeDisponivel;
+    private ModalidadeEnum selectModalidade = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,8 +114,6 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         editLoterica = findViewById(R.id.edit_loterica);
         recyclerViewLoterica = findViewById(R.id.recyclerViewLoterica);
 
-//        autoCompleteLoterica = findViewById(R.id.autoComplete_loterica);
-
         btnLimpaFiltros = findViewById(R.id.btn_limpar_filtros);
         btnAplicar = findViewById(R.id.btn_aplicar);
     }
@@ -132,7 +123,8 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
         btnAplicar.setOnClickListener(v -> aplicarFiltro());
 
-        List<ModalidadeDisponivelCota> listModalidadeDisponivel = SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas();
+        montaListaModalidadeComTodas();
+
         listAdapter = new ListaModalidadesAdapter(listModalidadeDisponivel, onItemClickListenerModalidade(),this);
         listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         listView.setAdapter(listAdapter);
@@ -154,6 +146,11 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private OnItemClickListener onItemClickListenerModalidade() {
         return (holder, position) -> {
+            if (position == 0) {
+                selectModalidade = null;
+            } else {
+                selectModalidade = listModalidadeDisponivel.get(position).getModalidade();
+            }
         };
     }
 
@@ -187,7 +184,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 editValMax.getText().toString(),
                 sliderQtdCotas.getValues().get(0),
                 sliderQtdCotas.getValues().get(1),
-                selectLotericaDTO);
+                selectLotericaDTO, selectModalidade);
     }
 
     private void setaRangeComponentes() {
@@ -245,50 +242,63 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         lotericaAdapter.filterList(filteredList);
     }
 
-    private void callWebservice() {
-        AlertDialogUtils.show(this);
-
-        if(SessaoUsuarioUtil.precisaAtualizar()){
-            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
-
-            new ParametrosSimulacaoModel(this)
-                    .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
-                        @Override
-                        public void success(ParametrosSimulacao payload) {
-                            AlertDialogUtils.dismiss();
-                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
-
-                            //modalidadesParaListar = payload.getParametros();
-
-                            //if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
-                            //    Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-                            //    appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
-
-                            //    startActivityForResult(appIndis, 1);
-                            //}
-
-                            SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
-                            //paramatroSimulacaoSuccess();
-                        }
-
-                        @Override
-                        public void error(VolleyError error) {
-                            AlertDialogUtils.dismiss();
-                            Intent appIndis = new Intent(FiltraMarketplaceActivity.this, AppIndisponivelActivity.class);
-                            appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
-
-                            startActivityForResult(appIndis, 1);
-                        }
-                    });
-//        }
-//        else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
-//            modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
-//            paramatroSimulacaoSuccess();
-//            AlertDialogUtils.dismiss();
-        }else {
-            AlertDialogUtils.dismiss();
+    private void montaListaModalidadeComTodas() {
+        listModalidadeDisponivel = new ArrayList<>();
+        for (ModalidadeDisponivelCota modalidadesDisponiveisCota : (SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas())) {
+            listModalidadeDisponivel.add(modalidadesDisponiveisCota);
         }
 
+        ModalidadeDisponivelCota modalidadeDisponivelTodas = new ModalidadeDisponivelCota();
+        ModalidadeEnum modalidadeTodas = ModalidadeEnum.BOLAO;
+        modalidadeDisponivelTodas.setModalidade(modalidadeTodas);
+
+        listModalidadeDisponivel.add(0, modalidadeDisponivelTodas);
     }
+
+//    private void callWebservice() {
+//        AlertDialogUtils.show(this);
+//
+//        if(SessaoUsuarioUtil.precisaAtualizar()){
+//            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
+//
+//            new ParametrosSimulacaoModel(this)
+//                    .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
+//                        @Override
+//                        public void success(ParametrosSimulacao payload) {
+//                            AlertDialogUtils.dismiss();
+//                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
+//
+//                            //modalidadesParaListar = payload.getParametros();
+//
+//                            //if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
+//                            //    Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
+//                            //    appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+//
+//                            //    startActivityForResult(appIndis, 1);
+//                            //}
+//
+//                            SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
+//                            //paramatroSimulacaoSuccess();
+//                        }
+//
+//                        @Override
+//                        public void error(VolleyError error) {
+//                            AlertDialogUtils.dismiss();
+//                            Intent appIndis = new Intent(FiltraMarketplaceActivity.this, AppIndisponivelActivity.class);
+//                            appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
+//
+//                            startActivityForResult(appIndis, 1);
+//                        }
+//                    });
+////        }
+////        else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
+////            modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+////            paramatroSimulacaoSuccess();
+////            AlertDialogUtils.dismiss();
+//        }else {
+//            AlertDialogUtils.dismiss();
+//        }
+//
+//    }
 
 }
