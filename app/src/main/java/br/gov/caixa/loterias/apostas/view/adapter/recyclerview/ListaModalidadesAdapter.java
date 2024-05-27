@@ -28,37 +28,30 @@ import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
-public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidadesAdapter.ViewHolder> {
+public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidadesAdapter.ModalidadeViewHolder> {
 
 	private List<ModalidadeDisponivelCota> listModalidadeDisponivel;
 	private OnItemClickListener listener;
 	private Activity activity;
 	private SparseBooleanArray itemClicked;
 
-	public static class ViewHolder extends RecyclerView.ViewHolder {
+	public static class ModalidadeViewHolder extends RecyclerView.ViewHolder {
 
-		private Activity activityHolder;
 		private View viewTopFiltroModalidade;
 		private TextView textBottomFiltroModalidade;
 		private TextView textCenterFiltroModalidade;
 		private ImageView imgTrevoMkp;
 		private ImageView imgCheckMkp;
 
-		public ViewHolder(Activity activityHolder, View view) {
+		public ModalidadeViewHolder(View view) {
 			super(view);
-
-			this.activityHolder = activityHolder;
 			viewTopFiltroModalidade = view.findViewById(R.id.viewTopFiltroModalidade);
 			textBottomFiltroModalidade = view.findViewById(R.id.textBottomFiltroModalidade);
 			textCenterFiltroModalidade = view.findViewById(R.id.textCenterFiltroModalidade);
 			imgTrevoMkp = view.findViewById(R.id.imgTrevoMkp);
 			imgCheckMkp = view.findViewById(R.id.imgCheckMkp);
-
 		}
 
-		public Activity getActivityHolder() {
-			return activityHolder;
-		}
 	}
 
 	public ListaModalidadesAdapter(List<ModalidadeDisponivelCota> listModalidadeDisponivel, OnItemClickListener listener, Activity activity){
@@ -70,13 +63,13 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 
 	@NonNull
 	@Override
-	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+	public ModalidadeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filtra_modalidade, parent, false);
-		return new ViewHolder(activity, view);
+		return new ModalidadeViewHolder(view);
 	}
 
 	@Override
-	public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+	public void onBindViewHolder(@NonNull ModalidadeViewHolder holder, int position) {
 		ModalidadeDisponivelCota itemModalidade = listModalidadeDisponivel.get(position);
 		ModalidadeEnum modalidade = itemModalidade.getModalidade();
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
@@ -90,52 +83,57 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		if (itemClicked.get(position,false)) {
 			//Selecionado
 			if (position == 0) {
-				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), R.color.blue_caixa));
+				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, R.color.blue_caixa));
 				holder.imgCheckMkp.setVisibility(View.VISIBLE);
 				holder.imgTrevoMkp.setVisibility(View.GONE);
 				holder.textBottomFiltroModalidade.setVisibility(View.GONE);
 				holder.textCenterFiltroModalidade.setVisibility(View.VISIBLE);
-				holder.textCenterFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(holder.getActivityHolder(), holder.getActivityHolder().getString(R.string.todas_modalidades)));
-				holder.textCenterFiltroModalidade.setTextColor(ContextCompat.getColor(holder.getActivityHolder(), R.color.branco));
+				holder.textCenterFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, activity.getString(R.string.todas_modalidades)));
+				holder.textCenterFiltroModalidade.setTextColor(ContextCompat.getColor(activity, R.color.branco));
 			} else {
 				if (isEspecial) {
-					holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(holder.getActivityHolder(), fundoImagemEspecial(modalidade)));
+					holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(modalidade)));
+					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
 				} else {
-					holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorClara()));
+					holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, estilo.getCorClara()));
+					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
 				}
 				holder.imgCheckMkp.setVisibility(View.VISIBLE);
 				holder.imgTrevoMkp.setVisibility(View.VISIBLE);
 				holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
 				holder.textCenterFiltroModalidade.setVisibility(View.GONE);
-				holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(holder.getActivityHolder(), estilo.getTrevoFundoEscuro()));
-				holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(holder.getActivityHolder(), ModalidadeEnum.fromString(modalidade).toLowerCase()));
-				holder.textBottomFiltroModalidade.setTextColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorFonteFundoEscuro()));
-				GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(holder.getActivityHolder(), R.drawable.custom_bottom_rouded);
-				backgroud.setColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorEscura()));
+				holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(activity, estilo.getTrevoFundoEscuro()));
+				holder.textBottomFiltroModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro()));
+				GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(activity, R.drawable.custom_bottom_rouded);
+				backgroud.setColor(ContextCompat.getColor(activity, estilo.getCorEscura()));
 				holder.textBottomFiltroModalidade.setBackground(backgroud);
 			}
 		//Desselecionado
 		} else {
 			if (position == 0) {
-				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), R.color.branco));
+				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, R.color.branco));
 				holder.imgCheckMkp.setVisibility(View.GONE);
 				holder.imgTrevoMkp.setVisibility(View.GONE);
 				holder.imgTrevoMkp.setVisibility(View.GONE);
 				holder.textBottomFiltroModalidade.setVisibility(View.GONE);
 				holder.textCenterFiltroModalidade.setVisibility(View.VISIBLE);
-				holder.textCenterFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(holder.getActivityHolder(), holder.getActivityHolder().getString(R.string.todas_modalidades)));
-				holder.textCenterFiltroModalidade.setTextColor(ContextCompat.getColor(holder.getActivityHolder(), R.color.blue_caixa));
+				holder.textCenterFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, activity.getString(R.string.todas_modalidades)));
+				holder.textCenterFiltroModalidade.setTextColor(ContextCompat.getColor(activity, R.color.blue_caixa));
 			} else {
-				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), R.color.branco));
+				if (isEspecial) {
+					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
+				} else {
+					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
+				}
+				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, R.color.branco));
 				holder.imgTrevoMkp.setVisibility(View.GONE);
 				holder.imgTrevoMkp.setVisibility(View.VISIBLE);
 				holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
 				holder.textCenterFiltroModalidade.setVisibility(View.GONE);
-				holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(holder.getActivityHolder(), estilo.getTrevoFundoClaro()));
-				holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(holder.getActivityHolder(), ModalidadeEnum.fromString(modalidade).toLowerCase()));
-				holder.textBottomFiltroModalidade.setTextColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorFonteFundoEscuro()));
-				GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(holder.getActivityHolder(), R.drawable.custom_bottom_rouded);
-				backgroud.setColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorEscura()));
+				holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(activity, estilo.getTrevoFundoClaro()));
+				holder.textBottomFiltroModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro()));
+				GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(activity, R.drawable.custom_bottom_rouded);
+				backgroud.setColor(ContextCompat.getColor(activity, estilo.getCorEscura()));
 				holder.textBottomFiltroModalidade.setBackground(backgroud);
 			}
 		}
@@ -159,6 +157,13 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 	@Override
 	public int getItemCount() {
 		return listModalidadeDisponivel.size();
+	}
+
+	public void limpaItemClicked() {
+		itemClicked.clear();
+		notifyDataSetChanged();
+
+		listener.itemClick(null, 0);
 	}
 
 	private int fundoImagemEspecial(ModalidadeEnum modalidade) {

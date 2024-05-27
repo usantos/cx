@@ -21,15 +21,22 @@ import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.FiltroMarketplaceModel;
+import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
+import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaModalidadesAdapter;
@@ -43,7 +50,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     public static final String FILTRO_MARKETPLACE_RETORNO = "FILTRO_MARKETPLACE_RETORNO";
 
     private RecyclerView listView;
-    private ListaModalidadesAdapter listAdapter;
+    private ListaModalidadesAdapter listaModalidadesAdapter;
 
     private EditText editValMin, editValMax;
     private RangeSlider sliderQtdCotas;
@@ -90,17 +97,10 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         }
     }
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK && requestCode == 1) {
-//            //callWebservice();
-//        }
-//    }
-
     @Override
     protected void onResume() {
         super.onResume();
+        atualizaParametros();
     }
 
     private void setaViews() {
@@ -125,9 +125,9 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
         montaListaModalidadeComTodas();
 
-        listAdapter = new ListaModalidadesAdapter(listModalidadeDisponivel, onItemClickListenerModalidade(),this);
+        listaModalidadesAdapter = new ListaModalidadesAdapter(listModalidadeDisponivel, onItemClickListenerModalidade(),this);
         listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        listView.setAdapter(listAdapter);
+        listView.setAdapter(listaModalidadesAdapter);
 
         lotericaAdapter = new LotericaAdapter(listLotericaDTO, onItemClickListener());
         recyclerViewLoterica.setLayoutManager(new LinearLayoutManager(this));
@@ -198,6 +198,9 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         editValMax.setText("");
         editLoterica.setText("");
         selectLotericaDTO = null;
+        if (listaModalidadesAdapter != null) {
+            listaModalidadesAdapter.limpaItemClicked();
+        }
     }
 
     private void filtraLoterica(String text) {
@@ -255,50 +258,32 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         listModalidadeDisponivel.add(0, modalidadeDisponivelTodas);
     }
 
-//    private void callWebservice() {
-//        AlertDialogUtils.show(this);
-//
-//        if(SessaoUsuarioUtil.precisaAtualizar()){
-//            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
-//
-//            new ParametrosSimulacaoModel(this)
-//                    .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
-//                        @Override
-//                        public void success(ParametrosSimulacao payload) {
-//                            AlertDialogUtils.dismiss();
-//                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
-//
-//                            //modalidadesParaListar = payload.getParametros();
-//
-//                            //if (modalidadesParaListar == null || modalidadesParaListar.isEmpty()) {
-//                            //    Intent appIndis = new Intent(PrincipalActivity.this, AppIndisponivelActivity.class);
-//                            //    appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
-//
-//                            //    startActivityForResult(appIndis, 1);
-//                            //}
-//
-//                            SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
-//                            //paramatroSimulacaoSuccess();
-//                        }
-//
-//                        @Override
-//                        public void error(VolleyError error) {
-//                            AlertDialogUtils.dismiss();
-//                            Intent appIndis = new Intent(FiltraMarketplaceActivity.this, AppIndisponivelActivity.class);
-//                            appIndis.putExtra(getResources().getString(R.string.extra_is_busca_param), true);
-//
-//                            startActivityForResult(appIndis, 1);
-//                        }
-//                    });
-////        }
-////        else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
-////            modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
-////            paramatroSimulacaoSuccess();
-////            AlertDialogUtils.dismiss();
-//        }else {
-//            AlertDialogUtils.dismiss();
-//        }
-//
-//    }
+
+    private void atualizaParametros() {
+        AlertDialogUtils.show(this);
+
+        if(SessaoUsuarioUtil.precisaAtualizar()){
+            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
+
+            new ParametrosSimulacaoModel(this)
+                    .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
+                        @Override
+                        public void success(ParametrosSimulacao payload) {
+                            AlertDialogUtils.dismiss();
+                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_modalidades));
+                            SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
+                        }
+
+                        @Override
+                        public void error(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                            RedirectNetwork.checkRedirect(error, FiltraMarketplaceActivity.this);
+                        }
+                    });
+        }else {
+            AlertDialogUtils.dismiss();
+        }
+
+    }
 
 }
