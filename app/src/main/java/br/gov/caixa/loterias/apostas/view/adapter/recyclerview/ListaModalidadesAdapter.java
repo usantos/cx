@@ -21,6 +21,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
@@ -43,7 +44,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		private ImageView imgTrevoMkp;
 		private ImageView imgCheckMkp;
 
-		public ViewHolder(Activity activityHolder, View view, OnItemClickListener onItemClickListener) {
+		public ViewHolder(Activity activityHolder, View view) {
 			super(view);
 
 			this.activityHolder = activityHolder;
@@ -53,14 +54,6 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 			imgTrevoMkp = view.findViewById(R.id.imgTrevoMkp);
 			imgCheckMkp = view.findViewById(R.id.imgCheckMkp);
 
-//			view.setOnClickListener(v -> {
-//				if (onItemClickListener != null) {
-//					int position = getAbsoluteAdapterPosition();
-//					if (position != RecyclerView.NO_POSITION) {
-//						onItemClickListener.itemClick(this, getAbsoluteAdapterPosition());
-//					}
-//				}
-//			});
 		}
 
 		public Activity getActivityHolder() {
@@ -79,7 +72,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 	@Override
 	public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filtra_modalidade, parent, false);
-		return new ViewHolder(activity, view, listener);
+		return new ViewHolder(activity, view);
 	}
 
 	@Override
@@ -87,8 +80,15 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		ModalidadeDisponivelCota itemModalidade = listModalidadeDisponivel.get(position);
 		ModalidadeEnum modalidade = itemModalidade.getModalidade();
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+		boolean isEspecial;
+		if (itemModalidade.getTipoConcurso() != null && itemModalidade.getTipoConcurso().equals(TipoConcursoEnum.ESPECIAL)) {
+			isEspecial = true;
+		} else {
+			isEspecial = false;
+		}
 
 		if (itemClicked.get(position,false)) {
+			//Selecionado
 			if (position == 0) {
 				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), R.color.blue_caixa));
 				holder.imgCheckMkp.setVisibility(View.VISIBLE);
@@ -98,7 +98,11 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 				holder.textCenterFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(holder.getActivityHolder(), holder.getActivityHolder().getString(R.string.todas_modalidades)));
 				holder.textCenterFiltroModalidade.setTextColor(ContextCompat.getColor(holder.getActivityHolder(), R.color.branco));
 			} else {
-				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorClara()));
+				if (isEspecial) {
+					holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(holder.getActivityHolder(), fundoImagemEspecial(modalidade)));
+				} else {
+					holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorClara()));
+				}
 				holder.imgCheckMkp.setVisibility(View.VISIBLE);
 				holder.imgTrevoMkp.setVisibility(View.VISIBLE);
 				holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
@@ -110,6 +114,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 				backgroud.setColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorEscura()));
 				holder.textBottomFiltroModalidade.setBackground(backgroud);
 			}
+		//Desselecionado
 		} else {
 			if (position == 0) {
 				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), R.color.branco));
@@ -156,29 +161,20 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		return listModalidadeDisponivel.size();
 	}
 
-//	public void bindSelecionado(@NonNull ViewHolder holder, int position) {
-//		ModalidadeDisponivelCota itemModalidade = listModalidadeDisponivel.get(position);
-//		ModalidadeEnum modalidade = itemModalidade.getModalidade();
-//		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
-//
-//		if (position == 0) {
-//			holder.cardFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), R.color.blue_caixa));
-//			holder.imgTrevoMkp.setVisibility(View.GONE);
-//			holder.textBottomFiltroModalidade.setVisibility(View.GONE);
-//			holder.textCenterFiltroModalidade.setVisibility(View.VISIBLE);
-//			holder.textCenterFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(holder.getActivityHolder(), holder.getActivityHolder().getString(R.string.todas_modalidades)));
-//		} else {
-//			holder.cardFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorClara()));
-//			holder.imgTrevoMkp.setVisibility(View.VISIBLE);
-//			holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
-//			holder.textCenterFiltroModalidade.setVisibility(View.GONE);
-//			holder.cardFiltroModalidade.setBackgroundColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorClara()));
-//			holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(holder.getActivityHolder(), estilo.getTrevoFundoEscuro()));
-//			holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(holder.getActivityHolder(), ModalidadeEnum.fromString(modalidade).toLowerCase()));
-//			holder.textBottomFiltroModalidade.setTextColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorFonteFundoEscuro()));
-//			GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(holder.getActivityHolder(), R.drawable.custom_bottom_rouded);
-//			backgroud.setColor(ContextCompat.getColor(holder.getActivityHolder(), estilo.getCorEscura()));
-//			holder.textBottomFiltroModalidade.setBackground(backgroud);
-//		}
-//	}
+	private int fundoImagemEspecial(ModalidadeEnum modalidade) {
+		if (modalidade == ModalidadeEnum.DUPLA_SENA) {
+			return R.drawable.fundo_especial_dupla_sena_de_pascoa;
+		}
+		if (modalidade == ModalidadeEnum.QUINA) {
+			return R.drawable.fundo_especial_quina_de_sao_joao;
+		}
+		if (modalidade == ModalidadeEnum.LOTOFACIL) {
+			return R.drawable.fundo_especial_lotofacil_da_independencia;
+		}
+		if (modalidade == ModalidadeEnum.MEGA_SENA) {
+			return R.drawable.fundo_especial_mega_da_virada;
+		}
+		return R.color.branco;
+	}
+
 }
