@@ -166,14 +166,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void showDialogCompraCancelada() {
-        if (contemBolao()){
-            DialogUtils.showDialogDebitoNaoAutorizado(this,
-                    getResources().getString(R.string.mensagem_compra_cancelada_dialog),
-                    false,
-                    getResources().getString(R.string.salvar_carrinho),
-                    false,
-                    onCompraCancelaDialogListener());
-        } else {
+        if (!contemBolao()){
             DialogUtils.showDialogDebitoNaoAutorizado(this,
                     getResources().getString(R.string.mensagem_compra_cancelada_dialog),
                     true,
@@ -184,14 +177,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void showDialogCompraCancelada(String descricao) {
-        if (contemBolao()){
-            DialogUtils.showDialogDebitoNaoAutorizado(this,
-                    descricao,
-                    false,
-                    getResources().getString(R.string.salvar_carrinho),
-                    false,
-                    onCompraCancelaDialogListener());
-        } else {
+        if (!contemBolao()){
             DialogUtils.showDialogDebitoNaoAutorizado(this,
                     descricao,
                     true,
