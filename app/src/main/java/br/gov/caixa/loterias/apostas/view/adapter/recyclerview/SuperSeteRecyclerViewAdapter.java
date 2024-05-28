@@ -11,32 +11,37 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.holder.SuperSeteHolder;
 
 public class SuperSeteRecyclerViewAdapter extends RecyclerView.Adapter<SuperSeteHolder>{
-	private List<List<List<Integer>>> matriz;
-	private Context context;
 
-	public SuperSeteRecyclerViewAdapter(List<List<List<Integer>>> matriz, Context context) {
-		this.matriz = matriz;
+	private List<ApostaBolaoDTO> apostas;
+	private Context context;
+	private DezenaConfig dezenaConfig;
+
+	public SuperSeteRecyclerViewAdapter(List<ApostaBolaoDTO> apostas, Context context, DezenaConfig dezenaConfig) {
+		this.apostas = apostas;
 		this.context = context;
+		this.dezenaConfig = dezenaConfig;
 	}
 
 	@NonNull
 	@Override
 	public SuperSeteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_partida_loteca,
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_super_sete,
 																		parent, false);
-		return new SuperSeteHolder(view, context);
+		return new SuperSeteHolder(view, context, dezenaConfig);
 	}
 
 	@Override
 	public void onBindViewHolder(@NonNull SuperSeteHolder holder, int position) {
-		holder.bind(matriz.get(position), position);
+		holder.bind(apostas.get(position), position);
 	}
 
 	@Override
 	public int getItemCount() {
-		return matriz.size();
+		return apostas.size();
 	}
 }

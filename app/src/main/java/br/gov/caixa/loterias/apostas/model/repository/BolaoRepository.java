@@ -2,8 +2,6 @@ package br.gov.caixa.loterias.apostas.model.repository;
 
 import android.app.Activity;
 
-import androidx.annotation.NonNull;
-
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;

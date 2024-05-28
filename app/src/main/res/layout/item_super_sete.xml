@@ -137,15 +137,96 @@
         app:layout_constraintTop_toBottomOf="@id/layout_colunas"
         app:layout_constraintStart_toStartOf="@id/numero_jogo"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lista_super_sete"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_colunas_listas"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_dezena_detalhe"
-        app:spanCount="7"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        android:layout_marginStart="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/numeros_txt"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/numeros_txt">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_coluna_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_dezena_detalhe"
+            app:spanCount="1"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_coluna_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_dezena_detalhe"
+            app:spanCount="1"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lista_coluna_1"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_coluna_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_dezena_detalhe"
+            app:spanCount="1"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lista_coluna_2"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_coluna_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_dezena_detalhe"
+            app:spanCount="1"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lista_coluna_3"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_coluna_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_dezena_detalhe"
+            app:spanCount="1"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lista_coluna_4"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_coluna_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_dezena_detalhe"
+            app:spanCount="1"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lista_coluna_5"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_coluna_7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_dezena_detalhe"
+            app:spanCount="1"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/lista_coluna_6"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

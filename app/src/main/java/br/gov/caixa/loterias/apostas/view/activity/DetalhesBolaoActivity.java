@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,10 +18,12 @@ import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -33,6 +36,7 @@ import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
@@ -52,6 +56,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private RecyclerView listaJogos;
 	private JogosBolaoRecyclerView listaAdapter;
 	private PartidasLotecaRecyclerViewAdapter partidasAdapter;
+	private SuperSeteRecyclerViewAdapter superSeteAdpter;
 	private ConstraintLayout layoutQtdCotas;
 	private FrameLayout frameSomador, frameRodape;
 
@@ -232,7 +237,9 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 			listaJogos.setAdapter(partidasAdapter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 		} else if (bolao.getModalidade() == ModalidadeEnum.SUPER_7) {
-
+			superSeteAdpter = new SuperSeteRecyclerViewAdapter(bolao.getApostas(), DetalhesBolaoActivity.this, getDezenaConfig());
+			listaJogos.setAdapter(superSeteAdpter);
+			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 		} else {
 			if (bolao.getApostas() != null && !bolao.getApostas().isEmpty()){
 				listaAdapter = new JogosBolaoRecyclerView(bolao.getModalidade(), estilo.getCorLetraLista(), bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
