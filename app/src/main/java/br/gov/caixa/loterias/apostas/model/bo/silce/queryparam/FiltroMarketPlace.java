@@ -31,7 +31,7 @@ public class FiltroMarketPlace implements Serializable {
     @SerializedName("idModalidade")
     private Integer idModalidade;
 
-    public FiltroMarketPlace(TipoConsultaBolaoEnum tipoConsulta, int idMunicipio, int idUf, int pagina, int qtdPorPagina) {
+    public FiltroMarketPlace(TipoConsultaBolaoEnum tipoConsulta, int idMunicipio, int idUf, int pagina, int qtdPorPagina, Integer idModalidade) {
         this.tipoConsulta = tipoConsulta;
         this.idMunicipio = idMunicipio;
         this.idUf = idUf;
@@ -42,7 +42,7 @@ public class FiltroMarketPlace implements Serializable {
         this.valorMinimoCota = null;
         this.valorMaximoCota = null;
         this.numeroLoterico = null;
-        this.idModalidade = null;
+        this.idModalidade = idModalidade;
     }
 
     public TipoConsultaBolaoEnum getTipoConsulta() {

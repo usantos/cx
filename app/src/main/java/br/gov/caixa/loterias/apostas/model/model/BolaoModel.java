@@ -30,6 +30,7 @@ public class BolaoModel extends AppModel{
 	private BolaoRepository bolaoRepository;
 	private PaginacaoFiltro paginacaoFiltro;
 	private int idMunicipio, idUf;
+	private Integer idModalidade;
 
 	public BolaoModel(Activity activity) {
 		super(activity);
@@ -111,8 +112,12 @@ public class BolaoModel extends AppModel{
 		this.idUf = idUF;
 	}
 
+	public void setIdModalidade(Integer idModalidade) {
+		this.idModalidade = idModalidade;
+	}
+
 	private void initPaginacao(){
-		this.paginacaoFiltro = new PaginacaoFiltro(TipoConsultaBolaoEnum.MUNICIPIO, idMunicipio, idUf);
+		this.paginacaoFiltro = new PaginacaoFiltro(TipoConsultaBolaoEnum.MUNICIPIO, idMunicipio, idUf, idModalidade);
 	}
 
 	public void atualizaPaginacao(ListaBolaoDTO payload) {
