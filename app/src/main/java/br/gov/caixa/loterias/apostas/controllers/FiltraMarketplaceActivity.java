@@ -247,8 +247,12 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private void montaListaModalidadeComTodas() {
         listModalidadeDisponivel = new ArrayList<>();
-        for (ModalidadeDisponivelCota modalidadesDisponiveisCota : (SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas())) {
-            listModalidadeDisponivel.add(modalidadesDisponiveisCota);
+
+        List<ModalidadeDisponivelCota> listModalidadeDisponivelSessao = SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas();
+        if (listModalidadeDisponivelSessao != null && !listModalidadeDisponivelSessao.isEmpty()) {
+            for (ModalidadeDisponivelCota modalidadesDisponiveisCota : listModalidadeDisponivelSessao) {
+                listModalidadeDisponivel.add(modalidadesDisponiveisCota);
+            }
         }
 
         ModalidadeDisponivelCota modalidadeDisponivelTodas = new ModalidadeDisponivelCota();

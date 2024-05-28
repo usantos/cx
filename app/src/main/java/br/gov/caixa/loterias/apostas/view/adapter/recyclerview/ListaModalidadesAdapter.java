@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
@@ -84,12 +85,13 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 			//Selecionado
 			if (position == 0) {
 				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, R.color.blue_caixa));
-				holder.imgCheckMkp.setVisibility(View.VISIBLE);
 				holder.imgTrevoMkp.setVisibility(View.GONE);
 				holder.textBottomFiltroModalidade.setVisibility(View.GONE);
 				holder.textCenterFiltroModalidade.setVisibility(View.VISIBLE);
 				holder.textCenterFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, activity.getString(R.string.todas_modalidades)));
 				holder.textCenterFiltroModalidade.setTextColor(ContextCompat.getColor(activity, R.color.branco));
+				holder.imgCheckMkp.setImageDrawable(VectorUtils.getShape(R.drawable.check_mkp, R.color.branco));
+				holder.imgCheckMkp.setVisibility(View.VISIBLE);
 			} else {
 				if (isEspecial) {
 					holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(modalidade)));
@@ -98,7 +100,6 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 					holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, estilo.getCorClara()));
 					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
 				}
-				holder.imgCheckMkp.setVisibility(View.VISIBLE);
 				holder.imgTrevoMkp.setVisibility(View.VISIBLE);
 				holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
 				holder.textCenterFiltroModalidade.setVisibility(View.GONE);
@@ -107,6 +108,8 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 				GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(activity, R.drawable.custom_bottom_rouded);
 				backgroud.setColor(ContextCompat.getColor(activity, estilo.getCorEscura()));
 				holder.textBottomFiltroModalidade.setBackground(backgroud);
+				holder.imgCheckMkp.setImageDrawable(VectorUtils.getShape(R.drawable.check_mkp, estilo.getCorFonteFundoClaro()));
+				holder.imgCheckMkp.setVisibility(View.VISIBLE);
 			}
 		//Desselecionado
 		} else {
@@ -126,6 +129,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
 				}
 				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, R.color.branco));
+				holder.imgCheckMkp.setVisibility(View.GONE);
 				holder.imgTrevoMkp.setVisibility(View.GONE);
 				holder.imgTrevoMkp.setVisibility(View.VISIBLE);
 				holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
