@@ -54,7 +54,7 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 		for (int i = 0; i < aposta.getDezenas().size(); i++) {
 			Integer numero = null;
 			if(aposta.getDezenas().get(i) instanceof Double){
-				numero = ((Double)aposta.getDezenas().get(0)).intValue();
+				numero = ((Double)aposta.getDezenas().get(i)).intValue();
 			} else {
 				numero = (Integer) aposta.getDezenas().get(i);
 			}
