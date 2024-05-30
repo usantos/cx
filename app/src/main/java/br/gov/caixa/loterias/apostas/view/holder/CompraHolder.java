@@ -13,7 +13,6 @@ import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
-import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostaLotogolDetalhesComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaComprasAdapter;
@@ -54,45 +53,35 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 
 	@Override
 	public void bind(ApostaDTO aposta, int position) {
-		EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
-		itemView.getContext().setTheme(estilo.getThemeId());
-		int colorText = itemView.getContext().getResources().getColor(estilo.getMenuItemColor());
+		//EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
+		EstiloModalidadeMKP estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
+		int colorText = itemView.getContext().getResources().getColor(estiloMKP.getCorFonteFundoClaro());
+
+		//itemView.getContext().setTheme(estilo.getThemeId());
+
 		int qtdTeimosinhas = aposta.getQuantidadeTeimosinhas();
 		String teimosinhasTxt = qtdTeimosinhas + (qtdTeimosinhas > 1 ? itemView.getContext().getResources().getString(R.string.espaco_teimosinhas) : itemView.getContext().getResources().getString(R.string.espaco_teimosinha));
 
-		String nomeAposta =  ViewUtils.getNomeModalidadePorAposta(aposta);
-
-		this.tipoPremioListaComprasTextView
-				.setText(ViewUtils.textFuturaAndFuturaBold(
-						itemView.getContext(),
-						itemView.getContext().getString(R.string.texto_futura_bold, nomeAposta)
-														  )
-						);
-
 		this.tipoPremioListaComprasTextView.setTextColor(colorText);
+		String nomeAposta =  ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase();
+		this.tipoPremioListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(), itemView.getContext().getString(R.string.texto_futura_bold, nomeAposta)));
 
 		if (aposta.getIndicadorCotaBolao()) {
 			tagBolao.setVisibility(View.VISIBLE);
-
-			EstiloModalidadeMKP estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
-			tagBolao.setImageResource(estiloModalidadeMKP.getImagemTrianguloOutline());
+			tagBolao.setImageResource(estiloMKP.getImagemTrianguloOutline());
 
 			this.dataConcursoListaComprasTextView.setText(aposta.getReservaCotaBolao().getDataRegistroBolao());
-			this.concursoListaComprasTextView
-					.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
+			this.concursoListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
 							itemView.getContext().getString(R.string.label_aposta_concurso_bold,
 							aposta.getConcursoInicial())));
 			this.cotaListaComprasTextView.setVisibility(View.VISIBLE);
 			this.cotaListaComprasTextView.setTextColor(colorText);
-			this.cotaListaComprasTextView.
-					setText(itemView.getContext().getString(R.string.label_cota_concurso_bold) +
-							String.format("%02d/%02d",
+			this.cotaListaComprasTextView.setText(itemView.getContext().getString(R.string.label_cota_concurso_bold) + String.format("%02d/%02d",
 									aposta.getReservaCotaBolao().getNumeroCotaReservada(),
 									aposta.getReservaCotaBolao().getQtdCotaTotalBolao()));
 		} else {
 			this.dataConcursoListaComprasTextView.setText(aposta.getDataEfetivacao());
-			this.concursoListaComprasTextView
-					.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
+			this.concursoListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
 							itemView.getContext().getString(R.string.label_aposta_concurso_bold,
 									aposta.getConcursoInicial())));
 		}
@@ -100,11 +89,11 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		this.concursoListaComprasTextView.setTextColor(colorText);
 
 		this.statusResultadoApostaListaComprasTextView.setText(aposta.getSituacao().getDescricao());
-		this.statusResultadoApostaListaComprasTextView.setTextColor(colorText);
+		this.statusResultadoApostaListaComprasTextView.setTextColor(estiloMKP.getCorFonteFundoEscuro());
 
-		this.topListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estilo.getCorClara()));
+		this.topListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estiloMKP.getCorClara()));
 
-		aplicaBackgroundPorSituacao(aposta, estilo);
+		this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estiloMKP.getCorEscura()));
 
 		this.seusNumerosItemListaComprasTextView.setTextColor(colorText);
 		if(qtdTeimosinhas > 0){
@@ -142,15 +131,4 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		this.itemComprasContentModalideLinearLayout.addView(child);
 	}
 
-	private void aplicaBackgroundPorSituacao(ApostaDTO aposta, EstiloModalidade estilo) {
-//		if (SituacaoCompraUtil.isEfetivada(aposta.getSituacao())){
-//			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.azul_efetivada));
-//		} else if (SituacaoCompraUtil.isCancelada(aposta.getSituacao())){
-//			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.vermelho_cancelada));
-//		} else if (SituacaoCompraUtil.isPremioPago(aposta.getSituacao())){
-//			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(R.color.verde_premio_pago));
-//		} else {
-			this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estilo.getCorEscura()));
-//		}
-	}
 }
