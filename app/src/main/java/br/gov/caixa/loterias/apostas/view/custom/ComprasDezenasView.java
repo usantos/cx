@@ -57,6 +57,7 @@ public class ComprasDezenasView extends LinearLayout {
     protected TextView labelDetalheTxt, detalheTxt;
 
     protected DetalhesComprasActivity activity;
+    private int corFonte;
 
 
     public ComprasDezenasView(DetalhesComprasActivity context) {
@@ -72,7 +73,8 @@ public class ComprasDezenasView extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setLayout(ApostaDTO aposta) {
+    public void setLayout(ApostaDTO aposta, int corFonte) {
+        this.corFonte = corFonte;
         switch (aposta.getModalidade()) {
             case TIMEMANIA:
                 labelDetalheTxt.setText(R.string.label_time_coracao);
@@ -175,7 +177,7 @@ public class ComprasDezenasView extends LinearLayout {
     private DezenaConfig getDezenaConfig() {
         ShapeConfig shapeConfig = new ShapeConfig(R.color.branco, R.color.mega_verde_escuro_mkp);
 
-        return new DezenaConfig(false, R.color.branco,
+        return new DezenaConfig(false, corFonte,
                 R.layout.item_dezena_detalhe,
                 shapeConfig,false);
     }

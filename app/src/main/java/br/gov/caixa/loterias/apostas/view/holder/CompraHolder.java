@@ -124,7 +124,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 			default:
 				this.seusNumerosItemListaComprasTextView.setText(R.string.seus_numeros);
 				child = ComprasDezenasView_.build(this.activity);
-				((ComprasDezenasView)child).setLayout(aposta);
+				((ComprasDezenasView)child).setLayout(aposta, estiloMKP.getCorFonteFundoClaro());
 				break;
 		}
 
