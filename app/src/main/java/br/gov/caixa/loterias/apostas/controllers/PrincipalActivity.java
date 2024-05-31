@@ -72,6 +72,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
@@ -656,8 +657,9 @@ public class PrincipalActivity extends AppCompatActivity
                     getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
 
-            if (data.get(adapterPosition).getTipoModalidade() != ModalidadeEnum.LOTOMANIA &&
-                    ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()){
+            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+                temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
+
                 buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
                                                                           getResources()
                                                                                   .getString(R.string.apostas_boloes)));
@@ -666,6 +668,18 @@ public class PrincipalActivity extends AppCompatActivity
                 buttonHomeBolao.setVisibility(View.GONE);
             }
         }
+    }
+
+    private boolean temBolaoModalidadeDisponivel(ModalidadeEnum modalidade) {
+        List<ModalidadeDisponivelCota> listModalidadesDisponiveis = SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas();
+        if (listModalidadesDisponiveis != null && !listModalidadesDisponiveis.isEmpty()) {
+            for (ModalidadeDisponivelCota modalidadesDisponivel : listModalidadesDisponiveis) {
+                if (modalidadesDisponivel.getModalidade() == modalidade) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Click(R.id.buttonHomeBet)

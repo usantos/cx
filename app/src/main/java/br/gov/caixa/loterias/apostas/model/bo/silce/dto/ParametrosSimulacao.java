@@ -31,6 +31,8 @@ public class ParametrosSimulacao {
     private Integer quantidadeMaximaApostasCarrinho = null;
     @SerializedName("parametros")
     private List<ParametroSimulacao> parametros = null;
+    @SerializedName("modalidadesDisponiveisCotas")
+    private List<ModalidadeDisponivelCota> modalidadesDisponiveisCotas = null;
 
     /**
      * Valor máximo de apostas que pode ser efetivadas em um único dia
@@ -80,6 +82,14 @@ public class ParametrosSimulacao {
         this.parametros = parametros;
     }
 
+    @ApiModelProperty(value = "")
+    public List<ModalidadeDisponivelCota> getModalidadesDisponiveisCotas() {
+        return modalidadesDisponiveisCotas;
+    }
+
+    public void setModalidadesDisponiveisCotas(List<ModalidadeDisponivelCota> modalidadesDisponiveisCotas) {
+        this.modalidadesDisponiveisCotas = modalidadesDisponiveisCotas;
+    }
 
     @Override
     public boolean equals(Object o) {

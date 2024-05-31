@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.model.bean;
 import java.io.Serializable;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 
 public class FiltroAplicadoMarketplace implements Serializable {
     private String valorMinimoAposta;
@@ -10,16 +11,18 @@ public class FiltroAplicadoMarketplace implements Serializable {
     private Float qtdMinCotas;
     private Float qtdMaxCotas;
     private LotericaDTO lotericaDTO;
+    private ModalidadeEnum modalidade;
 
     public FiltroAplicadoMarketplace(){
     }
 
-    public FiltroAplicadoMarketplace(String valorMinimoAposta, String valorMaximoAposta, Float qtdMinCotas, Float qtdMaxCotas, LotericaDTO lotericaDTO) {
+    public FiltroAplicadoMarketplace(String valorMinimoAposta, String valorMaximoAposta, Float qtdMinCotas, Float qtdMaxCotas, LotericaDTO lotericaDTO, ModalidadeEnum modalidade) {
         this.valorMinimoAposta = valorMinimoAposta;
         this.valorMaximoAposta = valorMaximoAposta;
         this.qtdMinCotas = qtdMinCotas;
         this.qtdMaxCotas = qtdMaxCotas;
         this.lotericaDTO = lotericaDTO;
+        this.modalidade = modalidade;
     }
 
     public String getValorMinimoAposta() {
@@ -60,5 +63,13 @@ public class FiltroAplicadoMarketplace implements Serializable {
 
     public void setLotericaDTO(LotericaDTO lotericaDTO) {
         this.lotericaDTO = lotericaDTO;
+    }
+
+    public ModalidadeEnum getModalidade() {
+        return modalidade;
+    }
+
+    public void setModalidade(ModalidadeEnum modalidade) {
+        this.modalidade = modalidade;
     }
 }
