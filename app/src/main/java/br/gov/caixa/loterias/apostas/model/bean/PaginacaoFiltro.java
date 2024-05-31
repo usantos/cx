@@ -13,14 +13,16 @@ public class PaginacaoFiltro {
     private int pagina;
     private int qtdTotalPaginas;
     private boolean semRegistros = false;
+    private Integer idModalidade;
 
-    public PaginacaoFiltro(TipoConsultaBolaoEnum tipoConsulta, int idMunicipio, int idUf){
+    public PaginacaoFiltro(TipoConsultaBolaoEnum tipoConsulta, int idMunicipio, int idUf, Integer idModalidade){
         this.tipoConsulta = tipoConsulta;
         this.idMunicipio = idMunicipio;
         this.idUf = idUf;
         this.pagina = PAG_INICIAL;
         this.qtdPorPagina = QTD_POR_PAGINA;
         this.qtdTotalPaginas = -1;
+        this.idModalidade = idModalidade;
     }
 
     public TipoConsultaBolaoEnum getTipoConsulta() {
@@ -49,6 +51,14 @@ public class PaginacaoFiltro {
 
     public void setQtdTotalPaginas(int qtdTotalPaginas) {
         this.qtdTotalPaginas = qtdTotalPaginas;
+    }
+
+    public Integer getIdModalidade() {
+        return idModalidade;
+    }
+
+    public void setIdModalidade(Integer idModalidade) {
+        this.idModalidade = idModalidade;
     }
 
     public void proxPagina() {

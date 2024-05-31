@@ -132,6 +132,11 @@ public class Utils {
         return equipeComTime + getUfTime(equipeDTO);
     }
 
+    public static String getEquipeComUf(ParametroEquipe equipe){
+        String equipeComTime = (equipe != null && equipe.getNome() != null) ? equipe.getNome(): "";
+        return equipeComTime + getUfTime(equipe);
+    }
+
     public static String getUfTime(EquipeDTO equipeDTO){
         String uf =  "";
 

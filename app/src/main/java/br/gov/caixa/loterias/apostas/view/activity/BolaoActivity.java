@@ -49,6 +49,8 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
 public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnEstadoVazioListener {
+	public static final String ARG_IDMODALIDADE = "ARG_IDMODALIDADE";
+
 	private DiscreteScrollView carrosselView;
 	private CarrosselBolaoAdapter carrosselAdapter;
 
@@ -75,11 +77,16 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private List<CotasBolaoDTO> cotasDisponiveis;
 	private List<CotasBolaoDTO> cotasFiltradas;
 
+	private Integer idModalidade;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bolao);
 		configToolbar(R.id.toolbar);
+		if (getIntent() != null && getIntent().getExtras() != null) {
+			idModalidade = getIntent().getExtras().getInt(ARG_IDMODALIDADE);
+		}
 		launcher = IntentUtil.registerLauncherActivityForResult(this, OnActivityForResult());
 		configFiltrar(launcher);
 		setTitle("");
@@ -126,6 +133,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				idMunicipio = payload.getMunicipioId().getNumero().intValue();
 				idUf = payload.getMunicipioId().getIdUF().intValue();
 				model.setIdMunicipioUF(idMunicipio, idUf);
+				model.setIdModalidade(idModalidade);
 				buscaBoloes();
 			}
 

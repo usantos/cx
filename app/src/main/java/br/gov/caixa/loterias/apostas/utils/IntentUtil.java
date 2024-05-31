@@ -67,18 +67,20 @@ public class IntentUtil {
 		return intent;
 	}
 
-	public static Intent getIntentFimTutorial(Activity activity, ModalidadeEnum modalidade) {
+	public static Intent getIntentFimTutorial(Activity activity, ModalidadeEnum modalidade, Integer IdModalidade) {
 		if (modalidade == ModalidadeEnum.BOLAO){
-			return new Intent(activity, BolaoActivity.class);
+			Intent intent = new Intent(activity, BolaoActivity.class);
+			intent.putExtra(BolaoActivity.ARG_IDMODALIDADE,IdModalidade);
+			return intent;
 		} else {
 			return new Intent(activity, SimularApostaActivity_.class);
 		}
 	}
 
-	public static Intent getIntentTutorial(Activity activity, ModalidadeEnum modalidade) {
+	public static Intent getIntentTutorial(Activity activity, ModalidadeEnum modalidade, int idModalidade) {
 		Intent intent = new Intent(activity, TutorialActivity.class);
 		intent.putExtra(activity.getResources().getString(R.string.tipoAposta), modalidade);
-
+		intent.putExtra(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
 		return intent;
 	}
 

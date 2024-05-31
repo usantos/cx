@@ -28,8 +28,10 @@ public class FiltroMarketPlace implements Serializable {
     private BigDecimal valorMaximoCota;
     @SerializedName("numeroLoterico")
     private Long numeroLoterico;
+    @SerializedName("idModalidade")
+    private Integer idModalidade;
 
-    public FiltroMarketPlace(TipoConsultaBolaoEnum tipoConsulta, int idMunicipio, int idUf, int pagina, int qtdPorPagina) {
+    public FiltroMarketPlace(TipoConsultaBolaoEnum tipoConsulta, int idMunicipio, int idUf, int pagina, int qtdPorPagina, Integer idModalidade) {
         this.tipoConsulta = tipoConsulta;
         this.idMunicipio = idMunicipio;
         this.idUf = idUf;
@@ -40,6 +42,7 @@ public class FiltroMarketPlace implements Serializable {
         this.valorMinimoCota = null;
         this.valorMaximoCota = null;
         this.numeroLoterico = null;
+        this.idModalidade = idModalidade;
     }
 
     public TipoConsultaBolaoEnum getTipoConsulta() {
@@ -120,5 +123,13 @@ public class FiltroMarketPlace implements Serializable {
 
     public void setNumeroLoterico(Long numeroLoterico) {
         this.numeroLoterico = numeroLoterico;
+    }
+
+    public Integer getIdModalidade() {
+        return idModalidade;
+    }
+
+    public void setIdModalidade(Integer idModalidade) {
+        this.idModalidade = idModalidade;
     }
 }
