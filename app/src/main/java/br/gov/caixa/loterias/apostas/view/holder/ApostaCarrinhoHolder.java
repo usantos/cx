@@ -244,9 +244,12 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			switch (aposta.getIndicadorSurpresinha().getValor()) {
 				case IndicadorSurpresinha.NAO_SURPRESINHA:
 					if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
-						configuraFragment(aposta, this);
-						this.tvNumeroConcursoNovo.setVisibility(View.VISIBLE);
-						this.textViewNumeroConcurso.setVisibility(View.GONE);
+						if (!isBolao){
+							configuraFragment(aposta, this);
+							this.tvNumeroConcursoNovo.setVisibility(View.VISIBLE);
+							this.textViewNumeroConcurso.setVisibility(View.GONE);
+						}
+
 						this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 						this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));

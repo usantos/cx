@@ -52,10 +52,16 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 
 		List<Dezena> dezenas = new ArrayList<>();
 		for (int i = 0; i < aposta.getDezenas().size(); i++) {
-			if (aposta.getDezenas().get(i) == 100 || aposta.getDezenas().get(i) == 0){
-				dezenas.add(new Dezena("" + aposta.getDezenas().get(i), Boolean.FALSE, "00" ));
+			Integer numero = null;
+			if(aposta.getDezenas().get(i) instanceof Double){
+				numero = ((Double)aposta.getDezenas().get(i)).intValue();
 			} else {
-				dezenas.add(new Dezena("" + aposta.getDezenas().get(i), Boolean.FALSE, "" + aposta.getDezenas().get(i)));
+				numero = (Integer) aposta.getDezenas().get(i);
+			}
+			if (numero == 100 || numero == 0){
+				dezenas.add(new Dezena("" + numero, Boolean.FALSE, "00" ));
+			} else {
+				dezenas.add(new Dezena("" + numero, Boolean.FALSE, "" + numero));
 			}
 		}
 
