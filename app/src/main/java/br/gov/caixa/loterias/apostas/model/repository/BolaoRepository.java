@@ -45,6 +45,9 @@ public class BolaoRepository extends AppRepository {
             }
             if (filtroAplicado.getModalidade() != null) {
                 filtro.setIdModalidade(ModalidadeEnum.fromStringToIdModalidade(filtroAplicado.getModalidade()));
+            } else {
+                //força todas as modalidades
+                filtro.setIdModalidade(null);
             }
         }
 
@@ -53,7 +56,7 @@ public class BolaoRepository extends AppRepository {
     }
 
     private FiltroMarketPlace getFiltroMarketPlace(PaginacaoFiltro paginacao) {
-        return new FiltroMarketPlace(paginacao.getTipoConsulta(), paginacao.getIdMunicipio(), paginacao.getIdUf(), paginacao.getPagina(), paginacao.getQtdPorPagina());
+        return new FiltroMarketPlace(paginacao.getTipoConsulta(), paginacao.getIdMunicipio(), paginacao.getIdUf(), paginacao.getPagina(), paginacao.getQtdPorPagina(), paginacao.getIdModalidade());
     }
 
     public void buscaDetalhesBolao(String codigoBolao, OnSilceListener<DetalheBolaoDTO> listener){

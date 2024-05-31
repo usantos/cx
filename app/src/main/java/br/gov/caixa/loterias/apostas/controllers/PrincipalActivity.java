@@ -690,10 +690,17 @@ public class PrincipalActivity extends AppCompatActivity
     @Click(R.id.buttonHomeBolao)
     protected void clickButtonBolao() {
         if(DadosUsuarioBO.checarUsuarioLogado(this)){
+            int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
+            int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
+
             if (!DadosUsuarioBO.checarTutorial(DadosUsuarioBO.BOLAO_TUTORIAL)){
-                startActivity(IntentUtil.getIntentTutorial(this, ModalidadeEnum.BOLAO));
+                startActivity(IntentUtil.getIntentTutorial(this, ModalidadeEnum.BOLAO, idModalidade));
             } else {
-                startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
+                Bundle bundle = new Bundle();
+                bundle.putInt(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
+                Intent intent = IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class, bundle);
+                startActivity(intent);
+                //startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
             }
         } else {
             RedirectNetwork.connectKeycloak(this);
