@@ -77,19 +77,23 @@ public class ComprasDezenasView extends LinearLayout {
         this.corFonte = corFonte;
         switch (aposta.getModalidade()) {
             case TIMEMANIA:
-                labelDetalheTxt.setText(R.string.label_time_coracao);
-                detalheTxt.setText(ViewUtils.textFuturaAndFuturaBold(getContext(),
-                        getContext().getString(R.string.texto_futura_bold,
-                                aposta.getTimeDoCoracao().getNome() +"/"+
-                                aposta.getTimeDoCoracao().getUf()
-                        )));
-                detalheLayout.setVisibility(View.VISIBLE);
+                if(!aposta.getIndicadorCotaBolao()) {
+                    labelDetalheTxt.setText(R.string.label_time_coracao_dois_pontos);
+                    detalheTxt.setText(ViewUtils.textFuturaAndFuturaBold(getContext(),
+                            getContext().getString(R.string.texto_futura_bold,
+                                    aposta.getTimeDoCoracao().getNome() + "/" +
+                                            aposta.getTimeDoCoracao().getUf()
+                            )));
+                    detalheLayout.setVisibility(View.VISIBLE);
+                }
                 break;
 
             case DIA_DE_SORTE:
-                labelDetalheTxt.setText(R.string.label_mes_sorte);
-                detalheTxt.setText(aposta.getMesDeSorte() == null ? "" : ViewUtils.textFuturaAndFuturaBold(getContext(), getContext().getString(R.string.texto_futura_bold, aposta.getMesDeSorte().getNome())));
-                detalheLayout.setVisibility(View.VISIBLE);
+                if(!aposta.getIndicadorCotaBolao()) {
+                    labelDetalheTxt.setText(R.string.label_mes_sorte_dois_pontos);
+                    detalheTxt.setText(aposta.getMesDeSorte() == null ? "" : ViewUtils.textFuturaAndFuturaBold(getContext(), getContext().getString(R.string.texto_futura_bold, aposta.getMesDeSorte().getNome())));
+                    detalheLayout.setVisibility(View.VISIBLE);
+                }
                 break;
 
             default:
@@ -104,13 +108,12 @@ public class ComprasDezenasView extends LinearLayout {
                 if (!aposta.getMatrizNumerosSelecionados().isEmpty()) {
                     configuraSuperSeteFragment(aposta);
                     dezenasRecyclerView.setVisibility(View.GONE);
-
                 }
             } else if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
                 configuraMaisMilionariaFragment(aposta);
             } else {
                 if(aposta.getIndicadorCotaBolao()) {
-                    JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(aposta.getModalidade(), R.color.branco,
+                    JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(aposta.getModalidade(), corFonte,
                             aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
                             new ArrayList<>(), getDezenaConfig());
                     dezenasRecyclerView.setAdapter(adpterJogos);
