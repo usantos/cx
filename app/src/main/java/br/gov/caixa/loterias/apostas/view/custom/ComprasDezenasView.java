@@ -26,16 +26,20 @@ import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuperSete;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasResultadoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosFragment;
@@ -105,9 +109,17 @@ public class ComprasDezenasView extends LinearLayout {
     private void initRecyclerView(ApostaDTO aposta) {
         if (aposta != null) {
             if  (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
-                if (!aposta.getMatrizNumerosSelecionados().isEmpty()) {
-                    configuraSuperSeteFragment(aposta);
-                    dezenasRecyclerView.setVisibility(View.GONE);
+                if(aposta.getIndicadorCotaBolao()) {
+                    SuperSeteRecyclerViewAdapter superSeteAdpter = new
+                            SuperSeteRecyclerViewAdapter(aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
+                            getContext(), getDezenaConfig());
+                    dezenasRecyclerView.setAdapter(superSeteAdpter);
+                    dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                } else {
+                    if (!aposta.getMatrizNumerosSelecionados().isEmpty()) {
+                        configuraSuperSeteFragment(aposta);
+                        dezenasRecyclerView.setVisibility(View.GONE);
+                    }
                 }
             } else if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
                 configuraMaisMilionariaFragment(aposta);
@@ -161,7 +173,9 @@ public class ComprasDezenasView extends LinearLayout {
         FragmentManager fm = activity.getSupportFragmentManager();
         int             newContainerId = getNewContainerId(fm);
         rl_container_fragment.setId(newContainerId);
-        NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados());
+        NumerosSuperSeteFragment fragment =
+                NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados(),
+                                                     configuraEstiloSuperSete(aposta.getModalidade()));
         fm.beginTransaction().replace(newContainerId, fragment).commit();
         rl_container_fragment.setVisibility(View.VISIBLE);
 
@@ -196,5 +210,20 @@ public class ComprasDezenasView extends LinearLayout {
 
         }
         return dezenas;
+    }
+
+    public ConfiguracaoNumerosSuperSete configuraEstiloSuperSete(ModalidadeEnum modalidade) {
+        EstiloModalidadeMKP estiloMKP = new EstiloModalidadeMKP(modalidade);
+
+        return new ConfiguracaoNumerosSuperSete(
+                estiloMKP.getCorClara(),            //corInteriorCirculo
+                R.color.branco,                     //corInteriorSelecionado
+                estiloMKP.getCorFonteFundoClaro(),  //corTextoCirculo
+                R.color.branco,                     //corTextoCirculoSelecionado
+                estiloMKP.getCorFonteFundoClaro(),  //corBordaCirculo
+                R.color.branco,                     //corBordaCirculoSelecionado
+                estiloMKP.getCorEscura(),           //corInteriorQuadrado
+                estiloMKP.getCorFonteFundoEscuro(), //textoQuadrado
+                estiloMKP.getCorEscura());          //corBordaQuadrado
     }
 }
