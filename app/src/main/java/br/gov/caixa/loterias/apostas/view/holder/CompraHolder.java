@@ -14,8 +14,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostaLotogolDetalhesComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaComprasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ComprasDezenasView;
 import br.gov.caixa.loterias.apostas.view.custom.ComprasDezenasView_;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
@@ -107,10 +109,19 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 				child = LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_compras_loteca_layout, null);
 				this.seusNumerosItemListaComprasTextView.setText(R.string.label_sua_aposta);
 				ExpandableHeightRecyclerView lotecaRecyclerViewItemCompra = child.findViewById(R.id.lotecaRecyclerViewItemCompra);
-				LotecaComprasAdapter lotecaAdapter = new LotecaComprasAdapter(aposta.getPartidasLoteca());
-				lotecaRecyclerViewItemCompra.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-				lotecaRecyclerViewItemCompra.setAdapter(lotecaAdapter);
-				lotecaRecyclerViewItemCompra.setExpanded(true);
+				if (aposta.getIndicadorCotaBolao()) {
+					PartidasLotecaRecyclerViewAdapter partidasAdapter = new PartidasLotecaRecyclerViewAdapter(
+							aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getPartidasLoteca(),
+							child.getContext());
+					lotecaRecyclerViewItemCompra.setAdapter(partidasAdapter);
+					lotecaRecyclerViewItemCompra.setLayoutManager(new LinearLayoutManager(child.getContext()));
+					lotecaRecyclerViewItemCompra.setExpanded(true);
+				} else {
+					LotecaComprasAdapter lotecaAdapter = new LotecaComprasAdapter(aposta.getPartidasLoteca());
+					lotecaRecyclerViewItemCompra.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
+					lotecaRecyclerViewItemCompra.setAdapter(lotecaAdapter);
+					lotecaRecyclerViewItemCompra.setExpanded(true);
+				}
 				break;
 			case LOTOGOL:
 				child = LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_compras_lotogol_layout, null);

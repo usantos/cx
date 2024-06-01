@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ComprasSuperSeteRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DezenasResultadoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
@@ -110,9 +111,9 @@ public class ComprasDezenasView extends LinearLayout {
         if (aposta != null) {
             if  (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
                 if(aposta.getIndicadorCotaBolao()) {
-                    SuperSeteRecyclerViewAdapter superSeteAdpter = new
-                            SuperSeteRecyclerViewAdapter(aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
-                            getContext(), getDezenaConfig());
+                    ComprasSuperSeteRecyclerViewAdapter superSeteAdpter = new
+                            ComprasSuperSeteRecyclerViewAdapter(aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
+                            getContext(), getDezenaConfigSuper7());
                     dezenasRecyclerView.setAdapter(superSeteAdpter);
                     dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 } else {
@@ -196,6 +197,14 @@ public class ComprasDezenasView extends LinearLayout {
 
         return new DezenaConfig(false, corFonte,
                 R.layout.item_dezena_detalhe,
+                shapeConfig,false);
+    }
+
+    private DezenaConfig getDezenaConfigSuper7() {
+        ShapeConfig shapeConfig = new ShapeConfig(R.color.branco, R.color.mega_verde_escuro_mkp);
+
+        return new DezenaConfig(false, corFonte,
+                R.layout.item_dezena_detalhe_super7,
                 shapeConfig,false);
     }
 
