@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.DataUtil;
@@ -47,7 +49,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 	private View view;
     private TextView concursoTxt, cotaTxt, dataApostaTxt, statusApostaTxt, tv_val_premio, tv_val_premio_tit;
-	private TextView tvNumerosSorteados, tvNumerosSorteados2;
+	private TextView tvNumerosSorteados, tvNumerosSorteados2, labelMesTime, txtMesTime;
 	private TextView tvDuplaSena1, tvDuplaSena2;
 	private RecyclerView listViewSorteados, listViewSorteados2, listViewJogos, listViewJogos2;
 	private ImageView imgTriangulo;
@@ -124,9 +126,33 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 		}
 
 		initList();
+		apresentaEspecialidadeModalidades();
 	}
 
-    private String getDataBolao(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
+	private void apresentaEspecialidadeModalidades() {
+		if (aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE){
+			labelMesTime.setVisibility(View.VISIBLE);
+			txtMesTime.setVisibility(View.VISIBLE);
+			labelMesTime.setText("Mês da sorte:");
+			txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorEscura()));
+			if (getResultadoConcurso() != null && getResultadoConcurso().getPremiacaoMesDeSorte() != null &&
+					getResultadoConcurso().getPremiacaoMesDeSorte().getMesDeSorte() != null){
+				txtMesTime.setText(getResultadoConcurso().getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+			}
+		} else if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
+			labelMesTime.setVisibility(View.VISIBLE);
+			txtMesTime.setVisibility(View.VISIBLE);
+			labelMesTime.setText("Time do coração:");
+			labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorEscura()));
+			if (getResultadoConcurso() != null && getResultadoConcurso().getPremiacaoTimeDoCoracao() != null &&
+					getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe() != null){
+				txtMesTime.setText(getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome());
+			}
+		}
+	}
+
+	private String getDataBolao(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
         String dataString = DataUtil.formatStringData(DataUtil.DD_MM_YYYY, aposta.getReservaCotaBolao().getDataHoraReserva());
         String horaString = DataUtil.formatStringData(DataUtil.HH_MM_SS, aposta.getReservaCotaBolao().getDataHoraReserva());
 
@@ -263,6 +289,8 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 		tvNumerosSorteados = view.findViewById(R.id.id_seus_numeros);
 		tvDuplaSena2 = view.findViewById(R.id.id_dupla_sena2);
 		tvNumerosSorteados2 = view.findViewById(R.id.id_seus_numeros2);
+		labelMesTime = view.findViewById(R.id.mes_time_label);
+		txtMesTime = view.findViewById(R.id.mes_time_valor);
 
 		listViewSorteados = view.findViewById(R.id.id_lista_sorteados);
 		listViewSorteados2 = view.findViewById(R.id.id_lista_sorteados2);

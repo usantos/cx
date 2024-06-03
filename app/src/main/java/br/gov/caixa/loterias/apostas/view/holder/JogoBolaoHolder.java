@@ -16,6 +16,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
@@ -28,19 +29,22 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 	private int corTitulo;
 	private List<Integer> dezenasSelecionadas;
 	private DezenaConfig dezenaConfig;
-	private TextView txtNumero, txtIndividualidade;
+	private TextView txtNumero, txtIndividualidade, mesTime;
 	private RecyclerView listView, listTrevos;
 	private Context context;
+	private EstiloModalidadeMKP estilo;
 
 	public JogoBolaoHolder(ModalidadeEnum modalidade, int corTitulo, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, View itemView, Context context) {
 		super(itemView);
 		this.modalidade = modalidade;
+		this.estilo = new EstiloModalidadeMKP(modalidade);
 		this.corTitulo = corTitulo;
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.dezenaConfig = dezenaConfig;
 		txtNumero = itemView.findViewById(R.id.id_numero_jogo);
 		listView = itemView.findViewById(R.id.id_lista);
-		txtIndividualidade = itemView.findViewById(R.id.id_descricao_individualidade);
+		txtIndividualidade = itemView.findViewById(R.id.mes_sorte_label);
+		mesTime = itemView.findViewById(R.id.mes_sorte_valor);
 		listTrevos = itemView.findViewById(R.id.id_trevos);
 		this.context = context;
 	}
@@ -125,7 +129,10 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 
 	private void apresentaDiaSorteTimeMania(String descricao, String valor){
 		txtIndividualidade.setVisibility(View.VISIBLE);
-		txtIndividualidade.setText(descricao + valor);
+		mesTime.setVisibility(View.VISIBLE);
+		txtIndividualidade.setText(descricao);
+		mesTime.setText(valor);
+		mesTime.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
 	}
 
 	private OnItemClickListener onItemClickListener() {
