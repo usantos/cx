@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -55,11 +56,8 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 
 	@Override
 	public void bind(ApostaDTO aposta, int position) {
-		//EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
 		EstiloModalidadeMKP estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 		int colorText = itemView.getContext().getResources().getColor(estiloMKP.getCorFonteFundoClaro());
-
-		//itemView.getContext().setTheme(estilo.getThemeId());
 
 		int qtdTeimosinhas = aposta.getQuantidadeTeimosinhas();
 		String teimosinhasTxt = qtdTeimosinhas + (qtdTeimosinhas > 1 ? itemView.getContext().getResources().getString(R.string.espaco_teimosinhas) : itemView.getContext().getResources().getString(R.string.espaco_teimosinha));
@@ -91,7 +89,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		this.concursoListaComprasTextView.setTextColor(colorText);
 
 		this.statusResultadoApostaListaComprasTextView.setText(aposta.getSituacao().getDescricao());
-		this.statusResultadoApostaListaComprasTextView.setTextColor(estiloMKP.getCorFonteFundoEscuro());
+		this.statusResultadoApostaListaComprasTextView.setTextColor(itemView.getContext().getResources().getColor(estiloMKP.getCorFonteFundoClaro()));
 
 		this.topListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estiloMKP.getCorClara()));
 
@@ -105,24 +103,6 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 
 		View child = null;
 		switch (aposta.getModalidade()) {
-			case LOTECA:
-				child = LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_compras_loteca_layout, null);
-				this.seusNumerosItemListaComprasTextView.setText(R.string.label_sua_aposta);
-				ExpandableHeightRecyclerView lotecaRecyclerViewItemCompra = child.findViewById(R.id.lotecaRecyclerViewItemCompra);
-				if (aposta.getIndicadorCotaBolao()) {
-					PartidasLotecaRecyclerViewAdapter partidasAdapter = new PartidasLotecaRecyclerViewAdapter(
-							aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getPartidasLoteca(),
-							child.getContext());
-					lotecaRecyclerViewItemCompra.setAdapter(partidasAdapter);
-					lotecaRecyclerViewItemCompra.setLayoutManager(new LinearLayoutManager(child.getContext()));
-					lotecaRecyclerViewItemCompra.setExpanded(true);
-				} else {
-					LotecaComprasAdapter lotecaAdapter = new LotecaComprasAdapter(aposta.getPartidasLoteca());
-					lotecaRecyclerViewItemCompra.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
-					lotecaRecyclerViewItemCompra.setAdapter(lotecaAdapter);
-					lotecaRecyclerViewItemCompra.setExpanded(true);
-				}
-				break;
 			case LOTOGOL:
 				child = LayoutInflater.from(itemView.getContext()).inflate(R.layout.item_compras_lotogol_layout, null);
 				this.seusNumerosItemListaComprasTextView.setText(R.string.label_sua_aposta);
@@ -133,7 +113,11 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 				lotogolRecyclerViewItemCompra.setExpanded(true);
 				break;
 			default:
-				this.seusNumerosItemListaComprasTextView.setText(R.string.seus_numeros);
+				if (aposta.getModalidade() == ModalidadeEnum.LOTECA) {
+					this.seusNumerosItemListaComprasTextView.setText(R.string.label_sua_aposta);
+				} else {
+					this.seusNumerosItemListaComprasTextView.setText(R.string.seus_numeros);
+				}
 				child = ComprasDezenasView_.build(this.activity);
 				((ComprasDezenasView)child).setLayout(aposta, estiloMKP.getCorFonteFundoClaro());
 				break;
