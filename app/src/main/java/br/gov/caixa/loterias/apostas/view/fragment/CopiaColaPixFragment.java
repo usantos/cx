@@ -5,6 +5,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -272,7 +273,7 @@ public class CopiaColaPixFragment extends Fragment {
 	private void sussecoCompra() {
 		new CompraModel(getActivity()).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
 
-		AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_pagamento_sucesso));
+		registrarCompraSucessoAppCenter();
 		RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
 
 		CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
@@ -283,6 +284,20 @@ public class CopiaColaPixFragment extends Fragment {
 		bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
 		Intent activity = IntentUtil.getIntentOrigemDestino(getActivity(), ConfirmacaoPagamentoActivity.class, bundle);
 		startActivity(activity);
+	}
+
+	private void registrarCompraSucessoAppCenter() {
+		try {
+			if(getActivity() != null){
+				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_pagamento_sucesso));
+			} else if (getContext() != null) {
+				AppCenterManager.registraEvento(getContext().getResources().getString(R.string.evento_pagamento_sucesso));
+			} else if (Aplicacao.application.getApplicationContext() != null) {
+				AppCenterManager.registraEvento(Aplicacao.application.getApplicationContext().getResources().getString(R.string.evento_pagamento_sucesso));
+			}
+		}catch (Exception e){
+			Log.d("SEMCONTEXTOCOMPRAPIX", e.getLocalizedMessage());
+		}
 	}
 
 	private void copiaTesto(String value) {
