@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity">
+    tools:context="br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity">
 
     <include layout="@layout/app_bar_marketplace" />
 
@@ -39,8 +39,8 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/rectangle_5_copy"
             android:layout_marginBottom="16dp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="48dp"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 
@@ -48,7 +48,7 @@
             android:id="@+id/textTituloTela"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tituloBolãoFeito"
+            android:text="@string/tituloBolaoFeito"
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="14.2sp"

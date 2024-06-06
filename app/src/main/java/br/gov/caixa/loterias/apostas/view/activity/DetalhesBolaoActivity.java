@@ -32,6 +32,8 @@ import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
@@ -50,6 +52,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private TextView tvLabelQtdCotas;
 	private RecyclerView listaJogos;
 	private JogosBolaoRecyclerView listaAdapter;
+	private PartidasLotecaRecyclerViewAdapter partidasAdapter;
+	private SuperSeteRecyclerViewAdapter superSeteAdpter;
 	private ConstraintLayout layoutQtdCotas;
 	private FrameLayout frameSomador, frameRodape;
 
@@ -225,10 +229,20 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	}
 
 	private void preencheJogos() {
-		if (bolao.getApostas() != null && !bolao.getApostas().isEmpty()){
-			listaAdapter = new JogosBolaoRecyclerView(bolao.getModalidade(), estilo.getCorLetraLista(), bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
-			listaJogos.setAdapter(listaAdapter);
-			listaJogos.setLayoutManager(new LinearLayoutManager(this));
+		if (bolao.getModalidade() == ModalidadeEnum.LOTECA && !bolao.getApostas().isEmpty()){
+			partidasAdapter = new PartidasLotecaRecyclerViewAdapter(bolao.getApostas().get(0).getPartidasLoteca(), DetalhesBolaoActivity.this);
+			listaJogos.setAdapter(partidasAdapter);
+			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
+		} else if (bolao.getModalidade() == ModalidadeEnum.SUPER_7) {
+			superSeteAdpter = new SuperSeteRecyclerViewAdapter(bolao.getApostas(), DetalhesBolaoActivity.this, getDezenaConfig());
+			listaJogos.setAdapter(superSeteAdpter);
+			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
+		} else {
+			if (bolao.getApostas() != null && !bolao.getApostas().isEmpty()){
+				listaAdapter = new JogosBolaoRecyclerView(bolao.getModalidade(), estilo.getCorLetraLista(), bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
+				listaJogos.setAdapter(listaAdapter);
+				listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
+			}
 		}
 	}
 

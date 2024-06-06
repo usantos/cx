@@ -911,6 +911,9 @@ public class ApostaBO extends BaseBO {
         if (filtro.getNumeroLoterico() != null){
             queryParams.put("numeroLoterico",String.valueOf(filtro.getNumeroLoterico()));
         }
+        if (filtro.getIdModalidade() != null){
+            queryParams.put("idModalidade",String.valueOf(filtro.getIdModalidade()));
+        }
 
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.BOLOES_DISPONIVEIS,
                 queryParams,
