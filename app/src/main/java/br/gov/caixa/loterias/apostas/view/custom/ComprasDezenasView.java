@@ -144,7 +144,15 @@ public class ComprasDezenasView extends LinearLayout {
                 }
                 break;
             case MAIS_MILIONARIA:
-                configuraMaisMilionariaFragment(aposta);
+                if(aposta.getIndicadorCotaBolao()) {
+                    JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(aposta.getModalidade(), corFonte,
+                            aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
+                            new ArrayList<>(), getDezenaConfig(), getTrevoConfig());
+                    dezenasRecyclerView.setAdapter(adpterJogos);
+                    dezenasRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                } else {
+                    configuraMaisMilionariaFragment(aposta);
+                }
                 break;
             default:
                 if(aposta.getIndicadorCotaBolao()) {
@@ -173,24 +181,29 @@ public class ComprasDezenasView extends LinearLayout {
         rl_trevos_fragment.setId(newContainerTrevosId);
         NumerosFragment trevosFrag = NumerosFragment.newInstance(activity.getResources().getString(R.string.trevosTitulo),
                                                                trevos, trevos,
-                                                               configuraEstiloNumeros(aposta), getTrevoShape());
+                                                               configuraEstiloNumerosTrevos(), getTrevoShape());
         fm.beginTransaction().replace(newContainerTrevosId, trevosFrag).commit();
         rl_trevos_fragment.setVisibility(VISIBLE);
     }
 
     private ShapeConfig getTrevoShape() {
-        return new ShapeConfig(R.drawable.ic_item_trevo,
-                               R.drawable.ic_item_trevo_selecionado,
-                               R.color.branco, R.color.mais_milionaria_escura);
+        return new ShapeConfig(0,
+                               R.drawable.ic_item_trevo_branco,
+                               0, 0);
     }
 
-    private ConfiguracaoNumeros configuraEstiloNumeros(ApostaDTO aposta) {
-        EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
-        if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-            return new ConfiguracaoNumeros(estilo.getCorClara(), R.color.branco);
-        } else {
-            return new ConfiguracaoNumeros(estilo.getCorEscura(), R.color.branco);
-        }
+    private DezenaConfig getTrevoConfig() {
+        ShapeConfig shapeConfig = new ShapeConfig(R.drawable.ic_item_trevo,
+                R.drawable.ic_item_trevo_selecionado,
+                R.color.branco, R.color.mais_milionaria_escura);
+
+        return new DezenaConfig(false, corFonte,
+                R.layout.item_dezena_detalhe,
+                shapeConfig,false);
+    }
+
+    private ConfiguracaoNumeros configuraEstiloNumerosTrevos() {
+        return new ConfiguracaoNumeros(0, 0);
     }
 
     private void configuraSuperSeteFragment(ApostaDTO aposta) {
