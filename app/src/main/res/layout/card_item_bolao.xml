@@ -93,7 +93,7 @@
                 android:id="@+id/descricao_numero_concurso"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="14dp"
                 android:fontFamily="@font/caixa_std_regular"
                 android:text="Prêmio estimado do concurso 2345"
                 android:textSize="16sp"
@@ -106,7 +106,7 @@
                 android:id="@+id/loterica_cidade_uf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="14dp"
                 android:fontFamily="@font/caixa_std_regular"
                 android:text="Serra Dourada\nSantos-SP"
                 android:textAlignment="center"
@@ -114,11 +114,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/descricao_numero_concurso" />
 
+            <TextView
+                android:id="@+id/descricao_qtd_dezenas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="05 apostas de 20 dezenas"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/loterica_cidade_uf" />
+
             <Button
                 android:id="@+id/detalhes"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="14dp"
                 android:background="@drawable/btn_rounded_green_outlined"
                 android:fontFamily="@font/caixa_std_regular"
                 android:text="Detalhes"
@@ -126,19 +139,32 @@
                 android:textColor="@color/mega_verde_claro_mkp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/loterica_cidade_uf" />
+                app:layout_constraintTop_toBottomOf="@id/descricao_qtd_dezenas" />
+
+            <TextView
+                android:id="@+id/descricao_qtd_cotas_disponiveis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="25 cotas disponíveis de 100"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detalhes" />
 
             <TextView
                 android:id="@+id/valor_cota"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="14dp"
                 android:fontFamily="@font/caixa_std_bold"
                 android:text="R$ 300,00"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/detalhes" />
+                app:layout_constraintTop_toBottomOf="@id/descricao_qtd_cotas_disponiveis" />
 
             <TextView
                 android:id="@+id/label_quantidade_cotas"
