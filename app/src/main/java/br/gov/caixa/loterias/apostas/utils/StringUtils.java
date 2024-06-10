@@ -42,4 +42,14 @@ public class StringUtils {
         df.setDecimalFormatSymbols(new DecimalFormatSymbols(new Locale("pt", "BR")));
         return df.format(value);
     }
+
+    public static String getApostasDeDezenas(int aposta, int dezena) {
+        String apostaText = (aposta <= 1) ? "aposta" : "apostas";
+        return "_"+aposta+"_ "+apostaText+" de _"+dezena+"_ dezenas";
+    }
+
+    public static String getCotaDeTotal(int cota, int total) {
+        String cotaText = (cota <= 1) ? "cota disponível" : "cotas disponíveis";
+        return "_"+cota+"_ "+cotaText+" de _"+total+"_";
+    }
 }

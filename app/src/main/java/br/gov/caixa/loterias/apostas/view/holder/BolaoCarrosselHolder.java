@@ -28,6 +28,9 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
+
 public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
 	private Activity activity;
 	private static final int QUANTIDADE_MINIMA = 1;
@@ -205,15 +208,5 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	private ColorStateList getCor(int cor) {
 		return ContextCompat.getColorStateList(activity, cor);
-	}
-
-	private String getApostasDeDezenas(int aposta, int dezena) {
-		String apostaText = (aposta <= 1) ? "aposta" : "apostas";
-		return "_"+aposta+"_ "+apostaText+" de _"+dezena+"_ dezenas";
-	}
-
-	private String getCotaDeTotal(int cota, int total) {
-		String cotaText = (cota <= 1) ? "cota disponível" : "cotas disponíveis";
-		return "_"+cota+"_ "+cotaText+" de _"+total+"_";
 	}
 }
