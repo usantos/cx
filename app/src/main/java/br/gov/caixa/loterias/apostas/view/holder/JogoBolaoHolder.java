@@ -33,8 +33,9 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 	private RecyclerView listView, listTrevos;
 	private Context context;
 	private EstiloModalidadeMKP estilo;
+	private DezenaConfig trevoConfig;
 
-	public JogoBolaoHolder(ModalidadeEnum modalidade, int corTitulo, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, View itemView, Context context) {
+	public JogoBolaoHolder(ModalidadeEnum modalidade, int corTitulo, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, View itemView, Context context, DezenaConfig trevoConfig) {
 		super(itemView);
 		this.modalidade = modalidade;
 		this.estilo = new EstiloModalidadeMKP(modalidade);
@@ -47,6 +48,7 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 		mesTime = itemView.findViewById(R.id.mes_sorte_valor);
 		listTrevos = itemView.findViewById(R.id.id_trevos);
 		this.context = context;
+		this.trevoConfig = trevoConfig;
 	}
 
 	@Override
@@ -118,6 +120,11 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 	}
 
 	private DezenaConfig getTrevoConfig() {
+
+		if (trevoConfig != null) {
+			return this.trevoConfig;
+		}
+
 		ShapeConfig shapeConfig = new ShapeConfig(R.drawable.ic_item_trevo,
 				R.drawable.ic_item_trevo_selecionado,
 				R.color.milionaria_escuro_mkp, R.color.milionaria_escuro_mkp);

@@ -65,7 +65,8 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 				}
 			}else {
 				shape = AppCompatResources.getDrawable(context, config.getDrawableSelecionado());
-				txtNumero.setTextColor(config.getColor());
+				//txtNumero.setTextColor(config.getColor());
+				txtNumero.setTextColor(ContextCompat.getColor(context, config.getColor()));
 			}
 		} else {
 			shape = VectorUtils.getShape(config.getDrawable(), config.getColor());
