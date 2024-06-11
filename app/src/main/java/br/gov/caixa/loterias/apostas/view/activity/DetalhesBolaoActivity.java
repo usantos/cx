@@ -39,6 +39,9 @@ import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
+
 public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	public static final String ARG_CODIGO_BOLAO = "ARG_CODIGO_BOLAO";
 	public static final String ARG_MODALIDADE = "ARG_MODALIDADE";
@@ -47,6 +50,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private TextView tvValorPremio, tvDescricaoPremioConcurso;
 	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota;
+	private TextView textQtdDezenas, textQtdCotas;
 	private Button btnAdd, btnDiminui, btnAumenta;
 	private TextView tvValorCotaBtn, tvQtdCotas;
 	private TextView tvLabelQtdCotas;
@@ -146,6 +150,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		tvDescricaoPremioConcurso = findViewById(R.id.id_descricao_valor_premio);
 		tvMunicipio = findViewById(R.id.id_municipio);
 		tvValorCota = findViewById(R.id.id_valor_cota);
+		textQtdDezenas = findViewById(R.id.descricao_qtd_dezenas_dt);
+		textQtdCotas = findViewById(R.id.descricao_qtd_cotas_disponiveis_dt);
 		tvNumeroCota = findViewById(R.id.id_numero_qtd_cotas);
 		tvValorTarifa = findViewById(R.id.id_valor_tarifa_servico);
 		tvValorTotal = findViewById(R.id.id_valor_total);
@@ -224,6 +230,13 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		tvValorTotal.setText("Total: " + ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()));
 		btnAdd.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
 		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
+
+		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(this,
+				getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+
+		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(this,
+				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
+
 		atualizaQuantidadeTextView();
 		preencheJogos();
 	}
