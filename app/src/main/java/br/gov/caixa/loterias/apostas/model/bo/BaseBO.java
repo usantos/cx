@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
@@ -62,6 +63,14 @@ public class BaseBO {
         return error -> {
             if(AppUtils.isNetworkAvailable(context)){
                 registraErro(error, request);
+                if (MensagensNetwork.isCertificadoInvalido(error)){
+                    CertificadoSingleton.getInstance().trocaCertificado();
+                    silceSingleton.initQueue();
+                    silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+                    silceConnection.request(request, listener);
+                    return;
+                }
+
                 //Caso não esteja autorizado tenta atualizar o token de acesso
                 if(MensagensNetwork.isUnauthorizedError(error) && keycloakBO.getAccessToken() != null) {
                     keycloakBO.refreshAccess(() -> {
