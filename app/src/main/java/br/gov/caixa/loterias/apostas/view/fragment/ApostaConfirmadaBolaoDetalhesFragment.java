@@ -48,7 +48,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	private IdentificaoDeUmaApostaDas8Modalidades aposta;
 
 	private View view;
-    private TextView concursoTxt, cotaTxt, dataApostaTxt, statusApostaTxt, tv_val_premio, tv_val_premio_tit;
+    private TextView concursoTxt, cotaTxt, dataApostaLabel, dataApostaTxt, statusApostaTxt, tv_val_premio, tv_val_premio_tit;
 	private TextView tvNumerosSorteados, tvNumerosSorteados2, labelMesTime, txtMesTime;
 	private TextView tvDuplaSena1, tvDuplaSena2;
 	private RecyclerView listViewSorteados, listViewSorteados2, listViewJogos, listViewJogos2;
@@ -93,6 +93,22 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 		return view;
 	}
 
+	private void aplicaCorFontes() {
+		concursoTxt.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		cotaTxt.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		dataApostaTxt.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+		dataApostaLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+		statusApostaTxt.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		tv_val_premio.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		tv_val_premio_tit.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		tvNumerosSorteados.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		tvNumerosSorteados2.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		tvDuplaSena1.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		tvDuplaSena2.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+	}
+
 	private void preencheDadosAposta() {
 		EstiloModalidadeMKP estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 		imgTriangulo.setImageResource(estiloModalidadeMKP.getImagemTrianguloOutline());
@@ -130,6 +146,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private void apresentaEspecialidadeModalidades() {
+		aplicaCorFontes();
 		if (aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE){
 			labelMesTime.setVisibility(View.VISIBLE);
 			txtMesTime.setVisibility(View.VISIBLE);
@@ -281,6 +298,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
         concursoTxt = view.findViewById(R.id.concursoTxt);
 		cotaTxt = view.findViewById(R.id.cotaTxt);
         dataApostaTxt = view.findViewById(R.id.dataApostaTxt);
+        dataApostaLabel = view.findViewById(R.id.dataAposta);
         statusApostaTxt = view.findViewById(R.id.statusApostaTextView);
         tv_val_premio = view.findViewById(R.id.tv_val_premio);
         tv_val_premio_tit = view.findViewById(R.id.tv_val_premio_tit);
