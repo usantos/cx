@@ -137,10 +137,7 @@ public class MensagensNetwork {
     }
 
     public static boolean isCertificadoInvalido(VolleyError error) {
-        NetworkResponse response = error.networkResponse;
-        if (response != null){
-            return response.statusCode == 403;
-        } else if (error.getLocalizedMessage().contains("SSLHandshakeException")) {
+        if (error.getLocalizedMessage().contains("SSLHandshakeException")) {
             return true;
         }
         return false;
