@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.internals;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
@@ -18,12 +19,17 @@ import java.util.List;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
+import br.gov.caixa.loterias.apostas.utils.ToastUtil;
 
 import static com.android.volley.Request.Method.DELETE;
 import static com.android.volley.Request.Method.GET;
@@ -38,6 +44,7 @@ public class SilceConnection {
     private static final String TAG_REQUEST = "TAG_REQUEST";
 
     private static final String AZURE_API = "azure-api.net";
+    //private static final String AZURE_API = ":8080";
 
     private static final String PUBLICO = "/publico";
     private static final String LOGADO = "/logado";
@@ -235,6 +242,11 @@ public class SilceConnection {
 
         String novoCaminho = alteraCaminhoCarrinho(path);
         if (novoCaminho != null) {
+            if (BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")){
+                //ToastUtil.toastShort(novoCaminho + fillParamToString(queryParams));
+                MessagingUtils.criaNotificacaoNova(Aplicacao.application.getApplicationContext(),
+                        DateUtils.getDateTime(), novoCaminho + fillParamToString(queryParams));
+            }
             return novoCaminho + fillParamToString(queryParams);
         }
 
@@ -349,6 +361,7 @@ public class SilceConnection {
 
             //Apenas para teste
             baseUrlCarrinho = "https://apim-lce-des.azure-api.net/loterias-web/carrinho/v1";
+            //baseUrlCarrinho = "http://localhost:8080/v1";
         } else {
             baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
         }
@@ -372,7 +385,8 @@ public class SilceConnection {
         }
 
         for(String parcial : listLogadoParcial) {
-            if (parcial.startsWith(path)) {
+            //if (parcial.startsWith(path)) {
+            if (path.startsWith(parcial)) {
                 if (finalCPFAcessaNuvem()) {
                     return baseUrlCarrinho + LOGADO + path;
                 }
