@@ -94,19 +94,21 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private void aplicaCorFontes() {
-		concursoTxt.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-		cotaTxt.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-		dataApostaTxt.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-		dataApostaLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-		statusApostaTxt.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-		tv_val_premio.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-		tv_val_premio_tit.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-		tvNumerosSorteados.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-		tvNumerosSorteados2.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-		labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-		txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-		tvDuplaSena1.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-		tvDuplaSena2.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
+			concursoTxt.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			cotaTxt.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			dataApostaTxt.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+			dataApostaLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+			statusApostaTxt.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			tv_val_premio.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			tv_val_premio_tit.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			tvNumerosSorteados.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			tvNumerosSorteados2.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			tvDuplaSena1.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			tvDuplaSena2.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+		}
 	}
 
 	private void preencheDadosAposta() {
@@ -152,6 +154,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 			txtMesTime.setVisibility(View.VISIBLE);
 			labelMesTime.setText("Mês da sorte:");
 			txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorEscura()));
+			labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoEscuro()));
 			if (getResultadoConcurso() != null && getResultadoConcurso().getPremiacaoMesDeSorte() != null &&
 					getResultadoConcurso().getPremiacaoMesDeSorte().getMesDeSorte() != null){
 				txtMesTime.setText(getResultadoConcurso().getPremiacaoMesDeSorte().getMesDeSorte().getNome());

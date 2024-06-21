@@ -25,15 +25,15 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 
-	private ModalidadeEnum modalidade;
-	private int corTitulo;
-	private List<Integer> dezenasSelecionadas;
-	private DezenaConfig dezenaConfig;
-	private TextView txtNumero, txtIndividualidade, mesTime;
-	private RecyclerView listView, listTrevos;
-	private Context context;
-	private EstiloModalidadeMKP estilo;
-	private DezenaConfig trevoConfig;
+	private final ModalidadeEnum modalidade;
+	private final int corTitulo;
+	private final List<Integer> dezenasSelecionadas;
+	private final DezenaConfig dezenaConfig;
+	private final TextView txtNumero, txtIndividualidade, mesTime;
+	private final RecyclerView listView, listTrevos;
+	private final Context context;
+	private final EstiloModalidadeMKP estilo;
+	private final DezenaConfig trevoConfig;
 
 	public JogoBolaoHolder(ModalidadeEnum modalidade, int corTitulo, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, View itemView, Context context, DezenaConfig trevoConfig) {
 		super(itemView);
@@ -58,7 +58,7 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 
 		List<Dezena> dezenas = new ArrayList<>();
 		for (int i = 0; i < aposta.getDezenas().size(); i++) {
-			Integer numero = null;
+			Integer numero;
 			if(aposta.getDezenas().get(i) instanceof Double){
 				numero = ((Double)aposta.getDezenas().get(i)).intValue();
 			} else {
@@ -89,14 +89,14 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 				if (aposta.getTimeCoracao() != null && aposta.getTimeCoracao().getNomeComUf() != null){
 					time = aposta.getTimeCoracao().getNomeComUf();
 				}
-				apresentaDiaSorteTimeMania(context.getString(R.string.label_time_coracao_dois_pontos), time);
+				apresentaDiaSorteTimeMania(context.getString(R.string.label_time_coracao_dois_pontos), time, estilo.getCorFonteFundoClaro());
 				break;
 			case DIA_DE_SORTE:
 				String mes = "-";
 				if (aposta.getMesSorte() != null && aposta.getMesSorte().getNome() != null){
 					mes = aposta.getMesSorte().getNome();
 				}
-				apresentaDiaSorteTimeMania(context.getString(R.string.label_mes_sorte_dois_pontos), mes);
+				apresentaDiaSorteTimeMania(context.getString(R.string.label_mes_sorte_dois_pontos), mes, estilo.getCorFonteFundoEscuro());
 				break;
 			case MAIS_MILIONARIA:
 				txtIndividualidade.setVisibility(View.VISIBLE);
@@ -134,12 +134,12 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 				shapeConfig, false);
 	}
 
-	private void apresentaDiaSorteTimeMania(String descricao, String valor){
+	private void apresentaDiaSorteTimeMania(String descricao, String valor, int cor){
 		txtIndividualidade.setVisibility(View.VISIBLE);
 		mesTime.setVisibility(View.VISIBLE);
 		txtIndividualidade.setText(descricao);
 		mesTime.setText(valor);
-		mesTime.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
+		mesTime.setTextColor(ContextCompat.getColor(context, cor));
 	}
 
 	private OnItemClickListener onItemClickListener() {

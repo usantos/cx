@@ -117,7 +117,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private ImageView salvarApostaImg;
 
     private LinearLayout  ll_adic_fav;
-    private ConstraintLayout comprovanteLayout, informacaoApostaLayout;
+    private ConstraintLayout comprovanteLayout, informacaoApostaLayout, containerConteudo;
 
     private EditText nomeApostaEditTxt;
     private View id_view_divisao;
@@ -239,7 +239,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         //estilo = new EstiloModalidade(aposta.getModalidade());
         estilo = new EstiloModalidade(aposta); //Colocar EstiloModalidadeMKP
         estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade()); //Colocar EstiloModalidadeMKP
-        setTheme(estilo.getThemeId());
+        if(!aposta.getIndicadorCotaBolao()){
+            setTheme(estilo.getThemeId());
+        }
 
         fragmentContainer       = findViewById(R.id.fragmentContainer);
         linearLayoutBottom      = findViewById(R.id.linearLayoutBottom);
@@ -253,6 +255,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         editarApostaBtn         = findViewById(R.id.editarApostaBtn);
         ll_adic_fav             = findViewById(R.id.ll_adic_fav);
         informacaoApostaLayout  = findViewById(R.id.informacaoApostaLayout);
+        containerConteudo       = findViewById(R.id.container_conteudo);
         nomeApostaEditTxt       = findViewById(R.id.nomeApostaEditTxt);
         id_view_divisao         = findViewById(R.id.id_view_divisao);
         comprovanteLayout       = findViewById(R.id.comprovanteLayout);
@@ -297,8 +300,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 break;
         }
         linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
-        fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
+        if (aposta.getIndicadorCotaBolao()){
+            containerConteudo.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
+        } else {
+            fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
+        }
     }
 
     private int getCorEscura() {
