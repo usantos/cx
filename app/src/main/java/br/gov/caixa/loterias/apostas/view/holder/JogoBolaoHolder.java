@@ -90,6 +90,8 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 				if (aposta.getTimeCoracao() != null && aposta.getTimeCoracao().getNomeComUf() != null){
 					time = aposta.getTimeCoracao().getNomeComUf();
 				}
+				txtNumero.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
+				txtIndividualidade.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
 				apresentaDiaSorteTimeMania(context.getString(R.string.label_time_coracao_dois_pontos), time, estilo.getCorFonteFundoClaro());
 				break;
 			case DIA_DE_SORTE:
