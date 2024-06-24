@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
@@ -144,5 +145,26 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 
 	private OnItemClickListener onItemClickListener() {
 		return (holder, position) -> {};
+	}
+
+	public void bindResultado(ResultadoConcursoDTO resultado) {
+		switch (modalidade){
+			case DIA_DE_SORTE:
+				if (resultado.getPremiacaoMesDeSorte() != null){
+					if (mesTime.getText().toString().contains(resultado.getPremiacaoMesDeSorte().getMesDeSorte().getNome())){
+						mesTime.setBackgroundColor(ContextCompat.getColor(context, R.color.branco));
+						mesTime.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
+					}
+				}
+				break;
+			case TIMEMANIA:
+				if (resultado.getPremiacaoTimeDoCoracao() != null){
+					if (mesTime.getText().toString().contains(resultado.getPremiacaoTimeDoCoracao().getEquipe().getNome())){
+						mesTime.setBackgroundColor(ContextCompat.getColor(context, R.color.branco));
+						mesTime.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
+					}
+				}
+				break;
+		}
 	}
 }

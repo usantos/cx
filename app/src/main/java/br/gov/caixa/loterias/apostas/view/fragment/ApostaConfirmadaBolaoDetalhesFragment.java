@@ -231,7 +231,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 		JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(aposta.getModalidade(), R.color.branco,
 				aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
-				listSorteados, getDezenaConfig());
+				listSorteados, getDezenaConfig(), getResultadoConcurso());
 		listViewJogos.setAdapter(adpterJogos);
 		listViewJogos.setLayoutManager(new LinearLayoutManager(getContext()));
 
