@@ -47,8 +47,8 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 	private IdentificaoDeUmaApostaDas8Modalidades aposta;
 
-	private View view;
-    private TextView concursoLabel, concursoTxt, cotaLabel, cotaTxt, dataApostaLabel, dataApostaTxt, statusApostaTxt, tv_val_premio, tv_val_premio_tit;
+	private View view, linhaEsqueda, linhaDireita, linhaCentral;
+    private TextView tvPremioPago, concursoLabel, concursoTxt, cotaLabel, cotaTxt, dataApostaLabel, dataApostaTxt, statusApostaTxt, tv_val_premio, tv_val_premio_tit;
 	private TextView tvNumerosSorteados, tvNumerosSorteados2, labelMesTime, txtMesTime;
 	private TextView tvDuplaSena1, tvDuplaSena2;
 	private RecyclerView listViewSorteados, listViewSorteados2, listViewJogos, listViewJogos2;
@@ -110,6 +110,10 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 			txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 			tvDuplaSena1.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 			tvDuplaSena2.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			tvPremioPago.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			linhaEsqueda.setBackgroundColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			linhaDireita.setBackgroundColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			linhaCentral.setBackgroundColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 		}
 	}
 
@@ -310,6 +314,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
         statusApostaTxt = view.findViewById(R.id.statusApostaTextView);
         tv_val_premio = view.findViewById(R.id.tv_val_premio);
         tv_val_premio_tit = view.findViewById(R.id.tv_val_premio_tit);
+		tvPremioPago = view.findViewById(R.id.tv_premio_pago_tit);
 
 		tvDuplaSena1 = view.findViewById(R.id.id_dupla_sena1);
 		tvNumerosSorteados = view.findViewById(R.id.id_seus_numeros);
@@ -325,6 +330,9 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 		cl_premio_pago = view.findViewById(R.id.cl_premio_pago);
 		clResgatePremio = view.findViewById(R.id.clResgatePremio);
+		linhaEsqueda = view.findViewById(R.id.v_separador_esq);
+		linhaDireita = view.findViewById(R.id.v_separador_dir);
+		linhaCentral = view.findViewById(R.id.divider);
 	}
 
 	public void atualizaValorPremio(BigDecimal valor){
