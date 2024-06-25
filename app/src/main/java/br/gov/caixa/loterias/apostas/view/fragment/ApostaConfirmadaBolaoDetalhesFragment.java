@@ -156,22 +156,22 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	private void apresentaEspecialidadeModalidades() {
 		aplicaCorFontes();
 		if (aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE){
-			labelMesTime.setVisibility(View.VISIBLE);
-			txtMesTime.setVisibility(View.VISIBLE);
-			labelMesTime.setText("Mês da sorte:");
-			txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorEscura()));
-			labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoEscuro()));
 			if (getResultadoConcurso() != null && getResultadoConcurso().getPremiacaoMesDeSorte() != null &&
 					getResultadoConcurso().getPremiacaoMesDeSorte().getMesDeSorte() != null){
+				labelMesTime.setVisibility(View.VISIBLE);
+				txtMesTime.setVisibility(View.VISIBLE);
+				labelMesTime.setText("Mês da sorte:");
+				txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorEscura()));
+				labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoEscuro()));
 				txtMesTime.setText(getResultadoConcurso().getPremiacaoMesDeSorte().getMesDeSorte().getNome());
 			}
 		} else if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
-			labelMesTime.setVisibility(View.VISIBLE);
-			txtMesTime.setVisibility(View.VISIBLE);
-			labelMesTime.setText("Time do coração:");
-			labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 			if (getResultadoConcurso() != null && getResultadoConcurso().getPremiacaoTimeDoCoracao() != null &&
 					getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe() != null){
+				labelMesTime.setVisibility(View.VISIBLE);
+				txtMesTime.setVisibility(View.VISIBLE);
+				labelMesTime.setText("Time do coração:");
+				labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 				txtMesTime.setText(getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome());
 			}
 		}
