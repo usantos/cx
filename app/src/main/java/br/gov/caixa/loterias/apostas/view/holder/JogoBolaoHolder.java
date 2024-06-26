@@ -35,6 +35,7 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 	private final Context context;
 	private final EstiloModalidadeMKP estilo;
 	private final DezenaConfig trevoConfig;
+	private ListaDezenaRecyclerView trevosAdapter;
 
 	public JogoBolaoHolder(ModalidadeEnum modalidade, int corTitulo, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, View itemView, Context context, DezenaConfig trevoConfig) {
 		super(itemView);
@@ -112,7 +113,7 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 				}
 
 				listTrevos.setVisibility(View.VISIBLE);
-				ListaDezenaRecyclerView trevosAdapter = new ListaDezenaRecyclerView(trevos, new ArrayList<>(),
+				trevosAdapter = new ListaDezenaRecyclerView(trevos, new ArrayList<>(),
 						getTrevoConfig(), onItemClickListener());
 				listTrevos.setAdapter(trevosAdapter);
 
@@ -123,16 +124,15 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 	}
 
 	private DezenaConfig getTrevoConfig() {
-
 		if (trevoConfig != null) {
 			return this.trevoConfig;
 		}
 
 		ShapeConfig shapeConfig = new ShapeConfig(R.drawable.ic_item_trevo,
 				R.drawable.ic_item_trevo_selecionado,
-				R.color.milionaria_escuro_mkp, R.color.milionaria_escuro_mkp);
+				R.color.branco, R.color.milionaria_escuro_mkp);
 
-		return new DezenaConfig(false, R.color.milionaria_escuro_mkp,
+		return new DezenaConfig(false, R.color.branco,
 				R.layout.item_dezena_detalhe,
 				shapeConfig, false);
 	}
@@ -165,6 +165,11 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 						mesTime.setBackgroundColor(ContextCompat.getColor(context, R.color.branco));
 						mesTime.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
 					}
+				}
+				break;
+			case MAIS_MILIONARIA:
+				if (trevosAdapter != null && resultado.getTrevosSorteadosPrimeiroSorteio() != null ){
+					trevosAdapter.atualizaSelecionados(resultado.getTrevosSorteadosPrimeiroSorteio());
 				}
 				break;
 		}

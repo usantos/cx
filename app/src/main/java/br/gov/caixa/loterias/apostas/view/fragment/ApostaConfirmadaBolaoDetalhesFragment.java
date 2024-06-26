@@ -198,7 +198,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	private ShapeConfig getTrevoShape() {
 		return new ShapeConfig(R.drawable.ic_item_trevo,
 				R.drawable.ic_item_trevo_selecionado,
-				R.color.branco, R.color.mais_milionaria_escura);
+				R.color.branco, R.color.milionaria_escuro_mkp);
 	}
 
 	private String getDataBolao(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
@@ -309,7 +309,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private DezenaConfig getDezenaTrevoConfig(ShapeConfig shapeConfig) {
-		return new DezenaConfig(false, R.color.mais_milionaria_escura,
+		return new DezenaConfig(false, R.color.branco,
 				R.layout.item_dezena_detalhe,
 				shapeConfig,false);
 	}
