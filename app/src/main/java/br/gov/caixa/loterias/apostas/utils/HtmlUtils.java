@@ -176,7 +176,6 @@ public class HtmlUtils {
     }
 
     public static String getComprovanteCabecalhoRodapePremioHistorico(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, Context context) {
-
         String modalidade = ViewUtils.getNomeModalidadePorAposta(detalhesHistoricoPremioDTO.getAposta());
         String hora = DateUtils.getDateToString(
                 DateUtils.stringToDate(detalhesHistoricoPremioDTO.getAposta().getHoraEfetivacao(), DateUtils.PATTERN_HH_MM_SS)
