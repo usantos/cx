@@ -12,18 +12,22 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
+import br.gov.caixa.loterias.apostas.view.config.ColunaConfig;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.holder.SuperSeteHolder;
 
 public class SuperSeteRecyclerViewAdapter extends RecyclerView.Adapter<SuperSeteHolder>{
 
+	private int cor;
 	private List<ApostaBolaoDTO> apostas;
 	private Context context;
+	private ColunaConfig colunaConfig;
 	private DezenaConfig dezenaConfig;
-
-	public SuperSeteRecyclerViewAdapter(List<ApostaBolaoDTO> apostas, Context context, DezenaConfig dezenaConfig) {
+	public SuperSeteRecyclerViewAdapter(int cor, List<ApostaBolaoDTO> apostas, Context context, ColunaConfig colunaConfig, DezenaConfig dezenaConfig) {
+		this.cor = cor;
 		this.apostas = apostas;
 		this.context = context;
+		this.colunaConfig = colunaConfig;
 		this.dezenaConfig = dezenaConfig;
 	}
 
@@ -32,7 +36,8 @@ public class SuperSeteRecyclerViewAdapter extends RecyclerView.Adapter<SuperSete
 	public SuperSeteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_super_sete,
 																		parent, false);
-		return new SuperSeteHolder(view, context, dezenaConfig);
+		return new SuperSeteHolder(view, context, colunaConfig, dezenaConfig, cor);
+
 	}
 
 	@Override

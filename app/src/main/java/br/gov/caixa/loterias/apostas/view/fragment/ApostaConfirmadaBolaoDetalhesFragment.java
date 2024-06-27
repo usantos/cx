@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,13 +38,15 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.config.ColunaConfig;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 
 public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetalhesFragment {
 	private static final String ARG_APOSTA = "ARG_APOSTA";
 
-    private ConstraintLayout cl_premio_pago, clResgatePremio;
+    private ConstraintLayout cl_premio_pago, clResgatePremio, clCorpoAposta;
 
 	private IdentificaoDeUmaApostaDas8Modalidades aposta;
 
@@ -258,10 +261,28 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 			((TextView)view.findViewById(R.id.id_seus_numeros)).setText("");
 		}
 
-		JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(aposta.getModalidade(), R.color.branco,
-				aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
-				listSorteados, getDezenaConfig(), getResultadoConcurso());
-		listViewJogos.setAdapter(adpterJogos);
+		switch (aposta.getModalidade()){
+			case SUPER_7:
+				ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) clCorpoAposta.getLayoutParams();
+				layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+				layoutParams.rightMargin = 100;
+				clCorpoAposta.setLayoutParams(layoutParams);
+
+				ConstraintSet constraintSet = new ConstraintSet();
+				constraintSet.clone(clCorpoAposta);
+				constraintSet.clear(R.id.id_corpo_aposta, ConstraintSet.START);
+				constraintSet.applyTo(clCorpoAposta);
+
+				SuperSeteRecyclerViewAdapter adapter = new SuperSeteRecyclerViewAdapter(R.color.branco, aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
+						getContext(), getColunaConfig(), getDezenaConfig());
+				listViewJogos.setAdapter(adapter);
+				break;
+			default:
+				JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(aposta.getModalidade(), R.color.branco,
+						aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
+						listSorteados, getDezenaConfig(), getResultadoConcurso());
+				listViewJogos.setAdapter(adpterJogos);
+		}
 		listViewJogos.setLayoutManager(new LinearLayoutManager(getContext()));
 
 		if (temResultadoSegundoSorteio) {
@@ -276,6 +297,10 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 		if (isSituacaoConcursoNaoApurado() || isApostaPequena()){
 			view.findViewById(R.id.id_view_base).setVisibility(View.VISIBLE);
 		}
+	}
+
+	private ColunaConfig getColunaConfig() {
+		return new ColunaConfig(estiloMKP.getCorEscura(), estiloMKP.getCorFonteFundoEscuro());
 	}
 
 	private boolean isApostaPequena() {
@@ -361,6 +386,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 		cl_premio_pago = view.findViewById(R.id.cl_premio_pago);
 		clResgatePremio = view.findViewById(R.id.clResgatePremio);
+		clCorpoAposta = view.findViewById(R.id.id_corpo_aposta);
 		linhaEsqueda = view.findViewById(R.id.v_separador_esq);
 		linhaDireita = view.findViewById(R.id.v_separador_dir);
 		linhaCentral = view.findViewById(R.id.divider);
