@@ -285,7 +285,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 				constraintSet.applyTo(clCorpoAposta);
 
 				SuperSeteRecyclerViewAdapter adapter = new SuperSeteRecyclerViewAdapter(R.color.branco, aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
-						getContext(), getColunaConfig(), getDezenaConfig());
+						getContext(), getColunaConfig(), getDezenaConfig(), getMatrizResultado());
 				listViewJogos.setAdapter(adapter);
 				break;
 			default:
@@ -307,6 +307,14 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 		if (isSituacaoConcursoNaoApurado() || isApostaPequena()){
 			view.findViewById(R.id.id_view_base).setVisibility(View.VISIBLE);
+		}
+	}
+
+	private ArrayList<ArrayList<Integer>> getMatrizResultado() {
+		if (getResultadoConcurso() != null){
+			return getResultadoConcurso().getMatrizNumerosSorteadosPrimeiroSorteio();
+		} else {
+			return null;
 		}
 	}
 

@@ -235,7 +235,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 			listaJogos.setAdapter(partidasAdapter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 		} else if (bolao.getModalidade() == ModalidadeEnum.SUPER_7) {
-			superSeteAdpter = new SuperSeteRecyclerViewAdapter(estilo.getCorEscura(), bolao.getApostas(), DetalhesBolaoActivity.this, getColunaConfig(), getDezenaConfig());
+			superSeteAdpter = new SuperSeteRecyclerViewAdapter(estilo.getCorEscura(), bolao.getApostas(),
+					DetalhesBolaoActivity.this, getColunaConfig(), getDezenaConfig(), null);
 			listaJogos.setAdapter(superSeteAdpter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 		} else {

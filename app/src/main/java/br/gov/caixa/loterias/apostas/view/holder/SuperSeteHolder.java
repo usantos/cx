@@ -27,10 +27,21 @@ public class SuperSeteHolder extends LoteriasHolder<ApostaBolaoDTO> {
 	private ColunaConfig colunaConfig;
 	private DezenaConfig dezenaConfig;
 	private int cor;
+	private ArrayList<ArrayList<Integer>> matrizSelecionados;
 
 	public SuperSeteHolder(View itemView, Context context, ColunaConfig colunaConfig, DezenaConfig dezenaConfig, int cor) {
 		super(itemView);
 		this.cor = cor;
+		setViews(itemView);
+		this.context = context;
+		this.colunaConfig = colunaConfig;
+		this.dezenaConfig = dezenaConfig;
+	}
+
+	public SuperSeteHolder(View itemView, Context context, ColunaConfig colunaConfig, DezenaConfig dezenaConfig, int cor, ArrayList<ArrayList<Integer>> matrizSelecionados) {
+		super(itemView);
+		this.cor = cor;
+		this.matrizSelecionados = matrizSelecionados;
 		setViews(itemView);
 		this.context = context;
 		this.colunaConfig = colunaConfig;
@@ -63,13 +74,13 @@ public class SuperSeteHolder extends LoteriasHolder<ApostaBolaoDTO> {
 		numeroJogo.setText("Jogo " + (position + 1));
 		aplicaEstiloColunas();
 
-		preencheColuna(listaColuna1, (List<Integer>) aposta.getDezenas().get(0));
-		preencheColuna(listaColuna2, (List<Integer>) aposta.getDezenas().get(1));
-		preencheColuna(listaColuna3, (List<Integer>) aposta.getDezenas().get(2));
-		preencheColuna(listaColuna4, (List<Integer>) aposta.getDezenas().get(3));
-		preencheColuna(listaColuna5, (List<Integer>) aposta.getDezenas().get(4));
-		preencheColuna(listaColuna6, (List<Integer>) aposta.getDezenas().get(5));
-		preencheColuna(listaColuna7, (List<Integer>) aposta.getDezenas().get(6));
+		preencheColuna(listaColuna1, (List<Integer>) aposta.getDezenas().get(0), 0);
+		preencheColuna(listaColuna2, (List<Integer>) aposta.getDezenas().get(1), 1);
+		preencheColuna(listaColuna3, (List<Integer>) aposta.getDezenas().get(2), 2);
+		preencheColuna(listaColuna4, (List<Integer>) aposta.getDezenas().get(3), 3);
+		preencheColuna(listaColuna5, (List<Integer>) aposta.getDezenas().get(4), 4);
+		preencheColuna(listaColuna6, (List<Integer>) aposta.getDezenas().get(5), 5);
+		preencheColuna(listaColuna7, (List<Integer>) aposta.getDezenas().get(6), 6);
 	}
 
 	private void aplicaEstiloColunas() {
@@ -97,9 +108,15 @@ public class SuperSeteHolder extends LoteriasHolder<ApostaBolaoDTO> {
 		}
 	}
 
-	private void preencheColuna(RecyclerView listView, List<Integer> numeros) {
-		ListaDezenaRecyclerView adapter = new ListaDezenaRecyclerView(getDezenas(numeros), new ArrayList<>(),
-				dezenaConfig, onItemClickListener());
+	private void preencheColuna(RecyclerView listView, List<Integer> numeros, int position) {
+		ListaDezenaRecyclerView adapter;
+		if (matrizSelecionados != null){
+			adapter = new ListaDezenaRecyclerView(getDezenas(numeros), matrizSelecionados.get(position),
+					dezenaConfig, onItemClickListener());
+		} else {
+			adapter = new ListaDezenaRecyclerView(getDezenas(numeros), new ArrayList<>(),
+					dezenaConfig, onItemClickListener());
+		}
 		listView.setAdapter(adapter);
 	}
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -23,12 +24,15 @@ public class SuperSeteRecyclerViewAdapter extends RecyclerView.Adapter<SuperSete
 	private Context context;
 	private ColunaConfig colunaConfig;
 	private DezenaConfig dezenaConfig;
-	public SuperSeteRecyclerViewAdapter(int cor, List<ApostaBolaoDTO> apostas, Context context, ColunaConfig colunaConfig, DezenaConfig dezenaConfig) {
+	private ArrayList<ArrayList<Integer>> matrizSelecionados;
+
+	public SuperSeteRecyclerViewAdapter(int cor, List<ApostaBolaoDTO> apostas, Context context, ColunaConfig colunaConfig, DezenaConfig dezenaConfig, ArrayList<ArrayList<Integer>> matrizSelecionados) {
 		this.cor = cor;
 		this.apostas = apostas;
 		this.context = context;
 		this.colunaConfig = colunaConfig;
 		this.dezenaConfig = dezenaConfig;
+		this.matrizSelecionados = matrizSelecionados;
 	}
 
 	@NonNull
@@ -36,7 +40,7 @@ public class SuperSeteRecyclerViewAdapter extends RecyclerView.Adapter<SuperSete
 	public SuperSeteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_super_sete,
 																		parent, false);
-		return new SuperSeteHolder(view, context, colunaConfig, dezenaConfig, cor);
+		return new SuperSeteHolder(view, context, colunaConfig, dezenaConfig, cor, matrizSelecionados);
 
 	}
 
