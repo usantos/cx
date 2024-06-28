@@ -39,9 +39,11 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteSorteadosAdapter;
 import br.gov.caixa.loterias.apostas.view.config.ColunaConfig;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
+import br.gov.caixa.loterias.apostas.view.holder.SuperSeteSorteadosHolder;
 
 public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetalhesFragment {
 	private static final String ARG_APOSTA = "ARG_APOSTA";
@@ -236,12 +238,21 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 						getString(R.string.primeiro_sorteiro));
 			}
 
-			listSorteados = getResultadoConcurso().getListaSorteadosPrimeiroSorteio();
-			List dezenas = getDezenas(listSorteados);
-			ListaDezenaRecyclerView numerosAdapter = new ListaDezenaRecyclerView(dezenas, listSorteados
-					, getDezenaConfig(), null);
-			listViewSorteados.setAdapter(numerosAdapter);
-			listViewSorteados.setLayoutManager(new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA));
+			if (aposta.getModalidade() == ModalidadeEnum.SUPER_7){
+				ArrayList<List<List<Integer>>> matrizList = new ArrayList<>();
+				matrizList.add(getResultadoConcurso().getMatrizNumerosSorteadosPrimeiroSorteio());
+				SuperSeteSorteadosAdapter adapter = new SuperSeteSorteadosAdapter(matrizList, getContext(), getColunaConfig(), getDezenaConfig());
+				listViewSorteados.setAdapter(adapter);
+				listViewSorteados.setLayoutManager(new LinearLayoutManager(getContext()));
+			} else {
+				listSorteados = getResultadoConcurso().getListaSorteadosPrimeiroSorteio();
+				List dezenas = getDezenas(listSorteados);
+				ListaDezenaRecyclerView numerosAdapter = new ListaDezenaRecyclerView(dezenas, listSorteados
+						, getDezenaConfig(), null);
+				listViewSorteados.setAdapter(numerosAdapter);
+				listViewSorteados.setLayoutManager(new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA));
+			}
+
 
 			if (temResultadoSegundoSorteio) {
 				tvDuplaSena2.setVisibility(View.VISIBLE);
