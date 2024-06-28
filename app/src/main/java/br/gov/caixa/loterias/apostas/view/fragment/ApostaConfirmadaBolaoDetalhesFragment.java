@@ -276,7 +276,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 			case SUPER_7:
 				ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) clCorpoAposta.getLayoutParams();
 				layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-				layoutParams.rightMargin = 100;
+				layoutParams.rightMargin = 150;
 				clCorpoAposta.setLayoutParams(layoutParams);
 
 				ConstraintSet constraintSet = new ConstraintSet();

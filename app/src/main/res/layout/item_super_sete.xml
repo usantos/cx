@@ -27,12 +27,6 @@
         app:layout_constraintTop_toBottomOf="@id/numero_jogo"
         app:layout_constraintStart_toStartOf="@id/numero_jogo"/>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_colunas"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/colunas_txt">
-
         <TextView
             android:id="@+id/coluna_1"
             android:layout_width="wrap_content"
@@ -43,7 +37,7 @@
             android:padding="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginStart="24dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/colunas_txt"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
@@ -56,7 +50,7 @@
             android:padding="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginStart="24dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/colunas_txt"
             app:layout_constraintStart_toEndOf="@id/coluna_1"/>
 
         <TextView
@@ -69,7 +63,7 @@
             android:padding="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginStart="24dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/colunas_txt"
             app:layout_constraintStart_toEndOf="@id/coluna_2"/>
 
         <TextView
@@ -82,7 +76,7 @@
             android:padding="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginStart="24dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/colunas_txt"
             app:layout_constraintStart_toEndOf="@id/coluna_3"/>
 
         <TextView
@@ -95,7 +89,7 @@
             android:padding="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginStart="24dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/colunas_txt"
             app:layout_constraintStart_toEndOf="@id/coluna_4"/>
 
         <TextView
@@ -108,7 +102,7 @@
             android:padding="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginStart="24dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/colunas_txt"
             app:layout_constraintStart_toEndOf="@id/coluna_5"/>
 
         <TextView
@@ -121,10 +115,8 @@
             android:padding="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginStart="24dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/colunas_txt"
             app:layout_constraintStart_toEndOf="@id/coluna_6"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/numeros_txt"
@@ -134,14 +126,8 @@
         android:textColor="@color/super_sete_letra_mkp"
         android:fontFamily="@font/caixa_std_regular"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/layout_colunas"
+        app:layout_constraintTop_toBottomOf="@id/coluna_1"
         app:layout_constraintStart_toStartOf="@id/numero_jogo"/>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_colunas_listas"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/numeros_txt">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_coluna_1"
@@ -152,8 +138,9 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             android:layout_marginTop="8dp"
             android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/numeros_txt"
+            app:layout_constraintStart_toStartOf="@id/coluna_1"
+            app:layout_constraintEnd_toEndOf="@id/coluna_1"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_coluna_2"
@@ -163,9 +150,9 @@
             app:spanCount="1"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             android:layout_marginTop="8dp"
-            android:layout_marginStart="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lista_coluna_1"/>
+            app:layout_constraintTop_toBottomOf="@id/numeros_txt"
+            app:layout_constraintStart_toStartOf="@id/coluna_2"
+            app:layout_constraintEnd_toEndOf="@id/coluna_2"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_coluna_3"
@@ -176,8 +163,9 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             android:layout_marginTop="8dp"
             android:layout_marginStart="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lista_coluna_2"/>
+            app:layout_constraintTop_toBottomOf="@id/numeros_txt"
+            app:layout_constraintStart_toStartOf="@id/coluna_3"
+            app:layout_constraintEnd_toEndOf="@id/coluna_3"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_coluna_4"
@@ -188,8 +176,9 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             android:layout_marginTop="8dp"
             android:layout_marginStart="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lista_coluna_3"/>
+            app:layout_constraintTop_toBottomOf="@id/numeros_txt"
+            app:layout_constraintStart_toStartOf="@id/coluna_4"
+            app:layout_constraintEnd_toEndOf="@id/coluna_4"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_coluna_5"
@@ -200,8 +189,9 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             android:layout_marginTop="8dp"
             android:layout_marginStart="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lista_coluna_4"/>
+            app:layout_constraintTop_toBottomOf="@id/numeros_txt"
+            app:layout_constraintStart_toStartOf="@id/coluna_5"
+            app:layout_constraintEnd_toEndOf="@id/coluna_5"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_coluna_6"
@@ -212,8 +202,9 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             android:layout_marginTop="8dp"
             android:layout_marginStart="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lista_coluna_5"/>
+            app:layout_constraintTop_toBottomOf="@id/numeros_txt"
+            app:layout_constraintStart_toStartOf="@id/coluna_6"
+            app:layout_constraintEnd_toEndOf="@id/coluna_6"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_coluna_7"
@@ -224,9 +215,8 @@
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             android:layout_marginTop="8dp"
             android:layout_marginStart="0dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lista_coluna_6"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toBottomOf="@id/numeros_txt"
+            app:layout_constraintStart_toStartOf="@id/coluna_7"
+            app:layout_constraintEnd_toEndOf="@id/coluna_7"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
