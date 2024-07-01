@@ -299,9 +299,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 break;
             case LOTECA:
                 disableButtonEditar();
-                partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
-                        R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio, true);
-
+                if (aposta.getIndicadorCotaBolao()){
+                    FragmentUtils.startApostaConfirmadaPartidaDetalhesBolao(getSupportFragmentManager(), R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
+                } else {
+                    partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
+                            R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio, true);
+                }
                 break;
             default:
                 if (aposta.getIndicadorCotaBolao()){
