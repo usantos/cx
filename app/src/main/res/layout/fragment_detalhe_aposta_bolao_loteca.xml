@@ -69,6 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="32dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintTop_toBottomOf="@id/cl_premio_pago"
         app:layout_constraintStart_toStartOf="parent"
         >
@@ -264,47 +265,40 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/apostaConfirmadaLotecaLinearLayout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
-        android:weightSum="1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cl_premio_pago">
+        app:layout_constraintTop_toBottomOf="@id/clResgatePremio">
 
-        <LinearLayout
-            android:id="@+id/colunaSuaApostaLinearLayout"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/sua_aposta_id"
+            style="@style/ArialMT"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:orientation="vertical">
+            android:layout_marginTop="16dp"
+            android:text="@string/label_sua_aposta"
+            android:textColor="@color/branco"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-            <TextView
-                style="@style/ArialMT"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/label_sua_aposta"
-                android:textColor="@color/branco"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
+            android:id="@+id/listaPartidasApostadasExpandebleRecyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="15dp"
+            android:clickable="false"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/sua_aposta_id"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
-                android:id="@+id/listaPartidasApostadasExpandebleRecyclerView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:layout_marginEnd="15dp"
-                android:clickable="false"
-                android:nestedScrollingEnabled="false" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
