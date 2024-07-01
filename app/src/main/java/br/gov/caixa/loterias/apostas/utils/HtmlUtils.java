@@ -328,19 +328,25 @@ public class HtmlUtils {
         switch (aposta.getModalidade()) {
             case LOTECA:
                 htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA2, context);
-                for (PartidaLotecaDTO partidaLotecaDTO : aposta.getPartidasLoteca()) {
+                List<PartidaLotecaDTO> partidaLotecaList;
+                if (aposta.getIndicadorCotaBolao()){
+                    partidaLotecaList = aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getPartidasLoteca();
+                } else {
+                    partidaLotecaList = aposta.getPartidasLoteca();
+                }
+                for (PartidaLotecaDTO partidaLotecaDTO : partidaLotecaList) {
                     EquipeDTO equipe1 = partidaLotecaDTO.getEquipe1();
                     EquipeDTO equipe2 = partidaLotecaDTO.getEquipe2();
 
                     String abrev = partidaLotecaDTO.getLegendaAbreviada();
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_ABREV,abrev);
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_PARTIDA1,
-                            context.getString(R.string.label_corpo_equipe, equipe1.getVitoria() ? PONTO_MARCADOR : " ", Utils.getEquipeComUf(partidaLotecaDTO.getEquipe1())));
+                            context.getString(R.string.label_corpo_equipe, equipe1.getVitoria() ? PONTO_MARCADOR : " ", getNomeEquipe(partidaLotecaDTO.getEquipe1(), aposta.getIndicadorCotaBolao())));
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_EMPATE,
                             context.getString(R.string.label_corpo_equipe, partidaLotecaDTO.getEmpate() ? PONTO_MARCADOR : " ",
                                     context.getString(R.string.label_empate)));
                     htmlBodyList = ViewUtils.replaceNullable(htmlBodyList, BODY_PARTIDA2,
-                            context.getString(R.string.label_corpo_equipe, equipe2.getVitoria() ? PONTO_MARCADOR : " ", Utils.getEquipeComUf(partidaLotecaDTO.getEquipe2())));
+                            context.getString(R.string.label_corpo_equipe, equipe2.getVitoria() ? PONTO_MARCADOR : " ", getNomeEquipe(partidaLotecaDTO.getEquipe2(), aposta.getIndicadorCotaBolao())));
                     sbHtmlBodyList.append(htmlBodyList);
                     htmlBodyList = getContentOfFile(FILE_PATH_COMPROVANTE_LISTA_CORPO_LOTECA2, context);
                 }
@@ -463,6 +469,14 @@ public class HtmlUtils {
                     sbHtmlBodyList.append(htmlBodyList);
                 }
                 return sbHtmlBodyList.toString();
+        }
+    }
+
+    private static String getNomeEquipe(EquipeDTO equipe, Boolean isBolao) {
+        if (isBolao){
+            return Utils.getEquipeComUfBolao(equipe);
+        } else {
+            return Utils.getEquipeComUf(equipe);
         }
     }
 
