@@ -29,15 +29,14 @@ import static com.android.volley.Request.Method.PUT;
 public class MicroServicoConnection {
     private static final Bin KEY = Bin.fromBase64("QEm06ZAThg1E314zziahsg");
     private static final Bin IV = Bin.fromBase64("8hQLtNV44Y1bIeONmlr+Dg==");
-    private static final String TAG = MicroServicoConnection.class.getName();
     private static final int TIMEOUT = 30000;
     private static final String TAG_REQUEST = "TAG_REQUEST";
 
-    private RequestQueue requestQueue;
-    private SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
+    private final RequestQueue requestQueue;
+    private final SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
     private String baseUrl;
 
-    private MicroServicoConnection(RequestQueue requestQueue, String baseUrl) {
+    public MicroServicoConnection(RequestQueue requestQueue, String baseUrl) {
         this.requestQueue = requestQueue;
         this.baseUrl = baseUrl;
 
@@ -164,14 +163,6 @@ public class MicroServicoConnection {
         request(buildPostRequest(path, queryParams, body, responseDataClass, listener, errorListener, headers), listenerService);
     }
 
-    public RequestQueue getRequestQueue() {
-        return requestQueue;
-    }
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
     private String fillUrl(String path) {
         return baseUrl + path;
     }
@@ -182,11 +173,7 @@ public class MicroServicoConnection {
 
     private <T> String prepareBody(T body) {
         try {
-            String teste = (new Gson()).toJson(body);
-
-            //{"apostas":[]}
-
-            String bodyString = "";
+            String bodyString;
             if (body == null) {
                 bodyString = "{}";
             } else {
@@ -239,17 +226,6 @@ public class MicroServicoConnection {
         return new MicroServicoConnection(requestQueue, baseUrl);
     }
 
-    public static String errorToString(VolleyError error) {
-        if (error.networkResponse != null) {
-            return "Network error: " +
-                    error.networkResponse.statusCode + " - " +
-                    Bin.fromBytes(error.networkResponse.data).toUtf8();
-        } else {
-            return "Exception when trying to reach the server: "
-                    + error.toString();
-        }
-    }
-
     private String getPath(String path, Map<String, String> param) {
         StringBuilder sb = new StringBuilder();
         sb.append(path);
@@ -262,9 +238,5 @@ public class MicroServicoConnection {
             }
         }
         return sb.toString();
-    }
-
-    public void nuke() {
-        //SSLPiniingUtil.pinagem();
     }
 }
