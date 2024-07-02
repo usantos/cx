@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -22,22 +23,22 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.utils.DataUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaConfirmadaLotecaAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
 public class DetalheApostaBolaoLotecaFragment extends ApostaConfirmadaDetalhesFragment {
 	private static final String ARG_APOSTA = "ARG_APOSTA";
-
 	private IdentificaoDeUmaApostaDas8Modalidades aposta;
-
 	private View view;
-
 	private TextView concursoTxt, cotaTxt, dataHoraTextView,
 			statusApostaTextView, tv_val_premio, tv_val_premio_tit;
 	private ConstraintLayout cl_premio_pago, clResgatePremio;
@@ -83,11 +84,7 @@ public class DetalheApostaBolaoLotecaFragment extends ApostaConfirmadaDetalhesFr
 	private void preencheDadosAposta() {
 		concursoTxt.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
 		cotaTxt.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" + aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
-		if (StringUtils.isEmpty(aposta.getHoraEfetivacao())) {
-			dataHoraTextView.setText(aposta.getDataEfetivacao());
-		} else {
-			dataHoraTextView.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.barra_n) + aposta.getHoraEfetivacao());
-		}
+		dataHoraTextView.setText(getDataBolao(aposta));
 		statusApostaTextView.setText(aposta.getSituacao().getDescricao());
 
 		if (aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO || isApostaPremiada(aposta)) {
@@ -129,15 +126,22 @@ public class DetalheApostaBolaoLotecaFragment extends ApostaConfirmadaDetalhesFr
 	}
 
 	private void initList() {
-		listaPartidasApostadasExpandebleRecyclerView.setAdapter(new DetalheApostaConfirmadaLotecaAdapter(getPartidas(), getResultadoConcurso()));
+		listaPartidasApostadasExpandebleRecyclerView.setAdapter(new PartidasLotecaRecyclerViewAdapter(getPartidas(), getContext(), getConfigLoteca(), getResultadoConcurso()));
 		listaPartidasApostadasExpandebleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		listaPartidasApostadasExpandebleRecyclerView.setExpanded(Boolean.TRUE);
 		listaPartidasApostadasExpandebleRecyclerView.setFocusable(Boolean.FALSE);
 	}
 
+	@NonNull
+	private static ConfiguracaoLoteca getConfigLoteca() {
+		return new ConfiguracaoLoteca(R.color.branco, R.color.loteca_escuro_mkp, R.color.branco);
+	}
+
 	private List<PartidaLotecaDTO> getPartidas() {
 		if (!aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().isEmpty()){
-			return aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getPartidasLoteca();
+			if (aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getPartidasLoteca() != null){
+				return aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(0).getPartidasLoteca();
+			}
 		}
 		return new ArrayList<>();
 	}
@@ -146,6 +150,13 @@ public class DetalheApostaBolaoLotecaFragment extends ApostaConfirmadaDetalhesFr
 		return v -> {
 			irParaResgate(aposta.getId());
 		};
+	}
+
+	private String getDataBolao(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
+		String dataString = DataUtil.formatStringData(DataUtil.DD_MM_YYYY, aposta.getReservaCotaBolao().getDataHoraReserva());
+		String horaString = DataUtil.formatStringData(DataUtil.HH_MM_SS, aposta.getReservaCotaBolao().getDataHoraReserva());
+
+		return dataString + "\n" + horaString;
 	}
 
 	private void setaViews() {
