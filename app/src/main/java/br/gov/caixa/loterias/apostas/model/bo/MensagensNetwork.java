@@ -54,9 +54,6 @@ public class MensagensNetwork {
             try {
                 body = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorRecargaPayResponse.class);
-            } catch (UnsupportedEncodingException e) {
-                errorResponse = new ErrorRecargaPayResponse();
-                errorResponse.setMessage( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
             } catch (Exception e){
                 errorResponse = new ErrorRecargaPayResponse();
                 errorResponse.setMessage( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
@@ -91,9 +88,6 @@ public class MensagensNetwork {
             try {
                 body = new String(error.networkResponse.data,"UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
-            } catch (UnsupportedEncodingException e) {
-                errorResponse = new ErrorResponse();
-                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
             } catch (Exception e){
                 errorResponse = new ErrorResponse();
                 errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
@@ -138,6 +132,13 @@ public class MensagensNetwork {
         NetworkResponse response = error.networkResponse;
         if (response != null){
             return response.statusCode == UNAUTHORIZED;
+        }
+        return false;
+    }
+
+    public static boolean isCertificadoInvalido(VolleyError error) {
+        if (error.getLocalizedMessage().contains("SSLHandshakeException")) {
+            return true;
         }
         return false;
     }

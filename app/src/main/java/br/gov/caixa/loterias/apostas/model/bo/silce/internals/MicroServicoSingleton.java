@@ -22,10 +22,14 @@ public class MicroServicoSingleton {
 
     @AfterInject
     protected void init(){
+        initQueue();
+    }
+
+    public void initQueue() {
         Context ctx = Aplicacao.application.getApplicationContext();
 
         if (BuildVersionUtil.isPRD()){
-            this.queue = SSLPinningUtil.getRequestQueue(ctx);
+            this.queue = SSLPinningUtil.pinagemPRD(ctx);
         } else {
             SSLPinningUtil.pinagemTQS();
             this.queue = new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
