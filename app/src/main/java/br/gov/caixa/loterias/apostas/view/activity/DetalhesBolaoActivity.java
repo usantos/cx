@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -34,6 +35,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.config.ColunaConfig;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
@@ -243,11 +245,12 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private void preencheJogos() {
 		if (bolao.getModalidade() == ModalidadeEnum.LOTECA && !bolao.getApostas().isEmpty()){
-			partidasAdapter = new PartidasLotecaRecyclerViewAdapter(bolao.getApostas().get(0).getPartidasLoteca(), DetalhesBolaoActivity.this);
+			partidasAdapter = new PartidasLotecaRecyclerViewAdapter(bolao.getApostas().get(0).getPartidasLoteca(), DetalhesBolaoActivity.this, new ConfiguracaoLoteca(R.color.black));
 			listaJogos.setAdapter(partidasAdapter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 		} else if (bolao.getModalidade() == ModalidadeEnum.SUPER_7) {
-			superSeteAdpter = new SuperSeteRecyclerViewAdapter(bolao.getApostas(), DetalhesBolaoActivity.this, getDezenaConfig());
+			superSeteAdpter = new SuperSeteRecyclerViewAdapter(estilo.getCorEscura(), bolao.getApostas(),
+					DetalhesBolaoActivity.this, getColunaConfig(), getDezenaConfig(), null);
 			listaJogos.setAdapter(superSeteAdpter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 		} else {
@@ -257,6 +260,10 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 				listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 			}
 		}
+	}
+
+	private ColunaConfig getColunaConfig() {
+		return new ColunaConfig(estilo.getCorFonteFundoEscuro(), estilo.getCorEscura());
 	}
 
 	private DezenaConfig getDezenaConfig() {

@@ -128,7 +128,7 @@ android {
             tqs {
                 dimension "default"
                 applicationIdSuffix ".hmp"
-                resValue "string", "app_name", "Loterias_tqs"
+                resValue "string", "app_name", "Loterias_tqs_interno"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.tqs.caixa/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""
@@ -159,7 +159,7 @@ android {
             tqsexterno {
                 dimension "default"
                 applicationIdSuffix ".hmp"
-                resValue "string", "app_name", "Loterias_tqs"
+                resValue "string", "app_name", "Loterias_tqs_externo"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
                 buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.tqs.caixa.gov.br/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "CAIXA_BASE_URL_MICRO_SERVICO", "\"https://sispl-api-apostas-des-esteiras.nprd2.caixa\""

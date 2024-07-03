@@ -5,11 +5,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 
@@ -19,8 +21,9 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 	private ImageView checkEquipe1, checkEquipe2, checkEmpate;
 	private Context context;
 	private ConfiguracaoLoteca configuracaoLoteca;
+	private ResultadoConcursoDTO resultado;
 
-	public PartidaLotecaHolder(View itemView, Context context, ConfiguracaoLoteca configuracaoLoteca) {
+	public PartidaLotecaHolder(View itemView, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso) {
 		super(itemView);
 		nomeEquipe1 = itemView.findViewById(R.id.nome_equipe_1);
 		nomeEquipe2 = itemView.findViewById(R.id.nome_equipe_2);
@@ -30,6 +33,7 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 		checkEmpate = itemView.findViewById(R.id.check_empate);
 		this.context = context;
 		this.configuracaoLoteca = configuracaoLoteca;
+		this.resultado = resultadoConcurso;
 	}
 
 	@Override
@@ -42,6 +46,27 @@ public class PartidaLotecaHolder extends LoteriasHolder<PartidaLotecaDTO> {
 			nomeEmpate.setTextColor(context.getResources().getColor(configuracaoLoteca.getCorTexto()));
 		}
 		aplicaChecks(partida);
+		if (resultado != null){
+			aplicaResultados(position);
+		}
+	}
+
+	private void aplicaResultados(int position) {
+		if (resultado.getPartidasLoteca() != null && !resultado.getPartidasLoteca().isEmpty()){
+			PartidaLotecaDTO partida = (PartidaLotecaDTO) resultado.getPartidasLoteca().get(position);
+			if (partida.getEquipe1() != null && partida.getEquipe1().getVitoria() != null && partida.getEquipe1().getVitoria()){
+				aplicaCorSelecionado(nomeEquipe1);
+			} else if (partida.getEquipe2() != null && partida.getEquipe2().getVitoria() != null && partida.getEquipe2().getVitoria()){
+				aplicaCorSelecionado(nomeEquipe2);
+			} else if (partida.getEmpate() != null && partida.getEmpate()){
+				aplicaCorSelecionado(nomeEmpate);
+			}
+		}
+	}
+
+	private void aplicaCorSelecionado(TextView txt) {
+		txt.setTextColor(ContextCompat.getColor(context, configuracaoLoteca.getCorTextoSelecionado()));
+		txt.setBackgroundColor(ContextCompat.getColor(context, configuracaoLoteca.getBackgroundSelecionado()));
 	}
 
 	private void aplicaChecks(PartidaLotecaDTO partida) {

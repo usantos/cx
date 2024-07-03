@@ -127,6 +127,12 @@ public class Utils {
         return matriz;
     }
 
+    public static String getEquipeComUfBolao(EquipeDTO equipeDTO){
+        String equipeComTime = equipeDTO.getParametroEquipe().getNome() != null ? equipeDTO.getParametroEquipe().getNome() : "";
+
+        return equipeComTime + getUfTime(equipeDTO.getParametroEquipe());
+    }
+
     public static String getEquipeComUf(EquipeDTO equipeDTO){
         String equipeComTime = (equipeDTO != null && equipeDTO.getNome() != null) ? equipeDTO.getNome(): "";
         return equipeComTime + getUfTime(equipeDTO);
