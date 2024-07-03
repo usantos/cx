@@ -28,6 +28,9 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
+
 public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
 	private Activity activity;
 	private static final int QUANTIDADE_MINIMA = 1;
@@ -35,6 +38,8 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private TextView valorPremio;
 	private TextView concurso;
 	private TextView loterica;
+	private TextView textQtdDezenas;
+	private TextView textQtdCotas;
 	private TextView valorCota;
 	private TextView qtdCotas;
 	private Button btnDetalhes;
@@ -58,6 +63,8 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		valorPremio 	= itemView.findViewById(R.id.valor_estimado_premio);
 		concurso 		= itemView.findViewById(R.id.descricao_numero_concurso);
 		loterica 		= itemView.findViewById(R.id.loterica_cidade_uf);
+		textQtdDezenas	= itemView.findViewById(R.id.descricao_qtd_dezenas);
+		textQtdCotas	= itemView.findViewById(R.id.descricao_qtd_cotas_disponiveis);
 		valorCota 		= itemView.findViewById(R.id.valor_cota);
 		btnDetalhes 	= itemView.findViewById(R.id.detalhes);
 		btnDiminui 		= itemView.findViewById(R.id.diminui_cota);
@@ -110,9 +117,16 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	private void preencheConteudo(CotasBolaoDTO bolao) {
 		valorPremio.setText(ViewUtils.getMoedaFormat(bolao.getVrPremioEstimado()));
-		concurso.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
+		concurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
 														   itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso())));
 		loterica.setText(bolao.getNomeFantasia()+ "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
+
+		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
+								getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+
+		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
+								getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
+
 		atualizaValorTotal(bolao);
 	}
 

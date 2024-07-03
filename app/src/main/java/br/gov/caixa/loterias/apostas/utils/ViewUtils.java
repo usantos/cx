@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -471,10 +473,13 @@ public class ViewUtils {
     public static SpannableStringBuilder textCaixaSTDBold(Context context, String texto) {
         try{
             Typeface font = FonteUtils.getFonte(FontCaixaEnum.BOLD);
-
-            PositionStringBold positionStringBold = positionString(texto);
             SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
-            spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+            //PositionStringBold positionStringBold = positionString(texto);
+            List<PositionStringBold> listpositionStringBold = listPositionString(texto);
+            for (PositionStringBold positionStringBold : listpositionStringBold) {
+                spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            }
             return spannableStringBuilder;
         }catch (Exception e){
             return  new SpannableStringBuilder().append(texto);
@@ -520,6 +525,24 @@ public class ViewUtils {
         int end = listaString[1].length() + start;
         return new PositionStringBold(start, end);
     }
+
+    public static List<PositionStringBold> listPositionString(String texto) {
+        List<PositionStringBold> positionStringBoldList = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile("_(.*?)_");
+        Matcher matcher = pattern.matcher(texto);
+
+        int underline = 1;
+        while (matcher.find()) {
+            int start = matcher.start(1) - underline;
+            int end = matcher.end(1) - underline;
+            positionStringBoldList.add(new PositionStringBold(start, end));
+            underline += 2;
+        }
+
+        return positionStringBoldList;
+    }
+
 
     public static int setDisplayMetric(int valor, Context context) {
 
