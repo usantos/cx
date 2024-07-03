@@ -23,9 +23,8 @@ public class CertificadoMicroServicoSingleton {
 
     private static void initCertificados() {
         certificados = new ArrayList<>();
-        certificados.add(R.raw.certificado);
+        certificados.add(R.raw.certificado_loterias_antigo);
         certificados.add(R.raw.certificado_loterias_novo);
-        certificados.add(R.raw.certificado_mobilidade_atual);
         certificados.add(R.raw.certificado_mobilidade_novo);
         position = 0;
     }
