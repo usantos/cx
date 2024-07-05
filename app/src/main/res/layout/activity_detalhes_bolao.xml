@@ -80,12 +80,34 @@
                 />
 
             <TextView
+                android:id="@+id/descricao_qtd_dezenas_dt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="05 apostas de 20 dezenas"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="@id/id_municipio"
+                app:layout_constraintTop_toBottomOf="@id/id_municipio" />
+
+            <TextView
+                android:id="@+id/descricao_qtd_cotas_disponiveis_dt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="25 cotas disponíveis de 100"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="@id/id_municipio"
+                app:layout_constraintTop_toBottomOf="@id/descricao_qtd_dezenas_dt" />
+
+            <TextView
                 android:id="@+id/id_valor_cota"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Valor da cota: R$ 47,50"
                 android:layout_marginTop="4dp"
-                app:layout_constraintTop_toBottomOf="@id/id_municipio"
+                app:layout_constraintTop_toBottomOf="@id/descricao_qtd_cotas_disponiveis_dt"
                 app:layout_constraintStart_toStartOf="@id/id_municipio"
                 />
 

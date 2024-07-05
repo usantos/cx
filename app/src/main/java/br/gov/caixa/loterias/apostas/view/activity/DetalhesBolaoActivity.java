@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -34,10 +35,14 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.config.ColunaConfig;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
 public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	public static final String ARG_CODIGO_BOLAO = "ARG_CODIGO_BOLAO";
@@ -47,6 +52,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private TextView tvValorPremio, tvDescricaoPremioConcurso;
 	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota;
+	private TextView textQtdDezenas, textQtdCotas;
 	private Button btnAdd, btnDiminui, btnAumenta;
 	private TextView tvValorCotaBtn, tvQtdCotas;
 	private TextView tvLabelQtdCotas;
@@ -146,6 +152,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		tvDescricaoPremioConcurso = findViewById(R.id.id_descricao_valor_premio);
 		tvMunicipio = findViewById(R.id.id_municipio);
 		tvValorCota = findViewById(R.id.id_valor_cota);
+		textQtdDezenas = findViewById(R.id.descricao_qtd_dezenas_dt);
+		textQtdCotas = findViewById(R.id.descricao_qtd_cotas_disponiveis_dt);
 		tvNumeroCota = findViewById(R.id.id_numero_qtd_cotas);
 		tvValorTarifa = findViewById(R.id.id_valor_tarifa_servico);
 		tvValorTotal = findViewById(R.id.id_valor_total);
@@ -224,17 +232,25 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		tvValorTotal.setText("Total: " + ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()));
 		btnAdd.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
 		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
+
+		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(this,
+				getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+
+		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(this,
+				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
+
 		atualizaQuantidadeTextView();
 		preencheJogos();
 	}
 
 	private void preencheJogos() {
 		if (bolao.getModalidade() == ModalidadeEnum.LOTECA && !bolao.getApostas().isEmpty()){
-			partidasAdapter = new PartidasLotecaRecyclerViewAdapter(bolao.getApostas().get(0).getPartidasLoteca(), DetalhesBolaoActivity.this);
+			partidasAdapter = new PartidasLotecaRecyclerViewAdapter(bolao.getApostas().get(0).getPartidasLoteca(), DetalhesBolaoActivity.this, new ConfiguracaoLoteca(R.color.black));
 			listaJogos.setAdapter(partidasAdapter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 		} else if (bolao.getModalidade() == ModalidadeEnum.SUPER_7) {
-			superSeteAdpter = new SuperSeteRecyclerViewAdapter(bolao.getApostas(), DetalhesBolaoActivity.this, getDezenaConfig());
+			superSeteAdpter = new SuperSeteRecyclerViewAdapter(estilo.getCorEscura(), bolao.getApostas(),
+					DetalhesBolaoActivity.this, getColunaConfig(), getDezenaConfig(), null);
 			listaJogos.setAdapter(superSeteAdpter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 		} else {
@@ -244,6 +260,10 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 				listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 			}
 		}
+	}
+
+	private ColunaConfig getColunaConfig() {
+		return new ColunaConfig(estilo.getCorFonteFundoEscuro(), estilo.getCorEscura());
 	}
 
 	private DezenaConfig getDezenaConfig() {

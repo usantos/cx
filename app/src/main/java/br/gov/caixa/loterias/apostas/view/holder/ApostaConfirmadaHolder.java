@@ -19,13 +19,14 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -137,11 +138,11 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			parametroJogo = getParametroPorJogo(aposta, TipoConcursoEnum.ESPECIAL);
 		}
 
-		if(parametroJogo != null && !precisaBuscarResultadoNoSilce(aposta, parametroJogo)){
+		if(parametroJogo != null && !ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial())){
 			if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
 				descricaoStatus = aposta.getSituacao().getDescricao();
 			}else {
-				descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado);
+				descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado).toLowerCase();
 
 				if (!BuildVersionUtil.isPRD()){
 					descricaoStatus = "* " +descricaoStatus + " *";
@@ -181,26 +182,6 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		fragment.conferirResultado(position, aposta, this);
 	}
 
-	private boolean precisaBuscarResultadoNoSilce(ApostaDTO aposta, ParametroSimulacao parametroJogo) {
-		boolean precisaBuscar = false;
-
-		Integer numeroConcursoAposta = aposta.getConcursoInicial();
-		ConcursoDTO concursoAtual         = parametroJogo.getParametroJogo().getConcurso();
-
-		if (numeroConcursoAposta < concursoAtual.getNumero()){
-			if(numeroConcursoAposta + 1 == concursoAtual.getNumero()){
-				if (concursoAtual.getAberto()){
-					precisaBuscar = true;
-				} else {
-					precisaBuscar = false;
-				}
-			}else {
-				precisaBuscar = true;
-			}
-		}
-		return precisaBuscar;
-	}
-
 	private ParametroSimulacao getParametroPorJogo(ApostaDTO aposta, TipoConcursoEnum tipoConcurso) {
 		ParametrosSimulacao parametrosSimulacao = SessaoUsuario.getInstance().getParametrosSimulacao();
 		ParametroSimulacao parametroSimulacao = null;
@@ -217,7 +198,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	}
 
 	private void trataStyleSituacao(ApostaDTO aposta) {
-		if (aposta.getSituacao().getValor() != 100) {
+		if (aposta.getSituacao().getValor() != SituacaoAposta.PREMIADA) {
 			this.situacaoTxt.setTypeface(null, Typeface.NORMAL);
 			this.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 			//holder.modalidadeTxt.setTypeface(null, Typeface.NORMAL);

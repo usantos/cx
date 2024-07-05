@@ -26,6 +26,9 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
+
 public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
 	private Activity activity;
 	private static final int QUANTIDADE_MINIMA = 1;
@@ -34,6 +37,8 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private TextView concurso;
 	private TextView cidade;
 	private TextView valor;
+	private TextView textQtdDezenas;
+	private TextView textQtdCotas;
 	private ImageView seta;
 	private ConstraintLayout verMais;
 	private TextView valorPremio;
@@ -56,6 +61,9 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		concurso 	= itemView.findViewById(R.id.concurso_bolao);
 		cidade 		= itemView.findViewById(R.id.cidade_bolao);
 		valor 		= itemView.findViewById(R.id.valor_bolao);
+		textQtdDezenas = itemView.findViewById(R.id.descricao_qtd_dezenas_it);
+		textQtdCotas = itemView.findViewById(R.id.descricao_qtd_cotas_disponiveis_it);
+
 		seta 		= itemView.findViewById(R.id.seta_bolao);
 		verMais 	= itemView.findViewById(R.id.container_ver_mais);
 		valorPremio = itemView.findViewById(R.id.valor_estimado_premio);
@@ -99,6 +107,13 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 			valorPremio.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrPremioEstimado().doubleValue()));
 		}
 		valor.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrCotaComTarifa().doubleValue()));
+
+		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
+				getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+
+		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
+				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
+
 		atualizaBotoesQtdCotas(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		mostrarDetalhes(bolao.isAbertoParaMostrarDetalhes());
 		qtdCotas.setText(Integer.toString(bolao.getQtdCotasBolao()));

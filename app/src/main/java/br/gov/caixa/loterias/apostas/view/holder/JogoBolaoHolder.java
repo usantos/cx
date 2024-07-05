@@ -15,7 +15,9 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
@@ -24,25 +26,31 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 
-	private ModalidadeEnum modalidade;
-	private int corTitulo;
-	private List<Integer> dezenasSelecionadas;
-	private DezenaConfig dezenaConfig;
-	private TextView txtNumero, txtIndividualidade;
-	private RecyclerView listView, listTrevos;
-	private Context context;
+	private final ModalidadeEnum modalidade;
+	private final int corTitulo;
+	private final List<Integer> dezenasSelecionadas;
+	private final DezenaConfig dezenaConfig;
+	private final TextView txtNumero, txtIndividualidade, mesTime;
+	private final RecyclerView listView, listTrevos;
+	private final Context context;
+	private final EstiloModalidadeMKP estilo;
+	private final DezenaConfig trevoConfig;
+	private ListaDezenaRecyclerView trevosAdapter;
 
-	public JogoBolaoHolder(ModalidadeEnum modalidade, int corTitulo, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, View itemView, Context context) {
+	public JogoBolaoHolder(ModalidadeEnum modalidade, int corTitulo, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, View itemView, Context context, DezenaConfig trevoConfig) {
 		super(itemView);
 		this.modalidade = modalidade;
+		this.estilo = new EstiloModalidadeMKP(modalidade);
 		this.corTitulo = corTitulo;
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.dezenaConfig = dezenaConfig;
 		txtNumero = itemView.findViewById(R.id.id_numero_jogo);
 		listView = itemView.findViewById(R.id.id_lista);
-		txtIndividualidade = itemView.findViewById(R.id.id_descricao_individualidade);
+		txtIndividualidade = itemView.findViewById(R.id.mes_sorte_label);
+		mesTime = itemView.findViewById(R.id.mes_sorte_valor);
 		listTrevos = itemView.findViewById(R.id.id_trevos);
 		this.context = context;
+		this.trevoConfig = trevoConfig;
 	}
 
 	@Override
@@ -52,7 +60,7 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 
 		List<Dezena> dezenas = new ArrayList<>();
 		for (int i = 0; i < aposta.getDezenas().size(); i++) {
-			Integer numero = null;
+			Integer numero;
 			if(aposta.getDezenas().get(i) instanceof Double){
 				numero = ((Double)aposta.getDezenas().get(i)).intValue();
 			} else {
@@ -83,14 +91,16 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 				if (aposta.getTimeCoracao() != null && aposta.getTimeCoracao().getNomeComUf() != null){
 					time = aposta.getTimeCoracao().getNomeComUf();
 				}
-				apresentaDiaSorteTimeMania(context.getString(R.string.label_time_coracao_dois_pontos), time);
+				txtNumero.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
+				txtIndividualidade.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
+				apresentaDiaSorteTimeMania(context.getString(R.string.label_time_coracao_dois_pontos), time, estilo.getCorFonteFundoClaro());
 				break;
 			case DIA_DE_SORTE:
 				String mes = "-";
 				if (aposta.getMesSorte() != null && aposta.getMesSorte().getNome() != null){
 					mes = aposta.getMesSorte().getNome();
 				}
-				apresentaDiaSorteTimeMania(context.getString(R.string.label_mes_sorte_dois_pontos), mes);
+				apresentaDiaSorteTimeMania(context.getString(R.string.label_mes_sorte_dois_pontos), mes, estilo.getCorFonteFundoEscuro());
 				break;
 			case MAIS_MILIONARIA:
 				txtIndividualidade.setVisibility(View.VISIBLE);
@@ -103,7 +113,7 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 				}
 
 				listTrevos.setVisibility(View.VISIBLE);
-				ListaDezenaRecyclerView trevosAdapter = new ListaDezenaRecyclerView(trevos, new ArrayList<>(),
+				trevosAdapter = new ListaDezenaRecyclerView(trevos, new ArrayList<>(),
 						getTrevoConfig(), onItemClickListener());
 				listTrevos.setAdapter(trevosAdapter);
 
@@ -114,21 +124,54 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 	}
 
 	private DezenaConfig getTrevoConfig() {
+		if (trevoConfig != null) {
+			return this.trevoConfig;
+		}
+
 		ShapeConfig shapeConfig = new ShapeConfig(R.drawable.ic_item_trevo,
 				R.drawable.ic_item_trevo_selecionado,
-				R.color.milionaria_escuro_mkp, R.color.milionaria_escuro_mkp);
+				R.color.branco, R.color.milionaria_escuro_mkp);
 
-		return new DezenaConfig(false, R.color.milionaria_escuro_mkp,
+		return new DezenaConfig(false, R.color.branco,
 				R.layout.item_dezena_detalhe,
 				shapeConfig, false);
 	}
 
-	private void apresentaDiaSorteTimeMania(String descricao, String valor){
+	private void apresentaDiaSorteTimeMania(String descricao, String valor, int cor){
 		txtIndividualidade.setVisibility(View.VISIBLE);
-		txtIndividualidade.setText(descricao + valor);
+		mesTime.setVisibility(View.VISIBLE);
+		txtIndividualidade.setText(descricao);
+		mesTime.setText(valor);
+		mesTime.setTextColor(ContextCompat.getColor(context, cor));
 	}
 
 	private OnItemClickListener onItemClickListener() {
 		return (holder, position) -> {};
+	}
+
+	public void bindResultado(ResultadoConcursoDTO resultado) {
+		switch (modalidade){
+			case DIA_DE_SORTE:
+				if (resultado.getPremiacaoMesDeSorte() != null){
+					if (mesTime.getText().toString().contains(resultado.getPremiacaoMesDeSorte().getMesDeSorte().getNome())){
+						mesTime.setBackgroundColor(ContextCompat.getColor(context, R.color.branco));
+						mesTime.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
+					}
+				}
+				break;
+			case TIMEMANIA:
+				if (resultado.getPremiacaoTimeDoCoracao() != null){
+					if (mesTime.getText().toString().contains(resultado.getPremiacaoTimeDoCoracao().getEquipe().getNome())){
+						mesTime.setBackgroundColor(ContextCompat.getColor(context, R.color.branco));
+						mesTime.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
+					}
+				}
+				break;
+			case MAIS_MILIONARIA:
+				if (trevosAdapter != null && resultado.getTrevosSorteadosPrimeiroSorteio() != null ){
+					trevosAdapter.atualizaSelecionados(resultado.getTrevosSorteadosPrimeiroSorteio());
+				}
+				break;
+		}
 	}
 }

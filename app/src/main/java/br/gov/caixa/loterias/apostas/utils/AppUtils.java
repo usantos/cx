@@ -131,6 +131,7 @@ public class AppUtils {
     public static String listaIntToString(List<Integer> integerList) {
         StringBuilder sb = new StringBuilder();
 
+        integerList = converteListaInteiros(integerList);
         for (Integer numero : integerList) {
             if (numero == 100) {
                 sb.append("00 ");
