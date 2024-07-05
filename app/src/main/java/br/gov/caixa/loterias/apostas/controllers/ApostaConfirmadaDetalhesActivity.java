@@ -144,6 +144,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private ApostaConfirmadaNumeroDetalhesFragment numerosFragment;
     private ApostaConfirmadaBolaoDetalhesFragment numerosBolaoFragment;
 
+    private boolean isBuscandoSituacaoSilce = false;
+    private boolean criouFragmentDetalhe = false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,6 +240,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
             if(!ConfiguracaoAppSingleton.getInstance().isMicroServico() || aposta.getSituacao().getDescricao().contains("Aposta não conferida")) {
+                isBuscandoSituacaoSilce = true;
                 ConferirResultadoHelper.conferirResultadoHandler = this;
                 ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
             }
@@ -291,31 +295,34 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void chooseFragmentToPresent() {
-        switch (aposta.getModalidade()) {
-            case LOTOGOL:
-                disableButtonEditar();
-                partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
-                        R.id.fragmentContainer, aposta, null, comprovanteApostaDTO, valorPremio, false);
-                break;
-            case LOTECA:
-                disableButtonEditar();
-                if (aposta.getIndicadorCotaBolao()){
-                    FragmentUtils.startApostaConfirmadaPartidaDetalhesBolao(getSupportFragmentManager(), R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
-                } else {
+        if (!isBuscandoSituacaoSilce && !criouFragmentDetalhe){
+            switch (aposta.getModalidade()) {
+                case LOTOGOL:
+                    disableButtonEditar();
                     partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
-                            R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio, true);
-                }
-                break;
-            default:
-                if (aposta.getIndicadorCotaBolao()){
-                    numerosBolaoFragment = FragmentUtils.startApostaConfirmadaBolaoDetalhes(getSupportFragmentManager(),
-                            R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
-                } else {
-                    numerosFragment = FragmentUtils.startApostaConfirmadaDetalhes(getSupportFragmentManager(),
-                            R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
-                }
-                break;
+                            R.id.fragmentContainer, aposta, null, comprovanteApostaDTO, valorPremio, false);
+                    break;
+                case LOTECA:
+                    disableButtonEditar();
+                    if (aposta.getIndicadorCotaBolao()){
+                        FragmentUtils.startApostaConfirmadaPartidaDetalhesBolao(getSupportFragmentManager(), R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
+                    } else {
+                        partidaFragment = FragmentUtils.startApostaConfirmadaPartidaDetalhes(getSupportFragmentManager(),
+                                R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio, true);
+                    }
+                    break;
+                default:
+                    if (aposta.getIndicadorCotaBolao()){
+                        numerosBolaoFragment = FragmentUtils.startApostaConfirmadaBolaoDetalhes(getSupportFragmentManager(),
+                                R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
+                    } else {
+                        numerosFragment = FragmentUtils.startApostaConfirmadaDetalhes(getSupportFragmentManager(),
+                                R.id.fragmentContainer, aposta, resultadoConcurso, comprovanteApostaDTO, valorPremio);
+                    }
+            }
+            criouFragmentDetalhe = true;
         }
+
         linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
         if (aposta.getIndicadorCotaBolao()){
@@ -787,14 +794,18 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     @Override
     public void handle(DTOEnumLong situacao) {
+        isBuscandoSituacaoSilce = false;
         apresentaBySituacao(situacao);
     }
 
     @Override
-    public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) { }
+    public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
+        isBuscandoSituacaoSilce = false;
+    }
 
     @Override
     public void handleError(ApostaConfirmadaHolder holder, VolleyError error) {
+        isBuscandoSituacaoSilce = false;
         RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
     }
 }
