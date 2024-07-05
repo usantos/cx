@@ -155,7 +155,7 @@ public class CopiaColaPixFragment extends Fragment {
 					numeroPix = "";
 					btnCopia.setEnabled(false);
 					btnCopia.setVisibility(View.GONE);
-					copiaTesto(getString(R.string.codigo_expirado));
+					copiaTexto(getString(R.string.codigo_expirado));
 					iconAtualizar.setVisibility(View.INVISIBLE);
 					iconAtualizar.setEnabled(false);
 					progressBar.setVisibility(View.GONE);
@@ -190,7 +190,7 @@ public class CopiaColaPixFragment extends Fragment {
 	private void configListeners() {
 		btnCopia.setOnClickListener(v -> {
 			if (!numeroPix.isEmpty()) {
-				copiaTesto(numeroPix);
+				copiaTexto(numeroPix);
 				TestVisao.toast("Pix copiado.");
 				btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_pix_copiado, null));
 				btnCopia.setEnabled(false);
@@ -300,8 +300,8 @@ public class CopiaColaPixFragment extends Fragment {
 		}
 	}
 
-	private void copiaTesto(String value) {
-		ClipData         clip      = ClipData.newPlainText("label", value);
+	private void copiaTexto(String value) {
+		ClipData         clip      = ClipData.newPlainText("label", value.trim());
 		ClipboardManager clipBoard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
 		clipBoard.setPrimaryClip(clip);
 	}

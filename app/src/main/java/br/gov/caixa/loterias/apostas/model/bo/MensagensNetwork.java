@@ -137,7 +137,7 @@ public class MensagensNetwork {
     }
 
     public static boolean isCertificadoInvalido(VolleyError error) {
-        if (error.getLocalizedMessage().contains("SSLHandshakeException")) {
+        if (error != null && error.getLocalizedMessage() != null && error.getLocalizedMessage().contains("SSLHandshakeException")) {
             return true;
         }
         return false;

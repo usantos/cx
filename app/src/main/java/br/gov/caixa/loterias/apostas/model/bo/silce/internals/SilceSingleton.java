@@ -15,6 +15,7 @@ import android.content.Context;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.SSLPinningUtil;
+import br.gov.caixa.loterias.apostas.utils.ServicoEnum;
 
 @EBean(scope = Singleton)
 public class SilceSingleton {
@@ -29,7 +30,7 @@ public class SilceSingleton {
         Context ctx = Aplicacao.application.getApplicationContext();
 
         if (BuildVersionUtil.isPRD()){
-            this.queue = SSLPinningUtil.pinagemPRD(ctx);
+            this.queue = SSLPinningUtil.pinagemPRD(ctx, ServicoEnum.SILCE);
         } else {
             this.queue = new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
         }
