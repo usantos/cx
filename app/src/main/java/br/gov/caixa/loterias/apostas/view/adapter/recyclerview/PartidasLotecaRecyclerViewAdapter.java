@@ -11,16 +11,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.view.holder.PartidaLotecaHolder;
 
 public class PartidasLotecaRecyclerViewAdapter extends RecyclerView.Adapter<PartidaLotecaHolder>{
 	List<PartidaLotecaDTO> partidas;
 	private Context context;
+	private ResultadoConcursoDTO resultadoConcurso;
+	private ConfiguracaoLoteca configuracaoLoteca;
 
-	public PartidasLotecaRecyclerViewAdapter(List<PartidaLotecaDTO> partidas, Context context) {
+	public PartidasLotecaRecyclerViewAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca) {
 		this.partidas = partidas;
 		this.context = context;
+		this.configuracaoLoteca = configuracaoLoteca;
+	}
+
+	public PartidasLotecaRecyclerViewAdapter(List<PartidaLotecaDTO> partidas, Context context, ConfiguracaoLoteca configuracaoLoteca, ResultadoConcursoDTO resultadoConcurso) {
+		this.partidas = partidas;
+		this.context = context;
+		this.configuracaoLoteca = configuracaoLoteca;
+		this.resultadoConcurso = resultadoConcurso;
 	}
 
 	@NonNull
@@ -28,7 +40,7 @@ public class PartidasLotecaRecyclerViewAdapter extends RecyclerView.Adapter<Part
 	public PartidaLotecaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_partida_loteca,
 																		parent, false);
-		return new PartidaLotecaHolder(view, context);
+		return new PartidaLotecaHolder(view, context, configuracaoLoteca, resultadoConcurso);
 	}
 
 	@Override

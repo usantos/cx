@@ -5,9 +5,11 @@ import android.util.Log;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -62,6 +64,10 @@ public class ApostaBolaoDTO<T> implements Serializable {
 
     public void setOperacaoExecutadaComSucesso(Boolean operacaoExecutadaComSucesso) {
         this.operacaoExecutadaComSucesso = operacaoExecutadaComSucesso;
+    }
+
+    public ArrayList<ArrayList<Integer>> getMatriz() {
+        return AppUtils.converteMatrizInteiros((List<List<Integer>>) dezenas);
     }
 
     public TimeDoCoracaoDTO getTimeCoracao(){

@@ -26,16 +26,15 @@ import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoMicroServicoSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSilceSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
-
-/**
- * Created by pmotta on 21/03/2018.
- */
 
 @EBean
 public class BaseMicroServicoBO {
@@ -59,6 +58,19 @@ public class BaseMicroServicoBO {
         return error -> {
             if(AppUtils.isNetworkAvailable(context)){
                 registraErro(error, request);
+
+                if (MensagensNetwork.isCertificadoInvalido(error)){
+                    if (CertificadoMicroServicoSingleton.getInstance().trocaCertificado()){
+                        singleton.initQueue();
+                        connection = new MicroServicoConnection(singleton.getRequestQueue(), ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
+                        connection.request(request, listener);
+                        return;
+                    } else {
+                        listener.onErrorResponse(error);
+                    }
+
+                }
+
                 //Caso não esteja autorizado tenta atualizar o token de acesso
                 if((MensagensNetwork.isUnauthorizedError(error) || error instanceof AuthFailureError) && keycloakBO.getAccessToken() != null) {
                     keycloakBO.refreshAccess(() -> {

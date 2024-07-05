@@ -177,7 +177,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				break;
 		}
 
-		fm.beginTransaction().replace(R.id.rl_fg_numeros_1, fragment).commit();
+		fm.beginTransaction().replace(R.id.rl_fg_numeros_1, fragment).commitAllowingStateLoss();
 		rl_fg_numeros_1.setVisibility(View.VISIBLE);
 		//frag resultado
 		if(numerosSorteadosPrimeiro != null){
@@ -197,7 +197,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
 					numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,
 					getEstiloNumeros(aposta), null);
-			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commit();
+			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commitAllowingStateLoss();
 			rl_container_result_1.setVisibility(View.VISIBLE);
 
 
@@ -246,17 +246,17 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 						numerosSorteadosSegundo,
 						getEstiloNumeros(aposta),
 						getTrevoShape());
-				fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commit();
+				fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commitAllowingStateLoss();
 				rl_container_result_2.setVisibility(View.VISIBLE);
 			} else {
 				Collections.sort(numerosSorteadosSegundo);
 				fragResultado = NumerosFragment.newInstance("", aposta.getListaNumerosSelecionados() ,numerosSorteadosSegundo,getEstiloNumeros(aposta), null);
-				fm.beginTransaction().replace(R.id.rl_fg_numeros_2, fragResultado).commit();
+				fm.beginTransaction().replace(R.id.rl_fg_numeros_2, fragResultado).commitAllowingStateLoss();
 				rl_fg_numeros_2.setVisibility(View.VISIBLE);
 
 				Collections.sort(numerosSorteadosSegundo);
 				fragResultado = NumerosFragment.newInstance("", numerosSorteadosSegundo ,numerosSorteadosSegundo,getEstiloNumeros(aposta), null);
-				fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commit();
+				fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commitAllowingStateLoss();
 				rl_container_result_2.setVisibility(View.VISIBLE);
 			}
 		}
@@ -276,7 +276,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 		NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment
 				.newInstance(aposta.getMatrizNumerosSelecionados(),matrizSorteados,getEstiloSuperSete());
-		fm.beginTransaction().replace(R.id.rl_fg_numeros_1, fragment).commit();
+		fm.beginTransaction().replace(R.id.rl_fg_numeros_1, fragment).commitAllowingStateLoss();
 		rl_fg_numeros_1.setVisibility(View.VISIBLE);
 		tv_colunas.setVisibility(View.VISIBLE);
 		tv_sua_aposta.setVisibility(View.VISIBLE);
@@ -285,7 +285,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			Utils.ordenaMatrizInteiro(matrizSorteados);
 			NumerosSuperSeteFragment frag = NumerosSuperSeteFragment
 					.newInstance(matrizSorteados,matrizSorteados,getEstiloSuperSete());
-			fm.beginTransaction().replace(R.id.rl_container_result_1, frag).commit();
+			fm.beginTransaction().replace(R.id.rl_container_result_1, frag).commitAllowingStateLoss();
 			rl_container_result_1.setVisibility(View.VISIBLE);
 			tv_resultado_super_sete.setVisibility(View.VISIBLE);
 			tv_colunas_2.setVisibility(View.VISIBLE);

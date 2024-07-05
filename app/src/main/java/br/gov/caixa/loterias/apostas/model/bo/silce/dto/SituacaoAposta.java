@@ -7,4 +7,5 @@ public class SituacaoAposta {
 	public static final int CONCURSO_NAO_APURADO = 101;
 	public static final int PRESCRITA = 10;
 	public static final int NAO_PREMIADA_CONCORRENDO_CONCURSO_FUTURO = 4;
+	public static final int EFETIVADA = 4;
 }
