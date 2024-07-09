@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 /**
  * Created by pmotta on 21/03/2018.
@@ -56,6 +57,7 @@ public class BaseBO {
 
     @AfterInject
     protected void init(){
+        String teste = BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE");
         silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
     }
 
