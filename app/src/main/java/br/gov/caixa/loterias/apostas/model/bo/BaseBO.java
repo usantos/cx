@@ -57,7 +57,6 @@ public class BaseBO {
 
     @AfterInject
     protected void init(){
-        String teste = BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE");
         silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
     }
 

@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -95,29 +96,35 @@ public class LoginFragment extends Fragment {
         biometriaLinearLayout = v.findViewById(R.id.biometriaLinearLayout);
         biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
 
-        //Ambiente Selecao
-        ambienteSpinner = v.findViewById(R.id.spin_ambiente);
-        AmbienteEnum[] ambienteEnums = AmbienteEnum.values();
-        ArrayAdapter<AmbienteEnum> adapter = new ArrayAdapter<AmbienteEnum>(getContext(),
-                                                        R.layout.spinner_item_ambiente, ambienteEnums);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ambienteSpinner.setAdapter(adapter);
-        //Carrega selecao salva no SharedPreferences
-        String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO.name());
-        AmbienteEnum ambienteAtual = AmbienteEnum.valueOf(ambienteSalvo);
-        ambienteSpinner.setSelection(adapter.getPosition(ambienteAtual));
-        //Listener salvar a selecao
-        ambienteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        //Selecao ambiente se NAO PRD
+        if (!BuildConfig.FLAVOR.equals("prd")) {
+            //Ambiente Selecao
+            ambienteSpinner = v.findViewById(R.id.spin_ambiente);
+            ambienteSpinner.setVisibility(View.VISIBLE);
+            AmbienteEnum[] ambienteEnums = AmbienteEnum.values();
+            ArrayAdapter<AmbienteEnum> adapter = new ArrayAdapter<AmbienteEnum>(getContext(),
+                    R.layout.spinner_item_ambiente, ambienteEnums);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ambienteSpinner.setAdapter(adapter);
+            //Carrega selecao salva no SharedPreferences
+            String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO.name());
+            AmbienteEnum ambienteAtual = AmbienteEnum.valueOf(ambienteSalvo);
+            ambienteSpinner.setSelection(adapter.getPosition(ambienteAtual));
+            //Listener salvar a selecao
+            ambienteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     AmbienteEnum selectedAmbiente = (AmbienteEnum) parent.getItemAtPosition(position);
                     SharedPreferencesUtils.setValor("AMBIENTE_SELECIONADO", selectedAmbiente.name());
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
+                    if (!selectedAmbiente.name().equals(ambienteSalvo)) {
+                        showAlertAndExit(selectedAmbiente);
+                    }
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }
 
         setUpBiometria();
 
@@ -397,4 +404,18 @@ public class LoginFragment extends Fragment {
         };
     }
 
+    private void showAlertAndExit(AmbienteEnum selectedAmbiete) {
+        new AlertDialog.Builder(getContext())
+            .setTitle("Mudança de Ambiente")
+            .setMessage("O aplicativo será encerrado para aplicar as mudanças de ambeinte.")
+            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (getActivity() != null) {
+                        getActivity().finishAffinity();
+                    }
+                }
+            })
+            .show();
+    }
 }

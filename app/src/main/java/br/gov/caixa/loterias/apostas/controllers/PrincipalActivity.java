@@ -89,6 +89,7 @@ import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
 import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
@@ -98,6 +99,7 @@ import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -133,7 +135,7 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected Button buttonHomeBet, buttonHomeBolao;
     @ViewById
-    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, recolherMenu;
+    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, recolherMenu, txtAmbiente;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             rlJogoResponsavel,
@@ -182,6 +184,12 @@ public class PrincipalActivity extends AppCompatActivity
     @AfterViews
     public void init() {
         setSupportActionBar(toolbar);
+
+        if (!BuildConfig.FLAVOR.equals("prd")) {
+            String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO.name());
+            txtAmbiente.setText(ambienteSalvo);
+            txtAmbiente.setVisibility(View.VISIBLE);
+        }
 
         txtVersaoMenu.setText(BuildConfig.VERSION_NAME);
 

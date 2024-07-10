@@ -172,6 +172,7 @@
             android:fontFamily="@font/caixa_std_regular"
             android:backgroundTint="@color/branco"
             android:dropDownWidth="wrap_content"
+            android:visibility="gone"
             />
 
     </RelativeLayout>
