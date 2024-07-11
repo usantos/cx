@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisD
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
@@ -57,7 +58,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }
         
-        AppCenter.start(getApplication(), BuildConfig.APP_CENTER_KEY, Analytics.class, Crashes.class);
+        AppCenter.start(getApplication(), BuildConfigManager.getVariavel("APP_CENTER_KEY"), Analytics.class, Crashes.class);
 
         //Cria canal de Notificacao
         MessagingUtils.criaCanalNotificacaoApp(this);

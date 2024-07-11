@@ -36,6 +36,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 public class BiometriaLogin {
 
@@ -50,12 +51,12 @@ public class BiometriaLogin {
         AlertDialogUtils.show(activity);
 
         AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                Uri.parse(BuildConfig.URL_SSO_AUTH),
-                Uri.parse(BuildConfig.URL_SSO_TOKEN)
+                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_AUTH")),
+                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
         );
 
         AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(Aplicacao.application.getApplicationContext());
-        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
+        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfigManager.getVariavel("SSO_CLIENT_ID"));
         tokenBuilder.setRefreshToken(biometriaDTO.getRefresh());
         tokenBuilder.setGrantType("refresh_token");
 
