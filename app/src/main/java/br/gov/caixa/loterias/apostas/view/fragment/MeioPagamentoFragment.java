@@ -160,10 +160,10 @@ public class MeioPagamentoFragment extends Fragment {
 			@Override
 			public void favoritar(CartaoMeioPagamentoHolder holder, int position) {
 				if (!cartoes.get(position).isFav()){
-					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.alterar_favorito_interrogacao),
-																						  getString(R.string.cancelar),
-																						  getString(R.string.confirmar),
-																						  getString(R.string.confirmar_alterar_cartao_favorito),
+					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getStringById(R.string.alterar_favorito_interrogacao),
+																						  getStringById(R.string.cancelar),
+																						  getStringById(R.string.confirmar),
+																						  getStringById(R.string.confirmar_alterar_cartao_favorito),
 																						  (dialog, which) -> {
 																							  adapter.atualizaCartaoFavorito(cartoes.get(position));
 																						  });
@@ -176,15 +176,15 @@ public class MeioPagamentoFragment extends Fragment {
 				if (cartoes.get(position).isFav()){
 					ViewUtils.alertTitleButton(getContext(),
 											   R.string.excluir_cartao_interrogacao,
-											   getString(R.string.nao_e_possivel_eliminar_cartao_favorito),
-											   getString(R.string.title_entendi));
+											   getStringById(R.string.nao_e_possivel_eliminar_cartao_favorito),
+											   getStringById(R.string.title_entendi));
 				} else {
-					String mensagem = getString(R.string.voceDesejaExcluir);
+					String mensagem = getStringById(R.string.voceDesejaExcluir);
 					mensagem = mensagem.replace("{bandeira}", cartoes.get(position).getNomeMetodoPagamento());
 					mensagem = mensagem.replace("{XXXX}", cartoes.get(position).getUltimosDigitos());
-					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getString(R.string.excluir_cartao_interrogacao),
-																				getString(R.string.naoExcluir),
-																				getString(R.string.excluir),
+					Dialog dialogConfirmacao = ViewUtils.alertTitleCustomPositiveListener(getContext(), getStringById(R.string.excluir_cartao_interrogacao),
+																				getStringById(R.string.naoExcluir),
+																				getStringById(R.string.excluir),
 																				mensagem,
 																				(dialog, which) -> {
 																					deletaCartao(cartoes.get(position), position);
@@ -232,8 +232,8 @@ public class MeioPagamentoFragment extends Fragment {
 	private void configButton() {
 		btnAdd.setOnClickListener(v -> {
 			ViewUtils.alertTitleButtonYesListener(getContext(),
-					getResources().getString(R.string.suaTitularidade),
-					getResources().getString(R.string.title_entendi),
+					getStringById(R.string.suaTitularidade),
+					getStringById(R.string.title_entendi),
 					(dialogInterface, i) -> goToAddCartao());
 		});
 
@@ -241,7 +241,7 @@ public class MeioPagamentoFragment extends Fragment {
 	}
 
 	private void goToAddCartao(){
-		Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), AdicionaCartaoActivity.class, getString(R.string.bundle_key_config), config);
+		Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), AdicionaCartaoActivity.class, getStringById(R.string.bundle_key_config), config);
 		startActivity(intent);
 	}
 
@@ -274,24 +274,38 @@ public class MeioPagamentoFragment extends Fragment {
 	private void setSemCartao() {
 		textoSemCartao.setVisibility(View.VISIBLE);
 		if (model.isMercadoPago(config.getMeioPagamento().getValor())){
-			textoSemCartao.setText(getActivity().getString(R.string.semCartaoMercadoPago));
+			textoSemCartao.setText(getStringById(R.string.semCartaoMercadoPago));
 		}
 		if (model.isRecargaPay(config.getMeioPagamento().getValor())){
-			textoSemCartao.setText(getActivity().getString(R.string.semCartaoRecargaPay));
+			textoSemCartao.setText(getStringById(R.string.semCartaoRecargaPay));
 		}
-		btnAdd.setText(getActivity().getString(R.string.novoCartaoCredito));
+		btnAdd.setText(getStringById(R.string.novoCartaoCredito));
 	}
 
 	private void clickMostraMaisMenos() {
 		//Lista Mais
-		if (btnListaMaisMenos.getText().equals(getActivity().getString(R.string.listarMais))) {
-			btnListaMaisMenos.setText(getActivity().getString(R.string.listarMenos));
+		if (btnListaMaisMenos.getText().equals(getStringById(R.string.listarMais))) {
+			btnListaMaisMenos.setText(getStringById(R.string.listarMenos));
 			adapter.mostrarTodos();
 		} else { //Lista Menos
-			btnListaMaisMenos.setText(getActivity().getString(R.string.listarMais));
+			btnListaMaisMenos.setText(getStringById(R.string.listarMais));
 			adapter.mostrarMenos();
 		}
 
+	}
+
+	private String getStringById(int idString){
+		try {
+			if (getActivity() != null){
+				return getActivity().getString(idString);
+			} else if (getResources() != null){
+				return getResources().getString(idString);
+			} else {
+				return getString(idString);
+			}
+		} catch (Exception e){
+			return "";
+		}
 	}
 
 }
