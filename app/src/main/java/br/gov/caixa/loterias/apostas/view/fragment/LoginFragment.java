@@ -207,6 +207,7 @@ public class LoginFragment extends Fragment {
                     }
                     SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
                     SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
+                    SessaoUsuario.getInstance().setSituacaoApostadorId(response.getPayload().getSituacaoApostador().getId());
 
                     crud.deleteAll();
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());

@@ -12,8 +12,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 public class SessaoUsuario {
     private static  SessaoUsuario ourInstance = new SessaoUsuario();
 
-
-
     private BigDecimal valorMinimimoAposta;
     private BigDecimal valorMaximoAposta;
     private String token;
@@ -24,6 +22,7 @@ public class SessaoUsuario {
 
     private Boolean suspensaoTemporariaApostador;
     private Boolean responderAutoavaliacao;
+    private Long situacaoApostadorId;
 
     private Date dataUltimaRequisicao;
     public static int SECONDS = 180;
@@ -136,5 +135,13 @@ public class SessaoUsuario {
 
     public void setResponderAutoavaliacao(Boolean responderAutoavaliacao) {
         this.responderAutoavaliacao = responderAutoavaliacao;
+    }
+
+    public Long getSituacaoApostadorId() {
+        return situacaoApostadorId;
+    }
+
+    public void setSituacaoApostadorId(Long situacaoApostadorId) {
+        this.situacaoApostadorId = situacaoApostadorId;
     }
 }

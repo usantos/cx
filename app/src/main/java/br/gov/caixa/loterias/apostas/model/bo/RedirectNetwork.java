@@ -19,13 +19,17 @@ import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
+import br.gov.caixa.loterias.apostas.controllers.IntroducaoActivity;
 import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
+import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
+import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
@@ -256,6 +260,36 @@ public class  RedirectNetwork {
             default:
                 break;
         }
+    }
+
+    public static void trataBloqueioTotal(VolleyError error, final Activity activity) {
+        Gson gsonResponse = new Gson();
+        ErrorResponse errorResponse = new ErrorResponse();
+        String body = null;
+        if (error.networkResponse.data != null) {
+            try {
+                body = new String(error.networkResponse.data, "UTF-8");
+                errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
+                if (errorResponse != null) {
+                    if (errorResponse.getRedirect() != null) {
+                        if (errorResponse.getCodigo() != null && errorResponse.getCodigo().equals("002020")) {
+                            ViewUtils.alertTitleButton(activity, R.string.label_atencao, errorResponse.getMensagem(),
+                                "Ok", dialogInterface -> {
+                                    AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_logout_sucesso));
+                                    new LoginSSOModel(activity).sair(() -> {});
+                                    DadosUsuarioBO.updateUsuarioLogado(activity, false);
+                                    activity.finish();
+                                    return;
+                                }
+                            );
+                            return;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+        activity.finish();
     }
 
     public static void treatNegotialErros(ErrorResponse error, VolleyError volleyError, Activity activity) {
