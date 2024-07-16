@@ -90,7 +90,6 @@ public class TokenActivity extends AppCompatActivity {
                                         //SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
                                         SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
                                         SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
-                                        SessaoUsuario.getInstance().setSituacaoApostadorId(response.getPayload().getSituacaoApostador().getId());
 
                                         CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                                         UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());

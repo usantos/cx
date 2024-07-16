@@ -22,7 +22,6 @@ public class SessaoUsuario {
 
     private Boolean suspensaoTemporariaApostador;
     private Boolean responderAutoavaliacao;
-    private Long situacaoApostadorId;
 
     private Date dataUltimaRequisicao;
     public static int SECONDS = 180;
@@ -137,11 +136,4 @@ public class SessaoUsuario {
         this.responderAutoavaliacao = responderAutoavaliacao;
     }
 
-    public Long getSituacaoApostadorId() {
-        return situacaoApostadorId;
-    }
-
-    public void setSituacaoApostadorId(Long situacaoApostadorId) {
-        this.situacaoApostadorId = situacaoApostadorId;
-    }
 }
