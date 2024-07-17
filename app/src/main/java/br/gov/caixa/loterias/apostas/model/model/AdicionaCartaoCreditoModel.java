@@ -30,7 +30,7 @@ public class AdicionaCartaoCreditoModel extends AppModel{
 		listaAnos.add(getActivity().getString(R.string.title_anoDeValidade));
 		DateTime joda = new DateTime();
 		listaAnos.add("" + joda.getYear());
-		for(int x = 1; x <= 10; x++){
+		for(int x = 1; x <= 20; x++){
 			listaAnos.add("" + joda.plusYears(x).getYear());
 		}
 		return listaAnos;
