@@ -187,9 +187,9 @@ public class ComprasDezenasView extends LinearLayout {
     }
 
     private ShapeConfig getTrevoShape() {
-        return new ShapeConfig(0,
+        return new ShapeConfig(R.drawable.ic_item_trevo_branco,
                                R.drawable.ic_item_trevo_branco,
-                               0, 0);
+                               R.color.branco, R.color.branco);
     }
 
     private DezenaConfig getTrevoConfig() {
