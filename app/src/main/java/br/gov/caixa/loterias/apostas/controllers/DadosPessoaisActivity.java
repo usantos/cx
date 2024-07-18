@@ -142,7 +142,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         setSupportActionBar( toolbar );
         getSupportActionBar().setDisplayHomeAsUpEnabled( true );
 
-        setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
+        //setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
+        setTitle( ViewUtils.textCaixaSTDBoldTitle( this, getTitle().toString() ) );
         subtitleToolbar.setText( getResources().getString(R.string.seus_dados_pessoais) );
     }
 
