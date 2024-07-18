@@ -338,14 +338,14 @@ public class AdicionarApostaCarrinhoHelper {
     private static boolean inserirApostaCarrinhoLocal(Context contextParam, IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
         DBLoteriasCrud crud = new DBLoteriasCrud(contextParam);
         int quantidadeApostaCarrinho = crud.qtdIdentificaoDeUmaApostaDas8Modalidades();
-        BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
-        valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
 
         boolean isTipoLotogol = CollectionUtils.isNotEmpty(aposta.getPartidasLotogol());
         boolean isTipoLoteca = CollectionUtils.isNotEmpty(aposta.getPartidasLoteca());
 
 
-        if (quantidadeApostaCarrinho >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
+        if (SessaoUsuario.getInstance().getParametrosSimulacao() != null &&
+                SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho() != null &&
+                quantidadeApostaCarrinho >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
             ViewUtils.alert(contextParam, contextParam.getString(R.string.MA013));
             return Boolean.FALSE;
         } else {
