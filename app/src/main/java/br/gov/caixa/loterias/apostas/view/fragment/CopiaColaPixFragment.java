@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
@@ -139,7 +140,7 @@ public class CopiaColaPixFragment extends Fragment {
 					edtNumeroPix.setText(R.string.codigo_expirado);
 					edtNumeroPix.setTextColor(Aplicacao.application.getResources().getColor(R.color.vermelho_dialog));
 					edtNumeroPix.setBackground(VectorUtils.getShape(R.drawable.shape_input_pix_copia_cola, R.color.cinza_borda));
-					edtNumeroPix.setTextColor(getActivity().getResources().getColor(R.color.branco));
+					edtNumeroPix.setTextColor(ContextCompat.getColor(Aplicacao.application.getApplicationContext(), R.color.branco));
 					numeroPix = "";
 					btnCopia.setEnabled(false);
 					btnCopia.setVisibility(View.GONE);
@@ -194,8 +195,9 @@ public class CopiaColaPixFragment extends Fragment {
 		});
 
 		btnMinhasCompras.setOnClickListener(v -> {
-			Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ListaComprasActivity.class);
-			startActivity(intent);
+			if (listener != null){
+				listener.irParaCompras();
+			}
 		});
 
 		iconAtualizar.setOnClickListener(v -> {
@@ -219,7 +221,12 @@ public class CopiaColaPixFragment extends Fragment {
 
 			@Override
 			public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
-				RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+				try {
+					RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+				} catch (Exception e){
+					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
+				}
+
 				if (pixDTO.estaNoPrazo()){
 					iconAtualizar.setEnabled(true);
 					iconAtualizar.setVisibility(View.VISIBLE);
@@ -229,7 +236,12 @@ public class CopiaColaPixFragment extends Fragment {
 
 			@Override
 			public void errorCompra(VolleyError volleyError) {
-				RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+				try {
+					RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+				} catch (Exception e){
+					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
+				}
+
 				if (pixDTO.estaNoPrazo()){
 					iconAtualizar.setEnabled(true);
 					iconAtualizar.setVisibility(View.VISIBLE);
@@ -248,12 +260,20 @@ public class CopiaColaPixFragment extends Fragment {
 
 			@Override
 			public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
-				RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+				try {
+					RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+				} catch (Exception e){
+					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
+				}
 			}
 
 			@Override
 			public void errorCompra(VolleyError volleyError) {
-				RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+				try {
+					RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+				} catch (Exception e){
+					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
+				}
 			}
 		};
 	}
@@ -266,7 +286,7 @@ public class CopiaColaPixFragment extends Fragment {
 
 	private void copiaTexto(String value) {
 		ClipData         clip      = ClipData.newPlainText("label", value.trim());
-		ClipboardManager clipBoard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+		ClipboardManager clipBoard = (ClipboardManager) Aplicacao.application.getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
 		clipBoard.setPrimaryClip(clip);
 	}
 

@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
+import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
@@ -151,6 +152,12 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	@Override
 	public void onSuccess() {
 		finalizaProcessoCompraSucesso();
+	}
+
+	@Override
+	public void irParaCompras() {
+		Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, ListaComprasActivity.class);
+		startActivity(intent);
 	}
 
 	private void restart() {

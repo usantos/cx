@@ -4,5 +4,6 @@ public interface OnCopiaColaListener {
 
 	void onFinish();
 	void onSuccess();
+	void irParaCompras();
 
 }
