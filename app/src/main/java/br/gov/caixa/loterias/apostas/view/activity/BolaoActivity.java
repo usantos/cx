@@ -44,13 +44,14 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoCarrosselHolder;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnEstadoVazioListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnVaiParaCarrinhoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
-public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnEstadoVazioListener, OnVaiParaCarrinhoListener {
+public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnEstadoVazioListener, OnVaiParaCarrinhoListener, OnCompraBolaoListener {
 	public static final String ARG_IDMODALIDADE = "ARG_IDMODALIDADE";
 
 	private DiscreteScrollView carrosselView;
@@ -66,6 +67,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private ActivityResultLauncher<Intent> launcherFiltro;
 	private ActivityResultLauncher<Intent> launcherAddCarrinho;
 	private ActivityResultLauncher<Intent> launcherCarrinho;
+	private ActivityResultLauncher<Intent> launcherDetalhes;
 
 	private TextView todosBoloesTxt;
 	private TextView toolBarTxt;
@@ -94,6 +96,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		launcherFiltro = IntentUtil.registerLauncherActivityForResult(this, OnActivityForResult());
 		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
 		launcherCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
+		launcherDetalhes = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
 		configFiltrar(launcherFiltro);
 		setTitle("");
 		toolBarTxt = findViewById(R.id.toolbar_title);
@@ -460,7 +463,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		bundle.putString(DetalhesBolaoActivity.ARG_MODALIDADE, new Gson().toJson(bolao.getModalidade()));
 		bundle.putString(DetalhesBolaoActivity.ARG_MODO_VISUALIZACAO, new Gson().toJson(ModoVisualizacaoBolaoEnum.SIMULACAO));
 		Intent intent = IntentUtil.getIntentOrigemDestino(this, DetalhesBolaoActivity.class, bundle);
-		startActivity(intent);
+		IntentUtil.startActivityForResult(launcherDetalhes, intent);
 	}
 
 	private void adicionarNoCarrinho(CotasBolaoDTO bolao) {
@@ -493,12 +496,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		}
 	}
 
-	public void sucessoCompra(Intent intent) {
-		IntentUtil.startActivityForResult(launcherAddCarrinho, intent);
-	}
-
 	@Override
 	public void vaiParaCarrinho() {
 		IntentUtil.startActivityForResult(launcherCarrinho, IntentUtil.getIntentOrigemDestino(BolaoActivity. this, CarrinhoActivity.class));
+	}
+
+	@Override
+	public void compraSucesso(Intent intent) {
+		IntentUtil.startActivityForResult(launcherAddCarrinho, intent);
 	}
 }

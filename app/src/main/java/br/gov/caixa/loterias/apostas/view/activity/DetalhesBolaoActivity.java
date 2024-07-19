@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +32,7 @@ import br.gov.caixa.loterias.apostas.model.model.DetalhesBolaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -40,11 +44,13 @@ import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
-public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
+public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implements OnCompraBolaoListener {
 	public static final String ARG_CODIGO_BOLAO = "ARG_CODIGO_BOLAO";
 	public static final String ARG_MODALIDADE = "ARG_MODALIDADE";
 	public static final String ARG_MODO_VISUALIZACAO = "ARG_MODO_VISUALIZACAO";
@@ -73,12 +79,16 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private SomadorCarrinhoFragment somadorCarrinhoFragment;
 	private RodapeSimulacaoApostaFragment rodapeFragment;
 	private String numeroCota;
+	private boolean precisaAtualizarLista = false;
+	private ActivityResultLauncher<Intent> launcherAddCarrinho;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detalhes_bolao);
 		configToolbar(R.id.toolbar);
+
+		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(DetalhesBolaoActivity.this, onAtualizaLista());
 
 		getExtras();
 		estilo = new EstiloModalidadeMKP(modalidade);
@@ -214,6 +224,16 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 				fragmentRodape();
 				preencheDados();
 				AlertDialogUtils.dismiss();
+				if (bolao.getQtdCotaDisponivel() == 0) {
+					ViewUtils.alertTitleButton(DetalhesBolaoActivity.this, R.string.label_atencao, getString(R.string.cota_zerou),
+							"Ok", dialogInterface -> {
+								dialogInterface.dismiss();
+								setResult(Activity.RESULT_OK);
+								finish();
+								return;
+							}
+					);
+				}
 			}
 
 			@Override
@@ -299,6 +319,28 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		}else {
 			somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
 		}
+	}
+
+	@Override
+	public void compraSucesso(Intent intent) {
+		IntentUtil.startActivityForResult(launcherAddCarrinho, intent);
+	}
+
+	private OnActivityForResult onAtualizaLista() {
+		return result -> {
+			if (result.getResultCode() == Activity.RESULT_OK) {
+				precisaAtualizarLista = true;
+			}
+		};
+	}
+
+	@Override
+	public boolean onSupportNavigateUp() {
+		if (precisaAtualizarLista){
+			setResult(RESULT_OK);
+		}
+		finish();
+		return true;
 	}
 
 }

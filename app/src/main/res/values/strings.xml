@@ -1382,5 +1382,6 @@
     <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
     <string name="todas_modalidades">todas as\nmodalidades</string>
     <string name="gerar_comprovante">Gerar Comprovante</string>
+    <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
 
 </resources>
