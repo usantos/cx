@@ -55,6 +55,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 
 
 /**
@@ -329,9 +330,11 @@ public class AdicionarApostaCarrinhoHelper {
             }
         }
 
-        AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
         if(AdicionarApostaCarrinhoHelper.activity instanceof SimularApostaActivity){
+            AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
             ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).zerarApostas();
+        } else {
+            ((BolaoActivity)AdicionarApostaCarrinhoHelper.activity).sucessoCompra(telaConfirmacao);
         }
     }
 
