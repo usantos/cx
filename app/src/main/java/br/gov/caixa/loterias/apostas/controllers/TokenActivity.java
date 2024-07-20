@@ -90,12 +90,14 @@ public class TokenActivity extends AppCompatActivity {
                                         //SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
                                         SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
                                         SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
+                                        SessaoUsuario.getInstance().setSituacaoApostador(response.getPayload().getSituacaoApostador());
 
                                         CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                                         UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
 
                                         crud.deleteAll();
-                                        finish();
+                                        //finish();
+                                        RedirectNetwork.trataBloqueioParcial(TokenActivity.this);
                                     } else {
                                         finish();
                                     }

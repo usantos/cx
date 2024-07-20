@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -29,6 +30,8 @@ import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostador;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
@@ -279,6 +282,7 @@ public class  RedirectNetwork {
                                     new LoginSSOModel(activity).sair(() -> {});
                                     DadosUsuarioBO.updateUsuarioLogado(activity, false);
                                     activity.finish();
+                                    dialogInterface.dismiss();
                                     return;
                                 }
                             );
@@ -288,6 +292,21 @@ public class  RedirectNetwork {
                 }
             } catch (Exception e) {
             }
+        }
+        activity.finish();
+    }
+
+    public static void trataBloqueioParcial(final Activity activity) {
+        if (SessaoUsuario.getInstance().getSituacaoApostador() != null &&
+            SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
+            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getString(R.string.usuario_bloqueio_parcial),
+                    "Ok", dialogInterface -> {
+                        activity.finish();
+                        dialogInterface.dismiss();
+                        return;
+                    }
+            );
+            return;
         }
         activity.finish();
     }
