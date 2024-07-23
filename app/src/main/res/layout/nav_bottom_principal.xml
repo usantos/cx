@@ -9,65 +9,50 @@
     android:gravity="bottom"
     android:orientation="vertical">
 
-    <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:columnCount="3"
-        android:orientation="vertical"
-        android:rowCount="3">
+    <ImageView
+        android:id="@+id/iconCef"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/caixa_logo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
 
-        <TextView
-            android:id="@+id/recolherMenu"
-            android:layout_width="200dp"
-            android:layout_column="1"
-            android:layout_row="0"
-            android:contentDescription="Sair do menu principal"
-            android:textColor="#00000000"
-            />
+    <TextView
+        android:id="@+id/nav_user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="8dp"
+        android:gravity="left"
+        android:text="@string/cef_id_tit"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textAppearance="@style/cef_titulo"
+        android:autoSizeTextType="uniform"
+        android:autoSizePresetSizes="@array/autosize_text_sizes"
+        app:layout_constraintTop_toTopOf="@+id/iconCef"
+        app:layout_constraintStart_toEndOf="@+id/iconCef"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <ImageView
-            android:id="@+id/iconCef"
-            android:layout_width="30dp"
-            android:layout_column="0"
-            android:layout_row="1"
-            android:src="@drawable/caixa_logo" />
-
-        <TextView
-            android:id="@+id/nav_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_row="1"
-            android:layout_column="1"
-            android:gravity="left"
-            android:paddingLeft="10dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="0dp"
-            android:text="@string/cef_id_tit"
-            android:fontFamily="@font/caixa_std_bold"
-            android:autoSizeTextType="uniform"
-            android:autoSizePresetSizes="@array/autosize_text_sizes"
-            android:textAppearance="@style/cef_titulo" />
-
-        <TextView
-            android:id="@+id/nav_user_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_row="2"
-            android:layout_column="1"
-            android:gravity="left"
-            android:paddingTop="3dp"
-            android:paddingLeft="10dp"
-            android:paddingBottom="5dp"
-            android:lineSpacingExtra="5dp"
-            android:text="@string/cef_id1"
-            android:fontFamily="@font/caixa_std_regular"
-            android:textAlignment="gravity"
-            android:textColor="@color/cinzaIdcaixa"
-            android:textSize="12dp"
-            android:autoSizeTextType="uniform"
-            android:autoSizePresetSizes="@array/autosize_text_sizes"
-            />
-    </GridLayout>
-
+    <TextView
+        android:id="@+id/nav_user_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="5dp"
+        android:lineSpacingExtra="5dp"
+        android:text="@string/cef_id1"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textColor="@color/cinzaIdcaixa"
+        android:textSize="12dp"
+        android:autoSizeTextType="uniform"
+        android:autoSizePresetSizes="@array/autosize_text_sizes"
+        app:layout_constraintTop_toBottomOf="@+id/nav_user"
+        app:layout_constraintStart_toStartOf="@+id/nav_user"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

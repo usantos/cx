@@ -133,7 +133,9 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected Button buttonHomeBet, buttonHomeBolao;
     @ViewById
-    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, recolherMenu;
+    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user;
+    @ViewById
+    protected ConstraintLayout layout_rodape;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             rlJogoResponsavel,
@@ -778,7 +780,7 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    @Click(R.id.recolherMenu)
+    @Click(R.id.layout_rodape)
     protected void clickRecolherMenu() {
         onBackPressed();
     }
