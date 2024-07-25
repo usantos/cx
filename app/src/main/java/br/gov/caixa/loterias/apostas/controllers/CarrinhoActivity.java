@@ -144,6 +144,9 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+        if (listBoloes == null || (listBoloes != null && listBoloes.isEmpty())){
+            setResult(RESULT_OK);
+        }
         finish();
         return true;
     }

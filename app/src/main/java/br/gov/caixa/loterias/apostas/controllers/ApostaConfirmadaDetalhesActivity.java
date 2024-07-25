@@ -162,14 +162,14 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         setupToolbar();
         setaMetodos();
 
-        if(ConfiguracaoAppSingleton.getInstance().isMicroServico()){
-            apresentaBySituacao(aposta.getSituacao());
-        }
-
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
 
-        getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
+        if(ConfiguracaoAppSingleton.getInstance().isMicroServico() && resultadoConcurso != null){
+            apresentaBySituacao(aposta.getSituacao());
+        } else {
+            getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
+        }
     }
 
     private void aplicaCorFontes() {
@@ -670,23 +670,15 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 if(response != null){
                     resultadoConcurso = response.getPayload();
                 }
-                chooseFragmentToPresent();
+                apresentaBySituacao(aposta.getSituacao());
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                // RedirectNetwork.checkRedirect(error, ApostaConfirmadaDetalhesActivity.this);
-                chooseFragmentToPresent();
+                apresentaBySituacao(aposta.getSituacao());
             }
         });
-    }
-
-    private void onApostasConfirmadasError(VolleyError error) {
-        if (this != null) {
-            AlertDialogUtils.dismiss();
-            RedirectNetwork.checkRedirect(error, this);
-        }
     }
 
     @Override

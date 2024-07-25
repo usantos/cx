@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -9,15 +10,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.android.volley.VolleyError;
 
 import java.util.Date;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
+import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.model.model.PixModel;
@@ -34,20 +36,9 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 
 public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopiaColaListener {
 	public static Boolean isRunning = false;
-
-	private Button btnGerar;
 	private SwipeRefreshLayout swipeRefreshLayout;
-
-
 	private PixModel model;
 	private CardPixFragment pixFragment;
-
-//	private ConstraintLayout layoutSimular;
-//	FloatingActionButton btnCompraSucesso, btnCompraCPFDivergente, btnAlterarContagem;
-//	ExtendedFloatingActionButton btnSimularCompra;
-//	TextView txtCompraSucesso, txtCompraCPFDivergente, txtAlterarContagem;
-
-//	private boolean isAllFabsVisible = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +47,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		configToolbar(R.id.toolbar);
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "Forma de _pagamento_"));
 
-		btnGerar = findViewById(R.id.botaoGerarPix);
+		Button btnGerar = findViewById(R.id.botaoGerarPix);
 		swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
 		swipeRefreshLayout.setOnRefreshListener(() -> {
 
@@ -66,12 +57,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		});
 		swipeRefreshLayout.setEnabled(false);
 
-		//aplicaLogicaSimulacao();
-
-
-		btnGerar.setOnClickListener(v -> {
-			restart();
-		});
+		btnGerar.setOnClickListener(v -> restart());
 
 		model = new PixModel(this);
 		gerarCodigoPix();
@@ -82,19 +68,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 			@Override
 			public void successCompra() {
 				swipeRefreshLayout.setRefreshing(false);
-				new CompraModel(CopiaColaPixActivity.this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
-
-				AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
-				RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
-
-				CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
-				CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(CopiaColaPixActivity.this);
-				crud.deletaTodos();
-
-				Bundle bundle   = new Bundle();
-				bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
-				Intent activity = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, ConfirmacaoPagamentoActivity.class, bundle);
-				startActivity(activity);
+				finalizaProcessoCompraSucesso();
 			}
 
 			@Override
@@ -109,6 +83,28 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 				swipeRefreshLayout.setRefreshing(false);
 			}
 		};
+	}
+
+	private void finalizaProcessoCompraSucesso() {
+		try {
+			new CompraModel(CopiaColaPixActivity.this).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
+
+			AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
+
+			RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
+
+			CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+			CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(CopiaColaPixActivity.this);
+			crud.deletaTodos();
+
+			Bundle bundle   = new Bundle();
+			bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
+			Intent activity = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, ConfirmacaoPagamentoActivity.class, bundle);
+			startActivity(activity);
+		}catch (Exception e){
+			Log.d("COPIACOLAPIXA_ONSUCCESS", Objects.requireNonNull(e.getLocalizedMessage()));
+		}
+		finish();
 	}
 
 	private void gerarCodigoPix() {
@@ -144,113 +140,24 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		};
 	}
 
-	//	private void aplicaLogicaSimulacao() {
-//		layoutSimular = findViewById(R.id.layoutSimular);
-//		btnSimularCompra = findViewById(R.id.btnSimularCompra);
-//		btnCompraSucesso = findViewById(R.id.btnCompraSucesso);
-//		btnCompraCPFDivergente = findViewById(R.id.btnCompraCPFDivergente);
-//		btnAlterarContagem = findViewById(R.id.btnAlterarContagem);
-//		txtCompraSucesso = findViewById(R.id.txtCompraSucesso);
-//		txtCompraCPFDivergente = findViewById(R.id.txtCompraDivergente);
-//		txtAlterarContagem = findViewById(R.id.txtAlterarContagem);
-//
-//		btnSimularCompra.shrink();
-//		btnSimularCompra.setOnClickListener(v -> {
-//			if (!isAllFabsVisible) {
-//				btnCompraSucesso.show();
-//				btnCompraCPFDivergente.show();
-//				btnAlterarContagem.show();
-//				txtCompraSucesso.setVisibility(View.VISIBLE);
-//				txtCompraCPFDivergente.setVisibility(View.VISIBLE);
-//				txtAlterarContagem.setVisibility(View.VISIBLE);
-//
-//				btnSimularCompra.extend();
-//				isAllFabsVisible = true;
-//			} else {
-//				btnCompraSucesso.hide();
-//				btnCompraCPFDivergente.hide();
-//				btnAlterarContagem.hide();
-//				txtCompraSucesso.setVisibility(View.GONE);
-//				txtCompraCPFDivergente.setVisibility(View.GONE);
-//				txtAlterarContagem.setVisibility(View.GONE);
-//
-//				btnSimularCompra.shrink();
-//				isAllFabsVisible = false;
-//			}
-//		});
-//
-//		btnAlterarContagem.setOnClickListener(v->{
-//			DialogUtils.showDialogGetIntTest(CopiaColaPixActivity.this, "Quantos segundos?", "Informe um valor interiro válido em segundos: (1 = 1 seg, 10 = 10 seg)", valor -> {
-//				CopiaColaPixFragment.SEGUNDOS = valor;
-//				restart();
-//				TimerSingleton.getInstance().cancel();
-//			});
-//		});
-//
-//		btnCompraSucesso.setOnClickListener(v -> {
-//			Bundle bundle = new Bundle();
-//			bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
-//
-//			Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, ConfirmacaoPagamentoActivity.class, bundle);
-//			startActivity(intent);
-//		});
-//
-//		btnCompraCPFDivergente.setOnClickListener(v -> {
-//			DialogUtils.showDialog3Botoes(CopiaColaPixActivity.this,R.drawable.vermelho,
-//										  getString(R.string.popup_pix_nao_autorizado),
-//										  getString(R.string.popup_pix_nao_autorizado_descricao),
-//										  getString(R.string.gerar_novo_codigo),
-//										  getString(R.string.alterar_forma_pagamento),
-//										  getString(R.string.btn_title_voltarAoInicio), onDialogListener());
-//		});
-//
-//		if (BuildVersionUtil.isTQS()){
-//			layoutSimular.setVisibility(View.VISIBLE);
-//		} else {
-//			layoutSimular.setVisibility(View.GONE);
-//		}
-//	}
-
-//	private OnDialog3ButtonsListener onDialogListener() {
-//		return new OnDialog3ButtonsListener() {
-//			@Override
-//			public void leftButtom() {
-//				cancelContagem();
-//				Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, OrientacaoPixActivity.class);
-//				startActivity(intent);
-//				finish();
-//			}
-//
-//			@Override
-//			public void centerButtom() {
-//				cancelContagem();
-//				Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, FormaPagamentoActivity.class);
-//				startActivity(intent);
-//				finish();
-//			}
-//
-//			@Override
-//			public void rightButtom() {
-//				cancelContagem();
-//				PrincipalActivity_.intent(CopiaColaPixActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
-//				finish();
-//			}
-//		};
-//	}
-
-	private void cancelContagem(){
-		TimerSingleton.getInstance().cancel();
-	}
-
 	private void startFragment(GerarPixDTO payload) {
 		pixFragment = FragmentUtils.startCardCopiaColaPix(payload, getSupportFragmentManager(), R.id.fragmentCopiaColaPix);
 	}
 
 	@Override
 	public void onFinish() {
-		//btnGerar.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.gerar_novo_codigo_pix)));
-		//btnGerar.setVisibility(View.VISIBLE);
 		swipeRefreshLayout.setEnabled(false);
+	}
+
+	@Override
+	public void onSuccess() {
+		finalizaProcessoCompraSucesso();
+	}
+
+	@Override
+	public void irParaCompras() {
+		Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, ListaComprasActivity.class);
+		startActivity(intent);
 	}
 
 	private void restart() {
@@ -261,6 +168,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
 		finish();
 	}
 

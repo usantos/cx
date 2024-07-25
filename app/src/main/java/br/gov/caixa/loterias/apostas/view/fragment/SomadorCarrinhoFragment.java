@@ -16,10 +16,10 @@ import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -32,6 +32,7 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnVaiParaCarrinhoListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,6 +53,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 
 	private Context context;
 	private OnSomadorListener listener;
+	private OnVaiParaCarrinhoListener vaiParaCarrinhoListener;
 	private boolean podeIrCarrinho = false;
 
 	public SomadorCarrinhoFragment() {
@@ -89,7 +91,13 @@ public class SomadorCarrinhoFragment extends Fragment {
 		try {
 			listener = (OnSomadorListener) context;
 		}catch (Exception e){
+			Log.d("SOMADORCARRINHOLISTENER", Objects.requireNonNull(e.getLocalizedMessage()));
+		}
 
+		try {
+			vaiParaCarrinhoListener = (OnVaiParaCarrinhoListener) context;
+		}catch (Exception e){
+			Log.d("SOMADORCARRINHOLISTENER", Objects.requireNonNull(e.getLocalizedMessage()));
 		}
 	}
 
@@ -117,7 +125,11 @@ public class SomadorCarrinhoFragment extends Fragment {
 		tvQtdApostas = view.findViewById(R.id.tv_quantidade_apostas);
 		if (podeIrCarrinho){
 			view.setOnClickListener(v -> {
-				startActivity(new Intent(getActivity(), CarrinhoActivity.class));
+				if (vaiParaCarrinhoListener != null){
+					vaiParaCarrinhoListener.vaiParaCarrinho();
+				} else {
+					startActivity(new Intent(getActivity(), CarrinhoActivity.class));
+				}
 			});
 		}
 		return view;
