@@ -104,4 +104,8 @@ public class IntentUtil {
 	public static void startActivityForResult(ActivityResultLauncher<Intent> launcher, ComponentActivity activity, Class clazz) {
 		launcher.launch(IntentUtil.getIntentOrigemDestino(activity, clazz));
 	}
+
+	public static void startActivityForResult(ActivityResultLauncher<Intent> launcher, Intent intent) {
+		launcher.launch(intent);
+	}
 }

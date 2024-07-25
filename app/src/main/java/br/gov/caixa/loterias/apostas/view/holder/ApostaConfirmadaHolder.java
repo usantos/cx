@@ -25,10 +25,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
@@ -199,12 +201,11 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 	private void trataStyleSituacao(ApostaDTO aposta) {
 		if (aposta.getSituacao().getValor() != SituacaoAposta.PREMIADA) {
-			this.situacaoTxt.setTypeface(null, Typeface.NORMAL);
-			this.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-			//holder.modalidadeTxt.setTypeface(null, Typeface.NORMAL);
+			this.situacaoTxt.setTypeface(FonteUtils.getFonte(FontCaixaEnum.REGULAR));
 		}else {
-			this.situacaoTxt.setTypeface(null, Typeface.BOLD);
+			this.situacaoTxt.setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
 		}
+		this.situacaoTxt.setTextSize(14);
 	}
 
 	private void preencheTeimosinha(ApostaDTO aposta) {

@@ -443,8 +443,12 @@ public class PrincipalActivity extends AppCompatActivity
     private void showMenu() {
         if (relativeContentPrincipal.isEnabled()) {
             AnimacaoAbrirMenuRapido(actionApresentarTrevo);
+            buttonHomeBet.setVisibility(View.GONE);
+            buttonHomeBolao.setVisibility(View.GONE);
         } else {
             AnimacaoFecharMenuRapido(actionApresentarTrevo);
+            buttonHomeBet.setVisibility(View.VISIBLE);
+            buttonHomeBolao.setVisibility(View.VISIBLE);
         }
     }
 

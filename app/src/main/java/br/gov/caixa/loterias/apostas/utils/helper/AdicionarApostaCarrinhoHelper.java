@@ -22,7 +22,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -55,6 +54,8 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 
 
 /**
@@ -329,23 +330,29 @@ public class AdicionarApostaCarrinhoHelper {
             }
         }
 
-        AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
         if(AdicionarApostaCarrinhoHelper.activity instanceof SimularApostaActivity){
+            AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
             ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).zerarApostas();
+        } else {
+            if(AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
+                ((OnCompraBolaoListener) AdicionarApostaCarrinhoHelper.activity).compraSucesso(telaConfirmacao);
+            } else {
+                AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
+            }
         }
     }
 
     private static boolean inserirApostaCarrinhoLocal(Context contextParam, IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
         DBLoteriasCrud crud = new DBLoteriasCrud(contextParam);
         int quantidadeApostaCarrinho = crud.qtdIdentificaoDeUmaApostaDas8Modalidades();
-        BigDecimal valorTotalCarrinho = crud.sumValorIdentificaoDeUmaApostaDas8Modalidades();
-        valorTotalCarrinho = valorTotalCarrinho.add(aposta.getValor());
 
         boolean isTipoLotogol = CollectionUtils.isNotEmpty(aposta.getPartidasLotogol());
         boolean isTipoLoteca = CollectionUtils.isNotEmpty(aposta.getPartidasLoteca());
 
 
-        if (quantidadeApostaCarrinho >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
+        if (SessaoUsuario.getInstance().getParametrosSimulacao() != null &&
+                SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho() != null &&
+                quantidadeApostaCarrinho >= SessaoUsuario.getInstance().getParametrosSimulacao().getQuantidadeMaximaApostasCarrinho()) {
             ViewUtils.alert(contextParam, contextParam.getString(R.string.MA013));
             return Boolean.FALSE;
         } else {
