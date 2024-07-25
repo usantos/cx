@@ -42,9 +42,6 @@ public class BaseMicroServicoBO {
     protected MicroServicoConnection connection;
 
     @Bean
-    protected MicroServicoSingleton singleton;
-
-    @Bean
     protected KeycloakBO keycloakBO;
 
     @RootContext
@@ -61,8 +58,8 @@ public class BaseMicroServicoBO {
 
                 if (MensagensNetwork.isCertificadoInvalido(error)){
                     if (CertificadoMicroServicoSingleton.getInstance().trocaCertificado()){
-                        singleton.initQueue();
-                        connection = new MicroServicoConnection(singleton.getRequestQueue(), ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
+                        MicroServicoSingleton.getInstance().initQueue();
+                        connection = new MicroServicoConnection(MicroServicoSingleton.getInstance().getRequestQueue(), ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
                         connection.request(request, listener);
                         return;
                     } else {

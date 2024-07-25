@@ -11,6 +11,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginad
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoConnection;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingleton;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
@@ -29,7 +30,7 @@ public class ApostaMicroServicoBO extends BaseMicroServicoBO {
     }
 
     public void getApostasConfirmadasMicroServico(String urlBase, ApostaPageRequest page, RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
-        connection = MicroServicoConnection.create(singleton.getRequestQueue(), urlBase);
+        connection = MicroServicoConnection.create(MicroServicoSingleton.getInstance().getRequestQueue(), urlBase);
 
         final Map<String, String> queryParams = getQueryParams(page);
 

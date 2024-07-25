@@ -44,9 +44,6 @@ public class BaseBO {
     protected SilceConnection silceConnection;
 
     @Bean
-    protected SilceSingleton silceSingleton;
-
-    @Bean
     protected KeycloakBO keycloakBO;
 
     @RootContext
@@ -56,7 +53,7 @@ public class BaseBO {
 
     @AfterInject
     protected void init(){
-        silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+        silceConnection = SilceConnection.create(SilceSingleton.getInstance().getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
     }
 
     protected <T> Response.ErrorListener interceptError(final GsonRequest request, final Map<String, String> headers, final RequestListener<T> listener){
@@ -65,8 +62,8 @@ public class BaseBO {
                 registraErro(error, request);
                 if (MensagensNetwork.isCertificadoInvalido(error)){
                     if (CertificadoSilceSingleton.getInstance().trocaCertificado()){
-                        silceSingleton.initQueue();
-                        silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+                        SilceSingleton.getInstance().initQueue();
+                        silceConnection = SilceConnection.create(SilceSingleton.getInstance().getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
                         silceConnection.request(request, listener);
                         return;
                     } else {

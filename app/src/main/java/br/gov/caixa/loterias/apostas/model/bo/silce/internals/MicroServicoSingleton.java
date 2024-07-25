@@ -5,11 +5,6 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.NoCache;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.EBean;
-
-import static org.androidannotations.annotations.EBean.Scope.Singleton;
-
 import android.content.Context;
 
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
@@ -17,15 +12,20 @@ import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.SSLPinningUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoEnum;
 
-@EBean(scope = Singleton)
 public class MicroServicoSingleton {
+    private static MicroServicoSingleton instance;
     private RequestQueue queue;
 
-    @AfterInject
-    protected void init(){
+    private MicroServicoSingleton(){
         initQueue();
     }
 
+    public static MicroServicoSingleton getInstance(){
+        if (instance == null){
+            instance = new MicroServicoSingleton();
+        }
+        return instance;
+    }
     public void initQueue() {
         Context ctx = Aplicacao.application.getApplicationContext();
 
