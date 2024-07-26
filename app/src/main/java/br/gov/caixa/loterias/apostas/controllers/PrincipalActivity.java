@@ -134,7 +134,8 @@ public class PrincipalActivity extends AppCompatActivity
     protected DrawerLayout drawerLayout;
     @ViewById
     protected Button buttonHomeBet, buttonHomeBolao;
-   protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, recolherMenu, txtAmbiente;
+    @ViewById
+    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, txtAmbiente;
     @ViewById
     protected RelativeLayout relativeContentPrincipal,
             rlJogoResponsavel,
