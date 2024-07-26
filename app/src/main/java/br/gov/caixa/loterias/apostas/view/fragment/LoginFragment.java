@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -27,6 +28,7 @@ import java.util.concurrent.Executor;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -41,6 +43,7 @@ import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
@@ -207,13 +210,15 @@ public class LoginFragment extends Fragment {
                     }
                     SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
                     SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
+                    SessaoUsuario.getInstance().setSituacaoApostador(response.getPayload().getSituacaoApostador());
 
                     crud.deleteAll();
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                     UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
 
                     PrincipalActivity_.intent(getActivity()).start();
-                    getActivity().finish();
+                    //getActivity().finish();
+                    RedirectNetwork.trataBloqueioParcial(getActivity());
                 } else {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
                 }
@@ -355,6 +360,20 @@ public class LoginFragment extends Fragment {
         return new OnRefreshTokenListener() {
             @Override
             public void successRefresh() {
+                //startActivity(new Intent(getContext(), PrincipalActivity_.class));
+                //getActivity().finish();
+                if (SessaoUsuario.getInstance().getSituacaoApostador() != null &&
+                        SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
+                    ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getActivity().getString(R.string.usuario_bloqueio_parcial),
+                            "Ok", dialogInterface -> {
+                                startActivity(new Intent(getContext(), PrincipalActivity_.class));
+                                getActivity().finish();
+                                dialogInterface.dismiss();
+                                return;
+                            }
+                    );
+                    return;
+                }
                 startActivity(new Intent(getContext(), PrincipalActivity_.class));
                 getActivity().finish();
             }
