@@ -31,6 +31,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
 import br.gov.caixa.loterias.apostas.model.dao.crud.MercadoPagoCRUD;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
@@ -51,7 +52,7 @@ public class MercadoPagoConnection {
 		if (ConfiguracaoAppSingleton.getInstance().isAtualizaPublicKey() || publicKey == null || publicKey.isEmpty()){
 			silceBuscaKeyPublic(onSilceKeyPaymentMethodListener(bin, jsonObject, ctx, listener));
 		}else {
-			String	url = BuildConfig.MP_PAYMENT_URL + ctx.getResources().getString(R.string.bin) +
+			String	url = BuildConfigManager.getVariavel("MP_PAYMENT_URL") + ctx.getResources().getString(R.string.bin) +
 					bin +  ctx.getResources().getString(R.string.public_key) + publicKey;
 
 			StringRequest request = new StringRequest(Request.Method.GET, url, response -> {
@@ -147,7 +148,7 @@ public class MercadoPagoConnection {
 		if (ConfiguracaoAppSingleton.getInstance().isAtualizaPublicKey() || publicKey == null || publicKey.isEmpty()){
 			silceBuscaKeyPublic(onBuscaSilceCreateTokenListener(jsonObject, ctx, listener, rQueue, payment_method_id));
 		} else {
-			String url2 = BuildConfig.MP_CREATE_TOKEN_URL +  ctx.getResources().getString(R.string.public_key) +
+			String url2 = BuildConfigManager.getVariavel("MP_CREATE_TOKEN_URL") +  ctx.getResources().getString(R.string.public_key) +
 					publicKey;
 
 			StringRequest stringRequest = new StringRequest(Request.Method.POST, url2,

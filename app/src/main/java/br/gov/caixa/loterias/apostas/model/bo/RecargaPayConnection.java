@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CartaoRecargaPayDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CartaoRecargaPayResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DataExpiracao;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 public class RecargaPayConnection {
 
@@ -100,7 +101,7 @@ public class RecargaPayConnection {
 	}
 
 	public static void callRecargaPayNovoCartao(String tokenApostador, Context ctx, CartaoRecargaPayDTO cartao, RecargaPayListener listener){
-		String URL = BuildConfig.RP_CREATE_TOKEN_URL + ServerMethods.CARDS_RECARGAPAY;
+		String URL = BuildConfigManager.getVariavel("RP_CREATE_TOKEN_URL") + ServerMethods.CARDS_RECARGAPAY;
 
 		JSONObject   jsonBody     = null;
 		try {
@@ -116,7 +117,7 @@ public class RecargaPayConnection {
 												 String cardToken, String securityCode,
 												 RecargaPayListener listener){
 
-		String URL = BuildConfig.RP_CREATE_TOKEN_URL + ServerMethods.CARDS_RECARGAPAY + "/" + cardToken;
+		String URL = BuildConfigManager.getVariavel("RP_CREATE_TOKEN_URL") + ServerMethods.CARDS_RECARGAPAY + "/" + cardToken;
 		JSONObject jsonBody = new JSONObject();
 		try {
 			jsonBody.put("securityCode", securityCode);
