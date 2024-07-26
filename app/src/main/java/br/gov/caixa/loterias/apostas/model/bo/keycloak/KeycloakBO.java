@@ -41,6 +41,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 @EBean(scope = EBean.Scope.Singleton)
 public class KeycloakBO {
@@ -168,12 +169,12 @@ public class KeycloakBO {
             //Se retornar o token, tenta fazer a mesma requisição
 
             AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                    Uri.parse(BuildConfig.URL_SSO_AUTH),
-                    Uri.parse(BuildConfig.URL_SSO_TOKEN)
+                    Uri.parse(BuildConfigManager.getVariavel("URL_SSO_AUTH")),
+                    Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
             );
 
             AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(context);
-            TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
+            TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfigManager.getVariavel("SSO_CLIENT_ID"));
             tokenBuilder.setRefreshToken(getRefreshToken());
             tokenBuilder.setGrantType("refresh_token");
 

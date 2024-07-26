@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
@@ -41,8 +42,8 @@ public class AcessoBO extends BaseBO {
     public void iniciarLoginSSO(Activity activity){
         if(activity != null) {
             AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                    Uri.parse(BuildConfig.URL_SSO_AUTH),
-                    Uri.parse(BuildConfig.URL_SSO_TOKEN)
+                    Uri.parse(BuildConfigManager.getVariavel("URL_SSO_AUTH")),
+                    Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
             );
 
             AuthorizationRequest.Builder builder = getAuthorizationRequestBuilder(activity, authorizationServiceConfiguration);
@@ -72,8 +73,8 @@ public class AcessoBO extends BaseBO {
 
     public void iniciarLogoutSSO(Activity activity){
         AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                Uri.parse(BuildConfig.URL_SSO_LOGOUT),
-                Uri.parse(BuildConfig.URL_SSO_TOKEN)
+                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_LOGOUT")),
+                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
         );
 
         AuthorizationRequest.Builder builder = getAuthorizationRequestBuilder(activity, authorizationServiceConfiguration);
@@ -94,9 +95,9 @@ public class AcessoBO extends BaseBO {
     private AuthorizationRequest.Builder getAuthorizationRequestBuilder(Activity activity, AuthorizationServiceConfiguration authorizationServiceConfiguration) {
         AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
                 authorizationServiceConfiguration,
-                BuildConfig.SSO_CLIENT_ID,
+                BuildConfigManager.getVariavel("SSO_CLIENT_ID"),
                 ResponseTypeValues.CODE,
-                Uri.parse(BuildConfig.SSO_REDIRECT)
+                Uri.parse(BuildConfigManager.getVariavel("SSO_REDIRECT"))
         );
 
         //Verifica se tem biometria para passar os parametros de RefreshToken com tempo Estendido

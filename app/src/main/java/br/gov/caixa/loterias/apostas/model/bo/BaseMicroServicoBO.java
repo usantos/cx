@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingle
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 @EBean
 public class BaseMicroServicoBO {
@@ -77,12 +78,12 @@ public class BaseMicroServicoBO {
                         //Se retornar o token, tenta fazer a mesma requisição
 
                         AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                                Uri.parse(BuildConfig.URL_SSO_AUTH),
-                                Uri.parse(BuildConfig.URL_SSO_TOKEN)
+                                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_AUTH")),
+                                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
                         );
 
                         AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(context);
-                        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
+                        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfigManager.getVariavel("SSO_CLIENT_ID"));
                         tokenBuilder.setRefreshToken(keycloakBO.getRefreshToken());
                         tokenBuilder.setGrantType("refresh_token");
 
@@ -133,7 +134,7 @@ public class BaseMicroServicoBO {
         if (request.getUrl().contains("/?")) {
             return "URL crashando app";
         }
-        return Bin.fromBase64(request.getUrl().replaceAll(BuildConfig.CAIXA_BASE_URL_SILCE,"")).toUtf8();
+        return Bin.fromBase64(request.getUrl().replaceAll(BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"),"")).toUtf8();
     }
 
 

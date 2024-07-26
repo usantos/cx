@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostador;
 
 /**
  * Created by cedesbr450 on 08/01/18.
@@ -11,8 +12,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 
 public class SessaoUsuario {
     private static  SessaoUsuario ourInstance = new SessaoUsuario();
-
-
 
     private BigDecimal valorMinimimoAposta;
     private BigDecimal valorMaximoAposta;
@@ -24,6 +23,7 @@ public class SessaoUsuario {
 
     private Boolean suspensaoTemporariaApostador;
     private Boolean responderAutoavaliacao;
+    private SituacaoApostador situacaoApostador;
 
     private Date dataUltimaRequisicao;
     public static int SECONDS = 180;
@@ -136,5 +136,13 @@ public class SessaoUsuario {
 
     public void setResponderAutoavaliacao(Boolean responderAutoavaliacao) {
         this.responderAutoavaliacao = responderAutoavaliacao;
+    }
+
+    public SituacaoApostador getSituacaoApostador() {
+        return situacaoApostador;
+    }
+
+    public void setSituacaoApostador(SituacaoApostador situacaoApostador) {
+        this.situacaoApostador = situacaoApostador;
     }
 }

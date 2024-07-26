@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 /**
  * Created by pmotta on 21/03/2018.
@@ -56,7 +57,7 @@ public class BaseBO {
 
     @AfterInject
     protected void init(){
-        silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+        silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
     }
 
     protected <T> Response.ErrorListener interceptError(final GsonRequest request, final Map<String, String> headers, final RequestListener<T> listener){
@@ -66,7 +67,7 @@ public class BaseBO {
                 if (MensagensNetwork.isCertificadoInvalido(error)){
                     if (CertificadoSilceSingleton.getInstance().trocaCertificado()){
                         silceSingleton.initQueue();
-                        silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+                        silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
                         silceConnection.request(request, listener);
                         return;
                     } else {
@@ -80,12 +81,12 @@ public class BaseBO {
                         //Se retornar o token, tenta fazer a mesma requisição
 
                         AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                                Uri.parse(BuildConfig.URL_SSO_AUTH),
-                                Uri.parse(BuildConfig.URL_SSO_TOKEN)
+                                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_AUTH")),
+                                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
                         );
 
                         AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(context);
-                        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
+                        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfigManager.getVariavel("SSO_CLIENT_ID"));
                         tokenBuilder.setRefreshToken(keycloakBO.getRefreshToken());
                         tokenBuilder.setGrantType("refresh_token");
 
@@ -136,7 +137,7 @@ public class BaseBO {
         if (request.getUrl().contains("/?")) {
             return "URL crashando app";
         }
-        return Bin.fromBase64(request.getUrl().replaceAll(BuildConfig.CAIXA_BASE_URL_SILCE,"")).toUtf8();
+        return Bin.fromBase64(request.getUrl().replaceAll(BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"),"")).toUtf8();
     }
 
     protected LinkedHashMap<String, String> getHeader(){

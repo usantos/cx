@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
@@ -54,9 +55,9 @@ public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
 
 
         if(AppUtils.isNetworkAvailable(this)){
-            String stringBuilder = BuildConfig.URL_SSO_ACCOUNT +
+            String stringBuilder = BuildConfigManager.getVariavel("URL_SSO_ACCOUNT") +
                     getResources().getString(R.string.referrer) +
-                    BuildConfig.SSO_CLIENT_ID +
+                    BuildConfigManager.getVariavel("SSO_CLIENT_ID") +
                     getResources().getString(R.string.referrer_uri);
 
             paginaAlterarDadosWebView.loadUrl(stringBuilder);

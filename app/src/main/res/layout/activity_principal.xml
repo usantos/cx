@@ -59,7 +59,7 @@
                 layout="@layout/nav_bottom_principal"
                 android:layout_width="248dp"
                 android:layout_height="103dp"
-                android:layout_marginStart="17dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginBottom="12dp"
                 app:layout_constraintBottom_toTopOf="@+id/viewSair"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -97,9 +97,25 @@
                     android:fontFamily="@font/caixa_std_regular"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
-                    android:hint="sair do app"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageView4"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtAmbiente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Ambiente"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/txtSairMenu"
+                    app:layout_constraintEnd_toStartOf="@+id/txtVersaoMenu"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView

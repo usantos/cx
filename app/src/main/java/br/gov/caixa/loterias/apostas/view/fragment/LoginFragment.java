@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -8,8 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -27,6 +31,7 @@ import java.util.concurrent.Executor;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -41,6 +46,7 @@ import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
@@ -48,9 +54,11 @@ import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
@@ -73,7 +81,7 @@ public class LoginFragment extends Fragment {
     AlertDialog alertDialogBio;
     TextView txtSSO;
     TextView txtTrocaUsuario;
-
+    Spinner ambienteSpinner;
 
     public LoginFragment() {}
 
@@ -89,6 +97,36 @@ public class LoginFragment extends Fragment {
 
         biometriaLinearLayout = v.findViewById(R.id.biometriaLinearLayout);
         biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
+
+        //Selecao ambiente se NAO PRD
+        if (!BuildConfig.FLAVOR.equals("prd")) {
+            //Ambiente Selecao
+            ambienteSpinner = v.findViewById(R.id.spin_ambiente);
+            ambienteSpinner.setVisibility(View.VISIBLE);
+            AmbienteEnum[] ambienteEnums = AmbienteEnum.values();
+            ArrayAdapter<AmbienteEnum> adapter = new ArrayAdapter<AmbienteEnum>(getContext(),
+                    R.layout.spinner_item_ambiente, ambienteEnums);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ambienteSpinner.setAdapter(adapter);
+            //Carrega selecao salva no SharedPreferences
+            String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO.name());
+            AmbienteEnum ambienteAtual = AmbienteEnum.valueOf(ambienteSalvo);
+            ambienteSpinner.setSelection(adapter.getPosition(ambienteAtual));
+            //Listener salvar a selecao
+            ambienteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    AmbienteEnum selectedAmbiente = (AmbienteEnum) parent.getItemAtPosition(position);
+                    SharedPreferencesUtils.setValor("AMBIENTE_SELECIONADO", selectedAmbiente.name());
+                    if (!selectedAmbiente.name().equals(ambienteSalvo)) {
+                        showAlertAndExit(selectedAmbiente);
+                    }
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }
 
         setUpBiometria();
 
@@ -207,13 +245,15 @@ public class LoginFragment extends Fragment {
                     }
                     SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
                     SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
+                    SessaoUsuario.getInstance().setSituacaoApostador(response.getPayload().getSituacaoApostador());
 
                     crud.deleteAll();
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                     UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
 
                     PrincipalActivity_.intent(getActivity()).start();
-                    getActivity().finish();
+                    //getActivity().finish();
+                    RedirectNetwork.trataBloqueioParcial(getActivity());
                 } else {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
                 }
@@ -355,6 +395,20 @@ public class LoginFragment extends Fragment {
         return new OnRefreshTokenListener() {
             @Override
             public void successRefresh() {
+                //startActivity(new Intent(getContext(), PrincipalActivity_.class));
+                //getActivity().finish();
+                if (SessaoUsuario.getInstance().getSituacaoApostador() != null &&
+                        SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
+                    ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getActivity().getString(R.string.usuario_bloqueio_parcial),
+                            "Ok", dialogInterface -> {
+                                startActivity(new Intent(getContext(), PrincipalActivity_.class));
+                                getActivity().finish();
+                                dialogInterface.dismiss();
+                                return;
+                            }
+                    );
+                    return;
+                }
                 startActivity(new Intent(getContext(), PrincipalActivity_.class));
                 getActivity().finish();
             }
@@ -368,4 +422,18 @@ public class LoginFragment extends Fragment {
         };
     }
 
+    private void showAlertAndExit(AmbienteEnum selectedAmbiete) {
+        new AlertDialog.Builder(getContext())
+            .setTitle("Mudança de Ambiente")
+            .setMessage("O aplicativo será encerrado para aplicar as mudanças de ambeinte.")
+            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (getActivity() != null) {
+                        getActivity().finishAffinity();
+                    }
+                }
+            })
+            .show();
+    }
 }

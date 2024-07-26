@@ -54,6 +54,8 @@ import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class SegmentedButtonGroup extends LinearLayout {
@@ -237,7 +239,9 @@ public class SegmentedButtonGroup extends LinearLayout {
             button.setSelectorColor(selectorColor);
             button.setSelectorRadius(radius);
             button.setBorderSize(borderSize);
-            button.setTypeface(ViewUtils.getFontFuturaBold(getContext()));
+            //button.setTypeface(ViewUtils.getFontFuturaBold(getContext()));
+            //button.setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
+            button.setTypeface(ViewUtils.getFontCaixaStdBold(getContext()));
 
             if (position == 0)
                 button.hasBorderLeft(true);

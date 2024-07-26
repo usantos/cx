@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -89,12 +90,14 @@ public class TokenActivity extends AppCompatActivity {
                                         //SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
                                         SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
                                         SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
+                                        SessaoUsuario.getInstance().setSituacaoApostador(response.getPayload().getSituacaoApostador());
 
                                         CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                                         UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
 
                                         crud.deleteAll();
-                                        finish();
+                                        //finish();
+                                        RedirectNetwork.trataBloqueioParcial(TokenActivity.this);
                                     } else {
                                         finish();
                                     }
@@ -102,7 +105,8 @@ public class TokenActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    finish();
+                                    RedirectNetwork.trataBloqueioTotal(error, TokenActivity.this);
+                                    //finish();
                                 }
                             });
                         }
