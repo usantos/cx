@@ -113,6 +113,10 @@
         <item name="android:fontFamily">@font/arialmt</item>
     </style>
 
+    <style name="CaixaStdRegular" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+    </style>
+
     <style name="FuturaStdBold" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/futura_std_bold</item>
     </style>
@@ -120,7 +124,16 @@
         <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/cinza</item>
     </style>
+
     <style name="editTextRegisterTheme" parent="ArialMT">
+        <item name="android:textColor">@color/cinza</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="editTextRegisterThemeCaixa" parent="CaixaStdRegular">
         <item name="android:textColor">@color/cinza</item>
         <item name="android:textColorHint">@color/colorAccent</item>
         <item name="android:textSize">16sp</item>
