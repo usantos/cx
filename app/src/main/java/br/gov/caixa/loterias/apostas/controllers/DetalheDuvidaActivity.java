@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.api.view.OnViewChangedNotifier;
 
 import java.util.List;
 
@@ -35,13 +37,27 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
     @ViewById
     ExpandableHeightRecyclerView recyclerViewDetalhesDuvida;
 
+    //private ExpandableHeightRecyclerView recyclerViewDetalhesDuvida;
+
     @Extra
     ListSecaoDTO secaoDTO;
 
-    @AfterViews
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_detalhe_duvida);
+//
+//        setViews();
+//        init();
+//    }
+
+    //@AfterViews
     public void init() {
         callWebservice();
         createToolBar();
+    }
+
+    private void setViews() {
+        recyclerViewDetalhesDuvida = findViewById(R.id.recyclerViewDetalhesDuvida);
     }
 
     private void callWebservice() {
