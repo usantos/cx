@@ -14,7 +14,6 @@ import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
 
 import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
@@ -24,10 +23,8 @@ import java.util.Map;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoMicroServicoSingleton;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSilceSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoConnection;
@@ -40,9 +37,6 @@ import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 public class BaseMicroServicoBO {
 
     protected MicroServicoConnection connection;
-
-    @Bean
-    protected KeycloakBO keycloakBO;
 
     @RootContext
     protected Context context;
@@ -65,12 +59,11 @@ public class BaseMicroServicoBO {
                     } else {
                         listener.onErrorResponse(error);
                     }
-
                 }
 
                 //Caso não esteja autorizado tenta atualizar o token de acesso
-                if((MensagensNetwork.isUnauthorizedError(error) || error instanceof AuthFailureError) && keycloakBO.getAccessToken() != null) {
-                    keycloakBO.refreshAccess(() -> {
+                if((MensagensNetwork.isUnauthorizedError(error) || error instanceof AuthFailureError) && KeycloakBO.getInstance().getAccessToken() != null) {
+                    KeycloakBO.getInstance().refreshAccess(() -> {
                         //Se retornar o token, tenta fazer a mesma requisição
 
                         AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
@@ -80,7 +73,7 @@ public class BaseMicroServicoBO {
 
                         AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(context);
                         TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
-                        tokenBuilder.setRefreshToken(keycloakBO.getRefreshToken());
+                        tokenBuilder.setRefreshToken(KeycloakBO.getInstance().getRefreshToken());
                         tokenBuilder.setGrantType("refresh_token");
 
                         TokenRequest tokenRequest = tokenBuilder.build();
@@ -90,12 +83,12 @@ public class BaseMicroServicoBO {
                                 if (response.accessToken == null || response.refreshToken == null) {
                                     listener.onErrorResponse(error);
                                 } else {
-                                    KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
-                                    KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
+                                    KeycloakBO.getInstance().setAccessToken(response.accessToken);
+                                    KeycloakBO.getInstance().setRefreshToken(response.refreshToken);
 
-                                    if (keycloakBO.getAccessToken() != null) {
+                                    if (KeycloakBO.getInstance().getAccessToken() != null) {
                                         //Atualiza o token com os headers
-                                        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+                                        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
                                         request.setHeaders(headers);
                                         //Refaz a conexão
                                         connection.request(request, listener);

@@ -15,6 +15,7 @@ import java.util.Map;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamentoPix;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoNovoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
@@ -878,7 +879,7 @@ public class ApostaBO extends BaseBO {
     }
 
     private <T> boolean verificaAcessToken(final RequestListener<T> listener) {
-        if (keycloakBO.getAccessToken() != null) {
+        if (KeycloakBO.getInstance().getAccessToken() != null) {
             return true;
         }
         listener.onErrorResponse(new VolleyError(new NetworkResponse(401, null, false, 0L, null)));

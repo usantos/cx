@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
@@ -24,7 +25,7 @@ public class ApostaMicroServicoBO extends BaseMicroServicoBO {
         if(header == null){
             this.header = new LinkedHashMap<>();
         }
-        this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        this.header.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         return header;
     }

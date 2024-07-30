@@ -20,10 +20,8 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -70,8 +68,8 @@ public class BiometriaLogin {
             //if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
             //    DadosBiometriaBO.salvarBiometria(response.refreshToken);
             //}
-            KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext()).setAccessToken(response.accessToken);
-            KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext()).setRefreshToken(response.refreshToken);
+            KeycloakBO.getInstance().setAccessToken(response.accessToken);
+            KeycloakBO.getInstance().setRefreshToken(response.refreshToken);
 
             LoginSP.loginRealizado(true);
             String separar[] = response.accessToken.split(activity.getString(R.string.barra_barra_ponto));

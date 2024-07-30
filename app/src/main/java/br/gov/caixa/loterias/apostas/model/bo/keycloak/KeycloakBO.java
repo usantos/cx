@@ -9,7 +9,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.webkit.CookieManager;
@@ -22,36 +21,37 @@ import com.android.volley.VolleyError;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
-
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 
-@EBean(scope = EBean.Scope.Singleton)
 public class KeycloakBO {
-
-    @RootContext
-    protected Context context;
-
     private static final String TAG = KeycloakBO.class.getName();
 
+    private static KeycloakBO instance;
+    protected Context context;
     private String accessToken;
     private String refreshToken;
+
+    private KeycloakBO(){
+        context = Aplicacao.application.getApplicationContext();
+    }
+
+    public static KeycloakBO getInstance(){
+        if (instance == null){
+            instance = new KeycloakBO();
+        }
+        return instance;
+    }
 
     public String getAccessToken(){
         return accessToken;
@@ -61,16 +61,6 @@ public class KeycloakBO {
     }
     public String getRefreshToken() { return refreshToken; }
     public void setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
-
-    @AfterInject
-    protected void init(){
-        try {
-
-        } catch (Exception e) {
-            throw new RuntimeException("Não foi possível inicializar os serviços de " +
-                    "autenticação OAUTH2 por um erro de configuração", e);
-        }
-    }
 
     public void refreshAccess(OnRefreshAccess listener){
         new RefreshAccessTask(this, listener).execute();
@@ -187,8 +177,8 @@ public class KeycloakBO {
                         if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
                             DadosBiometriaBO.salvarBiometria(response.refreshToken, DadosUsuarioBO.obterNome(), DadosUsuarioBO.obterCpf());
                         }
-                        KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
-                        KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
+                        KeycloakBO.getInstance().setAccessToken(response.accessToken);
+                        KeycloakBO.getInstance().setRefreshToken(response.refreshToken);
 
                         if (getAccessToken() != null) {
                             listener.successRefresh();

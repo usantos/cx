@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorAlteracaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutenticacaoDTO;
@@ -57,7 +58,7 @@ public class DadosUsuarioBO extends BaseBO {
         queryParams.put("meioPagamento", meioPagamento);
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         GsonRequest request = silceConnection.buildGetRequest(ServerMethods.LIST_CARTOES_PATH, queryParams, ListCartaoDTOResponse.class,
                 listener.getSilceListener(),
@@ -84,7 +85,7 @@ public class DadosUsuarioBO extends BaseBO {
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         GsonRequest request = silceConnection.buildPostRequest(ServerMethods.SAIR_PATH, queryParams,
                 null, NetworkResponse.class,
@@ -98,7 +99,7 @@ public class DadosUsuarioBO extends BaseBO {
 
     public void gravarUsuario(CadastrarApostadorDTO apostadorDTO, @NonNull final RequestListener<ApostadorDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.GRAVAR_USUARIO_PATH, new LinkedHashMap<>(),
                 apostadorDTO,
@@ -243,7 +244,7 @@ public class DadosUsuarioBO extends BaseBO {
 
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         GsonRequest request = silceConnection.buildPostRequest(ServerMethods.USUARIOS_RECALCULAR_LIMITE_AUTORIZADO_PATH, queryParams,
                 null, ApostadorDTOResponse.class,
@@ -259,7 +260,7 @@ public class DadosUsuarioBO extends BaseBO {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
 
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         GsonRequest request = silceConnection.buildGetRequest(ServerMethods.USUARIOS_RECUPERAR_DADOS_PATH, queryParams, ApostadorDTOResponse.class,
                 listener.getSilceListener(),
@@ -271,7 +272,7 @@ public class DadosUsuarioBO extends BaseBO {
 
     public void putDadosUsuario(ApostadorAlteracaoDTO apostadorAlteracaoDTO, final RequestListener<CadastrarApostadorDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         final GsonRequest request = silceConnection.buildPutRequest(ServerMethods.USUARIOS_PATH, new LinkedHashMap<>(),
                 apostadorAlteracaoDTO, CadastrarApostadorDTOResponse.class,
@@ -284,7 +285,7 @@ public class DadosUsuarioBO extends BaseBO {
 
     public void postVerificarCadastro(final List<IdentificaoDeUmaApostaDas8Modalidades> listaApostas, final RequestListener<UsuarioLogadoResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         AutenticacaoDTO autenticacaoDTO = new AutenticacaoDTO();
         autenticacaoDTO.setApostas(listaApostas);
@@ -299,7 +300,7 @@ public class DadosUsuarioBO extends BaseBO {
 
     public void putLerNotificacao(final RequestListener<RetornoPadraoDTO> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         final GsonRequest request = silceConnection.buildPutRequest(
                 ServerMethods.LER_NOTIFICACAO.replace("{idNotificacao}", UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getId().toString()),
@@ -317,7 +318,7 @@ public class DadosUsuarioBO extends BaseBO {
         queryParams.put("meioPagamento", meioPagamento);
 
         HashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
         GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH + idCartao, queryParams, ListCartaoDTOResponse.class,
                                                                  listener.getSilceListener(), listener.getErrorListener(), headers);
 

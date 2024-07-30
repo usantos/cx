@@ -34,7 +34,6 @@ import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTO;
@@ -90,7 +89,7 @@ public class CadastrarActivity extends CadastroActivity {
             cadastrarApostadorDTO.setApostas(apostas);
         }
 
-        KeycloakBO keycloakBO = KeycloakBO_.getInstance_( CadastrarActivity.this );
+        KeycloakBO keycloakBO = KeycloakBO.getInstance();
         String acessToken = keycloakBO.getAccessToken();
         try {
             atualizaLayout(Utils.decodedToken( acessToken ));

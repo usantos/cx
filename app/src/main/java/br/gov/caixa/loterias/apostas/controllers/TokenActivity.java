@@ -28,7 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -137,8 +137,8 @@ public class TokenActivity extends AppCompatActivity {
             if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
                 DadosBiometriaBO.salvarBiometria(response.refreshToken, jsonObject.getString(getResources().getString(R.string.name)), cpf);
             }
-            KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
-            KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
+            KeycloakBO.getInstance().setAccessToken(response.accessToken);
+            KeycloakBO.getInstance().setRefreshToken(response.refreshToken);
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_login_sucesso));
         } catch (JSONException e) {
             e.printStackTrace();

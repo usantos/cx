@@ -37,7 +37,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -106,7 +106,7 @@ public class LoginFragment extends Fragment {
         Button buttonAposte = v.findViewById(R.id.buttonAposteAgora);
         buttonAposte.setOnClickListener(v1 -> {
             AppCenterManager.registraEvento("ENTROU_OPCAO_DEGUSTAR");
-            KeycloakBO_.getInstance_(getActivity()).limparSessao(getActivity());
+            KeycloakBO.getInstance().limparSessao(getActivity());
 
             DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
             startActivity(new Intent(getContext(), PrincipalActivity_.class));
