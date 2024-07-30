@@ -384,6 +384,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
+            android:name=".controllers.DetalheDuvidaActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".controllers.DetalheDuvidaActivity_"
             android:screenOrientation="portrait" />
         <activity

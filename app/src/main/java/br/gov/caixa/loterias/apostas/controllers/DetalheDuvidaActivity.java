@@ -10,12 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
-import org.androidannotations.api.view.OnViewChangedNotifier;
-
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -31,29 +25,40 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheDuvidaAdap
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-@EActivity(R.layout.activity_detalhe_duvida)
+//@EActivity(R.layout.activity_detalhe_duvida)
 public class DetalheDuvidaActivity extends AppCompatActivity {
 
-    @ViewById
+    public final static String SECAO_DTO_EXTRA = "secaoDTO";
+
+    //@ViewById
     ExpandableHeightRecyclerView recyclerViewDetalhesDuvida;
 
-    //private ExpandableHeightRecyclerView recyclerViewDetalhesDuvida;
-
-    @Extra
+    //@Extra
     ListSecaoDTO secaoDTO;
 
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_detalhe_duvida);
-//
-//        setViews();
-//        init();
-//    }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //OnViewChangedNotifier.replaceNotifier(previousNotifier);
+        setContentView(R.layout.activity_detalhe_duvida);
+
+        init();
+    }
 
     //@AfterViews
     public void init() {
+        getExtras();
+        setViews();
         callWebservice();
         createToolBar();
+    }
+
+    private void getExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey(SECAO_DTO_EXTRA)) {
+                this.secaoDTO = ((ListSecaoDTO) bundle.getSerializable(SECAO_DTO_EXTRA));
+            }
+        }
     }
 
     private void setViews() {

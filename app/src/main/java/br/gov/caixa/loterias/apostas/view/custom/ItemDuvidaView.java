@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,9 +15,12 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.Serializable;
+
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.DetalheDuvidaActivity_;
+import br.gov.caixa.loterias.apostas.controllers.DetalheDuvidaActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTO;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 
 /**
  * Created by joafilho on 15/02/2018.
@@ -65,6 +70,14 @@ public class ItemDuvidaView extends LinearLayout {
 
     @Click(R.id.itemDuvida)
     public void clickItemDuvida() {
-        DetalheDuvidaActivity_.intent(getContext()).secaoDTO(listSecaoDTO).start();
+        //DetalheDuvidaActivity_.intent(getContext()).secaoDTO(listSecaoDTO).start();
+
+        Intent intent = IntentUtil.getIntentOrigemDestino((Activity) getContext(), DetalheDuvidaActivity.class);
+        intent.putExtra(DetalheDuvidaActivity.SECAO_DTO_EXTRA, ((Serializable) listSecaoDTO));
+        ((Activity) getContext()).startActivity(intent);
+
+//        Intent intent = new Intent(getContext(), DetalheDuvidaActivity.class);
+//        intent.putExtra(DetalheDuvidaActivity.SECAO_DTO_EXTRA, ((Serializable) listSecaoDTO));
+//        getContext().startActivity(intent);
     }
 }

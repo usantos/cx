@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,6 +30,8 @@ public class ItemDuvidaAdapter extends RecyclerView.Adapter<ItemDuvidaAdapter.It
     public ItemDuvidaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         ItemDuvidaView view = ItemDuvidaView_.build(parent.getContext());
+        //View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_duvida, null);
+
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
         return new ItemDuvidaViewHolder(view);
