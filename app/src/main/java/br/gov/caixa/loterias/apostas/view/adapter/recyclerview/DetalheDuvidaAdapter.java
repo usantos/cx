@@ -10,9 +10,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DuvidaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTO;
-import br.gov.caixa.loterias.apostas.view.custom.ItemDuvidaDetalheView;
-import br.gov.caixa.loterias.apostas.view.custom.ItemDuvidaDetalheView_;
 import br.gov.caixa.loterias.apostas.view.holder.DetalheDuvidaHolder;
 
 

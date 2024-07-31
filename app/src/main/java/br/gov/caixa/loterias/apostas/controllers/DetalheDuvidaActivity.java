@@ -25,16 +25,12 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheDuvidaAdap
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-//@EActivity(R.layout.activity_detalhe_duvida)
 public class DetalheDuvidaActivity extends AppCompatActivity {
 
     public final static String SECAO_DTO_EXTRA = "secaoDTO";
 
-    //@ViewById
-    ExpandableHeightRecyclerView recyclerViewDetalhesDuvida;
-
-    //@Extra
-    ListSecaoDTO secaoDTO;
+    private ExpandableHeightRecyclerView recyclerViewDetalhesDuvida;
+    private ListSecaoDTO secaoDTO;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +40,6 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
         init();
     }
 
-    //@AfterViews
     public void init() {
         getExtras();
         setViews();
