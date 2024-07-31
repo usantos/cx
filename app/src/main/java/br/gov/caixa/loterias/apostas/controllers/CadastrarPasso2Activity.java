@@ -34,7 +34,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTO;
@@ -203,8 +202,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
 
     private void buscarLotericasHabilitadas() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
-        dadosCorporativosBO.buscarLotericasHabilitadas(new RequestListener<ListDTOEnumIntegerResponse>() {
+        DadosCorporativosBO.getInstance().buscarLotericasHabilitadas(new RequestListener<ListDTOEnumIntegerResponse>() {
             @Override
             public void onResponse(ListDTOEnumIntegerResponse response) {
                 loadViewProgress.dismiss();
@@ -240,8 +238,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     private void buscarLoteriasLocalizacaoCep(String cep, BairroDTO bairroDTO) {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
-        dadosCorporativosBO.buscarLotericasCepOrBairroDTO(cep, bairroDTO, new RequestListener<LotericaDTOResponse>() {
+        DadosCorporativosBO.getInstance().buscarLotericasCepOrBairroDTO(cep, bairroDTO, new RequestListener<LotericaDTOResponse>() {
             @Override
             public void onResponse(LotericaDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -267,8 +264,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
     private void buscarLoteriasCodigoCompleto() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
-        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
-        dadosCorporativosBO.buscarLoteriasCodigoCompleto(editTextCodigoLotericaPasso2Content.getText().toString(), new RequestListener<LotericaCodigoWrapperResponse>() {
+        DadosCorporativosBO.getInstance().buscarLoteriasCodigoCompleto(editTextCodigoLotericaPasso2Content.getText().toString(), new RequestListener<LotericaCodigoWrapperResponse>() {
             @Override
             public void onResponse(LotericaCodigoWrapperResponse response) {
                 loadViewProgress.dismiss();
@@ -300,8 +296,7 @@ public class CadastrarPasso2Activity extends CadastroActivity {
             listBairros = new ArrayList<>();
             final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
-            DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarPasso2Activity.this);
-            dadosCorporativosBO.bairros(municipioIdDTOLoteria.getIdUF().toString(), municipioIdDTOLoteria.getNumero().toString(),
+            DadosCorporativosBO.getInstance().bairros(municipioIdDTOLoteria.getIdUF().toString(), municipioIdDTOLoteria.getNumero().toString(),
                     municipioIdDTOLoteria.getDigitoVerificador().toString(), null, new RequestListener<BairroDTOResponse>() {
                         @Override
                         public void onResponse(BairroDTOResponse response) {

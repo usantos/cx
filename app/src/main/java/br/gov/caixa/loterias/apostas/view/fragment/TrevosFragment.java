@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -167,7 +167,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     }
 
     private void validarApostaFav(ApostaFavoritaDTO apostaFavorita) {
-        DadosCorporativosBO_.getInstance_(getContext()).validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
+        DadosCorporativosBO.getInstance().validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 salvarAposta(apostaFavorita);
@@ -195,7 +195,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         if(!AlertDialogUtils.isShow()){
             AlertDialogUtils.show(getContext());
         }
-        DadosCorporativosBO_.getInstance_(getContext()).salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
+        DadosCorporativosBO.getInstance().salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));

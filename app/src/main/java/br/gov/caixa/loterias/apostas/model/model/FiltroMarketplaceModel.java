@@ -9,7 +9,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
@@ -32,8 +31,7 @@ public class FiltroMarketplaceModel extends AppModel{
 	}
 
 	public void buscaLotericas(String text, OnSilceListener<List<LotericaDTO>> listener) {
-		DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getActivity());
-		dadosCorporativosBO.buscarLoteriasNomeCodigo(text, new RequestListener<LotericaDTOResponse>() {
+		DadosCorporativosBO.getInstance().buscarLoteriasNomeCodigo(text, new RequestListener<LotericaDTOResponse>() {
 			@Override
 			public void onResponse(LotericaDTOResponse response) {
 				if (response.getPayload() == null){

@@ -7,37 +7,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
 
-import java.util.List;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TermoDeUsoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ItemDuvidaAdapter;
-import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
 public class TermosAceiteActivity extends AppCompatActivity {
 
@@ -112,9 +96,7 @@ public class TermosAceiteActivity extends AppCompatActivity {
 
     private void getTermo() {
         AlertDialogUtils.show(this);
-        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosAceiteActivity.this);
-
-        dadosCorporativosBO.termo(new RequestListener<TermoDeUsoDTOResponse>() {
+        DadosCorporativosBO.getInstance().termo(new RequestListener<TermoDeUsoDTOResponse>() {
             @Override
             public void onResponse(TermoDeUsoDTOResponse response) {
                 AlertDialogUtils.dismiss();

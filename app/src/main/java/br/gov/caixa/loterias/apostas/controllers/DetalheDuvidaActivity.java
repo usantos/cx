@@ -18,7 +18,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DuvidaDTO;
@@ -47,9 +46,7 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
     private void callWebservice() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
-
-        dadosCorporativosBO.duvidasPerguntasRespostas(secaoDTO.getId(), new RequestListener<ListSecaoDTOResponse>() {
+        DadosCorporativosBO.getInstance().duvidasPerguntasRespostas(secaoDTO.getId(), new RequestListener<ListSecaoDTOResponse>() {
             @Override
             public void onResponse(ListSecaoDTOResponse response) {
                 List<ListSecaoDTO> secaoDTOList = response.getPayload();

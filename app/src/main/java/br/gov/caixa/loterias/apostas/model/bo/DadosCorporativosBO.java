@@ -1,8 +1,6 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
 import com.android.volley.NetworkResponse;
-
-import org.androidannotations.annotations.EBean;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
@@ -25,14 +23,21 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TermoDeUsoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 
-import static org.androidannotations.annotations.EBean.Scope.Singleton;
-
 /**
  * Created by igorvilar on 10/11/17.
  */
 
-@EBean(scope = Singleton)
 public class DadosCorporativosBO extends BaseBO{
+    private static DadosCorporativosBO instance;
+
+    private DadosCorporativosBO(){}
+
+    public static DadosCorporativosBO getInstance(){
+        if (instance == null){
+            instance = new DadosCorporativosBO();
+        }
+        return instance;
+    }
 
     public void ufs(final RequestListener<UnidadeFederacaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
@@ -179,20 +184,6 @@ public class DadosCorporativosBO extends BaseBO{
                             listener.getSilceListener(),
                             listener.getErrorListener(),
                             new LinkedHashMap<>(), listener);
-    }
-
-    public void buscarLoteriasNomeFantasia(String nomeFantasia, final RequestListener<LotericaDTOResponse> listener) {
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        queryParams.put("nomeFantasia", nomeFantasia);
-
-        GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.LOTERICAS_NOME_FANTASIA_PATH,
-                queryParams,
-                LotericaDTOResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
     }
 
     public void buscarLoteriasNomeCodigo(String nomeCodigo, final RequestListener<LotericaDTOResponse> listener) {

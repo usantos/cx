@@ -67,7 +67,6 @@ import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -316,8 +315,6 @@ public class PrincipalActivity extends AppCompatActivity
         AlertDialogUtils.show(PrincipalActivity.this);
 
         if(SessaoUsuarioUtil.precisaAtualizar()){
-            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
-
             new ParametrosSimulacaoModel(PrincipalActivity.this)
                     .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
                         @Override
@@ -423,8 +420,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void callRepassesSociais() {
         AlertDialogUtils.show(PrincipalActivity.this);
-        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
-        dadosCorporativosBO.repasses(new RequestListener<RepassometroDTOResponse>() {
+        DadosCorporativosBO.getInstance().repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 repassesSociais = response.getPayload();
@@ -1000,6 +996,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case ZXING_CAMERA_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
