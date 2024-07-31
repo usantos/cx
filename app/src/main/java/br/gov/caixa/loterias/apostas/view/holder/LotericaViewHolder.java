@@ -36,7 +36,7 @@ public class LotericaViewHolder extends LoteriasHolder<LotericaDTO> {
 
 	@Override
 	public void bind(LotericaDTO item, int position) {
-		textView.setText(mioloCodigoLoterica(item.getCodigo()) + " - " +item.getNome().trim());
+		textView.setText(mioloCodigoLoterica(item.getCodigo()) + " - " +item.getNomeFantasia().trim());
 	}
 
 	private String mioloCodigoLoterica(String codigoLoterico) {
