@@ -364,7 +364,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".controllers.ResultadoLerBilhetesActivity_"
+            android:name=".controllers.ResultadoLerBilhetesActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
@@ -385,9 +385,6 @@
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.DetalheDuvidaActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".controllers.DetalheDuvidaActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".controllers.MinhasApostasActivity_"

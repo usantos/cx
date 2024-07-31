@@ -34,7 +34,6 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //OnViewChangedNotifier.replaceNotifier(previousNotifier);
         setContentView(R.layout.activity_detalhe_duvida);
 
         init();
