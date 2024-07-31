@@ -61,10 +61,10 @@ public class AcessoBO extends BaseBO {
     private PendingIntent getPendingIntent(Intent intent) {
         PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            pendingIntent = PendingIntent.getActivity(context,
+            pendingIntent = PendingIntent.getActivity(getContext(),
                                                       0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         } else {
-            pendingIntent = PendingIntent.getActivity(context,
+            pendingIntent = PendingIntent.getActivity(getContext(),
                                                       0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
         return pendingIntent;
@@ -121,11 +121,11 @@ public class AcessoBO extends BaseBO {
 
         String path = ServerMethods.APP_VERSAO_ATUALIZACAO_PATH.replace("{versao-app}", String.valueOf( versao ));
 
-        GsonRequest request = silceConnection.buildGetRequest(path, queryParams, VersionResponse.class,
+        GsonRequest request = getSilceConnection().buildGetRequest(path, queryParams, VersionResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        silceConnection.request(request, listener);
+        getSilceConnection().request(request, listener);
     }
 }

@@ -12,10 +12,6 @@ import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -28,6 +24,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSilceSi
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
@@ -36,17 +33,23 @@ import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
  * Created by pmotta on 21/03/2018.
  */
 
-@EBean
-public class BaseBO {
-    protected SilceConnection silceConnection;
-    @RootContext
-    protected Context context;
+public abstract class BaseBO {
+    private SilceConnection silceConnection;
+    private Context context;
 
     private static LinkedHashMap<String, String> header;
 
-    @AfterInject
-    protected void init(){
+    public BaseBO(){
         silceConnection = SilceConnection.create(SilceSingleton.getInstance().getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+        context = Aplicacao.application.getApplicationContext();
+    }
+
+    public SilceConnection getSilceConnection(){
+        return this.silceConnection;
+    }
+
+    public Context getContext(){
+        return this.context;
     }
 
     protected <T> Response.ErrorListener interceptError(final GsonRequest request, final Map<String, String> headers, final RequestListener<T> listener){
@@ -112,7 +115,6 @@ public class BaseBO {
             }
         };
     }
-
 
     private void registraErro(VolleyError error, GsonRequest request){
         ErrorResponse   errorResponse = transformaErroEmErrorResponse(error);
