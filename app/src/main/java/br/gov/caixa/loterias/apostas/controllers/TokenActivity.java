@@ -22,7 +22,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
-import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
@@ -59,7 +58,7 @@ public class TokenActivity extends AppCompatActivity {
                 authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), (response, ex) -> {
                     if (response != null) {
                         if (response.accessToken == null || response.refreshToken == null) {
-                            AcessoBO_.getInstance_(TokenActivity.this).iniciarLoginSSO(TokenActivity.this);
+                            AcessoBO.getInstance().iniciarLoginSSO(TokenActivity.this);
                         } else {
                             if (conseguiuLogar(response)) {
                                 LoginSP.loginRealizado(true);

@@ -13,30 +13,33 @@ import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.ResponseTypeValues;
 
-import org.androidannotations.annotations.EBean;
-
 import java.util.LinkedHashMap;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 
-import static org.androidannotations.annotations.EBean.Scope.Singleton;
-
-@EBean(scope = Singleton)
 public class AcessoBO extends BaseBO {
-
     private static String OPENID  = "openid";
     private static String PROFILE = "profile";
     private static String OFFLINE = "offline_access";
 
     public static Boolean PRIMEIRO_LOGIN = false;
-    AuthorizationService authorizationService;
+    private static AcessoBO instance;
+    private AuthorizationService authorizationService;
+
+    private AcessoBO(){}
+
+    public static AcessoBO getInstance(){
+        if (instance == null){
+            instance = new AcessoBO();
+        }
+        return instance;
+    }
 
     public void iniciarLoginSSO(Activity activity){
         if(activity != null) {
