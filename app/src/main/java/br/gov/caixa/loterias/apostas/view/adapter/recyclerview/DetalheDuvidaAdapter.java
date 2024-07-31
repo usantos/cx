@@ -1,12 +1,16 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DuvidaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTO;
 import br.gov.caixa.loterias.apostas.view.custom.ItemDuvidaDetalheView;
 import br.gov.caixa.loterias.apostas.view.custom.ItemDuvidaDetalheView_;
 import br.gov.caixa.loterias.apostas.view.holder.DetalheDuvidaHolder;
@@ -28,7 +32,9 @@ public class DetalheDuvidaAdapter extends RecyclerView.Adapter<DetalheDuvidaHold
     @Override
     public DetalheDuvidaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        ItemDuvidaDetalheView view = ItemDuvidaDetalheView_.build(parent.getContext());
+        //ItemDuvidaDetalheView view = ItemDuvidaDetalheView_.build(parent.getContext());
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_duvida_detalhe, parent, false);
+
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 
