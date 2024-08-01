@@ -421,6 +421,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/button_white_with_rouded_black_border"
+                android:hint="@string/nome_ou_codigo"
+                android:textColorHint="@color/bolao_hint"
                 android:paddingStart="8dp"
                 android:inputType="text"
                 android:textSize="16sp"
