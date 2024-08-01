@@ -428,7 +428,7 @@
             android:name=".controllers.ResultadoApostaConfirmadaActivity_"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait" />
-        <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity_" />
+        <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity" />
         <activity
             android:name=".controllers.DadosPessoaisActivity"
             android:label="@string/title_activity_dados_pessoais"

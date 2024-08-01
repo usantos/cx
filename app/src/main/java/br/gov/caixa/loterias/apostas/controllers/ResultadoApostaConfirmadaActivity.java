@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
@@ -23,6 +24,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -40,6 +42,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
@@ -195,7 +198,13 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                     it.putExtra(CODIGO_RESGATE, result.getPayload());
                     startActivity(new Intent(it));
                 }else {
-                    ResgatePremioLotericaAgenciaActivity_.intent(getContext()).codigoResgateDTO(result.getPayload()).isLoterica(isLoterica).detalhesPremioDTO(detalhesPremioDTO).comprovante(comprovante).start();
+                    //ResgatePremioLotericaAgenciaActivity_.intent(getContext()).codigoResgateDTO(result.getPayload()).isLoterica(isLoterica).detalhesPremioDTO(detalhesPremioDTO).comprovante(comprovante).start();
+                    Intent intent = IntentUtil.getIntentOrigemDestino((Activity) getContext(), ResgatePremioLotericaAgenciaActivity.class);
+                    intent.putExtra(ResgatePremioLotericaAgenciaActivity.CODIGO_RESGATE_DTO_EXTRA, ((Serializable) result.getPayload()));
+                    intent.putExtra(ResgatePremioLotericaAgenciaActivity.IS_LOTERICA_EXTRA, ((Serializable) isLoterica));
+                    intent.putExtra(ResgatePremioLotericaAgenciaActivity.DETALHES_PREMIO_DTO_EXTRA, ((Serializable) detalhesPremioDTO));
+                    intent.putExtra(ResgatePremioLotericaAgenciaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovante));
+                    ((Activity) getContext()).startActivity(intent);
                 }
 
             }

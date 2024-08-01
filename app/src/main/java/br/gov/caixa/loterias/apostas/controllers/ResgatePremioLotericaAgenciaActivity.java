@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.api.view.OnViewChangedNotifier;
 import org.apache.commons.lang.StringUtils;
 
 import androidmads.library.qrgenearator.QRGContents;
@@ -27,44 +29,69 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
-@EActivity(R.layout.activity_resgate_premio_loterica_agencia)
 public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity {
 
-    @ViewById
-    protected TextView categoriaText, informacaoTopicoUmText, informacaoTopicoDoisText, informacaoTopicoTresText, duploResgateText;
+    public final static String CODIGO_RESGATE_DTO_EXTRA = "codigoResgateDTO";
+    public final static String NSBI_EXTRA = "nsbi";
+    public final static String IS_LOTERICA_EXTRA = "isLoterica";
+    public final static String COMPROVANTE_EXTRA = "comprovante";
+    public final static String DETALHES_PREMIO_DTO_EXTRA = "detalhesPremioDTO";
 
-    @ViewById
-    protected ImageView qrCodeApostaImage;
+    private TextView categoriaText, informacaoTopicoUmText, informacaoTopicoDoisText, informacaoTopicoTresText, duploResgateText;
+    private ImageView qrCodeApostaImage;
+    private RelativeLayout duploResgateRelativeLayout, categoriaLayout;
+    private Button buttonGerarPDF;
+    private CodigoResgateDTO codigoResgateDTO;
+    private String nsbi;
+    private Boolean isLoterica;
+    private ComprovanteApostaDTO comprovante;
+    private DetalhesPremioDTO detalhesPremioDTO;
+    private PdfUtils pdfUtils;
 
-    @ViewById
-    protected RelativeLayout duploResgateRelativeLayout, categoriaLayout;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_resgate_premio_loterica_agencia);
+        init();
+    }
 
-    @ViewById
-    protected Button buttonGerarPDF;
-
-    @Extra
-    protected CodigoResgateDTO codigoResgateDTO;
-
-    @Extra
-    protected String nsbi;
-
-    @Extra
-    protected Boolean isLoterica;
-
-    @Extra
-    protected ComprovanteApostaDTO comprovante;
-
-    @Extra
-    protected DetalhesPremioDTO detalhesPremioDTO;
-
-    @Bean
-    protected PdfUtils pdfUtils;
-
-    @AfterViews
     protected void init() {
+        getExtras();
+        setViews();
         atualizaLayout(isLoterica);
-
         adicionarListeners();
+    }
+
+    private void getExtras() {
+        Bundle extras_ = getIntent().getExtras();
+        if (extras_!= null) {
+            if (extras_.containsKey(CODIGO_RESGATE_DTO_EXTRA)) {
+                this.codigoResgateDTO = ((CodigoResgateDTO) extras_.getSerializable(CODIGO_RESGATE_DTO_EXTRA));
+            }
+            if (extras_.containsKey(NSBI_EXTRA)) {
+                this.nsbi = extras_.getString(NSBI_EXTRA);
+            }
+            if (extras_.containsKey(IS_LOTERICA_EXTRA)) {
+                this.isLoterica = ((Boolean) extras_.getSerializable(IS_LOTERICA_EXTRA));
+            }
+            if (extras_.containsKey(COMPROVANTE_EXTRA)) {
+                this.comprovante = ((ComprovanteApostaDTO) extras_.getSerializable(COMPROVANTE_EXTRA));
+            }
+            if (extras_.containsKey(DETALHES_PREMIO_DTO_EXTRA)) {
+                this.detalhesPremioDTO = ((DetalhesPremioDTO) extras_.getSerializable(DETALHES_PREMIO_DTO_EXTRA));
+            }
+        }
+    }
+
+    private void setViews() {
+        this.categoriaText = findViewById(R.id.categoriaText);
+        this.informacaoTopicoUmText = findViewById(R.id.informacaoTopicoUmText);
+        this.informacaoTopicoDoisText = findViewById(R.id.informacaoTopicoDoisText);
+        this.informacaoTopicoTresText = findViewById(R.id.informacaoTopicoTresText);
+        this.duploResgateText = findViewById(R.id.duploResgateText);
+        this.qrCodeApostaImage = findViewById(R.id.qrCodeApostaImage);
+        this.duploResgateRelativeLayout = findViewById(R.id.duploResgateRelativeLayout);
+        this.categoriaLayout = findViewById(R.id.categoriaLayout);
+        this.buttonGerarPDF = findViewById(R.id.buttonGerarPDF);
     }
 
     private void atualizaLayout(Boolean isLoterica) {
