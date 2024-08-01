@@ -94,7 +94,6 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
@@ -838,7 +837,7 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(new Intent(PrincipalActivity.this, AlterarDadosLoginCaixaActivity.class));
                 break;*/
             case 1:
-                startActivity(new Intent(PrincipalActivity.this, MinhasApostasActivity_.class));
+                startActivity(new Intent(PrincipalActivity.this, MinhasApostasActivity.class));
                 break;
             case 2:
                 startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));

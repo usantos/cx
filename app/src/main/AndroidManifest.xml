@@ -387,7 +387,7 @@
             android:name=".controllers.DetalheDuvidaActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controllers.MinhasApostasActivity_"
+            android:name=".controllers.MinhasApostasActivity"
             android:label="@string/title_activity_minhas_apostas"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
