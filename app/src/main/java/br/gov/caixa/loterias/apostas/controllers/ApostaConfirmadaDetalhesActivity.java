@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -70,6 +71,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -676,7 +678,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                apresentaBySituacao(aposta.getSituacao());
+                //** Estava duplicando ** apresentaBySituacao(aposta.getSituacao());
             }
         });
     }
@@ -747,7 +749,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 if (numerosFragment != null){
                     numerosFragment.setDetalhesPremio(result.getPayload());
                 }
-                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
+                //ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
+                Intent intent = IntentUtil.getIntentOrigemDestino((Activity) contextParam, ResultadoApostaConfirmadaActivity.class);
+                intent.putExtra(ResultadoApostaConfirmadaActivity.DETALHES_PREMIO_DTO_EXTRA, ((Serializable) result.getPayload()));
+                intent.putExtra(ResultadoApostaConfirmadaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovante));
+                ((Activity) contextParam).startActivityForResult(intent, RESGATOU_MP);
             }
 
             @Override

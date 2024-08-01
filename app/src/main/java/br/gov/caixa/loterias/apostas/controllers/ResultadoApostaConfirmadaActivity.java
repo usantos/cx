@@ -3,9 +3,10 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
 import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,13 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -31,6 +25,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.ResgatePixActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
@@ -53,45 +48,44 @@ import br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-@EActivity(R.layout.activity_resultado_aposta_confirmada)
 public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
+
+    public final static String DETALHES_PREMIO_DTO_EXTRA = "detalhesPremioDTO";
+    public final static String COMPROVANTE_EXTRA = "comprovante";
 
     public static String DETALHES = "DETALHES";
     public static String COMPROVANTE = "COMPROVANTE";
     public static String CODIGO_RESGATE = "CODIGO_RESGATE";
     public static int RESGATOU_MERCADO_PAGO = 200;
-    @Bean
-    protected ApostaBO apostaBO;
 
-    @ViewById
-    protected Toolbar toolbar;
+    private ApostaBO apostaBO = ApostaBO_.getInstance_(this);
+    private Toolbar toolbar;
+    private ContentResultadoPremiado contentResultadoPremiado;
+    private RelativeLayout lotericaLayout, agenciaCaixaLayout, mercadoPagoLayout, pixLayout;
+    private TextView mercadoPagoText, agenciaCaixaText, lotericaText;
+    private ConstraintLayout constraintLayoutPix, constraintAvisoResgate;
+    private DetalhesPremioDTO detalhesPremioDTO;
 
-    @ViewById
-    protected ContentResultadoPremiado contentResultadoPremiado;
-
-    @ViewById
-    protected RelativeLayout lotericaLayout, agenciaCaixaLayout, mercadoPagoLayout, pixLayout;
-
-    @ViewById
-    protected TextView mercadoPagoText, agenciaCaixaText, lotericaText;
-
-    @ViewById
-    protected ConstraintLayout constraintLayoutPix, constraintAvisoResgate;
-
-    @Extra
-    protected DetalhesPremioDTO detalhesPremioDTO;
+    private Button botaoAposteAgora;
 
     private AlertDialog alertDialog;
 
     ModalidadeEnum modalidadeEnum;
 
-    @Extra
     protected ComprovanteApostaDTO comprovante;
     private EstiloModalidade estiloModalidade;
     private EstiloModalidadeMKP estiloModalidadeMKP;
 
-    @AfterViews
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_resultado_aposta_confirmada);
+        init();
+    }
+
     protected void init() {
+        getExtras();
+        setViews();
+
         createToolBar();
 
         modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
@@ -177,7 +171,68 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         setResult(RESULT_FIRST_USER);
     }
 
-    @Click(R.id.lotericaLayout)
+    private void getExtras() {
+        Bundle extras_ = getIntent().getExtras();
+        if (extras_!= null) {
+            if (extras_.containsKey(DETALHES_PREMIO_DTO_EXTRA)) {
+                this.detalhesPremioDTO = ((DetalhesPremioDTO) extras_.getSerializable(DETALHES_PREMIO_DTO_EXTRA));
+            }
+            if (extras_.containsKey(COMPROVANTE_EXTRA)) {
+                this.comprovante = ((ComprovanteApostaDTO) extras_.getSerializable(COMPROVANTE_EXTRA));
+            }
+        }
+    }
+
+    private void setViews() {
+        this.toolbar = findViewById(R.id.toolbar);
+        this.contentResultadoPremiado = findViewById(R.id.contentResultadoPremiado);
+        this.lotericaLayout = findViewById(R.id.lotericaLayout);
+        this.agenciaCaixaLayout = findViewById(R.id.agenciaCaixaLayout);
+        this.mercadoPagoLayout = findViewById(R.id.mercadoPagoLayout);
+        this.pixLayout = findViewById(R.id.pixLayout);
+        this.mercadoPagoText = findViewById(R.id.mercadoPagoText);
+        this.agenciaCaixaText = findViewById(R.id.agenciaCaixaText);
+        this.lotericaText = findViewById(R.id.lotericaText);
+        this.constraintLayoutPix = findViewById(R.id.constraintLayoutPix);
+        this.constraintAvisoResgate = findViewById(R.id.constraintAvisoResgate);
+        this.botaoAposteAgora = findViewById(R.id.botaoAposteAgora);
+
+        lotericaLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickLotericaLayout();
+            }
+        });
+
+        botaoAposteAgora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickBotaoAposteAgora();
+            }
+        });
+
+        agenciaCaixaLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickAgenciaCaixaLayout();
+            }
+        });
+
+        pixLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickPixLayout();
+            }
+        });
+
+        mercadoPagoLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickMercadoPagoLayout();
+            }
+        });
+    }
+
     protected void clickLotericaLayout() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             lotericaText.setBackgroundColor(getColor(R.color.azul_botao_pix));
@@ -222,7 +277,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         constraintAvisoResgate.setVisibility(View.VISIBLE);
     }
 
-    @Click(R.id.botaoAposteAgora)
     protected void clickBotaoAposteAgora() {
 
         Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, PrincipalActivity_.class);
@@ -231,7 +285,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         startActivity(it);
     }
 
-    @Click(R.id.agenciaCaixaLayout)
     protected void clickAgenciaCaixaLayout() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             agenciaCaixaText.setBackgroundColor(getColor(R.color.azul_botao_pix));
@@ -239,7 +292,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         apresentaOrientacoesResgate(false);
     }
 
-    @Click(R.id.pixLayout)
     protected void clickPixLayout() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             constraintLayoutPix.setBackgroundColor(getColor(R.color.azul_botao_pix));
@@ -248,7 +300,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         startActivity(intent);
     }
 
-    @Click(R.id.mercadoPagoLayout)
     protected void clickMercadoPagoLayout() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mercadoPagoText.setBackgroundColor(getColor(R.color.azul_botao_pix));
