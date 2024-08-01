@@ -422,10 +422,16 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void editarApostaBtn() {
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
-            SimularApostaActivity_.intent(this).aposta(aposta)
-                                  .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
-                                  .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
-                                  .start();
+            //SimularApostaActivity_.intent(this).aposta(aposta)
+            // .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
+            // .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
+            // .start();
+
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
+            intent.putExtra(SimularApostaActivity.APOSTA_EXTRA, ((Serializable) aposta));
+            intent.putExtra("tipoAposta", ((Serializable) aposta.getModalidade()));
+            intent.putExtra("modalidade", ((Serializable) (new Gson()).toJson(parametroSimulacao.getParametroJogo())));
+            startActivity(intent);
         }
     }
 

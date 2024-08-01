@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity_;
+import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
@@ -63,7 +63,7 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 			DadosUsuarioBO.updateTutorial(naoVerNovamente, DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL);
 		}
 
-		Intent activity = new Intent(TutorialMaisMilionariaActivity.this, SimularApostaActivity_.class);
+		Intent activity = new Intent(TutorialMaisMilionariaActivity.this, SimularApostaActivity.class);
 		activity.putExtra(getString(R.string.extra_tipo_aposta), modalidade);
 		activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
 		activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));

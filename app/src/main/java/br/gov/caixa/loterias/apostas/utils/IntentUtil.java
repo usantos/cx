@@ -16,7 +16,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
-import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity_;
+import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
@@ -73,7 +73,7 @@ public class IntentUtil {
 			intent.putExtra(BolaoActivity.ARG_IDMODALIDADE,IdModalidade);
 			return intent;
 		} else {
-			return new Intent(activity, SimularApostaActivity_.class);
+			return new Intent(activity, SimularApostaActivity.class);
 		}
 	}
 

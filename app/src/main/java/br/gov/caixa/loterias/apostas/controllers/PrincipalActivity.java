@@ -724,7 +724,7 @@ public class PrincipalActivity extends AppCompatActivity
         } else {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_simular_aposta_modalidade) + modalidade);
 
-            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity_.class);
+            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
             activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
