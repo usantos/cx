@@ -161,7 +161,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private OnItemClickListener onItemClickListener() {
         return (holder, position) -> {
             LotericaDTO lotericaDTO = listLotericaDTO.get(position);
-            editLoterica.setText(lotericaDTO.getNome().trim());
+            editLoterica.setText(lotericaDTO.getNomeFantasia().trim());
             recyclerViewLoterica.setVisibility(View.GONE);
             selectLotericaDTO = lotericaDTO;
         };
