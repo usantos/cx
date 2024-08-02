@@ -93,7 +93,6 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
@@ -153,9 +152,6 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Bean
     protected ApostaBO apostaBO;
-
-    @Bean
-    protected DadosUsuarioBO dadosUsuarioBO;
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
@@ -389,7 +385,7 @@ public class PrincipalActivity extends AppCompatActivity
         return new OnNotificacaoListener() {
             @Override
             public void removePopup() {
-                dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
+                DadosUsuarioBO.getInstance().putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
                     @Override
                     public void onResponse(RetornoPadraoDTO result) {
                         popupNotification.dismiss();

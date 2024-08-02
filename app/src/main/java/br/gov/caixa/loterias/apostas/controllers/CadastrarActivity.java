@@ -28,7 +28,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -133,8 +132,7 @@ public class CadastrarActivity extends CadastroActivity {
             if (validarCamposObrigatorios()) {
 
                 final AlertDialog loadViewProgress = LoadingViewLoterias.show(CadastrarActivity.this);
-                DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CadastrarActivity.this);
-                dadosUsuarioBO.gravarUsuario(cadastrarApostadorDTO, new RequestListener<ApostadorDTOResponse>() {
+                DadosUsuarioBO.getInstance().gravarUsuario(cadastrarApostadorDTO, new RequestListener<ApostadorDTOResponse>() {
                     @Override
                     public void onResponse(ApostadorDTOResponse response) {
                         loadViewProgress.dismiss();

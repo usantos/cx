@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -178,9 +177,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         updateDadosPessoaisLimiteButton.setOnClickListener(view -> {
 
             AlertDialogUtils.show(DadosPessoaisActivity.this);
-            final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
-
-            dadosUsuarioBO.recalcularLimite( new RequestListener<ApostadorDTOResponse>() {
+            DadosUsuarioBO.getInstance().recalcularLimite( new RequestListener<ApostadorDTOResponse>() {
                 @Override
                 public void onResponse(ApostadorDTOResponse response) {
                     apostadorDTO = response.getPayload();
@@ -241,9 +238,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
     private void callWebservice() {
         AlertDialogUtils.show(DadosPessoaisActivity.this);
-        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
-
-        dadosUsuarioBO.getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
+        DadosUsuarioBO.getInstance().getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
             @Override
             public void onResponse(ApostadorDTOResponse response) {
                 apostadorDTO = response.getPayload();
@@ -512,9 +507,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void updateDadosCadastrais(ApostadorAlteracaoDTO apostadorAlteracaoDTO){
-        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
         AlertDialogUtils.show(DadosPessoaisActivity.this);
-        dadosUsuarioBO.putDadosUsuario(apostadorAlteracaoDTO, new RequestListener<CadastrarApostadorDTOResponse>() {
+        DadosUsuarioBO.getInstance().putDadosUsuario(apostadorAlteracaoDTO, new RequestListener<CadastrarApostadorDTOResponse>() {
             @Override
             public void onResponse(CadastrarApostadorDTOResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_edicao_cadastro_sucesso));

@@ -85,10 +85,9 @@ public class BiometriaLogin {
                 AcessoBO.PRIMEIRO_LOGIN = false;
             }
 
-            final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(activity);
             DBLoteriasCrud crud = new DBLoteriasCrud(activity);
             List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
-            dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+            DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
 
                 @Override
                 public void onResponse(UsuarioLogadoResponse response) {

@@ -33,7 +33,6 @@ import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.BiometriaLogin;
 import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
@@ -191,10 +190,9 @@ public class LoginFragment extends Fragment {
 
     private void verificarCadastroWebservice() {
         AlertDialogUtils.show(getContext());
-        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getContext());
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
         List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
-        dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+        DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
 
             @Override
             public void onResponse(UsuarioLogadoResponse response) {

@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 
 import com.android.volley.NetworkResponse;
 
-import org.androidannotations.annotations.EBean;
 import org.apache.commons.codec.binary.Base64;
 
 import java.util.HashMap;
@@ -32,17 +31,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.UsuarioCRUD;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
-import br.gov.caixa.loterias.apostas.utils.Criptografia;
-
-import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 /**
  * Created by cedesbr450 on 07/12/17.
  */
-
-@EBean(scope = Singleton)
 public class DadosUsuarioBO extends BaseBO {
-
     private static final String USUARIO_KEY = "USUARIO_KEY";
     private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
     private final static String LOGIN_SUCESSO = "LOGIN_SUCESSO";
@@ -50,8 +43,16 @@ public class DadosUsuarioBO extends BaseBO {
     public final static String MAIS_MILIONARIA_TUTORIAL = "MAIS_MILIONARIA_TUTORIAL";
     public final static String BOLAO_TUTORIAL = "BOLAO_TUTORIAL";
 
-    private static final String alphabetString = "abcdefghijklmnopqrstuvwxyz";
-    private static final String numberString = "0123456789";
+    private static DadosUsuarioBO instance;
+
+    private DadosUsuarioBO(){}
+
+    public static DadosUsuarioBO getInstance(){
+        if (instance == null){
+            instance= new DadosUsuarioBO();
+        }
+        return instance;
+    }
 
     public void cartoes(String meioPagamento, final RequestListener<ListCartaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
@@ -66,19 +67,6 @@ public class DadosUsuarioBO extends BaseBO {
 
         request.setErrorListener(interceptError(request, headers, listener));
         getSilceConnection().request(request, listener);
-    }
-
-    public void autenticar(final String email, final String senha,
-                           final RequestListener<UsuarioLogadoResponse> listener) {
-
-        AutenticacaoDTO autenticacaoDTO = new AutenticacaoDTO();
-        autenticacaoDTO.setEmail(email);
-        autenticacaoDTO.setSenha(senha);
-
-        getSilceConnection().post(ServerMethods.LOGIN_PATH, new LinkedHashMap<>(),
-                autenticacaoDTO, UsuarioLogadoResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(), new LinkedHashMap<>(), listener);
     }
 
     public void sair(final RequestListener<NetworkResponse> listener) {
@@ -227,21 +215,7 @@ public class DadosUsuarioBO extends BaseBO {
         return status;
     }
 
-    public static void updateVerificarIdade(Activity activity, Boolean status) {
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(activity.getString(R.string.key_idade), status);
-        editor.commit();
-    }
-
-    public static Boolean checarVerificarIdade(Activity activity) {
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_idade), true);
-        return status;
-    }
-
     public void recalcularLimite(final RequestListener<ApostadorDTOResponse> listener) {
-
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
@@ -326,24 +300,4 @@ public class DadosUsuarioBO extends BaseBO {
         getSilceConnection().request(request, listener);
     }
 
-    // method to show the final output on the output
-    // textView when decrypt button is clicked
-    public static String decrypt12(String cipher, int key) {
-        return (Criptografia.decrypt(cipher, key).toLowerCase());
-    }
-
-    // method to show the final output on the output
-    // textView when encrypt button is clicked
-    public static String encrypt12(String message, int shiftkey) {
-        message = message.toLowerCase();
-        String cipherText = "";
-        for (int i = 0; i < message.length(); i++) {
-            int charPosition = numberString.indexOf(message.charAt(i));
-            int keyval = (shiftkey + charPosition) % 26;
-            char replaceVAL = numberString.charAt(keyval);
-            cipherText += replaceVAL;
-        }
-        // returning the final ciphertext
-        return cipherText;
-    }
 }

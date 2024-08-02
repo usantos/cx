@@ -15,7 +15,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RecargaPayConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -48,8 +47,7 @@ public class CartoesModel extends AppModel {
 	}
 
 	public void buscaCartoesPorMeioPagamento(String meioPagamento, OnSilceListener<List<RetornoCartao>> listener) {
-		DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getActivity());
-		dadosUsuarioBO.cartoes(meioPagamento, new RequestListener<ListCartaoDTOResponse>() {
+		DadosUsuarioBO.getInstance().cartoes(meioPagamento, new RequestListener<ListCartaoDTOResponse>() {
 			@Override
 			public void onResponse(ListCartaoDTOResponse response) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_entrou_formas_pagamento));
@@ -69,7 +67,7 @@ public class CartoesModel extends AppModel {
 	}
 
 	public void deletaCartao(String idCartao, String meioPagamento, OnSilceListener<List<RetornoCartao>> listener) {
-		DadosUsuarioBO_.getInstance_(getActivity().getApplicationContext()).deleteCartao(idCartao, meioPagamento, new RequestListener<ListCartaoDTOResponse>() {
+		DadosUsuarioBO.getInstance().deleteCartao(idCartao, meioPagamento, new RequestListener<ListCartaoDTOResponse>() {
 			@Override
 			public void onResponse(ListCartaoDTOResponse result) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_efetuou_exclusao_forma_pagamento_sucesso));
@@ -252,9 +250,7 @@ public class CartoesModel extends AppModel {
 	}
 
 	public void buscaDadosPessoais(OnSilceListener<ApostadorDTO> listener) {
-		final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( getActivity() );
-
-		dadosUsuarioBO.getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
+		DadosUsuarioBO.getInstance().getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
 			@Override
 			public void onResponse(ApostadorDTOResponse response) {
 				listener.success(response.getPayload());

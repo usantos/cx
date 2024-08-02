@@ -25,7 +25,6 @@ import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -39,8 +38,6 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 
 public class TokenActivity extends AppCompatActivity {
-
-
     private AuthorizationService authorizationService;
 
     @Override
@@ -73,10 +70,9 @@ public class TokenActivity extends AppCompatActivity {
                                 }
                             }
 
-                            final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(TokenActivity.this);
                             DBLoteriasCrud crud = new DBLoteriasCrud(TokenActivity.this);
                             List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
-                            dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+                            DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
 
                                 @Override
                                 public void onResponse(UsuarioLogadoResponse response) {
