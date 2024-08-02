@@ -26,7 +26,8 @@ import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoMicroServicoSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSilceSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoConnection;
@@ -59,11 +60,15 @@ public class BaseMicroServicoBO {
                 registraErro(error, request);
 
                 if (MensagensNetwork.isCertificadoInvalido(error)){
-                    CertificadoSingleton.getInstance().trocaCertificado();
-                    singleton.initQueue();
-                    connection = new MicroServicoConnection(singleton.getRequestQueue(), ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
-                    connection.request(request, listener);
-                    return;
+                    if (CertificadoMicroServicoSingleton.getInstance().trocaCertificado()){
+                        singleton.initQueue();
+                        connection = new MicroServicoConnection(singleton.getRequestQueue(), ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
+                        connection.request(request, listener);
+                        return;
+                    } else {
+                        listener.onErrorResponse(error);
+                    }
+
                 }
 
                 //Caso não esteja autorizado tenta atualizar o token de acesso

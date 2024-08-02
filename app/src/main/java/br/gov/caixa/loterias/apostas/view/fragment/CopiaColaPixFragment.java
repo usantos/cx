@@ -16,33 +16,25 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import java.util.Date;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
-import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
-import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.model.model.PixModel;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
-import br.gov.caixa.loterias.apostas.utils.PixUtils;
-import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
@@ -57,7 +49,7 @@ public class CopiaColaPixFragment extends Fragment {
 	private View view;
 	private Button btnCopia, btnMinhasCompras;
 	private EditText edtNumeroPix;
-	private TextView timerView, voceTemView, txtEfetuarPagamento, txtAlerta;
+	private TextView timerView;
 	private TextView tvAtencao, tvAtencaoDescricao;
 	private ImageView iconTimer, iconAtualizar;
 	private ProgressBar progressBar;
@@ -86,7 +78,7 @@ public class CopiaColaPixFragment extends Fragment {
 		try {
 			listener = (OnCopiaColaListener) context;
 		}catch (Exception e){
-
+			Log.d("ACTIVITY_NOT_LISTENER", Objects.requireNonNull(e.getLocalizedMessage()));
 		}
 	}
 
@@ -111,10 +103,7 @@ public class CopiaColaPixFragment extends Fragment {
 		btnCopia = view.findViewById(R.id.btn_copiar_colar);
 		edtNumeroPix = view.findViewById(R.id.numero_copiar);
 		timerView = view.findViewById(R.id.txt_contador);
-		voceTemView = view.findViewById(R.id.txt_voce_tem);
-		txtEfetuarPagamento = view.findViewById(R.id.txt_para_efetuar_pagamento);
 		iconTimer = view.findViewById(R.id.img_timer);
-		txtAlerta = view.findViewById(R.id.txt_alerta_codigo);
 		iconAtualizar = view.findViewById(R.id.icon_atualizar);
 		progressBar = view.findViewById(R.id.pb_loading);
 		btnMinhasCompras = view.findViewById(R.id.btn_minhas_compras);
@@ -151,11 +140,11 @@ public class CopiaColaPixFragment extends Fragment {
 					edtNumeroPix.setText(R.string.codigo_expirado);
 					edtNumeroPix.setTextColor(Aplicacao.application.getResources().getColor(R.color.vermelho_dialog));
 					edtNumeroPix.setBackground(VectorUtils.getShape(R.drawable.shape_input_pix_copia_cola, R.color.cinza_borda));
-					edtNumeroPix.setTextColor(getActivity().getResources().getColor(R.color.branco));
+					edtNumeroPix.setTextColor(ContextCompat.getColor(Aplicacao.application.getApplicationContext(), R.color.branco));
 					numeroPix = "";
 					btnCopia.setEnabled(false);
 					btnCopia.setVisibility(View.GONE);
-					copiaTesto(getString(R.string.codigo_expirado));
+					copiaTexto(getString(R.string.codigo_expirado));
 					iconAtualizar.setVisibility(View.INVISIBLE);
 					iconAtualizar.setEnabled(false);
 					progressBar.setVisibility(View.GONE);
@@ -165,7 +154,9 @@ public class CopiaColaPixFragment extends Fragment {
 					if (listener != null){
 						listener.onFinish();
 					}
-				} catch (Exception e){}
+				} catch (Exception e){
+					Log.d("ERRO_FINALIZA_CONTADOR", Objects.requireNonNull(e.getLocalizedMessage()));
+				}
 			}
 		};
 
@@ -190,7 +181,7 @@ public class CopiaColaPixFragment extends Fragment {
 	private void configListeners() {
 		btnCopia.setOnClickListener(v -> {
 			if (!numeroPix.isEmpty()) {
-				copiaTesto(numeroPix);
+				copiaTexto(numeroPix);
 				TestVisao.toast("Pix copiado.");
 				btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_pix_copiado, null));
 				btnCopia.setEnabled(false);
@@ -198,16 +189,15 @@ public class CopiaColaPixFragment extends Fragment {
 					btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_button_copia, null));
 					btnCopia.setEnabled(true);
 				});
-				Utils.delay(10,() -> {
-					model.verificaStatusPixPeriodicamente(pixDTO,onCheckPixPagoListener());
-				});
+				Utils.delay(10,() -> model.verificaStatusPixPeriodicamente(pixDTO,onCheckPixPagoListener()));
 				jaCopiou = true;
 			}
 		});
 
 		btnMinhasCompras.setOnClickListener(v -> {
-			Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ListaComprasActivity.class);
-			startActivity(intent);
+			if (listener != null){
+				listener.irParaCompras();
+			}
 		});
 
 		iconAtualizar.setOnClickListener(v -> {
@@ -231,7 +221,12 @@ public class CopiaColaPixFragment extends Fragment {
 
 			@Override
 			public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
-				RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+				try {
+					RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+				} catch (Exception e){
+					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
+				}
+
 				if (pixDTO.estaNoPrazo()){
 					iconAtualizar.setEnabled(true);
 					iconAtualizar.setVisibility(View.VISIBLE);
@@ -241,7 +236,12 @@ public class CopiaColaPixFragment extends Fragment {
 
 			@Override
 			public void errorCompra(VolleyError volleyError) {
-				RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+				try {
+					RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+				} catch (Exception e){
+					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
+				}
+
 				if (pixDTO.estaNoPrazo()){
 					iconAtualizar.setEnabled(true);
 					iconAtualizar.setVisibility(View.VISIBLE);
@@ -260,49 +260,33 @@ public class CopiaColaPixFragment extends Fragment {
 
 			@Override
 			public void redirectCompra(CompraAsyncResponse compraAsyncResponse) {
-				RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+				try {
+					RedirectNetwork.checkRedirectSucesso( compraAsyncResponse.getRedirect(), getActivity());
+				} catch (Exception e){
+					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
+				}
 			}
 
 			@Override
 			public void errorCompra(VolleyError volleyError) {
-				RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+				try {
+					RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+				} catch (Exception e){
+					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
+				}
 			}
 		};
 	}
 
 	private void sussecoCompra() {
-		new CompraModel(getActivity()).salvaUltimaCompra(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal(), new Date());
-
-		registrarCompraSucessoAppCenter();
-		RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
-
-		CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
-		CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(getActivity());
-		crud.deletaTodos();
-
-		Bundle bundle   = new Bundle();
-		bundle.putLong(ConfirmacaoPagamentoActivity.ARG_ORIGEM, MeioPagamentoUtils.PIX);
-		Intent activity = IntentUtil.getIntentOrigemDestino(getActivity(), ConfirmacaoPagamentoActivity.class, bundle);
-		startActivity(activity);
-	}
-
-	private void registrarCompraSucessoAppCenter() {
-		try {
-			if(getActivity() != null){
-				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_pagamento_sucesso));
-			} else if (getContext() != null) {
-				AppCenterManager.registraEvento(getContext().getResources().getString(R.string.evento_pagamento_sucesso));
-			} else if (Aplicacao.application.getApplicationContext() != null) {
-				AppCenterManager.registraEvento(Aplicacao.application.getApplicationContext().getResources().getString(R.string.evento_pagamento_sucesso));
-			}
-		}catch (Exception e){
-			Log.d("SEMCONTEXTOCOMPRAPIX", e.getLocalizedMessage());
+		if (listener != null){
+			listener.onSuccess();
 		}
 	}
 
-	private void copiaTesto(String value) {
-		ClipData         clip      = ClipData.newPlainText("label", value);
-		ClipboardManager clipBoard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+	private void copiaTexto(String value) {
+		ClipData         clip      = ClipData.newPlainText("label", value.trim());
+		ClipboardManager clipBoard = (ClipboardManager) Aplicacao.application.getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
 		clipBoard.setPrimaryClip(clip);
 	}
 

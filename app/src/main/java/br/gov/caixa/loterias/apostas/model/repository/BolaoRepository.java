@@ -2,8 +2,6 @@ package br.gov.caixa.loterias.apostas.model.repository;
 
 import android.app.Activity;
 
-import androidx.annotation.NonNull;
-
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
@@ -19,6 +17,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BoloesDisponiveisRespons
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 
@@ -44,6 +43,12 @@ public class BolaoRepository extends AppRepository {
             if (filtroAplicado.getLotericaDTO() != null && filtroAplicado.getLotericaDTO().getId() > 0) {
                 filtro.setNumeroLoterico(filtroAplicado.getLotericaDTO().getId());
             }
+            if (filtroAplicado.getModalidade() != null) {
+                filtro.setIdModalidade(ModalidadeEnum.fromStringToIdModalidade(filtroAplicado.getModalidade()));
+            } else {
+                //força todas as modalidades
+                filtro.setIdModalidade(null);
+            }
         }
 
         //listener.success(BolaoListMock.getInstance().filtro(filtro));
@@ -51,7 +56,7 @@ public class BolaoRepository extends AppRepository {
     }
 
     private FiltroMarketPlace getFiltroMarketPlace(PaginacaoFiltro paginacao) {
-        return new FiltroMarketPlace(paginacao.getTipoConsulta(), paginacao.getIdMunicipio(), paginacao.getIdUf(), paginacao.getPagina(), paginacao.getQtdPorPagina());
+        return new FiltroMarketPlace(paginacao.getTipoConsulta(), paginacao.getIdMunicipio(), paginacao.getIdUf(), paginacao.getPagina(), paginacao.getQtdPorPagina(), paginacao.getIdModalidade());
     }
 
     public void buscaDetalhesBolao(String codigoBolao, OnSilceListener<DetalheBolaoDTO> listener){

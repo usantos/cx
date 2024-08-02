@@ -1,11 +1,15 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -13,12 +17,12 @@ import io.swagger.annotations.ApiModelProperty;
  * ApostaBolaoDTO
  */
 @ApiModel(description = "")
-public class ApostaBolaoDTO implements Serializable {
+public class ApostaBolaoDTO<T> implements Serializable {
 
     @SerializedName("indicadorSurpresinha")
     private Boolean isSurpresinha = null;
     @SerializedName("dezenas")
-    private List<Integer> dezenas = null;
+    private T dezenas = null;
     @SerializedName("trevos")
     private List<Integer> trevos = null;
     @SerializedName("operacaoExecutadaComSucesso")
@@ -27,6 +31,8 @@ public class ApostaBolaoDTO implements Serializable {
     private TimeDoCoracaoDTO timeCoracao;
     @SerializedName("mesDeSorte")
     private MesDeSorteDTO mesSorte;
+    @SerializedName("partidasLoteca")
+    private List<PartidaLotecaDTO> partidasLoteca;
 
     public Boolean isSurpresinha() {
         return isSurpresinha;
@@ -37,10 +43,10 @@ public class ApostaBolaoDTO implements Serializable {
     }
 
     public List<Integer> getDezenas() {
-        return dezenas;
+        return (List<Integer>) dezenas;
     }
 
-    public void setDezenas(List<Integer> dezenas) {
+    public void setDezenas(T dezenas) {
         this.dezenas = dezenas;
     }
 
@@ -60,12 +66,24 @@ public class ApostaBolaoDTO implements Serializable {
         this.operacaoExecutadaComSucesso = operacaoExecutadaComSucesso;
     }
 
+    public ArrayList<ArrayList<Integer>> getMatriz() {
+        return AppUtils.converteMatrizInteiros((List<List<Integer>>) dezenas);
+    }
+
     public TimeDoCoracaoDTO getTimeCoracao(){
         return this.timeCoracao;
     }
 
     public MesDeSorteDTO getMesSorte(){
         return this.mesSorte;
+    }
+
+    public List<PartidaLotecaDTO> getPartidasLoteca() {
+        return partidasLoteca;
+    }
+
+    public void setPartidasLoteca(List<PartidaLotecaDTO> partidasLoteca) {
+        this.partidasLoteca = partidasLoteca;
     }
 
     @Override

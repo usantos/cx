@@ -21,6 +21,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
@@ -43,12 +44,16 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoCarrosselHolder;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnEstadoVazioListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnVaiParaCarrinhoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
-public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnEstadoVazioListener {
+public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnEstadoVazioListener, OnVaiParaCarrinhoListener, OnCompraBolaoListener {
+	public static final String ARG_IDMODALIDADE = "ARG_IDMODALIDADE";
+
 	private DiscreteScrollView carrosselView;
 	private CarrosselBolaoAdapter carrosselAdapter;
 
@@ -59,7 +64,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private List<CotasBolaoDTO> bolaoList;
 	private List<CotasBolaoDTO> carrosselList;
 	private SomadorCarrinhoFragment somadorCarrinhoFragment;
-	private ActivityResultLauncher<Intent> launcher;
+	private ActivityResultLauncher<Intent> launcherFiltro;
+	private ActivityResultLauncher<Intent> launcherAddCarrinho;
+	private ActivityResultLauncher<Intent> launcherCarrinho;
+	private ActivityResultLauncher<Intent> launcherDetalhes;
 
 	private TextView todosBoloesTxt;
 	private TextView toolBarTxt;
@@ -75,13 +83,21 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private List<CotasBolaoDTO> cotasDisponiveis;
 	private List<CotasBolaoDTO> cotasFiltradas;
 
+	private Integer idModalidade;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bolao);
 		configToolbar(R.id.toolbar);
-		launcher = IntentUtil.registerLauncherActivityForResult(this, OnActivityForResult());
-		configFiltrar(launcher);
+		if (getIntent() != null && getIntent().getExtras() != null) {
+			idModalidade = getIntent().getExtras().getInt(ARG_IDMODALIDADE);
+		}
+		launcherFiltro = IntentUtil.registerLauncherActivityForResult(this, OnActivityForResult());
+		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
+		launcherCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
+		launcherDetalhes = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
+		configFiltrar(launcherFiltro);
 		setTitle("");
 		toolBarTxt = findViewById(R.id.toolbar_title);
 		toolBarTxt.setText(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.label_voltar_apostas_individuais)));
@@ -126,6 +142,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				idMunicipio = payload.getMunicipioId().getNumero().intValue();
 				idUf = payload.getMunicipioId().getIdUF().intValue();
 				model.setIdMunicipioUF(idMunicipio, idUf);
+				model.setIdModalidade(idModalidade);
 				buscaBoloes();
 			}
 
@@ -346,6 +363,22 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		};
 	}
 
+	private OnActivityForResult onAtualizaListasDeCotas() {
+		return result -> {
+			if (result.getResultCode() == Activity.RESULT_OK) {
+				AlertDialogUtils.show(BolaoActivity.this);
+				model.zeraPaginacao();
+				if (filtro != null){
+					cotasFiltradas = null;
+					buscaBoloesFiltro();
+				} else {
+					cotasDisponiveis = null;
+					buscaBoloes();
+				}
+			}
+		};
+	}
+
 	private void buscaBoloesFiltro(){
 		model.buscaFiltradaBoloes(filtro, onBoloesFiltradosListener());
 	}
@@ -430,7 +463,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		bundle.putString(DetalhesBolaoActivity.ARG_MODALIDADE, new Gson().toJson(bolao.getModalidade()));
 		bundle.putString(DetalhesBolaoActivity.ARG_MODO_VISUALIZACAO, new Gson().toJson(ModoVisualizacaoBolaoEnum.SIMULACAO));
 		Intent intent = IntentUtil.getIntentOrigemDestino(this, DetalhesBolaoActivity.class, bundle);
-		startActivity(intent);
+		IntentUtil.startActivityForResult(launcherDetalhes, intent);
 	}
 
 	private void adicionarNoCarrinho(CotasBolaoDTO bolao) {
@@ -441,7 +474,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	public void alterar(FiltroBolaoResultadoEnum tipoFiltro) {
 		switch (tipoFiltro){
 			case VAZIO:
-				IntentUtil.startActivityForResult(launcher, BolaoActivity.this,
+				IntentUtil.startActivityForResult(launcherFiltro, BolaoActivity.this,
 						FiltraMarketplaceActivity.class);
 				break;
 			case ERRO:
@@ -461,5 +494,15 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				buscaBoloes();
 				break;
 		}
+	}
+
+	@Override
+	public void vaiParaCarrinho() {
+		IntentUtil.startActivityForResult(launcherCarrinho, IntentUtil.getIntentOrigemDestino(BolaoActivity. this, CarrinhoActivity.class));
+	}
+
+	@Override
+	public void compraSucesso(Intent intent) {
+		IntentUtil.startActivityForResult(launcherAddCarrinho, intent);
 	}
 }

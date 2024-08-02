@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
@@ -177,6 +178,15 @@ public class FragmentUtils {
 				.newInstance(aposta, resultado, comprovante, valorPremio, isToteca);
 		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
+	}
+
+	public static DetalheApostaBolaoLotecaFragment startApostaConfirmadaPartidaDetalhesBolao(FragmentManager fm, int id,
+																							 IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta,
+																							 ResultadoConcursoDTO resultado, ComprovanteApostaDTO comprovante,
+																							 BigDecimal valorPremio) {
+		DetalheApostaBolaoLotecaFragment frag = DetalheApostaBolaoLotecaFragment.newInstance(aposta, resultado, comprovante, valorPremio);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, frag);
+		return frag;
 	}
 
 	public static RodapeSimulacaoApostaFragment startRodapeSimulacaoAPosta(FragmentManager fm, int id, BigDecimal valorBolao) {

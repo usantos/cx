@@ -109,7 +109,8 @@ public class NumerosSuperSeteFragment extends Fragment {
 			arrayColunas.add(view.findViewById(R.id.tv_col_7));
 
 			for (TextView coluna: arrayColunas ) {
-				coluna.setTextColor(configuracao.getTextoQuadrado());
+				//coluna.setTextColor(configuracao.getTextoQuadrado());
+				coluna.setTextColor(ContextCompat.getColorStateList(ctx, configuracao.getTextoQuadrado()));
 				coluna.setBackgroundTintList(ContextCompat.getColorStateList(ctx, configuracao.getCorInteriorQuadrado()));
 			}
 		}

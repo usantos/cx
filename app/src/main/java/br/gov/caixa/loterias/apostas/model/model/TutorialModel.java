@@ -66,8 +66,8 @@ public class TutorialModel extends AppModel{
 		}
 	}
 
-	public Intent getIntentModalidade(ModalidadeEnum modalidade, ParametroJogoDTO parametroJogo) {
-		Intent activity = IntentUtil.getIntentFimTutorial(getActivity(), modalidade);
+	public Intent getIntentModalidade(ModalidadeEnum modalidade, ParametroJogoDTO parametroJogo, Integer idModaliade) {
+		Intent activity = IntentUtil.getIntentFimTutorial(getActivity(), modalidade, idModaliade);
 
 		activity.putExtra(getActivity().getString(R.string.extra_tipo_aposta), modalidade);
 		if (parametroJogo != null) {

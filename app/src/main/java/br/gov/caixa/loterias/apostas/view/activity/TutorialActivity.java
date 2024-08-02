@@ -23,6 +23,7 @@ public class TutorialActivity extends AppCompatActivity implements OnTutorialLis
 	private ParametroJogoDTO parametroJogo;
 	private ModalidadeEnum modalidade;
 	private TutorialModel model;
+	private Integer idModalidade;
 
 	private TutorialNovaModalidadeFragment fragment;
 
@@ -41,13 +42,14 @@ public class TutorialActivity extends AppCompatActivity implements OnTutorialLis
 	private void getBundle() {
 		parametroJogo = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.extra_modalidade)), ParametroJogoDTO.class);
 		modalidade = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
+		idModalidade = getIntent().getExtras().getInt(BolaoActivity.ARG_IDMODALIDADE);
 	}
 
 	@Override
 	public void apostar(Boolean naoVerNovamente) {
 		atualizaStatusTutorial(naoVerNovamente);
 
-		startActivity(model.getIntentModalidade(modalidade, parametroJogo));
+		startActivity(model.getIntentModalidade(modalidade, parametroJogo, idModalidade));
 		finish();
 	}
 

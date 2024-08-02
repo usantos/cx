@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -28,16 +32,25 @@ import br.gov.caixa.loterias.apostas.model.model.DetalhesBolaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteRecyclerViewAdapter;
+import br.gov.caixa.loterias.apostas.view.config.ColunaConfig;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
+import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 
-public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
+
+public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implements OnCompraBolaoListener {
 	public static final String ARG_CODIGO_BOLAO = "ARG_CODIGO_BOLAO";
 	public static final String ARG_MODALIDADE = "ARG_MODALIDADE";
 	public static final String ARG_MODO_VISUALIZACAO = "ARG_MODO_VISUALIZACAO";
@@ -45,11 +58,14 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 
 	private TextView tvValorPremio, tvDescricaoPremioConcurso;
 	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota;
+	private TextView textQtdDezenas, textQtdCotas;
 	private Button btnAdd, btnDiminui, btnAumenta;
 	private TextView tvValorCotaBtn, tvQtdCotas;
 	private TextView tvLabelQtdCotas;
 	private RecyclerView listaJogos;
 	private JogosBolaoRecyclerView listaAdapter;
+	private PartidasLotecaRecyclerViewAdapter partidasAdapter;
+	private SuperSeteRecyclerViewAdapter superSeteAdpter;
 	private ConstraintLayout layoutQtdCotas;
 	private FrameLayout frameSomador, frameRodape;
 
@@ -63,12 +79,16 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 	private SomadorCarrinhoFragment somadorCarrinhoFragment;
 	private RodapeSimulacaoApostaFragment rodapeFragment;
 	private String numeroCota;
+	private boolean precisaAtualizarLista = false;
+	private ActivityResultLauncher<Intent> launcherAddCarrinho;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detalhes_bolao);
 		configToolbar(R.id.toolbar);
+
+		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(DetalhesBolaoActivity.this, onAtualizaLista());
 
 		getExtras();
 		estilo = new EstiloModalidadeMKP(modalidade);
@@ -142,6 +162,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		tvDescricaoPremioConcurso = findViewById(R.id.id_descricao_valor_premio);
 		tvMunicipio = findViewById(R.id.id_municipio);
 		tvValorCota = findViewById(R.id.id_valor_cota);
+		textQtdDezenas = findViewById(R.id.descricao_qtd_dezenas_dt);
+		textQtdCotas = findViewById(R.id.descricao_qtd_cotas_disponiveis_dt);
 		tvNumeroCota = findViewById(R.id.id_numero_qtd_cotas);
 		tvValorTarifa = findViewById(R.id.id_valor_tarifa_servico);
 		tvValorTotal = findViewById(R.id.id_valor_total);
@@ -202,6 +224,16 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 				fragmentRodape();
 				preencheDados();
 				AlertDialogUtils.dismiss();
+				if (bolao.getQtdCotaDisponivel() == 0) {
+					ViewUtils.alertTitleButton(DetalhesBolaoActivity.this, R.string.label_atencao, getString(R.string.cota_zerou),
+							"Ok", dialogInterface -> {
+								dialogInterface.dismiss();
+								setResult(Activity.RESULT_OK);
+								finish();
+								return;
+							}
+					);
+				}
 			}
 
 			@Override
@@ -220,16 +252,38 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		tvValorTotal.setText("Total: " + ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()));
 		btnAdd.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
 		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
+
+		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(this,
+				getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+
+		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(this,
+				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
+
 		atualizaQuantidadeTextView();
 		preencheJogos();
 	}
 
 	private void preencheJogos() {
-		if (bolao.getApostas() != null && !bolao.getApostas().isEmpty()){
-			listaAdapter = new JogosBolaoRecyclerView(bolao.getModalidade(), estilo.getCorLetraLista(), bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
-			listaJogos.setAdapter(listaAdapter);
-			listaJogos.setLayoutManager(new LinearLayoutManager(this));
+		if (bolao.getModalidade() == ModalidadeEnum.LOTECA && !bolao.getApostas().isEmpty()){
+			partidasAdapter = new PartidasLotecaRecyclerViewAdapter(bolao.getApostas().get(0).getPartidasLoteca(), DetalhesBolaoActivity.this, new ConfiguracaoLoteca(R.color.black));
+			listaJogos.setAdapter(partidasAdapter);
+			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
+		} else if (bolao.getModalidade() == ModalidadeEnum.SUPER_7) {
+			superSeteAdpter = new SuperSeteRecyclerViewAdapter(estilo.getCorEscura(), bolao.getApostas(),
+					DetalhesBolaoActivity.this, getColunaConfig(), getDezenaConfig(), null);
+			listaJogos.setAdapter(superSeteAdpter);
+			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
+		} else {
+			if (bolao.getApostas() != null && !bolao.getApostas().isEmpty()){
+				listaAdapter = new JogosBolaoRecyclerView(bolao.getModalidade(), estilo.getCorLetraLista(), bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
+				listaJogos.setAdapter(listaAdapter);
+				listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
+			}
 		}
+	}
+
+	private ColunaConfig getColunaConfig() {
+		return new ColunaConfig(estilo.getCorFonteFundoEscuro(), estilo.getCorEscura());
 	}
 
 	private DezenaConfig getDezenaConfig() {
@@ -265,6 +319,28 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity {
 		}else {
 			somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
 		}
+	}
+
+	@Override
+	public void compraSucesso(Intent intent) {
+		IntentUtil.startActivityForResult(launcherAddCarrinho, intent);
+	}
+
+	private OnActivityForResult onAtualizaLista() {
+		return result -> {
+			if (result.getResultCode() == Activity.RESULT_OK) {
+				precisaAtualizarLista = true;
+			}
+		};
+	}
+
+	@Override
+	public boolean onSupportNavigateUp() {
+		if (precisaAtualizarLista){
+			setResult(RESULT_OK);
+		}
+		finish();
+		return true;
 	}
 
 }

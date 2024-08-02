@@ -61,7 +61,7 @@
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="infoConcluaPagamentoBolao">Conclua o pagamento de suas \napostas dentro do prazo</string>
     <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
-    <string name="tituloBolãoFeito">Esse bolão foi para \no seu carrinho.</string>
+    <string name="tituloBolaoFeito">Esse bolão foi para \no seu carrinho.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
     <string name="confirmacao">Confirmação</string>
@@ -986,7 +986,7 @@
     <string name="barra_n_mes_da_sorte_dois_pontos">\nMês da sorte:&#160;</string>
     <string name="conferindo_resultado_ponto">Conferindo resultado.</string>
     <string name="a_conferir">conferir aposta</string>
-    <string name="nao_apurado">concurso ainda não apurado</string>
+    <string name="nao_apurado">Concurso ainda não apurado</string>
     <string name="situacao_dois_pontos_espaco">situação:&#160;</string>
     <string name="premiada_maiusculo">Premiada</string>
     <string name="situacao_dois_pontos_underline">situação: _</string>
@@ -1310,6 +1310,8 @@
 
     <!-- Strings de boloes mkp -->
     <string name="filtrar">_Filtrar_</string>
+    <string name="filtrar_modalidades">Filtrar</string>
+    <string name="modalidades">Modalidades</string>
     <string name="valor_minimo_aposta">Valor Mínimo Aposta</string>
     <string name="valor_maximo_aposta">Valor Máximo Aposta</string>
     <string name="quantidade_cotas">Quantidade de Cotas</string>
@@ -1378,5 +1380,8 @@
     <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
     <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>
     <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
+    <string name="todas_modalidades">todas as\nmodalidades</string>
+    <string name="gerar_comprovante">Gerar Comprovante</string>
+    <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
 
 </resources>
