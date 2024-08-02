@@ -21,7 +21,6 @@ import java.util.Objects;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -156,8 +155,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 	}
 
 	private void carregaCarrinho() {
-		final ApostaBO apostaBO = ApostaBO_.getInstance_(getContext());
-		apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+		ApostaBO.getInstance().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
 				AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_entrou_carrinho_online));

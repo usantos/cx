@@ -30,7 +30,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -155,7 +154,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
         holder.editarRelativeLayoutAddCarrinho.setOnClickListener(view -> {
             if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(activity)) {
-                adicionarApostaCarrinhoRequest(ApostaBO_.getInstance_(activity), listaApostaFavorita.get(position));
+                adicionarApostaCarrinhoRequest(ApostaBO.getInstance(), listaApostaFavorita.get(position));
             }
         });
 
@@ -198,7 +197,6 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         }
 
     }
-
 
     private void configuraFragment(ApostaFavoritaDTO aposta, ViewHolder holder) {
         FragmentManager fm          = activity.getSupportFragmentManager();
@@ -277,9 +275,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
     private void deleteFavoritaCallWebservice(final int position) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
-
-        apostaBO.deleteApostasFavoritas(listaApostaFavorita.get(position).getId() + context.getResources().getString(R.string.string_vazia), new RequestListener<RetornoPadraoDTO>() {
+        ApostaBO.getInstance().deleteApostasFavoritas(listaApostaFavorita.get(position).getId() + context.getResources().getString(R.string.string_vazia), new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_efetuou_exclusao_favorito));
@@ -326,7 +322,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
 
     private void alterarFavoritaCallWebservice(final ApostaFavoritaDTO apostaFavoritaDTO, final ViewHolder holder) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+        final ApostaBO apostaBO = ApostaBO.getInstance();
         apostaFavoritaDTO.setNome(holder.editTextNomeDaAposta.getText().toString());
         apostaFavoritaDTO.setOpenSwipeLayout(null);
         apostaBO.postApostasFavoritas(apostaFavoritaDTO, new RequestListener<RetornoPadraoDTO>() {

@@ -21,7 +21,7 @@ import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
@@ -133,7 +133,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void callConfiguracoesApp() {
         try {
-            ApostaBO_.getInstance_(SplashScreenActivity.this).getApresentaHistorico(new RequestListener<ParametrosConfiguraveisDTOResponse>() {
+            ApostaBO.getInstance().getApresentaHistorico(new RequestListener<ParametrosConfiguraveisDTOResponse>() {
                 @Override
                 public void onResponse(ParametrosConfiguraveisDTOResponse result) {
 

@@ -14,7 +14,7 @@ import com.android.volley.VolleyError;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDTO;
@@ -70,7 +70,7 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
 	//region Network Methods
 	private void buscaCarrinhosFavoritos() {
 		AlertDialogUtils.show(CarrinhosFavoritosActivity.this);
-		ApostaBO_.getInstance_(CarrinhosFavoritosActivity.this).buscaCarrinhosFavoritos(new RequestListener<ListCarrinhoFavoritoDTO>() {
+		ApostaBO.getInstance().buscaCarrinhosFavoritos(new RequestListener<ListCarrinhoFavoritoDTO>() {
 			@Override
 			public void onResponse(ListCarrinhoFavoritoDTO result) {
 				AlertDialogUtils.dismiss();

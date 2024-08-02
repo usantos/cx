@@ -4,8 +4,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.androidannotations.annotations.EBean;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -60,10 +58,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 
-import static org.androidannotations.annotations.EBean.Scope.Singleton;
-
-@EBean(scope = Singleton)
 public class ApostaBO extends BaseBO {
+    private static ApostaBO instance;
+
+    private ApostaBO(){}
+
+    public static ApostaBO getInstance(){
+        if (instance == null){
+            instance = new ApostaBO();
+        }
+        return instance;
+    }
 
     //Carrinho Favorito
     public void validarCarrinhoFavorito(String nomeCarrinho, RequestListener<CarrinhoFavoritoDTOResponse> listener){

@@ -6,7 +6,6 @@ import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -24,7 +23,7 @@ public class ApostaConfirmadaDetalheModel extends AppModel {
 
 	public ApostaConfirmadaDetalheModel(Activity activity) {
 		super(activity);
-		this.apostaBO = ApostaBO_.getInstance_(getActivity());
+		this.apostaBO = ApostaBO.getInstance();
 	}
 
 	public  void buscaDetalhePremio(Long id, OnSilceListener<DetalhesPremioDTO> listener){
@@ -68,6 +67,5 @@ public class ApostaConfirmadaDetalheModel extends AppModel {
 				R.color.superseteescuro,
 				R.color.supersetemedio);
 	}
-
 
 }

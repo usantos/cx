@@ -12,7 +12,7 @@ import com.android.volley.VolleyError;
 import java.io.Serializable;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
@@ -61,7 +61,7 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
 
     private void buscaApostas(){
         AlertDialogUtils.show(this);
-        ApostaBO_.getInstance_(this).buscaApostasCarrinhoFavorito(idCarrinho ,new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
+        ApostaBO.getInstance().buscaApostasCarrinhoFavorito(idCarrinho ,new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
             @Override
             public void onResponse(ListApostaCarrinhoFavoritoDTO result) {
                 AlertDialogUtils.dismiss();

@@ -50,8 +50,7 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 @EActivity(R.layout.activity_resultado_ler_bilhetes)
 public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
-    @Bean
-    protected ApostaBO apostaBO;
+    private ApostaBO apostaBO;
 
     @ViewById
     protected Toolbar toolbar;
@@ -93,6 +92,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         contentResultadoPremiado.getButtonVerDetalheAposta().setVisibility(View.GONE);
         createToolBar();
         model = new ConferirBilheteModel(ResultadoLerBilhetesActivity.this);
+        apostaBO = ApostaBO.getInstance();
     }
 
     @Override

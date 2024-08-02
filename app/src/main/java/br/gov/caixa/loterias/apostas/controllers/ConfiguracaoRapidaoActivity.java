@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -62,7 +61,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_configuracao_rapidao);
-		apostaBO  = ApostaBO_.getInstance_(ConfiguracaoRapidaoActivity.this);
+		apostaBO  = ApostaBO.getInstance();
 	}
 
 	@Override

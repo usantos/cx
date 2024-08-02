@@ -85,8 +85,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private static final int PAGE_SIZE = 30;
 
-    @Bean
-    protected ApostaBO apostaBO;
+    private ApostaBO apostaBO;
     @Bean
     protected ApostaMicroServicoBO apostaMicroServicoBO;
 
@@ -134,6 +133,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         super.onCreate(savedInstanceState);
         model = new ApostaConfirmadaModel(getActivity());
         isOnCreate = true;
+        apostaBO = ApostaBO.getInstance();
     }
 
     @Override

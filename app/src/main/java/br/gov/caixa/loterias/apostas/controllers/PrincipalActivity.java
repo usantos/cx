@@ -150,8 +150,7 @@ public class PrincipalActivity extends AppCompatActivity
     @ViewById
     protected ConstraintLayout viewSair;
 
-    @Bean
-    protected ApostaBO apostaBO;
+    private ApostaBO apostaBO;
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
@@ -191,6 +190,7 @@ public class PrincipalActivity extends AppCompatActivity
         iniciarBancoLocal();
         RateUtils.avaliarAplicativo(this);
         SessaoUsuario.getInstance().setPrecisaMontarCarrossel(true);
+        apostaBO = ApostaBO.getInstance();
 
         if (SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
             startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));

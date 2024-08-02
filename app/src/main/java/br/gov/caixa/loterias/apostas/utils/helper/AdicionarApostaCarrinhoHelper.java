@@ -26,7 +26,6 @@ import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -75,7 +74,7 @@ public class AdicionarApostaCarrinhoHelper {
      */
     public static void incluirApostaCarrinho(Activity actv, Object objectAposta) {
         activity = actv;
-        ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+        ApostaBO apostaBO = ApostaBO.getInstance();
         aposta = getApostaPreenchida(objectAposta);
         AlertDialogUtils.show(activity);
         if (aposta != null && !checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.LISTA_APOSTA)) {
@@ -85,7 +84,7 @@ public class AdicionarApostaCarrinhoHelper {
 
     public static void incluirApostaCarrinhoMinhasApostas(Activity actv, Object objectAposta) {
         activity = actv;
-        ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+        ApostaBO apostaBO = ApostaBO.getInstance();
         AlertDialogUtils.show(activity);
         aposta = getApostaPreenchida(objectAposta);
         if (aposta != null && !checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.LISTA_APOSTA)) {
@@ -98,7 +97,7 @@ public class AdicionarApostaCarrinhoHelper {
 
     public static void incluirApostaCarrinhoCartela(Activity actv, IdentificaoDeUmaApostaDas8Modalidades objectAposta) {
         activity = actv;
-        ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+        ApostaBO apostaBO = ApostaBO.getInstance();
         aposta = objectAposta;
         AlertDialogUtils.show(activity);
         if (aposta != null) {
@@ -126,7 +125,7 @@ public class AdicionarApostaCarrinhoHelper {
 
     public static void incluirApostaCarrinhoSurpresinha(Activity actv, final IncluirSurpresinhaDTO apostaSurpresinha) {
         activity = actv;
-        ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+        ApostaBO apostaBO = ApostaBO.getInstance();
         AlertDialogUtils.show(activity);
         apostaBO.adicionarSurpresinhaNoCarrinho(apostaSurpresinha, new RequestListener<CarrinhoDTOResponse>() {
             @Override

@@ -57,8 +57,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     public static String COMPROVANTE = "COMPROVANTE";
     public static String CODIGO_RESGATE = "CODIGO_RESGATE";
     public static int RESGATOU_MERCADO_PAGO = 200;
-    @Bean
-    protected ApostaBO apostaBO;
+    private ApostaBO apostaBO = ApostaBO.getInstance();
 
     @ViewById
     protected Toolbar toolbar;

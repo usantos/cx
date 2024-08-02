@@ -27,7 +27,7 @@ import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesCarrinhoFavoritoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDTO;
@@ -117,7 +117,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 	//region Network Methods
 	private void chamaTransformarCarrinho(int opcaoSelecionada) {
 		AlertDialogUtils.show(context);
-		ApostaBO_.getInstance_(context).transformarCarrinho(idCarrinhoAtual, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
+		ApostaBO.getInstance().transformarCarrinho(idCarrinhoAtual, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse result) {
 				salvarCarrinhoFavoritoLocal(idCarrinhoAtual);
@@ -146,7 +146,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 
 	private void buscaApostas(LinearLayout layout, ConstraintLayout card, boolean configLayout) {
 		AlertDialogUtils.show(context);
-		ApostaBO_.getInstance_(context).buscaApostasCarrinhoFavorito(idCarrinhoAtual, new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
+		ApostaBO.getInstance().buscaApostasCarrinhoFavorito(idCarrinhoAtual, new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
 			@Override
 			public void onResponse(ListApostaCarrinhoFavoritoDTO result) {
 				AlertDialogUtils.dismiss();
@@ -179,7 +179,7 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 	private void excluirCarrinho(Long idCarrinhoAtual) {
 		ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.carrinho_fav_deseja_excluir), (dialogInterface, i) -> {
 			AlertDialogUtils.show(context);
-			ApostaBO_.getInstance_(context).deletaCarrinhoFavorito(idCarrinhoAtual.toString(), new RequestListener<ListCarrinhoFavoritoDTO>() {
+			ApostaBO.getInstance().deletaCarrinhoFavorito(idCarrinhoAtual.toString(), new RequestListener<ListCarrinhoFavoritoDTO>() {
 				@Override
 				public void onResponse(ListCarrinhoFavoritoDTO result) {
 					AlertDialogUtils.dismiss();

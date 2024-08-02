@@ -23,7 +23,6 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
@@ -125,8 +124,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
 
         loadViewProgress = LoadingViewLoterias.show(this);
 
-        ApostaBO apostaBO = ApostaBO_.getInstance_(JogosConfirmadosPremioMercadoPagoActivity.this);
-        apostaBO.postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoDTO>() {
+        ApostaBO.getInstance().postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoDTO>() {
             @Override
             public void onResponse(RetornoPadraoDTO response) {
                 setResult(RESULT_OK);
@@ -155,9 +153,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     }
 
     private void atualizaComprovante(){
-        ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-
-        apostaBO.getApostaComprovantePremio(idAposta, new RequestListener<DetalhesPremioDTOResponse>() {
+        ApostaBO.getInstance().getApostaComprovantePremio(idAposta, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
                 loadViewProgress.dismiss();
@@ -177,8 +173,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     public void redirectMp() {
 
         loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO apostaBO = ApostaBO_.getInstance_(JogosConfirmadosPremioMercadoPagoActivity.this);
-        apostaBO.getMercadoPagoToken(emailPremioMercadoPagoEditText.getText().toString(), new RequestListener<StringResponse>() {
+        ApostaBO.getInstance().getMercadoPagoToken(emailPremioMercadoPagoEditText.getText().toString(), new RequestListener<StringResponse>() {
             @Override
             public void onResponse(StringResponse result) {
                 loadViewProgress.dismiss();

@@ -37,8 +37,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 @EActivity(R.layout.activity_resultado_ler_bilhetes_novo)
 public class ResultadoLerBilhetesNovoActivity extends AppCompatActivity {
 
-    @Bean
-    protected ApostaBO apostaBO;
+    private ApostaBO apostaBO = ApostaBO.getInstance();
 
     @ViewById
     protected Toolbar toolbar;
