@@ -15,6 +15,7 @@ import java.io.Serializable;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -57,7 +58,7 @@ public class IntentUtil {
 		Intent intent = null;
 
 		if (deepLink.equals(activity.getResources().getString(R.string.deeplink_path_combos))) {
-			intent = IntentUtil.getIntentOrigemDestino(activity, PrincipalActivity_.class);
+			intent = IntentUtil.getIntentOrigemDestino(activity, PrincipalActivity.class);
 		} else if (deepLink.equals(activity.getResources().getString(R.string.deeplink_path_apostas))) {
 			intent = IntentUtil.getIntentOrigemDestino(activity, MinhasApostasActivity.class);
 		} else if (deepLink.equals(activity.getResources().getString(R.string.depplink_path_compras))) {
