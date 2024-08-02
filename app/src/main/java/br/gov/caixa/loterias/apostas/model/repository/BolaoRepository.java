@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 
@@ -49,6 +50,12 @@ public class BolaoRepository extends AppRepository {
                 //força todas as modalidades
                 filtro.setIdModalidade(null);
             }
+            if (filtroAplicado.getTipoConcurso() != null) {
+                filtro.setTipoConcurso(TipoConcursoEnum.fromStringToIdTipoConcurso(filtroAplicado.getTipoConcurso()));
+            } else {
+                //força todos os tipos de concurso
+                filtro.setTipoConcurso(null);
+            }
         }
 
         //listener.success(BolaoListMock.getInstance().filtro(filtro));
@@ -56,7 +63,7 @@ public class BolaoRepository extends AppRepository {
     }
 
     private FiltroMarketPlace getFiltroMarketPlace(PaginacaoFiltro paginacao) {
-        return new FiltroMarketPlace(paginacao.getTipoConsulta(), paginacao.getIdMunicipio(), paginacao.getIdUf(), paginacao.getPagina(), paginacao.getQtdPorPagina(), paginacao.getIdModalidade());
+        return new FiltroMarketPlace(paginacao.getTipoConsulta(), paginacao.getIdMunicipio(), paginacao.getIdUf(), paginacao.getPagina(), paginacao.getQtdPorPagina(), paginacao.getIdModalidade(), paginacao.getIdTipoConcurso());
     }
 
     public void buscaDetalhesBolao(String codigoBolao, OnSilceListener<DetalheBolaoDTO> listener){

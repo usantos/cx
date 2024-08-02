@@ -8,4 +8,14 @@ import io.swagger.annotations.ApiModel;
 public enum TipoConcursoEnum {
     @SerializedName("NORMAL") NORMAL,
     @SerializedName("ESPECIAL") ESPECIAL;
+
+    public static Integer fromStringToIdTipoConcurso(TipoConcursoEnum tipoConcursoEnum) {
+        switch (tipoConcursoEnum) {
+            case NORMAL:
+                return 1;
+            case ESPECIAL:
+                return 2;
+        }
+        return null;
+    }
 }
