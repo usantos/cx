@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.FiltroMarketplaceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
@@ -71,6 +72,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private List<ModalidadeDisponivelCota> listModalidadeDisponivel;
     private ModalidadeEnum selectModalidade = null;
+    private TipoConcursoEnum selectTipoConcurso = null;
 
 
     @Override
@@ -148,8 +150,10 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         return (holder, position) -> {
             if (position == 0) {
                 selectModalidade = null;
+                selectTipoConcurso = null;
             } else {
                 selectModalidade = listModalidadeDisponivel.get(position).getModalidade();
+                selectTipoConcurso = listModalidadeDisponivel.get(position).getTipoConcurso();
             }
         };
     }
@@ -184,7 +188,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 editValMax.getText().toString(),
                 sliderQtdCotas.getValues().get(0),
                 sliderQtdCotas.getValues().get(1),
-                selectLotericaDTO, selectModalidade);
+                selectLotericaDTO, selectModalidade, selectTipoConcurso);
     }
 
     private void setaRangeComponentes() {

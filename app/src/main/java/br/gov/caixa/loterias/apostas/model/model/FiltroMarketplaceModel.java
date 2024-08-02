@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
 public class FiltroMarketplaceModel extends AppModel{
 	public FiltroMarketplaceModel(Activity activity) {
@@ -54,10 +55,11 @@ public class FiltroMarketplaceModel extends AppModel{
 	public FiltroAplicadoMarketplace getFiltroAplicado(String valorMin, String valorMax,
 													   Float qtdMin, Float qtdMax,
 													   LotericaDTO selectLotericaDTO,
-													   ModalidadeEnum selectModalidade) {
+													   ModalidadeEnum selectModalidade,
+													   TipoConcursoEnum selectTipoConcurso) {
 		return new FiltroAplicadoMarketplace(
 				valorMin.replace(".","").replace(",","."),
 				valorMax.replace(".","").replace(",","."),
-				qtdMin, qtdMax, selectLotericaDTO, selectModalidade);
+				qtdMin, qtdMax, selectLotericaDTO, selectModalidade, selectTipoConcurso);
 	}
 }
