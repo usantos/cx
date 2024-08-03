@@ -197,7 +197,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".controllers.CadastrarActivity_"
+            android:name=".controllers.CadastrarActivity"
             android:configChanges="orientation"
             android:parentActivityName=".controllers.IntroducaoActivity"
             android:screenOrientation="portrait"
@@ -205,12 +205,12 @@
         <activity
             android:name=".controllers.CadastrarPasso2Activity_"
             android:configChanges="orientation"
-            android:parentActivityName=".controllers.CadastrarActivity_"
+            android:parentActivityName=".controllers.CadastrarActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:screenOrientation="portrait"
-                android:value="br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_" />
+                android:value="br.gov.caixa.loterias.apostas.controllers.CadastrarActivity" />
         </activity>
         <activity
             android:name=".controllers.SimularApostaActivity"

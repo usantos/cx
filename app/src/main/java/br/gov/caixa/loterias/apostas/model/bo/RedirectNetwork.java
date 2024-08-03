@@ -16,7 +16,7 @@ import java.io.UnsupportedEncodingException;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_;
+import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
@@ -236,7 +236,7 @@ public class  RedirectNetwork {
                 return;
             case CADASTRAR_APOSTADOR:
                 if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
-                    activity.startActivity(new Intent(activity, CadastrarActivity_.class));
+                    activity.startActivity(new Intent(activity, CadastrarActivity.class));
                 }
                 return;
             case INDISPONIVEL:
@@ -296,7 +296,7 @@ public class  RedirectNetwork {
                 break;
             case CADASTRAR_APOSTADOR:
                 if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
-                    activity.startActivity(new Intent(activity, CadastrarActivity_.class));
+                    activity.startActivity(new Intent(activity, CadastrarActivity.class));
                 }
                 break;
             case INDISPONIVEL:

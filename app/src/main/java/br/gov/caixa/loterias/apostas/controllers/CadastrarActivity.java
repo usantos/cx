@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
-
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
@@ -15,10 +15,6 @@ import androidx.core.content.res.ResourcesCompat;
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -48,35 +44,30 @@ import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 
-@EActivity(R.layout.activity_cadastrar)
-
 public class CadastrarActivity extends CadastroActivity {
+
+    public final static String LIST_UF_STRING_EXTRA = "listUFString";
+    public final static String LIST_MUNICIPIOS_EXTRA = "listMunicipios";
 
     private static final String FORMATO_YYYYMMDD = "yyyyMMdd";
 
-    @ViewById
     EditText editTextNomeContent, editTextEmailContent, editTextMunicipioContent, editTextUFContent;
-
-    @ViewById
     MaskedEditText editTextCpfContent, editTextCepContent;
-
-    @ViewById
     Button buttonFinalizarCadastro;
-
-    @ViewById
     SegmentedButtonGroup segmentedButtonSexo;
-
-    @ViewById
     TextView textViewTituloCadastrar2, termoPolitica;
-
-    @Extra
     ArrayList<String> listUFString, listMunicipios;
-
-    @ViewById
     AppCompatCheckBox aceiteTermo;
 
-    @AfterViews
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cadastrar);
+        init();
+    }
+
     protected void init() {
+        getExtras();
+        setViews();
         super.createToolbar();
         loadFields();
         loadFields();
@@ -97,6 +88,32 @@ public class CadastrarActivity extends CadastroActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void getExtras() {
+        Bundle extras_ = getIntent().getExtras();
+        if (extras_!= null) {
+            if (extras_.containsKey(LIST_UF_STRING_EXTRA)) {
+                this.listUFString = extras_.getStringArrayList(LIST_UF_STRING_EXTRA);
+            }
+            if (extras_.containsKey(LIST_MUNICIPIOS_EXTRA)) {
+                this.listMunicipios = extras_.getStringArrayList(LIST_MUNICIPIOS_EXTRA);
+            }
+        }
+    }
+
+    private void setViews() {
+        this.editTextNomeContent = findViewById(R.id.editTextNomeContent);
+        this.editTextEmailContent = findViewById(R.id.editTextEmailContent);
+        this.editTextMunicipioContent = findViewById(R.id.editTextMunicipioContent);
+        this.editTextUFContent = findViewById(R.id.editTextUFContent);
+        this.editTextCpfContent = findViewById(R.id.editTextCpfContent);
+        this.editTextCepContent = findViewById(R.id.editTextCepContent);
+        this.buttonFinalizarCadastro = findViewById(R.id.buttonFinalizarCadastro);
+        this.segmentedButtonSexo = findViewById(R.id.segmentedButtonSexo);
+        this.textViewTituloCadastrar2 = findViewById(R.id.textViewTituloCadastrar2);
+        this.termoPolitica = findViewById(R.id.termoPolitica);
+        this.aceiteTermo = findViewById(R.id.aceiteTermo);
     }
 
     private void loadFields() {

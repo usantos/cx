@@ -44,13 +44,6 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.OptionsMenu;
-import org.androidannotations.annotations.ViewById;
-import org.androidannotations.api.view.OnViewChangedNotifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -116,9 +109,6 @@ import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
 
-
-//@OptionsMenu(R.menu.principal)
-//@EActivity(R.layout.activity_principal)
 public class PrincipalActivity extends AppCompatActivity
         implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
         DiscreteScrollView.OnItemChangedListener<HomeViewHolder> {
@@ -126,20 +116,14 @@ public class PrincipalActivity extends AppCompatActivity
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
 
-    //@ViewById
     public AppBarLayout navigationBarListaModalidade;
-    //@ViewById
     public DiscreteScrollView homeCarousel;
-    //@ViewById
-    protected Toolbar toolbar;
-    //@ViewById
-    protected DrawerLayout drawerLayout;
-    //@ViewById
-    protected Button buttonHomeBet, buttonHomeBolao;
-    //@ViewById
-    protected TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, recolherMenu;
-    //@ViewById
-    protected RelativeLayout relativeContentPrincipal,
+
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private Button buttonHomeBet, buttonHomeBolao;
+    private TextView textViewHomeMinimumPurchaseValue, tituloLerBilhetes, textoRepassados, valorRepassesPrincipal, txtVersaoMenu, nav_user, recolherMenu;
+    private RelativeLayout relativeContentPrincipal,
             rlJogoResponsavel,
             relativeBlankView,
             relativeLayoutContentRapidao,
@@ -147,19 +131,12 @@ public class PrincipalActivity extends AppCompatActivity
             relativeLayoutContentFavoritas,
             relativeLayoutContentRepassados,
             rlMsgDisque180;
-    //@ViewById
-    protected LinearLayout atalhoRapidoLoterias;
-    //@ViewById
-    protected ExpandableListView sideMenuExpandableListView;
-    //@ViewById
-    protected NavigationView nav_view;
-    //@ViewById
-    protected ConstraintLayout viewSair;
+    private LinearLayout atalhoRapidoLoterias;
+    private ExpandableListView sideMenuExpandableListView;
+    private NavigationView nav_view;
+    private ConstraintLayout viewSair;
 
-    //@Bean
     protected ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-
-    //@Bean
     protected DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(this);
 
     //fragments
@@ -197,7 +174,6 @@ public class PrincipalActivity extends AppCompatActivity
         return super.onCreateOptionsMenu(menu);
     }
 
-    //@AfterViews
     public void init() {
         //getExtras();
         setViews();
@@ -806,12 +782,10 @@ public class PrincipalActivity extends AppCompatActivity
         return false;
     }
 
-    //@Click(R.id.buttonHomeBet)
     protected void clickButtonHomeBet() {
         nextActivity(TutorialMaisMilionariaActivity.class);
     }
 
-    //@Click(R.id.buttonHomeBolao)
     protected void clickButtonBolao() {
         if(DadosUsuarioBO.checarUsuarioLogado(this)){
             int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
@@ -853,45 +827,38 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    //@Click(R.id.relativeLayoutContentRepassados)
     protected void clickRelativeLayoutContentRepassados() {
         AnimacaoFecharMenuRapido(relativeContentPrincipal);
         Intent activity = new Intent(PrincipalActivity.this, RepassesSociaisActivity.class);
         startActivity(activity);
     }
 
-    //@Click(R.id.relativeLayoutContentRapidao)
     protected void clickRelativeLayoutContentRapidao() {
         //AnimacaoFecharMenuRapido(relativeContentPrincipal);
         redirecionaRapidao();
     }
 
-    //@Click(R.id.rlJogoResponsavel)
     protected void clickrlJogoResponsavel() {
         AnimacaoFecharMenuRapido(relativeContentPrincipal);
         redirecionaJogoResponsavel();
     }
 
-    //@Click(R.id.rlMsgDisque180)
     protected void clickrlMsgDisque180() {
         AnimacaoFecharMenuRapido(relativeContentPrincipal);
         redirecionaMsgDisque180();
     }
 
-    //@Click(R.id.id_fg_somador_carrinho)
     protected void vaiProCarrinho() {
         if (somadorCarrinhoFragment != null && somadorCarrinhoFragment.isVisible()) {
             startActivity(new Intent(PrincipalActivity.this, CarrinhoActivity.class));
         }
     }
 
-    //@Click(R.id.relativeLayoutContentFavoritas)
     protected void clickRelativeLayoutContentFavoritas() {
         AnimacaoFecharMenuRapido(relativeContentPrincipal);
         startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
     }
 
-    //@Click(R.id.relativeLayoutContentLerBilhetes)
     protected void clickRelativeLayoutContentLerBilhetes() {
         if (ContextCompat.checkSelfPermission(PrincipalActivity.this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -903,7 +870,6 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    //@Click(R.id.recolherMenu)
     protected void clickRecolherMenu() {
         onBackPressed();
     }
