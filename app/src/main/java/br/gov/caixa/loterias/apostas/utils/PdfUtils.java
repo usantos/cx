@@ -5,8 +5,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.androidannotations.annotations.EBean;
-
 import java.io.File;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
@@ -18,7 +16,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
  * Class PdfUtils
  */
 
-@EBean
 public class PdfUtils {
 
     public static final String DIRETORIO_COMPROVANTE = "Comprovantes";
