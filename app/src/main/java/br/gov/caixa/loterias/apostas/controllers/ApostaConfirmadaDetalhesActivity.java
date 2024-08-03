@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -69,6 +70,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -418,10 +420,16 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void editarApostaBtn() {
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
-            SimularApostaActivity_.intent(this).aposta(aposta)
-                                  .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
-                                  .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
-                                  .start();
+            //SimularApostaActivity_.intent(this).aposta(aposta)
+            // .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
+            // .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
+            // .start();
+
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
+            intent.putExtra(SimularApostaActivity.APOSTA_EXTRA, ((Serializable) aposta));
+            intent.putExtra("tipoAposta", ((Serializable) aposta.getModalidade()));
+            intent.putExtra("modalidade", ((Serializable) (new Gson()).toJson(parametroSimulacao.getParametroJogo())));
+            startActivity(intent);
         }
     }
 
@@ -673,7 +681,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                apresentaBySituacao(aposta.getSituacao());
+                //** Estava duplicando ** apresentaBySituacao(aposta.getSituacao());
             }
         });
     }
@@ -743,7 +751,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 if (numerosFragment != null){
                     numerosFragment.setDetalhesPremio(result.getPayload());
                 }
-                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
+                //ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
+                Intent intent = IntentUtil.getIntentOrigemDestino((Activity) contextParam, ResultadoApostaConfirmadaActivity.class);
+                intent.putExtra(ResultadoApostaConfirmadaActivity.DETALHES_PREMIO_DTO_EXTRA, ((Serializable) result.getPayload()));
+                intent.putExtra(ResultadoApostaConfirmadaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovante));
+                ((Activity) contextParam).startActivityForResult(intent, RESGATOU_MP);
             }
 
             @Override

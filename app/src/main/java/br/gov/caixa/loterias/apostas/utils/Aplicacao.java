@@ -21,7 +21,7 @@ import java.util.Date;
 import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.LocalizacaoActivity;
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -162,12 +162,11 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
     }
     
     private void atualizaLayout(Activity activity){
-        ArrayList<String> permitidas = new ArrayList<>((Arrays.asList(PrincipalActivity_.class.toString().toUpperCase(), CarrinhoActivity.class.toString().toUpperCase())));
+        ArrayList<String> permitidas = new ArrayList<>((Arrays.asList(PrincipalActivity.class.toString().toUpperCase(), CarrinhoActivity.class.toString().toUpperCase())));
         if(permitidas.contains(activity.getClass().toString().toUpperCase())){
             isRecreated = true;
             if (android.os.Build.VERSION.SDK_INT >= 11){
                 activity.recreate();
-
             }else{
                 Intent intent = new Intent(activity, activity.getClass());
                 if (activity.getIntent().getExtras() != null) {

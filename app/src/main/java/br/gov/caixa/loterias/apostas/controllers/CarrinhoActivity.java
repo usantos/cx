@@ -40,6 +40,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
@@ -368,8 +369,14 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     private void showAlertLocalizacao() {
         ViewUtils.alertTitleButton(this, R.string.label_atencao,
-                                   getString(R.string.alerta_precisa_estar_no_brasil),
-                                   getResources().getString(R.string.title_entendi), dialog -> PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start());
+                getString(R.string.alerta_precisa_estar_no_brasil),
+                getResources().getString(R.string.title_entendi),
+                dialog -> {
+                    //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                    Intent intent = IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, PrincipalActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                });
     }
 
     private void onFluxoLocalizacaoNoBrasil(){
@@ -556,7 +563,10 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     protected void clickBotaoFazerNovaAposta() {
         if (origem != null && origem.equalsIgnoreCase(DetalhesComprasActivity.DETALHES_COMPRA_ACTIVITY)){
-            PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+            //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+            Intent intent = IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, PrincipalActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         } else {
             setResult(2);
             finish();

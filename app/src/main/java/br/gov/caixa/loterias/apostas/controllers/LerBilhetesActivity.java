@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
 import br.gov.caixa.loterias.apostas.utils.BilheteUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 
 
 public class LerBilhetesActivity extends AppCompatActivity {
@@ -91,10 +92,15 @@ public class LerBilhetesActivity extends AppCompatActivity {
 //                          }
 //                          isRunning10Seg = false;
                             isScanned = false;
-                            ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this)
-                                                         .codBarras(code).nsb(nsbFormatado)
-                                                         .tipoLeitura(tipo)
-                                                         .startForResult(INTENT_RESULT);
+                            //ResultadoLerBilhetesActivity_.intent(LerBilhetesActivity.this)
+                            //                             .codBarras(code).nsb(nsbFormatado)
+                            //                             .tipoLeitura(tipo)
+                            //                             .startForResult(INTENT_RESULT);
+                            Intent intent = IntentUtil.getIntentOrigemDestino(LerBilhetesActivity.this, ResultadoLerBilhetesActivity.class);
+                            intent.putExtra(ResultadoLerBilhetesActivity.COD_BARRAS_EXTRA, code);
+                            intent.putExtra(ResultadoLerBilhetesActivity.NSB_EXTRA, nsbFormatado);
+                            intent.putExtra(ResultadoLerBilhetesActivity.TIPO_LEITURA_EXTRA, tipo);
+                            startActivityForResult(intent, INTENT_RESULT);
                         }
 
                     } else {

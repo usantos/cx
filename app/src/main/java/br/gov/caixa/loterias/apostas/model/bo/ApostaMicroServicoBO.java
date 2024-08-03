@@ -16,8 +16,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingle
 
 import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
-@EBean(scope = Singleton)
 public class ApostaMicroServicoBO extends BaseMicroServicoBO {
+    private static ApostaMicroServicoBO instance;
+
+    private ApostaMicroServicoBO(){}
+
+    public static ApostaMicroServicoBO getInstance(){
+        if (instance == null){
+            instance = new ApostaMicroServicoBO();
+        }
+        return instance;
+    }
 
     private static LinkedHashMap<String, String> header;
 
@@ -31,18 +40,18 @@ public class ApostaMicroServicoBO extends BaseMicroServicoBO {
     }
 
     public void getApostasConfirmadasMicroServico(String urlBase, ApostaPageRequest page, RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
-        connection = MicroServicoConnection.create(MicroServicoSingleton.getInstance().getRequestQueue(), urlBase);
+        setConnection(MicroServicoConnection.create(MicroServicoSingleton.getInstance().getRequestQueue(), urlBase));
 
         final Map<String, String> queryParams = getQueryParams(page);
 
-        final GsonRequest request = connection.buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_PATH,
+        final GsonRequest request = getConnection().buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_PATH,
                                                                     queryParams,
                                                                     ResultadoPesquisaPaginadaDTOApostaDTOResponse.class,
                                                                     listener.getSilceListener(),
                                                                     listener.getErrorListener(),
                                                                     getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        connection.request(request, listener);
+        getConnection().request(request, listener);
     }
 
     private Map<String, String> getQueryParams(ApostaPageRequest page) {

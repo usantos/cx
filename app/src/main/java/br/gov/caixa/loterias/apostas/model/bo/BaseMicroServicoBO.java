@@ -13,10 +13,6 @@ import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
@@ -29,20 +25,30 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingleton;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 
-@EBean
-public class BaseMicroServicoBO {
+public abstract class BaseMicroServicoBO {
 
-    protected MicroServicoConnection connection;
+    private MicroServicoConnection connection;
+    private Context context;
 
-    @RootContext
-    protected Context context;
+    public BaseMicroServicoBO(){
+        this.context = Aplicacao.application.getApplicationContext();
+    }
 
-    @AfterInject
-    protected void init(){
+    public MicroServicoConnection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(MicroServicoConnection connection) {
+        this.connection = connection;
+    }
+
+    public Context getContext(){
+        return this.context;
     }
 
     protected <T> Response.ErrorListener interceptError(final GsonRequest request, final Map<String, String> headers, final RequestListener<T> listener){
@@ -110,7 +116,6 @@ public class BaseMicroServicoBO {
         };
     }
 
-
     private void registraErro(VolleyError error, GsonRequest request){
         ErrorResponse   errorResponse = transformaErroEmErrorResponse(error);
         NetworkResponse response      = error.networkResponse;
@@ -125,7 +130,6 @@ public class BaseMicroServicoBO {
         }
         return Bin.fromBase64(request.getUrl().replaceAll(BuildConfig.CAIXA_BASE_URL_SILCE,"")).toUtf8();
     }
-
 
     public static ErrorResponse transformaErroEmErrorResponse(VolleyError error){
         ErrorResponse errorResponse = new ErrorResponse();

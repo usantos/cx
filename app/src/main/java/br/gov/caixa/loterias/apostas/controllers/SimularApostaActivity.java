@@ -31,11 +31,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
-
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -89,46 +84,24 @@ import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 import static java.lang.String.format;
 
-@EActivity(R.layout.activity_simular_aposta)
 public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener, OnPaginacaoListener {
 
+    public final static String APOSTA_EXTRA = "aposta";
     private static int RESULT_FINISH = 3;
 
-    @ViewById
-    protected DrawerLayout drawerLayout;
-
-    @ViewById
-    protected ConstraintLayout toolBarLoteca, simularApostaLayoutCarrinhoApostas;
-
-    @ViewById
-    protected Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
-
-    @ViewById
-    protected FrameLayout fragmentSimularApostas;
-
-    @ViewById
-    protected TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
+    private DrawerLayout drawerLayout;
+    private ConstraintLayout toolBarLoteca, simularApostaLayoutCarrinhoApostas;
+    private Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
+    private FrameLayout fragmentSimularApostas;
+    private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
             labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, textViewCarrinhoCartelaCount;
+    private LinearLayout toolBarSimularAposta;
+    private RelativeLayout salvarApostaLayout, carrinhoApostas, viewTabBar;
+    private ImageButton btnSalvarAposta;
+    private EditText editNomeAposta;
+    private ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton;
+    private FrameLayout paginacaoView;
 
-    @ViewById
-    protected LinearLayout toolBarSimularAposta;
-
-    @ViewById
-    protected RelativeLayout salvarApostaLayout, carrinhoApostas, viewTabBar;
-
-    @ViewById
-    protected ImageButton btnSalvarAposta;
-
-    @ViewById
-    protected EditText editNomeAposta;
-
-    @ViewById
-    protected ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton;
-
-    @ViewById
-    protected FrameLayout paginacaoView;
-
-    @Extra
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     // Fragments
@@ -164,9 +137,16 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private Boolean isSurpresinha = false;
 
-    @AfterViews
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_simular_aposta);
+        init();
+    }
+    
     protected void init() {
         dadosCorporativosBO = DadosCorporativosBO.getInstance();
+        getExtras();
+        setViews();
         isEspecial =  getIntent().getBooleanExtra(getResources().getString(R.string.extra_especial), false);
         invalidateOptionsMenu();
         zerarApostas();
@@ -178,6 +158,46 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.SUPER_SETE_TUTORIAL)) {
             startActivity(new Intent(this,TutorialSuperSeteActivity.class));
         }
+    }
+
+    private void getExtras() {
+        Bundle extras_ = getIntent().getExtras();
+        if (extras_!= null) {
+            if (extras_.containsKey(APOSTA_EXTRA)) {
+                this.aposta = ((IdentificaoDeUmaApostaDas8Modalidades) extras_.getSerializable(APOSTA_EXTRA));
+            }
+        }
+    }
+
+    private void setViews() {
+        this.drawerLayout = findViewById(R.id.drawerLayout);
+        this.toolBarLoteca = findViewById(R.id.toolBarLoteca);
+        this.simularApostaLayoutCarrinhoApostas = findViewById(R.id.simularApostaLayoutCarrinhoApostas);
+        this.simularTelaAposta = findViewById(R.id.simularTelaAposta);
+        this.surpresinhaTela = findViewById(R.id.surpresinhaTela);
+        this.qtdNumerosButton = findViewById(R.id.qtdNumerosButton);
+        this.qtdConcursosButton = findViewById(R.id.qtdConcursosButton);
+        this.botaoLimparAposta = findViewById(R.id.botaoLimparAposta);
+        this.botaoAdicionarCompletarCartela = findViewById(R.id.botaoAdicionarCompletarCartela);
+        this.botaoCarrinho = findViewById(R.id.botaoCarrinho);
+        this.fragmentSimularApostas = findViewById(R.id.fragmentSimularApostas);
+        this.labelValueJogosLoteca = findViewById(R.id.labelValueJogosLoteca);
+        this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
+        this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
+        this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
+        this.textoDeNomeInfo = findViewById(R.id.textoDeNomeInfo);
+        this.textoSalveEstaAposta = findViewById(R.id.textoSalveEstaAposta);
+        this.textViewCarrinhoCartelaCount = findViewById(R.id.textViewCarrinhoCartelaCount);
+        this.toolBarSimularAposta = findViewById(R.id.toolBarSimularAposta);
+        this.salvarApostaLayout = findViewById(R.id.salvarApostaLayout);
+        this.carrinhoApostas = findViewById(R.id.carrinhoApostas);
+        this.viewTabBar = findViewById(R.id.viewTabBar);
+        this.btnSalvarAposta = findViewById(R.id.btnSalvarAposta);
+        this.editNomeAposta = findViewById(R.id.editNomeAposta);
+        this.imageViewPaginacao = findViewById(R.id.imageViewPaginacao);
+        this.iconStarSalvar = findViewById(R.id.iconStarSalvar);
+        this.imageQtdNumerosButton = findViewById(R.id.imageQtdNumerosButton);
+        this.paginacaoView = findViewById(R.id.paginacaoView);
     }
 
     @Override

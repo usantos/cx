@@ -27,7 +27,7 @@
 
                 <TextView
                     android:id="@+id/textDuvidaDetalhe"
-                    style="@style/ArialMT"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/cinza"
@@ -60,7 +60,7 @@
 
             <TextView
                 android:id="@+id/textDetalhe"
-                style="@style/ArialMT"
+                android:fontFamily="@font/caixa_std_regular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="18dp"

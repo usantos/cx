@@ -41,7 +41,6 @@ import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -86,8 +85,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private static final int PAGE_SIZE = 30;
 
     private ApostaBO apostaBO;
-    @Bean
-    protected ApostaMicroServicoBO apostaMicroServicoBO;
 
     @ViewById
     protected TextView dateResultTxt;
@@ -276,8 +273,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private void requestApostasMicroServico(String urlBaseBuscaApostas) {
-        this.apostaMicroServicoBO = ApostaMicroServicoBO_.getInstance_(getActivity());
-        apostaMicroServicoBO.getApostasConfirmadasMicroServico(urlBaseBuscaApostas, page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+        ApostaMicroServicoBO.getInstance().getApostasConfirmadasMicroServico(urlBaseBuscaApostas, page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
                 chamarApostaNovamente = false;

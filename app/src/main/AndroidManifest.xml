@@ -197,23 +197,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".controllers.CadastrarActivity_"
+            android:name=".controllers.CadastrarActivity"
             android:configChanges="orientation"
             android:parentActivityName=".controllers.IntroducaoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".controllers.CadastrarPasso2Activity_"
-            android:configChanges="orientation"
-            android:parentActivityName=".controllers.CadastrarActivity_"
-            android:screenOrientation="portrait">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:screenOrientation="portrait"
-                android:value="br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_" />
-        </activity>
-        <activity
-            android:name=".controllers.SimularApostaActivity_"
+            android:name=".controllers.SimularApostaActivity"
             android:configChanges="orientation"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
@@ -265,7 +255,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".controllers.PrincipalActivity_"
+            android:name=".controllers.PrincipalActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.BrancoActionBar"
@@ -364,12 +354,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".controllers.ResultadoLerBilhetesActivity_"
-            android:label="@string/title_activity_resultado_ler_bilhetes"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar" />
-        <activity
-            android:name=".controllers.ResultadoLerBilhetesNovoActivity_"
+            android:name=".controllers.ResultadoLerBilhetesActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
@@ -384,10 +369,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
-            android:name=".controllers.DetalheDuvidaActivity_"
+            android:name=".controllers.DetalheDuvidaActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controllers.MinhasApostasActivity_"
+            android:name=".controllers.MinhasApostasActivity"
             android:label="@string/title_activity_minhas_apostas"
             android:parentActivityName=".controllers.PrincipalActivity"
             android:screenOrientation="portrait"
@@ -425,10 +410,10 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".controllers.ResultadoApostaConfirmadaActivity_"
+            android:name=".controllers.ResultadoApostaConfirmadaActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait" />
-        <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity_" />
+        <activity android:name=".controllers.ResgatePremioLotericaAgenciaActivity" />
         <activity
             android:name=".controllers.DadosPessoaisActivity"
             android:label="@string/title_activity_dados_pessoais"
