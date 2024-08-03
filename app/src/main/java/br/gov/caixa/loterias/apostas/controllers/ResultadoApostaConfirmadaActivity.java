@@ -279,8 +279,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     protected void clickBotaoAposteAgora() {
 
-        Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, PrincipalActivity_.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, PrincipalActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
         startActivity(it);
     }

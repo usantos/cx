@@ -331,15 +331,15 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     }
 
     protected void clickBotaoAposteAgora() {
-        Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity_.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
         startActivity(it);
     }
 
     protected void clickBotaoAposteAgora2() {
-        Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity_.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
         startActivity(it);
     }

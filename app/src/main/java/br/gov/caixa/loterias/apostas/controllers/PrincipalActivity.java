@@ -118,7 +118,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
 
 //@OptionsMenu(R.menu.principal)
-@EActivity(R.layout.activity_principal)
+//@EActivity(R.layout.activity_principal)
 public class PrincipalActivity extends AppCompatActivity
         implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
         DiscreteScrollView.OnItemChangedListener<HomeViewHolder> {

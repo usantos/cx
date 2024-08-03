@@ -26,7 +26,7 @@ import java.util.concurrent.Executor;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
@@ -51,6 +51,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
@@ -109,7 +110,7 @@ public class LoginFragment extends Fragment {
             KeycloakBO_.getInstance_(getActivity()).limparSessao(getActivity());
 
             DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
-            startActivity(new Intent(getContext(), PrincipalActivity_.class));
+            startActivity(new Intent(getContext(), PrincipalActivity.class));
             getActivity().finish();
         });
 
@@ -170,7 +171,9 @@ public class LoginFragment extends Fragment {
             if(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() == null){
                 verificarCadastroWebservice();
             }else {
-                PrincipalActivity_.intent(getActivity()).start();
+                //PrincipalActivity_.intent(getActivity()).start();
+                Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), PrincipalActivity.class);
+                getActivity().startActivity(intent);
                 getActivity().finish();
             }
         }
@@ -212,7 +215,10 @@ public class LoginFragment extends Fragment {
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                     UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
 
-                    PrincipalActivity_.intent(getActivity()).start();
+                    //PrincipalActivity_.intent(getActivity()).start();
+                    Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), PrincipalActivity.class);
+                    getActivity().startActivity(intent);
+
                     getActivity().finish();
                 } else {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
@@ -355,7 +361,7 @@ public class LoginFragment extends Fragment {
         return new OnRefreshTokenListener() {
             @Override
             public void successRefresh() {
-                startActivity(new Intent(getContext(), PrincipalActivity_.class));
+                startActivity(new Intent(getContext(), PrincipalActivity.class));
                 getActivity().finish();
             }
 

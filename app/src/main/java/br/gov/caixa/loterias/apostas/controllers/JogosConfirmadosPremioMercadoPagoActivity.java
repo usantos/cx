@@ -34,6 +34,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ValidacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -115,7 +116,12 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         });
 
         //voltarPremioButton.setOnClickListener(view -> finish());
-        voltarPremioButton.setOnClickListener(view -> PrincipalActivity_.intent(JogosConfirmadosPremioMercadoPagoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start());
+        voltarPremioButton.setOnClickListener(view -> {
+            //PrincipalActivity_.intent(JogosConfirmadosPremioMercadoPagoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+            Intent intent = IntentUtil.getIntentOrigemDestino(JogosConfirmadosPremioMercadoPagoActivity.this, PrincipalActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        });
     }
 
     private void callWebserviceResgatarPremio() {

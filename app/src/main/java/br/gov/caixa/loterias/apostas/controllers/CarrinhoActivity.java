@@ -369,8 +369,14 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     private void showAlertLocalizacao() {
         ViewUtils.alertTitleButton(this, R.string.label_atencao,
-                                   getString(R.string.alerta_precisa_estar_no_brasil),
-                                   getResources().getString(R.string.title_entendi), dialog -> PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start());
+                getString(R.string.alerta_precisa_estar_no_brasil),
+                getResources().getString(R.string.title_entendi),
+                dialog -> {
+                    //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                    Intent intent = IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, PrincipalActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                });
     }
 
     private void onFluxoLocalizacaoNoBrasil(){
@@ -561,7 +567,6 @@ public class CarrinhoActivity extends AppCompatActivity {
             Intent intent = IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, PrincipalActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-
         } else {
             setResult(2);
             finish();

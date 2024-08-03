@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTORespons
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -80,7 +81,12 @@ public class ConfirmacaoResgatePixActivity extends AppCompatActivity {
                 atualizaComprovante();
             }
         });
-        voltarConfirmacaoResgate.setOnClickListener(view -> PrincipalActivity_.intent(ConfirmacaoResgatePixActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start());
+        voltarConfirmacaoResgate.setOnClickListener(view -> {
+            //PrincipalActivity_.intent(ConfirmacaoResgatePixActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+            Intent intent = IntentUtil.getIntentOrigemDestino(ConfirmacaoResgatePixActivity.this, PrincipalActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        });
     }
 
     private void atualizaComprovante(){
