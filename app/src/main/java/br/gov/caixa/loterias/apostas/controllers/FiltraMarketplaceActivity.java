@@ -218,7 +218,8 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 model.buscaLotericas(text, onBuscaLotericasListener());
             } else {
                 if (listLotericaDTO != null && listLotericaDTO.size()>0) {
-                    apresentaListaFiltrada(model.getListaFiltrada(text, listLotericaDTO));
+                    listLotericaDTO = model.getListaFiltrada(text, listLotericaDTO);
+                    apresentaListaFiltrada(listLotericaDTO);
                 }
             }
         } else {

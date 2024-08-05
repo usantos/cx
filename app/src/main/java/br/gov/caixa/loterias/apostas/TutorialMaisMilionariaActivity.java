@@ -37,7 +37,7 @@ public class TutorialMaisMilionariaActivity extends AppCompatActivity implements
 
 		initFragmentList();
 		fragment = TutorialNovaModalidadeFragment.newInstance();
-		FragmentUtils.startFragment(getSupportFragmentManager(), R.id.frameTutorial, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(getSupportFragmentManager(), R.id.frameTutorial, fragment);
 	}
 
 	private void getBundle() {
