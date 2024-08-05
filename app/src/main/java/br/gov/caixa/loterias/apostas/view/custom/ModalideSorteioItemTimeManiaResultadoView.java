@@ -28,30 +28,55 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultados
  */
 
 
-@EViewGroup(R.layout.item_resultado_timemania)
+//@EViewGroup(R.layout.item_resultado_timemania)
 public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
 
-    @ViewById
+    private boolean alreadyInflated = false;
+
+    //@ViewById
     protected RecyclerView recyclerNumerosResultado;
 
-    @ViewById
+    //@ViewById
     protected LinearLayout  item_resultado_content_view;
 
-    @ViewById
+    //@ViewById
     protected View tracoViewDivisoriaResultado;
 
-    @ViewById
+    //@ViewById
     protected TextView labelTimeCoracaoText, textTimeCoracao;
 
-    @ViewById
+    //@ViewById
     protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
 
-    @ViewById
+    //@ViewById
     protected ImageView timeCoracaoImage;
 
-    @AfterViews
-    protected void init() {
 
+    public static ModalideSorteioItemTimeManiaResultadoView build(Context context) {
+        ModalideSorteioItemTimeManiaResultadoView instance = new ModalideSorteioItemTimeManiaResultadoView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_resultado_timemania, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    //@AfterViews
+    protected void init() {
+        this.recyclerNumerosResultado = findViewById(R.id.recyclerNumerosResultado);
+        this.item_resultado_content_view = findViewById(R.id.item_resultado_content_view);
+        this.tracoViewDivisoriaResultado = findViewById(R.id.tracoViewDivisoriaResultado);
+        this.labelTimeCoracaoText = findViewById(R.id.labelTimeCoracaoText);
+        this.textTimeCoracao = findViewById(R.id.textTimeCoracao);
+        this.partidaViewDetalhesResultadoView = findViewById(R.id.partidaViewDetalhesResultadoView);
+        this.timeCoracaoImage = findViewById(R.id.timeCoracaoImage);
     }
 
     public void setLayout(Modalidade modalidade) {

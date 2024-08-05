@@ -84,7 +84,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
                 break;
             case TIMEMANIA:
                 this.contentResultadoItem.removeAllViews();
-                ModalideSorteioItemTimeManiaResultadoView view3 = ModalideSorteioItemTimeManiaResultadoView_.build(getContext());
+                ModalideSorteioItemTimeManiaResultadoView view3 = ModalideSorteioItemTimeManiaResultadoView.build(getContext());
                 view3.setLayout(modalidade);
                 this.contentResultadoItem.addView(view3);
                 break;
@@ -102,7 +102,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
                 break;
             case DIA_DE_SORTE:
                 this.contentResultadoItem.removeAllViews();
-                ModalideSorteioItemTimeManiaResultadoView view6 = ModalideSorteioItemTimeManiaResultadoView_.build(getContext());
+                ModalideSorteioItemTimeManiaResultadoView view6 = ModalideSorteioItemTimeManiaResultadoView.build(getContext());
                 view6.setLayout(modalidade);
                 this.contentResultadoItem.addView(view6);
                 break;

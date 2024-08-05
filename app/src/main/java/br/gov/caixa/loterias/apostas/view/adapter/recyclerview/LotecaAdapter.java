@@ -10,7 +10,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.view.custom.PartidaView;
-import br.gov.caixa.loterias.apostas.view.custom.PartidaView_;
 import br.gov.caixa.loterias.apostas.view.holder.LotecaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 
@@ -33,7 +32,8 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
 
     @Override
     public LotecaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        PartidaView view = PartidaView_.build(parent.getContext());
+        //PartidaView view = PartidaView_.build(parent.getContext());
+        PartidaView view = PartidaView.build(parent.getContext());
         return new LotecaHolder(view, parametroJogo, listener);
     }
 
@@ -41,7 +41,6 @@ public class LotecaAdapter extends RecyclerView.Adapter<LotecaHolder> {
     public void onBindViewHolder(LotecaHolder holder, int position) {
         ParametroPartida parametroPartida = listaPartidas.get(position);
         holder.bind(parametroPartida, position);
-
     }
 
     @Override

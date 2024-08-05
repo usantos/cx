@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.view.custom;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import org.androidannotations.annotations.AfterViews;
@@ -23,10 +24,10 @@ import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
 /**
  * Created by joafilho on 28/12/2017.
  */
-@EViewGroup(R.layout.row_time_loteca)
 public class PartidaView extends LinearLayout {
 
-    @ViewById
+    private boolean alreadyInflated = false;
+
     public ItemEquipeView lotecaTimeUm, lotecaEmpate, lotecaTimeDois;
 
     private ParametroPartida parametroPartida;
@@ -38,9 +39,48 @@ public class PartidaView extends LinearLayout {
 
     private static final float ZERO= 0;
 
-    @AfterViews
-    protected void init() {
+    public static PartidaView build(Context context) {
+        PartidaView instance = new PartidaView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
 
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.row_time_loteca, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    //@AfterViews
+    protected void init() {
+        this.lotecaTimeUm = findViewById(R.id.loteca_time_um);
+        this.lotecaEmpate = findViewById(R.id.loteca_empate);
+        this.lotecaTimeDois = findViewById(R.id.loteca_time_dois);
+
+        lotecaTimeUm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickTimeUm();
+            }
+        });
+
+        lotecaTimeDois.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickTimeDois();
+            }
+        });
+
+        lotecaEmpate.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickEmpate();
+            }
+        });
     }
 
     private boolean verificaAberto(){
@@ -60,7 +100,7 @@ public class PartidaView extends LinearLayout {
 
     }
 
-    @Click(R.id.loteca_time_um)
+    //@Click(R.id.loteca_time_um)
     public void clickTimeUm() {
         if(!verificaAberto()){
             return;
@@ -93,7 +133,7 @@ public class PartidaView extends LinearLayout {
         listener.clickEquipeLoteca(parametroPartida);
     }
 
-    @Click(R.id.loteca_time_dois)
+    //@Click(R.id.loteca_time_dois)
     public void clickTimeDois() {
         if(!verificaAberto()){
             return;
@@ -126,7 +166,7 @@ public class PartidaView extends LinearLayout {
         listener.clickEquipeLoteca(parametroPartida);
     }
 
-    @Click(R.id.loteca_empate)
+    //@Click(R.id.loteca_empate)
     public void clickEmpate() {
         if(!verificaAberto()){
             return;
