@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -60,21 +62,16 @@ import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
-@EFragment(R.layout.fragment_trevos)
 public class TrevosFragment extends Fragment implements OnItemClickListener<DezenaHolder> {
-    private   boolean isAvisou = false;
+    private static final String ARG_APOSTA = "ARG_APOSTA";
+    private static final String ARG_PARAMENTRO = "ARG_PARAMENTRO";
+    private static final String ARG_SELECIONADOS = "ARG_SELECIONADOS";
+    private boolean isAvisou = false;
     private static final int QUANTIDADE_COLUNA_LISTA = 3;
-    @ViewById
-    protected RecyclerView listaTrevos;
-
-    @FragmentArg
-    protected ParametroJogoDTO parametro;
-    @FragmentArg
-    protected ArrayList<Integer> dezenasSelecionadas;
-
-    @FragmentArg
-    protected IdentificaoDeUmaApostaDas8Modalidades aposta;
-
+    private RecyclerView listaTrevos;
+    private ParametroJogoDTO parametro;
+    private ArrayList<Integer> dezenasSelecionadas;
+    private IdentificaoDeUmaApostaDas8Modalidades aposta;
     private OnTrevosListener listener;
     private List<ParametroValorApostaDTO> valoresApostas;
     private String textoBotaoTrevosSelecionado;
@@ -82,8 +79,24 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     private List<Dezena> dezenaList;
     private List<Integer> trevoSelecionadoList = new ArrayList<>();
     private ListaDezenaRecyclerView adappter;
+    private View view;
 
     private TrevoModel model;
+
+    private TrevosFragment(){}
+
+    public static TrevosFragment newInstance(IdentificaoDeUmaApostaDas8Modalidades aposta,
+                                             ParametroJogoDTO parametro,
+                                             ArrayList<Integer> dezenasSelecionadas){
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_APOSTA, aposta);
+        args.putSerializable(ARG_PARAMENTRO, parametro);
+        args.putString(ARG_SELECIONADOS, String.valueOf(dezenasSelecionadas));
+
+        TrevosFragment frag = new TrevosFragment();
+        frag.setArguments(args);
+        return frag;
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -95,8 +108,31 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         }
     }
 
-    @AfterViews
-    protected void init() {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null){
+            aposta = (IdentificaoDeUmaApostaDas8Modalidades) getArguments().getSerializable(ARG_APOSTA);
+            parametro = (ParametroJogoDTO) getArguments().getSerializable(ARG_PARAMENTRO);
+            String json = getArguments().getString(ARG_SELECIONADOS);
+            if (json != null && !json.isEmpty()){
+                dezenasSelecionadas = new Gson().fromJson(json, new TypeToken<List<Integer>>() {}.getType());
+            }
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        view = inflater.inflate(R.layout.fragment_trevos, container, false);
+        listaTrevos = view.findViewById(R.id.listaTrevos);
+        init();
+
+        return view;
+    }
+
+    private void init() {
         textoBotaoTrevosSelecionado = parametro.getTrevos().getQtdMinima() + getString(R.string.espaco_em_branco) +getString(R.string.trevos);
         listener.getButtonQtdTrevos().setText(textoBotaoTrevosSelecionado);
 
@@ -273,7 +309,6 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         };
     }
 
-
     private void addApostaCarrinho() {
         BigDecimal valorAposta = BigDecimal.ZERO;
         if (listener.getQtdConcursos() > 0){
@@ -380,13 +415,6 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         }
 
         return valores;
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     private String getStringFormatada(int idString, String target, String replace){
