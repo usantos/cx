@@ -136,8 +136,8 @@ public class PrincipalActivity extends AppCompatActivity
     private NavigationView nav_view;
     private ConstraintLayout viewSair;
 
-    protected ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-    protected DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(this);
+    protected ApostaBO apostaBO;
+    protected DadosUsuarioBO dadosUsuarioBO;
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
@@ -176,6 +176,8 @@ public class PrincipalActivity extends AppCompatActivity
 
     public void init() {
         //getExtras();
+        dadosUsuarioBO = DadosUsuarioBO_.getInstance_(this);
+        apostaBO = ApostaBO_.getInstance_(this);
         setViews();
 
         setSupportActionBar(toolbar);

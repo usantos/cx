@@ -67,7 +67,6 @@ import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
@@ -558,8 +557,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha) {
-        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, MesesFragment_.builder().modalidadeEnum(tipoJogo).
-                parametroJogoDTO(parametroSimulacao).dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
+        FragmentUtils.startMesesFragment(fragmentManager, R.id.fragmentSimularApostas, tipoJogo,
+                parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
 
         if (surpresinha) {
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
