@@ -19,14 +19,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
  * Created by cedesbr450 on 15/03/18.
  */
 
-@EViewGroup(R.layout.row_apostas_partidas_loteca)
 public class PartidaViewLoteca extends LinearLayout {
 
-    @ViewById
-    protected ApostaEquipeLotecaView apostas_partida_loteca_view_um, apostas_partida_loteca_view_empate, apostas_partida_loteca_view_dois;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    protected LinearLayout layout_row_apostas_partidas_loteca_list_view;
+    private ApostaEquipeLotecaView apostas_partida_loteca_view_um, apostas_partida_loteca_view_empate, apostas_partida_loteca_view_dois;
+    private LinearLayout layout_row_apostas_partidas_loteca_list_view;
 
     public LinearLayout getLayout_row_apostas_partidas_loteca_list_view() {
         return layout_row_apostas_partidas_loteca_list_view;
@@ -36,9 +34,27 @@ public class PartidaViewLoteca extends LinearLayout {
         this.layout_row_apostas_partidas_loteca_list_view = layout_row_apostas_partidas_loteca_list_view;
     }
 
-    @AfterViews
+    public static PartidaViewLoteca build(Context context) {
+        PartidaViewLoteca instance = new PartidaViewLoteca(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.row_apostas_partidas_loteca, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
     protected void init() {
-        Log.d("dd", "dd");
+        this.apostas_partida_loteca_view_um = findViewById(R.id.apostas_partida_loteca_view_um);
+        this.apostas_partida_loteca_view_empate = findViewById(R.id.apostas_partida_loteca_view_empate);
+        this.apostas_partida_loteca_view_dois = findViewById(R.id.apostas_partida_loteca_view_dois);
+        this.layout_row_apostas_partidas_loteca_list_view = findViewById(R.id.layout_row_apostas_partidas_loteca_list_view);
     }
 
     public void setLayout(PartidaLotecaDTO parametroPartida) {

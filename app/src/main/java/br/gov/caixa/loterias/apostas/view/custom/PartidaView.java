@@ -99,7 +99,6 @@ public class PartidaView extends LinearLayout {
 
     }
 
-    //@Click(R.id.loteca_time_um)
     public void clickTimeUm() {
         if(!verificaAberto()){
             return;
@@ -132,7 +131,6 @@ public class PartidaView extends LinearLayout {
         listener.clickEquipeLoteca(parametroPartida);
     }
 
-    //@Click(R.id.loteca_time_dois)
     public void clickTimeDois() {
         if(!verificaAberto()){
             return;
@@ -165,7 +163,6 @@ public class PartidaView extends LinearLayout {
         listener.clickEquipeLoteca(parametroPartida);
     }
 
-    //@Click(R.id.loteca_empate)
     public void clickEmpate() {
         if(!verificaAberto()){
             return;
