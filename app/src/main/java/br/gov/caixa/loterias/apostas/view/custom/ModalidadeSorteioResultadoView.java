@@ -25,22 +25,45 @@ import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
  * Created by cedesbr450 on 26/03/18.
  */
 
-@EViewGroup(R.layout.item_resultado)
+//@EViewGroup(R.layout.item_resultado)
 public class ModalidadeSorteioResultadoView extends ScrollView {
+
+    private boolean alreadyInflated = false;
 
     private Modalidade modalidade;
 
-    @ViewById
+    //@ViewById
     protected TextView numeroeDataConcursoResultadoMegaSena;
 
-    @ViewById
+    //@ViewById
     protected LinearLayout contentResultadoItem;
 
-    @ViewById
+    //@ViewById
     protected ScrollView scrollResultados;
 
-    @AfterViews
-    protected void init() {}
+
+    public static ModalidadeSorteioResultadoView build(Context context) {
+        ModalidadeSorteioResultadoView instance = new ModalidadeSorteioResultadoView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_resultado, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    //@AfterViews
+    protected void init() {
+        this.numeroeDataConcursoResultadoMegaSena = findViewById(R.id.numeroeDataConcursoResultadoMegaSena);
+        this.contentResultadoItem = findViewById(R.id.contentResultadoItem);
+        this.scrollResultados = findViewById(R.id.scrollResultados);
+    }
 
     public void setLayout(Modalidade modalidade) {
 

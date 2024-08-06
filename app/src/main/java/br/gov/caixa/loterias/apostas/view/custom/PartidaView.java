@@ -55,7 +55,6 @@ public class PartidaView extends LinearLayout {
         init();
     }
 
-    //@AfterViews
     protected void init() {
         this.lotecaTimeUm = findViewById(R.id.loteca_time_um);
         this.lotecaEmpate = findViewById(R.id.loteca_empate);

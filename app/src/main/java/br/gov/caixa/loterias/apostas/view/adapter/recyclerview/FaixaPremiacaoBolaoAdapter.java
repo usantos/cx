@@ -9,10 +9,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixaPremiadaDTO;
-import br.gov.caixa.loterias.apostas.view.custom.ItemListaFaixaPremiacao;
 import br.gov.caixa.loterias.apostas.view.custom.ItemListaFaixaPremiacaoBolao;
-import br.gov.caixa.loterias.apostas.view.custom.ItemListaFaixaPremiacaoBolao_;
-import br.gov.caixa.loterias.apostas.view.custom.ItemListaFaixaPremiacao_;
 
 public class FaixaPremiacaoBolaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoBolaoAdapter.FaixaPremiacaoHolder> {
     private List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList;
@@ -29,7 +26,7 @@ public class FaixaPremiacaoBolaoAdapter extends RecyclerView.Adapter<FaixaPremia
 
     @Override
     public FaixaPremiacaoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ItemListaFaixaPremiacaoBolao view = ItemListaFaixaPremiacaoBolao_.build(parent.getContext());
+        ItemListaFaixaPremiacaoBolao view = ItemListaFaixaPremiacaoBolao.build(parent.getContext());
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 

@@ -26,7 +26,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.custom.ModalidadeSorteioResultadoView;
-import br.gov.caixa.loterias.apostas.view.custom.ModalidadeSorteioResultadoView_;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnHomeListener;
 
@@ -128,7 +127,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> implements
     @Override
     public void setLayoutResultado(LinearLayout linearLayoutResultadosApostas, int position) {
         linearLayoutResultadosApostas.removeAllViews();
-        ModalidadeSorteioResultadoView view = ModalidadeSorteioResultadoView_.build(context);
+        ModalidadeSorteioResultadoView view = ModalidadeSorteioResultadoView.build(context);
         view.setLayout(data.get(position));
         linearLayoutResultadosApostas.addView(view);
     }
