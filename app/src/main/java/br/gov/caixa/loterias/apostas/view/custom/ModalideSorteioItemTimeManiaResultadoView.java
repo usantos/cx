@@ -27,28 +27,14 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultados
  * Created by cedesbr450 on 28/03/18.
  */
 
-
-//@EViewGroup(R.layout.item_resultado_timemania)
 public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
 
     private boolean alreadyInflated = false;
-
-    //@ViewById
     protected RecyclerView recyclerNumerosResultado;
-
-    //@ViewById
     protected LinearLayout  item_resultado_content_view;
-
-    //@ViewById
     protected View tracoViewDivisoriaResultado;
-
-    //@ViewById
     protected TextView labelTimeCoracaoText, textTimeCoracao;
-
-    //@ViewById
     protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
-
-    //@ViewById
     protected ImageView timeCoracaoImage;
 
 
@@ -68,7 +54,6 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
         init();
     }
 
-    //@AfterViews
     protected void init() {
         this.recyclerNumerosResultado = findViewById(R.id.recyclerNumerosResultado);
         this.item_resultado_content_view = findViewById(R.id.item_resultado_content_view);

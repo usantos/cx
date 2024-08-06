@@ -108,7 +108,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
                 break;
             case SUPER_7:
                 this.contentResultadoItem.removeAllViews();
-                SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout_.build(getContext());
+                SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout.build(getContext());
                 view7.setLayout(modalidade);
                 this.contentResultadoItem.addView(view7);
                 break;
