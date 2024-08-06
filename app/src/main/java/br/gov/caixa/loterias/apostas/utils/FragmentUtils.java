@@ -38,6 +38,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 
 public class FragmentUtils {
@@ -217,5 +218,9 @@ public class FragmentUtils {
 		TrevosFragment frag = TrevosFragment.newInstance(aposta, parametroSimulacao, dezenasSelecionadas);
 		startFragment(fm, id, frag);
 		return frag;
+	}
+
+	public static SurpresinhaFragment getSurpresinhaFragment() {
+		return SurpresinhaFragment.newInstance();
 	}
 }

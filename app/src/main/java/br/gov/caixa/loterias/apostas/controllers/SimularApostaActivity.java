@@ -71,7 +71,6 @@ import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
@@ -599,7 +598,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     private void abrirTelaSurprezinha() {
-        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, surpresinhaFragment).commit();
+        FragmentUtils.startFragmentAllowingStateLoss(fragmentManager, R.id.fragmentSimularApostas, surpresinhaFragment);
 
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
         surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
@@ -639,7 +638,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private void configuraFragments() {
         fragmentManager = getSupportFragmentManager();
         cartelaFragment = new CartelaFragment();
-        surpresinhaFragment = SurpresinhaFragment_.builder().build();
+        surpresinhaFragment = FragmentUtils.getSurpresinhaFragment();
 
         rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(), R.id.id_fg_rodape, new BigDecimal(0), new BigDecimal(0));
 
