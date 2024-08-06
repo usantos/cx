@@ -10,10 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
@@ -25,22 +21,15 @@ import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
  * Created by cedesbr450 on 26/03/18.
  */
 
-//@EViewGroup(R.layout.item_resultado)
 public class ModalidadeSorteioResultadoView extends ScrollView {
 
     private boolean alreadyInflated = false;
 
     private Modalidade modalidade;
 
-    //@ViewById
-    protected TextView numeroeDataConcursoResultadoMegaSena;
-
-    //@ViewById
-    protected LinearLayout contentResultadoItem;
-
-    //@ViewById
-    protected ScrollView scrollResultados;
-
+    private TextView numeroeDataConcursoResultadoMegaSena;
+    private LinearLayout contentResultadoItem;
+    private ScrollView scrollResultados;
 
     public static ModalidadeSorteioResultadoView build(Context context) {
         ModalidadeSorteioResultadoView instance = new ModalidadeSorteioResultadoView(context);
@@ -113,7 +102,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
                 break;
             case LOTECA:
                 this.contentResultadoItem.removeAllViews();
-                ModalidadeSorteioLotecaResultadoView view4 = ModalidadeSorteioLotecaResultadoView_.build(getContext());
+                ModalidadeSorteioLotecaResultadoView view4 = ModalidadeSorteioLotecaResultadoView.build(getContext());
                 view4.setLayout(modalidade);
                 this.contentResultadoItem.addView(view4);
                 break;

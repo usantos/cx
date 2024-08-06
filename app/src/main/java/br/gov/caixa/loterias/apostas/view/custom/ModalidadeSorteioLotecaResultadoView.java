@@ -27,25 +27,37 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaResultadoTi
  */
 
 
-
-@EViewGroup(R.layout.item_resultado_loteca)
 public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implements DiscreteScrollView.ScrollListener<LotecaResultadoTimesAdapter.LotecaHolder>,
         DiscreteScrollView.OnItemChangedListener<LotecaResultadoTimesAdapter.LotecaHolder> {
 
-    @ViewById
-    protected DiscreteScrollView recyclerPartidasLotecas;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    protected LinearLayout  item_resultado_content_view;
+    private DiscreteScrollView recyclerPartidasLotecas;
+    private LinearLayout  item_resultado_content_view;
+    private View tracoViewDivisoriaResultado;
+    private PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
 
-    @ViewById
-    protected View tracoViewDivisoriaResultado;
+    public static ModalidadeSorteioLotecaResultadoView build(Context context) {
+        ModalidadeSorteioLotecaResultadoView instance = new ModalidadeSorteioLotecaResultadoView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
 
-    @ViewById
-    protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_resultado_loteca, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
 
-    @AfterViews
     protected void init() {
+        this.recyclerPartidasLotecas = findViewById(R.id.recyclerPartidasLotecas);
+        this.item_resultado_content_view = findViewById(R.id.item_resultado_content_view);
+        this.tracoViewDivisoriaResultado = findViewById(R.id.tracoViewDivisoriaResultado);
+        this.partidaViewDetalhesResultadoView = findViewById(R.id.partidaViewDetalhesResultadoView);
     }
 
     public void setLayout(Modalidade modalidade) {
