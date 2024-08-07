@@ -50,20 +50,14 @@ import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 
-@EViewGroup(R.layout.item_compras_dezenas_layout)
 public class ComprasDezenasView extends LinearLayout {
 
-    @ViewById
-    protected RecyclerView dezenasRecyclerView;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    protected LinearLayout detalheLayout;
-
-    @ViewById
-    protected RelativeLayout rl_container_fragment, rl_trevos_fragment;
-
-    @ViewById
-    protected TextView labelDetalheTxt, detalheTxt;
+    private RecyclerView dezenasRecyclerView;
+    private LinearLayout detalheLayout;
+    private RelativeLayout rl_container_fragment, rl_trevos_fragment;
+    private TextView labelDetalheTxt, detalheTxt;
 
     protected DetalhesComprasActivity activity;
     private int corFonte;
@@ -80,6 +74,31 @@ public class ComprasDezenasView extends LinearLayout {
 
     public ComprasDezenasView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public static ComprasDezenasView build(DetalhesComprasActivity context) {
+        ComprasDezenasView instance = new ComprasDezenasView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_compras_dezenas_layout, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    private void init() {
+        this.dezenasRecyclerView = findViewById(R.id.dezenasRecyclerView);
+        this.detalheLayout = findViewById(R.id.detalheLayout);
+        this.rl_container_fragment = findViewById(R.id.rl_container_fragment);
+        this.rl_trevos_fragment = findViewById(R.id.rl_trevos_fragment);
+        this.labelDetalheTxt = findViewById(R.id.labelDetalheTxt);
+        this.detalheTxt = findViewById(R.id.detalheTxt);
     }
 
     public void setLayout(ApostaDTO aposta, int corFonte) {
