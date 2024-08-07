@@ -21,6 +21,7 @@ import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
@@ -222,5 +223,10 @@ public class FragmentUtils {
 
 	public static SurpresinhaFragment getSurpresinhaFragment() {
 		return SurpresinhaFragment.newInstance();
+	}
+
+    public static ApostasConfirmadasFragment getApostasConfirmadasFragment(boolean isHistorico) {
+		ApostasConfirmadasFragment fragment = ApostasConfirmadasFragment.newInstance(isHistorico);
+		return fragment;
 	}
 }
