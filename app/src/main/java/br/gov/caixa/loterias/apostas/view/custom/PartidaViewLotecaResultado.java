@@ -23,23 +23,37 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
  * Created by cedesbr450 on 02/04/18.
  */
 
-@EViewGroup(R.layout.row_time_loteca_resultado)
 public class PartidaViewLotecaResultado extends LinearLayout {
 
-    @ViewById
-    ItemEquipeViewResultado lotecaTimeUm, lotecaEmpate, lotecaTimeDois;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    TextView paginaResultadoLotecaText;
+    private ItemEquipeViewResultado lotecaTimeUm, lotecaEmpate, lotecaTimeDois;
+    private TextView paginaResultadoLotecaText;
+    private TextView diaSemanaDataPartidaText;
 
-    @ViewById
-    TextView diaSemanaDataPartidaText;
-
-    @AfterViews
-    protected void init() {
-
+    public static PartidaViewLotecaResultado build(Context context) {
+        PartidaViewLotecaResultado instance = new PartidaViewLotecaResultado(context);
+        instance.onFinishInflate();
+        return instance;
     }
 
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.row_time_loteca_resultado, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    protected void init() {
+        this.lotecaTimeUm = findViewById(R.id.loteca_time_um);
+        this.lotecaEmpate = findViewById(R.id.loteca_empate);
+        this.lotecaTimeDois = findViewById(R.id.loteca_time_dois);
+        this.paginaResultadoLotecaText = findViewById(R.id.paginaResultadoLotecaText);
+        this.diaSemanaDataPartidaText = findViewById(R.id.diaSemanaDataPartidaText);
+    }
 
     public void setLayout(PartidaLotecaDTO parametroPartida) {
         int corVitoria = ContextCompat.getColor(getContext(), R.color.selecaoLotecaResultado);

@@ -90,7 +90,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
         switch (modalidade.getTipoModalidade()) {
             case DUPLA_SENA:
                 this.contentResultadoItem.removeAllViews();
-                ModalidadeSorteioItemDoisConcursosResultadoView view = ModalidadeSorteioItemDoisConcursosResultadoView_.build(getContext());
+                ModalidadeSorteioItemDoisConcursosResultadoView view = ModalidadeSorteioItemDoisConcursosResultadoView.build(getContext());
                 view.setLayout(modalidade);
                 this.contentResultadoItem.addView(view);
                 break;
@@ -126,13 +126,13 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
                 break;
             case MAIS_MILIONARIA:
                 this.contentResultadoItem.removeAllViews();
-                ModalidadeSorteioItemUmConcursoResultadoView viewM = ModalidadeSorteioItemUmConcursoResultadoView_.build(getContext());
+                ModalidadeSorteioItemUmConcursoResultadoView viewM = ModalidadeSorteioItemUmConcursoResultadoView.build(getContext());
                 viewM.setLayout(modalidade);
                 this.contentResultadoItem.addView(viewM);
                 break;
             default:
                 this.contentResultadoItem.removeAllViews();
-                ModalidadeSorteioItemUmConcursoResultadoView view2 = ModalidadeSorteioItemUmConcursoResultadoView_.build(getContext());
+                ModalidadeSorteioItemUmConcursoResultadoView view2 = ModalidadeSorteioItemUmConcursoResultadoView.build(getContext());
                 view2.setLayout(modalidade);
                 this.contentResultadoItem.addView(view2);
                 break;

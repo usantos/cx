@@ -26,31 +26,40 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TrevosResultadosA
  */
 
 
-@EViewGroup(R.layout.item_resultado_um_concurso)
 public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 
-    @ViewById
-    protected RecyclerView recyclerNumerosResultado;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    protected LinearLayout  item_resultado_content_view;
+    private RecyclerView recyclerNumerosResultado;
+    private LinearLayout  item_resultado_content_view;
+    private View tracoViewDivisoriaResultado;
+    private PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
+    private RecyclerView recyclerTrevosResultado;
+    private TextView tvTrevos;
 
-    @ViewById
-    protected View tracoViewDivisoriaResultado;
+    public static ModalidadeSorteioItemUmConcursoResultadoView build(Context context) {
+        ModalidadeSorteioItemUmConcursoResultadoView instance = new ModalidadeSorteioItemUmConcursoResultadoView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
 
-    @ViewById
-    protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_resultado_um_concurso, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
 
-    @ViewById
-    protected RecyclerView recyclerTrevosResultado;
-
-    @ViewById
-    protected TextView tvTrevos;
-
-
-    @AfterViews
     protected void init() {
-
+        this.recyclerNumerosResultado = findViewById(R.id.recyclerNumerosResultado);
+        this.item_resultado_content_view = findViewById(R.id.item_resultado_content_view);
+        this.tracoViewDivisoriaResultado = findViewById(R.id.tracoViewDivisoriaResultado);
+        this.partidaViewDetalhesResultadoView = findViewById(R.id.partidaViewDetalhesResultadoView);
+        this.recyclerTrevosResultado = findViewById(R.id.recyclerTrevosResultado);
+        this.tvTrevos = findViewById(R.id.tvTrevos);
     }
 
     public void setLayout(Modalidade modalidade) {

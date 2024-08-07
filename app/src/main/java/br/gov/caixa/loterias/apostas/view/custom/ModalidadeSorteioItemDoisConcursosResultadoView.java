@@ -23,25 +23,39 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultados
  * Created by cedesbr450 on 28/03/18.
  */
 
-
-@EViewGroup(R.layout.item_resultado_dois_concursos)
 public class ModalidadeSorteioItemDoisConcursosResultadoView extends LinearLayout {
 
-    @ViewById
-    protected RecyclerView recyclerNumerosResultado, recyclerNumerosResultadoSegundoSorteio;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    protected LinearLayout linearlayoutPremiadosListaText, item_resultado_content_view;
+    private RecyclerView recyclerNumerosResultado, recyclerNumerosResultadoSegundoSorteio;
+    private LinearLayout linearlayoutPremiadosListaText, item_resultado_content_view;
+    private View tracoViewDivisoriaResultado;
+    private PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
 
-    @ViewById
-    protected View tracoViewDivisoriaResultado;
 
-    @ViewById
-    protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
+    public static ModalidadeSorteioItemDoisConcursosResultadoView build(Context context) {
+        ModalidadeSorteioItemDoisConcursosResultadoView instance = new ModalidadeSorteioItemDoisConcursosResultadoView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
 
-    @AfterViews
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_resultado_dois_concursos, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
     protected void init() {
-
+        this.recyclerNumerosResultado = findViewById(R.id.recyclerNumerosResultado);
+        this.recyclerNumerosResultadoSegundoSorteio = findViewById(R.id.recyclerNumerosResultadoSegundoSorteio);
+        this.linearlayoutPremiadosListaText = findViewById(R.id.linearlayoutPremiadosListaText);
+        this.item_resultado_content_view = findViewById(R.id.item_resultado_content_view);
+        this.tracoViewDivisoriaResultado = findViewById(R.id.tracoViewDivisoriaResultado);
+        this.partidaViewDetalhesResultadoView = findViewById(R.id.partidaViewDetalhesResultadoView);
     }
 
     public void setLayout(Modalidade modalidade) {

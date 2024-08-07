@@ -18,22 +18,35 @@ import br.gov.caixa.loterias.apostas.R;
  * Created by cedesbr450 on 02/04/18.
  */
 
-@EViewGroup(R.layout.item_loteca_resultado)
 public class ItemEquipeViewResultado extends LinearLayout {
 
-    @ViewById
-    ImageView itemImage;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    TextView itemTitle, itemDescription;
+    private ImageView itemImage;
+    private TextView itemTitle, itemDescription;
+    private LinearLayout linearLayoutContentItemLotecaResultado;
 
+    public static ItemEquipeViewResultado build(Context context) {
+        ItemEquipeViewResultado instance = new ItemEquipeViewResultado(context);
+        instance.onFinishInflate();
+        return instance;
+    }
 
-    @ViewById
-    LinearLayout linearLayoutContentItemLotecaResultado;
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_loteca_resultado, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
 
-    @AfterViews
     protected void init() {
-
+        this.itemImage = findViewById(R.id.item_image);
+        this.itemTitle = findViewById(R.id.item_title);
+        this.itemDescription = findViewById(R.id.item_description);
+        this.linearLayoutContentItemLotecaResultado = findViewById(R.id.linearLayoutContentItemLotecaResultado);
     }
 
     public ItemEquipeViewResultado(Context context) {
