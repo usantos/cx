@@ -39,8 +39,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
@@ -99,13 +99,13 @@ public class ApostaBO extends BaseBO {
 
     public void deletaApostaCarrinhoFavorito(final String idCarrinho,
                                              final String idAposta,
-                                             final RequestListener<ListApostaCarrinhoFavoritoDTO> listener) {
+                                             final RequestListener<ListApostaCarrinhoFavoritoResponse> listener) {
         String url = ServerMethods.CARRINHO_FAVORITO_DELETAR_APOSTA.replace("{id}", idCarrinho);
         url = url.replace("{idAposta}",idAposta);
 
         final GsonRequest request = silceConnection.buildDeleteRequest(url ,
                 new LinkedHashMap<>(),
-                ListApostaCarrinhoFavoritoDTO.class,
+                ListApostaCarrinhoFavoritoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());
@@ -114,12 +114,12 @@ public class ApostaBO extends BaseBO {
     }
 
     public void deletaCarrinhoFavorito(final String idCarrinho,
-                                       final RequestListener<ListCarrinhoFavoritoDTO> listener) {
+                                       final RequestListener<ListCarrinhoFavoritoResponse> listener) {
         String url = ServerMethods.CARRINHO_FAVORITO_DELETAR_CARRINHO.replace("{id}", idCarrinho);
 
         final GsonRequest request = silceConnection.buildDeleteRequest(url ,
                 new LinkedHashMap<>(),
-                ListCarrinhoFavoritoDTO.class,
+                ListCarrinhoFavoritoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());
@@ -161,10 +161,10 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
-    public void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoDTO> listener){
+    public void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoResponse> listener){
         final GsonRequest request = silceConnection.buildGetRequest(ServerMethods.CARRINHO_FAVORITO_BUSCAR_CARRINHOS,
                 new LinkedHashMap<>(),
-                ListCarrinhoFavoritoDTO.class,
+                ListCarrinhoFavoritoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());
@@ -172,11 +172,11 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
-    public void buscaApostasCarrinhoFavorito(Long idCarrinho,RequestListener<ListApostaCarrinhoFavoritoDTO> listener){
+    public void buscaApostasCarrinhoFavorito(Long idCarrinho,RequestListener<ListApostaCarrinhoFavoritoResponse> listener){
         String url = ServerMethods.CARRINHO_FAVORITO_BUSCA_APOSTAS.replace("{idCarrinho}", idCarrinho.toString());
         final GsonRequest request = silceConnection.buildGetRequest(url,
                 new LinkedHashMap<>(),
-                ListApostaCarrinhoFavoritoDTO.class,
+                ListApostaCarrinhoFavoritoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());

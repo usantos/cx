@@ -15,7 +15,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostasCarrinhoFavoritoAdapter;
 
@@ -27,7 +27,7 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
     public static String ID_CARRINHO = "ID_CARRINHO";
 
     private RecyclerView rvApostas;
-    private ListApostaCarrinhoFavoritoDTO listApostaResponse;
+    private ListApostaCarrinhoFavoritoResponse listApostaResponse;
     private Long idCarrinho;
 
     @Override
@@ -55,21 +55,21 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
         }
     }
 
-    public void setListApostaResponse(ListApostaCarrinhoFavoritoDTO listApostaResponse) {
+    public void setListApostaResponse(ListApostaCarrinhoFavoritoResponse listApostaResponse) {
         this.listApostaResponse = listApostaResponse;
     }
 
     private void buscaApostas(){
         AlertDialogUtils.show(this);
-        ApostaBO_.getInstance_(this).buscaApostasCarrinhoFavorito(idCarrinho ,new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
+        ApostaBO_.getInstance_(this).buscaApostasCarrinhoFavorito(idCarrinho ,new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
             @Override
-            public void onResponse(ListApostaCarrinhoFavoritoDTO result) {
+            public void onResponse(ListApostaCarrinhoFavoritoResponse response) {
                 AlertDialogUtils.dismiss();
-                if (result.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(result.getRedirect(), DetalhesCarrinhoFavoritoActivity.this);
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalhesCarrinhoFavoritoActivity.this);
                 }
-                listApostaResponse = result;
-                configuraRecyclerView(result);
+                listApostaResponse = response;
+                configuraRecyclerView(response);
             }
 
             @Override
@@ -80,7 +80,7 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
         });
     }
 
-    public void configuraRecyclerView(ListApostaCarrinhoFavoritoDTO listApostaResponse){
+    public void configuraRecyclerView(ListApostaCarrinhoFavoritoResponse listApostaResponse){
         rvApostas.setAdapter( new DetalhesApostasCarrinhoFavoritoAdapter(idCarrinho, listApostaResponse,this));
         RecyclerView.LayoutManager layout = new LinearLayoutManager(DetalhesCarrinhoFavoritoActivity.this, LinearLayoutManager.VERTICAL, false);
         rvApostas.setLayoutManager(layout);

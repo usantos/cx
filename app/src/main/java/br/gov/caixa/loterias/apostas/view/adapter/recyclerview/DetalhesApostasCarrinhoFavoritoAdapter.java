@@ -18,14 +18,14 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
@@ -113,7 +113,7 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 		return listApostas.size();
 	}
 
-	public DetalhesApostasCarrinhoFavoritoAdapter(Long idCarrinho, ListApostaCarrinhoFavoritoDTO response, DetalhesCarrinhoFavoritoActivity activity) {
+	public DetalhesApostasCarrinhoFavoritoAdapter(Long idCarrinho, ListApostaCarrinhoFavoritoResponse response, DetalhesCarrinhoFavoritoActivity activity) {
 		this.listApostas = response.getPayload();
 		this.activity = activity;
 		this.idCarrinho = idCarrinho;
@@ -175,9 +175,9 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 		ViewUtils.alertTitleButtonYesOrNotListener(activity, activity.getResources().getString(R.string.carrinho_fav_deseja_excluir_aposta), (dialogInterface, i) -> {
 			if (listApostas.size() > 1) {
 				AlertDialogUtils.show(activity);
-				ApostaBO_.getInstance_(activity).deletaApostaCarrinhoFavorito(idCarrinho.toString(), idAposta.toString(), new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
+				ApostaBO_.getInstance_(activity).deletaApostaCarrinhoFavorito(idCarrinho.toString(), idAposta.toString(), new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
 					@Override
-					public void onResponse(ListApostaCarrinhoFavoritoDTO result) {
+					public void onResponse(ListApostaCarrinhoFavoritoResponse result) {
 						AlertDialogUtils.dismiss();
 						if (result.getRedirect() != null) {
 							RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
@@ -201,9 +201,9 @@ public class DetalhesApostasCarrinhoFavoritoAdapter extends RecyclerView.Adapter
 
 	private void excluirCarrinho(Long idCarrinhoAtual) {
 		AlertDialogUtils.show(activity);
-		ApostaBO_.getInstance_(activity).deletaCarrinhoFavorito(idCarrinhoAtual.toString(), new RequestListener<ListCarrinhoFavoritoDTO>() {
+		ApostaBO_.getInstance_(activity).deletaCarrinhoFavorito(idCarrinhoAtual.toString(), new RequestListener<ListCarrinhoFavoritoResponse>() {
 			@Override
-			public void onResponse(ListCarrinhoFavoritoDTO result) {
+			public void onResponse(ListCarrinhoFavoritoResponse result) {
 				AlertDialogUtils.dismiss();
 				if (result.getRedirect() != null) {
 					RedirectNetwork.checkRedirectSucesso(result.getRedirect(), activity);
