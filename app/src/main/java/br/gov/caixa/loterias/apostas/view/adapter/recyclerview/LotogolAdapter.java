@@ -10,7 +10,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.view.custom.PartidaViewLotogol;
-import br.gov.caixa.loterias.apostas.view.custom.PartidaViewLotogol_;
 import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 
 /**
@@ -30,7 +29,7 @@ public class LotogolAdapter extends RecyclerView.Adapter<LotogolAdapter.LotogolH
 
     @Override
     public LotogolHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        PartidaViewLotogol view = PartidaViewLotogol_.build(parent.getContext());
+        PartidaViewLotogol view = PartidaViewLotogol.build(parent.getContext());
         return new LotogolHolder(view);
     }
 

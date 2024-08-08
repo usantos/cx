@@ -9,7 +9,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.view.custom.ApostaPartidaLotogolView;
-import br.gov.caixa.loterias.apostas.view.custom.ApostaPartidaLotogolView_;
 
 /**
  * Created by joafilho on 26/01/2018.
@@ -26,7 +25,7 @@ public class DetalheApostaLotogolAdapter extends RecyclerView.Adapter<DetalheApo
 
     @Override
     public ApostaLotogolHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ApostaPartidaLotogolView view = ApostaPartidaLotogolView_.build(parent.getContext());
+        ApostaPartidaLotogolView view = ApostaPartidaLotogolView.build(parent.getContext());
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
         return new ApostaLotogolHolder(view);

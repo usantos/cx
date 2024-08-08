@@ -108,7 +108,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
                 break;
             case LOTOGOL:
                 this.contentResultadoItem.removeAllViews();
-                ModalidadeSorteioLotogolResultadoView view5 = ModalidadeSorteioLotogolResultadoView_.build(getContext());
+                ModalidadeSorteioLotogolResultadoView view5 = ModalidadeSorteioLotogolResultadoView.build(getContext());
                 view5.setLayout(modalidade);
                 this.contentResultadoItem.addView(view5);
                 break;

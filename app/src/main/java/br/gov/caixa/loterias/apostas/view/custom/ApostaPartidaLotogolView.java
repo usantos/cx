@@ -18,18 +18,33 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
  * Class ApostaPartidaLotogolView
  */
 
-@EViewGroup(R.layout.row_aposta_partida_lotogol)
 public class ApostaPartidaLotogolView extends LinearLayout {
 
-    @ViewById
-    View linhaDivisao;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    ApostaEquipeLototgolView apostaEquipeLotogolUm, apostaEquipeLotogolDois;
+    private View linhaDivisao;
+    private ApostaEquipeLototgolView apostaEquipeLotogolUm, apostaEquipeLotogolDois;
 
-    @AfterViews
+    public static ApostaPartidaLotogolView build(Context context) {
+        ApostaPartidaLotogolView instance = new ApostaPartidaLotogolView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.row_aposta_partida_lotogol, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
     protected void init() {
-
+        this.linhaDivisao = findViewById(R.id.linhaDivisao);
+        this.apostaEquipeLotogolUm = findViewById(R.id.aposta_equipe_lotogol_um);
+        this.apostaEquipeLotogolDois = findViewById(R.id.aposta_equipe_lotogol_dois);
     }
 
     public ApostaPartidaLotogolView(Context context) {
