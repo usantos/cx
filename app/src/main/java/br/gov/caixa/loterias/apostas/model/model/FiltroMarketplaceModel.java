@@ -24,7 +24,7 @@ public class FiltroMarketplaceModel extends AppModel{
 	public List<LotericaDTO> getListaFiltrada(String text, List<LotericaDTO> listLotericaDTO) {
 		List<LotericaDTO> filteredList = new ArrayList<>();
 		for (LotericaDTO item : listLotericaDTO) {
-			if (item.getNome().toLowerCase().contains(text.toLowerCase())) {
+			if (item.getNomeFantasia().toLowerCase().contains(text.toLowerCase())) {
 				filteredList.add(item);
 			}
 		}
