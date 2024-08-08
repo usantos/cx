@@ -95,4 +95,20 @@ public class CarrinhosFavoritosRepository extends AppRepository {
         CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(getActivity());
         crud.inserirCarrinhoFavorito(carrinho);
     }
+
+    public void deletaApostaCarrinho(String idCarrinho, String idAposta, OnSilceListener<List<ApostaCarrinhoFavoritoDTO>> listener) {
+        apostaBO.deletaApostaCarrinhoFavorito(idCarrinho.toString(), idAposta.toString(), new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
+            @Override
+            public void onResponse(ListApostaCarrinhoFavoritoResponse response) {
+                checkRedirect(response);
+                listener.success(response.getPayload());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                RedirectNetwork.checkRedirect(error, getActivity());
+                listener.error(error);
+            }
+        });
+    }
 }
