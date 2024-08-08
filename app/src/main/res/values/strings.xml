@@ -1384,6 +1384,6 @@
     <string name="gerar_comprovante">Gerar Comprovante</string>
     <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
     <string name="usuario_bloqueio_parcial">Usuário habilitado apenas para consultas.</string>
-    <string name="nome_loteria">Nome da Loteria:</string>
+    <string name="nome_loteria">Nome da Lotérica:</string>
 
 </resources>
