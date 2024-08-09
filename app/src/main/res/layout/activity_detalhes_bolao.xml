@@ -87,6 +87,7 @@
                 android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/nome_loteria"
                 android:textAlignment="textStart"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/id_municipio"
                 app:layout_constraintTop_toBottomOf="@id/id_municipio" />
 
