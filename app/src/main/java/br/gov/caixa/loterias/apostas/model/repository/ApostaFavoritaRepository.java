@@ -6,7 +6,6 @@ import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -27,7 +26,7 @@ public class ApostaFavoritaRepository extends AppRepository {
     //region Constructors
     public ApostaFavoritaRepository(Activity activity) {
         super(activity);
-        apostaBO = ApostaBO_.getInstance_(activity);
+        apostaBO = ApostaBO.getInstance();
     }
     //endregion
 
