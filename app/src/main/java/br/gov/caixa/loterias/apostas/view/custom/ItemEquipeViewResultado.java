@@ -8,10 +8,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import br.gov.caixa.loterias.apostas.R;
 
 /**

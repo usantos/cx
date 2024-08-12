@@ -3,12 +3,7 @@ package br.gov.caixa.loterias.apostas.view.custom;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.LinearLayout;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
 
 import javax.annotation.Nullable;
 

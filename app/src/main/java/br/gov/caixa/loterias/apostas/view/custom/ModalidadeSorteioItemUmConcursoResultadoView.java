@@ -11,10 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
@@ -24,7 +20,6 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TrevosResultadosA
 /**
  * Created by cedesbr450 on 28/03/18.
  */
-
 
 public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 

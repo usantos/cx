@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
-import org.androidannotations.annotations.EBean;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,8 +11,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnu
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingleton;
-
-import static org.androidannotations.annotations.EBean.Scope.Singleton;
 
 public class ApostaMicroServicoBO extends BaseMicroServicoBO {
     private static ApostaMicroServicoBO instance;

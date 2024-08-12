@@ -7,10 +7,6 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;

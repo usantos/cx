@@ -4,10 +4,6 @@ import android.content.Context;import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;

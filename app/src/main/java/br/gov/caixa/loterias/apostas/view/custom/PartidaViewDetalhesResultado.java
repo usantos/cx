@@ -11,10 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;

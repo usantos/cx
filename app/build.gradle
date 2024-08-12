@@ -260,7 +260,6 @@ android {
 
 
         // versions
-        def AAVersion = '4.6.0'
         def supportVersion = '27.1.1'
         def lottieVersion = '3.6.1';
         def appCenterSdkVersion = '4.1.0'
@@ -287,10 +286,6 @@ android {
 
         //animations
         implementation "com.airbnb.android:lottie:$lottieVersion"
-
-        //Android Annotations
-        implementation "org.androidannotations:androidannotations-api:$AAVersion"
-        annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
 
         //Progressbar
         //implementation 'me.relex:circleindicator:1.2.2@aar'
