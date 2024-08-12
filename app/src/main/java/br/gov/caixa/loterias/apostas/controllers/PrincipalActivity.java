@@ -77,7 +77,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -136,8 +136,8 @@ public class PrincipalActivity extends AppCompatActivity
     private NavigationView nav_view;
     private ConstraintLayout viewSair;
 
-    protected ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-    protected DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(this);
+    protected ApostaBO apostaBO;
+    protected DadosUsuarioBO dadosUsuarioBO;
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
@@ -176,6 +176,8 @@ public class PrincipalActivity extends AppCompatActivity
 
     public void init() {
         //getExtras();
+        dadosUsuarioBO = DadosUsuarioBO_.getInstance_(this);
+        apostaBO = ApostaBO_.getInstance_(this);
         setViews();
 
         setSupportActionBar(toolbar);
@@ -488,9 +490,9 @@ public class PrincipalActivity extends AppCompatActivity
         return new OnNotificacaoListener() {
             @Override
             public void removePopup() {
-                dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoDTO>() {
+                dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoResponse>() {
                     @Override
-                    public void onResponse(RetornoPadraoDTO result) {
+                    public void onResponse(RetornoPadraoResponse result) {
                         popupNotification.dismiss();
                         UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
                     }

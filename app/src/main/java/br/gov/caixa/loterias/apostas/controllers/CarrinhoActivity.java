@@ -354,6 +354,7 @@ public class CarrinhoActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LocalizacaoUtils.PERMISSAO_LOCALIZACAO_COD) {
             if (grantResults.length > 0 && grantResults[0] >= 0) {
                 trataPermissao();

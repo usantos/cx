@@ -6,12 +6,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -19,6 +21,7 @@ import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
@@ -29,12 +32,15 @@ import br.gov.caixa.loterias.apostas.view.fragment.ChavePixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.OrientacaoPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 
 public class FragmentUtils {
 
@@ -199,5 +205,28 @@ public class FragmentUtils {
 		FiltroVazioFragment frag = FiltroVazioFragment.newInstance();
 		startFragment(fm, idFrag, frag);
 		return frag;
+	}
+
+	public static MesesFragment startMesesFragment(FragmentManager fm, int id, ModalidadeEnum modalidadeEnum,
+												   ParametroJogoDTO parametro, ArrayList<Integer> selecionados) {
+		MesesFragment fragment = MesesFragment.newInstance(modalidadeEnum, parametro, selecionados);
+		startFragment(fm,id, fragment);
+		return fragment;
+	}
+
+	public static TrevosFragment startTrevosFragment(FragmentManager fm, int id, IdentificaoDeUmaApostaDas8Modalidades aposta,
+													 ParametroJogoDTO parametroSimulacao, ArrayList<Integer> dezenasSelecionadas) {
+		TrevosFragment frag = TrevosFragment.newInstance(aposta, parametroSimulacao, dezenasSelecionadas);
+		startFragment(fm, id, frag);
+		return frag;
+	}
+
+	public static SurpresinhaFragment getSurpresinhaFragment() {
+		return SurpresinhaFragment.newInstance();
+	}
+
+    public static ApostasConfirmadasFragment getApostasConfirmadasFragment(boolean isHistorico) {
+		ApostasConfirmadasFragment fragment = ApostasConfirmadasFragment.newInstance(isHistorico);
+		return fragment;
 	}
 }
