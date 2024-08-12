@@ -106,7 +106,8 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }
 
-    public static void adicionarApostaCarrinhoRequest(Activity actv, final ApostaBO apostaBO, IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades) {
+    public static void adicionarApostaCarrinhoRequest(Activity actv, final ApostaBO apostaBO,
+                                                      IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades) {
         activity = actv;
         aposta = identificaoDeUmaApostaDas8Modalidades;
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {

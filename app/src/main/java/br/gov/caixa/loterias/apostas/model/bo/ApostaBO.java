@@ -53,7 +53,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginad
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
@@ -289,12 +289,12 @@ public class ApostaBO extends BaseBO {
 
     public void postResgatarAposta(final Long idAposta,
                                    final InformacaoPagamentoDTO infoPgtoDTO,
-                                   final RequestListener<RetornoPadraoDTO> listener) {
+                                   final RequestListener<RetornoPadraoResponse> listener) {
 
         String url = ServerMethods.APOSTAS_RESGATAR_PATH.replace("{idAposta}", String.valueOf( idAposta ));
         final GsonRequest request = silceConnection.buildPostRequest(url,
                 new LinkedHashMap<>(),
-                infoPgtoDTO, RetornoPadraoDTO.class,
+                infoPgtoDTO, RetornoPadraoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());
@@ -475,12 +475,12 @@ public class ApostaBO extends BaseBO {
 
 
     //APOSTAS FAVORITAS
-    public void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoDTO> listener) {
+    public void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("id", idAposta);
         final GsonRequest request = silceConnection.buildDeleteRequest(ServerMethods.APOSTAS_FAVORITAS_PATH + idAposta,
                 queryParams,
-                RetornoPadraoDTO.class,
+                RetornoPadraoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());
@@ -489,10 +489,10 @@ public class ApostaBO extends BaseBO {
         silceConnection.request(request, listener);
     }
 
-    public void postApostasFavoritas(final ApostaFavoritaDTO apostaFavoritaDTO, final RequestListener<RetornoPadraoDTO> listener) {
+    public void postApostasFavoritas(final ApostaFavoritaDTO apostaFavoritaDTO, final RequestListener<RetornoPadraoResponse> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.APOSTAS_FAVORITAS_PATH,
                 new LinkedHashMap<>(),
-                apostaFavoritaDTO, RetornoPadraoDTO.class,
+                apostaFavoritaDTO, RetornoPadraoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());
@@ -622,10 +622,10 @@ public class ApostaBO extends BaseBO {
         }
     }
 
-    public void postRegistrarApostaCarrinho(final MeioPagamento meioPagamento, final RequestListener<RetornoPadraoDTO> listener) {
+    public void postRegistrarApostaCarrinho(final MeioPagamento meioPagamento, final RequestListener<RetornoPadraoResponse> listener) {
         final GsonRequest request = silceConnection.buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_PATH,
                 new LinkedHashMap<>(),
-                meioPagamento, RetornoPadraoDTO.class,
+                meioPagamento, RetornoPadraoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());

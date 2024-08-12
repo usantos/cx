@@ -24,16 +24,14 @@ import java.util.Map;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ValidacaoUtils;
@@ -134,9 +132,9 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         loadViewProgress = LoadingViewLoterias.show(this);
 
         ApostaBO apostaBO = ApostaBO_.getInstance_(JogosConfirmadosPremioMercadoPagoActivity.this);
-        apostaBO.postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoDTO>() {
+        apostaBO.postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoResponse>() {
             @Override
-            public void onResponse(RetornoPadraoDTO response) {
+            public void onResponse(RetornoPadraoResponse response) {
                 setResult(RESULT_OK);
                 contentTopoConfirmarLinearLayout.setVisibility(View.GONE);
                 contentTopoConfirmadoLinearLayout.setVisibility(View.VISIBLE);
