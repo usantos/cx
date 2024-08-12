@@ -23,14 +23,11 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTO;
@@ -81,7 +78,7 @@ public class CadastrarActivity extends CadastroActivity {
             cadastrarApostadorDTO.setApostas(apostas);
         }
 
-        KeycloakBO keycloakBO = KeycloakBO_.getInstance_( CadastrarActivity.this );
+        KeycloakBO keycloakBO = KeycloakBO.getInstance();
         String acessToken = keycloakBO.getAccessToken();
         try {
             atualizaLayout(Utils.decodedToken( acessToken ));
@@ -152,8 +149,7 @@ public class CadastrarActivity extends CadastroActivity {
             if (validarCamposObrigatorios()) {
 
                 final AlertDialog loadViewProgress = LoadingViewLoterias.show(CadastrarActivity.this);
-                DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(CadastrarActivity.this);
-                dadosUsuarioBO.gravarUsuario(cadastrarApostadorDTO, new RequestListener<ApostadorDTOResponse>() {
+                DadosUsuarioBO.getInstance().gravarUsuario(cadastrarApostadorDTO, new RequestListener<ApostadorDTOResponse>() {
                     @Override
                     public void onResponse(ApostadorDTOResponse response) {
                         loadViewProgress.dismiss();
@@ -260,8 +256,7 @@ public class CadastrarActivity extends CadastroActivity {
 
     private void buscarBairroPorCep(String cep) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(CadastrarActivity.this);
-        dadosCorporativosBO.bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
+        DadosCorporativosBO.getInstance().bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
             @Override
             public void onResponse(BairroDTOResponse response) {
                 loadViewProgress.dismiss();

@@ -312,7 +312,7 @@ public class  RedirectNetwork {
     //TODO: LOGIN - Trocando
     public static void connectKeycloak(final Activity activity) {
         if(AppUtils.isNetworkAvailable(activity)){
-            AcessoBO_.getInstance_(activity).iniciarLoginSSO(activity);
+            AcessoBO.getInstance().iniciarLoginSSO(activity);
         }else{
             ViewUtils.alert(activity, activity.getString(R.string.seminternet));
         }

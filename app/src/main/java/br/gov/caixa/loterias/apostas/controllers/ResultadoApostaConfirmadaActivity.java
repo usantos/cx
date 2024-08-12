@@ -57,8 +57,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     public static String COMPROVANTE = "COMPROVANTE";
     public static String CODIGO_RESGATE = "CODIGO_RESGATE";
     public static int RESGATOU_MERCADO_PAGO = 200;
-
-    private ApostaBO apostaBO = ApostaBO_.getInstance_(this);
     private Toolbar toolbar;
     private ContentResultadoPremiado contentResultadoPremiado;
     private RelativeLayout lotericaLayout, agenciaCaixaLayout, mercadoPagoLayout, pixLayout;
@@ -242,7 +240,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     protected void apresentaOrientacoesResgate(Boolean isLoterica) {
         alertDialog = LoadingViewLoterias.show(getContext());
-        apostaBO.getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
+        ApostaBO.getInstance().getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
             @Override
             public void onResponse(CodigoResgateDTOResponse result) {
                 alertDialog.dismiss();
@@ -312,6 +310,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == RESGATOU_MERCADO_PAGO && resultCode == RESULT_OK){
             setResult(RESULT_OK);
             finish();

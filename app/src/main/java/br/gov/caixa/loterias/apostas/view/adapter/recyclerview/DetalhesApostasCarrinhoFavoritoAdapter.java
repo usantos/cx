@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.view.holder.DetalhesCarrinhoFavoritoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnDetalheCarrinhoFavoritoClickListener;

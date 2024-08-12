@@ -19,7 +19,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -77,9 +76,7 @@ public class ConfiguracaoRapidaoFragment7 extends Fragment {
 		bloquearRequestScroll = false;
 
 		final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
-		final ApostaBO    apostaBO         = ApostaBO_.getInstance_(getActivity());
-
-		apostaBO.getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+		ApostaBO.getInstance().getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
 			@Override
 			public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
 				loadViewProgress.dismiss();
@@ -163,10 +160,9 @@ public class ConfiguracaoRapidaoFragment7 extends Fragment {
 		if (isMaisCompras == false) {
 			return;
 		}
-		final ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
 		progressLoadingMore.setVisibility(View.VISIBLE);
 
-		apostaBO.getApostasFavoritas(offsetItem ,new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+		ApostaBO.getInstance().getApostasFavoritas(offsetItem ,new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
 			@Override
 			public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
 				progressLoadingMore.setVisibility(View.GONE);

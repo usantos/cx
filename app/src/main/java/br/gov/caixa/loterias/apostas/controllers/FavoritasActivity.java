@@ -256,7 +256,6 @@ public class FavoritasActivity extends AppCompatActivity {
             return;
         }
         progressLoadingMore.setVisibility(View.VISIBLE);
-
         model.buscaApostas(new OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO>() {
             @Override
             public void success(ResultadoPesquisaPaginadaApostaFavoritaDTO payload) {

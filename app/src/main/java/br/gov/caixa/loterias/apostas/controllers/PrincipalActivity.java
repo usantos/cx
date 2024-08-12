@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-
 import android.Manifest;
 import android.animation.AnimatorSet;
 import android.content.Intent;
@@ -62,11 +61,8 @@ import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -136,9 +132,6 @@ public class PrincipalActivity extends AppCompatActivity
     private NavigationView nav_view;
     private ConstraintLayout viewSair;
 
-    protected ApostaBO apostaBO;
-    protected DadosUsuarioBO dadosUsuarioBO;
-
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
     private VerificaMsgPush contadorMsgpush;
@@ -176,8 +169,6 @@ public class PrincipalActivity extends AppCompatActivity
 
     public void init() {
         //getExtras();
-        dadosUsuarioBO = DadosUsuarioBO_.getInstance_(this);
-        apostaBO = ApostaBO_.getInstance_(this);
         setViews();
 
         setSupportActionBar(toolbar);
@@ -238,75 +229,25 @@ public class PrincipalActivity extends AppCompatActivity
         this.viewSair = findViewById(R.id.viewSair);
         View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
 
-        buttonHomeBet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickButtonHomeBet();
-            }
-        });
+        buttonHomeBet.setOnClickListener(view -> clickButtonHomeBet());
 
-        buttonHomeBolao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickButtonBolao();
-            }
-        });
+        buttonHomeBolao.setOnClickListener(view -> clickButtonBolao());
 
-        relativeLayoutContentRepassados.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickRelativeLayoutContentRepassados();
-            }
-        });
+        relativeLayoutContentRepassados.setOnClickListener(view -> clickRelativeLayoutContentRepassados());
 
-        relativeLayoutContentRapidao.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickRelativeLayoutContentRapidao();
-            }
-        });
+        relativeLayoutContentRapidao.setOnClickListener(view -> clickRelativeLayoutContentRapidao());
 
-        rlJogoResponsavel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickrlJogoResponsavel();
-            }
-        });
+        rlJogoResponsavel.setOnClickListener(view -> clickrlJogoResponsavel());
 
-        rlMsgDisque180 .setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickrlMsgDisque180();
-            }
-        });
+        rlMsgDisque180 .setOnClickListener(view -> clickrlMsgDisque180());
 
-        view_id_fg_somador_carrinho.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vaiProCarrinho();
-            }
-        });
+        view_id_fg_somador_carrinho.setOnClickListener(view -> vaiProCarrinho());
 
-        relativeLayoutContentFavoritas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickRelativeLayoutContentFavoritas();
-            }
-        });
+        relativeLayoutContentFavoritas.setOnClickListener(view -> clickRelativeLayoutContentFavoritas());
 
-        relativeLayoutContentLerBilhetes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickRelativeLayoutContentLerBilhetes();
-            }
-        });
+        relativeLayoutContentLerBilhetes.setOnClickListener(view -> clickRelativeLayoutContentLerBilhetes());
 
-        recolherMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickRecolherMenu();
-            }
-        });
+        recolherMenu.setOnClickListener(view -> clickRecolherMenu());
     }
 
     @Override
@@ -414,8 +355,6 @@ public class PrincipalActivity extends AppCompatActivity
         AlertDialogUtils.show(PrincipalActivity.this);
 
         if(SessaoUsuarioUtil.precisaAtualizar()){
-            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
-
             new ParametrosSimulacaoModel(PrincipalActivity.this)
                     .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
                         @Override
@@ -490,7 +429,8 @@ public class PrincipalActivity extends AppCompatActivity
         return new OnNotificacaoListener() {
             @Override
             public void removePopup() {
-                dadosUsuarioBO.putLerNotificacao(new RequestListener<RetornoPadraoResponse>() {
+
+                DadosUsuarioBO.getInstance().putLerNotificacao(new RequestListener<RetornoPadraoResponse>() {
                     @Override
                     public void onResponse(RetornoPadraoResponse result) {
                         popupNotification.dismiss();
@@ -521,8 +461,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void callRepassesSociais() {
         AlertDialogUtils.show(PrincipalActivity.this);
-        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(PrincipalActivity.this);
-        dadosCorporativosBO.repasses(new RequestListener<RepassometroDTOResponse>() {
+        DadosCorporativosBO.getInstance().repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 repassesSociais = response.getPayload();
@@ -1089,6 +1028,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case ZXING_CAMERA_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

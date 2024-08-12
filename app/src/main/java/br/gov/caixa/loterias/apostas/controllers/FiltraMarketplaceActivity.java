@@ -21,8 +21,6 @@ import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
@@ -267,8 +265,6 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         AlertDialogUtils.show(this);
 
         if(SessaoUsuarioUtil.precisaAtualizar()){
-            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
-
             new ParametrosSimulacaoModel(this)
                     .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
                         @Override

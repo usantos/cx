@@ -34,7 +34,6 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
     private Boolean isLoterica;
     private ComprovanteApostaDTO comprovante;
     private DetalhesPremioDTO detalhesPremioDTO;
-    private PdfUtils pdfUtils;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,12 +88,9 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
             it.putExtra("COMPROVANTE", comprovante);
             it.putExtra("CODIGO_RESGATE", codigoResgateDTO);
             startActivity(new Intent(it));
-
         } else {
             setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.label_agencia_bold)));
-
             categoriaLayout.setVisibility(View.GONE);
-
             for (TipoPagamentoDTO meioPagamento: detalhesPremioDTO.getMeiosResgate()) {
                 if (meioPagamento.getCanal() == CanalEnum.SISPL) {
                     duploResgateRelativeLayout.setVisibility(View.VISIBLE);
@@ -110,7 +106,7 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
 
     private void adicionarListeners() {
         buttonGerarPDF.setOnClickListener(view -> {
-            pdfUtils.createComprovanteApostaPdf(comprovante, ResgatePremioLotericaAgenciaActivity.this);
+            PdfUtils.createComprovanteApostaPdf(comprovante, ResgatePremioLotericaAgenciaActivity.this);
         });
 
         duploResgateRelativeLayout.setOnClickListener(view -> {

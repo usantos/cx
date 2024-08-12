@@ -29,15 +29,13 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
-import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.BiometriaLogin;
 import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -107,7 +105,7 @@ public class LoginFragment extends Fragment {
         Button buttonAposte = v.findViewById(R.id.buttonAposteAgora);
         buttonAposte.setOnClickListener(v1 -> {
             AppCenterManager.registraEvento("ENTROU_OPCAO_DEGUSTAR");
-            KeycloakBO_.getInstance_(getActivity()).limparSessao(getActivity());
+            KeycloakBO.getInstance().limparSessao(getActivity());
 
             DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
             startActivity(new Intent(getContext(), PrincipalActivity.class));
@@ -195,10 +193,9 @@ public class LoginFragment extends Fragment {
 
     private void verificarCadastroWebservice() {
         AlertDialogUtils.show(getContext());
-        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getContext());
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
         List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
-        dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+        DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
 
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
@@ -236,7 +233,7 @@ public class LoginFragment extends Fragment {
     private void connectKeycloak() {
         if(AppUtils.isNetworkAvailable(getContext())){
             AcessoBO.PRIMEIRO_LOGIN = true;
-            AcessoBO_.getInstance_(getContext()).iniciarLoginSSO(getActivity());
+            AcessoBO.getInstance().iniciarLoginSSO(getActivity());
         }else{
             buttonLogin.setEnabled( true );
             Log.e("caixa", "Erro ao conexar com internet LoginFragment.connectKeycloak()");

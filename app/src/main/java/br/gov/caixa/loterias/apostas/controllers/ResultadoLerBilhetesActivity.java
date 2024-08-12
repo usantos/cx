@@ -41,7 +41,6 @@ import br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
 public class ResultadoLerBilhetesActivity extends AppCompatActivity {
-
     public final static String COD_BARRAS_EXTRA = "codBarras";
     public final static String TIPO_LEITURA_EXTRA = "tipoLeitura";
     public final static String NSB_EXTRA = "nsb";

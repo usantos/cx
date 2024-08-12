@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -50,17 +49,9 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         ApostaFavoritaDTO aposta = listaApostaFavorita.get(position);
         holder.bind(aposta, position);
     }
-
     @Override
     public int getItemCount() {
         return listaApostaFavorita.size();
-    }
-    //endregion
-
-    //region Methods
-
-    public List<ApostaFavoritaDTO> getCompras() {
-        return Collections.unmodifiableList(listaApostaFavorita);
     }
     //endregion
 }

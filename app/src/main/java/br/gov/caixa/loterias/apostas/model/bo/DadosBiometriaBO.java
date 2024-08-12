@@ -2,17 +2,12 @@ package br.gov.caixa.loterias.apostas.model.bo;
 
 import android.content.Context;
 
-import org.androidannotations.annotations.EBean;
 import org.apache.commons.codec.binary.Base64;
-
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.dao.crud.BiometriaCRUD;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 
-import static org.androidannotations.annotations.EBean.Scope.Singleton;
-
-@EBean(scope = Singleton)
 public class DadosBiometriaBO extends BaseBO {
 
     public static void salvarBiometria(String refresh, String nome, String cpf) {

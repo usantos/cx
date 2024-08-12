@@ -5,7 +5,6 @@ import android.app.Activity;
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -21,7 +20,7 @@ public class ParametrosSimulacaoModel {
 	}
 
 	public void buscaParametroSiumulacao(OnSilceListener<ParametrosSimulacao> listener) {
-		final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(activity);
+		final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO.getInstance();
 		dadosCorporativosBO.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
 			@Override
 			public void onResponse(ParametrosSimulacaoResponse response) {

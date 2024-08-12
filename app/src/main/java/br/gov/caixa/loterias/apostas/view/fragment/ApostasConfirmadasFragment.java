@@ -38,8 +38,7 @@ import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO_;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -89,6 +88,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private View view, apostasLoading;
     private LinearLayout dataBtn;
     private boolean isHistorico;
+
     protected FiltroApostasAdapter filtroAdapter;
     private Dialog dialogData;
     private NumberPicker npData;
@@ -125,8 +125,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = new ApostaConfirmadaModel(getActivity());
-        apostaBO = ApostaBO_.getInstance_(getActivity());
         isOnCreate = true;
+        apostaBO = ApostaBO.getInstance();
     }
 
     @Nullable
@@ -277,8 +277,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
     }
 
-    private void requestApostasMicroServico(String urlBaseBuscaApostas)       {
-        ApostaMicroServicoBO_.getInstance_(getActivity()).getApostasConfirmadasMicroServico(urlBaseBuscaApostas, page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+
+    private void requestApostasMicroServico(String urlBaseBuscaApostas) {
+        ApostaMicroServicoBO.getInstance().getApostasConfirmadasMicroServico(urlBaseBuscaApostas, page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
                 chamarApostaNovamente = false;

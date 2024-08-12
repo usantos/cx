@@ -91,10 +91,6 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 	}
 	//endregion
 
-	//region Network Methodsƒ
-
-	//endregion
-
 	//region Layout Configuration Methods
 	private void preencheLayoutApostas(List<ApostaCarrinhoFavoritoDTO> listaApostas, LinearLayout layout) {
 		if (layout.findViewById(R.id.tv_nome_modalidade) == null) {

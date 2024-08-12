@@ -13,7 +13,7 @@ import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
+import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -105,7 +105,7 @@ public class AppIndisponivelActivity extends AppCompatActivity {
             } else {
                 loadViewProgress = LoadingViewLoterias.show(this);
 
-                AcessoBO_.getInstance_(this).getVerificaVersao(BuildConfig.VERSION_NAME, new RequestListener<VersionResponse>() {
+                AcessoBO.getInstance().getVerificaVersao(BuildConfig.VERSION_NAME, new RequestListener<VersionResponse>() {
                     @Override
                     public void onResponse(VersionResponse response) {
                         loadViewProgress.dismiss();

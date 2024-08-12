@@ -31,9 +31,7 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -179,9 +177,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         updateDadosPessoaisLimiteButton.setOnClickListener(view -> {
 
             AlertDialogUtils.show(DadosPessoaisActivity.this);
-            final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
-
-            dadosUsuarioBO.recalcularLimite( new RequestListener<ApostadorDTOResponse>() {
+            DadosUsuarioBO.getInstance().recalcularLimite( new RequestListener<ApostadorDTOResponse>() {
                 @Override
                 public void onResponse(ApostadorDTOResponse response) {
                     apostadorDTO = response.getPayload();
@@ -242,9 +238,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
     private void callWebservice() {
         AlertDialogUtils.show(DadosPessoaisActivity.this);
-        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
-
-        dadosUsuarioBO.getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
+        DadosUsuarioBO.getInstance().getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
             @Override
             public void onResponse(ApostadorDTOResponse response) {
                 apostadorDTO = response.getPayload();
@@ -275,9 +269,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
     private void getUFS() {
         if (listUf == null || listUFString == null) {
-            DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
             AlertDialogUtils.show(DadosPessoaisActivity.this);
-            dadosCorporativosBO.ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
+            DadosCorporativosBO.getInstance().ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
                 @Override
                 public void onResponse(UnidadeFederacaoDTOResponse response) {
                     AlertDialogUtils.dismiss();
@@ -358,8 +351,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         if (idUF != null && !idUF.isEmpty()){
             AlertDialogUtils.show(DadosPessoaisActivity.this);
 
-            DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
-            dadosCorporativosBO.municipios(idUF, new RequestListener<MunicipioDTOResponse>() {
+            DadosCorporativosBO.getInstance().municipios(idUF, new RequestListener<MunicipioDTOResponse>() {
                 @Override
                 public void onResponse(MunicipioDTOResponse response) {
                     AlertDialogUtils.dismiss();
@@ -487,8 +479,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
 
     private void buscarBairroPorCep(String cep) {
         AlertDialogUtils.show(DadosPessoaisActivity.this);
-        final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
-        dadosCorporativosBO.bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
+        DadosCorporativosBO.getInstance().bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
             @Override
             public void onResponse(BairroDTOResponse response) {
                 AlertDialogUtils.dismiss();
@@ -516,9 +507,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void updateDadosCadastrais(ApostadorAlteracaoDTO apostadorAlteracaoDTO){
-        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_( this );
         AlertDialogUtils.show(DadosPessoaisActivity.this);
-        dadosUsuarioBO.putDadosUsuario(apostadorAlteracaoDTO, new RequestListener<CadastrarApostadorDTOResponse>() {
+        DadosUsuarioBO.getInstance().putDadosUsuario(apostadorAlteracaoDTO, new RequestListener<CadastrarApostadorDTOResponse>() {
             @Override
             public void onResponse(CadastrarApostadorDTOResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_edicao_cadastro_sucesso));
@@ -563,9 +553,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void getUfeMunicipio(){
-
-        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
-        dadosCorporativosBO.ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
+        DadosCorporativosBO.getInstance().ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
             @Override
             public void onResponse(UnidadeFederacaoDTOResponse response) {
                 listUf = response.getPayload();
@@ -576,8 +564,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                     }
                     listUFString.add(item.getSigla());
                 }
-                DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(DadosPessoaisActivity.this);
-                dadosCorporativosBO.municipios(apostadorDTO.getMunicipioId().getIdUF().toString(), new RequestListener<MunicipioDTOResponse>() {
+                DadosCorporativosBO.getInstance().municipios(apostadorDTO.getMunicipioId().getIdUF().toString(), new RequestListener<MunicipioDTOResponse>() {
                     @Override
                     public void onResponse(MunicipioDTOResponse response) {
                         AlertDialogUtils.dismiss();

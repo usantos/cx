@@ -42,7 +42,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -142,10 +141,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
     
     protected void init() {
+        dadosCorporativosBO = DadosCorporativosBO.getInstance();
         getExtras();
         setViews();
-        
-        dadosCorporativosBO = DadosCorporativosBO_.getInstance_(SimularApostaActivity.this);
         isEspecial =  getIntent().getBooleanExtra(getResources().getString(R.string.extra_especial), false);
         invalidateOptionsMenu();
         zerarApostas();
