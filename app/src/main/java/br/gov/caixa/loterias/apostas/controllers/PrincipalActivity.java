@@ -696,12 +696,14 @@ public class PrincipalActivity extends AppCompatActivity
         if(DadosUsuarioBO.checarUsuarioLogado(this)){
             int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
             int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
+            TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
 
             if (!DadosUsuarioBO.checarTutorial(DadosUsuarioBO.BOLAO_TUTORIAL)){
-                startActivity(IntentUtil.getIntentTutorial(this, ModalidadeEnum.BOLAO, idModalidade));
+                startActivity(IntentUtil.getIntentTutorial(this, ModalidadeEnum.BOLAO, idModalidade, tipoConcurso));
             } else {
                 Bundle bundle = new Bundle();
                 bundle.putInt(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
+                bundle.putInt(BolaoActivity.ARG_TIPO_CONCURSO, tipoConcurso.fromStringToIdTipoConcurso());
                 Intent intent = IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class, bundle);
                 startActivity(intent);
                 //startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));

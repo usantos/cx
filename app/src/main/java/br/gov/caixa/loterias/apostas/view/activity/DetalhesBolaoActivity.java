@@ -224,7 +224,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 				fragmentRodape();
 				preencheDados();
 				AlertDialogUtils.dismiss();
-				if (bolao.getQtdCotaDisponivel() == 0) {
+				if (bolao.getQtdCotaDisponivel() == 0 && modoVisualizacao != null && modoVisualizacao == ModoVisualizacaoBolaoEnum.SIMULACAO) {
 					ViewUtils.alertTitleButton(DetalhesBolaoActivity.this, R.string.label_atencao, getString(R.string.cota_zerou),
 							"Ok", dialogInterface -> {
 								dialogInterface.dismiss();

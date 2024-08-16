@@ -31,6 +31,7 @@ public class BolaoModel extends AppModel{
 	private PaginacaoFiltro paginacaoFiltro;
 	private int idMunicipio, idUf;
 	private Integer idModalidade;
+	private Integer idTipoConcurso;
 
 	public BolaoModel(Activity activity) {
 		super(activity);
@@ -116,8 +117,12 @@ public class BolaoModel extends AppModel{
 		this.idModalidade = idModalidade;
 	}
 
+	public void setIdTipoConcurso(Integer idTipoConcurso) {
+		this.idTipoConcurso = idTipoConcurso;
+	}
+
 	private void initPaginacao(){
-		this.paginacaoFiltro = new PaginacaoFiltro(TipoConsultaBolaoEnum.MUNICIPIO, idMunicipio, idUf, idModalidade);
+		this.paginacaoFiltro = new PaginacaoFiltro(TipoConsultaBolaoEnum.MUNICIPIO, idMunicipio, idUf, idModalidade, idTipoConcurso);
 	}
 
 	public void atualizaPaginacao(ListaBolaoDTO payload) {

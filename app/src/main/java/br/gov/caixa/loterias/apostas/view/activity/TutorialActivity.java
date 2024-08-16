@@ -24,6 +24,7 @@ public class TutorialActivity extends AppCompatActivity implements OnTutorialLis
 	private ModalidadeEnum modalidade;
 	private TutorialModel model;
 	private Integer idModalidade;
+	private Integer tipoConcurso;
 
 	private TutorialNovaModalidadeFragment fragment;
 
@@ -36,20 +37,21 @@ public class TutorialActivity extends AppCompatActivity implements OnTutorialLis
 
 		model = new TutorialModel(this);
 		fragment = TutorialNovaModalidadeFragment.newInstance();
-		FragmentUtils.startFragment(getSupportFragmentManager(), R.id.frameTutorial, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(getSupportFragmentManager(), R.id.frameTutorial, fragment);
 	}
 
 	private void getBundle() {
 		parametroJogo = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.extra_modalidade)), ParametroJogoDTO.class);
 		modalidade = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
 		idModalidade = getIntent().getExtras().getInt(BolaoActivity.ARG_IDMODALIDADE);
+		tipoConcurso = getIntent().getExtras().getInt(BolaoActivity.ARG_TIPO_CONCURSO);
 	}
 
 	@Override
 	public void apostar(Boolean naoVerNovamente) {
 		atualizaStatusTutorial(naoVerNovamente);
 
-		startActivity(model.getIntentModalidade(modalidade, parametroJogo, idModalidade));
+		startActivity(model.getIntentModalidade(modalidade, parametroJogo, idModalidade, tipoConcurso));
 		finish();
 	}
 
