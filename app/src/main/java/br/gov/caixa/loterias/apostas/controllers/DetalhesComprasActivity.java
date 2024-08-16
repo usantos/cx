@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.WebViewActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -274,7 +273,10 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             @Override
             public void rightButtom() {
                 //cancelContagem();
-                PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                //PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, PrincipalActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 finish();
             }
         };
@@ -290,7 +292,10 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             @Override
             public void centerButtom() {
                 dialogDevolucaoPix.dismiss();
-                PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                //PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, PrincipalActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
                 finish();
             }
 
@@ -483,9 +488,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     private void buscaDetalhesCompras() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(DetalhesComprasActivity.this);
-
-        apostaBO.getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        ApostaBO.getInstance().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -652,7 +655,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
         AlertDialogUtils.show(DetalhesComprasActivity.this);
-        ApostaBO_.getInstance_(DetalhesComprasActivity.this).validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ApostaBO.getInstance().validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -676,7 +679,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void favoritarCarrinho(String nome, Long idFavorito) {
         AlertDialogUtils.show(DetalhesComprasActivity.this);
-        ApostaBO_.getInstance_(DetalhesComprasActivity.this).salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ApostaBO.getInstance().salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();

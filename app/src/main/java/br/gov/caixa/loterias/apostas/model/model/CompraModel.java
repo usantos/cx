@@ -10,7 +10,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -42,8 +41,7 @@ public class CompraModel extends AppModel{
 	}
 
 	public void buscaCartoes(OnSilceListener<List<RetornoCartao>> listener){
-		DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getActivity());
-		dadosUsuarioBO.cartoes(MeioPagamentoUtils.MP_MERCADO_PAGO, new RequestListener<ListCartaoDTOResponse>() {
+		DadosUsuarioBO.getInstance().cartoes(MeioPagamentoUtils.MP_MERCADO_PAGO, new RequestListener<ListCartaoDTOResponse>() {
 			@Override
 			public void onResponse(ListCartaoDTOResponse response) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_entrou_formas_pagamento));

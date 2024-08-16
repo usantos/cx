@@ -5,10 +5,6 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -20,21 +16,36 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
  * Created by cedesbr450 on 02/04/18.
  */
 
-@EViewGroup(R.layout.row_partida_lotogol_resultado)
 public class PartidaViewLotogolResultado extends LinearLayout {
 
-    @ViewById
-    LinearLayout rowPartidaLotogol;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    ItemEquipeViewLotogolResultado lotogolTimeUm, lotogolTimeDois;
+    private LinearLayout rowPartidaLotogol;
+    private ItemEquipeViewLotogolResultado lotogolTimeUm, lotogolTimeDois;
+    private TextView paginaResultadoLotogolText, diaSemanaDataPartidaText;
 
-    @ViewById
-    TextView paginaResultadoLotogolText, diaSemanaDataPartidaText;
+    public static PartidaViewLotogolResultado build(Context context) {
+        PartidaViewLotogolResultado instance = new PartidaViewLotogolResultado(context);
+        instance.onFinishInflate();
+        return instance;
+    }
 
-    @AfterViews
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.row_partida_lotogol_resultado, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
     protected void init() {
-
+        this.rowPartidaLotogol = findViewById(R.id.row_partida_lotogol);
+        this.lotogolTimeUm = findViewById(R.id.lotogol_time_um);
+        this.lotogolTimeDois = findViewById(R.id.lotogol_time_dois);
+        this.paginaResultadoLotogolText = findViewById(R.id.paginaResultadoLotogolText);
+        this.diaSemanaDataPartidaText = findViewById(R.id.diaSemanaDataPartidaText);
     }
 
     public PartidaViewLotogolResultado(Context context) {

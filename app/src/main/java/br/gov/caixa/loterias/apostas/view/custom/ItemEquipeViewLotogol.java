@@ -7,9 +7,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -27,17 +24,13 @@ import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 /**
  * Created by joafilho on 28/12/2017.
  */
-@EViewGroup(R.layout.item_lotogol)
 public class ItemEquipeViewLotogol extends RelativeLayout {
 
-    @ViewById
-    ImageView itemImage;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    TextView itemTitle;
-
-    @ViewById
-    ExpandableHeightGridView gridViewPlacarTresColunas, gridViewPlacarDuasColunas;
+    private ImageView itemImage;
+    private TextView itemTitle;
+    private ExpandableHeightGridView gridViewPlacarTresColunas, gridViewPlacarDuasColunas;
 
     private ParametroEquipe parametroEquipe;
     private LotogolListener listerner;
@@ -50,8 +43,29 @@ public class ItemEquipeViewLotogol extends RelativeLayout {
 
     private View selecionadoAnterior;
 
-    @AfterViews
+    public static ItemEquipeViewLotogol build(Context context) {
+        ItemEquipeViewLotogol instance = new ItemEquipeViewLotogol(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_lotogol, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    //@AfterViews
     protected void init() {
+        this.itemImage = findViewById(R.id.item_image);
+        this.itemTitle = findViewById(R.id.item_title);
+        this.gridViewPlacarTresColunas = findViewById(R.id.gridViewPlacarTresColunas);
+        this.gridViewPlacarDuasColunas = findViewById(R.id.gridViewPlacarDuasColunas);
+
         placarListUm = new ArrayList<>();
         placarListDois = new ArrayList<>();
         criarListaPlacar();

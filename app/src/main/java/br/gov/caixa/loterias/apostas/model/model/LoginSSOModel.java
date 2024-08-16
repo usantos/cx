@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
 
-import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
+import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 
 public class LoginSSOModel extends AppModel {
@@ -16,7 +16,7 @@ public class LoginSSOModel extends AppModel {
 	}
 
 	public void sair(SairListener listener) {
-		AcessoBO_.getInstance_(getActivity()).iniciarLogoutSSO(getActivity());
+		AcessoBO.getInstance().iniciarLogoutSSO(getActivity());
 		LoginSP.loginRealizado(false);
 
 		listener.onSaiu();

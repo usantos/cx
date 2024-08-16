@@ -5,7 +5,6 @@ import android.app.Activity;
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
@@ -26,8 +25,7 @@ public class ConferirResultadoHelper  {
      */
     public static void conferirResultado(final Long apostaId, final Activity contextParam) {
         AlertDialogUtils.show(contextParam);
-        ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
-        apostaBO.getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
+        ApostaBO.getInstance().getApostaConferir(apostaId, new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
                 long codigoResultado = result.getPayload().getValor().longValue();
@@ -83,8 +81,7 @@ public class ConferirResultadoHelper  {
         if(AlertDialogUtils.isShow()){
             AlertDialogUtils.dismiss();
         }
-        ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
-        apostaBO.getApostaConferir(apostaDTO.getId(), new RequestListener<DTOEnumIntegerResponse>() {
+        ApostaBO.getInstance().getApostaConferir(apostaDTO.getId(), new RequestListener<DTOEnumIntegerResponse>() {
             @Override
             public void onResponse(DTOEnumIntegerResponse result) {
                 if (result.getRedirect() != null){

@@ -11,9 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import br.gov.caixa.loterias.apostas.R;
 
 /**
@@ -21,30 +18,20 @@ import br.gov.caixa.loterias.apostas.R;
  * Class ContentResultadoPremiado
  */
 
-@EViewGroup(R.layout.content_resultado_premiado)
 public class ContentResultadoPremiado extends LinearLayout {
 
-    @ViewById
-    protected LinearLayout premioInfoLinearLayout,topoModalidadeResultadoLinearLayout,
+    private boolean alreadyInflated = false;
+
+    private LinearLayout premioInfoLinearLayout,topoModalidadeResultadoLinearLayout,
             fundoBackgroundTrapezeResultadoLinearLayout, topoResultadoPremioLinearLayout, premioGanhoLinearLayout,
             cabecalhoListaFaixaPremiacaoLinearLayout, cabecalhoListaFaixaPremiacaoBolao;
-
-    @ViewById
-    protected TextView valorEstimativaConcursoAtualTextView,valorPremioTituloTextView,
+    private TextView valorEstimativaConcursoAtualTextView,valorPremioTituloTextView,
             tituloModalidadeTextView, proximoSorteioTextView, nsbBilhete, idPodeComemorar,
             tvFaixaPremiacao, tvValorPremioCota, tvValorPremioLiquido;
-
-    @ViewById
-    protected ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
-
-    @ViewById
-    protected ConstraintLayout clVerDetalheAposta;
-
-    @ViewById
-    protected Button botaoAposteAgora ;
-
-    @ViewById
-    protected ImageView imgTrevoResultado, imgTagBolao;
+    private ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
+    private ConstraintLayout clVerDetalheAposta;
+    private Button botaoAposteAgora ;
+    private ImageView imgTrevoResultado, imgTagBolao;
 
     public ContentResultadoPremiado(Context context) {
         super(context);
@@ -56,6 +43,46 @@ public class ContentResultadoPremiado extends LinearLayout {
 
     public ContentResultadoPremiado(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public static ContentResultadoPremiado build(Context context) {
+        ContentResultadoPremiado instance = new ContentResultadoPremiado(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.content_resultado_premiado, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    private void init() {
+        this.premioInfoLinearLayout = findViewById(R.id.premioInfoLinearLayout);
+        this.topoModalidadeResultadoLinearLayout = findViewById(R.id.topoModalidadeResultadoLinearLayout);
+        this.fundoBackgroundTrapezeResultadoLinearLayout = findViewById(R.id.fundoBackgroundTrapezeResultadoLinearLayout);
+        this.topoResultadoPremioLinearLayout = findViewById(R.id.topoResultadoPremioLinearLayout);
+        this.premioGanhoLinearLayout = findViewById(R.id.premioGanhoLinearLayout);
+        this.cabecalhoListaFaixaPremiacaoLinearLayout = findViewById(R.id.cabecalhoListaFaixaPremiacaoLinearLayout);
+        this.cabecalhoListaFaixaPremiacaoBolao = findViewById(R.id.cabecalhoListaFaixaPremiacaoBolao);
+        this.valorEstimativaConcursoAtualTextView = findViewById(R.id.valorEstimativaConcursoAtualTextView);
+        this.valorPremioTituloTextView = findViewById(R.id.valorPremioTituloTextView);
+        this.tituloModalidadeTextView = findViewById(R.id.tituloModalidadeTextView);
+        this.proximoSorteioTextView = findViewById(R.id.proximoSorteioTextView);
+        this.nsbBilhete = findViewById(R.id.nsbBilhete);
+        this.idPodeComemorar = findViewById(R.id.idPodeComemorar);
+        this.tvFaixaPremiacao = findViewById(R.id.tvFaixaPremiacao);
+        this.tvValorPremioCota = findViewById(R.id.tvValorPremioCota);
+        this.tvValorPremioLiquido = findViewById(R.id.tvValorPremioLiquido);
+        this.listaFaixaPremiacaoExpandableHeightRecyclerView = findViewById(R.id.listaFaixaPremiacaoExpandableHeightRecyclerView);
+        this.clVerDetalheAposta = findViewById(R.id.clVerDetalheAposta);
+        this.botaoAposteAgora = findViewById(R.id.botaoAposteAgora);
+        this.imgTrevoResultado = findViewById(R.id.imgTrevoResultado);
+        this.imgTagBolao = findViewById(R.id.imgTagBolao);
     }
 
     public LinearLayout getTopoModalidadeResultadoLinearLayout() {

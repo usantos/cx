@@ -7,7 +7,7 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
@@ -23,7 +23,7 @@ public class DetalhesCompraModel extends AppModel{
 	}
 
 	public void realizaReaposta(ArrayList<ApostaDTO> listaAposta, OnSilceListener<AgrupadorDTOIdentificaoDeUmaApostaDas8Modalidades> listener) {
-		ApostaBO_.getInstance_(getActivity()).adicionarApostasNoCarrinho(getApostas(listaAposta), new RequestListener<AgrupadorDTOApostaDTOResponse>() {
+		ApostaBO.getInstance().adicionarApostasNoCarrinho(getApostas(listaAposta), new RequestListener<AgrupadorDTOApostaDTOResponse>() {
 			@Override
 			public void onResponse(AgrupadorDTOApostaDTOResponse result) {
 				listener.success(result.getPayload());

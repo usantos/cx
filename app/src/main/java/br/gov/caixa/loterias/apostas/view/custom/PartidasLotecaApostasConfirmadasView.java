@@ -12,9 +12,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -31,14 +28,12 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
  * Class PartidasLotecaApostasConfirmadasView
  */
 
-@EViewGroup(R.layout.row_apostas_confirmadas_partidas_loteca)
 public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
 
-    @ViewById
-    TextView textApostaPartidaLotecaUm, textApostaPartidaLotecaDois, textApostaPartidaLotecaEmpate;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    ImageView imageApostaPartidaLotecaUm, imageApostaPartidaLotecaDois, imageApostaPartidaLotecaEmpate;
+    private TextView textApostaPartidaLotecaUm, textApostaPartidaLotecaDois, textApostaPartidaLotecaEmpate;
+    private ImageView imageApostaPartidaLotecaUm, imageApostaPartidaLotecaDois, imageApostaPartidaLotecaEmpate;
 
     protected List<PartidaLotecaDTO> listaResultados;
 
@@ -51,13 +46,38 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
         this.listaResultados = listaResultados;
     }
 
-
     public PartidasLotecaApostasConfirmadasView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
     public PartidasLotecaApostasConfirmadasView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+
+    public static PartidasLotecaApostasConfirmadasView build(Context context, List<PartidaLotecaDTO> listaResultados) {
+        PartidasLotecaApostasConfirmadasView instance = new PartidasLotecaApostasConfirmadasView(context, listaResultados);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.row_apostas_confirmadas_partidas_loteca, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    private void init() {
+        this.textApostaPartidaLotecaUm = findViewById(R.id.textApostaPartidaLotecaUm);
+        this.textApostaPartidaLotecaDois = findViewById(R.id.textApostaPartidaLotecaDois);
+        this.textApostaPartidaLotecaEmpate = findViewById(R.id.textApostaPartidaLotecaEmpate);
+        this.imageApostaPartidaLotecaUm = findViewById(R.id.imageApostaPartidaLotecaUm);
+        this.imageApostaPartidaLotecaDois = findViewById(R.id.imageApostaPartidaLotecaDois);
+        this.imageApostaPartidaLotecaEmpate = findViewById(R.id.imageApostaPartidaLotecaEmpate);
     }
 
     public void setLayout(PartidaLotecaDTO partidaLotecaDTO) {

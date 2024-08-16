@@ -25,7 +25,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -125,8 +124,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         buttonTermoAceite.setOnClickListener(view -> {
             if (selcioneAceiteTermoUso.isChecked()){
                 AlertDialogUtils.show(TermosUsoActivity.this);
-                DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
-                dadosCorporativosBO.aceiteTermo(new RequestListener<ResourceResponse>() {
+                DadosCorporativosBO.getInstance().aceiteTermo(new RequestListener<ResourceResponse>() {
                     @Override
                     public void onResponse(ResourceResponse response) {
                         AlertDialogUtils.dismiss();
@@ -210,9 +208,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void getTermo() {
         AlertDialogUtils.show(this);
-        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
-
-        dadosCorporativosBO.termo(new RequestListener<TermoDeUsoDTOResponse>() {
+        DadosCorporativosBO.getInstance().termo(new RequestListener<TermoDeUsoDTOResponse>() {
             @Override
             public void onResponse(TermoDeUsoDTOResponse response) {
                 AlertDialogUtils.dismiss();
@@ -278,9 +274,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void verificaTermoAceito() {
         AlertDialogUtils.show(this);
-        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(TermosUsoActivity.this);
-
-        dadosCorporativosBO.validaTermoAceito(new RequestListener<ResourceResponse>() {
+        DadosCorporativosBO.getInstance().validaTermoAceito(new RequestListener<ResourceResponse>() {
 
             @Override
             public void onResponse(ResourceResponse result) {
@@ -330,9 +324,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     private void initReciclerViewDuvidas() {
         if (secaoDuvidas == null) {
             AlertDialogUtils.show(this);
-            DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
-
-            dadosCorporativosBO.secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
+            DadosCorporativosBO.getInstance().secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
                 @Override
                 public void onResponse(ListSecaoDTOResponse response) {
                     AlertDialogUtils.dismiss();

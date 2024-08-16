@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -38,8 +37,7 @@ public class SimularApostaModel {
 
 	private void preencheNumerosAleatoriosSilce(int qtdDezenasPossiveisSelecionado, List<Integer> dezenasSelecionadas,
 										   int qtdPrognosticoMaximo, OnSilceListener listener) {
-		ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
-		apostaBO.completaJogo(qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
+		ApostaBO.getInstance().completaJogo(qtdDezenasPossiveisSelecionado, dezenasSelecionadas, 1,
 							  qtdPrognosticoMaximo, new RequestListener<CompletaJogoRsp>() {
 					@Override
 					public void onResponse(CompletaJogoRsp response) {
@@ -86,8 +84,7 @@ public class SimularApostaModel {
 
 	private void preencheNumerosAleatoriosSuperSeteSilce(int qtdDezenasPossiveisSelecionado, ArrayList<ArrayList<Integer>> listaInteiros,
 												   String nome, OnSilceListener listener) {
-		ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
-		apostaBO.completaJogoNovo(qtdDezenasPossiveisSelecionado, listaInteiros,
+		ApostaBO.getInstance().completaJogoNovo(qtdDezenasPossiveisSelecionado, listaInteiros,
 								  nome,
 								  new RequestListener<CompletaJogoNovoRsp>() {
 									  @Override

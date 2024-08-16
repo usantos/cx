@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -17,25 +16,24 @@ import java.io.UnsupportedEncodingException;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity_;
+import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
-import br.gov.caixa.loterias.apostas.controllers.IntroducaoActivity;
 import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
-import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostador;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -242,7 +240,7 @@ public class  RedirectNetwork {
                 return;
             case CADASTRAR_APOSTADOR:
                 if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
-                    activity.startActivity(new Intent(activity, CadastrarActivity_.class));
+                    activity.startActivity(new Intent(activity, CadastrarActivity.class));
                 }
                 return;
             case INDISPONIVEL:
@@ -319,7 +317,10 @@ public class  RedirectNetwork {
                 case "011012":
                     ViewUtils.alertTitleCustomPositiveListener(activity, "Ok", "Apostar mais",
                                                                MensagensNetwork.setMensagem(volleyError, activity), (dialog, which) -> {
-                                PrincipalActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                                //PrincipalActivity_.intent(activity).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                                Intent intent = IntentUtil.getIntentOrigemDestino(activity, PrincipalActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                activity.startActivity(intent);
                             });
                     break;
                 case "018003":
@@ -345,7 +346,7 @@ public class  RedirectNetwork {
                 break;
             case CADASTRAR_APOSTADOR:
                 if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
-                    activity.startActivity(new Intent(activity, CadastrarActivity_.class));
+                    activity.startActivity(new Intent(activity, CadastrarActivity.class));
                 }
                 break;
             case INDISPONIVEL:
@@ -361,7 +362,7 @@ public class  RedirectNetwork {
     //TODO: LOGIN - Trocando
     public static void connectKeycloak(final Activity activity) {
         if(AppUtils.isNetworkAvailable(activity)){
-            AcessoBO_.getInstance_(activity).iniciarLoginSSO(activity);
+            AcessoBO.getInstance().iniciarLoginSSO(activity);
         }else{
             ViewUtils.alert(activity, activity.getString(R.string.seminternet));
         }

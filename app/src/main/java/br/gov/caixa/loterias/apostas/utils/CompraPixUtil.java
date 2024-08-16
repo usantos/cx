@@ -5,7 +5,7 @@ import android.content.Context;
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.CopiaColaPixActivity;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
@@ -29,8 +29,7 @@ public class CompraPixUtil {
     private static void checkagemPix(Context context, GerarPixDTO pix, Long idCompraCarrinho, OnCompraAsync listener, OnVerificaPagamentoPix checagem) {
         if (isActivityRunning() && pix.estaNoPrazo()) {
             Utils.delay(SECONDS, () -> {
-                ApostaBO_.getInstance_(context)
-                         .verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
+                ApostaBO.getInstance().verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
                     @Override
                     public void onResponse(CompraAsyncResponse result) {
                         listener.successCompra();

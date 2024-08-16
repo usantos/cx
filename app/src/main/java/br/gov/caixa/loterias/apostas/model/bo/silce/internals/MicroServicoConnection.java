@@ -17,7 +17,6 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 
@@ -48,7 +47,7 @@ public class MicroServicoConnection {
     public <T> void request(GsonRequest req, final RequestListener<T> listenerService) {
         boolean precisaRefreshToken = false;
         try {
-            KeycloakBO keycloakBO = KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext());
+            KeycloakBO keycloakBO = KeycloakBO.getInstance();
             if (req.getHeaders() == null) {
                 req.setHeaders(new HashMap<>());
             } else if (req.getHeaders().get("Authorization") != null && keycloakBO.isPrecisaRefreshToken()) {
@@ -74,7 +73,7 @@ public class MicroServicoConnection {
             @Override
             public void successRefresh() {
                 try {
-                    KeycloakBO keycloakBO = KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext());
+                    KeycloakBO keycloakBO = KeycloakBO.getInstance();
                     req.getHeaders().put("Authorization", "Bearer " + keycloakBO.getAccessToken());
                     req.getHeaders().put("cookie", "security=false");
                     req.getHeaders().put("Subcanal", "3");

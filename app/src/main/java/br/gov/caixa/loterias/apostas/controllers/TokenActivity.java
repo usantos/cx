@@ -22,14 +22,12 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
-import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -41,8 +39,6 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 
 public class TokenActivity extends AppCompatActivity {
-
-
     private AuthorizationService authorizationService;
 
     @Override
@@ -60,7 +56,7 @@ public class TokenActivity extends AppCompatActivity {
                 authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), (response, ex) -> {
                     if (response != null) {
                         if (response.accessToken == null || response.refreshToken == null) {
-                            AcessoBO_.getInstance_(TokenActivity.this).iniciarLoginSSO(TokenActivity.this);
+                            AcessoBO.getInstance().iniciarLoginSSO(TokenActivity.this);
                         } else {
                             if (conseguiuLogar(response)) {
                                 LoginSP.loginRealizado(true);
@@ -75,10 +71,9 @@ public class TokenActivity extends AppCompatActivity {
                                 }
                             }
 
-                            final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(TokenActivity.this);
                             DBLoteriasCrud crud = new DBLoteriasCrud(TokenActivity.this);
                             List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
-                            dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+                            DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
 
                                 @Override
                                 public void onResponse(UsuarioLogadoResponse response) {
@@ -141,8 +136,8 @@ public class TokenActivity extends AppCompatActivity {
             if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
                 DadosBiometriaBO.salvarBiometria(response.refreshToken, jsonObject.getString(getResources().getString(R.string.name)), cpf);
             }
-            KeycloakBO_.getInstance_(TokenActivity.this).setAccessToken(response.accessToken);
-            KeycloakBO_.getInstance_(TokenActivity.this).setRefreshToken(response.refreshToken);
+            KeycloakBO.getInstance().setAccessToken(response.accessToken);
+            KeycloakBO.getInstance().setRefreshToken(response.refreshToken);
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_login_sucesso));
         } catch (JSONException e) {
             e.printStackTrace();

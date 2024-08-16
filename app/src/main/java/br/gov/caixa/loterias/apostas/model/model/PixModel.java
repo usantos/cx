@@ -7,7 +7,6 @@ import com.android.volley.VolleyError;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamentoPix;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -26,8 +25,7 @@ public class PixModel extends AppModel {
 	public void gerarCodigoPix(OnSilceListener<GerarPixDTO> listener) {
 		MeioPagamentoPix meioPagamento = new MeioPagamentoPix(6, null, false, "");
 
-		ApostaBO bo = ApostaBO_.getInstance_(getActivity());
-		bo.gerarCodigoPix(meioPagamento, new RequestListener<GerarPixResponse>() {
+		ApostaBO.getInstance().gerarCodigoPix(meioPagamento, new RequestListener<GerarPixResponse>() {
 			@Override
 			public void onResponse(GerarPixResponse response) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_entrou_formas_pagamento));

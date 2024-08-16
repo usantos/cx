@@ -1,0 +1,216 @@
+package br.gov.caixa.loterias.apostas.model.model;
+
+import android.app.Activity;
+
+import androidx.fragment.app.FragmentManager;
+
+import com.android.volley.VolleyError;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.repository.ApostaFavoritaRepository;
+import br.gov.caixa.loterias.apostas.model.repository.CarrinhoRepository;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.custom.AdicionarCarrinhoFavoritasView;
+import br.gov.caixa.loterias.apostas.view.holder.FavoritaHolder;
+
+public class FavoritaModel extends AppModel {
+	//region Variables
+	private ApostaFavoritaRepository repository;
+	private CarrinhoRepository carrinhoRepository;
+	private int offsetItem;
+	private Boolean isMaisCompras = true;
+	private Boolean bloquearRequestScroll = false;
+	private List<ApostaFavoritaDTO> apostaList;
+	//endregion
+
+	//region Constructors
+	public FavoritaModel(Activity activity) {
+		super(activity);
+		repository = new ApostaFavoritaRepository(activity);
+		carrinhoRepository = new CarrinhoRepository(activity);
+		offsetItem = 0;
+		apostaList = new ArrayList<>();
+	}
+	//endregion
+
+	//region Methods
+	public void buscaApostas(OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO> listener){
+		repository.buscaApostas(this.offsetItem, listener);
+	}
+
+	public void setOffsetItem(int offsetItem){
+		this.offsetItem = offsetItem;
+	}
+
+	public int getOffsetItem(){
+		return this.offsetItem;
+	}
+
+	public Boolean getMaisCompras() {
+		return isMaisCompras;
+	}
+
+	public void setMaisCompras(Boolean maisCompras) {
+		isMaisCompras = maisCompras;
+	}
+
+	public Boolean getBloquearRequestScroll() {
+		return bloquearRequestScroll;
+	}
+
+	public void setBloquearRequestScroll(Boolean bloquearRequestScroll) {
+		this.bloquearRequestScroll = bloquearRequestScroll;
+	}
+
+	public List<ApostaFavoritaDTO> getApostaList() {
+		return apostaList;
+	}
+
+	public void setApostaList(List<ApostaFavoritaDTO> apostaList) {
+		this.apostaList = apostaList;
+	}
+
+	public boolean temSwipe(int position) {
+		return apostaList.size() > 0 && position < apostaList.size();
+	}
+
+	public void addApostaCarrinho(ApostaFavoritaDTO aposta, OnSilceListener<CarrinhoDTO> listener) {
+		carrinhoRepository.buscaCarrinho(new OnSilceListener<CarrinhoDTO>() {
+			@Override
+			public void success(CarrinhoDTO payload) {
+				AlertDialogUtils.dismiss();
+				checarLimiteDiario(aposta, payload, listener);
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		});
+	}
+	//endregion
+
+	//region Privates
+	private void checarLimiteDiario(ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO, OnSilceListener<CarrinhoDTO> listener) {
+		if (isLimiteDiarioExcedido(carrinhoDTO, apostaFavoritaDTO)) {
+			ViewUtils.alertTitleButtonYesOrNotListener(getActivity(), getActivity().getResources().getString(R.string.MA014), (dialog, which) -> {
+				checarApostasRepetidas(apostaFavoritaDTO, carrinhoDTO, listener);
+			});
+		} else {
+			checarApostasRepetidas(apostaFavoritaDTO, carrinhoDTO, listener);
+		}
+	}
+
+	private boolean isLimiteDiarioExcedido(CarrinhoDTO carrinhoDTO, ApostaFavoritaDTO apostaFavoritaDTO) {
+		return SessaoUsuario.getInstance().getParametrosSimulacao() != null &&
+				SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() != null &&
+				carrinhoDTO != null && carrinhoDTO.getValorTotal() != null &&
+				SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()
+						.compareTo(carrinhoDTO.getValorTotal()
+								.add(IdentificaoDeUmaApostaDas8Modalidades.getValorApostaFavoritaPorProagnostico(apostaFavoritaDTO))) < 0;
+	}
+
+	private void checarApostasRepetidas(final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO, OnSilceListener<CarrinhoDTO> listener) {
+		if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(apostaFavoritaDTO, carrinhoDTO)) {
+			ViewUtils.alertTitleButtonYesOrNotListener(getActivity(), getActivity().getResources().getString(R.string.MA015), (dialog, which) -> {
+				AlertDialogUtils.show(getActivity());
+				adicionarCarrinho(apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade(), listener);
+			});
+		} else {
+			adicionarCarrinho(apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade(), listener);
+		}
+	}
+
+	private void adicionarCarrinho(Long idApostaFavorita, DTOEnumInteger modalidadeEnum, OnSilceListener<CarrinhoDTO> listener) {
+		SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+		List<ParametroSimulacao> arrayConcursos = new ArrayList<>();
+		List<ParametroSimulacao> parametroSimulacaoList = sessaoUsuario.getParametrosSimulacao().getParametros();
+		for (ParametroSimulacao concurso : parametroSimulacaoList) {
+			if (concurso.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().equals(modalidadeEnum.getDescricao())) {
+				arrayConcursos.add(concurso);
+			}
+		}
+
+		if (arrayConcursos.size() > 1) {
+			AlertDialogUtils.dismiss();
+			Boolean temEspecialENormal = false;
+			for (ParametroSimulacao modalidade : arrayConcursos) {
+				if (modalidade.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL) {
+					temEspecialENormal = true;
+					if (modalidade.getParametroJogo().getTeimosinhas().size() > 0) {
+						popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
+						return;
+					}
+				} else {
+					if (temEspecialENormal) {
+						popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
+						return;
+					}
+				}
+			}
+		} else {
+			if (arrayConcursos.isEmpty()){
+				ViewUtils.alertTitulo(getActivity(), R.string.label_atencao,"Modalidade não disponível no momento.");
+				AlertDialogUtils.dismiss();
+			} else {
+				if (arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
+					adicionarCarrinhoCallWebservice(idApostaFavorita, 2, 0, listener);
+				} else {
+					AlertDialogUtils.dismiss();
+					if (arrayConcursos.get(0).getParametroJogo().getTeimosinhas().size() > 0) {
+						popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita) {
+		FragmentManager fm = ((FavoritasActivity) getActivity()).getSupportFragmentManager();
+		AdicionarCarrinhoFavoritasView adicionarCarrinhoFavoritasView = AdicionarCarrinhoFavoritasView.newInstance();
+		adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
+		adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;
+		adicionarCarrinhoFavoritasView.show(fm, getActivity().getResources().getString(R.string.adicionar_carrinho_favoritas_view));
+	}
+
+	private void adicionarCarrinhoCallWebservice(final Long idApostaFavorita, final int valorTipoConcurso,
+												 final int qtdTeimosinhas, OnSilceListener<CarrinhoDTO> listener) {
+		repository.incluirApostaFavorita(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, listener);
+
+	}
+
+	public void alteraAposta(ApostaFavoritaDTO aposta, FavoritaHolder holder, OnSilceListener listener) {
+		aposta.setNome(holder.getNomeAlterado());
+		aposta.setOpenSwipeLayout(null);
+		repository.alteraAposta(aposta, listener);
+	}
+
+	public void deletaAposta(ApostaFavoritaDTO aposta, OnSilceListener listener) {
+		repository.deletaAposta(aposta.getId(), listener);
+	}
+
+	public boolean isListaVazia() {
+		return apostaList.size() == 0;
+	}
+
+	public void removeAposta(int position) {
+		apostaList.remove(position);
+	}
+
+	//endregion
+}

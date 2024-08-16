@@ -4,12 +4,16 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -19,12 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
-
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.FragmentArg;
-import org.androidannotations.annotations.ViewById;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -41,7 +39,6 @@ import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -80,32 +77,21 @@ import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
  * Class ApostasConfirmadasFragment
  */
 
-@EFragment(R.layout.fragment_apostas_confirmadas)
-public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener, ConferirResultadoHandler {
-
+public class ApostasConfirmadasFragment extends Fragment implements MinhasApostasActivity.OnScrollReachBottomListener,
+        ConferirResultadoHandler {
     private static final int PAGE_SIZE = 30;
+    private static final String ARG_IS_HISTORICO = "ARG_IS_HISTORICO";
 
-    @Bean
-    protected ApostaBO apostaBO;
-    @Bean
-    protected ApostaMicroServicoBO apostaMicroServicoBO;
-
-    @ViewById
-    protected TextView dateResultTxt;
-
-    @ViewById
-    protected RecyclerView apostasConfirmadasRecyclerView;
-
-    @ViewById
-    protected View apostasLoading;
-
-    @FragmentArg
-    protected boolean isHistorico;
+    private ApostaBO apostaBO;
+    private TextView dateResultTxt;
+    private RecyclerView apostasConfirmadasRecyclerView;
+    private View view, apostasLoading;
+    private LinearLayout dataBtn;
+    private boolean isHistorico;
 
     protected FiltroApostasAdapter filtroAdapter;
     private Dialog dialogData;
     private NumberPicker npData;
-
     private List<MesAnoDTO> mesesAnosDisponiveis;
     private List<String> valoresApresentados;
     private boolean hasMoreItems;
@@ -121,19 +107,38 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private ApostaConfirmadaModel model;
 
-    private static ApostasConfirmadasFragment instance = null;
-    public static ApostasConfirmadasFragment getInstance(){
-        return instance;
-    }
 
     private boolean isOnCreate;
     private int ordenacaoDefault = 3;
+
+    private ApostasConfirmadasFragment(){}
+
+    public static ApostasConfirmadasFragment newInstance(boolean isHistorico){
+        Bundle args = new Bundle();
+        args.putBoolean(ARG_IS_HISTORICO, isHistorico);
+        ApostasConfirmadasFragment fragment = new ApostasConfirmadasFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model = new ApostaConfirmadaModel(getActivity());
         isOnCreate = true;
+        apostaBO = ApostaBO.getInstance();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_apostas_confirmadas, container, false);
+        dateResultTxt = view.findViewById(R.id.dateResultTxt);
+        apostasConfirmadasRecyclerView = view.findViewById(R.id.apostasConfirmadasRecyclerView);
+        apostasLoading = view.findViewById(R.id.apostasLoading);
+        dataBtn = view.findViewById(R.id.dateSelectorBtn);
+        dataBtn.setOnClickListener(v -> dateSelectorBtn());
+        return view;
     }
 
     @Override
@@ -149,8 +154,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 AppCenterManager.registraEvento("ENTROU_GERENCIAR_APOSTAS");
 
                 if (getActivity() != null) {
-                    instance = this;
-
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                     apostasConfirmadasRecyclerView.setLayoutManager(layoutManager);
                     apostasConfirmadasRecyclerView.setNestedScrollingEnabled(false);
@@ -176,8 +179,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         return PAGE_SIZE;
     }
 
-    @Click
-    protected void dateSelectorBtn() {
+    private void dateSelectorBtn() {
         if (dialogData != null){
             dialogData.show();
         }
@@ -275,9 +277,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
     }
 
+
     private void requestApostasMicroServico(String urlBaseBuscaApostas) {
-        this.apostaMicroServicoBO = ApostaMicroServicoBO_.getInstance_(getActivity());
-        apostaMicroServicoBO.getApostasConfirmadasMicroServico(urlBaseBuscaApostas, page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+        ApostaMicroServicoBO.getInstance().getApostasConfirmadasMicroServico(urlBaseBuscaApostas, page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
                 chamarApostaNovamente = false;

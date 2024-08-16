@@ -30,19 +30,16 @@ import java.util.concurrent.Executor;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
-import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
-import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
 import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.BiometriaLogin;
 import br.gov.caixa.loterias.apostas.model.bo.DadosBiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -59,6 +56,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
@@ -144,10 +142,10 @@ public class LoginFragment extends Fragment {
         Button buttonAposte = v.findViewById(R.id.buttonAposteAgora);
         buttonAposte.setOnClickListener(v1 -> {
             AppCenterManager.registraEvento("ENTROU_OPCAO_DEGUSTAR");
-            KeycloakBO_.getInstance_(getActivity()).limparSessao(getActivity());
+            KeycloakBO.getInstance().limparSessao(getActivity());
 
             DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
-            startActivity(new Intent(getContext(), PrincipalActivity_.class));
+            startActivity(new Intent(getContext(), PrincipalActivity.class));
             getActivity().finish();
         });
 
@@ -208,7 +206,9 @@ public class LoginFragment extends Fragment {
             if(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() == null){
                 verificarCadastroWebservice();
             }else {
-                PrincipalActivity_.intent(getActivity()).start();
+                //PrincipalActivity_.intent(getActivity()).start();
+                Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), PrincipalActivity.class);
+                getActivity().startActivity(intent);
                 getActivity().finish();
             }
         }
@@ -230,10 +230,9 @@ public class LoginFragment extends Fragment {
 
     private void verificarCadastroWebservice() {
         AlertDialogUtils.show(getContext());
-        final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getContext());
         DBLoteriasCrud crud = new DBLoteriasCrud(getContext());
         List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
-        dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+        DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
 
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
@@ -251,9 +250,10 @@ public class LoginFragment extends Fragment {
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                     UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
 
-                    PrincipalActivity_.intent(getActivity()).start();
-                    //getActivity().finish();
-                    RedirectNetwork.trataBloqueioParcial(getActivity());
+                    Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), PrincipalActivity.class);
+                    getActivity().startActivity(intent);
+
+                    getActivity().finish();
                 } else {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
                 }
@@ -270,7 +270,7 @@ public class LoginFragment extends Fragment {
     private void connectKeycloak() {
         if(AppUtils.isNetworkAvailable(getContext())){
             AcessoBO.PRIMEIRO_LOGIN = true;
-            AcessoBO_.getInstance_(getContext()).iniciarLoginSSO(getActivity());
+            AcessoBO.getInstance().iniciarLoginSSO(getActivity());
         }else{
             buttonLogin.setEnabled( true );
             Log.e("caixa", "Erro ao conexar com internet LoginFragment.connectKeycloak()");
@@ -395,13 +395,11 @@ public class LoginFragment extends Fragment {
         return new OnRefreshTokenListener() {
             @Override
             public void successRefresh() {
-                //startActivity(new Intent(getContext(), PrincipalActivity_.class));
-                //getActivity().finish();
                 if (SessaoUsuario.getInstance().getSituacaoApostador() != null &&
                         SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
                     ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getActivity().getString(R.string.usuario_bloqueio_parcial),
                             "Ok", dialogInterface -> {
-                                startActivity(new Intent(getContext(), PrincipalActivity_.class));
+                                startActivity(new Intent(getContext(), PrincipalActivity.class));
                                 getActivity().finish();
                                 dialogInterface.dismiss();
                                 return;
@@ -409,7 +407,7 @@ public class LoginFragment extends Fragment {
                     );
                     return;
                 }
-                startActivity(new Intent(getContext(), PrincipalActivity_.class));
+                startActivity(new Intent(getContext(), PrincipalActivity.class));
                 getActivity().finish();
             }
 

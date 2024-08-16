@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,9 +9,10 @@ import androidx.fragment.app.Fragment;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-import br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity_;
+import br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
@@ -20,6 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.model.ApostaConfirmadaDetalheModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 
 public abstract class ApostaConfirmadaDetalhesFragment extends Fragment {
 	private static final String ARG_RESULTADO = "ARG_RESULTADO";
@@ -106,10 +110,14 @@ public abstract class ApostaConfirmadaDetalhesFragment extends Fragment {
 	}
 
 	private void startResgateActivity() {
-		ResultadoApostaConfirmadaActivity_.intent(getContext())
-				.detalhesPremioDTO(detalhesPremio)
-				.comprovante(comprovanteApostaDTO)
-				.start();
+		//ResultadoApostaConfirmadaActivity_.intent(getContext()).detalhesPremioDTO(detalhesPremio)
+		//		.comprovante(comprovanteApostaDTO).start();
+
+		Intent intent = IntentUtil.getIntentOrigemDestino((Activity) getContext(), ResultadoApostaConfirmadaActivity.class);
+		intent.putExtra(ResultadoApostaConfirmadaActivity.DETALHES_PREMIO_DTO_EXTRA, ((Serializable) detalhesPremio));
+		intent.putExtra(ResultadoApostaConfirmadaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovanteApostaDTO));
+		((Activity) getContext()).startActivity(intent);
+
 	}
 
 	public boolean isApostaPremiada(IdentificaoDeUmaApostaDas8Modalidades aposta) {

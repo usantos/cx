@@ -4,14 +4,18 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -19,19 +23,12 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivity;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
-import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
@@ -47,7 +44,6 @@ import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SurpresinhaGridVie
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 
-@EFragment(R.layout.fragment_surpresinha)
 public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     private static final int QUANTIDADE_MINIMA_SURPRESINHAS = 1;
@@ -64,38 +60,73 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private boolean isAvisouS = false;
     private boolean isAvisouT = false;
     private boolean isAvisouN = false;
-    @ViewById
-    protected ImageView escolhaItemImageView;
+    private View view;
+    private ImageView escolhaItemImageView;
 
-    @ViewById
-    protected TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas, surpresinhaTitulo, surpresinhaQtdInfo, surpresinhaInfo, qtdSurpresinhasSelecionadasTrevos, qtdNumerosSelecionadasNovo;
+    private TextView infoItemSurpresaTextView, qtdSurpresinhasSelecionadas, surpresinhaTitulo,
+            surpresinhaQtdInfo, surpresinhaInfo, qtdSurpresinhasSelecionadasTrevos, qtdNumerosSelecionadasNovo;
 
-    @ViewById
-    protected Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha, btnMenosTrevos, btnMaisTrevos, btnNumerosMenos, btnNumerosMais;
-
-    @ViewById
-    protected RelativeLayout escolhaItemLayout;
-
-    @ViewById
-    protected ExpandableHeightGridView listaDezenasSurpresinha;
-
-    @ViewById
-    protected LinearLayout layoutEspelhoSurpresinha;
-
-    @ViewById
-    protected AppCompatCheckBox selcioneEspelhoSurpresinha;
-
-    @ViewById
-    protected ConstraintLayout maisMilionaria, numeroNovoConst;
-
+    private Button escolherOutroItemBtn, btnMenosSurpresinha, btnMaisSurpresinha, btnMenosTrevos,
+            btnMaisTrevos, btnNumerosMenos, btnNumerosMais;
+    private RelativeLayout escolhaItemLayout;
+    private ExpandableHeightGridView listaDezenasSurpresinha;
+    private LinearLayout layoutEspelhoSurpresinha;
+    private AppCompatCheckBox selcioneEspelhoSurpresinha;
+    private ConstraintLayout maisMilionaria, numeroNovoConst;
     private SurpresinhaApostaModel model;
 
-    public SurpresinhaFragment() {
-        // Required empty public constructor
+    private SurpresinhaFragment() {}
+
+    public static SurpresinhaFragment newInstance(){
+        return new SurpresinhaFragment();
     }
 
-    @AfterViews
-    protected void init() {
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_surpresinha, container, false);
+        setViews();
+        setListeners();
+        init();
+        return view;
+    }
+
+    private void setViews() {
+        escolhaItemImageView = view.findViewById(R.id.escolhaItemImageView);
+        infoItemSurpresaTextView = view.findViewById(R.id.infoItemSurpresaTextView);
+        qtdSurpresinhasSelecionadas = view.findViewById(R.id.qtdSurpresinhasSelecionadas);
+        surpresinhaTitulo = view.findViewById(R.id.surpresinhaTitulo);
+        surpresinhaQtdInfo = view.findViewById(R.id.surpresinhaQtdInfo);
+        surpresinhaInfo = view.findViewById(R.id.surpresinhaInfo);
+        qtdSurpresinhasSelecionadasTrevos = view.findViewById(R.id.qtdSurpresinhasSelecionadasTrevos);
+        qtdNumerosSelecionadasNovo = view.findViewById(R.id.qtdNumerosSelecionadasNovo);
+        escolherOutroItemBtn = view.findViewById(R.id.escolherOutroItemBtn);
+        btnMenosSurpresinha = view.findViewById(R.id.btnMenosSurpresinha);
+        btnMaisSurpresinha = view.findViewById(R.id.btnMaisSurpresinha);
+        btnMenosTrevos = view.findViewById(R.id.btnMenosTrevos);
+        btnMaisTrevos = view.findViewById(R.id.btnMaisTrevos);
+        btnNumerosMenos = view.findViewById(R.id.btnNumerosMenos);
+        btnNumerosMais = view.findViewById(R.id.btnNumerosMais);
+        escolhaItemLayout = view.findViewById(R.id.escolhaItemLayout);
+        listaDezenasSurpresinha = view.findViewById(R.id.listaDezenasSurpresinha);
+        layoutEspelhoSurpresinha = view.findViewById(R.id.layoutEspelhoSurpresinha);
+        selcioneEspelhoSurpresinha = view.findViewById(R.id.selcioneEspelhoSurpresinha);
+        maisMilionaria = view.findViewById(R.id.maisMilionaria);
+        numeroNovoConst = view.findViewById(R.id.numeroNovoConst);
+    }
+
+    private void setListeners(){
+        escolherOutroItemBtn.setOnClickListener(v -> escolherOutroItemBtn());
+        btnMenosSurpresinha.setOnClickListener(v -> btnMenosSurpresinha());
+        btnMaisSurpresinha.setOnClickListener(v -> btnMaisSurpresinha());
+        btnMenosTrevos.setOnClickListener(v -> btnMenosTrevos());
+        btnMaisTrevos.setOnClickListener(v -> btnMaisTrevos());
+        btnNumerosMais.setOnClickListener(v -> btnNumerosMais());
+        btnNumerosMenos.setOnClickListener(v -> btnNumerosMenos());
+        layoutEspelhoSurpresinha.setOnClickListener(v -> layoutEspelhoSurpresinha());
+    }
+
+    private void init() {
         model = new SurpresinhaApostaModel(getActivity());
 
         AppCenterManager.registraEvento("ENTROU_SURPRESINHA");
@@ -322,7 +353,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     }
 
     public void adicionarSurpresinhaNoCarrinho() {
-
         IncluirSurpresinhaDTO surpresinha;
         switch (parametroJogo.getConcurso().getModalidade()){
             case TIMEMANIA:
@@ -378,8 +408,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         return parametroJogo;
     }
 
-    @Click
-    protected void escolherOutroItemBtn() {
+    private void escolherOutroItemBtn() {
         if (isTimemania()) {
             parentActivity.escolherOutroTimeSurpresinha();
         } else if (isDiaDeSorte()) {
@@ -392,8 +421,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         return tipoJogo == ModalidadeEnum.TIMEMANIA;
     }
 
-    @Click
-    protected void btnMenosSurpresinha() {
+    private void btnMenosSurpresinha() {
         if (qtdSurpresinhas > 1) {
             qtdSurpresinhas--;
             if (qtdSurpresinhas == 1) {
@@ -404,8 +432,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
     }
 
-    @Click
-    protected void btnMaisSurpresinha() {
+    private void btnMaisSurpresinha() {
         if (qtdSurpresinhas == 1) {
             atualizaBotoesQtdSurpresinha();
         }
@@ -418,8 +445,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     }
 
-    @Click
-    protected void btnMaisTrevos() {
+    private void btnMaisTrevos() {
         if (qtdTrevos < parametroJogo.getTrevos().getQtdMaxima()) {
             qtdTrevos++;
             atualizaBotoesQtdTrevos();
@@ -434,8 +460,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     }
 
-    @Click
-    protected void btnMenosTrevos() {
+    private void btnMenosTrevos() {
         if (qtdTrevos > parametroJogo.getTrevos().getQtdMinima()) {
             qtdTrevos--;
             atualizaBotoesQtdTrevos();
@@ -444,8 +469,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         }
     }
 
-    @Click
-    protected void btnNumerosMais() {
+    private void btnNumerosMais() {
         if (getQtdNumeros < parametroJogo.getQuantidadeMaxima()) {
             getQtdNumeros++;
             parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
@@ -463,8 +487,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     }
 
-    @Click
-    protected void btnNumerosMenos() {
+    private void btnNumerosMenos() {
         if (getQtdNumeros > parametroJogo.getQuantidadeMinima()) {
             getQtdNumeros--;
             parentActivity.qtdDezenasPossiveisSelecionado = getQtdNumeros;
@@ -490,8 +513,7 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
 
     }
 
-    @Click
-    protected void layoutEspelhoSurpresinha() {
+    private void layoutEspelhoSurpresinha() {
         selecionarEspelho();
     }
 

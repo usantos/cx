@@ -22,7 +22,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -128,7 +127,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         }
 
         AlertDialogUtils.show(ListaRapidaoActivity.this);
-        ApostaBO_.getInstance_(ListaRapidaoActivity.this).validarCarrinho(new RequestListener<ResourceResponse>() {
+        ApostaBO.getInstance().validarCarrinho(new RequestListener<ResourceResponse>() {
             @Override
             public void onResponse(ResourceResponse result) {
                 AlertDialogUtils.dismiss();
@@ -160,9 +159,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
 
     private void callWebserviceRemoveItem(IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades){
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaRapidaoActivity.this);
-
-        apostaBO.deleteApostaCarrinho(identificaoDeUmaApostaDas8Modalidades.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
+        ApostaBO.getInstance().deleteApostaCarrinho(identificaoDeUmaApostaDas8Modalidades.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -187,9 +184,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     private void callWebservice(int quantidade) {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaRapidaoActivity.this);
-
-        apostaBO.gerarApostas(quantidade, new RequestListener<CarrinhoDTOResponse>() {
+        ApostaBO.getInstance().gerarApostas(quantidade, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();

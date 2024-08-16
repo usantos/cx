@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.Menu;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -28,7 +30,10 @@ public class CadastrarConfirmacaoActivity extends AppCompatActivity {
         subtituloConfirmaCadastroTextView.setText( getResources().getString(R.string.aguarde_redirecionamento) );
 
         Utils.delay(3, () -> {
-            PrincipalActivity_.intent(CadastrarConfirmacaoActivity.this).start();
+            //PrincipalActivity_.intent(CadastrarConfirmacaoActivity.this).start();
+            Intent intent = IntentUtil.getIntentOrigemDestino(CadastrarConfirmacaoActivity.this, PrincipalActivity.class);
+            startActivity(intent);
+
             CadastrarConfirmacaoActivity.this.finish();
         });
     }

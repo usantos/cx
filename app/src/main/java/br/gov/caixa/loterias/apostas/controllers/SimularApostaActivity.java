@@ -31,13 +31,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
-
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -48,17 +41,13 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -77,14 +66,11 @@ import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.PaginacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment_;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment_;
 import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnPaginacaoListener;
@@ -92,51 +78,27 @@ import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
 import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
-import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 import static java.lang.String.format;
 
-@EActivity(R.layout.activity_simular_aposta)
 public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener, OnPaginacaoListener {
 
+    public final static String APOSTA_EXTRA = "aposta";
     private static int RESULT_FINISH = 3;
 
-    @ViewById
-    protected DrawerLayout drawerLayout;
-
-    @ViewById
-    protected ConstraintLayout toolBarLoteca, simularApostaLayoutCarrinhoApostas;
-
-    @ViewById
-    protected Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
-
-    @ViewById
-    protected FrameLayout fragmentSimularApostas;
-
-    @ViewById
-    protected TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
+    private DrawerLayout drawerLayout;
+    private ConstraintLayout toolBarLoteca, simularApostaLayoutCarrinhoApostas;
+    private Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
+    private FrameLayout fragmentSimularApostas;
+    private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
             labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, textViewCarrinhoCartelaCount;
+    private LinearLayout toolBarSimularAposta;
+    private RelativeLayout salvarApostaLayout, carrinhoApostas, viewTabBar;
+    private ImageButton btnSalvarAposta;
+    private EditText editNomeAposta;
+    private ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton;
+    private FrameLayout paginacaoView;
 
-    @ViewById
-    protected LinearLayout toolBarSimularAposta;
-
-    @ViewById
-    protected RelativeLayout salvarApostaLayout, carrinhoApostas, viewTabBar;
-
-    @ViewById
-    protected ImageButton btnSalvarAposta;
-
-    @ViewById
-    protected EditText editNomeAposta;
-
-    @ViewById
-    protected ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton;
-
-    @ViewById
-    protected FrameLayout paginacaoView;
-
-    @Extra
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
 
     // Fragments
@@ -172,9 +134,16 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private Boolean isSurpresinha = false;
 
-    @AfterViews
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_simular_aposta);
+        init();
+    }
+    
     protected void init() {
-        dadosCorporativosBO = DadosCorporativosBO_.getInstance_(SimularApostaActivity.this);
+        dadosCorporativosBO = DadosCorporativosBO.getInstance();
+        getExtras();
+        setViews();
         isEspecial =  getIntent().getBooleanExtra(getResources().getString(R.string.extra_especial), false);
         invalidateOptionsMenu();
         zerarApostas();
@@ -186,6 +155,46 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if (tipoJogo == ModalidadeEnum.SUPER_7 && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.SUPER_SETE_TUTORIAL)) {
             startActivity(new Intent(this,TutorialSuperSeteActivity.class));
         }
+    }
+
+    private void getExtras() {
+        Bundle extras_ = getIntent().getExtras();
+        if (extras_!= null) {
+            if (extras_.containsKey(APOSTA_EXTRA)) {
+                this.aposta = ((IdentificaoDeUmaApostaDas8Modalidades) extras_.getSerializable(APOSTA_EXTRA));
+            }
+        }
+    }
+
+    private void setViews() {
+        this.drawerLayout = findViewById(R.id.drawerLayout);
+        this.toolBarLoteca = findViewById(R.id.toolBarLoteca);
+        this.simularApostaLayoutCarrinhoApostas = findViewById(R.id.simularApostaLayoutCarrinhoApostas);
+        this.simularTelaAposta = findViewById(R.id.simularTelaAposta);
+        this.surpresinhaTela = findViewById(R.id.surpresinhaTela);
+        this.qtdNumerosButton = findViewById(R.id.qtdNumerosButton);
+        this.qtdConcursosButton = findViewById(R.id.qtdConcursosButton);
+        this.botaoLimparAposta = findViewById(R.id.botaoLimparAposta);
+        this.botaoAdicionarCompletarCartela = findViewById(R.id.botaoAdicionarCompletarCartela);
+        this.botaoCarrinho = findViewById(R.id.botaoCarrinho);
+        this.fragmentSimularApostas = findViewById(R.id.fragmentSimularApostas);
+        this.labelValueJogosLoteca = findViewById(R.id.labelValueJogosLoteca);
+        this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
+        this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
+        this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
+        this.textoDeNomeInfo = findViewById(R.id.textoDeNomeInfo);
+        this.textoSalveEstaAposta = findViewById(R.id.textoSalveEstaAposta);
+        this.textViewCarrinhoCartelaCount = findViewById(R.id.textViewCarrinhoCartelaCount);
+        this.toolBarSimularAposta = findViewById(R.id.toolBarSimularAposta);
+        this.salvarApostaLayout = findViewById(R.id.salvarApostaLayout);
+        this.carrinhoApostas = findViewById(R.id.carrinhoApostas);
+        this.viewTabBar = findViewById(R.id.viewTabBar);
+        this.btnSalvarAposta = findViewById(R.id.btnSalvarAposta);
+        this.editNomeAposta = findViewById(R.id.editNomeAposta);
+        this.imageViewPaginacao = findViewById(R.id.imageViewPaginacao);
+        this.iconStarSalvar = findViewById(R.id.iconStarSalvar);
+        this.imageQtdNumerosButton = findViewById(R.id.imageQtdNumerosButton);
+        this.paginacaoView = findViewById(R.id.paginacaoView);
     }
 
     @Override
@@ -544,8 +553,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     public void mesDeSorteFragment(List<Integer> dezenasSelecionadas, boolean surpresinha) {
-        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, MesesFragment_.builder().modalidadeEnum(tipoJogo).
-                parametroJogoDTO(parametroSimulacao).dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build()).commit();
+        FragmentUtils.startMesesFragment(fragmentManager, R.id.fragmentSimularApostas, tipoJogo,
+                parametroSimulacao, (ArrayList<Integer>) dezenasSelecionadas);
 
         if (surpresinha) {
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
@@ -555,12 +564,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     public void trevosFragment(List<Integer> dezenasSelecionadas){
-        trevosFragment = TrevosFragment_.builder()
-                                              .aposta(aposta)
-                                              .parametro(parametroSimulacao)
-                                              .dezenasSelecionadas((ArrayList<Integer>) dezenasSelecionadas).build();
-        fragmentManager.beginTransaction()
-                       .replace(R.id.fragmentSimularApostas, trevosFragment).commit();
+        trevosFragment = FragmentUtils.startTrevosFragment(fragmentManager, R.id.fragmentSimularApostas,
+                aposta, parametroSimulacao, (ArrayList<Integer>)dezenasSelecionadas);
         Paginacao paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), dezenasSelecionadas.size(), R.color.mais_milionaria_escura);
         paginacaoFragment.atualizaPaginacao(paginacao);
         proximaPagina();
@@ -591,7 +596,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     private void abrirTelaSurprezinha() {
-        fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, surpresinhaFragment).commit();
+        FragmentUtils.startFragmentAllowingStateLoss(fragmentManager, R.id.fragmentSimularApostas, surpresinhaFragment);
 
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
         surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
@@ -631,7 +636,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private void configuraFragments() {
         fragmentManager = getSupportFragmentManager();
         cartelaFragment = new CartelaFragment();
-        surpresinhaFragment = SurpresinhaFragment_.builder().build();
+        surpresinhaFragment = FragmentUtils.getSurpresinhaFragment();
 
         rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(), R.id.id_fg_rodape, new BigDecimal(0), new BigDecimal(0));
 
@@ -832,7 +837,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                     if (surpresinhaFragment.getParametroJogo() != null) {
                         surpresinhaFragment.atualizaValorTotalAposta(qtdDezenasPossiveisSelecionado, qtdConcursoSelecionado);
                     }
-                } else if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment_){
+                } else if (fragmentManager.findFragmentById(R.id.fragmentSimularApostas) instanceof TrevosFragment){
                     if (trevosFragment != null && trevosFragment.getParametroValorApostaSelecionado() != null){
                         atualizaValorAposta(trevosFragment.getParametroValorApostaSelecionado());
                     }

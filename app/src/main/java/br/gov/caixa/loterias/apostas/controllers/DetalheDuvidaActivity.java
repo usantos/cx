@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,16 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
-
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DuvidaDTO;
@@ -29,27 +24,44 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheDuvidaAdap
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-@EActivity(R.layout.activity_detalhe_duvida)
 public class DetalheDuvidaActivity extends AppCompatActivity {
 
-    @ViewById
-    ExpandableHeightRecyclerView recyclerViewDetalhesDuvida;
+    public final static String SECAO_DTO_EXTRA = "secaoDTO";
 
-    @Extra
-    ListSecaoDTO secaoDTO;
+    private ExpandableHeightRecyclerView recyclerViewDetalhesDuvida;
+    private ListSecaoDTO secaoDTO;
 
-    @AfterViews
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detalhe_duvida);
+
+        init();
+    }
+
     public void init() {
+        getExtras();
+        setViews();
         callWebservice();
         createToolBar();
+    }
+
+    private void getExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.containsKey(SECAO_DTO_EXTRA)) {
+                this.secaoDTO = ((ListSecaoDTO) bundle.getSerializable(SECAO_DTO_EXTRA));
+            }
+        }
+    }
+
+    private void setViews() {
+        recyclerViewDetalhesDuvida = findViewById(R.id.recyclerViewDetalhesDuvida);
     }
 
     private void callWebservice() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
-
-        dadosCorporativosBO.duvidasPerguntasRespostas(secaoDTO.getId(), new RequestListener<ListSecaoDTOResponse>() {
+        DadosCorporativosBO.getInstance().duvidasPerguntasRespostas(secaoDTO.getId(), new RequestListener<ListSecaoDTOResponse>() {
             @Override
             public void onResponse(ListSecaoDTOResponse response) {
                 List<ListSecaoDTO> secaoDTOList = response.getPayload();

@@ -9,8 +9,6 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
-
-import org.androidannotations.annotations.EBean;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.BufferedReader;
@@ -42,7 +40,6 @@ import br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado;
  * Class HtmlUtils
  */
 
-@EBean
 public class HtmlUtils {
 
     private static final String FILE_PATH_COMPROVANTE_APOSTA = "htmls/comprovante_aposta.html";
@@ -321,7 +318,6 @@ public class HtmlUtils {
         return html;
     }
 
-
     private static String getBodyList(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta, Context context) {
         StringBuilder sbHtmlBodyList = new StringBuilder();
         String htmlBodyList = "";
@@ -555,7 +551,6 @@ public class HtmlUtils {
     }
 
     private static String getBarcode(String valor) {
-
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Bitmap bitmap = null;
         try {

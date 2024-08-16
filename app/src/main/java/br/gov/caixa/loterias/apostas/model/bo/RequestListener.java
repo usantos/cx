@@ -29,7 +29,7 @@ public abstract class RequestListener<T> {
         };
     }
 
-    public abstract void onResponse(T result);
+    public abstract void onResponse(T response);
     public abstract void onErrorResponse(VolleyError error);
 
     public Response.Listener<T> getSilceListener() {

@@ -217,7 +217,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="@string/label_premiados" />
 
-                <br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado_
+                <br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado
                     android:id="@+id/pvdr_resultado_partida"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

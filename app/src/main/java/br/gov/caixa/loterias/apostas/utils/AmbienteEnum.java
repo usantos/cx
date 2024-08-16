@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.apostas.utils;
 public enum AmbienteEnum {
     EXTERNO("TQS Externo"),
     INTERNO("TQS Interno"),
-    HML("Hml"),
+    HMP("Hmp"),
     PILOTO("Piloto");
 
     private final String texto;

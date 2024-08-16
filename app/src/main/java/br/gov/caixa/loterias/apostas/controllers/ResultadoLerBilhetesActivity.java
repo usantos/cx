@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,20 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -47,39 +40,22 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoAda
 import br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
-@EActivity(R.layout.activity_resultado_ler_bilhetes)
 public class ResultadoLerBilhetesActivity extends AppCompatActivity {
+    public final static String COD_BARRAS_EXTRA = "codBarras";
+    public final static String TIPO_LEITURA_EXTRA = "tipoLeitura";
+    public final static String NSB_EXTRA = "nsb";
 
-    @Bean
-    protected ApostaBO apostaBO;
-
-    @ViewById
-    protected Toolbar toolbar;
-
-    @ViewById
-    protected ScrollView resultadoApostaScrollView;
-
-    @ViewById
-    protected LinearLayout corpoBilhetePremiadoLinearLayout, corpoBilheteNaoPremiadoLinearLayout, premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout,
+    private Toolbar toolbar;
+    private ScrollView resultadoApostaScrollView;
+    private LinearLayout corpoBilhetePremiadoLinearLayout, corpoBilheteNaoPremiadoLinearLayout, premioGanhoLinearLayout, mensagemNaoPremiadoLinearLayout,
             informacoesPremioZeradoLayout, informacoesPremioLayout, backgroundTopoNaoPremiadoLayout, aposteAgoraNaoPremiadoLinearLayout;
-
-    @ViewById
-    protected TextView mensagemNaoPremiadoTextView, statusResultadoNaoPremiadTextView;
-
-    @ViewById
-    protected ContentResultadoPremiado contentResultadoPremiado;
-
-    @ViewById
-    protected Button botaoAposteAgora2 ;
-
-    @Extra
-    protected String codBarras;
-
-    @Extra
-    protected LeituraBilheteEnum tipoLeitura;
-
-    @Extra
-    protected String nsb;
+    private TextView mensagemNaoPremiadoTextView, statusResultadoNaoPremiadTextView;
+    private ContentResultadoPremiado contentResultadoPremiado;
+    private Button botaoAposteAgora2 ;
+    private Button botaoAposteAgora ;
+    private String codBarras;
+    private LeituraBilheteEnum tipoLeitura;
+    private String nsb;
 
     private ResultadoConsultaBilheteDTO resultadoConsultaBilheteDTO;
     private ModalidadeEnum modalidadeEnum;
@@ -87,12 +63,70 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private ConferirBilheteModel model;
     private EstiloModalidade estiloModalidade;
 
-    @AfterViews
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_resultado_ler_bilhetes);
+        init();
+    }
+
     public void init() {
+        getExtras();
+        setViews();
         contentResultadoPremiado.getPremioGanhoLinearLayout().setVisibility(View.GONE);
         contentResultadoPremiado.getButtonVerDetalheAposta().setVisibility(View.GONE);
         createToolBar();
         model = new ConferirBilheteModel(ResultadoLerBilhetesActivity.this);
+    }
+
+    private void getExtras() {
+        Bundle extras_ = getIntent().getExtras();
+        if (extras_!= null) {
+            if (extras_.containsKey(COD_BARRAS_EXTRA)) {
+                this.codBarras = extras_.getString(COD_BARRAS_EXTRA);
+            }
+            if (extras_.containsKey(TIPO_LEITURA_EXTRA)) {
+                this.tipoLeitura = ((LeituraBilheteEnum) extras_.getSerializable(TIPO_LEITURA_EXTRA));
+            }
+            if (extras_.containsKey(NSB_EXTRA)) {
+                this.nsb = extras_.getString(NSB_EXTRA);
+            }
+        }
+    }
+
+    private void setViews() {
+        this.toolbar = findViewById(R.id.toolbar);
+        this.resultadoApostaScrollView = findViewById(R.id.resultadoApostaScrollView);
+        this.corpoBilhetePremiadoLinearLayout = findViewById(R.id.corpoBilhetePremiadoLinearLayout);
+        this.corpoBilheteNaoPremiadoLinearLayout = findViewById(R.id.corpoBilheteNaoPremiadoLinearLayout);
+        this.premioGanhoLinearLayout = findViewById(R.id.premioGanhoLinearLayout);
+        this.mensagemNaoPremiadoLinearLayout = findViewById(R.id.mensagemNaoPremiadoLinearLayout);
+        this.informacoesPremioZeradoLayout = findViewById(R.id.informacoesPremioZeradoLayout);
+        this.informacoesPremioLayout = findViewById(R.id.informacoesPremioLayout);
+        this.backgroundTopoNaoPremiadoLayout = findViewById(R.id.backgroundTopoNaoPremiadoLayout);
+        this.aposteAgoraNaoPremiadoLinearLayout = findViewById(R.id.aposteAgoraNaoPremiadoLinearLayout);
+        this.mensagemNaoPremiadoTextView = findViewById(R.id.mensagemNaoPremiadoTextView);
+        this.statusResultadoNaoPremiadTextView = findViewById(R.id.statusResultadoNaoPremiadTextView);
+        this.contentResultadoPremiado = findViewById(R.id.contentResultadoPremiado);
+        this.botaoAposteAgora2 = findViewById(R.id.botaoAposteAgora2);
+        this.botaoAposteAgora = findViewById(R.id.botaoAposteAgora);
+
+        if (botaoAposteAgora != null) {
+            botaoAposteAgora.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickBotaoAposteAgora();
+                }
+            });
+        }
+        if (this.botaoAposteAgora2 != null) {
+            this.botaoAposteAgora2 .setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    clickBotaoAposteAgora2();
+                }
+            });
+        }
     }
 
     @Override
@@ -295,18 +329,16 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }
     }
 
-    @Click(R.id.botaoAposteAgora)
     protected void clickBotaoAposteAgora() {
-        Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity_.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
         startActivity(it);
     }
 
-    @Click(R.id.botaoAposteAgora2)
     protected void clickBotaoAposteAgora2() {
-        Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity_.class);
-        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent it = new Intent(ResultadoLerBilhetesActivity.this, PrincipalActivity.class);
+        it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
         startActivity(it);
     }

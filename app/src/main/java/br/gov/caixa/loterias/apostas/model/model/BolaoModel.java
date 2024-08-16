@@ -9,15 +9,13 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmBolao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.enums.TipoConsultaBolaoEnum;
 import br.gov.caixa.loterias.apostas.model.repository.BolaoRepository;
@@ -86,7 +84,7 @@ public class BolaoModel extends AppModel{
 	}
 
 	public void buscaDadosUsuario(OnSilceListener<ApostadorDTO> listener) {
-		DadosUsuarioBO_.getInstance_( getActivity() ).getDadosUsuario( new RequestListener<ApostadorDTOResponse>() {
+		DadosUsuarioBO.getInstance().getDadosUsuario(new RequestListener<ApostadorDTOResponse>() {
 			@Override
 			public void onResponse(ApostadorDTOResponse response) {
 				AppCenterManager.registraEvento("DADOS_USUARIO");

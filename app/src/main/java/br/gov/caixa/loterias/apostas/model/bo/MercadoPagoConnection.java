@@ -104,9 +104,8 @@ public class MercadoPagoConnection {
 
 	private static void silceBuscaKeyPublic(OnPublicKeyListener keyListener) {
 		Context ctx = Aplicacao.application.getApplicationContext();
-		DadosCorporativosBO_ service = DadosCorporativosBO_.getInstance_(ctx);
 		Long                 id      = new Long(1);
-		service.buscaKeyMercadoPago(id, new RequestListener<MeioPagamentoResponse>() {
+		DadosCorporativosBO.getInstance().buscaKeyMercadoPago(id, new RequestListener<MeioPagamentoResponse>() {
 			@Override
 			public void onResponse(MeioPagamentoResponse result) {
 				if (result != null && result.getPayload() != null) {

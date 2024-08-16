@@ -12,7 +12,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -39,16 +38,15 @@ public class CarrinhoModel {
 	private ParametrosSimulacaoModel model;
 
 	private Activity activity;
+	private ApostaBO apostaBO;
 
 	public CarrinhoModel(Activity activity) {
 		this.activity = activity;
 		this.model = new ParametrosSimulacaoModel(activity);
+		this.apostaBO = ApostaBO.getInstance();
 	}
 
 	public void buscaCarrinhoSilce(OnSilceListener listener) {
-
-		final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
-
 		apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
@@ -82,7 +80,7 @@ public class CarrinhoModel {
 	}
 
 	public void validarCarrinho(OnSilceListener listener) {
-		ApostaBO_.getInstance_(activity).validarCarrinho(new RequestListener<ResourceResponse>() {
+		apostaBO.validarCarrinho(new RequestListener<ResourceResponse>() {
 			@Override
 			public void onResponse(ResourceResponse result) {
 				listener.success(result.getPayload());
@@ -97,7 +95,7 @@ public class CarrinhoModel {
 	}
 
 	public void validarCarrinhoFavorito(String nome, OnSilceListener listener) {
-		ApostaBO_.getInstance_(activity).validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+		apostaBO.validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoFavoritoDTOResponse result) {
 				if (result.getRedirect() != null) {
@@ -118,7 +116,7 @@ public class CarrinhoModel {
 	}
 
 	public void favoritarCarrinho(String nome, OnSilceListener listener) {
-		ApostaBO_.getInstance_(activity).salvarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+		apostaBO.salvarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoFavoritoDTOResponse result) {
 				if (result.getRedirect() != null) {
@@ -152,7 +150,6 @@ public class CarrinhoModel {
 	}
 
 	public void limparCarrinho(OnSilceListener listener) {
-		ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
 		apostaBO.limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse result) {
@@ -175,7 +172,6 @@ public class CarrinhoModel {
 	}
 
 	public void deletaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades aposta, OnSilceListener listener) {
-		ApostaBO     apostaBO         = ApostaBO_.getInstance_(activity);
 		apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
@@ -227,4 +223,5 @@ public class CarrinhoModel {
 			return existeCompra;
 		}
 	}
+
 }
