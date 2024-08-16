@@ -38,12 +38,6 @@ import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 
 public class FragmentUtils {
 
-	public static void startFragment(FragmentManager fm, int id, Fragment fragment){
-		FragmentTransaction fragmentTransaction = fm.beginTransaction();
-		fragmentTransaction.replace(id, fragment);
-		fragmentTransaction.commit();
-	}
-
 	public static void startFragmentAllowingStateLoss(FragmentManager fm, int id, Fragment fragment){
 		FragmentTransaction fragmentTransaction = fm.beginTransaction();
 		fragmentTransaction.replace(id, fragment);
@@ -53,7 +47,7 @@ public class FragmentUtils {
 	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, String TAG) {
 		if(fragment == null){
 			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), TAG);
-			FragmentUtils.startFragment(fm, id, fragment);
+			FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		}
 		return fragment;
 	}
@@ -61,64 +55,64 @@ public class FragmentUtils {
 	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, Boolean irCarrinho) {
 		if(fragment == null){
 			fragment = SomadorCarrinhoFragment.newInstance(CarrinhoSingleton.getInstance().getCarrinho(), irCarrinho);
-			FragmentUtils.startFragment(fm, id, fragment);
+			FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		}
 		return fragment;
 	}
 
 	public static MeusCartoesFragment meusCartoesFragment(FragmentManager fm, int id, List<RetornoCartao> cartoes, MeusCartoesConfig config) {
 		MeusCartoesFragment fragment = MeusCartoesFragment.newInstance(cartoes, config);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
 	public static PaginacaoFragment startPaginacaoFragment(FragmentManager fm, PaginacaoFragment fragment, int id) {
 		if(fragment == null){
 			fragment = PaginacaoFragment.newInstance();
-			FragmentUtils.startFragment(fm, id, fragment);
+			FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		}
 		return fragment;
 	}
 
 	public static MeioPagamentoFragment startMeioPagamento(FragmentManager fm, int id, MeioPagamentoConfig config) {
 		MeioPagamentoFragment fragment = MeioPagamentoFragment.newInstance(config);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
 	public static CardPixFragment startCardPix(FragmentManager fm, int id, int tela) {
 		CardPixFragment fragment = CardPixFragment.newOrientacaoInstance(tela);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
 	public static CartaoCreditoFragment startCartaoCredito(FragmentManager fm, int id, CartaoCreditoConfig config) {
 		CartaoCreditoFragment fragment = CartaoCreditoFragment.newInstance(config);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
 	public static CardPixFragment startCardOrientacaoPix(FragmentManager fm, int id) {
 		CardPixFragment fragment = CardPixFragment.newOrientacaoInstance(CardPixFragment.TELA_ORIENTACAO);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
 	public static CartaoCreditoVersoFragment startCartaoCreditoVerso(FragmentManager fm, int id, String metodo, String cvv) {
 		CartaoCreditoVersoFragment fragment = CartaoCreditoVersoFragment.newInstance(metodo,cvv);
-		FragmentUtils.startFragment(fm, id,fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id,fragment);
 		return fragment;
 	}
 
 	public static CardPixFragment startCardCopiaColaPix(GerarPixDTO pixDTO, FragmentManager fm, int id) {
 		CardPixFragment fragment = CardPixFragment.newCopiaColaInstance(pixDTO, CardPixFragment.TELA_COPIA_COLA);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
 	public static OrientacaoPixFragment startOrientacaoPix(FragmentManager fm, int id) {
 		OrientacaoPixFragment fragment = OrientacaoPixFragment.newInstance();
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
@@ -130,20 +124,20 @@ public class FragmentUtils {
 
 	public static ChavePixFragment startChavePix(FragmentManager fm, int id, ChavePixEnum chave) {
 		ChavePixFragment fragment = ChavePixFragment.newInstance(chave);
-		FragmentUtils.startFragment(fm, id, fragment);
+		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
 
 	public static SubBarraModalidadeFragment startFragmentSubBarraModalidade(FragmentManager fm, int id, ModalidadeEnum modalidade,
 																			 String concurso, String sorteio, boolean especial) {
 		SubBarraModalidadeFragment frag = SubBarraModalidadeFragment.newInstance(modalidade, concurso, sorteio, especial);
-		startFragment(fm, id, frag);
+		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}
 
 	public static RodapeSimulacaoApostaFragment startRodapeSimulacaoAPosta(FragmentManager fm, int id, BigDecimal valorBolao, BigDecimal valorTotal) {
 		RodapeSimulacaoApostaFragment frag = RodapeSimulacaoApostaFragment.newInstance(valorBolao, valorTotal);
-		startFragment(fm, id, frag);
+		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}
 
@@ -191,13 +185,13 @@ public class FragmentUtils {
 
 	public static RodapeSimulacaoApostaFragment startRodapeSimulacaoAPosta(FragmentManager fm, int id, BigDecimal valorBolao) {
 		RodapeSimulacaoApostaFragment frag = RodapeSimulacaoApostaFragment.newInstance(valorBolao);
-		startFragment(fm, id, frag);
+		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}
 
 	public static FiltroVazioFragment startFiltroVazio(FragmentManager fm, int idFrag) {
 		FiltroVazioFragment frag = FiltroVazioFragment.newInstance();
-		startFragment(fm, idFrag, frag);
+		startFragmentAllowingStateLoss(fm, idFrag, frag);
 		return frag;
 	}
 }

@@ -54,6 +54,8 @@ import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidad
 public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnEstadoVazioListener, OnVaiParaCarrinhoListener, OnCompraBolaoListener {
 	public static final String ARG_IDMODALIDADE = "ARG_IDMODALIDADE";
 
+	public static final String ARG_TIPO_CONCURSO = "ARG_TIPO_CONCURSO";
+
 	private DiscreteScrollView carrosselView;
 	private CarrosselBolaoAdapter carrosselAdapter;
 
@@ -84,6 +86,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private List<CotasBolaoDTO> cotasFiltradas;
 
 	private Integer idModalidade;
+	private Integer tipoConcurso;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		configToolbar(R.id.toolbar);
 		if (getIntent() != null && getIntent().getExtras() != null) {
 			idModalidade = getIntent().getExtras().getInt(ARG_IDMODALIDADE);
+			tipoConcurso = getIntent().getExtras().getInt(ARG_TIPO_CONCURSO);
 		}
 		launcherFiltro = IntentUtil.registerLauncherActivityForResult(this, OnActivityForResult());
 		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
@@ -102,8 +106,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		toolBarTxt = findViewById(R.id.toolbar_title);
 		toolBarTxt.setText(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.label_voltar_apostas_individuais)));
 		toolBarTxt.setVisibility(View.VISIBLE);
-
-
+		
 		todosBoloesTxt = findViewById(R.id.txt_todos_boloes);
 
 		listView = findViewById(R.id.lista_bolao);
@@ -143,6 +146,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				idUf = payload.getMunicipioId().getIdUF().intValue();
 				model.setIdMunicipioUF(idMunicipio, idUf);
 				model.setIdModalidade(idModalidade);
+				model.setIdTipoConcurso(tipoConcurso);
 				buscaBoloes();
 			}
 

@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 import br.gov.caixa.loterias.apostas.view.activity.TutorialActivity;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
@@ -67,28 +68,22 @@ public class IntentUtil {
 		return intent;
 	}
 
-	public static Intent getIntentFimTutorial(Activity activity, ModalidadeEnum modalidade, Integer IdModalidade) {
+	public static Intent getIntentFimTutorial(Activity activity, ModalidadeEnum modalidade, Integer IdModalidade, Integer tipoConcurso) {
 		if (modalidade == ModalidadeEnum.BOLAO){
 			Intent intent = new Intent(activity, BolaoActivity.class);
 			intent.putExtra(BolaoActivity.ARG_IDMODALIDADE,IdModalidade);
+			intent.putExtra(BolaoActivity.ARG_TIPO_CONCURSO, tipoConcurso);
 			return intent;
 		} else {
 			return new Intent(activity, SimularApostaActivity_.class);
 		}
 	}
 
-	public static Intent getIntentTutorial(Activity activity, ModalidadeEnum modalidade, int idModalidade) {
+	public static Intent getIntentTutorial(Activity activity, ModalidadeEnum modalidade, int idModalidade, TipoConcursoEnum tipoConcurso) {
 		Intent intent = new Intent(activity, TutorialActivity.class);
 		intent.putExtra(activity.getResources().getString(R.string.tipoAposta), modalidade);
 		intent.putExtra(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
-		return intent;
-	}
-
-	public static Intent getIntentTutorial(Activity activity, ModalidadeEnum modalidade, ParametroJogoDTO parametroJogo) {
-		Intent intent = new Intent(activity, TutorialActivity.class);
-		intent.putExtra(activity.getResources().getString(R.string.tipoAposta), modalidade);
-		intent.putExtra(activity.getResources().getString(R.string.extra_modalidade), parametroJogo);
-
+		intent.putExtra(BolaoActivity.ARG_TIPO_CONCURSO, tipoConcurso.fromStringToIdTipoConcurso());
 		return intent;
 	}
 

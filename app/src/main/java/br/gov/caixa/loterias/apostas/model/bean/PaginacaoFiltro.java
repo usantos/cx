@@ -14,8 +14,9 @@ public class PaginacaoFiltro {
     private int qtdTotalPaginas;
     private boolean semRegistros = false;
     private Integer idModalidade;
+    private Integer idTipoConcurso;
 
-    public PaginacaoFiltro(TipoConsultaBolaoEnum tipoConsulta, int idMunicipio, int idUf, Integer idModalidade){
+    public PaginacaoFiltro(TipoConsultaBolaoEnum tipoConsulta, int idMunicipio, int idUf, Integer idModalidade, Integer idTipoConcurso){
         this.tipoConsulta = tipoConsulta;
         this.idMunicipio = idMunicipio;
         this.idUf = idUf;
@@ -23,6 +24,7 @@ public class PaginacaoFiltro {
         this.qtdPorPagina = QTD_POR_PAGINA;
         this.qtdTotalPaginas = -1;
         this.idModalidade = idModalidade;
+        this.idTipoConcurso = idTipoConcurso;
     }
 
     public TipoConsultaBolaoEnum getTipoConsulta() {
@@ -93,5 +95,13 @@ public class PaginacaoFiltro {
 
     public void setAcabouRegistros(boolean acabou) {
         this.semRegistros = acabou;
+    }
+
+    public Integer getIdTipoConcurso() {
+        return idTipoConcurso;
+    }
+
+    public void setIdTipoConcurso(Integer idTipoConcurso) {
+        this.idTipoConcurso = idTipoConcurso;
     }
 }

@@ -21,14 +21,13 @@ import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.FiltroMarketplaceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
@@ -71,6 +70,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private List<ModalidadeDisponivelCota> listModalidadeDisponivel;
     private ModalidadeEnum selectModalidade = null;
+    private TipoConcursoEnum selectTipoConcurso = null;
 
 
     @Override
@@ -148,8 +148,10 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         return (holder, position) -> {
             if (position == 0) {
                 selectModalidade = null;
+                selectTipoConcurso = null;
             } else {
                 selectModalidade = listModalidadeDisponivel.get(position).getModalidade();
+                selectTipoConcurso = listModalidadeDisponivel.get(position).getTipoConcurso();
             }
         };
     }
@@ -157,10 +159,14 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private OnItemClickListener onItemClickListener() {
         return (holder, position) -> {
             LotericaDTO lotericaDTO = listLotericaDTO.get(position);
-            editLoterica.setText(lotericaDTO.getNome().trim());
+            editLoterica.setText(mioloCodigoLoterica(lotericaDTO.getCodigo()) + " - " + lotericaDTO.getNomeFantasia().trim());
             recyclerViewLoterica.setVisibility(View.GONE);
             selectLotericaDTO = lotericaDTO;
         };
+    }
+
+    private String mioloCodigoLoterica(String codigoLoterico) {
+        return codigoLoterico.substring(3,9);
     }
 
     private void onTextChanged(String charSequence){
@@ -184,7 +190,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 editValMax.getText().toString(),
                 sliderQtdCotas.getValues().get(0),
                 sliderQtdCotas.getValues().get(1),
-                selectLotericaDTO, selectModalidade);
+                selectLotericaDTO, selectModalidade, selectTipoConcurso);
     }
 
     private void setaRangeComponentes() {
@@ -212,7 +218,8 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 model.buscaLotericas(text, onBuscaLotericasListener());
             } else {
                 if (listLotericaDTO != null && listLotericaDTO.size()>0) {
-                    apresentaListaFiltrada(model.getListaFiltrada(text, listLotericaDTO));
+                    listLotericaDTO = model.getListaFiltrada(text, listLotericaDTO);
+                    apresentaListaFiltrada(listLotericaDTO);
                 }
             }
         } else {
@@ -267,7 +274,6 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         AlertDialogUtils.show(this);
 
         if(SessaoUsuarioUtil.precisaAtualizar()){
-            final DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(this);
 
             new ParametrosSimulacaoModel(this)
                     .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {

@@ -36,6 +36,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.DataUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
@@ -245,7 +246,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 				listViewSorteados.setAdapter(adapter);
 				listViewSorteados.setLayoutManager(new LinearLayoutManager(getContext()));
 			} else {
-				listSorteados = getResultadoConcurso().getListaSorteadosPrimeiroSorteio();
+				listSorteados = ListaUtils.orderAscDezenas(getResultadoConcurso().getListaSorteadosPrimeiroSorteio());
 				List dezenas = getDezenas(listSorteados);
 				ListaDezenaRecyclerView numerosAdapter = new ListaDezenaRecyclerView(dezenas, listSorteados
 						, getDezenaConfig(), null);
@@ -261,7 +262,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 				tvNumerosSorteados2.setVisibility(View.VISIBLE);
 				listViewSorteados2.setVisibility(View.VISIBLE);
 
-				listSorteados2 = getResultadoConcurso().getListaSorteadosSegundoSorteio();
+				listSorteados2 = ListaUtils.orderAscDezenas(getResultadoConcurso().getListaSorteadosSegundoSorteio());
 				List dezenas2 = getDezenas(listSorteados2);
 				ListaDezenaRecyclerView numerosAdapter2 = new ListaDezenaRecyclerView(dezenas2, listSorteados2
 						, getDezenaConfig(), null);
