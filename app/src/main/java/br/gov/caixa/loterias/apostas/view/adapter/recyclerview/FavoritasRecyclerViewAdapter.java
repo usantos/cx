@@ -385,8 +385,8 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             }
 
             @Override
-            public void unicaModalidade(List<ParametroSimulacao> arrayConcursos) {
-                if (arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
+            public void unicaModalidade(List<ParametroSimulacao> arrayConcursos, TipoConcursoEnum tipoConcursoEnum) {
+                if (tipoConcursoEnum == TipoConcursoEnum.ESPECIAL) {
                     adicionarCarrinhoCallWebservice(apostaBO, idApostaFavorita, 2, 0);
                 } else {
                     AlertDialogUtils.dismiss();
@@ -401,7 +401,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita) {
         FragmentManager fm = ((FavoritasActivity) context).getSupportFragmentManager();
         DialogFragmentUtils.startEscolhaModalidade(fm, arrayConcursos, idApostaFavorita,
-                context.getResources().getString(R.string.adicionar_carrinho_favoritas_view),
+                context.getResources().getString(R.string.adicionar_carrinho_favoritas_view), true,
                 onDialogFragmentListener(idApostaFavorita));
     }
 

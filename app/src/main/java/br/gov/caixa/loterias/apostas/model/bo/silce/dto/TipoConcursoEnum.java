@@ -28,4 +28,15 @@ public enum TipoConcursoEnum {
         }
         return null;
     }
+
+    public String getValor() {
+        switch (this) {
+            case NORMAL:
+                return "1";
+            case ESPECIAL:
+                return "2";
+        }
+        return null;
+    }
+
 }

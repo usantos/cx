@@ -44,6 +44,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
     private List<String> listaConcursosString;
     private List<String> listaTeimosinhas;
+    private boolean mostraTeimosinha;
 
     public AdicionarCarrinhoFavoritasView() {}
 
@@ -176,11 +177,13 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     }
 
     private void apresentaQtdTeimosinha(TipoConcursoEnum tipoConcurso) {
-        if(tipoConcurso == TipoConcursoEnum.NORMAL) {
-            selecioneQntTeimosinhaButton.setVisibility( View.VISIBLE );
-        } else {
-            selecioneQntTeimosinhaButton.setVisibility( View.GONE );
-            picker_qnt_teimosinhas.setVisibility(View.GONE);
+        if (mostraTeimosinha){
+            if(tipoConcurso == TipoConcursoEnum.NORMAL) {
+                selecioneQntTeimosinhaButton.setVisibility( View.VISIBLE );
+            } else {
+                selecioneQntTeimosinhaButton.setVisibility( View.GONE );
+                picker_qnt_teimosinhas.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -196,6 +199,9 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         this.listener = listener;
     }
 
+    public void setMostraTeimosinha(boolean mostraTeimosinha) {
+        this.mostraTeimosinha = mostraTeimosinha;
+    }
 }
 
 

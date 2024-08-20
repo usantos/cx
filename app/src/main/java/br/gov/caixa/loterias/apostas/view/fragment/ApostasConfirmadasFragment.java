@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -10,9 +12,11 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +40,7 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivity;
+import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -49,24 +54,33 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ApostaConfirmadaModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
@@ -74,6 +88,8 @@ import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapt
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnEscolheModalidadeDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
 /**
  * Created by pmotta on 16/03/2018.
@@ -409,8 +425,46 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             @Override
             public void onReload(int position) {
                 if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
-                    ApostaDTO apostaDTO = apostasList.get(position);
-                    AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
+                    AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(apostasList.get(position).getModalidade(), new OnModalidadesAbertasListener() {
+                        @Override
+                        public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
+                            ApostaDTO apostaDTO = apostasList.get(position);
+                            FragmentManager fm = getActivity().getSupportFragmentManager();
+                            DialogFragmentUtils.startEscolhaModalidade(fm, arrayConcursos, apostaDTO.getId(),
+                                    getContext().getResources().getString(R.string.adicionar_carrinho_favoritas_view), false,
+                                    (tipoConcurso, teimosinha) -> {
+                                        if (tipoConcurso.toString().equalsIgnoreCase(apostaDTO.getTipoConcurso().getValor())){
+                                            AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
+                                        } else {
+                                            AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(),
+                                                    ApostaUtils.converteTipoDeConcurso(apostaDTO));
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void ambasFechadas() {
+                            AlertDialogUtils.dismiss();
+                            ViewUtils.alertTitulo(getContext(), R.string.label_atencao,"Modalidade não disponível no momento.");
+                        }
+
+                        @Override
+                        public void unicaModalidade(List<ParametroSimulacao> arrayConcursos, TipoConcursoEnum tipoConcursoEnum) {
+                            ApostaDTO apostaDTO = apostasList.get(position);
+
+                            if (tipoConcursoEnum.getValor().equals(apostaDTO.getTipoConcurso().getValor())){
+                                AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
+                            } else {
+                                String msg = MensagemUtils.getMensagemConverteModalidade(apostaDTO);
+
+                                ViewUtils.alertTitleButtonPositiveListener(getContext(), R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
+                                    AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(),
+                                    ApostaUtils.converteTipoDeConcurso(apostaDTO));
+                                });
+                            }
+                        }
+                    });
+
                 }
             }
 
@@ -446,8 +500,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     holder.showProgressBarSituacao(false);
                 }
             });
-        } else
-                if (holder.precisaConferirSituacao()){
+        } else if (holder.precisaConferirSituacao()){
             conferirResultado(position, apostaDTO, holder);
         }else {
             if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {

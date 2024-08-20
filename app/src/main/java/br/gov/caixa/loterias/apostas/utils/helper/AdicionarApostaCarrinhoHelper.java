@@ -647,7 +647,27 @@ public class AdicionarApostaCarrinhoHelper {
             if (arrayConcursos.isEmpty()){
                 listener.ambasFechadas();
             } else {
-                listener.unicaModalidade(arrayConcursos);
+                listener.unicaModalidade(arrayConcursos, arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso());
+            }
+        }
+    }
+
+    public static void checagemModadalidadesAbertas(ModalidadeEnum modalidadeEnum, OnModalidadesAbertasListener listener){
+        List<ParametroSimulacao> arrayConcursos = new ArrayList<>();
+        List<ParametroSimulacao> parametroSimulacaoList = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+        for (ParametroSimulacao concurso : parametroSimulacaoList) {
+            if (concurso.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
+                arrayConcursos.add(concurso);
+            }
+        }
+
+        if (arrayConcursos.size() > 1) {
+            listener.ambasAbertas(arrayConcursos);
+        } else {
+            if (arrayConcursos.isEmpty()){
+                listener.ambasFechadas();
+            } else {
+                listener.unicaModalidade(arrayConcursos, arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso());
             }
         }
     }

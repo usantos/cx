@@ -439,7 +439,6 @@ public class ApostaUtils {
 
 		return aposta;
 	}
-
 	public static IdentificaoDeUmaApostaDas8Modalidades converteDetalheBolaoEmAposta(String codigoBolao, DetalheBolaoDTO bolao) {
 		IdentificaoDeUmBolao aposta = new IdentificaoDeUmBolao();
 		aposta.setModalidade(bolao.getModalidade());
@@ -458,4 +457,19 @@ public class ApostaUtils {
 
 		return aposta;
 	}
+
+	public static ApostaDTO converteTipoDeConcurso(ApostaDTO apostaDTO) {
+		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+		if (apostaDTO.getTipoConcurso().getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor())){
+			tipoConcurso.setValor(TipoConcursoEnum.NORMAL.getValor());
+		} else {
+			tipoConcurso.setValor(TipoConcursoEnum.ESPECIAL.getValor());
+		}
+
+		tipoConcurso.setDescricao("");
+		apostaDTO.setTipoConcurso(tipoConcurso);
+
+		return apostaDTO;
+	}
+
 }
