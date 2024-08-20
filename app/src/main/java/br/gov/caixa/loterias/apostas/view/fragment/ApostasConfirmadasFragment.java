@@ -455,7 +455,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                             if (tipoConcursoEnum.getValor().equals(apostaDTO.getTipoConcurso().getValor())){
                                 AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);
                             } else {
-                                String msg = MensagemUtils.getMensagemConverteModalidade(apostaDTO);
+                                String msg = MensagemUtils.getMensagemConverteModalidade(apostaDTO.getModalidade(), apostaDTO.getTipoConcurso().getValor());
 
                                 ViewUtils.alertTitleButtonPositiveListener(getContext(), R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
                                     AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(),

@@ -318,7 +318,6 @@ public class ApostaUtils {
 		equipeDTO2.setNomeClass(partida.getEquipe2().getNomeClass());
 		equipeDTO2.setNome(partida.getEquipe2().getNome());
 	}
-
 	public static IdentificaoDeUmaApostaDas8Modalidades convertApostaDTOemIdentificaoDeuUmaPostaDas8Modadlidades(ApostaDTO apostaDTO) {
 		ParametroJogoDTO parametroJogo = ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), apostaDTO.getModalidade()).getParametroJogo();
 
@@ -359,7 +358,6 @@ public class ApostaUtils {
 
 		}
 	}
-
 	public static boolean temModalidadeNormaleEspecialAberta(ArrayList<ApostaDTO> listaApostas){
 		int                      countModalidade;
 		List<ParametroSimulacao> parametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
@@ -464,6 +462,22 @@ public class ApostaUtils {
 			tipoConcurso.setValor(TipoConcursoEnum.NORMAL.getValor());
 		} else {
 			tipoConcurso.setValor(TipoConcursoEnum.ESPECIAL.getValor());
+			apostaDTO.setQuantidadeTeimosinhas(0);
+		}
+
+		tipoConcurso.setDescricao("");
+		apostaDTO.setTipoConcurso(tipoConcurso);
+
+		return apostaDTO;
+	}
+
+	public static IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> converteTipoDeConcurso(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaDTO) {
+		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
+		if (apostaDTO.getTipoConcurso().getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor())){
+			tipoConcurso.setValor(TipoConcursoEnum.NORMAL.getValor());
+		} else {
+			tipoConcurso.setValor(TipoConcursoEnum.ESPECIAL.getValor());
+			apostaDTO.setQuantidadeTeimosinhas(0);
 		}
 
 		tipoConcurso.setDescricao("");

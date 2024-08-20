@@ -63,15 +63,18 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
-import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
@@ -81,6 +84,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhes
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
@@ -429,18 +433,57 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void adicionarCarrinhoBtn() {
         if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(ApostaConfirmadaDetalhesActivity.this, 1)) {
-            ModalidadeEnum modalidade = (aposta!= null && aposta.getModalidade()!= null) ? aposta.getModalidade(): null;
-            if (modalidade != null && !modalidade.equals(ModalidadeEnum.LOTECA)){
-                if (!modalidade.equals(ModalidadeEnum.SUPER_7)) {
-                    aposta.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
-                } else {
-                    AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, apostaMatriz);
-                    return;
-                }
-            }
 
-            AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
+            AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), new OnModalidadesAbertasListener() {
+                @Override
+                public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
+                    DialogFragmentUtils.startEscolhaModalidade(getSupportFragmentManager(), arrayConcursos, aposta.getId(),
+                            getResources().getString(R.string.adicionar_carrinho_favoritas_view), false,
+                            (tipoConcurso, teimosinha) -> {
+                                if (tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())){
+                                    adicionaApostaCarrinho();
+                                } else {
+                                    AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(ApostaConfirmadaDetalhesActivity.this,
+                                            ApostaUtils.converteTipoDeConcurso(aposta));
+                                }
+                            });
+                }
+
+                @Override
+                public void ambasFechadas() {
+                    AlertDialogUtils.dismiss();
+                    ViewUtils.alertTitulo(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao,"Modalidade não disponível no momento.");
+                }
+
+                @Override
+                public void unicaModalidade(List<ParametroSimulacao> arrayConcursos, TipoConcursoEnum tipoConcursoEnum) {
+                    if (tipoConcursoEnum.getValor().equals(aposta.getTipoConcurso().getValor())){
+                        adicionaApostaCarrinho();
+                    } else {
+                        String msg = MensagemUtils.getMensagemConverteModalidade(aposta.getModalidade(), aposta.getTipoConcurso().getValor());
+
+                        ViewUtils.alertTitleButtonPositiveListener(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
+                            AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(ApostaConfirmadaDetalhesActivity.this,
+                                    ApostaUtils.converteTipoDeConcurso(aposta));
+                        });
+                    }
+                }
+            });
         }
+    }
+
+    private void adicionaApostaCarrinho(){
+        ModalidadeEnum modalidade = (aposta!= null && aposta.getModalidade()!= null) ? aposta.getModalidade(): null;
+        if (modalidade != null && !modalidade.equals(ModalidadeEnum.LOTECA)){
+            if (!modalidade.equals(ModalidadeEnum.SUPER_7)) {
+                aposta.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
+            } else {
+                AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, apostaMatriz);
+                return;
+            }
+        }
+
+        AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
     }
 
     private void salvarApostaImg() {
