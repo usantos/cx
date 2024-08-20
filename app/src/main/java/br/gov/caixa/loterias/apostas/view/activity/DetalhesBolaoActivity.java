@@ -57,7 +57,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	public static final String ARG_NUMERO_COTA = "ARG_NUMERO_COTA";
 
 	private TextView tvValorPremio, tvDescricaoPremioConcurso;
-	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota;
+	private TextView tvMunicipio, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota, tvDescLoterica;
 	private TextView textQtdDezenas, textQtdCotas;
 	private Button btnAdd, btnDiminui, btnAumenta;
 	private TextView tvValorCotaBtn, tvQtdCotas;
@@ -161,6 +161,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		tvValorPremio = findViewById(R.id.id_valor_premio);
 		tvDescricaoPremioConcurso = findViewById(R.id.id_descricao_valor_premio);
 		tvMunicipio = findViewById(R.id.id_municipio);
+		tvDescLoterica = findViewById(R.id.descricao_loterica);
 		tvValorCota = findViewById(R.id.id_valor_cota);
 		textQtdDezenas = findViewById(R.id.descricao_qtd_dezenas_dt);
 		textQtdCotas = findViewById(R.id.descricao_qtd_cotas_disponiveis_dt);
@@ -246,11 +247,12 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private void preencheDados() {
 		ViewUtils.setMoedaFormatHtml(bolao.getVrPremioEstimado(), tvValorPremio);
 		tvDescricaoPremioConcurso.setText(ViewUtils.textColor(this, getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso()), estilo.getCorLetraLista(), false));
-		tvMunicipio.setText(bolao.getMunicipio().getNome() + "\n" + bolao.getMunicipio().getUf().getNome().trim() + "-" + bolao.getMunicipio().getUf().getSigla() );
+		tvMunicipio.setText(getString(R.string.nome_loteria) +" "+ bolao.getNomeFantasia() + "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getMunicipio().getUf().getSigla() );
+		//tvDescLoterica.setText(getString(R.string.nome_loteria) +" "+ bolao.getNomeFantasia());
 		tvValorCota.setText("Valor da Cota: " + ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()));
 		tvValorTarifa.setText("Tarifa de Serviço: " + ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()));
 		tvValorTotal.setText("Total: " + ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()));
-		btnAdd.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.adicionarAoCarrinho)));
+		btnAdd.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.adicionarAoCarrinho)));
 		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
 
 		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(this,
