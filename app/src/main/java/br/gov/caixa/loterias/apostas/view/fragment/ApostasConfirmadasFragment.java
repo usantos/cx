@@ -431,7 +431,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                             ApostaDTO apostaDTO = apostasList.get(position);
                             FragmentManager fm = getActivity().getSupportFragmentManager();
                             DialogFragmentUtils.startEscolhaModalidade(fm, arrayConcursos, apostaDTO.getId(),
-                                    getContext().getResources().getString(R.string.adicionar_carrinho_favoritas_view), false,
+                                    getContext().getResources().getString(R.string.adicionar_carrinho_favoritas_view), null, false,
                                     (tipoConcurso, teimosinha) -> {
                                         if (tipoConcurso.toString().equalsIgnoreCase(apostaDTO.getTipoConcurso().getValor())){
                                             AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(getActivity(), apostaDTO);

@@ -423,65 +423,87 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void editarApostaBtn() {
+        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(true));
+    }
+
+    private void goToEditarAposta(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
             SimularApostaActivity_.intent(this).aposta(aposta)
-                                  .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
-                                  .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
-                                  .start();
+                    .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
+                    .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
+                    .start();
         }
     }
 
     private void adicionarCarrinhoBtn() {
         if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(ApostaConfirmadaDetalhesActivity.this, 1)) {
 
-            AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), new OnModalidadesAbertasListener() {
-                @Override
-                public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
-                    DialogFragmentUtils.startEscolhaModalidade(getSupportFragmentManager(), arrayConcursos, aposta.getId(),
-                            getResources().getString(R.string.adicionar_carrinho_favoritas_view), false,
-                            (tipoConcurso, teimosinha) -> {
-                                if (tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())){
-                                    adicionaApostaCarrinho(aposta);
-                                } else {
-                                    adicionaApostaCarrinho(ApostaUtils.converteTipoDeConcurso(aposta));
-                                }
-                            });
-                }
-
-                @Override
-                public void ambasFechadas() {
-                    AlertDialogUtils.dismiss();
-                    ViewUtils.alertTitulo(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao,"Modalidade não disponível no momento.");
-                }
-
-                @Override
-                public void unicaModalidade(List<ParametroSimulacao> arrayConcursos, TipoConcursoEnum tipoConcursoEnum) {
-                    if (tipoConcursoEnum.getValor().equals(aposta.getTipoConcurso().getValor())){
-                        adicionaApostaCarrinho(aposta);
-                    } else {
-                        String msg = MensagemUtils.getMensagemConverteModalidade(aposta.getModalidade(), aposta.getTipoConcurso().getValor());
-
-                        ViewUtils.alertTitleButtonPositiveListener(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
-                            adicionaApostaCarrinho(ApostaUtils.converteTipoDeConcurso(aposta));
-                        });
-                    }
-                }
-            });
+            AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false));
         }
     }
 
+    private OnModalidadesAbertasListener onChegagemModalidadesListener(boolean isEditing){
+        return new OnModalidadesAbertasListener() {
+            @Override
+            public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
+                DialogFragmentUtils.startEscolhaModalidade(getSupportFragmentManager(), arrayConcursos, aposta.getId(),
+                        getResources().getString(R.string.adicionar_carrinho_favoritas_view), "Editar Aposta",false,
+                        (tipoConcurso, teimosinha) -> {
+                            IdentificaoDeUmaApostaDas8Modalidades clone = aposta;
+                            if (!tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())) {
+                                clone = ApostaUtils.converteTipoDeConcurso(aposta);
+                            }
+                            if (isEditing){
+                                goToEditarAposta(clone);
+                            } else {
+                                adicionaApostaCarrinho(clone);
+                            }
+
+                        });
+            }
+
+            @Override
+            public void ambasFechadas() {
+                AlertDialogUtils.dismiss();
+                ViewUtils.alertTitulo(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao,"Modalidade não disponível no momento.");
+            }
+
+            @Override
+            public void unicaModalidade(List<ParametroSimulacao> arrayConcursos, TipoConcursoEnum tipoConcursoEnum) {
+                if (tipoConcursoEnum.getValor().equals(aposta.getTipoConcurso().getValor())){
+                    if (isEditing){
+                        goToEditarAposta(aposta);
+                    } else {
+                        adicionaApostaCarrinho(aposta);
+                    }
+                } else {
+                    String msg = MensagemUtils.getMensagemConverteModalidade(aposta.getModalidade(), aposta.getTipoConcurso().getValor());
+
+                    ViewUtils.alertTitleButtonPositiveListener(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
+                        IdentificaoDeUmaApostaDas8Modalidades clone =  ApostaUtils.converteTipoDeConcurso(aposta);
+                        if (isEditing){
+                            goToEditarAposta(clone);
+                        } else {
+                            adicionaApostaCarrinho(clone);
+                        }
+                    });
+                }
+            }
+        };
+    }
+
     private void adicionaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
-        ModalidadeEnum modalidade = (this.aposta != null && this.aposta.getModalidade()!= null) ? this.aposta.getModalidade(): null;
+        ModalidadeEnum modalidade = (aposta != null && aposta.getModalidade()!= null) ? aposta.getModalidade(): null;
         if (modalidade != null && !modalidade.equals(ModalidadeEnum.LOTECA)){
             if (!modalidade.equals(ModalidadeEnum.SUPER_7)) {
-                this.aposta.setNumerosSelecionados(this.aposta.getListaNumerosSelecionados());
+                aposta.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
             } else {
                 AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, apostaMatriz);
                 return;
             }
         }
 
-        AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, this.aposta);
+        AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
     }
 
     private void salvarApostaImg() {

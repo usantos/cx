@@ -401,7 +401,7 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita) {
         FragmentManager fm = ((FavoritasActivity) context).getSupportFragmentManager();
         DialogFragmentUtils.startEscolhaModalidade(fm, arrayConcursos, idApostaFavorita,
-                context.getResources().getString(R.string.adicionar_carrinho_favoritas_view), true,
+                context.getResources().getString(R.string.adicionar_carrinho_favoritas_view), null,true,
                 onDialogFragmentListener(idApostaFavorita));
     }
 

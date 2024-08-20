@@ -45,6 +45,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     private List<String> listaConcursosString;
     private List<String> listaTeimosinhas;
     private boolean mostraTeimosinha;
+    private String txtBotao;
 
     public AdicionarCarrinhoFavoritasView() {}
 
@@ -71,6 +72,10 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         cancelarModalFavoritosAddCarrinhoButton = view.findViewById(R.id.cancelarModalFavoritosAddCarrinhoButton);
         selecioneConcursoButton = view.findViewById(R.id.selecioneConcursoButton);
         selecioneQntTeimosinhaButton = view.findViewById(R.id.selecioneQntTeimosinhaButton);
+
+        if (txtBotao != null){
+            adicionarCarrinhoFavoritosButton.setText(txtBotao);
+        }
 
         cancelarModalFavoritosAddCarrinhoButton.setOnClickListener( this );
         adicionarCarrinhoFavoritosButton.setOnClickListener( this );
@@ -201,6 +206,10 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
     public void setMostraTeimosinha(boolean mostraTeimosinha) {
         this.mostraTeimosinha = mostraTeimosinha;
+    }
+
+    public void setTextoBotao(String txtBotao){
+        this.txtBotao = txtBotao;
     }
 }
 

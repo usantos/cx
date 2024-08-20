@@ -8,7 +8,7 @@ public class MensagemUtils {
         String descricaoEspecial = ModalidadeEnum.getDescricaoEspecial(modalidade);
 
         String msg = "A modalidade XXX não está vigente. A aposta será efetivada na modalidade ZZZ. Deseja prosseguir?";
-        if (tipoConcurso == TipoConcursoEnum.ESPECIAL.getValor()){
+        if (tipoConcurso.equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor())){
             msg = msg.replace("XXX", descricaoEspecial).replace("ZZZ", descricaoNormal);
         } else {
             msg = msg.replace("XXX", descricaoNormal).replace("ZZZ", descricaoEspecial);

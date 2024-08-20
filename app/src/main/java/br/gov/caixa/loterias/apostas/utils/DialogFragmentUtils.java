@@ -44,12 +44,15 @@ import br.gov.caixa.loterias.apostas.view.listener.OnEscolheModalidadeDialogList
 public class DialogFragmentUtils {
 
 	public static void startEscolhaModalidade(FragmentManager fm, List<ParametroSimulacao> arrayConcursos,
-											  Long idAposta, String string,boolean mostraTeimosinha, OnEscolheModalidadeDialogListener listener) {
+											  Long idAposta, String string, String txtBolao, boolean mostraTeimosinha, OnEscolheModalidadeDialogListener listener) {
 		AdicionarCarrinhoFavoritasView view = AdicionarCarrinhoFavoritasView.newInstance();
 		view.setArrayConcursos(arrayConcursos);
 		view.setIdApostaFavorita(idAposta);
 		view.setListener(listener);
 		view.setMostraTeimosinha(mostraTeimosinha);
+		if (txtBolao != null){
+			view.setTextoBotao(txtBolao);
+		}
 		view.show(fm, string);
 	}
 

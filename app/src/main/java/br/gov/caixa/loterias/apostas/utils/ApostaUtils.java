@@ -472,18 +472,19 @@ public class ApostaUtils {
 	}
 
 	public static IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> converteTipoDeConcurso(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaDTO) {
+		IdentificaoDeUmaApostaDas8Modalidades clone = IdentificaoDeUmaApostaDas8Modalidades.clone(apostaDTO);
 		DTOEnumCharacter tipoConcurso = new DTOEnumCharacter();
-		if (apostaDTO.getTipoConcurso().getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor())){
+		if (clone.getTipoConcurso().getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor())){
 			tipoConcurso.setValor(TipoConcursoEnum.NORMAL.getValor());
 		} else {
 			tipoConcurso.setValor(TipoConcursoEnum.ESPECIAL.getValor());
-			apostaDTO.setQuantidadeTeimosinhas(0);
+			clone.setQuantidadeTeimosinhas(0);
 		}
 
 		tipoConcurso.setDescricao("");
-		apostaDTO.setTipoConcurso(tipoConcurso);
+		clone.setTipoConcurso(tipoConcurso);
 
-		return apostaDTO;
+		return clone;
 	}
 
 }
