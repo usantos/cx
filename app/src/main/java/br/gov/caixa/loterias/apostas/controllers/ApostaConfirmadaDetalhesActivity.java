@@ -441,10 +441,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                             getResources().getString(R.string.adicionar_carrinho_favoritas_view), false,
                             (tipoConcurso, teimosinha) -> {
                                 if (tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())){
-                                    adicionaApostaCarrinho();
+                                    adicionaApostaCarrinho(aposta);
                                 } else {
-                                    AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(ApostaConfirmadaDetalhesActivity.this,
-                                            ApostaUtils.converteTipoDeConcurso(aposta));
+                                    adicionaApostaCarrinho(ApostaUtils.converteTipoDeConcurso(aposta));
                                 }
                             });
                 }
@@ -458,13 +457,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 @Override
                 public void unicaModalidade(List<ParametroSimulacao> arrayConcursos, TipoConcursoEnum tipoConcursoEnum) {
                     if (tipoConcursoEnum.getValor().equals(aposta.getTipoConcurso().getValor())){
-                        adicionaApostaCarrinho();
+                        adicionaApostaCarrinho(aposta);
                     } else {
                         String msg = MensagemUtils.getMensagemConverteModalidade(aposta.getModalidade(), aposta.getTipoConcurso().getValor());
 
                         ViewUtils.alertTitleButtonPositiveListener(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
-                            AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoMinhasApostas(ApostaConfirmadaDetalhesActivity.this,
-                                    ApostaUtils.converteTipoDeConcurso(aposta));
+                            adicionaApostaCarrinho(ApostaUtils.converteTipoDeConcurso(aposta));
                         });
                     }
                 }
@@ -472,18 +470,18 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         }
     }
 
-    private void adicionaApostaCarrinho(){
-        ModalidadeEnum modalidade = (aposta!= null && aposta.getModalidade()!= null) ? aposta.getModalidade(): null;
+    private void adicionaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
+        ModalidadeEnum modalidade = (this.aposta != null && this.aposta.getModalidade()!= null) ? this.aposta.getModalidade(): null;
         if (modalidade != null && !modalidade.equals(ModalidadeEnum.LOTECA)){
             if (!modalidade.equals(ModalidadeEnum.SUPER_7)) {
-                aposta.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
+                this.aposta.setNumerosSelecionados(this.aposta.getListaNumerosSelecionados());
             } else {
                 AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, apostaMatriz);
                 return;
             }
         }
 
-        AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
+        AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, this.aposta);
     }
 
     private void salvarApostaImg() {
