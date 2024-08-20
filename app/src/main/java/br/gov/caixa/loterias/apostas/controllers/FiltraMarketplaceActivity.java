@@ -159,7 +159,8 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private OnItemClickListener onItemClickListener() {
         return (holder, position) -> {
             LotericaDTO lotericaDTO = listLotericaDTO.get(position);
-            editLoterica.setText(mioloCodigoLoterica(lotericaDTO.getCodigo()) + " - " + lotericaDTO.getNomeFantasia().trim());
+            editLoterica.setText(mioloCodigoLoterica(lotericaDTO.getCodigo()) + " - " +
+                    lotericaDTO.getNomeFantasia().trim());
             recyclerViewLoterica.setVisibility(View.GONE);
             selectLotericaDTO = lotericaDTO;
         };
@@ -219,7 +220,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
             } else {
                 if (listLotericaDTO != null && listLotericaDTO.size()>0) {
                     listLotericaDTO = model.getListaFiltrada(text, listLotericaDTO);
-                    apresentaListaFiltrada(listLotericaDTO);
+                    apresentaListaFiltrada(model.getListaFiltrada(text, listLotericaDTO));
                 }
             }
         } else {
