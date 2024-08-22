@@ -135,7 +135,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private boolean premioPago;
     private ApostaFavoritaDTO apostaFavoritaDTO;
-    private ParametroSimulacao parametroSimulacao;
+    private ParametroSimulacao parametroSimulacao, parametroSimulacaoTrocado;
     private ComprovanteApostaDTO comprovanteParaPdf;
     private boolean isHistorico;
     private int RESGATOU_MP = 2000;
@@ -150,6 +150,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private boolean isBuscandoSituacaoSilce = false;
     private boolean criouFragmentDetalhe = false;
+
+    private SessaoUsuario sessaoUsuario;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -166,8 +169,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         setupToolbar();
         setaMetodos();
 
-        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+        sessaoUsuario = SessaoUsuario.getInstance();
         parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
+        parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
 
         if(ConfiguracaoAppSingleton.getInstance().isMicroServico() && resultadoConcurso != null){
             apresentaBySituacao(aposta.getSituacao());
@@ -430,7 +434,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
             SimularApostaActivity_.intent(this).aposta(aposta)
                     .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
-                    .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao.getParametroJogo()))
+                    .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacaoTrocado.getParametroJogo()))
+                    .extra(getResources().getString(R.string.extra_especial), isEspecial(aposta.getTipoConcurso().getValor()))
                     .start();
         }
     }
@@ -452,6 +457,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                             IdentificaoDeUmaApostaDas8Modalidades clone = aposta;
                             if (!tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())) {
                                 clone = ApostaUtils.converteTipoDeConcurso(aposta);
+                                parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade(), aposta.getTipoConcurso().getValor());
                             }
                             if (isEditing){
                                 goToEditarAposta(clone);
@@ -481,6 +487,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
                     ViewUtils.alertTitleButtonPositiveListener(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
                         IdentificaoDeUmaApostaDas8Modalidades clone =  ApostaUtils.converteTipoDeConcurso(aposta);
+                        parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade(), aposta.getTipoConcurso().getValor());
                         if (isEditing){
                             goToEditarAposta(clone);
                         } else {
