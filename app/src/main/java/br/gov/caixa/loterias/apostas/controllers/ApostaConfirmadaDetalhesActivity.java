@@ -457,8 +457,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                             IdentificaoDeUmaApostaDas8Modalidades clone = aposta;
                             if (!tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())) {
                                 clone = ApostaUtils.converteTipoDeConcurso(aposta);
-                                parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade(), aposta.getTipoConcurso().getValor());
                             }
+                            parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, clone.getModalidade(), clone.getTipoConcurso().getValor());
                             if (isEditing){
                                 goToEditarAposta(clone);
                             } else {
@@ -487,7 +487,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
                     ViewUtils.alertTitleButtonPositiveListener(ApostaConfirmadaDetalhesActivity.this, R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
                         IdentificaoDeUmaApostaDas8Modalidades clone =  ApostaUtils.converteTipoDeConcurso(aposta);
-                        parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade(), aposta.getTipoConcurso().getValor());
+                        parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, clone.getModalidade(), clone.getTipoConcurso().getValor());
                         if (isEditing){
                             goToEditarAposta(clone);
                         } else {
