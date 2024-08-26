@@ -231,6 +231,10 @@ public class AdicionarApostaCarrinhoHelper {
 
     private static boolean checarApostasRepetidas(Activity activity, IdentificaoDeUmaApostaDas8Modalidades aposta, ApostaBO apostaBO, ApostaOrigem origem) {
 
+        if (isBolao(aposta)) {
+            return false;
+        }
+
         ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas = new ArrayList<>();
         if (DadosUsuarioBO.checarUsuarioLogado(activity)) {
             if(CarrinhoSingleton.getInstance().getCarrinho() != null &&
@@ -637,5 +641,9 @@ public class AdicionarApostaCarrinhoHelper {
             return true;
         }
         return false;
+    }
+
+    private static boolean isBolao(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta != null && aposta.getIndicadorCotaBolao() != null && aposta.getIndicadorCotaBolao();
     }
 }
