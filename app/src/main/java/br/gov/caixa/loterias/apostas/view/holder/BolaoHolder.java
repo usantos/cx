@@ -89,7 +89,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		if (isEspecial(bolao.getTipoConcurso())){
 			modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 		} else {
-			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()));
+			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
 		}
 		concurso.setText(String.valueOf("Conc. "+bolao.getConcurso()));
 		if (bolao.getNomeFantasia().length() > 13){

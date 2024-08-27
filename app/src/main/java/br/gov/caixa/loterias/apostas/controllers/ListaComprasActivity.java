@@ -29,7 +29,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -86,9 +85,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void callWebServiceMesCompras(){
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
-
-        apostaBO.getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
+        ApostaBO.getInstance().getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
             @Override
             public void onResponse(MesAnoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -111,9 +108,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         isMaisCompras = true;
         bloquearRequestScroll = false;
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
-
-        apostaBO.getCompras(mes, ano, offsetItem, PAGE_SIZE ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        ApostaBO.getInstance().getCompras(mes, ano, offsetItem, PAGE_SIZE ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -178,7 +173,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
         AlertDialogUtils.show(ListaComprasActivity.this);
-        ApostaBO_.getInstance_(ListaComprasActivity.this).validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ApostaBO.getInstance().validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -203,7 +198,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
     private void favoritarCarrinho(String nome, Long idFavorito) {
         AlertDialogUtils.show(ListaComprasActivity.this);
-        ApostaBO_.getInstance_(ListaComprasActivity.this).salvarCarrinhoFavorito(nome, idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ApostaBO.getInstance().salvarCarrinhoFavorito(nome, idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -345,9 +340,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void pegaApostasDaCompra() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
-
-        apostaBO.getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        ApostaBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -371,10 +364,9 @@ public class ListaComprasActivity extends AppCompatActivity {
         if (!isMaisCompras) {
             return;
         }
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(ListaComprasActivity.this);
         progressLoadingMore.setVisibility(View.VISIBLE);
 
-        apostaBO.getCompras(mes, ano, offsetItem, PAGE_SIZE, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        ApostaBO.getInstance().getCompras(mes, ano, offsetItem, PAGE_SIZE, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);

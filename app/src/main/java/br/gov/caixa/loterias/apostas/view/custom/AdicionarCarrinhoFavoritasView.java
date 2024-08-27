@@ -16,6 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -192,8 +197,25 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         }
     }
 
+
     public void setIdApostaFavorita(Long idApostaFavorita) {
         this.idApostaFavorita = idApostaFavorita;
+    }
+
+    public void adicionarCarrinhoCallWebservice(final Long idApostaFavorita, final int valorTipoConcurso, final int qtdTeimosinhas) {
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
+        ApostaBO.getInstance().postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                loadViewProgress.dismiss();
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
+                }
+                dismiss();
+                ViewUtils.alert(getContext(), getContext().getResources().getString(R.string.label_favorita_no_carrinho));
+                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+            }
+        }
     }
 
     public void setArrayConcursos(List<ParametroSimulacao> arrayConcursos){

@@ -112,7 +112,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
 			}
 		} else {
-			tvModalidade.setText(ModalidadeEnum.fromString(modalidade));
+			tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
 		}
 		tvConcurso.setText(concurso);
 		tvSorteio.setText(sorteio);

@@ -89,4 +89,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/spin_ambiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:backgroundTint="@color/colorAccent"
+        android:dropDownWidth="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/txtVersao"
+        app:layout_constraintBottom_toBottomOf="@id/txtVersao"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

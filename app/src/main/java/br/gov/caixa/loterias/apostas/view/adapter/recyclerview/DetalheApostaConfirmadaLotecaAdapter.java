@@ -10,7 +10,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.view.custom.PartidasLotecaApostasConfirmadasView;
-import br.gov.caixa.loterias.apostas.view.custom.PartidasLotecaApostasConfirmadasView_;
 
 /**
  * Created by joafilho on 25/01/2018.
@@ -35,7 +34,7 @@ public class DetalheApostaConfirmadaLotecaAdapter extends RecyclerView.Adapter<D
     @Override
     public ApostaLotecaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        PartidasLotecaApostasConfirmadasView view = PartidasLotecaApostasConfirmadasView_.build(parent.getContext(), listaResultados);
+        PartidasLotecaApostasConfirmadasView view = PartidasLotecaApostasConfirmadasView.build(parent.getContext(), listaResultados);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 

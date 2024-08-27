@@ -6,10 +6,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -18,18 +14,28 @@ import br.gov.caixa.loterias.apostas.R;
  * Created by joafilho on 28/12/2017.
  * Class ItemEquipeView
  */
-@EViewGroup(R.layout.item_loteca)
 public class ItemEquipeView extends LinearLayout {
 
-    @ViewById
-    ImageView itemImage;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    TextView itemTitle, itemDescription;
+    private ImageView itemImage;
 
-    @AfterViews
+    private TextView itemTitle, itemDescription;
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_loteca, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
     protected void init() {
-
+        this.itemImage = findViewById(R.id.item_image);
+        this.itemTitle = findViewById(R.id.item_title);
+        this.itemDescription = findViewById(R.id.item_description);
     }
 
     public ItemEquipeView(Context context) {

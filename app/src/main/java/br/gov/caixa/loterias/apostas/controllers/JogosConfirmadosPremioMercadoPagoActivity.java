@@ -23,17 +23,15 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ValidacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -95,7 +93,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         textoTituloPremioConfirmado.setText(getResources().getString(R.string.premio_disponivel_em_breve_mp));
         textoPremioConfirmado.setText(getResources().getString(R.string.email_enviado_para) + emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.com_o_passo_a_passo));
 
-        emailPremioMercadoPagoEditText.setText(KeycloakBO_.getInstance_(this).getFromToken(getResources().getString(R.string.email_minusculo)));
+        emailPremioMercadoPagoEditText.setText(KeycloakBO.getInstance().getFromToken(getResources().getString(R.string.email_minusculo)));
         emailPremioMercadoPagoEditText.setSelection(emailPremioMercadoPagoEditText.getText().length());
         valorPremioTextView.setText(valorPremio);
 
@@ -115,7 +113,11 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         });
 
         //voltarPremioButton.setOnClickListener(view -> finish());
-        voltarPremioButton.setOnClickListener(view -> PrincipalActivity_.intent(JogosConfirmadosPremioMercadoPagoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start());
+        voltarPremioButton.setOnClickListener(view -> {
+            Intent intent = IntentUtil.getIntentOrigemDestino(JogosConfirmadosPremioMercadoPagoActivity.this, PrincipalActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        });
     }
 
     private void callWebserviceResgatarPremio() {
@@ -127,10 +129,10 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
 
         loadViewProgress = LoadingViewLoterias.show(this);
 
-        ApostaBO apostaBO = ApostaBO_.getInstance_(JogosConfirmadosPremioMercadoPagoActivity.this);
-        apostaBO.postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoDTO>() {
+
+        ApostaBO.getInstance().postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoResponse>() {
             @Override
-            public void onResponse(RetornoPadraoDTO response) {
+            public void onResponse(RetornoPadraoResponse response) {
                 setResult(RESULT_OK);
                 contentTopoConfirmarLinearLayout.setVisibility(View.GONE);
                 contentTopoConfirmadoLinearLayout.setVisibility(View.VISIBLE);
@@ -157,9 +159,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     }
 
     private void atualizaComprovante(){
-        ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-
-        apostaBO.getApostaComprovantePremio(idAposta, new RequestListener<DetalhesPremioDTOResponse>() {
+        ApostaBO.getInstance().getApostaComprovantePremio(idAposta, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
                 loadViewProgress.dismiss();
@@ -179,8 +179,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     public void redirectMp() {
 
         loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO apostaBO = ApostaBO_.getInstance_(JogosConfirmadosPremioMercadoPagoActivity.this);
-        apostaBO.getMercadoPagoToken(emailPremioMercadoPagoEditText.getText().toString(), new RequestListener<StringResponse>() {
+        ApostaBO.getInstance().getMercadoPagoToken(emailPremioMercadoPagoEditText.getText().toString(), new RequestListener<StringResponse>() {
             @Override
             public void onResponse(StringResponse result) {
                 loadViewProgress.dismiss();

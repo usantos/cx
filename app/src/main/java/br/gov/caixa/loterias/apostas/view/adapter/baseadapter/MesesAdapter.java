@@ -8,7 +8,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.view.custom.ItemRetanguloTextView;
-import br.gov.caixa.loterias.apostas.view.custom.ItemRetanguloTextView_;
 
 public class MesesAdapter extends BaseAdapter {
 
@@ -35,7 +34,7 @@ public class MesesAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        convertView = ItemRetanguloTextView_.build(parent.getContext());
+        convertView = ItemRetanguloTextView.build(parent.getContext());
         ((ItemRetanguloTextView) convertView).setLayout(meses.get(position));
         return convertView;
     }

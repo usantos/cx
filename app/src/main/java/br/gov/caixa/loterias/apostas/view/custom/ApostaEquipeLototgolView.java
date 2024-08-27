@@ -6,10 +6,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -22,18 +18,34 @@ import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
  * Class ApostaEquipeLototgolView
  */
 
-@EViewGroup(R.layout.row_aposta_equipe_lotogol)
 public class ApostaEquipeLototgolView extends LinearLayout {
 
-    @ViewById
-    ImageView imagemEscudoApostaPartidaLotogol, imagemPlacarApostaPartidaLotogol;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    TextView textoApostaPartidaLotogol;
+    private ImageView imagemEscudoApostaPartidaLotogol, imagemPlacarApostaPartidaLotogol;
 
-    @AfterViews
+    private TextView textoApostaPartidaLotogol;
+
+    public static ApostaEquipeLototgolView build(Context context) {
+        ApostaEquipeLototgolView instance = new ApostaEquipeLototgolView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.row_aposta_equipe_lotogol, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
     protected void init() {
-
+        this.imagemEscudoApostaPartidaLotogol = findViewById(R.id.imagem_escudo_aposta_partida_lotogol);
+        this.imagemPlacarApostaPartidaLotogol = findViewById(R.id.imagem_placar_aposta_partida_lotogol);
+        this.textoApostaPartidaLotogol = findViewById(R.id.texto_aposta_partida_lotogol);
     }
 
     public ApostaEquipeLototgolView(Context context) {

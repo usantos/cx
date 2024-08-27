@@ -6,7 +6,7 @@
     android:background="@color/transparente"
     android:orientation="vertical">
 
-    <br.gov.caixa.loterias.apostas.view.custom.ApostaEquipeLototgolView_
+    <br.gov.caixa.loterias.apostas.view.custom.ApostaEquipeLototgolView
         android:id="@+id/aposta_equipe_lotogol_um"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -23,7 +23,7 @@
         android:textColor="@color/cinza"
         android:textSize="14sp" />
 
-    <br.gov.caixa.loterias.apostas.view.custom.ApostaEquipeLototgolView_
+    <br.gov.caixa.loterias.apostas.view.custom.ApostaEquipeLototgolView
         android:id="@+id/aposta_equipe_lotogol_dois"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

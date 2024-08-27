@@ -1,11 +1,17 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import static br.gov.caixa.loterias.apostas.controllers.DetalhesCarrinhoFavoritoActivity.ID_CARRINHO;
+
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,16 +20,22 @@ import com.android.volley.VolleyError;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostas.model.model.CarrinhosFavoritosModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhosFavoritosAdapter;
+import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
+import br.gov.caixa.loterias.apostas.view.listener.OnCarrinhosFavoritosClickListener;
 
 public class CarrinhosFavoritosActivity extends AppCompatActivity {
+	private final static int AMBAS = 0;
 
 	//region Constants
 	public final static int RESPOSTAS_APOSTAS_CODIGO = 1;
@@ -39,6 +51,9 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
 
 	//region Variables
 	private CarrinhosFavoritosAdapter adapter;
+	private CarrinhosFavoritosModel model;
+	private ActivityResultLauncher<Intent> launcher;
+	private Dialog dialogSegmentedControl;
 	//endregion
 
 	//region Life Cicle
@@ -46,13 +61,31 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_carrinhos_favoritos);
+		launcher = IntentUtil.registerLauncherActivityForResult(this, onActivityForResult());
+		model = new CarrinhosFavoritosModel(this);
 		setaViews();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		buscaCarrinhosFavoritos();
+		AlertDialogUtils.show(CarrinhosFavoritosActivity.this);
+		model.buscaCarrinhosFavoritos(onBuscaCarrinhoListener());
+	}
+
+	private OnSilceListener<List<CarrinhoFavoritoDTO>> onBuscaCarrinhoListener() {
+		return new OnSilceListener<List<CarrinhoFavoritoDTO>>() {
+			@Override
+			public void success(List<CarrinhoFavoritoDTO> payload) {
+				AlertDialogUtils.dismiss();
+				configuraRecyclerView(payload);
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
 	}
 	//endregion
 
@@ -68,33 +101,15 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
 	//endregion
 
 	//region Network Methods
-	private void buscaCarrinhosFavoritos() {
-		AlertDialogUtils.show(CarrinhosFavoritosActivity.this);
-		ApostaBO_.getInstance_(CarrinhosFavoritosActivity.this).buscaCarrinhosFavoritos(new RequestListener<ListCarrinhoFavoritoDTO>() {
-			@Override
-			public void onResponse(ListCarrinhoFavoritoDTO result) {
-				AlertDialogUtils.dismiss();
-				if (result.getRedirect() != null) {
-					RedirectNetwork.checkRedirectSucesso(result.getRedirect(), CarrinhosFavoritosActivity.this);
-				}
-				configuraRecyclerView(result);
-			}
-
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				AlertDialogUtils.dismiss();
-				RedirectNetwork.checkRedirect(error, CarrinhosFavoritosActivity.this);
-			}
-		});
-	}
 	//endregion
 
 	//region Layout Configuration Methods
-	public void configuraRecyclerView(ListCarrinhoFavoritoDTO result) {
-		if (result.getPayload().size() > 0) {
+	public void configuraRecyclerView(List<CarrinhoFavoritoDTO> result) {
+		if (result.size() > 0) {
 			rvCarrinhosFavoritos.setVisibility(View.VISIBLE);
 			tvSemCarrinhos.setVisibility(View.GONE);
-			adapter = new CarrinhosFavoritosAdapter(result.getPayload(), CarrinhosFavoritosActivity.this);
+			model.setListCarrinhosFavoritos(result);
+			adapter = new CarrinhosFavoritosAdapter(result, CarrinhosFavoritosActivity.this, onRecyclerViewListener());
 			rvCarrinhosFavoritos.setAdapter(adapter);
 			RecyclerView.LayoutManager layout = new LinearLayoutManager(CarrinhosFavoritosActivity.this, RecyclerView.VERTICAL, false);
 			rvCarrinhosFavoritos.setLayoutManager(layout);
@@ -103,26 +118,146 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
 			tvSemCarrinhos.setVisibility(View.VISIBLE);
 		}
 	}
+
+	private OnCarrinhosFavoritosClickListener onRecyclerViewListener() {
+		return new OnCarrinhosFavoritosClickListener() {
+			@Override
+			public void onExcluirCarrinho(int position) {
+				excluirCarrinho(position);
+			}
+
+			@Override
+			public void onDetalhesCarrinho(LinearLayout layoutDetalhes, int position) {
+				detalhesCarrinho(layoutDetalhes, model.getIdCarrinhoByPosition(position));
+			}
+
+			@Override
+			public void onTransformaCarrinho(int position) {
+				if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(CarrinhosFavoritosActivity.this)) {
+					transformaCarrinho(position);
+				}
+			}
+
+			@Override
+			public void onBuscaApostas(LinearLayout layoutDetalhes, ConstraintLayout clCard, boolean configLayout, int position) {
+				buscaApostas(layoutDetalhes, clCard, configLayout, model.getIdCarrinhoByPosition(position));
+			}
+		};
+	}
+
+	private void buscaApostas(LinearLayout layout, ConstraintLayout card, boolean configLayout, Long idCarrinho) {
+		AlertDialogUtils.show(CarrinhosFavoritosActivity.this);
+		model.buscaApostas(idCarrinho, new OnSilceListener<List<ApostaCarrinhoFavoritoDTO>>() {
+			@Override
+			public void success(List<ApostaCarrinhoFavoritoDTO> result) {
+				AlertDialogUtils.dismiss();
+				if (configLayout) {
+					adapter.configViewsAposta(result, layout, card);
+				} else {
+					adapter.setListaApostasCarrinho(result);
+					if (adapter.temApostaEspecial() >= 2) {
+						dialogSegmentedControl = DialogUtils.showDialogSegmentedControl(CarrinhosFavoritosActivity.this,
+								adapter.getModadlidadeNormal(),
+								adapter.getModalidadeEspecial(),
+								opcaoSelecionada -> chamaTransformarCarrinho(idCarrinho, opcaoSelecionada));
+					} else {
+						chamaTransformarCarrinho(idCarrinho, AMBAS);
+					}
+				}
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		});
+	}
+
+	private void chamaTransformarCarrinho(Long idCarrinho, int opcaoSelecionada) {
+		AlertDialogUtils.show(this);
+		model.transformaCarrinho(idCarrinho, opcaoSelecionada, new OnSilceListener<CarrinhoDTO>() {
+			@Override
+			public void success(CarrinhoDTO payload) {
+				model.salvarCarrinhoFavoritoLocal(idCarrinho);
+				if (dialogSegmentedControl != null && dialogSegmentedControl.isShowing()) {
+					dialogSegmentedControl.dismiss();
+				}
+
+				startActivity(new Intent(CarrinhosFavoritosActivity.this, CarrinhoActivity.class));
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		});
+	}
+
+	private void detalhesCarrinho(LinearLayout layoutDetalhes, Long idCarrinhoAtual) {
+		adapter.setLayoutAtual(layoutDetalhes);
+		Bundle args = new Bundle();
+		args.putLong(ID_CARRINHO, idCarrinhoAtual);
+		Intent intent = IntentUtil.getIntentOrigemDestino(CarrinhosFavoritosActivity.this, DetalhesCarrinhoFavoritoActivity.class);
+		intent.putExtras(args);
+		IntentUtil.startActivityForResult(launcher, intent);
+	}
+
+	private void excluirCarrinho(int position) {
+		ViewUtils.alertTitleButtonYesOrNotListener(CarrinhosFavoritosActivity.this,
+				getResources().getString(R.string.carrinho_fav_deseja_excluir), (dialogInterface, i) -> {
+			AlertDialogUtils.show(CarrinhosFavoritosActivity.this);
+			model.excluirCarrinho(model.getIdCarrinhoByPosition(position), onExcluirCarrinhoListener());
+		});
+	}
+
+	private OnSilceListener<List<CarrinhoFavoritoDTO>> onExcluirCarrinhoListener() {
+		return new OnSilceListener<List<CarrinhoFavoritoDTO>>() {
+			@Override
+			public void success(List<CarrinhoFavoritoDTO> payload) {
+				AlertDialogUtils.dismiss();
+				configuraRecyclerView(payload);
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
+	}
+
+	private void transformaCarrinho(int position) {
+		if(!model.existeCarrinho(model.getIdCarrinhoByPosition(position))){
+			buscaApostas(null, null, false, model.getIdCarrinhoByPosition(position));
+		}else {
+			ViewUtils.alertTitleCustomPositiveListener(
+					this,
+					getString(R.string.cancelar), getString(R.string.carrinho_fav_incluir_carrinho),
+					getString(R.string.carrinho_favorito_ja_adicionado),
+					(dialogInterface, i) ->
+							buscaApostas(null, null, false, model.getIdCarrinhoByPosition(position))
+			);
+		}
+	}
 	//endregion
 
 	//region Support Methods
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == RESPOSTAS_APOSTAS_CODIGO) {
-			switch (resultCode) {
-				case RESPOSTA_EXCLUIU_CARRINHO:
-					buscaCarrinhosFavoritos();
-					break;
-				case RESPOSTA_EXCLUIU_APOSTAS:
-					Bundle bundle = data.getExtras();
-					if (bundle != null) {
-						List<ApostaCarrinhoFavoritoDTO> resposta = (List<ApostaCarrinhoFavoritoDTO>) bundle.getSerializable(RESPOSTA_APOSTAS);
-						adapter.recarregaCelula(resposta, adapter.getLayoutAtual());
-						//rvCarrinhosFavoritos.setAdapter(adapter);
-					}
-					break;
+	private OnActivityForResult onActivityForResult() {
+		return result -> {
+			if (result.getResultCode() == RESPOSTAS_APOSTAS_CODIGO){
+				switch (result.getResultCode()) {
+					case RESPOSTA_EXCLUIU_CARRINHO:
+						model.buscaCarrinhosFavoritos(onBuscaCarrinhoListener());
+						break;
+					case RESPOSTA_EXCLUIU_APOSTAS:
+						Bundle bundle = result.getData().getExtras();
+						if (bundle != null) {
+							List<ApostaCarrinhoFavoritoDTO> resposta = (List<ApostaCarrinhoFavoritoDTO>) bundle.getSerializable(RESPOSTA_APOSTAS);
+							adapter.recarregaCelula(resposta, adapter.getLayoutAtual());
+						}
+						break;
+				}
 			}
-		}
+		};
 	}
 
 	@Override

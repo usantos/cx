@@ -22,11 +22,10 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity_;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -53,6 +52,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
@@ -75,7 +75,7 @@ public class AdicionarApostaCarrinhoHelper {
      */
     public static void incluirApostaCarrinho(Activity actv, Object objectAposta) {
         activity = actv;
-        ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+        ApostaBO apostaBO = ApostaBO.getInstance();
         aposta = getApostaPreenchida(objectAposta);
         AlertDialogUtils.show(activity);
         if (aposta != null && !checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.LISTA_APOSTA)) {
@@ -85,7 +85,7 @@ public class AdicionarApostaCarrinhoHelper {
 
     public static void incluirApostaCarrinhoMinhasApostas(Activity actv, Object objectAposta) {
         activity = actv;
-        ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+        ApostaBO apostaBO = ApostaBO.getInstance();
         AlertDialogUtils.show(activity);
         aposta = getApostaPreenchida(objectAposta);
         if (aposta != null && !checarApostasRepetidas(activity, aposta, apostaBO, ApostaOrigem.LISTA_APOSTA)) {
@@ -98,7 +98,7 @@ public class AdicionarApostaCarrinhoHelper {
 
     public static void incluirApostaCarrinhoCartela(Activity actv, IdentificaoDeUmaApostaDas8Modalidades objectAposta) {
         activity = actv;
-        ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+        ApostaBO apostaBO = ApostaBO.getInstance();
         aposta = objectAposta;
         AlertDialogUtils.show(activity);
         if (aposta != null) {
@@ -106,7 +106,8 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }
 
-    public static void adicionarApostaCarrinhoRequest(Activity actv, final ApostaBO apostaBO, IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades) {
+    public static void adicionarApostaCarrinhoRequest(Activity actv, final ApostaBO apostaBO,
+                                                      IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades) {
         activity = actv;
         aposta = identificaoDeUmaApostaDas8Modalidades;
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
@@ -126,7 +127,7 @@ public class AdicionarApostaCarrinhoHelper {
 
     public static void incluirApostaCarrinhoSurpresinha(Activity actv, final IncluirSurpresinhaDTO apostaSurpresinha) {
         activity = actv;
-        ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+        ApostaBO apostaBO = ApostaBO.getInstance();
         AlertDialogUtils.show(activity);
         apostaBO.adicionarSurpresinhaNoCarrinho(apostaSurpresinha, new RequestListener<CarrinhoDTOResponse>() {
             @Override
@@ -230,6 +231,10 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static boolean checarApostasRepetidas(Activity activity, IdentificaoDeUmaApostaDas8Modalidades aposta, ApostaBO apostaBO, ApostaOrigem origem) {
+
+        if (isBolao(aposta)) {
+            return false;
+        }
 
         ArrayList<IdentificaoDeUmaApostaDas8Modalidades> apostas = new ArrayList<>();
         if (DadosUsuarioBO.checarUsuarioLogado(activity)) {
@@ -618,7 +623,11 @@ public class AdicionarApostaCarrinhoHelper {
                                 actv.finish();
                                 return;
                             case 1:
-                                PrincipalActivity_.intent(actv).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                                //PrincipalActivity_.intent(actv).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+                                Intent intent = IntentUtil.getIntentOrigemDestino(actv, PrincipalActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                actv.startActivity(intent);
+
                                 actv.finish();
                                 return;
                             default:
@@ -669,5 +678,10 @@ public class AdicionarApostaCarrinhoHelper {
                 listener.unicaModalidade(arrayConcursos, arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso());
             }
         }
+    }
+
+    private static boolean isBolao(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta != null && aposta.getIndicadorCotaBolao() != null && aposta.getIndicadorCotaBolao();
+
     }
 }

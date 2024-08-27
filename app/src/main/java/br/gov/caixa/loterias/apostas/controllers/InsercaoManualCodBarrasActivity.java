@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -27,6 +29,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
 import br.gov.caixa.loterias.apostas.utils.BilheteUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -82,9 +85,14 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
                         tipo = LeituraBilheteEnum.CODIGO_BARRAS;
                     }
                     String nsbFormatado = BilheteUtils.getNSBFormatado(editTextNumeroBilhete.getText().toString());
-                    ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this)
-                                                 .codBarras(code).nsb(nsbFormatado)
-                                                 .tipoLeitura(tipo).start();
+                    //ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this)
+                    //                             .codBarras(code).nsb(nsbFormatado)
+                    //                             .tipoLeitura(tipo).start();
+                    Intent intent = IntentUtil.getIntentOrigemDestino(this, ResultadoLerBilhetesActivity.class);
+                    intent.putExtra(ResultadoLerBilhetesActivity.COD_BARRAS_EXTRA, code);
+                    intent.putExtra(ResultadoLerBilhetesActivity.NSB_EXTRA, nsbFormatado);
+                    intent.putExtra(ResultadoLerBilhetesActivity.TIPO_LEITURA_EXTRA, tipo);
+                    startActivity(intent);
 
                     //ResultadoLerBilhetesActivity_.intent(InsercaoManualCodBarrasActivity.this).codBarras(code).start();
                 } catch (NoSuchAlgorithmException e) {

@@ -4,9 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
 import org.apache.commons.lang.StringUtils;
 
 import javax.annotation.Nullable;
@@ -20,21 +17,36 @@ import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
 /**
  * Created by joafilho on 09/01/2018.
  */
-@EViewGroup(R.layout.row_partida_lotogol)
 public class PartidaViewLotogol extends RelativeLayout implements LotogolListener {
 
-    @ViewById
-    RelativeLayout rowPartidaLotogol;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    ItemEquipeViewLotogol lotogolTimeUm, lotogolTimeDois;
+    private RelativeLayout rowPartidaLotogol;
+    private ItemEquipeViewLotogol lotogolTimeUm, lotogolTimeDois;
 
     private ParametroPartida parametroPartida;
     private LotogolListener listener;
 
-    @AfterViews
-    protected void init() {
+    public static PartidaViewLotogol build(Context context) {
+        PartidaViewLotogol instance = new PartidaViewLotogol(context);
+        instance.onFinishInflate();
+        return instance;
+    }
 
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.row_partida_lotogol, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    protected void init() {
+        this.rowPartidaLotogol = findViewById(R.id.row_partida_lotogol);
+        this.lotogolTimeUm = findViewById(R.id.lotogol_time_um);
+        this.lotogolTimeDois = findViewById(R.id.lotogol_time_dois);
     }
 
     public PartidaViewLotogol(Context context) {

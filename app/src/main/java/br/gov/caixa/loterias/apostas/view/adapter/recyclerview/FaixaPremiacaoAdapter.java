@@ -9,7 +9,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostas.view.custom.ItemListaFaixaPremiacao;
-import br.gov.caixa.loterias.apostas.view.custom.ItemListaFaixaPremiacao_;
 
 /**
  * Created by joafilho on 16/03/2018.
@@ -31,7 +30,7 @@ public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAd
     @Override
     public FaixaPremiacaoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        ItemListaFaixaPremiacao view = ItemListaFaixaPremiacao_.build(parent.getContext());
+        ItemListaFaixaPremiacao view = ItemListaFaixaPremiacao.build(parent.getContext());
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
 

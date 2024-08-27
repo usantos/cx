@@ -5,7 +5,6 @@ import android.app.Activity;
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -20,7 +19,7 @@ public class ConferirBilheteModel {
 
 	public ConferirBilheteModel(Activity activity) {
 		this.activity = activity;
-		this.apostaBO = ApostaBO_.getInstance_(activity);
+		this.apostaBO = ApostaBO.getInstance();
 	}
 
 	public void conferirBilhete(String codBarras, OnSilceListener<ResultadoConsultaBilheteDTO> listener){

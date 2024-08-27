@@ -12,7 +12,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.view.custom.PartidaViewLotecaResultado;
-import br.gov.caixa.loterias.apostas.view.custom.PartidaViewLotecaResultado_;
 
 /**
  * Created by cedesbr450 on 29/03/18.
@@ -33,7 +32,7 @@ public class LotecaResultadoTimesAdapter extends RecyclerView.Adapter<LotecaResu
 
     @Override
     public LotecaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        PartidaViewLotecaResultado view = PartidaViewLotecaResultado_.build(parent.getContext());
+        PartidaViewLotecaResultado view = PartidaViewLotecaResultado.build(parent.getContext());
         return new LotecaHolder(view);
     }
 

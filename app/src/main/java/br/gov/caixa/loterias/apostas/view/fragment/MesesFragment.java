@@ -1,20 +1,23 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.FragmentArg;
-import org.androidannotations.annotations.ViewById;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
@@ -29,27 +32,61 @@ import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.MesesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ItemRetanguloTextView;
 
-@EFragment(R.layout.fragment_meses)
 public class MesesFragment extends Fragment {
+    private static final String ARG_MODADLIDADE = "ARG_MODALIDADE";
+    private static final String ARG_PARAMENTRO = "ARG_PARAMENTRO";
+    private static final String ARG_DEZENAS = "ARG_DEZENAS";
 
-    @ViewById
-    protected ExpandableHeightGridView mesesGridView;
+    private ExpandableHeightGridView mesesGridView;
 
-    @FragmentArg
-    protected ModalidadeEnum modalidadeEnum;
-
-    @FragmentArg
-    protected ParametroJogoDTO parametroJogoDTO;
-
-    @FragmentArg
-    protected ArrayList<Integer> dezenasSelecionadas;
+    private ModalidadeEnum modalidadeEnum;
+    private ParametroJogoDTO parametroJogoDTO;
+    private ArrayList<Integer> dezenasSelecionadas;
 
     private ParametroMesDeSorte mesDeSorte;
     private SimularApostaActivity parentActivity;
     private MesesAdapter mesesAdapter;
+    private View view;
 
-    @AfterViews
-    protected void init() {
+    private MesesFragment(){}
+
+    public static MesesFragment newInstance(ModalidadeEnum modalidade,
+                                            ParametroJogoDTO parametroJogoDTO,
+                                            ArrayList<Integer> dezenasSelecionadas){
+        MesesFragment fragment  = new MesesFragment();
+        Bundle        args      = new Bundle();
+        args.putSerializable(ARG_MODADLIDADE, modalidade);
+        args.putSerializable(ARG_PARAMENTRO, parametroJogoDTO);
+        args.putString(ARG_DEZENAS, String.valueOf(dezenasSelecionadas));
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null){
+            modalidadeEnum = (ModalidadeEnum) getArguments().getSerializable(ARG_MODADLIDADE);
+            parametroJogoDTO = (ParametroJogoDTO) getArguments().getSerializable(ARG_PARAMENTRO);
+            String json = getArguments().getString(ARG_DEZENAS);
+            if(json!= null && json.length() > 0){
+                dezenasSelecionadas = new Gson().fromJson(json, new TypeToken<List<Integer>>() {}.getType());
+            } else {
+                dezenasSelecionadas = new ArrayList<>();
+            }
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_meses, container, false);
+        mesesGridView = view.findViewById(R.id.mesesGridView);
+        init();
+        return view;
+    }
+
+    private void init() {
         parentActivity = ((SimularApostaActivity) getActivity());
         switch (modalidadeEnum) {
             case DIA_DE_SORTE:
@@ -242,4 +279,5 @@ public class MesesFragment extends Fragment {
             parentActivity.setMesDeSorteSurpresinha(getItemSelecionado());
         }
     }
+
 }

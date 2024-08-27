@@ -275,7 +275,6 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         AlertDialogUtils.show(this);
 
         if(SessaoUsuarioUtil.precisaAtualizar()){
-
             new ParametrosSimulacaoModel(this)
                     .buscaParametroSiumulacao(new OnSilceListener<ParametrosSimulacao>() {
                         @Override

@@ -36,8 +36,7 @@ public class EscudoBO {
     public void carregaEscudos(Context context, OnEscudoListener escudoListener) {
         if (listEscudoImagem == null) {
             AlertDialogUtils.show(context);
-            ApostaBO apostaBO = ApostaBO_.getInstance_(context);
-            apostaBO.getEscudosEquipes(new RequestListener<EscudoEquipeEsportivaDTOResponse>() {
+            ApostaBO.getInstance().getEscudosEquipes(new RequestListener<EscudoEquipeEsportivaDTOResponse>() {
                 @Override
                 public void onResponse(EscudoEquipeEsportivaDTOResponse response) {
                     if (response != null && response.getPayload() != null) {

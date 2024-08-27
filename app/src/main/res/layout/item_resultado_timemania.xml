@@ -65,7 +65,7 @@
             android:layout_marginTop="19dp"
             android:background="@color/megasenamedio" />
 
-        <br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado_
+        <br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado
             android:id="@+id/partidaViewDetalhesResultadoView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

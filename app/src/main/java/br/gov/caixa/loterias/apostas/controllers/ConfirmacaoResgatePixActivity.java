@@ -2,36 +2,24 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.VolleyError;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 public class ConfirmacaoResgatePixActivity extends AppCompatActivity {
 
@@ -80,13 +68,17 @@ public class ConfirmacaoResgatePixActivity extends AppCompatActivity {
                 atualizaComprovante();
             }
         });
-        voltarConfirmacaoResgate.setOnClickListener(view -> PrincipalActivity_.intent(ConfirmacaoResgatePixActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start());
+        voltarConfirmacaoResgate.setOnClickListener(view -> {
+            //PrincipalActivity_.intent(ConfirmacaoResgatePixActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+            Intent intent = IntentUtil.getIntentOrigemDestino(ConfirmacaoResgatePixActivity.this, PrincipalActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        });
     }
 
     private void atualizaComprovante(){
         AlertDialogUtils.show(this);
-        ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-        apostaBO.getApostaComprovantePremio(idAposta, new RequestListener<DetalhesPremioDTOResponse>() {
+        ApostaBO.getInstance().getApostaComprovantePremio(idAposta, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
                 AlertDialogUtils.dismiss();

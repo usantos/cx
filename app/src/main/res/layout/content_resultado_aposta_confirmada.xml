@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado_
+        <br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado
             android:id="@+id/contentResultadoPremiado"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

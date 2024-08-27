@@ -4,15 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
@@ -23,15 +16,9 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
-import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -39,7 +26,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -55,33 +41,35 @@ import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnEscolheModalidadeDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
+import br.gov.caixa.loterias.apostas.view.holder.FavoritaHolder;
+import br.gov.caixa.loterias.apostas.view.listener.ApostaFavoritaListener;
+
 /**
  * Created by cedesbr450 on 16/02/18.
  */
-public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<FavoritasRecyclerViewAdapter.ViewHolder> {
-
+public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<FavoritaHolder> {
+    //region Variables
     private final Context context;
     private final FavoritasActivity activity;
     private final List<ApostaFavoritaDTO> listaApostaFavorita;
-    private ViewTreeObserver.OnGlobalLayoutListener swipeGlobalLayoutListener;
-    private ExcluiuTudo excluiuTudo;
+    private ApostaFavoritaListener listener;
+    //endregion
 
-    public FavoritasRecyclerViewAdapter(final FavoritasActivity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita) {
+    //region Constructors
+    public FavoritasRecyclerViewAdapter(final FavoritasActivity activity, final Context context, final List<ApostaFavoritaDTO> listaApostaFavorita, ApostaFavoritaListener listener) {
         this.context = context;
         this.listaApostaFavorita = listaApostaFavorita;
         this.activity = activity;
+        this.listener = listener;
     }
+    //endregion
 
-    public void setOnExcluiuTudo(ExcluiuTudo excluiuTudo) {
-        this.excluiuTudo = excluiuTudo;
-    }
-
+    //region Overrides
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+    public FavoritaHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         final Context context = parent.getContext();
-        final View view = LayoutInflater.from(context).inflate(R.layout.linearlayout_favoritas, parent, false);
-        final ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+        View view = LayoutInflater.from(context).inflate(R.layout.linearlayout_favoritas, parent, false);
+        return new FavoritaHolder(view, activity, listener, activity.getSupportFragmentManager());
     }
 
     @Override

@@ -11,10 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,11 +27,14 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
  * Created by cedesbr450 on 04/04/18.
  */
 
-@EViewGroup(R.layout.item_partida_view_detalhes_resultado)
+//@EViewGroup(R.layout.item_partida_view_detalhes_resultado)
 public class PartidaViewDetalhesResultado extends LinearLayout {
 
-    @ViewById
-    LinearLayout contentResuldadoDetalhesPremiacaoLinearLayout;
+    private boolean alreadyInflated = false;
+
+    //@ViewById
+    private LinearLayout contentResuldadoDetalhesPremiacaoLinearLayout;
+
     private ModalidadeEnum modalidade;
     private TipoConcursoEnum concurso;
     private String modalidadeDescricao;
@@ -51,6 +50,27 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
     public PartidaViewDetalhesResultado(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public static PartidaViewDetalhesResultado build(Context context) {
+        PartidaViewDetalhesResultado instance = new PartidaViewDetalhesResultado(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_partida_view_detalhes_resultado, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    //@AfterViews
+    protected void init() {
+        this.contentResuldadoDetalhesPremiacaoLinearLayout = findViewById(R.id.contentResuldadoDetalhesPremiacaoLinearLayout);
     }
 
     public static LinkedHashMap<String, String> obterMapFaixa(Modalidade modalidade) {
@@ -162,10 +182,6 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 break;
         }
         return mapFaixa;
-    }
-
-    @AfterViews
-    protected void init() {
     }
 
     public void setLayout(Modalidade modalidade) {

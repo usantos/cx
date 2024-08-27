@@ -28,7 +28,6 @@ import java.util.Date;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -38,6 +37,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
@@ -189,9 +189,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         switch (view.getId()) {
             case R.id.confirmarInclusaoApostaLayoutCarrinhoApostas: {
                 AlertDialogUtils.show(this);
-                ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-
-                apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+                ApostaBO.getInstance().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
                     @Override
                     public void onResponse(CarrinhoDTOResponse response) {
                         AlertDialogUtils.dismiss();
@@ -216,8 +214,10 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
             }
             break;
             case R.id.botaoLinearLayoutVoltarPrincipal: {
-                PrincipalActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
-
+                //PrincipalActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                Intent intent = IntentUtil.getIntentOrigemDestino(this, PrincipalActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
             break;
         }

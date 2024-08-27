@@ -9,7 +9,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.view.custom.PartidaViewLoteca;
-import br.gov.caixa.loterias.apostas.view.custom.PartidaViewLoteca_;
 
 /**
  * Created by cedesbr450 on 15/03/18.
@@ -25,7 +24,7 @@ public class LotecaComprasAdapter extends RecyclerView.Adapter<LotecaComprasAdap
 
     @Override
     public LotecaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        PartidaViewLoteca view = PartidaViewLoteca_.build(parent.getContext());
+        PartidaViewLoteca view = PartidaViewLoteca.build(parent.getContext());
         return new LotecaHolder(view);
     }
 

@@ -15,7 +15,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTO;
@@ -83,9 +82,7 @@ public class DuvidasActivity extends AppCompatActivity {
     private void initReciclerViewDuvidas() {
         if (secaoDuvidas == null) {
             AlertDialogUtils.show(this);
-            DadosCorporativosBO dadosCorporativosBO = DadosCorporativosBO_.getInstance_(getApplicationContext());
-
-            dadosCorporativosBO.secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
+            DadosCorporativosBO.getInstance().secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
                 @Override
                 public void onResponse(ListSecaoDTOResponse response) {
                     AlertDialogUtils.dismiss();

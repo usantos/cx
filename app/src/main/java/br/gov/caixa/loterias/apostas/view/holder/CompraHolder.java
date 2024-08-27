@@ -12,15 +12,10 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostaLotogolDetalhesComprasAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaComprasAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ComprasDezenasView;
-import br.gov.caixa.loterias.apostas.view.custom.ComprasDezenasView_;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
 public class CompraHolder extends LoteriasHolder<ApostaDTO> {
@@ -118,7 +113,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 				} else {
 					this.seusNumerosItemListaComprasTextView.setText(R.string.seus_numeros);
 				}
-				child = ComprasDezenasView_.build(this.activity);
+				child = ComprasDezenasView.build(this.activity);
 				((ComprasDezenasView)child).setLayout(aposta, estiloMKP.getCorFonteFundoClaro());
 				break;
 		}
