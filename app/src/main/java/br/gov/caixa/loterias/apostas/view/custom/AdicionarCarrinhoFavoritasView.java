@@ -10,25 +10,16 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-
-import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-
+import br.gov.caixa.loterias.apostas.view.listener.OnEscolheModalidadeDialogListener;
 
 
 /**
@@ -46,16 +37,17 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     private NumberPicker picker_tipo_concurso;
     private NumberPicker picker_qnt_teimosinhas;
 
-    public List<ParametroSimulacao>  arrayConcursos = new ArrayList<>();
-    public Long idApostaFavorita;
+    private List<ParametroSimulacao>  arrayConcursos = new ArrayList<>();
+    private Long idApostaFavorita;
 
+    private OnEscolheModalidadeDialogListener listener;
 
     private List<String> listaConcursosString;
     private List<String> listaTeimosinhas;
+    private boolean mostraTeimosinha;
+    private String txtBotao;
 
-    public AdicionarCarrinhoFavoritasView() {
-
-    }
+    public AdicionarCarrinhoFavoritasView() {}
 
     public static AdicionarCarrinhoFavoritasView newInstance() {
         AdicionarCarrinhoFavoritasView frag = new AdicionarCarrinhoFavoritasView();
@@ -81,18 +73,23 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         selecioneConcursoButton = view.findViewById(R.id.selecioneConcursoButton);
         selecioneQntTeimosinhaButton = view.findViewById(R.id.selecioneQntTeimosinhaButton);
 
+        if (txtBotao != null){
+            adicionarCarrinhoFavoritosButton.setText(txtBotao);
+        }
 
         cancelarModalFavoritosAddCarrinhoButton.setOnClickListener( this );
         adicionarCarrinhoFavoritosButton.setOnClickListener( this );
 
-        if( arrayConcursos.size() == 1 ){
-            if (arrayConcursos.get( 0 ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL && (arrayConcursos.get( 0 ).getParametroJogo().getTeimosinhas().size()) > 0 ){
+        if(arrayConcursos.size() == 1){
+            if(arrayConcursos.get( 0 ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL
+                    && (arrayConcursos.get( 0 ).getParametroJogo().getTeimosinhas().size()) > 0 ){
                 selecioneConcursoButton.setVisibility( View.GONE );
-                apresentaQtdTeimosinha();
+                apresentaQtdTeimosinha(TipoConcursoEnum.NORMAL);
             }
         } else {
-            if( arrayConcursos.get( 0 ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL && (arrayConcursos.get( 0 ).getParametroJogo().getTeimosinhas().size()) > 0 ) {
-                apresentaQtdTeimosinha();
+            if(arrayConcursos.get( 0 ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL
+                    && (arrayConcursos.get( 0 ).getParametroJogo().getTeimosinhas().size()) > 0 ) {
+                apresentaQtdTeimosinha(TipoConcursoEnum.NORMAL);
             }
         }
 
@@ -113,7 +110,10 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         setPickerTeimosinhas( 0 , view);
 
 
-        picker_tipo_concurso.setOnValueChangedListener((numberPicker, oldVal, newVal) -> setPickerTeimosinhas( newVal, view ));
+        picker_tipo_concurso.setOnValueChangedListener((numberPicker, oldVal, newVal) -> {
+            setPickerTeimosinhas( newVal, view );
+            apresentaQtdTeimosinha(arrayConcursos.get(newVal).getParametroJogo().getConcurso().getTipoConcurso());
+        });
 
 
         picker_qnt_teimosinhas.setOnValueChangedListener((numberPicker, oldVal, newVal) -> {
@@ -129,6 +129,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         });
 
         selecioneQntTeimosinhaButton.setOnClickListener(view1 -> {
+            picker_qnt_teimosinhas.setVisibility(View.VISIBLE);
             Integer alturaAnimacao = 0;
             if (picker_qnt_teimosinhas.getHeight()==0){
                 alturaAnimacao = 100;
@@ -149,7 +150,9 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             if (arrayConcursos.get( picker_tipo_concurso.getValue() ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL){
                 tipoConcurso = 1;
             }
-            adicionarCarrinhoCallWebservice( idApostaFavorita, tipoConcurso , Integer.parseInt( listaTeimosinhas.get( picker_qnt_teimosinhas.getValue() ) ) );
+            int teimosinha = Integer.parseInt(listaTeimosinhas.get(picker_qnt_teimosinhas.getValue()));
+            dismiss();
+            listener.selecionado(tipoConcurso, teimosinha);
         }
     }
 
@@ -166,7 +169,6 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         picker_qnt_teimosinhas.refreshDrawableState();
     }
 
-
     private void setarAlturaConteudo(Integer alturaConteudo, final View view){
         ValueAnimator animator = ValueAnimator.ofInt(view.getHeight(), ViewUtils.setDisplayMetric( alturaConteudo, getContext() ));
         animator.addUpdateListener(valueAnimator -> {
@@ -179,37 +181,35 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         animator.start();
     }
 
-    private void apresentaQtdTeimosinha () {
-        if(selecioneQntTeimosinhaButton.getVisibility() == View.GONE) {
-            selecioneQntTeimosinhaButton.setVisibility( View.VISIBLE );
-        } else {
-            selecioneQntTeimosinhaButton.setVisibility( View.GONE );
+    private void apresentaQtdTeimosinha(TipoConcursoEnum tipoConcurso) {
+        if (mostraTeimosinha){
+            if(tipoConcurso == TipoConcursoEnum.NORMAL) {
+                selecioneQntTeimosinhaButton.setVisibility( View.VISIBLE );
+            } else {
+                selecioneQntTeimosinhaButton.setVisibility( View.GONE );
+                picker_qnt_teimosinhas.setVisibility(View.GONE);
+            }
         }
     }
 
-    public void adicionarCarrinhoCallWebservice(final Long idApostaFavorita, final int valorTipoConcurso, final int qtdTeimosinhas) {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(getActivity());
+    public void setIdApostaFavorita(Long idApostaFavorita) {
+        this.idApostaFavorita = idApostaFavorita;
+    }
 
-        apostaBO.postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
-            @Override
-            public void onResponse(CarrinhoDTOResponse response) {
-                loadViewProgress.dismiss();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), getActivity());
-                }
-                dismiss();
-                ViewUtils.alert( getContext(), getContext().getResources().getString( R.string.label_favorita_no_carrinho ) );
-                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
-            }
+    public void setArrayConcursos(List<ParametroSimulacao> arrayConcursos){
+        this.arrayConcursos = arrayConcursos;
+    }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect(error, getActivity());
+    public void setListener(OnEscolheModalidadeDialogListener listener) {
+        this.listener = listener;
+    }
 
-            }
-        });
+    public void setMostraTeimosinha(boolean mostraTeimosinha) {
+        this.mostraTeimosinha = mostraTeimosinha;
+    }
+
+    public void setTextoBotao(String txtBotao){
+        this.txtBotao = txtBotao;
     }
 }
 

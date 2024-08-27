@@ -52,6 +52,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoPremiadoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
@@ -694,6 +695,19 @@ public class ViewUtils {
             for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
                 if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
                     return parametroSimulacao;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static ParametroSimulacao getParametroSimulacao(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum, String valorTipoConcurso) {
+        if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
+            for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
+                if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
+                    if (parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().getValor().equalsIgnoreCase(valorTipoConcurso)) {
+                        return parametroSimulacao;
+                    }
                 }
             }
         }

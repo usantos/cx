@@ -21,7 +21,6 @@ import com.daimajia.swipe.SwipeLayout;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -46,13 +45,15 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
-import br.gov.caixa.loterias.apostas.view.custom.AdicionarCarrinhoFavoritasView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnEscolheModalidadeDialogListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
 /**
  * Created by cedesbr450 on 16/02/18.
@@ -181,7 +182,6 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
             holder.maisInformacoesLayout.setVisibility(View.GONE);
         }
 
-        //AQUIII
         ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br))));
         if (modalidadeEnum.equals(ModalidadeEnum.MAIS_MILIONARIA)){
             holder.maisInformacoesMaisMilionaria.setVisibility(View.VISIBLE);
@@ -357,56 +357,78 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     }
 
     private void adicionarCarrinho(ApostaBO apostaBO, Long idApostaFavorita, DTOEnumInteger modalidadeEnum) {
-        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        List<ParametroSimulacao> arrayConcursos = new ArrayList<>();
-        List<ParametroSimulacao> parametroSimulacaoList = sessaoUsuario.getParametrosSimulacao().getParametros();
-        for (ParametroSimulacao concurso : parametroSimulacaoList) {
-            if (concurso.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().equals(modalidadeEnum.getDescricao())) {
-                arrayConcursos.add(concurso);
-            }
-        }
-
-        if (arrayConcursos.size() > 1) {
-            AlertDialogUtils.dismiss();
-            Boolean temEspecialENormal = false;
-            for (ParametroSimulacao modalidade : arrayConcursos) {
-                if (modalidade.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL) {
-                    temEspecialENormal = true;
-                    if (modalidade.getParametroJogo().getTeimosinhas().size() > 0) {
-                        popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
-                        return;
-                    }
-                } else {
-                    if (temEspecialENormal) {
-                        popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
-                        return;
+        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(modalidadeEnum, new OnModalidadesAbertasListener() {
+            @Override
+            public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
+                AlertDialogUtils.dismiss();
+                Boolean temEspecialENormal = false;
+                for (ParametroSimulacao modalidade : arrayConcursos) {
+                    if (modalidade.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL) {
+                        temEspecialENormal = true;
+                        if (modalidade.getParametroJogo().getTeimosinhas().size() > 0) {
+                            popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
+                            return;
+                        }
+                    } else {
+                        if (temEspecialENormal) {
+                            popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
+                            return;
+                        }
                     }
                 }
             }
-        } else {
-            if (arrayConcursos.isEmpty()){
-                ViewUtils.alertTitulo(context, R.string.label_atencao,"Modalidade não disponível no momento.");
+
+            @Override
+            public void ambasFechadas() {
                 AlertDialogUtils.dismiss();
-            } else {
-                if (arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
+                ViewUtils.alertTitulo(context, R.string.label_atencao,"Modalidade não disponível no momento.");
+            }
+
+            @Override
+            public void unicaModalidade(List<ParametroSimulacao> arrayConcursos, TipoConcursoEnum tipoConcursoEnum) {
+                if (tipoConcursoEnum == TipoConcursoEnum.ESPECIAL) {
                     adicionarCarrinhoCallWebservice(apostaBO, idApostaFavorita, 2, 0);
                 } else {
                     AlertDialogUtils.dismiss();
                     if (arrayConcursos.get(0).getParametroJogo().getTeimosinhas().size() > 0) {
                         popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
-                        return;
                     }
                 }
             }
-        }
+        });
     }
 
     private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita) {
         FragmentManager fm = ((FavoritasActivity) context).getSupportFragmentManager();
-        AdicionarCarrinhoFavoritasView adicionarCarrinhoFavoritasView = AdicionarCarrinhoFavoritasView.newInstance();
-        adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
-        adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;
-        adicionarCarrinhoFavoritasView.show(fm, context.getResources().getString(R.string.adicionar_carrinho_favoritas_view));
+        DialogFragmentUtils.startEscolhaModalidade(fm, arrayConcursos, idApostaFavorita,
+                context.getResources().getString(R.string.adicionar_carrinho_favoritas_view), null,true,
+                onDialogFragmentListener(idApostaFavorita));
+    }
+
+    private OnEscolheModalidadeDialogListener onDialogFragmentListener(Long idApostaFavorita) {
+        return (Integer tipoConcurso, int qtdTeimosinhas) -> {
+            final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
+            final ApostaBO apostaBO = ApostaBO_.getInstance_(activity);
+
+            apostaBO.postIncluirApostaFavoritaCarrinho(idApostaFavorita, tipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
+                @Override
+                public void onResponse(CarrinhoDTOResponse response) {
+                    loadViewProgress.dismiss();
+                    if (response.getRedirect() != null){
+                        RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
+                    }
+                    ViewUtils.alert( activity, activity.getResources().getString( R.string.label_favorita_no_carrinho ) );
+                    CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
+                    RedirectNetwork.checkRedirect(error, activity);
+
+                }
+            });
+        };
     }
 
     private void adicionarApostaCarrinhoRequest(final ApostaBO apostaBO, final ApostaFavoritaDTO apostaFavoritaDTO) {

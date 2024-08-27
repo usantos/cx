@@ -55,6 +55,7 @@ import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
 
 /**
@@ -271,7 +272,6 @@ public class AdicionarApostaCarrinhoHelper {
             dialog.dismiss();
         } );
     }
-
 
     private static void telaConfirmarCarrinho(ModalidadeEnum modalidade, Object aposta) {
         telaConfirmarCarrinho(modalidade,  aposta, null);
@@ -551,7 +551,6 @@ public class AdicionarApostaCarrinhoHelper {
 
     private static void setApostaLoteca(IdentificaoDeUmaApostaDas8Modalidades
                                                 apostaDas8Modalidades, Object object) {
-
         List<PartidaLotecaDTO> partidaLotecaList = null;
         if (object instanceof ApostaDTO) {
             ApostaDTO aposta = (ApostaDTO) object;
@@ -566,7 +565,6 @@ public class AdicionarApostaCarrinhoHelper {
 
     private static void setApostaLotogol(IdentificaoDeUmaApostaDas8Modalidades
                                                  apostaDas8Modalidades, Object object) {
-
         List<PartidaLotogolDTO> partidaLotogolList = null;
         if (object instanceof ApostaDTO) {
             ApostaDTO aposta = (ApostaDTO) object;
@@ -592,7 +590,6 @@ public class AdicionarApostaCarrinhoHelper {
     private enum ApostaOrigem {
         CARROSEL, LISTA_APOSTA;
     }
-
 
     private static String buscaBolaoCarrinho(String bolaoId, CarrinhoDTOResponse carrinhoDtoResponse) {
         List<IdentificaoDeUmaApostaDas8Modalidades> listBoloes = carrinhoDtoResponse.getPayload().getBoloes();
@@ -632,5 +629,45 @@ public class AdicionarApostaCarrinhoHelper {
             return true;
         }
         return false;
+    }
+
+    public static void checagemModadalidadesAbertas(DTOEnumInteger modalidadeEnum, OnModalidadesAbertasListener listener){
+        List<ParametroSimulacao> arrayConcursos = new ArrayList<>();
+        List<ParametroSimulacao> parametroSimulacaoList = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+        for (ParametroSimulacao concurso : parametroSimulacaoList) {
+            if (concurso.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao().equals(modalidadeEnum.getDescricao())) {
+                arrayConcursos.add(concurso);
+            }
+        }
+
+        if (arrayConcursos.size() > 1) {
+            listener.ambasAbertas(arrayConcursos);
+        } else {
+            if (arrayConcursos.isEmpty()){
+                listener.ambasFechadas();
+            } else {
+                listener.unicaModalidade(arrayConcursos, arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso());
+            }
+        }
+    }
+
+    public static void checagemModadalidadesAbertas(ModalidadeEnum modalidadeEnum, OnModalidadesAbertasListener listener){
+        List<ParametroSimulacao> arrayConcursos = new ArrayList<>();
+        List<ParametroSimulacao> parametroSimulacaoList = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+        for (ParametroSimulacao concurso : parametroSimulacaoList) {
+            if (concurso.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
+                arrayConcursos.add(concurso);
+            }
+        }
+
+        if (arrayConcursos.size() > 1) {
+            listener.ambasAbertas(arrayConcursos);
+        } else {
+            if (arrayConcursos.isEmpty()){
+                listener.ambasFechadas();
+            } else {
+                listener.unicaModalidade(arrayConcursos, arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso());
+            }
+        }
     }
 }

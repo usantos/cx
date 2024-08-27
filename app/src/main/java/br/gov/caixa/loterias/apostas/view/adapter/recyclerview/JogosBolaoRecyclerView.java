@@ -34,7 +34,8 @@ public class JogosBolaoRecyclerView extends RecyclerView.Adapter<JogoBolaoHolder
 		this.dezenaConfig = dezenaConfig;
 	}
 
-	public JogosBolaoRecyclerView(ModalidadeEnum modalidade, int corTitulo, List<ApostaBolaoDTO> apostas, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, DezenaConfig trevoConfig) {
+	public JogosBolaoRecyclerView(ModalidadeEnum modalidade, int corTitulo, List<ApostaBolaoDTO> apostas,
+								  List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, DezenaConfig trevoConfig) {
 		this.modalidade = modalidade;
 		this.corTitulo = corTitulo;
 		this.apostas = apostas;
@@ -43,7 +44,8 @@ public class JogosBolaoRecyclerView extends RecyclerView.Adapter<JogoBolaoHolder
 		this.trevoConfig = trevoConfig;
 	}
 
-	public JogosBolaoRecyclerView(ModalidadeEnum modalidade, int corTitulo, List<ApostaBolaoDTO> apostas, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, ResultadoConcursoDTO resultadoConcurso) {
+	public JogosBolaoRecyclerView(ModalidadeEnum modalidade, int corTitulo, List<ApostaBolaoDTO> apostas,
+								  List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, ResultadoConcursoDTO resultadoConcurso) {
 		this.modalidade = modalidade;
 		this.corTitulo = corTitulo;
 		this.apostas = apostas;
