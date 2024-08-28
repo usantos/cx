@@ -202,22 +202,6 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         this.idApostaFavorita = idApostaFavorita;
     }
 
-    public void adicionarCarrinhoCallWebservice(final Long idApostaFavorita, final int valorTipoConcurso, final int qtdTeimosinhas) {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
-        ApostaBO.getInstance().postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
-            @Override
-            public void onResponse(CarrinhoDTOResponse response) {
-                loadViewProgress.dismiss();
-                if (response.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), getActivity());
-                }
-                dismiss();
-                ViewUtils.alert(getContext(), getContext().getResources().getString(R.string.label_favorita_no_carrinho));
-                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
-            }
-        }
-    }
-
     public void setArrayConcursos(List<ParametroSimulacao> arrayConcursos){
         this.arrayConcursos = arrayConcursos;
     }

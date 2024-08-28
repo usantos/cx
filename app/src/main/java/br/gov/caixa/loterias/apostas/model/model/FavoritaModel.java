@@ -183,8 +183,10 @@ public class FavoritaModel extends AppModel {
 	private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita) {
 		FragmentManager fm = ((FavoritasActivity) getActivity()).getSupportFragmentManager();
 		AdicionarCarrinhoFavoritasView adicionarCarrinhoFavoritasView = AdicionarCarrinhoFavoritasView.newInstance();
-		adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
-		adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;
+		//adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
+		//adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;
+		adicionarCarrinhoFavoritasView.setArrayConcursos(arrayConcursos);
+		adicionarCarrinhoFavoritasView.setIdApostaFavorita(idApostaFavorita);
 		adicionarCarrinhoFavoritasView.show(fm, getActivity().getResources().getString(R.string.adicionar_carrinho_favoritas_view));
 	}
 
