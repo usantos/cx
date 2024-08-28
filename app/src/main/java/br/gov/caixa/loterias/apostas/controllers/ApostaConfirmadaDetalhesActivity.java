@@ -435,7 +435,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
             intent.putExtra(SimularApostaActivity.APOSTA_EXTRA, ((Serializable) aposta));
             intent.putExtra("tipoAposta", ((Serializable) aposta.getModalidade()));
-            intent.putExtra("modalidade", ((Serializable) (new Gson()).toJson(parametroSimulacao.getParametroJogo())));
+            intent.putExtra("modalidade", ((Serializable) (new Gson()).toJson(parametroSimulacaoTrocado.getParametroJogo())));
+            intent.putExtra("especial", isEspecial(aposta.getTipoConcurso().getValor()));
             startActivity(intent);
         }
     }
