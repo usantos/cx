@@ -92,7 +92,7 @@ public class AdicionarApostaCarrinhoHelper {
             postAdicionarApostaCarrinhoMinhasApostas(apostaBO);
         } else {
             AlertDialogUtils.dismiss();
-            ViewUtils.alertTitleButton(activity, R.string.label_atencao, actv.getResources().getString(R.string.erro_req), activity.getResources().getString(R.string.ok));
+            //ViewUtils.alertTitleButton(activity, R.string.label_atencao, actv.getResources().getString(R.string.erro_req), activity.getResources().getString(R.string.ok));
         }
     }
 
