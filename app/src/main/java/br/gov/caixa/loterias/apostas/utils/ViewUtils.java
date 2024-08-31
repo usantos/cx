@@ -776,6 +776,22 @@ public class ViewUtils {
         return "";
     }
 
+    public static String getNomeModalidadePorApostaDuasLinas(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
+        if(param != null){
+            ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
+
+            if (modalidadeDetalhada.getValor() == 9){
+                return "+Milionária";
+            } else {
+                return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                        ModalidadeEnum.getDescricaoEspecialDuasLinhas(aposta.getModalidade()):
+                        modalidadeDetalhada.getDescricao();
+            }
+        }
+        return "";
+    }
+
     public static Integer getConcursoAtualPorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         List<ParametroSimulacao> parametos = getListaParametroSimulacao(SessaoUsuario.getInstance(), aposta.getModalidade());
         int numConc = 0;
