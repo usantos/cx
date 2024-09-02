@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.os.CountDownTimer;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -200,11 +201,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 										   itemView.getContext().getResources().getString(R.string.as_espacado) +
 										   horaMinSeg);
 
-		Map mapComDiferencaDeDatas = computeDiff(new Date(), dataFechamentoSorteio);
-
-		this.tempoRestanteParaAposta.setText(retornaStringDias((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS))
-													   + retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS), parentActivity));
-
 		this.calendario.setImageResource(estilo.getImagemCalendario());
 		this.relogio.setImageResource(estilo.getImagemRelogio());
 
@@ -233,6 +229,55 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 		this.setaEsquerdaAcaoRelativeLayout.setOnClickListener(this);
 		this.setaDireitaAcaoRelativeLayout.setOnClickListener(this);
+
+		try {
+			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		if (dataFechamentoSorteio != null) {
+			long tempoRestanteMillis = dataFechamentoSorteio.getTime() - System.currentTimeMillis();
+
+			if (tempoRestanteMillis > 0) {
+				new CountDownTimer(tempoRestanteMillis, 1000) {
+
+					public void onTick(long millisUntilFinished) {
+						long days = TimeUnit.MILLISECONDS.toDays(millisUntilFinished);
+						millisUntilFinished -= TimeUnit.DAYS.toMillis(days);
+
+						long hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished);
+						millisUntilFinished -= TimeUnit.HOURS.toMillis(hours);
+
+						long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
+						millisUntilFinished -= TimeUnit.MINUTES.toMillis(minutes);
+
+						long seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished);
+
+						String tempoRestante;
+						if (days > 0) {
+							tempoRestante = days + " dias";
+						} else if (hours > 0) {
+							tempoRestante = hours + " horas e " + minutes + " minutos";
+						} else if (minutes > 0) {
+							tempoRestante = minutes + " minutos";
+						} else {
+							tempoRestante = seconds + " segundos";
+						}
+
+						tempoRestanteParaAposta.setText(tempoRestante);
+					}
+
+					public void onFinish() {
+						tempoRestanteParaAposta.setText(itemView.getContext().getResources().getString(R.string.aposta_encerrada));
+					}
+
+				}.start();
+			} else {
+				tempoRestanteParaAposta.setText(itemView.getContext().getResources().getString(R.string.aposta_encerrada));
+			}
+		}
+
 	}
 
 	public void setOverlayColor(EstiloModalidade estilo, Button aposta) {
