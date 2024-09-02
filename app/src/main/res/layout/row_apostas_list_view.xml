@@ -145,7 +145,7 @@
 
             <LinearLayout
                 android:id="@+id/modalidadeConcursoLayout"
-                android:layout_width="85dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
