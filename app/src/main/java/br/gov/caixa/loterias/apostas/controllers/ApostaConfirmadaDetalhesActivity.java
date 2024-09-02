@@ -746,7 +746,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             @Override
             public void onErrorResponse(VolleyError error) {
                 loadViewProgress.dismiss();
-                //** Estava duplicando ** apresentaBySituacao(aposta.getSituacao());
+                apresentaBySituacao(aposta.getSituacao());
             }
         });
     }
