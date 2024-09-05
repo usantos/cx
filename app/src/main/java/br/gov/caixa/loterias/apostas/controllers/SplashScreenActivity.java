@@ -47,13 +47,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        if (BuildVersionUtil.isPRD() || BuildVersionUtil.isTQS()){
+        if (BuildVersionUtil.isPRD()) {
             RootBeer rootBeer = new RootBeer(this);
             if (rootBeer.isRooted() || isRootAvailable()) {
                 ViewUtils.alertTitleButton(this, R.string.label_atencao, "Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.",
                                            getString(R.string.ok), (DialogInterface.OnDismissListener) dialog -> {
-                            finish();
-                        });
+                    finish();
+                });
                 return;
             }
         }
