@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.VolleyError;
@@ -12,20 +13,28 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.repository.ApostaFavoritaRepository;
 import br.gov.caixa.loterias.apostas.model.repository.CarrinhoRepository;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.AdicionarCarrinhoFavoritasView;
+import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.holder.FavoritaHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnEscolheModalidadeDialogListener;
 
 public class FavoritaModel extends AppModel {
 	//region Variables
@@ -182,11 +191,44 @@ public class FavoritaModel extends AppModel {
 
 	private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita) {
 		FragmentManager fm = ((FavoritasActivity) getActivity()).getSupportFragmentManager();
-		AdicionarCarrinhoFavoritasView adicionarCarrinhoFavoritasView = AdicionarCarrinhoFavoritasView.newInstance();
-		adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
-		adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;
-		adicionarCarrinhoFavoritasView.show(fm, getActivity().getResources().getString(R.string.adicionar_carrinho_favoritas_view));
+//		AdicionarCarrinhoFavoritasView adicionarCarrinhoFavoritasView = AdicionarCarrinhoFavoritasView.newInstance();
+//		//adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
+//		//adicionarCarrinhoFavoritasView.idApostaFavorita = idApostaFavorita;
+//		adicionarCarrinhoFavoritasView.setArrayConcursos(arrayConcursos);
+//		adicionarCarrinhoFavoritasView.setIdApostaFavorita(idApostaFavorita);
+//		adicionarCarrinhoFavoritasView.show(fm, getActivity().getResources().getString(R.string.adicionar_carrinho_favoritas_view));
+
+		DialogFragmentUtils.startEscolhaModalidade(fm, arrayConcursos, idApostaFavorita,
+				((FavoritasActivity) getActivity()).getResources().getString(R.string.adicionar_carrinho_favoritas_view),null, true,
+				onDialogFragmentListener(idApostaFavorita));
 	}
+
+	private OnEscolheModalidadeDialogListener onDialogFragmentListener(Long idApostaFavorita) {
+		return (Integer tipoConcurso, int qtdTeimosinhas) -> {
+			Activity activity = ((FavoritasActivity) getActivity());
+			final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
+			final ApostaBO apostaBO = ApostaBO.getInstance();
+
+			apostaBO.postIncluirApostaFavoritaCarrinho(idApostaFavorita, tipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
+				@Override
+				public void onResponse(CarrinhoDTOResponse response) {
+					loadViewProgress.dismiss();
+					if (response.getRedirect() != null){
+						RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
+					}
+					ViewUtils.alert( activity, activity.getResources().getString( R.string.label_favorita_no_carrinho ) );
+					CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
+				}
+
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					loadViewProgress.dismiss();
+					RedirectNetwork.checkRedirect(error, activity);
+				}
+			});
+		};
+	}
+
 
 	private void adicionarCarrinhoCallWebservice(final Long idApostaFavorita, final int valorTipoConcurso,
 												 final int qtdTeimosinhas, OnSilceListener<CarrinhoDTO> listener) {
