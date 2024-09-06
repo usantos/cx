@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -100,7 +101,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private ApostaBO apostaBO;
     private TextView dateResultTxt;
     private RecyclerView apostasConfirmadasRecyclerView;
-    private View view, apostasLoading;
+    private View view;
+    private ProgressBar apostasLoading;
     private LinearLayout dataBtn;
     private boolean isHistorico;
 
@@ -367,7 +369,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
 
         AlertDialogUtils.dismiss();
-        apostasLoading.setVisibility(View.GONE);
         //SessaoUsuario.getInstance().getParametrosSimulacao().setParametros(null);
 
         if (apostasList != null) {
@@ -414,6 +415,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 TestVisao.toast("Tamanho carregado: " + apostasConfirmadasRecyclerView.getAdapter().getItemCount() + "\nTotal: " + rowCount);
             }catch (Exception e){}
         }
+        apostasLoading.setVisibility(View.GONE);
     }
 
     private OnApostaConfirmadaListener getOnApostasConfirmadasListener(List<ApostaDTO> apostasList) {
