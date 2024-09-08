@@ -93,7 +93,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		getExtras();
 		estilo = new EstiloModalidadeMKP(modalidade);
 
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_bolões_"));
+		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_bolões_"));
 
 		setViews();
 		setMetodos();
@@ -255,10 +255,10 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		btnAdd.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.adicionarAoCarrinho)));
 		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
 
-		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(this,
+		textQtdDezenas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
 				getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
 
-		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(this,
+		textQtdCotas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
 				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
 
 		atualizaQuantidadeTextView();
