@@ -43,7 +43,7 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmacao_pagamento);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_confirmacao_pagamento)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_confirmacao_pagamento)));
 
         configViews();
 
@@ -91,11 +91,11 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 
     private void configuraBotoes(){
 
-        btnVoltarInicio.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
+        btnVoltarInicio.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
         if (isPixResgate()){
-            btnAcompanheCompras.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.visualizar_comprovante)));
+            btnAcompanheCompras.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.visualizar_comprovante)));
         } else {
-            btnAcompanheCompras.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_acompanhe_suas_compras_pix)));
+            btnAcompanheCompras.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.label_acompanhe_suas_compras_pix)));
         }
 
         btnVoltarInicio.setOnClickListener(view -> {
