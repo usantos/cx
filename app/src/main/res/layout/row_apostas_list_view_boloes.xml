@@ -153,7 +153,7 @@
 
                 <TextView
                     android:id="@+id/tipoAposta"
-                    style="@style/editTextCaixaRegularTheme"
+                    style="@style/editTextFuturaBoldTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxWidth="100dp"

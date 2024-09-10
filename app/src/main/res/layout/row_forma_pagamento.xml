@@ -27,7 +27,7 @@
         android:layout_below="@+id/textBandeiraCartao"
         android:layout_alignLeft="@+id/textBandeiraCartao"
         android:layout_alignStart="@+id/textBandeiraCartao"
-        style="@style/editTextArialMTTheme"/>
+        style="@style/editTextCaixaRegularTheme"/>
 
     <TextView
         android:id="@+id/textBandeiraCartao"
@@ -41,7 +41,7 @@
         android:layout_marginTop="15dp"
         android:layout_toRightOf="@+id/imageViewSelecionado"
         android:layout_toEndOf="@+id/imageViewSelecionado"
-        style="@style/editTextArialMTTheme"/>
+        style="@style/editTextCaixaRegularTheme"/>
 
     <ImageView
         android:id="@+id/imageViewSelecionado"
