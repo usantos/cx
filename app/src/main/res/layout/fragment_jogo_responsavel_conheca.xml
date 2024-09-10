@@ -35,7 +35,7 @@
             android:text="@string/jr_conheca_o_jogo"
             android:padding="10dp"
             android:gravity="center"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             android:textColor="@color/jr_azul_text_title" />
 
         <TextView
@@ -45,6 +45,7 @@
             android:text="@string/jr_conheca_acoes"
             android:textSize="15sp"
             android:textAlignment="center"
+            android:fontFamily="@font/caixa_std_regular"
             android:layout_marginTop="10dp"
             android:paddingBottom="20dp"
             android:paddingLeft="10dp"
@@ -68,6 +69,7 @@
             android:text="@string/jr_conheca_acao_1"
             android:textSize="14sp"
             android:textColor="#6A7476"
+            android:fontFamily="@font/caixa_std_regular"
             android:paddingBottom="20dp"
             android:paddingLeft="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -88,6 +90,7 @@
             android:layout_height="wrap_content"
             android:text="@string/jr_conheca_acao_2"
             android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"
             android:paddingBottom="20dp"
             android:paddingLeft="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -103,6 +106,7 @@
         android:text="@string/jr_conheca_alem_disso"
         android:textSize="15sp"
         android:textColor="@color/jr_cinza_text"
+        android:fontFamily="@font/caixa_std_regular"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="20dp"
@@ -138,6 +142,7 @@
         android:textSize="15sp"
         android:padding="15dp"
         android:textAlignment="center"
+        android:fontFamily="@font/caixa_std_regular"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +157,7 @@
         android:text="@string/jr_conheca_btn_saiba_mais"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/jr_radio_text_selected"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_ober_mais_informacoes" />

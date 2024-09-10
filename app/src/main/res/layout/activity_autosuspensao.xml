@@ -58,6 +58,7 @@
                 android:text="@string/tv_autosuspensao_1"
                 android:textSize="16sp"
                 android:textColor="@color/blue_caixa"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imagemAtencao"
@@ -74,6 +75,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/blue_caixa"
                 android:textStyle="normal"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintTop_toBottomOf="@+id/tvSuspensao1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -89,6 +91,7 @@
                 android:text="@string/tv_autosuspensao_3"
                 android:textSize="16sp"
                 android:textColor="@color/blue_caixa"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintTop_toBottomOf="@+id/tvSuspensao2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -104,6 +107,7 @@
                 android:text="@string/tv_autosuspensao_4"
                 android:textSize="16sp"
                 android:textColor="@color/blue_caixa"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintTop_toBottomOf="@+id/tvSuspensao3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -118,8 +122,8 @@
                 android:layout_marginEnd="12dp"
                 android:text="@string/tv_suspensao_pergunta"
                 android:textSize="14sp"
-                android:textStyle="bold"
                 android:textColor="@color/blue_caixa"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintTop_toBottomOf="@+id/tvSuspensao4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +144,7 @@
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_24_horas"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textColor="@color/blue_caixa"/>
 
                 <RadioButton
@@ -148,7 +152,7 @@
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_48_horas"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textColor="@color/blue_caixa"/>
 
                 <RadioButton
@@ -156,7 +160,7 @@
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_7_dias"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textColor="@color/blue_caixa"/>
             </RadioGroup>
 
@@ -174,7 +178,7 @@
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_15_dias"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textColor="@color/blue_caixa"/>
 
                 <RadioButton
@@ -182,7 +186,7 @@
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:text="@string/tv_30_dias"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textColor="@color/blue_caixa"/>
             </RadioGroup>
 
@@ -193,7 +197,7 @@
                 android:text="@string/tv_estou_ciente"
                 android:textColor="@color/blue_caixa"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="15dp"
                 app:layout_constraintTop_toBottomOf="@+id/rgSuspensao2"
@@ -211,7 +215,7 @@
                 android:text="@string/confirmar"
                 android:textColor="@color/branco"
                 android:textAllCaps="false"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:textAlignment="center"
                 android:background="@drawable/button_rounded_verdeazul"
                 android:visibility="visible"
@@ -229,7 +233,7 @@
                 android:text="@string/desistir"
                 android:textColor="@color/bolao_slider_trilha_ativa"
                 android:textAllCaps="false"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:textAlignment="center"
                 android:background="@drawable/background_border_verde"
                 android:visibility="gone"
@@ -246,7 +250,7 @@
                 android:text="@string/suspender_apostas"
                 android:textColor="@color/branco"
                 android:textAllCaps="false"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:textAlignment="center"
                 android:background="@drawable/button_rounded_verdeazul"
                 android:visibility="gone"
@@ -264,7 +268,7 @@
                 android:text="@string/title_entendi"
                 android:textColor="@color/branco"
                 android:textAllCaps="false"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:textAlignment="center"
                 android:background="@drawable/button_rounded_verdeazul"
                 android:visibility="gone"

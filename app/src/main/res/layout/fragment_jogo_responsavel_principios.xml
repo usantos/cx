@@ -41,7 +41,7 @@
         android:text="@string/jr_principios_tit"
         android:textColor="@color/jr_azul_text_title"
         android:textSize="16sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_icone_topo" />
@@ -55,6 +55,7 @@
         android:text="@string/jr_principios_cert"
         android:textAlignment="center"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_programa" />
@@ -79,6 +80,7 @@
         android:gravity="center"
         android:text="@string/jr_principios_niveis"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintTop_toBottomOf="@+id/v_separador" />
 
     <TextView
@@ -94,7 +96,7 @@
         android:paddingLeft="20dp"
         android:text="@string/jr_principios_nvl_1"
         android:textColor="@color/branco"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_niveis" />
 
     <TextView
@@ -111,6 +113,7 @@
         android:paddingLeft="20dp"
         android:text="@string/jr_principios_nvl_1_desc"
         android:textColor="@color/branco"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintTop_toBottomOf="@+id/tv_nvl_1" />
 
     <TextView
@@ -124,7 +127,7 @@
         android:paddingLeft="20dp"
         android:text="@string/jr_principios_nvl_2"
         android:textColor="@color/branco"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_nvl_1_desc" />
 
     <TextView
@@ -141,6 +144,7 @@
         android:paddingLeft="20dp"
         android:text="@string/jr_principios_nvl_2_desc"
         android:textColor="@color/branco"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintTop_toBottomOf="@+id/tv_nvl_2" />
 
     <View
@@ -154,7 +158,7 @@
         android:paddingLeft="20dp"
         android:text="@string/jr_principios_nvl_3"
         android:textColor="@color/branco"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_nvl_2_desc" />
 
     <TextView
@@ -167,7 +171,7 @@
         android:gravity="center_vertical|bottom"
         android:text="@string/jr_principios_nvl_3"
         android:textColor="@color/branco"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintBottom_toBottomOf="@+id/tv_nvl_3_bg"
         app:layout_constraintStart_toStartOf="@id/tv_nvl_3_bg" />
 
@@ -182,6 +186,7 @@
         android:text="@string/jr_principios_nvl_3_caixa"
         android:textColor="@color/branco"
         android:textSize="9sp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintBottom_toBottomOf="@id/tv_nvl_3"
         app:layout_constraintStart_toEndOf="@id/tv_nvl_3"
         app:layout_constraintTop_toTopOf="@id/tv_nvl_3" />
@@ -200,6 +205,7 @@
         android:paddingLeft="20dp"
         android:text="@string/jr_principios_nvl_3_desc"
         android:textColor="@color/branco"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintTop_toBottomOf="@+id/tv_nvl_3" />
 
 
@@ -215,7 +221,7 @@
         android:paddingLeft="20dp"
         android:text="@string/jr_principios_nvl_4"
         android:textColor="@color/branco"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_nvl_3_desc" />
 
     <TextView
@@ -232,6 +238,7 @@
         android:paddingLeft="20dp"
         android:text="@string/jr_principios_nvl_4_desc"
         android:textColor="@color/branco"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintTop_toBottomOf="@+id/tv_nvl_4" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -246,7 +253,7 @@
         android:textAlignment="center"
         android:textSize="15sp"
         android:textColor="@color/jr_cinza_text"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cl_margin" />

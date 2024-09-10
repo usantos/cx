@@ -86,7 +86,9 @@ public class JogoResponsavelActivity extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.background_gradient_jogo_responsavel));
-        setTitle(getResources().getString(R.string.jr_titulo));
+        //setTitle(getResources().getString(R.string.jr_titulo));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getResources().getString(R.string.jr_titulo)));
+
     }
 
     private void setaFragmentConheca(){
