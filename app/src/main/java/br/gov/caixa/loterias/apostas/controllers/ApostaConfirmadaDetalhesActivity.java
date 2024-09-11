@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BaixarComprovanteResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
@@ -137,14 +139,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private boolean premioPago;
     private ApostaFavoritaDTO apostaFavoritaDTO;
     private ParametroSimulacao parametroSimulacao, parametroSimulacaoTrocado;
-    private ComprovanteApostaDTO comprovanteParaPdf;
     private boolean isHistorico;
     private int RESGATOU_MP = 2000;
 
     private BigDecimal valorPremio;
-    private ComprovanteApostaDTOResponse comprovanteApostaDTOResponse;
-    private DetalhesPremioDTOResponse detalhesPremioDTOResponse;
-    private DetalhesHistoricoPremioDTOResponse detalhesHistoricoPremioDTOResponse;
     private ApostaConfirmadaPartidaDetalhesFragment partidaFragment;
     private ApostaConfirmadaNumeroDetalhesFragment numerosFragment;
     private ApostaConfirmadaBolaoDetalhesFragment numerosBolaoFragment;
@@ -153,7 +151,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private boolean criouFragmentDetalhe = false;
 
     private SessaoUsuario sessaoUsuario;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -256,8 +253,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         } else {
             inibirTeim();
         }
-
-        chamadasParaComprovante();
     }
 
     private void setaViews(){
@@ -443,7 +438,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void adicionarCarrinhoBtn() {
         if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(ApostaConfirmadaDetalhesActivity.this, 1)) {
-
             AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false));
         }
     }
@@ -599,98 +593,24 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void comprovanteLayout() {
-        if (premioPago && isHistorico) {
-            if (detalhesHistoricoPremioDTOResponse != null && detalhesHistoricoPremioDTOResponse.getPayload() != null){
-                PdfUtils.createComprovanteHistoricoPremioPdf(detalhesHistoricoPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
-            } else {
-                buscaDetalheComprovanteHistoricoAposta(true);
-            }
-        } else if (premioPago) {
-            if(detalhesPremioDTOResponse != null && detalhesPremioDTOResponse.getPayload() != null){
-                PdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
-            } else if (detalhesPremioDTO != null){
-                PdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this);
-            } else {
-                buscarDetalheComprovantePremioAposta(true);
-            }
-        } else {
-            if (comprovanteParaPdf != null){
-                PdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
-            } else if (comprovanteApostaDTOResponse != null && comprovanteApostaDTOResponse.getPayload() != null){
-                PdfUtils.createComprovanteApostaPdf(comprovanteApostaDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
-            } else if (comprovanteApostaDTO != null){
-                PdfUtils.createComprovanteApostaPdf(comprovanteApostaDTO, ApostaConfirmadaDetalhesActivity.this);
-            } else {
-                buscaDetalhesComprovanteAposta(true);
-            }
-        }
-    }
-
-    private void chamadasParaComprovante(){
-        if(!AlertDialogUtils.isShow()) {
-            AlertDialogUtils.show(this);
-        }
-        if (premioPago && isHistorico) {
-            buscaDetalheComprovanteHistoricoAposta(false);
-        } else if (premioPago) {
-            buscarDetalheComprovantePremioAposta(false);
-        } else {
-            buscaDetalhesComprovanteAposta(false);
-        }
-    }
-
-    private void buscaDetalheComprovanteHistoricoAposta(boolean geraPDF) {
-        apostaBO.getApostaHistoricoComprovante(aposta.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
+        AlertDialogUtils.show(this);
+        apostaBO.baixarComprovanteAposta(aposta.getId(), new RequestListener<BaixarComprovanteResponse>() {
             @Override
-            public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
+            public void onResponse(BaixarComprovanteResponse response) {
                 AlertDialogUtils.dismiss();
-                detalhesHistoricoPremioDTOResponse = result;
-                if (geraPDF){
-                    comprovanteLayout();
-                }
-            }
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                onError(error);
-            }
-        });
-    }
-
-    private void buscarDetalheComprovantePremioAposta(boolean geraPDF) {
-        apostaBO.getApostaComprovantePremio(aposta.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
-            @Override
-            public void onResponse(DetalhesPremioDTOResponse result) {
-                AlertDialogUtils.dismiss();
-                detalhesPremioDTOResponse = result;
-                detalhesPremioDTO = result.getPayload();
-                if (geraPDF){
-                    comprovanteLayout();
+                Uri fileUri = PdfUtils.baixarPdf(response.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+                if (fileUri != null){
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(fileUri, "application/pdf");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(Intent.createChooser(intent, "Abrir PDF com"));
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                onError(error);
-            }
-        });
-    }
-
-    private void buscaDetalhesComprovanteAposta(boolean geraPDF) {
-        apostaBO.getApostaDetalheComprovante(aposta.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
-            @Override
-            public void onResponse(ComprovanteApostaDTOResponse result) {
                 AlertDialogUtils.dismiss();
-                comprovanteApostaDTOResponse = result;
-                comprovanteParaPdf = result.getPayload();
-                comprovanteApostaDTO = result.getPayload();
-                if (geraPDF){
-                    comprovanteLayout();
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                onError(error);
+                error.getLocalizedMessage();
             }
         });
     }

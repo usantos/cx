@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoRespostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BaixarComprovanteResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BoloesDisponiveisResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
@@ -415,6 +416,21 @@ public class ApostaBO extends BaseBO {
         final GsonRequest request = getSilceConnection().buildGetRequest(url,
                 queryParams,
                 DetalhesPremioDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        getSilceConnection().request(request, listener);
+    }
+
+    public void baixarComprovanteAposta(Long id, final RequestListener<BaixarComprovanteResponse> listener) {
+
+        String url = ServerMethods.APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH.replace("{id}", id.toString());
+        final Map<String, String> queryParams = new HashMap<>();
+        final GsonRequest request = getSilceConnection().buildGetRequest(url,
+                queryParams,
+                BaixarComprovanteResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());

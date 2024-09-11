@@ -1,11 +1,17 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import android.app.Activity;
+import android.net.Uri;
 import android.print.PdfConverter;
+import android.util.Base64;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
@@ -108,5 +114,27 @@ public class PdfUtils {
 
             throw new Exception(exception);
         }
+    }
+
+    public static Uri baixarPdf(String stringBase64, Activity activity) {
+        return decodeBase64ToPdf(stringBase64, activity);
+    }
+
+    private static Uri decodeBase64ToPdf(String base64String, Activity activity) {
+        try {
+            byte[] pdfBytes = Base64.decode(base64String, Base64.DEFAULT);//982526360
+
+            File file = new File(activity.getExternalFilesDir(null), "documento.pdf");
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                fos.write(pdfBytes);
+                fos.flush();
+            }
+
+            Uri photoURI = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".fileprovider", file);
+            return photoURI;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
