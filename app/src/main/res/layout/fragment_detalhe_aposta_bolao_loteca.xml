@@ -44,7 +44,7 @@
             android:text="@string/tit_premio_pago"
             android:textColor="@color/branco"
             android:textSize="16sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,10 +78,9 @@
             android:id="@+id/concursoLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/arialmt"
+            android:fontFamily="@font/caixa_std_bold"
             android:text="@string/concurso"
             android:textSize="14sp"
-            android:textStyle="bold"
             android:textColor="@color/branco"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -92,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/concursoLabel"
-            android:fontFamily="@font/arialmt"
+            android:fontFamily="@font/caixa_std_regular"
             android:textSize="12sp"
             tools:text="1234"
             android:textColor="@color/branco"
@@ -103,12 +102,11 @@
             android:id="@+id/cotaLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/arialmt"
+            android:fontFamily="@font/caixa_std_bold"
             android:layout_below="@id/concursoTxt"
             android:text="Cota"
             android:layout_marginTop="8dp"
             android:textSize="14sp"
-            android:textStyle="bold"
             android:textColor="@color/branco"
             app:layout_constraintTop_toBottomOf="@id/concursoTxt"
             app:layout_constraintStart_toStartOf="parent"/>
@@ -118,7 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/cotaLabel"
-            android:fontFamily="@font/arialmt"
+            android:fontFamily="@font/caixa_std_regular"
             android:textSize="12sp"
             tools:text="1/25"
             android:textColor="@color/branco"
@@ -147,7 +145,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/divider"
             android:text="@string/label_data_aposta"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             android:textSize="12sp"
             android:textColor="@color/branco"/>
 
@@ -160,6 +158,7 @@
             android:layout_height="wrap_content"
             android:text="@string/label_data_aposta"
             android:textColor="@color/branco"
+            android:fontFamily="@font/caixa_std_regular"
             android:textSize="12sp" />
 
         <View
@@ -185,7 +184,7 @@
             android:text="Aguardando"
             android:textColor="@color/branco"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/caixa_std_bold" />
 
         <TextView
             android:id="@+id/resultTxt"
@@ -198,7 +197,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="@color/branco"
             android:textSize="12sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             tools:text="Aguardando" />
 
         <TextView
@@ -212,6 +211,7 @@
             android:layout_marginStart="10dp"
             android:textColor="@color/branco"
             android:textSize="12sp"
+            android:fontFamily="@font/caixa_std_regular"
             android:visibility="gone" />
 
         <TextView
@@ -224,7 +224,7 @@
             android:layout_marginStart="10dp"
             android:textColor="@color/branco"
             android:textSize="12sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             android:visibility="gone"
             tools:text="@string/r_0_00" />
 
@@ -259,6 +259,7 @@
             android:layout_height="wrap_content"
             android:text="Resgatar prêmio"
             android:textColor="@color/branco"
+            android:fontFamily="@font/caixa_std_regular"
             android:layout_marginStart="16sp"
             app:layout_constraintStart_toEndOf="@+id/ivResgatePremio"
             app:layout_constraintTop_toTopOf="parent"
@@ -279,14 +280,13 @@
 
         <TextView
             android:id="@+id/sua_aposta_id"
-            style="@style/ArialMT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/label_sua_aposta"
             android:textColor="@color/branco"
             android:textSize="12sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
