@@ -26,7 +26,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/arialmt"
+            android:fontFamily="@font/caixa_std_regular"
             android:text="@string/nesta_rea_est_o_todas_as_suas_apostas_da_sorte_s_escolher_e_apostar_boa_sorte"
             android:textColor="@color/cinza"
             android:autoSizeTextType="uniform"
