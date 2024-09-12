@@ -27,9 +27,8 @@
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_bold"
                 android:textSize="14.2sp"
-                android:textStyle="bold"
                 tools:text="Mega-sena" />
 
             <TextView
@@ -37,7 +36,7 @@
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textSize="12.1sp"
                 tools:text="Seus números" />
         </LinearLayout>
@@ -58,7 +57,7 @@
                     android:id="@+id/dataConcursoListaComprasTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textSize="14.2sp"
                     tools:text="25/08/2016" />
 
@@ -66,7 +65,7 @@
                     android:id="@+id/concursoListaComprasTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textSize="14.2sp"
                     tools:text="Conc. 2587" />
 
@@ -74,7 +73,7 @@
                     android:id="@+id/cotaListaComprasTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textSize="14.2sp"
                     tools:text="Cota: 01/05"
                     android:visibility="gone"/>
@@ -84,7 +83,7 @@
                     android:layout_marginTop="30dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textSize="12.2sp"
                     tools:text="1 Teimosinha" />
             </LinearLayout>

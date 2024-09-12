@@ -98,7 +98,7 @@ public class ComprasDezenasView extends LinearLayout {
             case TIMEMANIA:
                 if(!aposta.getIndicadorCotaBolao()) {
                     labelDetalheTxt.setText(R.string.label_time_coracao_dois_pontos);
-                    detalheTxt.setText(ViewUtils.textFuturaAndFuturaBold(getContext(),
+                    detalheTxt.setText(ViewUtils.textCaixaSTDBold(getContext(),
                             getContext().getString(R.string.texto_futura_bold,
                                     aposta.getTimeDoCoracao().getNome() + "/" +
                                             aposta.getTimeDoCoracao().getUf()
@@ -110,7 +110,7 @@ public class ComprasDezenasView extends LinearLayout {
             case DIA_DE_SORTE:
                 if(!aposta.getIndicadorCotaBolao()) {
                     labelDetalheTxt.setText(R.string.label_mes_sorte_dois_pontos);
-                    detalheTxt.setText(aposta.getMesDeSorte() == null ? "" : ViewUtils.textFuturaAndFuturaBold(getContext(), getContext().getString(R.string.texto_futura_bold, aposta.getMesDeSorte().getNome())));
+                    detalheTxt.setText(aposta.getMesDeSorte() == null ? "" : ViewUtils.textCaixaSTDBold(getContext(), getContext().getString(R.string.texto_futura_bold, aposta.getMesDeSorte().getNome())));
                     detalheLayout.setVisibility(View.VISIBLE);
                 }
                 break;

@@ -45,7 +45,7 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 		}else {
 			txtNumero.setText(dezena.getLabel());
 		}
-		txtNumero.setTypeface(ViewUtils.getFontFuturaBold(context));
+		txtNumero.setTypeface(ViewUtils.getFontCaixaStdBold(context));
 
 		if (config.isClickable()){
 			txtNumero.setOnClickListener(this);
