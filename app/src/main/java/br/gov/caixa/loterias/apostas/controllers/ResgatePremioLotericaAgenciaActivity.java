@@ -89,7 +89,7 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
             it.putExtra("CODIGO_RESGATE", codigoResgateDTO);
             startActivity(new Intent(it));
         } else {
-            setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.label_agencia_bold)));
+            setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.label_agencia_bold)));
             categoriaLayout.setVisibility(View.GONE);
             for (TipoPagamentoDTO meioPagamento: detalhesPremioDTO.getMeiosResgate()) {
                 if (meioPagamento.getCanal() == CanalEnum.SISPL) {

@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/futura_std_book"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/label_premio"
                     android:textAlignment="center"
                     android:textColor="@color/cinza"
@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textAlignment="center"
                     android:textColor="@color/branco"
                     android:textSize="21sp"
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="29dp"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:text="@string/excelente"
                     android:textAlignment="center"
                     android:textColor="@color/branco"
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="40dp"
-                    android:fontFamily="@font/futura_std_book"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/para_receber_seu_pr_mio_npor_favor_confirme_seu_email"
                     android:textColor="@color/cinza"
                     android:textSize="14.2dp" />
@@ -108,7 +108,8 @@
                         android:inputType="textEmailAddress"
                         android:textColor="@color/cinza"
                         android:textColorHint="@color/azulFormNovoTipoPagamento"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:fontFamily="@font/caixa_std_regular"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -128,12 +129,11 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="40dp"
-                    android:fontFamily="@font/futura_std_book"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:text="@string/em_breve_seu_pr_mio_estar_dispon_vel_em_sua_conta_no_mercado_pago"
                     android:textAlignment="center"
                     android:textColor="@color/cinza"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/textoPremioConfirmado"
@@ -141,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="19dp"
-                    android:fontFamily="@font/futura_std_book"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textAlignment="center"
                     android:textColor="@color/cinza"
                     android:textSize="14dp"
@@ -177,7 +177,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center"
                     android:textColor="@color/branco"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:text="@string/label_visualizar_comprovante_premio"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -211,7 +211,7 @@
                     android:layout_height="84dp"
                     android:layout_centerHorizontal="true"
                     android:background="@color/verdeazul"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:text="@string/resgatar"
                     android:textAllCaps="false"
                     android:textColor="@color/branco"
@@ -224,7 +224,7 @@
                     android:layout_height="84dp"
                     android:layout_centerHorizontal="true"
                     android:background="@color/verdeazul"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:text="@string/voltar"
                     android:textAllCaps="false"
                     android:textColor="@color/branco"

@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/branco"
                 android:textSize="16sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 tools:text="tipo de resgate" />
         </RelativeLayout>
 
@@ -82,7 +82,7 @@
                         android:text="@string/label_numerico_um"
                         android:textColor="@color/colorAccent"
                         android:textSize="17.5sp"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/caixa_std_bold"/>
 
                     <TextView
                         android:id="@+id/informacaoTopicoUmText"
@@ -97,7 +97,7 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/cinza"
                         android:textSize="16sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         tools:text="texto 01" />
 
                 </RelativeLayout>
@@ -125,7 +125,7 @@
                         android:text="@string/label_numerico_dois"
                         android:textColor="@color/colorAccent"
                         android:textSize="17.5sp"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/caixa_std_bold"/>
 
                     <TextView
                         android:id="@+id/informacaoTopicoDoisText"
@@ -140,7 +140,7 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/cinza"
                         android:textSize="16sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         tools:text="texto 02" />
 
                 </RelativeLayout>
@@ -162,7 +162,7 @@
                         android:text="@string/label_numerico_tres"
                         android:textColor="@color/colorAccent"
                         android:textSize="17.5sp"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/caixa_std_bold"/>
 
                     <TextView
                         android:id="@+id/informacaoTopicoTresText"
@@ -177,7 +177,7 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/cinza"
                         android:textSize="16sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         tools:text="texto 03" />
 
                 </RelativeLayout>
@@ -196,7 +196,7 @@
         android:layout_marginEnd="50dp"
         android:text="@string/label_gerar_pdf"
         android:textAllCaps="false"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         android:textColor="@color/verdeazul"
         android:background="@drawable/button_white_with_green_border"
         app:layout_constraintEnd_toEndOf="parent"
