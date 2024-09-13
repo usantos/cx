@@ -151,6 +151,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private boolean criouFragmentDetalhe = false;
 
     private SessaoUsuario sessaoUsuario;
+    private Uri fileUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -593,26 +594,35 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void comprovanteLayout() {
-        AlertDialogUtils.show(this);
-        apostaBO.baixarComprovanteAposta(aposta.getId(), new RequestListener<BaixarComprovanteResponse>() {
-            @Override
-            public void onResponse(BaixarComprovanteResponse response) {
-                AlertDialogUtils.dismiss();
-                Uri fileUri = PdfUtils.baixarPdf(response.getPayload(), ApostaConfirmadaDetalhesActivity.this);
-                if (fileUri != null){
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(fileUri, "application/pdf");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                    startActivity(Intent.createChooser(intent, "Abrir PDF com"));
+        if(fileUri != null){
+            abrirPdf();
+        } else {
+            AlertDialogUtils.show(this);
+            apostaBO.baixarComprovanteAposta(aposta.getId(), new RequestListener<String>() {
+                @Override
+                public void onResponse(String  response) {
+                    AlertDialogUtils.dismiss();
+                    fileUri = PdfUtils.baixarPdf(response, ApostaConfirmadaDetalhesActivity.this);
+                    abrirPdf();
                 }
-            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                error.getLocalizedMessage();
-            }
-        });
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    AlertDialogUtils.dismiss();
+                    RedirectNetwork.checkRedirect(error,ApostaConfirmadaDetalhesActivity.this);
+                    error.getLocalizedMessage();
+                }
+            });
+        }
+    }
+
+    private void abrirPdf() {
+        if (fileUri != null){
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(fileUri, "application/pdf");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(Intent.createChooser(intent, "Abrir PDF com"));
+        }
     }
 
     @Override

@@ -122,7 +122,7 @@ public class PdfUtils {
 
     private static Uri decodeBase64ToPdf(String base64String, Activity activity) {
         try {
-            byte[] pdfBytes = Base64.decode(base64String, Base64.DEFAULT);//982526360
+            byte[] pdfBytes = Base64.decode(base64String, Base64.DEFAULT);
 
             File file = new File(activity.getExternalFilesDir(null), "documento.pdf");
             try (FileOutputStream fos = new FileOutputStream(file)) {

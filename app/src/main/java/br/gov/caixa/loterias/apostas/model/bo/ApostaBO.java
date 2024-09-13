@@ -1,7 +1,10 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
 import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -23,7 +26,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoRespostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BaixarComprovanteResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BoloesDisponiveisResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
@@ -424,19 +426,24 @@ public class ApostaBO extends BaseBO {
         getSilceConnection().request(request, listener);
     }
 
-    public void baixarComprovanteAposta(Long id, final RequestListener<BaixarComprovanteResponse> listener) {
+    public void baixarComprovanteAposta(Long id, final RequestListener<String> listener) {
+        String baseUrl = getSilceConnection().getBaseUrl();
+        baseUrl = baseUrl.substring(0, baseUrl.length()-1);
 
-        String url = ServerMethods.APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH.replace("{id}", id.toString());
-        final Map<String, String> queryParams = new HashMap<>();
-        final GsonRequest request = getSilceConnection().buildGetRequest(url,
-                queryParams,
-                BaixarComprovanteResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                getHeader());
-
-        request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
+        String endPoint = ServerMethods.APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH.replace("{id}", id.toString());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, baseUrl + endPoint, response -> {
+            listener.onResponse(response);
+        }, error -> {
+            listener.onErrorResponse(error);
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> header = (Map<String, String>) getHeader().clone();
+                header.put("Disable-Crypto", "true");
+                return header;
+            }
+        };
+        Volley.newRequestQueue(getContext()).add(stringRequest);
     }
 
     public void getApostaDetalheComprovante(Long id, final RequestListener<ComprovanteApostaDTOResponse> listener) {
