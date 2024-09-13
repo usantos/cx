@@ -35,7 +35,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_repasses_sociais)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_repasses_sociais)));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         callWebservice();
@@ -133,7 +133,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         Button buttonAposte = findViewById(R.id.ButtonAposteSociais);
         textViewRepasseQuadro1.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro1));
         textViewRepasseQuadro2.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro2));
-        buttonAposte.setText(ViewUtils.textFuturaAndFuturaBold(this, htmlTextButtonAposte));
+        buttonAposte.setText(ViewUtils.textCaixaSTDBold(this, htmlTextButtonAposte));
 
 
         buttonAposte.setOnClickListener(v -> finish());
