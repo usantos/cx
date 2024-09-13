@@ -239,7 +239,7 @@ public class CarrinhoActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_carrinho)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_Carrinho de apostas_"));
         setaDialogFavoritar();
     }
 

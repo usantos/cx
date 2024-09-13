@@ -42,7 +42,7 @@ public class SelecaoModalidadesResultados extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         gridModalidades = findViewById(R.id.ehgv_grid_modalidades);
 
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.label_resultados)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_Resultados_"));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
