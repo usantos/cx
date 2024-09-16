@@ -51,7 +51,7 @@ public class DuvidasActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_toolbar)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_toolbar)));
 
         layoutDuvidas = findViewById(R.id.layoutDuvidas2);
         recyclerViewDuvidas = findViewById(R.id.recyclerViewDuvidas2);

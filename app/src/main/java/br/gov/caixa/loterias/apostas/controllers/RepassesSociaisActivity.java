@@ -35,7 +35,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_repasses_sociais)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_Repasses sociais_"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         callWebservice();
