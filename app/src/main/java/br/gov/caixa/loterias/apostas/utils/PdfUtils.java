@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.utils;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.print.PdfConverter;
 import android.util.Base64;
@@ -11,10 +10,8 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 
 /**
@@ -23,7 +20,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
  */
 
 public class PdfUtils {
-
     public static final String DIRETORIO_COMPROVANTE = "Comprovantes";
     public static final String ARQUIVO_COMPROV_PREMIO = "Premio";
     public static final String ARQUIVO_COMPROV_APOSTA = "Aposta";
@@ -33,28 +29,26 @@ public class PdfUtils {
         try {
             String html = HtmlUtils.getComprovanteCabecalhoRodapeAposta(comprovanteApostaDTO, activity);
 
-            // cria a estrutura de diretório
-            File dir = new File(FileUtils.getDownloadsDir(activity), DIRETORIO_COMPROVANTE);
-            dir.mkdirs();
-
-            String pathArquivo = dir + "/" + ARQUIVO_COMPROV_APOSTA + ".pdf";
-            createAndOpenPDF(activity, html, pathArquivo);
+            createAndOpenPDF(activity, html, getFilePath(activity, DIRETORIO_COMPROVANTE));
         } catch (Exception ex) {
             ex.printStackTrace();
             Toast.makeText(activity, "Ocorreu um erro inesperado, por favor tente novamente.", Toast.LENGTH_LONG).show();
         }
     }
 
+    private static String getFilePath(AppCompatActivity activity, String diretorio) throws Exception {
+        // cria a estrutura de diretório
+        File dir = new File(FileUtils.getDownloadsDir(activity), diretorio);
+        dir.mkdirs();
+
+        return dir + "/" + ARQUIVO_COMPROV_APOSTA + ".pdf";
+    }
+
     public static void createComprovantePremioPdf(DetalhesPremioDTO detalhesPremioDTO, AppCompatActivity activity) {
         try {
             String html = HtmlUtils.getComprovanteCabecalhoRodapePremio(detalhesPremioDTO, activity);
 
-            // cria a estrutura de diretório
-            File dir = new File(FileUtils.getDownloadsDir(activity), DIRETORIO_COMPROVANTE);
-            dir.mkdirs();
-
-            String pathArquivo = dir + "/" + ARQUIVO_COMPROV_PREMIO + ".pdf";
-            createAndOpenPDF(activity, html, pathArquivo);
+            createAndOpenPDF(activity, html, getFilePath(activity, ARQUIVO_COMPROV_PREMIO));
         } catch (Exception ex) {
             ex.printStackTrace();
             Toast.makeText(activity, "Ocorreu um erro inesperado, por favor tente novamente.", Toast.LENGTH_LONG).show();
@@ -65,28 +59,7 @@ public class PdfUtils {
         try {
             String html = HtmlUtils.getComprovanteCabecalhoRodapePremioPago(detalhesPremioDTO, activity);
 
-            // cria a estrutura de diretório
-            File dir = new File(FileUtils.getDownloadsDir(activity), DIRETORIO_COMPROVANTE);
-            dir.mkdirs();
-
-            String pathArquivo = dir + "/" + ARQUIVO_COMPROV_PREMIO + ".pdf";
-            createAndOpenPDF(activity, html, pathArquivo);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Toast.makeText(activity, "Ocorreu um erro inesperado, por favor tente novamente.", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public static void createComprovanteHistoricoPremioPdf(DetalhesHistoricoPremioDTO detalhesHistoricoPremioDTO, AppCompatActivity activity) {
-        try {
-            String html = HtmlUtils.getComprovanteCabecalhoRodapePremioHistorico(detalhesHistoricoPremioDTO, activity);
-
-            // cria a estrutura de diretório
-            File dir = new File(FileUtils.getDownloadsDir(activity), DIRETORIO_COMPROVANTE);
-            dir.mkdirs();
-
-            String pathArquivo = dir + "/" + ARQUIVO_COMPROV_PREMIO + ".pdf";
-            createAndOpenPDF(activity, html, pathArquivo);
+            createAndOpenPDF(activity, html, getFilePath(activity, ARQUIVO_COMPROV_PREMIO));
         } catch (Exception ex) {
             ex.printStackTrace();
             Toast.makeText(activity, "Ocorreu um erro inesperado, por favor tente novamente.", Toast.LENGTH_LONG).show();
@@ -116,25 +89,22 @@ public class PdfUtils {
         }
     }
 
-    public static Uri baixarPdf(String stringBase64, Activity activity) {
-        return decodeBase64ToPdf(stringBase64, activity);
-    }
-
-    private static Uri decodeBase64ToPdf(String base64String, Activity activity) {
+    public static Uri baixarPdf(String stringBase64, AppCompatActivity activity) {
+        Uri fileUri = null;
         try {
-            byte[] pdfBytes = Base64.decode(base64String, Base64.DEFAULT);
+            File file = new File(getFilePath(activity, DIRETORIO_COMPROVANTE));
 
-            File file = new File(activity.getExternalFilesDir(null), "documento.pdf");
+            byte[] pdfBytes = Base64.decode(stringBase64, Base64.DEFAULT);
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 fos.write(pdfBytes);
                 fos.flush();
             }
 
-            Uri photoURI = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".fileprovider", file);
-            return photoURI;
-        } catch (IOException e) {
-            e.printStackTrace();
+            fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".fileprovider" , file);
+        } catch (Exception ex) {
+            Toast.makeText(activity, "Ocorreu um erro inesperado, por favor tente novamente.", Toast.LENGTH_LONG).show();
         }
-        return null;
+
+        return fileUri;
     }
 }

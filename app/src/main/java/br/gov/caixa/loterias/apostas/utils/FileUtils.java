@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Environment;
 
@@ -68,6 +69,7 @@ public class FileUtils {
      * @param context The context.
      * @param uri     The Uri to query.
      */
+    @SuppressLint("Range")
     public static File getFileFromUri(final Context context, final Uri uri) throws Exception {
 
         String path = null;
@@ -224,6 +226,7 @@ public class FileUtils {
     }
 
 
+    @SuppressLint("Range")
     public static String getFileName(Context context, Uri uri) {
         String result = null;
         if (uri.getScheme().equals("content")) {

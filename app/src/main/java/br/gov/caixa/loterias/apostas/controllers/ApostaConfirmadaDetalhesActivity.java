@@ -618,10 +618,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void abrirPdf() {
         if (fileUri != null){
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(fileUri, "application/pdf");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            startActivity(Intent.createChooser(intent, "Abrir PDF com"));
+            Intent myIntent = new Intent(Intent.ACTION_VIEW)
+                    .setDataAndType(fileUri, "application/pdf")
+                    .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            startActivity(myIntent);
         }
     }
 
