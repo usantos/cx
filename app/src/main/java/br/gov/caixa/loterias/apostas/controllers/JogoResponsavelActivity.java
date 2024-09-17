@@ -45,7 +45,7 @@ public class JogoResponsavelActivity extends AppCompatActivity {
         ivDuvidas = findViewById(R.id.iv_duvidas);
         bottomSheetFragment = new BottomSheetFragment();
 
-        tvRegras.setText(ViewUtils.textColor(this,getResources().getString(R.string.jr_aprender_regras),R.color.jr_amarelo));
+        tvRegras.setText(ViewUtils.textColorCaixa(this, getResources().getString(R.string.jr_aprender_regras), R.color.jr_amarelo));
 
         setaToolbar();
     }
@@ -88,7 +88,6 @@ public class JogoResponsavelActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.background_gradient_jogo_responsavel));
         //setTitle(getResources().getString(R.string.jr_titulo));
         setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getResources().getString(R.string.jr_titulo)));
-
     }
 
     private void setaFragmentConheca(){

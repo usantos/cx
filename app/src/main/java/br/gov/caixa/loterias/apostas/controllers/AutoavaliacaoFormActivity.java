@@ -275,9 +275,9 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
                 tvAutoPergunta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 if (verificaRespostasTudoNao()) {
                     btnProximo.setVisibility(View.GONE);
-                    tvAutoPergunta.setText(ViewUtils.textFuturaAndFuturaBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_parabens)));
+                    tvAutoPergunta.setText(ViewUtils.textCaixaSTDBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_parabens)));
                 } else {
-                    tvAutoPergunta.setText(ViewUtils.textFuturaAndFuturaBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_atencao)));
+                    tvAutoPergunta.setText(ViewUtils.textCaixaSTDBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_atencao)));
                     alteraBtnToAjuda();
                 }
                 alteraBtnToFechar();

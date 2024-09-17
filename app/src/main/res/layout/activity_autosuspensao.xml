@@ -49,6 +49,22 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/tvAtencaoAuto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-35dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:text="@string/label_atencao"
+                android:textSize="18sp"
+                android:textColor="@color/blue_caixa"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imagemAtencao"
+                />
+
+            <TextView
                 android:id="@+id/tvSuspensao1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

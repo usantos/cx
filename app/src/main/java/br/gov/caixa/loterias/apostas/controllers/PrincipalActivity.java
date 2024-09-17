@@ -295,9 +295,10 @@ public class PrincipalActivity extends AppCompatActivity
         if(!" ".equals(nomeUsuario)) {
             String texto = getResources().getString(R.string.ola_usuario);
             texto = texto.replace(getResources().getString(R.string.percent), nomeUsuario);
-            nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
+            //nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
+            nav_user.setText(ViewUtils.textCaixaSTDBold(this, texto));
         }else {
-            nav_user.setText(getResources().getString(R.string.bem_vindo_ao_app));
+            nav_user.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.bem_vindo_ao_app)));
         }
 
         callWebservice();
@@ -539,7 +540,8 @@ public class PrincipalActivity extends AppCompatActivity
     private void layoutTrevoAcessoRapido() {
         valorRepassesPrincipal.setText(getResources().getString(R.string.zero));
 
-        tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
+        //tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
+        tituloLerBilhetes.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.label_ler_bilhestes_bold)));
         Date data = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
@@ -552,7 +554,8 @@ public class PrincipalActivity extends AppCompatActivity
         calendar.setTime(date);
         ano = calendar.get(Calendar.YEAR);
 
-        textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this,
+        //textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this,
+        textoRepassados.setText(ViewUtils.textCaixaSTDBold(this,
                 String.format(getString(R.string.label_repassados_boas_causas_bold).replace("{ano_repassometro}", String.valueOf(ano)))));
         AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, repassesSociais);
     }
@@ -694,14 +697,16 @@ public class PrincipalActivity extends AppCompatActivity
             EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
             buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
             buttonHomeBet.setTag(adapterPosition);
-            buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
+            //buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
+            buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
                     getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
 
             if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
                 temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
 
-                buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
+                //buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
+                buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this,
                                                                           getResources()
                                                                                   .getString(R.string.apostas_boloes)));
                 buttonHomeBolao.setVisibility(View.VISIBLE);

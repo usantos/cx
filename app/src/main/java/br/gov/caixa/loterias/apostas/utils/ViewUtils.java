@@ -496,12 +496,26 @@ public class ViewUtils {
     }
 
     public static SpannableStringBuilder textColor(Context context, String texto, int idCor) {
-
         return textColor(context,texto,idCor,true);
     }
 
     public static SpannableStringBuilder textColor(Context context, String texto, int idCor, Boolean colorBold) {
         Typeface font = ViewUtils.getFontFuturaBold(context);
+
+        PositionStringBold positionStringBold = positionString(texto);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+        spannableStringBuilder.setSpan(new ForegroundColorSpan(context.getResources().getColor(idCor)) , positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        if(colorBold){
+            spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        }
+        return spannableStringBuilder;
+    }
+
+    public static SpannableStringBuilder textColorCaixa(Context context, String texto, int idCor) {
+        return textColorCaixa(context,texto,idCor,true);
+    }
+    public static SpannableStringBuilder textColorCaixa(Context context, String texto, int idCor, Boolean colorBold) {
+        Typeface font = ViewUtils.getFontCaixaStdBold(context);
 
         PositionStringBold positionStringBold = positionString(texto);
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));

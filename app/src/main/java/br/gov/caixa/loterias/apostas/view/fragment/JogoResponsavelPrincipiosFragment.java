@@ -45,7 +45,8 @@ public class JogoResponsavelPrincipiosFragment extends Fragment {
 
     private void setaViews(View view){
         tvCert = view.findViewById(R.id.tv_cert);
-        tvCert.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),getResources().getString(R.string.jr_principios_cert)));
+        //tvCert.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),getResources().getString(R.string.jr_principios_cert)));
+        tvCert.setText(ViewUtils.textCaixaSTDBold(getActivity(), getResources().getString(R.string.jr_principios_cert)));
         setaFragmentCards();
     }
 
