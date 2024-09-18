@@ -11,7 +11,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.BottomSheetFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.JogoResponsavelApostadorFragment;
@@ -51,26 +53,28 @@ public class JogoResponsavelActivity extends AppCompatActivity {
     }
 
     public void setaMetodos(){
+        Typeface fontCaixaBold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+        Typeface fontCaixaRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
 
         rbConheca.setOnClickListener(view -> {
-            rbPrincipios.setTypeface(null, Typeface.NORMAL);
-            rbConheca.setTypeface(null, Typeface.BOLD);
-            rbApostador.setTypeface(null, Typeface.NORMAL);
+            rbPrincipios.setTypeface(fontCaixaRegular);
+            rbConheca.setTypeface(fontCaixaBold);
+            rbApostador.setTypeface(fontCaixaRegular);
             setaFragmentConheca();
         });
 
         rbPrincipios.setOnClickListener(view -> {
-            rbPrincipios.setTypeface(null, Typeface.BOLD);
-            rbConheca.setTypeface(null, Typeface.NORMAL);
-            rbApostador.setTypeface(null, Typeface.NORMAL);
+            rbPrincipios.setTypeface(fontCaixaBold);
+            rbConheca.setTypeface(fontCaixaRegular);
+            rbApostador.setTypeface(fontCaixaRegular);
             setaFragmentPrincipios();
 
         });
 
         rbApostador.setOnClickListener(view -> {
-            rbPrincipios.setTypeface(null, Typeface.NORMAL);
-            rbConheca.setTypeface(null, Typeface.NORMAL);
-            rbApostador.setTypeface(null, Typeface.BOLD);
+            rbPrincipios.setTypeface(fontCaixaRegular);
+            rbConheca.setTypeface(fontCaixaRegular);
+            rbApostador.setTypeface(fontCaixaBold);
             setaFragmentApostador();
         });
 
