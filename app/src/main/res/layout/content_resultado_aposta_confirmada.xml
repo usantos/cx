@@ -31,7 +31,7 @@
                 android:text="@string/label_veja_retirar_premio"
                 android:textColor="@color/verdeazul"
                 android:textSize="14.2sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold" />
 
             <LinearLayout
                 android:layout_width="250dp"
@@ -77,7 +77,7 @@
 
                             android:text="@string/label_pix"
                             android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
-                            android:textStyle="bold"
+                            android:fontFamily="@font/caixa_std_bold"
                             android:textColor="@color/branco"
                             android:textSize="14sp"
                             app:layout_constraintTop_toTopOf="parent"
@@ -105,7 +105,7 @@
                         android:textAlignment="center"
                         android:gravity="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:textColor="@color/branco"
                         android:textSize="14sp" />
                 </RelativeLayout>
@@ -126,7 +126,7 @@
                         android:textAlignment="center"
                         android:gravity="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:textColor="@color/branco"
                         android:textSize="14sp" />
                 </RelativeLayout>
@@ -148,7 +148,7 @@
                         android:textAlignment="center"
                         android:gravity="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:textColor="@color/branco"
                         android:textSize="14sp" />
                 </RelativeLayout>
@@ -179,6 +179,7 @@
                         android:layout_height="wrap_content"
                         android:text="Resgate permitido somente na agência devido à incidência de IR sobre o valor total do prêmio."
                         android:textColor="@color/bolao_barra_titulo"
+                        android:fontFamily="@font/caixa_std_regular"
                         android:layout_marginStart="16dp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
