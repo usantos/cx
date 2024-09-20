@@ -146,11 +146,11 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     }
 
     private void setaMetodos() {
-        editTextMunicipioContent.setClickable(true);
-        editTextMunicipioContent.setOnClickListener(v -> modalMunicipios());
+        editTextMunicipioContent.setClickable(false);
+        //editTextMunicipioContent.setOnClickListener(v -> modalMunicipios());
 
-        editTextUFContent.setClickable(true);
-        editTextUFContent.setOnClickListener(v -> getUFS());
+        editTextUFContent.setClickable(false);
+        //editTextUFContent.setOnClickListener(v -> getUFS());
 
         updateDadosPesoaisButton.setOnClickListener(view -> {
             if (validarCamposObrigatorios()){

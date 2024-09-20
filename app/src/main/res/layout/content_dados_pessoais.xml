@@ -108,7 +108,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextCEP"
-                android:layout_width="match_parent"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/segmentedButtonSexo"
                 android:layout_marginLeft="16dp"
@@ -125,6 +125,15 @@
                     app:notMaskedSymbol="*" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Button
+                android:id="@+id/naoSeiCep"
+                android:layout_width="170dp"
+                android:layout_height="56dp"
+                android:layout_marginLeft="0dp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:text="@string/nao_sei_cep"
+                android:textAllCaps="false"
+                android:textSize="14sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextUF"
@@ -137,7 +146,6 @@
 
                 <EditText
                     android:id="@+id/editTextUFContent"
-                    android:drawableRight="@drawable/combo"
                     style="@style/editTextRegisterThemeCaixa"
                     android:ems="10"
                     android:focusableInTouchMode="false"
@@ -157,7 +165,6 @@
 
                 <EditText
                     android:id="@+id/editTextMunicipioContent"
-                    android:drawableRight="@drawable/combo"
                     style="@style/editTextRegisterThemeCaixa"
                     android:ems="10"
                     android:focusableInTouchMode="false"
