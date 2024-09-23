@@ -25,7 +25,6 @@
 
         <TextView
             android:id="@+id/textInfoValorAposta"
-            style="@style/ArialMT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/valorDessaAposta"
@@ -35,6 +34,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintTop_toBottomOf="@id/gl_divisao"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -43,7 +43,7 @@
             android:id="@+id/valorApostaCartela"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             tools:text="R$ 4,50"
             android:padding="2dp"
             android:layout_marginBottom="4dp"
@@ -104,9 +104,8 @@
             android:paddingStart="1dp"
             android:text="0"
             android:textSize="7sp"
-            android:textStyle="bold"
             android:padding="1dp"
-            android:fontFamily="@font/font_family_futura"
+            android:fontFamily="@font/caixa_std_bold"
             android:lineHeight="10dp"
             android:visibility="invisible"
             app:layout_constraintTop_toTopOf="@id/circuloQuantidade"
@@ -117,7 +116,6 @@
 
         <TextView
             android:id="@+id/textInfoCarrinho"
-            style="@style/ArialMT"
             android:translationZ="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -128,6 +126,7 @@
             android:textAlignment="center"
             android:textColor="@color/azulescuro"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gl_divisa"
@@ -142,7 +141,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="R$ 00,00"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         android:textColor="#3964A4"
         android:layout_marginBottom="8dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,6 +153,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/valor_atual_do_carrinho"
+        android:fontFamily="@font/caixa_std_regular"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

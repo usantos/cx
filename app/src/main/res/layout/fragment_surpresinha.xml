@@ -14,13 +14,13 @@
 
         <TextView
             android:id="@+id/surpresinhaInfo"
-            style="@style/editTextArialMTTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/surpresinhaInfo"
             android:textAlignment="center"
             android:textColor="@color/cinza"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -39,7 +39,7 @@
             android:textAlignment="center"
             android:textColor="@color/verdeagua"
             android:textSize="18sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -67,20 +67,20 @@
                 android:textAlignment="center"
                 android:textColor="@color/mais_milionaria_escura"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/numerosInfo"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/escolha_a_quantidade_de_n_meros"
                 android:textAlignment="center"
                 android:textColor="@color/mais_milionaria_escura"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -96,7 +96,7 @@
                 android:text="@string/_6"
                 android:textAlignment="center"
                 android:textColor="@color/mais_milionaria_escura"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/numerosInfo" />
@@ -114,6 +114,7 @@
                 android:text="@string/menos"
                 android:textColor="@color/branco"
                 android:textSize="24sp"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintRight_toLeftOf="@+id/qtdNumerosSelecionadasNovo"
                 app:layout_constraintTop_toBottomOf="@+id/numerosInfo" />
 
@@ -128,6 +129,7 @@
                 android:text="@string/mais"
                 android:textColor="@color/branco"
                 android:textSize="24sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintLeft_toRightOf="@+id/qtdNumerosSelecionadasNovo"
                 app:layout_constraintTop_toBottomOf="@+id/numerosInfo" />
 
@@ -179,14 +181,14 @@
 
                 <TextView
                     android:id="@+id/infoItemSurpresaTextView"
-                    style="@style/FuturaStdBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="13dp"
                     android:text="@string/time_surpresa"
                     android:textColor="@color/megasenamedio"
-                    android:textSize="14.1sp" />
+                    android:textSize="14.1sp"
+                    android:fontFamily="@font/caixa_std_bold"/>
 
             </LinearLayout>
 
@@ -200,7 +202,8 @@
                 android:background="@drawable/button_white_with_border"
                 android:text="@string/escolha_outro_time"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
-                android:textColor="@color/cinza" />
+                android:textColor="@color/cinza"
+                android:fontFamily="@font/caixa_std_regular"/>
 
             <View
                 android:id="@+id/divisaoLinhaDois"
@@ -238,19 +241,20 @@
                 android:textColor="@color/mais_milionaria_escura"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/trevosInfo"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/trevosInfo"
                 android:textAlignment="center"
                 android:textColor="@color/mais_milionaria_escura"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -266,7 +270,7 @@
                 android:text="@string/_2"
                 android:textAlignment="center"
                 android:textColor="@color/mais_milionaria_escura"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/trevosInfo" />
@@ -284,6 +288,7 @@
                 android:text="@string/menos"
                 android:textColor="@color/branco"
                 android:textSize="24sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintRight_toLeftOf="@+id/qtdSurpresinhasSelecionadasTrevos"
                 app:layout_constraintTop_toBottomOf="@+id/trevosInfo" />
 
@@ -298,6 +303,7 @@
                 android:text="@string/mais"
                 android:textColor="@color/branco"
                 android:textSize="24sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintLeft_toRightOf="@+id/qtdSurpresinhasSelecionadasTrevos"
                 app:layout_constraintTop_toBottomOf="@+id/trevosInfo" />
 
@@ -331,7 +337,6 @@
 
         <TextView
             android:id="@+id/surpresinhaQtdInfo"
-            style="@style/editTextArialMTTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="45dp"
@@ -342,6 +347,7 @@
             android:text="@string/surpresinhaQtdInfo"
             android:textAlignment="center"
             android:textColor="@color/cinza"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -355,7 +361,7 @@
             android:gravity="center"
             android:text="@string/_1"
             android:textAlignment="center"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
@@ -373,6 +379,7 @@
             android:text="@string/menos"
             android:textColor="@color/branco"
             android:textSize="24sp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintRight_toLeftOf="@+id/qtdSurpresinhasSelecionadas"
             app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
 
@@ -388,6 +395,7 @@
             android:text="@string/mais"
             android:textColor="@color/branco"
             android:textSize="24sp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintLeft_toRightOf="@+id/qtdSurpresinhasSelecionadas"
             app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
 
@@ -424,7 +432,7 @@
                 android:text="@string/label_aposta_espelho"
                 android:textColor="@color/branco"
                 android:textSize="14.2sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

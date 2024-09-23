@@ -870,10 +870,12 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, titleActivity));
+        //setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, titleActivity));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, titleActivity));
 
         if (BuildVersionUtil.isAutomacao() && tipoJogo == ModalidadeEnum.DUPLA_SENA){
-            setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "dupla-sena"));
+            //setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "dupla-sena"));
+            setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "dupla-sena"));
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
