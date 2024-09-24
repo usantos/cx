@@ -316,10 +316,17 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				.setMinScale(0.8f)
 				.build());
 
-
-		bolaoList = model.getBolaoList(cotas);
-		listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
-		listView.setAdapter(listAdapter);
+		if (listAdapter == null){
+			bolaoList = model.getBolaoList(cotas);
+			listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
+			listView.setAdapter(listAdapter);
+		} else {
+			int inicioRange = bolaoList.size();
+			bolaoList = model.getBolaoList(cotas);
+			if (inicioRange < bolaoList.size()){
+				listAdapter.atualizaLista(inicioRange, bolaoList.subList(inicioRange, bolaoList.size()));
+			}
+		}
 
 		acumulouBoloesParaApresentar = false;
 	}
@@ -373,6 +380,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				cotasFiltradas = null;
 
 				buscaBoloesFiltro();
+				listAdapter = null;
 				txtFimLista.setVisibility(View.GONE);
 				scrollView.scrollTo(0,0);
 			}
