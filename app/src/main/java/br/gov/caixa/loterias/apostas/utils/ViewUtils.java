@@ -481,13 +481,20 @@ public class ViewUtils {
 
     public static SpannableStringBuilder textCaixaSTDBold(Context context, String texto) {
         try{
-            Typeface font = FonteUtils.getFonte(FontCaixaEnum.BOLD);
-            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+            Typeface fontRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface fontBold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
 
-            //PositionStringBold positionStringBold = positionString(texto);
-            List<PositionStringBold> listpositionStringBold = listPositionString(texto);
-            for (PositionStringBold positionStringBold : listpositionStringBold) {
-                spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            boolean isBold = false;
+            String[] parts = texto.split("_");
+            for (String part: parts) {
+                int start = spannableStringBuilder.length();
+                spannableStringBuilder.append(part);
+                Typeface fontToApply = isBold ? fontBold : fontRegular;
+                spannableStringBuilder.setSpan(new CustomTypefaceSpan("", fontToApply),
+                        start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+                isBold = !isBold;
             }
             return spannableStringBuilder;
         }catch (Exception e){
