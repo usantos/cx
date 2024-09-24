@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +49,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 public class DadosPessoaisActivity extends AppCompatActivity {
@@ -56,16 +59,16 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     TextView editValMaximoCompraContent, editValMinCompraContent, seekBarValor;
     MaskedEditText editTextCpfContent, editTextCepContent;
     SegmentedButtonGroup segmentedButtonSexo;
-    Button updateDadosPesoaisButton;
+    Button updateDadosPesoaisButton, naoSeiCepButton;
     Button updateDadosPessoaisLimiteButton;
 
+    private boolean ufMunicipio = true;
     private List<String> listUFString, listMunicipios, listBairros;
     private List<MunicipioDTO> municipioDTOList;
     protected List<UnidadeFederacaoDTO> listUf;
     protected String ufSelect;
     protected String municipioSelect;
     protected MunicipioIdDTO municipioIdDTOSelect;
-
     SeekBar seekbarLimite;
     ApostadorDTO apostadorDTO;
 
@@ -100,6 +103,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         editTextEmailContent = findViewById( R.id.editTextEmailContent );
         segmentedButtonSexo = findViewById( R.id.segmentedButtonSexo );
         updateDadosPesoaisButton = findViewById( R.id.updateDadosPesoaisButton );
+        naoSeiCepButton = findViewById(R.id.naoSeiCep);
         updateDadosPessoaisLimiteButton = findViewById( R.id.updateDadosPessoaisLimiteButton );
 
         Toolbar toolbar = findViewById( R.id.toolbar );
@@ -174,6 +178,10 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             }
         }
         );
+
+        naoSeiCepButton.setOnClickListener(view ->{
+            modalNaoSeiCep();
+        });
 
         updateDadosPessoaisLimiteButton.setOnClickListener(view -> {
 
@@ -296,6 +304,42 @@ public class DadosPessoaisActivity extends AppCompatActivity {
             modalUfs();
         }
     }
+
+
+    private void modalNaoSeiCep() {
+        // custom dialog
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.custom_dialog_padrao);
+
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
+        tituloDialog.setText(getResources().getString(R.string.nao_sei_cep));
+        TextView descricaoView= dialog.findViewById(R.id.descricaoDialog);
+
+        descricaoView.setText(R.string.voce_sera_redirecionado_para_o_site_dos_correios);
+
+        Button dialogButtonConfirmar = dialog.findViewById(R.id.rightButton);
+        dialogButtonConfirmar.setBackground(getDrawable(R.drawable.button_rounded_verdeazul));
+        dialogButtonConfirmar.setTextColor(getResources().getColor(R.color.branco));
+        dialogButtonConfirmar.setText(R.string.confirmar);
+
+        Button dialogButtonCancelar = dialog.findViewById(R.id.leftButton);
+        dialogButtonCancelar.setBackground(getDrawable(R.drawable.background_border_verde));
+        dialogButtonCancelar.setTextColor(getResources().getColor(R.color.verdeazul));
+        dialogButtonCancelar.setText(R.string.cancelar);
+
+
+        dialogButtonConfirmar.setOnClickListener(v -> {
+            Utils.abreUrl(this, R.string.Url_Correios);
+            dialog.dismiss();
+        });
+
+        dialogButtonCancelar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
+
 
     private void modalUfs() {
         // custom dialog
@@ -470,6 +514,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                             buscarBairroPorCep( cep );
                         } else {
                             editText.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0 );
+                            habilitaBotao(true);
                         }
 
                 }
@@ -494,6 +539,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
+
             }
 
             @Override
@@ -503,8 +549,25 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                         R.string.label_atencao,
                         MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this),
                         getApplicationContext().getResources().getString( R.string.ok ));
+                editTextUFContent.setText("");
+                editTextMunicipioContent.setText("");
+                editTextCepContent.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0 );
+                habilitaBotao(false);
+
+
             }
         });
+    }
+
+    private void habilitaBotao(boolean isHabilita){
+        if(isHabilita){
+            updateDadosPesoaisButton.setEnabled(true);
+            updateDadosPesoaisButton.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+
+        }else{
+            updateDadosPesoaisButton.setEnabled(false);
+            updateDadosPesoaisButton.setBackgroundColor(getResources().getColor(R.color.cinza_desativado));
+        }
     }
 
     private void updateDadosCadastrais(ApostadorAlteracaoDTO apostadorAlteracaoDTO){
@@ -547,8 +610,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         if (StringUtils.isEmpty(campos)) {
             return true;
         } else {
-
-            ViewUtils.alertTitulo(DadosPessoaisActivity.this, R.string.label_atencao, this.getResources().getString( R.string.MA002 ) + getResources().getString(R.string.espaco_em_branco) + campos);
+            ViewUtils.alertTitulo(DadosPessoaisActivity.this, R.string.label_atencao,
+                    this.getResources().getString( R.string.MA002 ) + getResources().getString(R.string.espaco_em_branco) + campos);
             return false;
         }
     }
@@ -575,6 +638,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                         for (MunicipioDTO item : municipioDTOList){
                             if (item.getId().getNumero().equals(apostadorDTO.getMunicipioId().getNumero())){
                                 editTextMunicipioContent.setText( item.getNome() );
+                                ufMunicipio = true;
                             }
                             listMunicipios.add(item.getNome());
                         }
@@ -601,4 +665,5 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         });
 
     }
+
 }

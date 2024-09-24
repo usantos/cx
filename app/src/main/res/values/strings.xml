@@ -1387,5 +1387,7 @@
     <string name="label_loterica_filtro">Lotérica</string>
     <string name="nome_loteria">Nome da Lotérica:</string>
     <string name="nao_sei_cep">Não sei o meu CEP</string>
+    <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
+    <string name="voce_sera_redirecionado_para_o_site_dos_correios">Você será redirecionado para o site dos Correios</string>
 
 </resources>
