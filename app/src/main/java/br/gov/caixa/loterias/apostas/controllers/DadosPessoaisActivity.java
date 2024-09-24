@@ -62,7 +62,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     Button updateDadosPesoaisButton, naoSeiCepButton;
     Button updateDadosPessoaisLimiteButton;
 
-    private boolean ufMunicipio = true;
     private List<String> listUFString, listMunicipios, listBairros;
     private List<MunicipioDTO> municipioDTOList;
     protected List<UnidadeFederacaoDTO> listUf;
@@ -638,7 +637,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                         for (MunicipioDTO item : municipioDTOList){
                             if (item.getId().getNumero().equals(apostadorDTO.getMunicipioId().getNumero())){
                                 editTextMunicipioContent.setText( item.getNome() );
-                                ufMunicipio = true;
                             }
                             listMunicipios.add(item.getNome());
                         }
