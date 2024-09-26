@@ -56,7 +56,8 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autoavaliacao_apostador))));
+        //setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autoavaliacao_apostador))));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autoavaliacao_apostador))));
 
         configurar();
         buscaPerguntas();
@@ -274,9 +275,9 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
                 tvAutoPergunta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 if (verificaRespostasTudoNao()) {
                     btnProximo.setVisibility(View.GONE);
-                    tvAutoPergunta.setText(ViewUtils.textFuturaAndFuturaBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_parabens)));
+                    tvAutoPergunta.setText(ViewUtils.textCaixaSTDBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_parabens)));
                 } else {
-                    tvAutoPergunta.setText(ViewUtils.textFuturaAndFuturaBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_atencao)));
+                    tvAutoPergunta.setText(ViewUtils.textCaixaSTDBold(AutoavaliacaoFormActivity.this, getString(R.string.autoavaliacao_atencao)));
                     alteraBtnToAjuda();
                 }
                 alteraBtnToFechar();

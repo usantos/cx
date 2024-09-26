@@ -53,7 +53,8 @@ public class JogoResponsavelConhecaFragment extends Fragment {
     private void setaViews(View view){
         btnSaibaMais = view.findViewById(R.id.btn_saiba_mais);
         tvAlemDisso = view.findViewById(R.id.tv_alem_disso);
-        tvAlemDisso.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),getResources().getString(R.string.jr_conheca_alem_disso)));
+        //tvAlemDisso.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),getResources().getString(R.string.jr_conheca_alem_disso)));
+        tvAlemDisso.setText(ViewUtils.textCaixaSTDBold(getActivity(),getResources().getString(R.string.jr_conheca_alem_disso)));
         setaFragmentCards();
     }
 

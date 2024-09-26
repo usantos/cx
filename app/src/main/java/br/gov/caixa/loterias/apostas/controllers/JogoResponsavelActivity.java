@@ -11,7 +11,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.BottomSheetFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.JogoResponsavelApostadorFragment;
@@ -45,32 +47,34 @@ public class JogoResponsavelActivity extends AppCompatActivity {
         ivDuvidas = findViewById(R.id.iv_duvidas);
         bottomSheetFragment = new BottomSheetFragment();
 
-        tvRegras.setText(ViewUtils.textColor(this,getResources().getString(R.string.jr_aprender_regras),R.color.jr_amarelo));
+        tvRegras.setText(ViewUtils.textColorCaixa(this, getResources().getString(R.string.jr_aprender_regras), R.color.jr_amarelo));
 
         setaToolbar();
     }
 
     public void setaMetodos(){
+        Typeface fontCaixaBold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+        Typeface fontCaixaRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
 
         rbConheca.setOnClickListener(view -> {
-            rbPrincipios.setTypeface(null, Typeface.NORMAL);
-            rbConheca.setTypeface(null, Typeface.BOLD);
-            rbApostador.setTypeface(null, Typeface.NORMAL);
+            rbPrincipios.setTypeface(fontCaixaRegular);
+            rbConheca.setTypeface(fontCaixaBold);
+            rbApostador.setTypeface(fontCaixaRegular);
             setaFragmentConheca();
         });
 
         rbPrincipios.setOnClickListener(view -> {
-            rbPrincipios.setTypeface(null, Typeface.BOLD);
-            rbConheca.setTypeface(null, Typeface.NORMAL);
-            rbApostador.setTypeface(null, Typeface.NORMAL);
+            rbPrincipios.setTypeface(fontCaixaBold);
+            rbConheca.setTypeface(fontCaixaRegular);
+            rbApostador.setTypeface(fontCaixaRegular);
             setaFragmentPrincipios();
 
         });
 
         rbApostador.setOnClickListener(view -> {
-            rbPrincipios.setTypeface(null, Typeface.NORMAL);
-            rbConheca.setTypeface(null, Typeface.NORMAL);
-            rbApostador.setTypeface(null, Typeface.BOLD);
+            rbPrincipios.setTypeface(fontCaixaRegular);
+            rbConheca.setTypeface(fontCaixaRegular);
+            rbApostador.setTypeface(fontCaixaBold);
             setaFragmentApostador();
         });
 
@@ -86,7 +90,7 @@ public class JogoResponsavelActivity extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.background_gradient_jogo_responsavel));
-        setTitle(getResources().getString(R.string.jr_titulo));
+        setTitle(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.jr_titulo)));
     }
 
     private void setaFragmentConheca(){

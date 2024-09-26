@@ -59,9 +59,12 @@ public class BottomSheetFragment  extends BottomSheetDialogFragment {
         tvJaSite = view.findViewById(R.id.tv_ja_site);
 
         src = getActivity().getResources();
-        tvCaixa.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),src.getString(R.string.jr_bs_caixa_tel)));
-        tvProamjo.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),src.getString(R.string.jr_bs_proamjo)));
-        tvProad.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),src.getString(R.string.jr_bs_proad)));
+        //tvCaixa.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),src.getString(R.string.jr_bs_caixa_tel)));
+        //tvProamjo.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),src.getString(R.string.jr_bs_proamjo)));
+        //tvProad.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),src.getString(R.string.jr_bs_proad)));
+        tvCaixa.setText(ViewUtils.textCaixaSTDBold(getActivity(),src.getString(R.string.jr_bs_caixa_tel)));
+        tvProamjo.setText(ViewUtils.textCaixaSTDBold(getActivity(),src.getString(R.string.jr_bs_proamjo)));
+        tvProad.setText(ViewUtils.textCaixaSTDBold(getActivity(),src.getString(R.string.jr_bs_proad)));
 
 
     }

@@ -27,7 +27,7 @@
         android:text="@string/jr_bs_titulo"
         android:textColor="@color/jr_azul_text_title"
         android:textSize="16sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/indicator_top" />
@@ -41,6 +41,7 @@
         android:text="@string/jr_bs_desc"
         android:textColor="@color/cinza_total"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_titulo" />
@@ -70,7 +71,7 @@
                 android:text="@string/jr_bs_caixa_titulo"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -82,6 +83,7 @@
                 android:text="@string/jr_bs_caixa_tel"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_caixa_tile" />
 
@@ -94,6 +96,7 @@
                 android:text="@string/jr_bs_caixa_tel_1"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_caixa" />
 
@@ -106,6 +109,7 @@
                 android:text="@string/jr_bs_caixa_tel_2"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_caixa_1" />
 
@@ -117,6 +121,7 @@
                 android:text="@string/jr_bs_op_6"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_caixa_2" />
 
@@ -128,6 +133,7 @@
                 android:text="@string/jr_bs_op_2"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_6" />
 
@@ -140,7 +146,7 @@
                 android:text="@string/jr_caps_titulo"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_caixa_op_2" />
 
@@ -152,6 +158,7 @@
                 android:text="@string/jr_caps_site"
                 android:textColor="@color/jr_email"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_caps" />
 
@@ -164,6 +171,7 @@
                 android:text="@string/jr_bs_proamjo"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_caps_site" />
 
@@ -175,6 +183,7 @@
                 android:text="@string/jr_bs_proamjo_end"
                 android:textColor="@color/jr_cinza_text_claro"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proamjo" />
 
@@ -187,6 +196,7 @@
                 android:text="@string/jr_bs_proamjo_tels"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proamjo_end" />
 
@@ -199,6 +209,7 @@
                 android:text="@string/jr_bs_proamjo_email"
                 android:textColor="@color/jr_email"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proamjo_tels" />
 
@@ -211,7 +222,7 @@
                 android:text="@string/jr_bs_avb"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proamjo_email" />
 
@@ -223,6 +234,7 @@
                 android:text="@string/jr_bs_avb_end"
                 android:textColor="@color/jr_cinza_text_claro"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_avb" />
 
@@ -235,6 +247,7 @@
                 android:text="@string/jr_bs_avb_tel"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_avb_end" />
 
@@ -247,6 +260,7 @@
                 android:text="@string/jr_bs_avb_email"
                 android:textColor="@color/jr_email"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_avb_tels" />
 
@@ -259,6 +273,7 @@
                 android:text="@string/jr_bs_proad"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_avb_email" />
 
@@ -270,6 +285,7 @@
                 android:text="@string/jr_bs_proad_end"
                 android:textColor="@color/jr_cinza_text_claro"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proad" />
 
@@ -282,6 +298,7 @@
                 android:text="@string/jr_bs_proad_tels"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proad_end" />
 
@@ -294,6 +311,7 @@
                 android:text="@string/jr_bs_proad_email"
                 android:textColor="@color/jr_email"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proad_tels" />
 
@@ -306,7 +324,7 @@
                 android:text="@string/jr_bs_scm"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_proad_email" />
 
@@ -318,6 +336,7 @@
                 android:text="@string/jr_bs_scm_end"
                 android:textColor="@color/jr_cinza_text_claro"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_scm" />
 
@@ -330,6 +349,7 @@
                 android:text="@string/jr_bs_scm_tel"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_scm_end" />
 
@@ -342,7 +362,7 @@
                 android:text="@string/jr_ja_titulo"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_scm_tels" />
 
@@ -356,6 +376,7 @@
                 android:text="@string/jr_ja_tels"
                 android:textColor="@color/jr_cinza_text"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_ja" />
 
@@ -368,6 +389,7 @@
                 android:text="@string/jr_ja_site"
                 android:textColor="@color/jr_email"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_ja_tels" />
 
