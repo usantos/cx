@@ -804,7 +804,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else {
 				textoBotao = getString(R.string.label_complete_placar_aleatoriamente);
 			}
-			botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), textoBotao));
+			botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(getActivity(), textoBotao));
 		} else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 			if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 				mGridTimeCoracao = null;
@@ -814,7 +814,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 				atualizarBotaoFinalizar(R.string.label_escolha_trevos);
 			}else {
-				botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(fragmentView.getContext(), getString(R.string.adicionarAoCarrinho)));
+				botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(fragmentView.getContext(), getString(R.string.adicionarAoCarrinho)));
 				verificaSeMostraBotaoLimparAposta();
 			}
 		} else {
@@ -967,7 +967,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			if (partidasSelecionadas.size() < parametroJogo.getPartidas().size()) {
 				botaoFinalizar.setVisibility(View.INVISIBLE);
 				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
-				botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_complete_placar_aleatoriamente)));
+				botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.label_complete_placar_aleatoriamente)));
 			} else {
 				botaoFinalizar.setVisibility(View.VISIBLE);
 				atualizarBotaoFinalizarAdicionarCarrinho();
@@ -976,10 +976,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado) {
 				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
 				if (mGridTimeCoracao != null) {
-					botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_time_aleatoriamente)));
+					botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.label_selecionar_time_aleatoriamente)));
 					botaoFinalizar.setBackgroundColor(getContext().getResources().getColor(R.color.cinza));
 				} else {
-					botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_escolha_time_coracao)));
+					botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.label_escolha_time_coracao)));
 					botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
 				}
 			} else {
@@ -1022,7 +1022,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else {
 				botaoFinalizar.setVisibility(View.INVISIBLE);
 				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
-				botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_times_aleatoriamente)));
+				botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.label_selecionar_times_aleatoriamente)));
 			}
 		}
 	}
@@ -1063,19 +1063,19 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 	private void atualizarBotaoFinalizar(int stringId) {
 		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-		botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(stringId)));
+		botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(stringId)));
 		verificaSeMostraSalvarApostaView();
 	}
 
 	private void atualizarBotaoFinalizarCompletarCartela() {
 		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
-		botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.completarCartela)));
+		botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.completarCartela)));
 		parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
 	}
 
 	private void atualizarBotaoFinalizarAdicionarCarrinho() {
 		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-		botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.adicionarAoCarrinho)));
+		botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.adicionarAoCarrinho)));
 		if ((!parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) && !parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) && !parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
 			parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
 		}
