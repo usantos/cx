@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_bold"
                 tools:text="@string/label_compra_lista_situacao_descricao"
                 android:maxWidth="150dp"
                 android:textColor="@color/cinza"
@@ -55,6 +55,7 @@
                 android:layout_weight="0.1"
                 android:gravity="end"
                 android:text="@string/label_compra_lista_valor"
+                android:fontFamily="@font/caixa_std_bold"
                 android:textColor="@color/cinza"
                 android:textSize="14.4dp"
                 />
@@ -80,7 +81,7 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:gravity="end"
                 android:text="@string/r_4_50"
                 android:textColor="@color/cinza"
@@ -95,29 +96,42 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/processadaPor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                tools:text="@string/label_compra_lista_processada_por" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageViewRelogio"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.1"
-                app:srcCompat="@drawable/relogio_amarelo" />
+                <TextView
+                    android:id="@+id/processadaPor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    tools:text="@string/label_compra_lista_processada_por"
+                    android:fontFamily="@font/caixa_std_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                />
 
-            <TextView
-                android:id="@+id/contadorDown"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/futura_std_bold"
-                android:gravity="end"
-                android:text="00:00"
-                android:textColor="@color/amarelo_minhas_compras"
-                android:textSize="14.2dp" />
+                <ImageView
+                    android:id="@+id/imageViewRelogio"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    app:srcCompat="@drawable/relogio_amarelo"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintEnd_toStartOf="@+id/contadorDown"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/contadorDown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="end"
+                    android:text="00:00"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:textColor="@color/amarelo_minhas_compras"
+                    android:textSize="14.2dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
 
@@ -130,7 +144,7 @@
         android:text="@string/label_compra_lista_alterar_compra"
         android:textColor="@color/branco"
         android:textAllCaps="false"
-        android:fontFamily="@font/futura_std_bold"
+        android:fontFamily="@font/caixa_std_bold"
         android:background="@color/verde_botao_minhas_compras"
         android:gravity="center_horizontal|center_vertical"
         android:layout_marginStart="8dp"
