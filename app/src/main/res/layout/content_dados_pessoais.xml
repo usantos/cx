@@ -13,9 +13,10 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="106dp"
+        android:layout_marginBottom="126dp"
         android:layout_marginHorizontal="10dp"
         android:id="@+id/scrollViewDadosPessoais">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,6 +41,7 @@
                     app:notMaskedSymbol="*"
                     android:enabled="false"
                     android:alpha="0.3"/>
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -60,7 +62,6 @@
                     android:enabled="false"
                     android:alpha="0.3"/>
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup
                 android:id="@+id/segmentedButtonSexo"
@@ -108,54 +109,53 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp">
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                >
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/editTextCEP"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    >
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:layout_below="@id/segmentedButtonSexo"
+                    android:layout_marginLeft="16dp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/editTextCEP"
-                        android:layout_width="170dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/segmentedButtonSexo"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="20dp">
+                    <com.github.pinball83.maskededittext.MaskedEditText
+                        android:id="@+id/editTextCepContent"
+                        style="@style/editTextRegisterThemeCaixa"
+                        android:ems="10"
+                        android:hint="@string/label_cep"
+                        android:inputType="number"
+                        app:mask="*****-***"
+                        app:notMaskedSymbol="*" />
 
-                        <com.github.pinball83.maskededittext.MaskedEditText
-                            android:id="@+id/editTextCepContent"
-                            style="@style/editTextRegisterThemeCaixa"
-                            android:ems="10"
-                            android:hint="@string/label_cep"
-                            android:inputType="number"
-                            app:mask="*****-***"
-                            app:notMaskedSymbol="*" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <Button
-                        android:id="@+id/naoSeiCep"
-                        android:layout_width="170dp"
-                        android:layout_height="56dp"
-                        android:layout_marginLeft="20dp"
-                        android:fontFamily="@font/caixa_std_regular"
-                        android:textColor="@color/cinza"
-                        android:text="@string/nao_sei_cep"
-                        android:background="@drawable/button_border_verde"
-                        android:textAllCaps="false"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                <Button
+                    android:id="@+id/naoSeiCep"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:textColor="@color/cinza"
+                    android:text="@string/nao_sei_cep"
+                    android:background="@drawable/button_border_verde"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="16dp"
+                    />
 
             </LinearLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextUF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editTextCEP"
+                android:enabled="false"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp">
@@ -169,12 +169,12 @@
                     android:inputType="textPersonName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextMunicipio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editTextUF"
+                android:enabled="false"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="20dp">
@@ -237,6 +237,7 @@
                 android:layout_below="@id/seekbar_valor"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp" />
+
             <TableLayout
                 android:id="@+id/tableLayout1"
                 android:layout_width="match_parent"
@@ -272,6 +273,7 @@
                         android:textSize="15.7sp" />
                 </TableRow>
             </TableLayout>
+
             <Button
                 android:id="@+id/updateDadosPessoaisLimiteButton"
                 android:layout_below="@id/seekBar"
@@ -289,35 +291,32 @@
                 android:layout_marginBottom="30dp"/>
 
         </LinearLayout>
+
     </ScrollView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="106dp"
-        android:id="@+id/atualizarRelativeLayout"
-        app:layout_constraintTop_toBottomOf="@+id/scrollViewDadosPessoais"
-        app:layout_constraintBottom_toBottomOf="parent">
+    <Button
+        android:id="@+id/updateDadosPesoaisButton"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:background="@color/verdeazul"
+        android:fontFamily="@font/caixa_std_bold"
+        android:text="@string/atualizar"
+        android:textAllCaps="false"
+        android:textColor="@color/branco"
+        android:textSize="17.7sp"
+        app:layout_constraintTop_toTopOf="@id/view_bottom"
+        app:layout_constraintBottom_toTopOf="@id/view_bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/cinzamercadopago">
-
-        </View>
-
-        <Button
-            android:id="@+id/updateDadosPesoaisButton"
-            android:layout_width="184dp"
-            android:layout_height="84dp"
-            android:layout_marginLeft="108dp"
-            android:background="@color/verdeazul"
-            android:fontFamily="@font/caixa_std_bold"
-            android:text="@string/atualizar"
-            android:textAllCaps="false"
-            android:textColor="@color/branco"
-            android:textSize="17.7sp" />
-    </RelativeLayout>
-
+    <View
+        android:id="@+id/view_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:background="@color/cinzamercadopago"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
