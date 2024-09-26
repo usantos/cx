@@ -25,7 +25,6 @@
 
         <TextView
             android:id="@+id/textInfoValorAposta"
-            style="@style/CaixaStdRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/valorDessaAposta"
@@ -35,6 +34,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintTop_toBottomOf="@id/gl_divisao"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -116,7 +116,6 @@
 
         <TextView
             android:id="@+id/textInfoCarrinho"
-            style="@style/CaixaStdRegular"
             android:translationZ="3dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -127,6 +126,7 @@
             android:textAlignment="center"
             android:textColor="@color/azulescuro"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gl_divisa"
@@ -150,10 +150,10 @@
 
     <TextView
         android:id="@+id/tv_valor_atual_carrinho"
-        android:fontFamily="@font/caixa_std_regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/valor_atual_do_carrinho"
+        android:fontFamily="@font/caixa_std_regular"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

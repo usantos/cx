@@ -797,7 +797,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 getSupportActionBar().setHomeAsUpIndicator(upArrow);
             }
         }
-        setTitle(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
+        //setTitle(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase()));
     }
 
     private void getApostaDetalhePremio(Long apostaId, final Context contextParam, ComprovanteApostaDTO comprovante) {

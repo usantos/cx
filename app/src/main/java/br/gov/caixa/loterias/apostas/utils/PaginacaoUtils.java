@@ -45,15 +45,17 @@ public class PaginacaoUtils {
 
 		String tituloSemBold = context.getString(idString).replace("x", String.valueOf(size));
 
-		SpannableStringBuilder titulo = ViewUtils.textFuturaAndFuturaBold(context, tituloSemBold);
+		//SpannableStringBuilder titulo = ViewUtils.textFuturaAndFuturaBold(context, tituloSemBold);
+		SpannableStringBuilder titulo = ViewUtils.textCaixaSTDBold(context, tituloSemBold);
 
 		return new Pagina(titulo, numeroPagina);
 	}
 
 	private static Pagina getPagina(Context context, int idString, int numeroPagina){
 
-		String                 tituloSemBold      = context.getString(idString);
-		SpannableStringBuilder titulo = ViewUtils.textFuturaAndFuturaBold(context, tituloSemBold);
+		String tituloSemBold = context.getString(idString);
+		//SpannableStringBuilder titulo = ViewUtils.textFuturaAndFuturaBold(context, tituloSemBold);
+		SpannableStringBuilder titulo = ViewUtils.textCaixaSTDBold(context, tituloSemBold);
 
 		return new Pagina(titulo, numeroPagina);
 	}

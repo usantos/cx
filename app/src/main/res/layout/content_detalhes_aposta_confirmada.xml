@@ -126,9 +126,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="34dp"
-                        android:fontFamily="@font/caixa_std_regular"
                         android:text="@string/gerar_comprovante"
                         android:textColor="@color/branco"
+                        android:fontFamily="@font/caixa_std_regular"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -184,9 +184,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/label_editar_aposta"
                 android:textColor="@color/textColorToolbar"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textSize="12sp" />
 
         </RelativeLayout>
@@ -217,9 +217,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/label_carrinho_apostas"
                 android:textColor="@color/textColorToolbar"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textSize="12sp" />
 
         </RelativeLayout>
@@ -308,8 +308,8 @@
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/favoritarImg"
                         android:text="@string/label_salve_aposta"
-                        android:fontFamily="@font/caixa_std_regular"
                         android:textColor="@color/branco"
+                        android:fontFamily="@font/caixa_std_regular"
                         android:textSize="14sp" />
                 </RelativeLayout>
 
@@ -383,10 +383,10 @@
                     android:layout_below="@id/adicionarTxt"
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
-                    android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/label_adicionar_carrinho_apostas"
                     android:textColor="@color/branco"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:fontFamily="@font/caixa_std_regular"/>
 
             </RelativeLayout>
 

@@ -74,7 +74,6 @@
                             android:id="@+id/pixText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
                             android:text="@string/label_pix"
                             android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
                             android:fontFamily="@font/caixa_std_bold"

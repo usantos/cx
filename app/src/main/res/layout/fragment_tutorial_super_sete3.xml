@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:gravity="center"
                 android:textSize="16sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:layout_height="wrap_content"
                 android:text="@string/pronto"/>
 
@@ -36,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:gravity="center"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
                 tools:text="@string/confirmar_carrinho"/>
 
             <ImageView
@@ -50,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:padding="30dp"
                 android:textAlignment="center"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/aumente_suas_chances" />
         </LinearLayout>
     </ScrollView>

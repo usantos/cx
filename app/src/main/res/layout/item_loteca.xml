@@ -24,7 +24,8 @@
         android:text="@string/label_empate"
         android:textAlignment="center"
         android:textSize="14.2sp"
-        android:textStyle="bold" />
+        android:fontFamily="@font/caixa_std_bold"
+        android:textColor="@color/cinza" />
 
     <TextView
         android:id="@+id/item_description"
@@ -36,5 +37,6 @@
         android:text=""
         android:textAlignment="center"
         android:textSize="14.2sp"
+        android:fontFamily="@font/caixa_std_regular"
         android:layout_marginBottom="10dp"/>
 </LinearLayout>

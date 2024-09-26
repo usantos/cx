@@ -70,12 +70,10 @@ import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 public class ViewUtils {
 
     private static Typeface fontFutura = null;
+    private static Typeface fontCaixaStdRegular = null;
     private static Typeface fontFuturaBold = null;
     private static Typeface fontAriallMT = null;
     private static Typeface fontCaixaStdBold = null;
-
-    private static Typeface fontCaixaStdRegular = null;
-
 
     public static Typeface getFontFutura(Context context) {
         if (fontFutura == null) {
@@ -328,7 +326,6 @@ public class ViewUtils {
         TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontCaixaStdBold(context));
         textMessageView.setTypeface(getFontCaixaStdRegular(context));
-
         return dialog;
     }
 

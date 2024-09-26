@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:gravity="center_vertical"
                     android:paddingLeft="3dp"
                     android:text="@string/um_concurso"
@@ -85,7 +85,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="10dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:gravity="center_vertical"
                     android:paddingLeft="3dp"
                     android:text="Teimosinha"
@@ -118,43 +118,45 @@
 
             <TextView
                 android:id="@+id/labelExplicaSuasApostas"
-                style="@style/ExplicativoArialMT"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
                 android:layout_marginEnd="17dp"
                 android:paddingTop="5dp"
                 android:text="@string/label_suas_apostas_explica"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textSize="12dp"
+                android:textColor="@color/cinza"
                 app:layout_constraintEnd_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/labelTituloLoteca"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="17dp"
                 android:paddingTop="8dp"
                 android:text="@string/label_suas_apostas"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
+                android:textColor="@color/cinza"
                 app:layout_constraintStart_toStartOf="@id/labelExplicaSuasApostas"
                 app:layout_constraintTop_toBottomOf="@id/labelExplicaSuasApostas" />
 
             <TextView
                 android:id="@+id/labelJogosLoteca"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
                 android:text="@string/label_jogos"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/cinza"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
 
             <TextView
-                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="52dp"
@@ -162,13 +164,13 @@
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/cinza"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
                 />
 
             <TextView
                 android:id="@+id/labelValueJogosLoteca"
-                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="65dp"
@@ -176,14 +178,13 @@
                 android:text="@string/zero"
                 android:textColor="@color/lotecaclaro"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
             />
 
             <TextView
                 android:id="@+id/labelSimplesLoteca"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
@@ -191,12 +192,13 @@
                 android:paddingTop="8dp"
                 android:text="@string/label_simples"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/cinza"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
                  />
 
             <TextView
-                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="147dp"
@@ -204,13 +206,13 @@
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/cinza"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
             />
 
             <TextView
                 android:id="@+id/labelValueSimplesLoteca"
-                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="155dp"
@@ -218,26 +220,26 @@
                 android:text="@string/zero"
                 android:textColor="@color/lotecaclaro"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
             />
 
             <TextView
                 android:id="@+id/labelDuplasLoteca"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="180dp"
                 android:paddingTop="8dp"
                 android:text="@string/label_duplas"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/cinza"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
             />
 
             <TextView
-                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="227dp"
@@ -245,13 +247,13 @@
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/cinza"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
             />
 
             <TextView
                 android:id="@+id/labelValueDuplasLoteca"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="232dp"
@@ -259,26 +261,26 @@
                 android:text="@string/zero"
                 android:textColor="@color/lotecaclaro"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
              />
 
             <TextView
                 android:id="@+id/labelTriplasLoteca"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="260dp"
                 android:paddingTop="8dp"
                 android:text="@string/label_triplas"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/cinza"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
             />
 
             <TextView
-                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="305dp"
@@ -286,13 +288,13 @@
                 android:text="@string/label_dois_pontos"
                 android:textColor="@color/cinza"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
             />
 
             <TextView
                 android:id="@+id/labelValueTriplasLoteca"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="315dp"
@@ -300,7 +302,7 @@
                 android:text="@string/zero"
                 android:textColor="@color/lotecaclaro"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
                 app:layout_constraintTop_toBottomOf="@id/labelTituloLoteca" />
             />
@@ -378,6 +380,7 @@
                     android:paddingTop="0dp"
                     android:text=""
                     android:textColor="@color/branco"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textCursorDrawable="@null"
                     android:textSize="16sp" />
             </RelativeLayout>
@@ -392,7 +395,8 @@
                 android:layout_marginTop="29dp"
                 android:text="@string/label_de_nome"
                 android:textColor="@color/verdeazul"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:fontFamily="@font/caixa_std_regular"/>
 
             <TextView
                 android:id="@+id/textoSalveEstaAposta"
@@ -407,7 +411,8 @@
                 android:padding="0dp"
                 android:text="@string/tituloSalvarAposta"
                 android:textColor="@color/branco"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"/>
 
             <ImageView
                 android:id="@+id/iconStarSalvar"
@@ -434,6 +439,7 @@
         android:text="@string/limparAposta"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/cinza"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintBottom_toTopOf="@+id/botaoAdicionarCompletarCartela"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -448,6 +454,7 @@
         android:text="@string/adicionarAoCarrinho"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/branco"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

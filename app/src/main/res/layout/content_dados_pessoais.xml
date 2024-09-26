@@ -89,6 +89,7 @@
                     android:textAlignment="center"
                     app:sb_textColor_onSelection="@color/branco"
                     app:sb_textStyle="bold"
+                    style="@style/editTextRegisterThemeCaixa"
                     app:sb_textGravity="center"
                     android:layout_gravity="center_vertical"
                     tools:ignore="RtlCompat" />
@@ -101,7 +102,9 @@
                     app:sb_text="Feminino"
                     app:sb_textColor="@color/verdeazul"
                     app:sb_textColor_onSelection="@color/branco"
-                    app:sb_textStyle="bold" />
+                    app:sb_textStyle="bold"
+                    style="@style/editTextRegisterThemeCaixa"
+                    />
 
             </br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup>
 
