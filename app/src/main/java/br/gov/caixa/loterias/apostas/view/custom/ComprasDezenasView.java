@@ -103,6 +103,8 @@ public class ComprasDezenasView extends LinearLayout {
                                     aposta.getTimeDoCoracao().getNome() + "/" +
                                             aposta.getTimeDoCoracao().getUf()
                             )));
+                    labelDetalheTxt.setTextColor(getContext().getResources().getColor(corFonte));
+                    detalheTxt.setTextColor(getContext().getResources().getColor(corFonte));
                     detalheLayout.setVisibility(View.VISIBLE);
                 }
                 break;
