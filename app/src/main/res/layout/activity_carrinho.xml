@@ -38,12 +38,12 @@
                 android:textAlignment="textStart"
                 android:textColor="@color/colorAccent"
                 android:textSize="14.2sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_info_valor_minimo"
-                style="@style/editTextArialMTTheme"
+                style="@style/editTextCaixaRegularTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -66,7 +66,7 @@
                 android:textColor="@color/bolao_azul_subtitulo"
                 android:textAlignment="textStart"
                 android:textSize="14.2sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@id/tv_info_valor_minimo" />
 
@@ -81,7 +81,7 @@
 
             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/erv_boloes_listas"
-                style="@style/editTextArialMTTheme"
+                style="@style/editTextCaixaRegularTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -101,7 +101,7 @@
                 android:textColor="@color/bolao_azul_subtitulo"
                 android:textAlignment="textStart"
                 android:textSize="14.2sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintTop_toBottomOf="@id/erv_boloes_listas" />
 
             <View
@@ -114,7 +114,7 @@
 
             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
                 android:id="@+id/erv_apostas_listas"
-                style="@style/editTextArialMTTheme"
+                style="@style/editTextCaixaRegularTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -148,7 +148,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/verdeazul"
         android:textSize="16sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintBottom_toTopOf="@+id/btn_avancar_pagamento"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -165,6 +165,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/branco"
         android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

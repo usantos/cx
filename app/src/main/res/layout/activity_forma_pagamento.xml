@@ -39,7 +39,7 @@
                 android:text="@string/label_pix"
                 android:textColor="@color/azul_alterar"
                 android:textSize="12sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -50,7 +50,7 @@
                 android:text="@string/gere_codigo_pix_copia_cola"
                 android:textColor="@color/cinzaescuro"
                 android:textSize="13sp"
-                android:fontFamily="@font/font_family_futura"
+                android:fontFamily="@font/caixa_std_regular"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginTop="8dp"
@@ -89,7 +89,7 @@
                 android:text="@string/cartaoCredito"
                 android:textColor="@color/azul_alterar"
                 android:textSize="12sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -100,7 +100,7 @@
                 android:text="@string/escolhaUmProcessador"
                 android:textColor="@color/cinzaescuro"
                 android:textSize="13sp"
-                android:fontFamily="@font/font_family_futura"
+                android:fontFamily="@font/caixa_std_regular"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginTop="8dp"

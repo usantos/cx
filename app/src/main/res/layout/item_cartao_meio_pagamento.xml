@@ -39,6 +39,7 @@
                 android:id="@+id/numero_cartao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="**** 0010"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintTop_toTopOf="parent"

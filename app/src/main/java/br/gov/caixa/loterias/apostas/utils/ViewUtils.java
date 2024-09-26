@@ -74,6 +74,8 @@ public class ViewUtils {
     private static Typeface fontAriallMT = null;
     private static Typeface fontCaixaStdBold = null;
 
+    private static Typeface fontCaixaStdRegular = null;
+
 
     public static Typeface getFontFutura(Context context) {
         if (fontFutura == null) {
@@ -98,6 +100,12 @@ public class ViewUtils {
         return fontCaixaStdBold;
     }
 
+    public static Typeface getFontCaixaStdRegular(Context context) {
+        if (fontCaixaStdRegular == null) {
+            fontCaixaStdRegular = Typeface.createFromAsset(context.getAssets(), "fonts/caixa_std_regular.ttf");
+        }
+        return fontCaixaStdRegular;
+    }
     public static Typeface getFontArialMT(Context context) {
         if (fontAriallMT == null) {
             fontAriallMT = Typeface.createFromAsset(context.getAssets(), "fonts/arialmt.ttf");
@@ -179,7 +187,7 @@ public class ViewUtils {
                 .setOnDismissListener(listener)
                 .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
         TextView textView = dialog.findViewById(android.R.id.message);
-        textView.setTypeface(getFontFutura(context));
+        textView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -191,8 +199,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -204,8 +212,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -217,8 +225,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -231,8 +239,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -248,8 +256,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -264,8 +272,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -277,8 +285,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -290,8 +298,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -304,8 +312,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -318,8 +326,9 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+
         return dialog;
     }
 
@@ -340,8 +349,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -501,7 +510,7 @@ public class ViewUtils {
     }
 
     public static SpannableStringBuilder textColor(Context context, String texto, int idCor, Boolean colorBold) {
-        Typeface font = ViewUtils.getFontFuturaBold(context);
+        Typeface font = ViewUtils.getFontCaixaStdBold(context);
 
         PositionStringBold positionStringBold = positionString(texto);
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));

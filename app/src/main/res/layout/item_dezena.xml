@@ -12,7 +12,7 @@
         android:textAlignment="center"
         android:gravity="center"
         android:layout_margin="8dp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         android:background="@drawable/ic_item_dezena"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

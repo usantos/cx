@@ -231,8 +231,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 				quantidade = aposta.getQuantidadeTrevos();
 			}
 			String                 qtd     = "_"+quantidade+"_";
-			SpannableStringBuilder qtdBold = ViewUtils.textFuturaAndFuturaBold(context, qtd);
-			SpannableStringBuilder trevosBold = ViewUtils.textFuturaAndFuturaBold(context, context.getResources().getString(R.string.underline_trevos_underline));
+			SpannableStringBuilder qtdBold = ViewUtils.textCaixaSTDBold(context, qtd);
+			SpannableStringBuilder trevosBold = ViewUtils.textCaixaSTDBold(context, context.getResources().getString(R.string.underline_trevos_underline));
 
 			labelTimeCoracao.setText(qtdBold);
 			textViewTimeCoracao.setText(" " + trevosBold);

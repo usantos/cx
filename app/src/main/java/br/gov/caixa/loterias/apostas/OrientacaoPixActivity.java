@@ -12,7 +12,7 @@ public class OrientacaoPixActivity extends LoteriasAppActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_orientacao_pix);
 		configToolbar(R.id.toolbar);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "Forma de _pagamento_"));
+		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "Forma de _pagamento_"));
 
 		startFragment();
 	}

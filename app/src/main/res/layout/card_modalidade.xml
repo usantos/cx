@@ -48,12 +48,11 @@
 
                 <Button
                     android:id="@+id/buttonActionResultadosModalidade"
-                    style="@style/editTextArialMTTheme"
+                    style="@style/editTextCaixaRegularTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:background="@null"
                     android:gravity="center"
-                    android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/label_ultimo_resultado"
                     android:textAllCaps="false"
                     android:textColor="@color/branco" />
