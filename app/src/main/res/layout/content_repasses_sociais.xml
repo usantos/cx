@@ -57,7 +57,7 @@
                         android:textAlignment="center"
                         android:textColor="@color/branco"
                         android:textSize="14.2sp"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/caixa_std_bold" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                         android:textAlignment="center"
                         android:textColor="@color/amareloQueimado"
                         android:textSize="19.8sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:id="@+id/valorRepassesSociais"/>
 
                     <TextView
@@ -78,7 +78,7 @@
                         android:textAlignment="center"
                         android:textColor="@color/branco"
                         android:textSize="14.2sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:layout_marginBottom="40dp"/>
 
                     <RelativeLayout
@@ -96,6 +96,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_regular"
                                     android:text="@string/para_cada_nr_1_00_napostados_nas_nloterias_federais"
                                     android:textAlignment="center"
                                     android:layout_centerHorizontal="true"
@@ -113,6 +114,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:fontFamily="@font/caixa_std_regular"
                                     android:text="@string/r_0_48_ns_o_destinados_na_programas_sociais"
                                     android:textAlignment="center"
                                     android:layout_centerHorizontal="true"
@@ -159,7 +161,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="17dp"
-                        android:fontFamily="@font/futura_std_bold"
+                        android:fontFamily="@font/caixa_std_bold"
                         android:text="@string/entenda_como"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
@@ -168,7 +170,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/futura_std_book"
+                        android:fontFamily="@font/caixa_std_book"
                         android:text="@string/esse_dinheiro_distribu_do"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
@@ -197,7 +199,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/azulfavoritas"
@@ -207,7 +209,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/futura_std_book"
+                                    android:fontFamily="@font/caixa_std_book"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -226,7 +228,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/vermelhoBilhetes"
@@ -236,7 +238,7 @@
                                     android:id="@+id/textViewCulturaUnidadeValor"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/futura_std_book"
+                                    android:fontFamily="@font/caixa_std_book"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -260,7 +262,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/educa_o"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -283,7 +285,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/cultura"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -320,7 +322,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/verdeazul"
@@ -330,7 +332,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/futura_std_book"
+                                    android:fontFamily="@font/caixa_std_book"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -348,7 +350,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/verdemusgo"
@@ -358,7 +360,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/futura_std_book"
+                                    android:fontFamily="@font/caixa_std_book"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -383,7 +385,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/esporte"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -406,7 +408,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/seguran_a"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -444,7 +446,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/roxoclaro"
@@ -454,7 +456,7 @@
                                     android:id="@+id/textViewSeguridadeUnidadeValor"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/futura_std_book"
+                                    android:fontFamily="@font/caixa_std_book"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -473,7 +475,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="24dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/amareloQueimado"
@@ -483,7 +485,7 @@
                                     android:id="@+id/textViewOutrosUnidadeValor"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/futura_std_book"
+                                    android:fontFamily="@font/caixa_std_book"
                                     android:text=""
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -507,7 +509,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/seguridade"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -531,7 +533,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="18dp"
-                                    android:fontFamily="@font/futura_std_bold"
+                                    android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/outros"
                                     android:textAlignment="center"
                                     android:textColor="@color/cinza"
@@ -569,33 +571,33 @@
                         android:layout_marginTop="80dp">
 
                         <TextView
+                            style="@style/editTextCaixaStdTheme"
                             android:layout_width="230dp"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="14dp"
+                            android:gravity="center"
                             android:text="@string/o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios"
                             android:textAlignment="center"
                             android:textColor="@color/textColorToolbar"
-                            android:gravity="center"
-                            android:layout_alignParentBottom="true"
                             android:textSize="12.4sp"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="14dp"
-                            android:textStyle="bold"
-                            style="@style/editTextArialMTTheme"
-                            />
+                            android:textStyle="bold" />
                     </RelativeLayout>
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="-143dp">
+
                         <Button
+                            android:id="@+id/ButtonAposteSociais"
                             android:layout_width="184dp"
-                            android:layout_height="84dp"
-                            android:text="@string/aposte_ne_ajude_ainda_mais"
+                            android:layout_height="74dp"
                             android:layout_centerHorizontal="true"
                             android:background="@color/cinza"
-                            android:textColor="@color/branco"
-                            android:id="@+id/ButtonAposteSociais"
-                            android:textAllCaps="false"/>
+                            android:text="@string/aposte_ne_ajude_ainda_mais"
+                            android:textAllCaps="false"
+                            android:textColor="@color/branco" />
                     </RelativeLayout>
 
 

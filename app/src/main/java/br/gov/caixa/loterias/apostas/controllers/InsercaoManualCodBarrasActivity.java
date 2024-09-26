@@ -45,7 +45,7 @@ public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle( ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.label_ler_bilhestes_bold)));
+        setTitle( ViewUtils.textCaixaSTDBold(this, getString(R.string.label_ler_bilhestes_bold)));
 
         InputFilter inputFilter = (charSequence, start, end, spanned, dstart, dend) -> {
             StringBuilder stringBuilder = new StringBuilder();

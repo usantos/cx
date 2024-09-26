@@ -93,7 +93,7 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_principal">PrincipalActivity</string>
     <string name="title_activity_termos_uso">Loterias Caixa</string>
-    <string name="title_activity_repasses_sociais">Repasses _sociais_</string>
+    <string name="title_activity_repasses_sociais">_Repasses sociais_</string>
     <string name="title_activity_teste">TesteActivity</string>
     <string name="title_activity_toolbar">_Loterias Caixa_</string>
     <string name="title_activity_login">Login</string>
@@ -362,6 +362,7 @@
     <string name="label_sucesso">Sucesso</string>
     <string name="label_otimo_novo_nome_sua_aposta">Ótimo! o novo nome da sua aposta é</string>
     <string name="texto_futura_bold">_%s_</string>
+    <string name="texto_caixaStd_bold">_%s_</string>
     <string name="label_pre_pagamento">O Valor total da sua compra é de {valorCompra}. Confirma?</string>
     <string name="label_verificar_valor_carrinho">Antes de finalizar sua compra, verifique o valor total e as apostas contidas no seu carrinho.</string>
 
@@ -706,7 +707,7 @@
     <string name="seguran_a">Segurança</string>
     <string name="seguridade">Seguridade</string>
     <string name="outros">Outros</string>
-    <string name="o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios">*o valor inclui a parcela correspondente ao imposto de renda sobre os prêmios.</string>
+    <string name="o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios">*O valor inclui a parcela correspondente ao imposto de renda sobre os prêmios.</string>
     <string name="aposte_ne_ajude_ainda_mais">Aposte e ajude ainda mais</string>
     <string name="termos_de_uso">Termos de uso</string>
     <string name="pol_tica_nde_privacidade">Política de privacidade</string>

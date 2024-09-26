@@ -24,7 +24,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title_modalidades"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textSize="18sp"
                     android:textAlignment="center"
                     android:layout_marginTop="40dp"
@@ -43,7 +43,7 @@
                         android:textColor="@color/cinza"
                         android:layout_centerHorizontal="true"
                         android:textAlignment="center"
-                        style="@style/editTextArialMTTheme"/>
+                        style="@style/editTextCaixaStdTheme"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -78,7 +78,7 @@
                 android:background="@color/cinzaclaro"
                 android:textColor="@color/branco"
                 android:textSize="17.7sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:text="@string/title_salvar"
                 android:textAllCaps="false"
                 android:layout_centerHorizontal="true"

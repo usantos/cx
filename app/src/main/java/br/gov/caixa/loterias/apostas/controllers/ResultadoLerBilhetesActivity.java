@@ -250,7 +250,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
 
         atualizaTituloeBackground();
 
-        contentResultadoPremiado.getBotaoAposteAgora().setText(ViewUtils.textFuturaAndFuturaBold(this ,getString(R.string.botao_aposte_agora)));
+        contentResultadoPremiado.getBotaoAposteAgora().setText(ViewUtils.textCaixaSTDBold(this ,getString(R.string.botao_aposte_agora)));
 
         if (resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido() != null && !(BigDecimal.ZERO.compareTo(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido()) == 0)) {
             String label = getResources().getString(R.string.label_voce_foi_premiado).replace(getResources().getString(R.string.chave_valor_premio_chave), ViewUtils.getMoedaFormat(resultadoConsultaBilheteDTO.getPremioDTO().getValorLiquido()));

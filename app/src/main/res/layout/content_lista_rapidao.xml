@@ -29,7 +29,7 @@
 
             <TextView
                 android:id="@+id/infoPacoteRapidao"
-                style="@style/editTextArialMTTheme"
+                style="@style/editTextCaixaStdTheme"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="17dp"
@@ -56,7 +56,7 @@
                 android:textAlignment="textStart"
                 android:textColor="@color/colorAccent"
                 android:textSize="14.2sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -88,7 +88,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/verdeazul"
         android:textSize="16sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintBottom_toTopOf="@+id/botaoAvancarPagamentoRapidao"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -104,6 +104,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/branco"
         android:textSize="17sp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -126,7 +127,7 @@
 
             <TextView
                 android:id="@+id/tv_valor_total_carrinho"
-                style="@style/FuturaStdBold"
+                style="@style/CaixaStdBold"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:textAlignment="center"
@@ -144,7 +145,7 @@
 
             <TextView
                 android:id="@+id/tv_total"
-                style="@style/ArialMT"
+                style="@style/CaixaStdRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/transparente"

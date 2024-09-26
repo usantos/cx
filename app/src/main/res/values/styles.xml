@@ -124,6 +124,7 @@
     <style name="FuturaStdBold" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/futura_std_bold</item>
     </style>
+
     <style name="ExplicativoArialMT" parent="ArialMT">
         <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/cinza</item>
@@ -156,7 +157,12 @@
     <style name="editTextCaixaRegularTheme" parent="CaixaStdRegular">
         <item name="android:textColor">@color/cinza</item>
     </style>
+
     <style name="editTextCaixaBoldTheme" parent="CaixaStdBold">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextCaixaStdTheme" parent="CaixaStdRegular">
         <item name="android:textColor">@color/cinza</item>
     </style>
 
@@ -331,6 +337,12 @@
         <item name="android:textColorPrimary">@color/verde_card</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/futura_std_bold</item>
+        <item name="colorControlNormal">@color/transparente</item>
+    </style>
+    <style name="AppTheme.PickerCaixa" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/verde_card</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
         <item name="colorControlNormal">@color/transparente</item>
     </style>
 

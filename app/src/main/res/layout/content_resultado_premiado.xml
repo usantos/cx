@@ -60,7 +60,7 @@
 
         <TextView
             android:id="@+id/idPodeComemorar"
-            style="@style/ArialMT"
+            style="@style/CaixaStdRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -80,7 +80,7 @@
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="20.1sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/caixa_std_bold" />
 
         <TextView
             android:id="@+id/nsbBilhete"
@@ -94,7 +94,7 @@
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="16.1sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/caixa_std_bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -128,7 +128,7 @@
                     android:weightSum="12">
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:id="@+id/concursoTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                         android:textSize="@dimen/text_size_header" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:id="@+id/situacaoTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -154,7 +154,7 @@
                         android:textSize="@dimen/text_size_header" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:id="@+id/faixaPremiacaoTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
                         android:textSize="@dimen/text_size_header" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:id="@+id/quantidadePremiacaoTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -180,7 +180,7 @@
                         android:textSize="@dimen/text_size_header" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:id="@+id/sorteioTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
                         android:textSize="@dimen/text_size_header" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:id="@+id/premiacaoTextView"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -217,7 +217,7 @@
 
                     <TextView
                         android:id="@+id/tvFaixaPremiacao"
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="4"
@@ -230,7 +230,7 @@
 
                     <TextView
                         android:id="@+id/tvValorPremioCota"
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
@@ -243,7 +243,7 @@
 
                     <TextView
                         android:id="@+id/tvValorPremioLiquido"
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="4"
@@ -304,6 +304,7 @@
                 android:id="@+id/tvDetalheAposta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/ver_detalhe_da_aposta"
                 android:textColor="@color/mais_milionaria_escura"
                 android:layout_marginStart="16sp"
@@ -327,7 +328,7 @@
                 android:text="@string/label_concurso_atual"
                 android:textColor="@color/cinza"
                 android:textSize="14.2sp"
-                android:textStyle="bold"></TextView>
+                android:fontFamily="@font/caixa_std_bold"></TextView>
         </LinearLayout>
 
         <LinearLayout
@@ -343,7 +344,7 @@
 
                 <TextView
                     android:id="@+id/textView11"
-                    style="@style/ArialMT"
+                    style="@style/CaixaStdRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -355,7 +356,7 @@
 
                 <TextView
                     android:id="@+id/valorEstimativaConcursoAtualTextView"
-                    style="@style/ArialMT"
+                    style="@style/CaixaStdRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -378,7 +379,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -390,7 +391,7 @@
 
                     <TextView
                         android:id="@+id/proximoSorteioTextView"
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAlignment="textStart"
@@ -408,6 +409,7 @@
                         android:textAllCaps="false"
                         android:textColor="#FFFFFF"
                         android:textSize="14.2sp"
+                        android:fontFamily="@font/caixa_std_regular"
                         tools:text="@string/label_aposte_agora" />
 
                 </LinearLayout>

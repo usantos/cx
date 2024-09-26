@@ -66,23 +66,23 @@
         android:layout_marginRight="8dp"
         android:backgroundTint="@color/transparente"
         android:src="@drawable/ic_estrela"
-        android:tint="@color/branco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:tint="@color/branco" />
 
     <ImageButton
         android:id="@+id/ib_excluir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/transparente"
-        android:tint="@color/branco"
         android:src="@drawable/icon_excluir"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ib_favoritar"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:tint="@color/branco" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
@@ -107,9 +107,9 @@
             android:layout_margin="6dp"
             android:background="@drawable/btn_circulo_verde_filled"
             android:backgroundTint="@color/mp_color_red_error"
+            android:fontFamily="@font/caixa_std_regular"
             tools:text="1"
             android:textSize="8sp"
-            android:fontFamily="@font/caixa_std_regular"
             android:textColor="@color/branco"
             android:gravity="center"
             app:layout_constraintLeft_toLeftOf="@id/ib_filtrar"
@@ -154,10 +154,10 @@
         android:layout_marginRight="8dp"
         android:backgroundTint="@color/transparente"
         android:src="@drawable/ic_engrenagem"
-        android:tint="@color/branco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:tint="@color/branco" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
