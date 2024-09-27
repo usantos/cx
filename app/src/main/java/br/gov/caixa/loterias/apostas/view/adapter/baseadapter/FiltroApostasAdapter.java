@@ -26,7 +26,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 public class FiltroApostasAdapter extends BaseExpandableListAdapter {
@@ -84,9 +87,10 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = layoutInflater.inflate(R.layout.list_group_filtro, null);
 		}
-		TextView listTitleTextView = convertView
-				.findViewById(R.id.titleItemGroupSideMenu);
-		listTitleTextView.setTypeface(null, Typeface.BOLD);
+		TextView listTitleTextView = convertView.findViewById(R.id.titleItemGroupSideMenu);
+		Typeface fontCaixaBold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+		//listTitleTextView.setTypeface(null, Typeface.BOLD);
+		listTitleTextView.setTypeface(fontCaixaBold);
 		listTitleTextView.setText(listTitle);
 
 		ImageView imagemMaisOpcoes = convertView.findViewById(R.id.imagemMaisOpcoes);

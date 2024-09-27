@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
             android:layout_weight="1"
-            android:fontFamily="@font/arialmt"
+            android:fontFamily="@font/caixa_std_regular"
             android:textSize="14.2sp"
             tools:text="Confirmada" />
 
@@ -124,11 +124,10 @@
             android:layout_marginTop="7dp"
             android:layout_weight="1"
             android:background="@null"
-            android:fontFamily="@font/arialmt"
+            android:fontFamily="@font/caixa_std_bold"
             android:text="@string/veja_os_resultados"
             android:textColor="@color/branco"
             android:textSize="14.2sp"
-            android:textStyle="bold"
             android:visibility="invisible" />
     </LinearLayout>
 
