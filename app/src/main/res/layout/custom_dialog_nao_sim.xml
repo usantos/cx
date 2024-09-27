@@ -22,7 +22,7 @@
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="17dp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/caixa_std_bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,6 +38,7 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:textAlignment="center"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="Mensagem"
                 android:textColor="@android:color/black"
                 android:textSize="13dp" />
@@ -59,6 +60,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/label_nao_sim"
                 android:textSize="17dp"
+                android:fontFamily="@font/caixa_std_regular"
                 android:gravity="center" />
 
             <Button
@@ -71,6 +73,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/label_nao_sim"
                 android:textSize="17dp"
+                android:fontFamily="@font/caixa_std_regular"
                 android:gravity="center" />
         </LinearLayout>
 
