@@ -225,9 +225,9 @@ public class DialogUtils {
         tituloView.setText(titulo);
         descricaoView.setText(descricao);
 
-        buttonLeft.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao1));
-        buttonCenter.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao2));
-        buttonRigth.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao3));
+        buttonLeft.setText(ViewUtils.textCaixaSTDBoldTitle(context, botao1));
+        buttonCenter.setText(ViewUtils.textCaixaSTDBoldTitle(context, botao2));
+        buttonRigth.setText(ViewUtils.textCaixaSTDBoldTitle(context, botao3));
 
         close.setOnClickListener(v -> dialog.dismiss());
         buttonLeft.setOnClickListener(v -> listener.leftButtom());
@@ -325,8 +325,8 @@ public class DialogUtils {
         tituloView.setText(titulo);
         descricaoView.setText(descricao);
 
-        buttonLeft.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao1));
-        buttonRigth.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao2));
+        buttonLeft.setText(ViewUtils.textCaixaSTDBoldTitle(context, botao1));
+        buttonRigth.setText(ViewUtils.textCaixaSTDBoldTitle(context, botao2));
 
         buttonLeft.setOnClickListener(v -> {
             dialog.dismiss();
