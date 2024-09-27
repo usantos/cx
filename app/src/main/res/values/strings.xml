@@ -196,7 +196,7 @@
     <string name="label_encerramento">Encerramento</string>
     <string name="label_regras_jogo">Regras do jogo</string>
     <string name="label_mega_sena">mega-sena</string>
-    <string name="label_mais_milionaria">+Milionaria</string>
+    <string name="label_mais_milionaria">+milionaria</string>
     <string name="label_lotofacil">lotofácil</string>
     <string name="label_quina">quina</string>
     <string name="label_dupla_sena">dupla sena</string>
@@ -1101,7 +1101,7 @@
     <string name="trevos_">Trevos:</string>
     <string name="n_mero">Números</string>
     <string name="escolha_a_quantidade_de_n_meros">Escolha a quantidade de números</string>
-    <string name="label_mais_milionaria_acentuado">+Milionária</string>
+    <string name="label_mais_milionaria_acentuado">+milionária</string>
     <string name="ver_detalhe_da_aposta">Ver detalhe da aposta</string>
     <string name="Trevos">Trevos</string>
     <string name="vamos_comecar">Vamos começar?</string>

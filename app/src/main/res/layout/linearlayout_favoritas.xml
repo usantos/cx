@@ -132,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/caixa_std_bold"
+                    android:fontFamily="@font/futura_std_bold"
                     android:text=""
                     android:textColor="@color/verdeazul"
                     android:textSize="14.2sp" />
