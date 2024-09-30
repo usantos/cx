@@ -10,7 +10,9 @@ import javax.annotation.Nullable;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -84,7 +86,8 @@ public class ApostaPartidaLotecaView extends LinearLayout {
             apostaEquipeLotecaView.getTextApostaPartidaLoteca().setText(Utils.getEquipeComUf(equipeDTO));
         }
         if (equipeDTO.getVitoria()) {
-            apostaEquipeLotecaView.getTextApostaPartidaLoteca().setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+            //apostaEquipeLotecaView.getTextApostaPartidaLoteca().setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+            apostaEquipeLotecaView.getTextApostaPartidaLoteca().setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
         }
     }
 }
