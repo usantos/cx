@@ -194,7 +194,7 @@
 
                 <EditText
                     android:id="@+id/editTextUFContent"
-                    android:drawableRight="@drawable/combo"
+                    android:drawableRight="@drawable/icon_input_ok"
                     style="@style/editTextRegisterTheme"
                     android:ems="10"
                     android:focusableInTouchMode="false"
@@ -214,7 +214,7 @@
 
                 <EditText
                     android:id="@+id/editTextMunicipioContent"
-                    android:drawableRight="@drawable/combo"
+                    android:drawableRight="@drawable/icon_input_ok"
                     style="@style/editTextRegisterTheme"
                     android:ems="10"
                     android:focusableInTouchMode="false"

@@ -513,7 +513,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                             buscarBairroPorCep( cep );
                         } else {
                             editText.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0 );
-                            habilitaBotao(true);
+                            //habilitaBotao(true);
                         }
 
                 }
@@ -551,9 +551,7 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 editTextUFContent.setText("");
                 editTextMunicipioContent.setText("");
                 editTextCepContent.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0 );
-                habilitaBotao(false);
-
-
+                //habilitaBotao(false);
             }
         });
     }
