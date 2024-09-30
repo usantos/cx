@@ -69,25 +69,15 @@ import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 
 public class ViewUtils {
 
-    private static Typeface fontFutura = null;
-    private static Typeface fontCaixaStdRegular = null;
     private static Typeface fontFuturaBold = null;
-    private static Typeface fontAriallMT = null;
     private static Typeface fontCaixaStdBold = null;
+    private static Typeface fontCaixaStdRegular = null;
 
-    public static Typeface getFontFutura(Context context) {
-        if (fontFutura == null) {
-            fontFutura = Typeface.createFromAsset(context.getAssets(), "fonts/futura_std_book.otf");
-        }
-
-        return fontFutura;
-    }
 
     public static Typeface getFontFuturaBold(Context context) {
         if (fontFuturaBold == null) {
             fontFuturaBold = Typeface.createFromAsset(context.getAssets(), "fonts/futura_std_bold.otf");
         }
-
         return fontFuturaBold;
     }
 
@@ -103,13 +93,6 @@ public class ViewUtils {
             fontCaixaStdRegular = Typeface.createFromAsset(context.getAssets(), "fonts/caixa_std_regular.ttf");
         }
         return fontCaixaStdRegular;
-    }
-    public static Typeface getFontArialMT(Context context) {
-        if (fontAriallMT == null) {
-            fontAriallMT = Typeface.createFromAsset(context.getAssets(), "fonts/arialmt.ttf");
-        }
-
-        return fontAriallMT;
     }
 
     public static void configuraStatusBarGradientLayout(Context context, Window window) {
@@ -549,15 +532,6 @@ public class ViewUtils {
     public static SpannableStringBuilder textCaixaSTDBoldTitle(Context context, String texto) {
         SpannableStringBuilder spannableStringBuilder = textCaixaSTDBold(context, texto);
         spannableStringBuilder.setSpan(new AbsoluteSizeSpan(16, true), 0, texto.replace("_", "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        return spannableStringBuilder;
-    }
-
-    public static SpannableStringBuilder textFuturaAndSizeTitle(Context context, String texto) {
-        Typeface font = ViewUtils.getFontFutura(context);
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto);
-        spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), 0, texto.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        spannableStringBuilder.setSpan(new AbsoluteSizeSpan(16, true), 0, texto.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return spannableStringBuilder;
     }

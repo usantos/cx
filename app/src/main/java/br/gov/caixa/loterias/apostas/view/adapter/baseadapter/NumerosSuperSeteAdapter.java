@@ -21,8 +21,10 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuperSete;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SuperSeteEnum;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.AutomacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class NumerosSuperSeteAdapter extends BaseAdapter {
@@ -119,7 +121,8 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		shape.setCornerRadius(sizeItens / 2);
 		textView.setBackground(shape);
 		textView.setText(dezenas.get(i).getValue());
-		textView.setTypeface(ViewUtils.getFontFutura(context));
+		//textView.setTypeface(ViewUtils.getFontFutura(context));
+		textView.setTypeface(FonteUtils.getFonte(FontCaixaEnum.REGULAR));
 		textView.setGravity(Gravity.CENTER);
 
 		// logica apenas para o automatizado

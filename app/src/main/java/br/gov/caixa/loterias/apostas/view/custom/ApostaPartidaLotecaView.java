@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -14,7 +13,6 @@ import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 /**
  * Created by joafilho on 25/01/2018.
