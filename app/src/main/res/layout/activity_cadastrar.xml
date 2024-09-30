@@ -187,6 +187,7 @@
                 android:id="@+id/editTextUF"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:layout_below="@id/editTextCEP"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
@@ -199,7 +200,7 @@
                     android:ems="10"
                     android:focusableInTouchMode="false"
                     android:hint="@string/title_uf"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -207,6 +208,7 @@
                 android:id="@+id/editTextMunicipio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:layout_below="@id/editTextUF"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
