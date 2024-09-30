@@ -1076,6 +1076,9 @@
     <string name="valor_atual_do_carrinho">Valor atual do carrinho</string>
     <string name="mais_999">...</string>
     <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
+    <string name="percent_d_minutos">%d minutos </string>
+    <string name="percent_d_segundos">%d segundos</string>
+    <string name="aposta_encerrada">Aposta encerrada</string>
 
     <!-- App Center -->
     <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
