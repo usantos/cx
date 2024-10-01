@@ -78,6 +78,19 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintTop_toBottomOf="@id/txt_todos_boloes"/>
 
+            <ProgressBar
+                android:id="@+id/progress_loading"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/lista_bolao"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
             <TextView
                 android:id="@+id/id_fim_lista"
                 android:layout_width="wrap_content"
@@ -85,9 +98,17 @@
                 android:text="Fim da lista"
                 android:padding="16dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/lista_bolao"
+                app:layout_constraintTop_toBottomOf="@id/progress_loading"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.viewpager.widget.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/id_fim_lista"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

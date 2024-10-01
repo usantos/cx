@@ -1076,6 +1076,9 @@
     <string name="valor_atual_do_carrinho">Valor atual do carrinho</string>
     <string name="mais_999">...</string>
     <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
+    <string name="percent_d_minutos">%d minutos </string>
+    <string name="percent_d_segundos">%d segundos</string>
+    <string name="aposta_encerrada">Aposta encerrada</string>
 
     <!-- App Center -->
     <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
@@ -1386,5 +1389,8 @@
     <string name="usuario_bloqueio_parcial">Usuário habilitado apenas para consultas.</string>
     <string name="label_loterica_filtro">Lotérica</string>
     <string name="nome_loteria">Nome da Lotérica:</string>
+    <string name="nao_sei_cep">Não sei o meu CEP</string>
+    <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
+    <string name="voce_sera_redirecionado_para_o_site_dos_correios">Você será redirecionado para o site dos Correios</string>
 
 </resources>
