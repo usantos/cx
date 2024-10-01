@@ -37,6 +37,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesResultados;
 import br.gov.caixa.loterias.apostas.view.listener.OnHomeListener;
@@ -63,7 +64,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private RelativeLayout setaEsquerdaAcaoRelativeLayout;
 	private ImageView imgSetaResultado;
 
-	private EstiloModalidade estilo;
+	//private EstiloModalidade estilo;
+	private EstiloModalidadeMKP estilo;
 	private OnHomeListener listener;
 	private Modalidade modalidade;
 	private int position;
@@ -104,7 +106,10 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.modalidade = modalidade;
 		this.position = position;
 		setIsRecyclable(false);
-		estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+		//estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+		estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+
+		this.game.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorFonteFundoClaro()));
 		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo))) {
 			this.game.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
 			this.tvNomeEspeciais.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
@@ -118,8 +123,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
 		this.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
 		//TODO: Altera a cor do título do carrosel
-		this.trevo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoBackground()));
-		this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoBackground()));
+		//this.trevo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+		this.trevo.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+		this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrapezio()));
 		this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 		this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 
@@ -201,8 +207,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 										   itemView.getContext().getResources().getString(R.string.as_espacado) +
 										   horaMinSeg);
 
-		this.calendario.setImageResource(estilo.getImagemCalendario());
-		this.relogio.setImageResource(estilo.getImagemRelogio());
+//????
+//		this.calendario.setImageResource(estilo.getImagemCalendario());
+//		this.relogio.setImageResource(estilo.getImagemRelogio());
 
 		this.buttonActionResultadosModalidade.setOnClickListener(this);
 		this.imgSetaResultado.setOnClickListener(this);
@@ -280,7 +287,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 	}
 
-	public void setOverlayColor(EstiloModalidade estilo, Button aposta) {
+	public void setOverlayColor(EstiloModalidadeMKP estilo, Button aposta) {
 		aposta.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 	}
 
