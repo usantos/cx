@@ -1,8 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,7 +36,6 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivity;
-import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -50,14 +48,12 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
@@ -72,7 +68,6 @@ import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
@@ -84,7 +79,6 @@ import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapt
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ApostasConfirmadasAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaConfirmadaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnEscolheModalidadeDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
 /**
@@ -100,7 +94,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private ApostaBO apostaBO;
     private TextView dateResultTxt;
     private RecyclerView apostasConfirmadasRecyclerView;
-    private View view, apostasLoading;
+    private View view;
+    private ProgressBar apostasLoading;
     private LinearLayout dataBtn;
     private boolean isHistorico;
 
@@ -367,8 +362,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
 
         AlertDialogUtils.dismiss();
-        apostasLoading.setVisibility(View.GONE);
-        //SessaoUsuario.getInstance().getParametrosSimulacao().setParametros(null);
 
         if (apostasList != null) {
             if (page.getOffset() == 0) {
@@ -414,6 +407,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 TestVisao.toast("Tamanho carregado: " + apostasConfirmadasRecyclerView.getAdapter().getItemCount() + "\nTotal: " + rowCount);
             }catch (Exception e){}
         }
+        apostasLoading.setVisibility(View.GONE);
     }
 
     private OnApostaConfirmadaListener getOnApostasConfirmadasListener(List<ApostaDTO> apostasList) {
