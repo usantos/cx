@@ -14,10 +14,10 @@ public class SituacoesApostaFiltroEnum {
 	public static LinkedHashMap<Integer,String> getSituacoes(){
 		LinkedHashMap<Integer,String> mapSituacoes = new LinkedHashMap<>();
 		mapSituacoes.put(new Integer(TODAS),getDescricao(TODAS));
-		mapSituacoes.put(new Integer(CONFERIDAS),getDescricao(CONFERIDAS));
-		mapSituacoes.put(new Integer(NAO_CONFERIDAS),getDescricao(NAO_CONFERIDAS));
+		//mapSituacoes.put(new Integer(CONFERIDAS),getDescricao(CONFERIDAS));
+		//mapSituacoes.put(new Integer(NAO_CONFERIDAS),getDescricao(NAO_CONFERIDAS));
 		mapSituacoes.put(new Integer(PAGAS),getDescricao(PAGAS));
-		mapSituacoes.put(new Integer(NAO_PREMIADAS),getDescricao(NAO_PREMIADAS));
+		//mapSituacoes.put(new Integer(NAO_PREMIADAS),getDescricao(NAO_PREMIADAS));
 		mapSituacoes.put(new Integer(PRESCRITAS),getDescricao(PRESCRITAS));
 
 		return mapSituacoes;
