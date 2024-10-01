@@ -5,12 +5,7 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import java.math.BigDecimal;
-import java.util.Locale;
 
 import javax.annotation.Nullable;
 
@@ -18,16 +13,34 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
-@EViewGroup(R.layout.item_lista_faixa_premiacao_bolao)
 public class ItemListaFaixaPremiacaoBolao extends LinearLayout {
 
-    @ViewById
-    protected TextView faixaPremio, valorCota, valorTotal;
-    @ViewById
-    protected LinearLayout conteudoLinha;
+    private boolean alreadyInflated = false;
 
-    @AfterViews
+    private TextView faixaPremio, valorCota, valorTotal;
+    private LinearLayout conteudoLinha;
+
+    public static ItemListaFaixaPremiacaoBolao build(Context context) {
+        ItemListaFaixaPremiacaoBolao instance = new ItemListaFaixaPremiacaoBolao(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_lista_faixa_premiacao_bolao, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
     public void init() {
+        this.faixaPremio = findViewById(R.id.faixaPremio);
+        this.valorCota = findViewById(R.id.valorCota);
+        this.valorTotal = findViewById(R.id.valorTotal);
+        this.conteudoLinha = findViewById(R.id.conteudoLinha);
     }
 
     public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int colorBack, int colorText, int position, BigDecimal valorLiquidoPremio) {

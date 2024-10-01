@@ -8,30 +8,50 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 
-@EViewGroup(R.layout.item_resultado_supersete)
 public class SuperSeteResultadoLayout extends LinearLayout {
 
-	@ViewById
-	protected TextView tv_numero_1,tv_numero_2,tv_numero_3,tv_numero_4,
+	private boolean alreadyInflated = false;
+
+	private TextView tv_numero_1,tv_numero_2,tv_numero_3,tv_numero_4,
 					   tv_numero_5,tv_numero_6,tv_numero_7;
-	@ViewById
-	protected LinearLayout  item_resultado_content_view;
+	private LinearLayout  item_resultado_content_view;
+	private View tracoViewDivisoriaResultado;
+	private PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
 
-	@ViewById
-	protected View tracoViewDivisoriaResultado;
+	public static SuperSeteResultadoLayout build(Context context) {
+		SuperSeteResultadoLayout instance = new SuperSeteResultadoLayout(context);
+		instance.onFinishInflate();
+		return instance;
+	}
 
-	@ViewById
-	protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
+	@Override
+	public void onFinishInflate() {
+		if (!alreadyInflated) {
+			alreadyInflated = true;
+			inflate(getContext(), R.layout.item_resultado_supersete, this);
+		}
+		super.onFinishInflate();
+		init();
+	}
+
+	protected void init() {
+		this.tv_numero_1 = findViewById(R.id.tv_numero_1);
+		this.tv_numero_2 = findViewById(R.id.tv_numero_2);
+		this.tv_numero_3 = findViewById(R.id.tv_numero_3);
+		this.tv_numero_4 = findViewById(R.id.tv_numero_4);
+		this.tv_numero_5 = findViewById(R.id.tv_numero_5);
+		this.tv_numero_6 = findViewById(R.id.tv_numero_6);
+		this.tv_numero_7 = findViewById(R.id.tv_numero_7);
+		this.item_resultado_content_view = findViewById(R.id.item_resultado_content_view);
+		this.tracoViewDivisoriaResultado = findViewById(R.id.tracoViewDivisoriaResultado);
+		this.partidaViewDetalhesResultadoView = findViewById(R.id.partidaViewDetalhesResultadoView);
+	}
 
 	public void setLayout(Modalidade modalidade) {
 
@@ -76,10 +96,4 @@ public class SuperSeteResultadoLayout extends LinearLayout {
 	public SuperSeteResultadoLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 	}
-
-	@AfterViews
-	protected void init() {
-
-	}
-
 }

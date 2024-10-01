@@ -13,10 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
@@ -28,25 +24,37 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotogolResultadoT
  */
 
 
-@EViewGroup(R.layout.item_resultado_lotogol)
 public class ModalidadeSorteioLotogolResultadoView extends LinearLayout implements DiscreteScrollView.ScrollListener<LotogolResultadoTimesAdapter.LotogolHolder>,
         DiscreteScrollView.OnItemChangedListener<LotogolResultadoTimesAdapter.LotogolHolder> {
 
-    @ViewById
-    protected DiscreteScrollView recyclerPartidasLotogol;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    protected LinearLayout  item_resultado_content_view;
+    private DiscreteScrollView recyclerPartidasLotogol;
+    private LinearLayout  item_resultado_content_view;
+    private View tracoViewDivisoriaResultado;
+    private PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
 
-    @ViewById
-    protected View tracoViewDivisoriaResultado;
+    public static ModalidadeSorteioLotogolResultadoView build(Context context) {
+        ModalidadeSorteioLotogolResultadoView instance = new ModalidadeSorteioLotogolResultadoView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
 
-    @ViewById
-    protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_resultado_lotogol, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
 
-    @AfterViews
     protected void init() {
-
+        this.recyclerPartidasLotogol = findViewById(R.id.recyclerPartidasLotogol);
+        this.item_resultado_content_view = findViewById(R.id.item_resultado_content_view);
+        this.tracoViewDivisoriaResultado = findViewById(R.id.tracoViewDivisoriaResultado);
+        this.partidaViewDetalhesResultadoView = findViewById(R.id.partidaViewDetalhesResultadoView);
     }
 
     public void setLayout(Modalidade modalidade) {

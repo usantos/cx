@@ -10,36 +10,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 
 import java.io.Serializable;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTO;
+import br.gov.caixa.loterias.apostas.model.model.DetalhesCarrinhoFavoritoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostasCarrinhoFavoritoAdapter;
+import br.gov.caixa.loterias.apostas.view.listener.OnDetalheCarrinhoFavoritoClickListener;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity.RESPOSTA_APOSTAS;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity.RESPOSTA_EXCLUIU_APOSTAS;
+import static br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity.RESPOSTA_EXCLUIU_CARRINHO;
 
 public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
-
     public static String ID_CARRINHO = "ID_CARRINHO";
 
     private RecyclerView rvApostas;
-    private ListApostaCarrinhoFavoritoDTO listApostaResponse;
-    private Long idCarrinho;
+    private DetalhesCarrinhoFavoritoModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalhes_carrinho_favorito);
+        model = new DetalhesCarrinhoFavoritoModel(this);
         pegaExtras();
         setaViews();
-        setaMetodos();
-    }
-
-    private void setaMetodos(){
         buscaApostas();
     }
 
@@ -51,44 +50,79 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
     private void pegaExtras() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            idCarrinho = bundle.getLong(ID_CARRINHO);
+            model.setIdCarrinho(bundle.getLong(ID_CARRINHO));
         }
-    }
-
-    public void setListApostaResponse(ListApostaCarrinhoFavoritoDTO listApostaResponse) {
-        this.listApostaResponse = listApostaResponse;
     }
 
     private void buscaApostas(){
         AlertDialogUtils.show(this);
-        ApostaBO_.getInstance_(this).buscaApostasCarrinhoFavorito(idCarrinho ,new RequestListener<ListApostaCarrinhoFavoritoDTO>() {
+        model.buscaApostas(new OnSilceListener<List<ApostaCarrinhoFavoritoDTO>>() {
             @Override
-            public void onResponse(ListApostaCarrinhoFavoritoDTO result) {
+            public void success(List<ApostaCarrinhoFavoritoDTO> payload) {
                 AlertDialogUtils.dismiss();
-                if (result.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(result.getRedirect(), DetalhesCarrinhoFavoritoActivity.this);
-                }
-                listApostaResponse = result;
-                configuraRecyclerView(result);
+                model.setListApostas(payload);
+                configuraRecyclerView(payload);
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, DetalhesCarrinhoFavoritoActivity.this);
             }
         });
     }
 
-    public void configuraRecyclerView(ListApostaCarrinhoFavoritoDTO listApostaResponse){
-        rvApostas.setAdapter( new DetalhesApostasCarrinhoFavoritoAdapter(idCarrinho, listApostaResponse,this));
+    public void configuraRecyclerView(List<ApostaCarrinhoFavoritoDTO> list){
+        rvApostas.setAdapter( new DetalhesApostasCarrinhoFavoritoAdapter(list, onItemClickListener(), getSupportFragmentManager()));
         RecyclerView.LayoutManager layout = new LinearLayoutManager(DetalhesCarrinhoFavoritoActivity.this, LinearLayoutManager.VERTICAL, false);
         rvApostas.setLayoutManager(layout);
     }
 
+    private OnDetalheCarrinhoFavoritoClickListener onItemClickListener() {
+        return position -> {
+            ViewUtils.alertTitleButtonYesOrNotListener(DetalhesCarrinhoFavoritoActivity.this, getResources().getString(R.string.carrinho_fav_deseja_excluir_aposta), (dialogInterface, i) -> {
+                if (model.getList().size() > 1) {
+                    AlertDialogUtils.show(DetalhesCarrinhoFavoritoActivity.this);
+                    model.deletaApostaCarrinhoFavorito(model.getIdApostaByPosition(position), new OnSilceListener<List<ApostaCarrinhoFavoritoDTO>>() {
+                        @Override
+                        public void success(List<ApostaCarrinhoFavoritoDTO> payload) {
+                            AlertDialogUtils.dismiss();
+                            model.setListApostas(payload);
+                            configuraRecyclerView(payload);
+                        }
+
+                        @Override
+                        public void error(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                        }
+                    });
+                } else {
+                    excluirCarrinho(model.getIdCarrinho());
+                }
+            });
+
+        };
+    }
+
+    private void excluirCarrinho(Long idCarrinhoAtual) {
+        AlertDialogUtils.show(DetalhesCarrinhoFavoritoActivity.this);
+        model.excluiCarrinho(idCarrinhoAtual, new OnSilceListener<List<CarrinhoFavoritoDTO>>() {
+            @Override
+            public void success(List<CarrinhoFavoritoDTO> payload) {
+                AlertDialogUtils.dismiss();
+                setResult(RESPOSTA_EXCLUIU_CARRINHO);
+                finish();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        });
+    }
+
     private void setaResult(){
         Bundle args = new Bundle();
-        args.putSerializable(RESPOSTA_APOSTAS, (Serializable) listApostaResponse.getPayload());
+        args.putSerializable(RESPOSTA_APOSTAS, (Serializable) model.getList());
         Intent it = new Intent();
         it.putExtras(args);
         setResult(RESPOSTA_EXCLUIU_APOSTAS, it);

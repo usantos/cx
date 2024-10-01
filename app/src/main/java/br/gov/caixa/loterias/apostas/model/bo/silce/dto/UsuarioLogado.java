@@ -43,6 +43,8 @@ public class UsuarioLogado {
     private Boolean suspensaoTemporariaApostador = null;
     @SerializedName("responderAutoavaliacao")
     private Boolean responderAutoavaliacao = null;
+    @SerializedName("situacaoApostador")
+    private SituacaoApostador situacaoApostador = null;
 
     public NotificacaoDTO getUltimaNotificacao() {
         return ultimaNotificacao;
@@ -154,6 +156,15 @@ public class UsuarioLogado {
 
     public void setResponderAutoavaliacao(Boolean responderAutoavaliacao) {
         this.responderAutoavaliacao = responderAutoavaliacao;
+    }
+
+    @ApiModelProperty(value = "")
+    public SituacaoApostador getSituacaoApostador() {
+        return situacaoApostador;
+    }
+
+    public void setSituacaoApostador(SituacaoApostador situacaoApostador) {
+        this.situacaoApostador = situacaoApostador;
     }
 
     @Override

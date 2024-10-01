@@ -20,13 +20,14 @@ import java.io.File;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.AcessoBO_;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
+import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
@@ -57,7 +58,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }
         
-        AppCenter.start(getApplication(), BuildConfig.APP_CENTER_KEY, Analytics.class, Crashes.class);
+        AppCenter.start(getApplication(), BuildConfigManager.getVariavel("APP_CENTER_KEY"), Analytics.class, Crashes.class);
 
         //Cria canal de Notificacao
         MessagingUtils.criaCanalNotificacaoApp(this);
@@ -101,7 +102,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     public void verificaVersao() {
-        AcessoBO_.getInstance_(this).getVerificaVersao(BuildConfig.VERSION_NAME, new RequestListener<VersionResponse>() {
+        AcessoBO.getInstance().getVerificaVersao(BuildConfig.VERSION_NAME, new RequestListener<VersionResponse>() {
             @Override
             public void onResponse(VersionResponse response) {
                 responseVersao = response;
@@ -133,7 +134,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private void callConfiguracoesApp() {
         try {
-            ApostaBO_.getInstance_(SplashScreenActivity.this).getApresentaHistorico(new RequestListener<ParametrosConfiguraveisDTOResponse>() {
+            ApostaBO.getInstance().getApresentaHistorico(new RequestListener<ParametrosConfiguraveisDTOResponse>() {
                 @Override
                 public void onResponse(ParametrosConfiguraveisDTOResponse result) {
 
@@ -189,6 +190,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
             verificaVersao();
         }

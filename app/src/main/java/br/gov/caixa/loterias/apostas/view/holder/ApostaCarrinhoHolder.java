@@ -115,7 +115,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
 		this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
 		this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-		this.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
+		this.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorApostaDuasLinas(aposta).toLowerCase());
 		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 		this.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 

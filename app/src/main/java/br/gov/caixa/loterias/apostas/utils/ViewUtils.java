@@ -72,6 +72,7 @@ public class ViewUtils {
     private static Typeface fontFutura = null;
     private static Typeface fontFuturaBold = null;
     private static Typeface fontAriallMT = null;
+    private static Typeface fontCaixaStdBold = null;
 
 
     public static Typeface getFontFutura(Context context) {
@@ -88,6 +89,13 @@ public class ViewUtils {
         }
 
         return fontFuturaBold;
+    }
+
+    public static Typeface getFontCaixaStdBold(Context context) {
+        if (fontCaixaStdBold == null) {
+            fontCaixaStdBold = Typeface.createFromAsset(context.getAssets(), "fonts/caixa_std_bold.ttf");
+        }
+        return fontCaixaStdBold;
     }
 
     public static Typeface getFontArialMT(Context context) {
@@ -511,6 +519,13 @@ public class ViewUtils {
         return spannableStringBuilder;
     }
 
+    public static SpannableStringBuilder textCaixaSTDBoldTitle(Context context, String texto) {
+        SpannableStringBuilder spannableStringBuilder = textCaixaSTDBold(context, texto);
+        spannableStringBuilder.setSpan(new AbsoluteSizeSpan(16, true), 0, texto.replace("_", "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return spannableStringBuilder;
+    }
+
     public static SpannableStringBuilder textFuturaAndSizeTitle(Context context, String texto) {
         Typeface font = ViewUtils.getFontFutura(context);
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto);
@@ -758,6 +773,22 @@ public class ViewUtils {
         } /*else {
             return ModalidadeEnum.fromString(aposta.getModalidade());
         }*/
+        return "";
+    }
+
+    public static String getNomeModalidadePorApostaDuasLinas(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
+        if(param != null){
+            ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
+
+            if (modalidadeDetalhada.getValor() == 9){
+                return "+Milionária";
+            } else {
+                return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                        ModalidadeEnum.getDescricaoEspecialDuasLinhas(aposta.getModalidade()):
+                        modalidadeDetalhada.getDescricao();
+            }
+        }
         return "";
     }
 

@@ -20,6 +20,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
@@ -120,8 +121,12 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			tagBolao.setImageResource(estiloModalidadeMKP.getImagemTriangulo());
 			tagBolao.setVisibility(View.VISIBLE);
 		} else {
-			addCarrinho.setVisibility(View.VISIBLE);
-			addCarrinho.setOnClickListener(this);
+			if (aposta.getModalidade().equals(ModalidadeEnum.LOTECA)) {
+				addCarrinho.setVisibility(View.INVISIBLE);
+			} else {
+				addCarrinho.setVisibility(View.VISIBLE);
+				addCarrinho.setOnClickListener(this);
+			}
 			tagBolao.setVisibility(View.GONE);
 		}
 	}

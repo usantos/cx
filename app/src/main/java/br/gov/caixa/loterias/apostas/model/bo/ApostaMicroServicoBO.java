@@ -1,21 +1,28 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
-import org.androidannotations.annotations.EBean;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
+import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoConnection;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingleton;
 
-import static org.androidannotations.annotations.EBean.Scope.Singleton;
-
-@EBean(scope = Singleton)
 public class ApostaMicroServicoBO extends BaseMicroServicoBO {
+    private static ApostaMicroServicoBO instance;
+
+    private ApostaMicroServicoBO(){}
+
+    public static ApostaMicroServicoBO getInstance(){
+        if (instance == null){
+            instance = new ApostaMicroServicoBO();
+        }
+        return instance;
+    }
 
     private static LinkedHashMap<String, String> header;
 
@@ -23,24 +30,24 @@ public class ApostaMicroServicoBO extends BaseMicroServicoBO {
         if(header == null){
             this.header = new LinkedHashMap<>();
         }
-        this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        this.header.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         return header;
     }
 
     public void getApostasConfirmadasMicroServico(String urlBase, ApostaPageRequest page, RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
-        connection = MicroServicoConnection.create(singleton.getRequestQueue(), urlBase);
+        setConnection(MicroServicoConnection.create(MicroServicoSingleton.getInstance().getRequestQueue(), urlBase));
 
         final Map<String, String> queryParams = getQueryParams(page);
 
-        final GsonRequest request = connection.buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_PATH,
+        final GsonRequest request = getConnection().buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_PATH,
                                                                     queryParams,
                                                                     ResultadoPesquisaPaginadaDTOApostaDTOResponse.class,
                                                                     listener.getSilceListener(),
                                                                     listener.getErrorListener(),
                                                                     getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        connection.request(request, listener);
+        getConnection().request(request, listener);
     }
 
     private Map<String, String> getQueryParams(ApostaPageRequest page) {

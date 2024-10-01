@@ -20,10 +20,8 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -36,6 +34,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 public class BiometriaLogin {
 
@@ -50,12 +49,12 @@ public class BiometriaLogin {
         AlertDialogUtils.show(activity);
 
         AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                Uri.parse(BuildConfig.URL_SSO_AUTH),
-                Uri.parse(BuildConfig.URL_SSO_TOKEN)
+                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_AUTH")),
+                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
         );
 
         AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(Aplicacao.application.getApplicationContext());
-        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
+        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfigManager.getVariavel("SSO_CLIENT_ID"));
         tokenBuilder.setRefreshToken(biometriaDTO.getRefresh());
         tokenBuilder.setGrantType("refresh_token");
 
@@ -70,8 +69,8 @@ public class BiometriaLogin {
             //if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
             //    DadosBiometriaBO.salvarBiometria(response.refreshToken);
             //}
-            KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext()).setAccessToken(response.accessToken);
-            KeycloakBO_.getInstance_(Aplicacao.application.getApplicationContext()).setRefreshToken(response.refreshToken);
+            KeycloakBO.getInstance().setAccessToken(response.accessToken);
+            KeycloakBO.getInstance().setRefreshToken(response.refreshToken);
 
             LoginSP.loginRealizado(true);
             String separar[] = response.accessToken.split(activity.getString(R.string.barra_barra_ponto));
@@ -87,10 +86,9 @@ public class BiometriaLogin {
                 AcessoBO.PRIMEIRO_LOGIN = false;
             }
 
-            final DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(activity);
             DBLoteriasCrud crud = new DBLoteriasCrud(activity);
             List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
-            dadosUsuarioBO.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+            DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
 
                 @Override
                 public void onResponse(UsuarioLogadoResponse response) {
@@ -105,6 +103,7 @@ public class BiometriaLogin {
                     //SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
                     SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
                     SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
+                    SessaoUsuario.getInstance().setSituacaoApostador(response.getPayload().getSituacaoApostador());
 
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                     UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());

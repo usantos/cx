@@ -7,5 +7,7 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(description = "")
 public enum SituacaoApostadorEnum {
     @SerializedName("ATIVO") ATIVO,
-    @SerializedName("BLOQUEADO") BLOQUEADO;
+    @SerializedName("BLOQUEADO") BLOQUEADO,
+    @SerializedName("BLOQUEADO_TOTAL") BLOQUEADO_TOTAL,
+    @SerializedName("BLOQUEADO_PARCIAL") BLOQUEADO_PARCIAL;
 }

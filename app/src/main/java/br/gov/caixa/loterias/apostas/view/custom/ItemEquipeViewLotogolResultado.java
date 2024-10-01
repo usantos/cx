@@ -7,10 +7,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -21,27 +17,36 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
  * Created by cedesbr450 on 03/04/18.
  */
 
-@EViewGroup(R.layout.item_lotogol_resultado)
 public class ItemEquipeViewLotogolResultado extends LinearLayout {
 
-    @ViewById
-    ImageView itemImage;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    TextView itemTitle;
-
-
-
-    @ViewById
-    TextView placarResultadoIremLotogolText;
-
+    private ImageView itemImage;
+    private TextView itemTitle;
+    private TextView placarResultadoIremLotogolText;
 
     private ParametroEquipe parametroEquipe;
 
+    public static ItemEquipeViewLotogolResultado build(Context context) {
+        ItemEquipeViewLotogolResultado instance = new ItemEquipeViewLotogolResultado(context);
+        instance.onFinishInflate();
+        return instance;
+    }
 
-    @AfterViews
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_lotogol_resultado, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
     protected void init() {
-
+        this.itemImage = findViewById(R.id.item_image);
+        this.itemTitle = findViewById(R.id.item_title);
+        this.placarResultadoIremLotogolText = findViewById(R.id.placarResultadoIremLotogolText);
     }
 
     public ItemEquipeViewLotogolResultado(Context context) {

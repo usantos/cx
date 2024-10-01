@@ -7,9 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -35,9 +33,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
-import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
@@ -50,7 +46,6 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado;
 import br.gov.caixa.loterias.apostas.view.custom.SuperSeteResultadoLayout;
-import br.gov.caixa.loterias.apostas.view.custom.SuperSeteResultadoLayout_;
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoDuplaSenaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoGenericoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoLotecaFragment;
@@ -308,7 +303,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 break;
             case SUPER_7:
                 setBackground(R.color.superseteclaro, R.color.supersetemedio, R.drawable.background_trapeze_super_sete);
-                SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout_.build(this);
+                SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout.build(this);
                 view7.setLayout(response.getMatrizNumerosSorteadosPrimeiroSorteio());
                 containerFragment.addView(view7);
                 tvNumeroSorteio.setVisibility(View.GONE);
@@ -354,8 +349,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private void getResultadoModalidade(String txtmodalidade, String concurso) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
-        apostaBO.getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
+        ApostaBO.getInstance().getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();

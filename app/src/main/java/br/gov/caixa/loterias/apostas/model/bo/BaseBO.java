@@ -12,11 +12,6 @@ import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,39 +19,39 @@ import java.util.Map;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO_;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSilceSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 /**
  * Created by pmotta on 21/03/2018.
  */
 
-@EBean
-public class BaseBO {
-
-    protected SilceConnection silceConnection;
-
-    @Bean
-    protected SilceSingleton silceSingleton;
-
-    @Bean
-    protected KeycloakBO keycloakBO;
-
-    @RootContext
-    protected Context context;
+public abstract class BaseBO {
+    private SilceConnection silceConnection;
+    private Context context;
 
     private static LinkedHashMap<String, String> header;
 
-    @AfterInject
-    protected void init(){
-        silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+    public BaseBO(){
+        silceConnection = SilceConnection.create(SilceSingleton.getInstance().getRequestQueue(),
+                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
+        context = Aplicacao.application.getApplicationContext();
+    }
+
+    public SilceConnection getSilceConnection(){
+        return this.silceConnection;
+    }
+
+    public Context getContext(){
+        return this.context;
     }
 
     protected <T> Response.ErrorListener interceptError(final GsonRequest request, final Map<String, String> headers, final RequestListener<T> listener){
@@ -65,8 +60,9 @@ public class BaseBO {
                 registraErro(error, request);
                 if (MensagensNetwork.isCertificadoInvalido(error)){
                     if (CertificadoSilceSingleton.getInstance().trocaCertificado()){
-                        silceSingleton.initQueue();
-                        silceConnection = SilceConnection.create(silceSingleton.getRequestQueue(), BuildConfig.CAIXA_BASE_URL_SILCE);
+                        SilceSingleton.getInstance().initQueue();
+                        silceConnection = SilceConnection.create(SilceSingleton.getInstance().getRequestQueue(),
+                                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
                         silceConnection.request(request, listener);
                         return;
                     } else {
@@ -75,18 +71,19 @@ public class BaseBO {
                 }
 
                 //Caso não esteja autorizado tenta atualizar o token de acesso
-                if(MensagensNetwork.isUnauthorizedError(error) && keycloakBO.getAccessToken() != null) {
-                    keycloakBO.refreshAccess(() -> {
+                if(MensagensNetwork.isUnauthorizedError(error) && KeycloakBO.getInstance().getAccessToken() != null) {
+                    KeycloakBO.getInstance().refreshAccess(() -> {
                         //Se retornar o token, tenta fazer a mesma requisição
 
                         AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                                Uri.parse(BuildConfig.URL_SSO_AUTH),
-                                Uri.parse(BuildConfig.URL_SSO_TOKEN)
+                                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_AUTH")),
+                                Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
                         );
 
                         AuthorizationService authorizationService = AuthorizationServiceFactory.getAuthorizationService(context);
-                        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration, BuildConfig.SSO_CLIENT_ID);
-                        tokenBuilder.setRefreshToken(keycloakBO.getRefreshToken());
+                        TokenRequest.Builder tokenBuilder = new TokenRequest.Builder(authorizationServiceConfiguration,
+                                BuildConfigManager.getVariavel("SSO_CLIENT_ID"));
+                        tokenBuilder.setRefreshToken(KeycloakBO.getInstance().getRefreshToken());
                         tokenBuilder.setGrantType("refresh_token");
 
                         TokenRequest tokenRequest = tokenBuilder.build();
@@ -96,12 +93,12 @@ public class BaseBO {
                                 if (response.accessToken == null || response.refreshToken == null) {
                                     listener.onErrorResponse(error);
                                 } else {
-                                    KeycloakBO_.getInstance_(context).setAccessToken(response.accessToken);
-                                    KeycloakBO_.getInstance_(context).setRefreshToken(response.refreshToken);
+                                    KeycloakBO.getInstance().setAccessToken(response.accessToken);
+                                    KeycloakBO.getInstance().setRefreshToken(response.refreshToken);
 
-                                    if (keycloakBO.getAccessToken() != null) {
+                                    if (KeycloakBO.getInstance().getAccessToken() != null) {
                                         //Atualiza o token com os headers
-                                        headers.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+                                        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
                                         request.setHeaders(headers);
                                         //Refaz a conexão
                                         silceConnection.request(request, listener);
@@ -123,7 +120,6 @@ public class BaseBO {
         };
     }
 
-
     private void registraErro(VolleyError error, GsonRequest request){
         ErrorResponse   errorResponse = transformaErroEmErrorResponse(error);
         NetworkResponse response      = error.networkResponse;
@@ -136,14 +132,14 @@ public class BaseBO {
         if (request.getUrl().contains("/?")) {
             return "URL crashando app";
         }
-        return Bin.fromBase64(request.getUrl().replaceAll(BuildConfig.CAIXA_BASE_URL_SILCE,"")).toUtf8();
+        return Bin.fromBase64(request.getUrl().replaceAll(BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"),"")).toUtf8();
     }
 
     protected LinkedHashMap<String, String> getHeader(){
         if(header == null){
             this.header = new LinkedHashMap<>();
         }
-        this.header.put("Authorization", "Bearer " + keycloakBO.getAccessToken());
+        this.header.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         return header;
     }

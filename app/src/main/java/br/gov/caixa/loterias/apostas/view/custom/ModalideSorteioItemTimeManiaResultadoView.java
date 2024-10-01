@@ -12,10 +12,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -27,31 +23,41 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultados
  * Created by cedesbr450 on 28/03/18.
  */
 
-
-@EViewGroup(R.layout.item_resultado_timemania)
 public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
 
-    @ViewById
+    private boolean alreadyInflated = false;
     protected RecyclerView recyclerNumerosResultado;
-
-    @ViewById
     protected LinearLayout  item_resultado_content_view;
-
-    @ViewById
     protected View tracoViewDivisoriaResultado;
-
-    @ViewById
     protected TextView labelTimeCoracaoText, textTimeCoracao;
-
-    @ViewById
     protected PartidaViewDetalhesResultado partidaViewDetalhesResultadoView;
-
-    @ViewById
     protected ImageView timeCoracaoImage;
 
-    @AfterViews
-    protected void init() {
 
+    public static ModalideSorteioItemTimeManiaResultadoView build(Context context) {
+        ModalideSorteioItemTimeManiaResultadoView instance = new ModalideSorteioItemTimeManiaResultadoView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_resultado_timemania, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    protected void init() {
+        this.recyclerNumerosResultado = findViewById(R.id.recyclerNumerosResultado);
+        this.item_resultado_content_view = findViewById(R.id.item_resultado_content_view);
+        this.tracoViewDivisoriaResultado = findViewById(R.id.tracoViewDivisoriaResultado);
+        this.labelTimeCoracaoText = findViewById(R.id.labelTimeCoracaoText);
+        this.textTimeCoracao = findViewById(R.id.textTimeCoracao);
+        this.partidaViewDetalhesResultadoView = findViewById(R.id.partidaViewDetalhesResultadoView);
+        this.timeCoracaoImage = findViewById(R.id.timeCoracaoImage);
     }
 
     public void setLayout(Modalidade modalidade) {

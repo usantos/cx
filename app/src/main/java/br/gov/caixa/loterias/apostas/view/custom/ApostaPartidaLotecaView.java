@@ -5,10 +5,6 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -22,15 +18,33 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
  * Created by joafilho on 25/01/2018.
  * Class ApostaPartidaLotecaView
  */
-@EViewGroup(R.layout.row_apostas_partidas_loteca)
 public class ApostaPartidaLotecaView extends LinearLayout {
 
-    @ViewById
-    ApostaEquipeLotecaView apostasPartidaLotecaViewUm, apostasPartidaLotecaViewEmpate, apostasPartidaLotecaViewDois;
+    private boolean alreadyInflated = false;
 
-    @AfterViews
+    private ApostaEquipeLotecaView apostasPartidaLotecaViewUm, apostasPartidaLotecaViewEmpate, apostasPartidaLotecaViewDois;
+
+    public static ApostaPartidaLotecaView build(Context context) {
+        ApostaPartidaLotecaView instance = new ApostaPartidaLotecaView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.row_apostas_partidas_loteca, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    //@AfterViews
     protected void init() {
-
+        this.apostasPartidaLotecaViewUm = findViewById(R.id.apostas_partida_loteca_view_um);
+        this.apostasPartidaLotecaViewEmpate = findViewById(R.id.apostas_partida_loteca_view_empate);
+        this.apostasPartidaLotecaViewDois = findViewById(R.id.apostas_partida_loteca_view_dois);
     }
 
     public ApostaPartidaLotecaView(Context context) {

@@ -9,13 +9,12 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
-
-import org.androidannotations.annotations.EBean;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,7 +41,6 @@ import br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado;
  * Class HtmlUtils
  */
 
-@EBean
 public class HtmlUtils {
 
     private static final String FILE_PATH_COMPROVANTE_APOSTA = "htmls/comprovante_aposta.html";
@@ -311,7 +309,7 @@ public class HtmlUtils {
 
         html = ViewUtils.replaceNullable(html, BODY_LISTA_ITENS_APOSTA, getBodyList(detalhesPremioDTO.getAposta(), context));
 
-        html = ViewUtils.replaceNullable(html, BODY_LISTA_TABELA_PREMIACAO, getBodyListaTabelaPremiacao(detalhesPremioDTO.getPremio()));
+        html = ViewUtils.replaceNullable(html, BODY_LISTA_TABELA_PREMIACAO, getBodyListaTabelaPremiacao(detalhesPremioDTO.getPremio(), detalhesPremioDTO.getPremio().getValorLiquido()));
 
         html = ViewUtils.replaceNullable(html, BODY_CODIGO_NSBI, detalhesPremioDTO.getNsbi());
 
@@ -320,7 +318,6 @@ public class HtmlUtils {
 
         return html;
     }
-
 
     private static String getBodyList(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta, Context context) {
         StringBuilder sbHtmlBodyList = new StringBuilder();
@@ -555,7 +552,6 @@ public class HtmlUtils {
     }
 
     private static String getBarcode(String valor) {
-
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         Bitmap bitmap = null;
         try {
@@ -572,24 +568,25 @@ public class HtmlUtils {
         return "";
     }
 
-    private static String getBodyListaTabelaPremiacao(PremioDTO premioDTO) {
+    private static String getBodyListaTabelaPremiacao(PremioDTO premioDTO, BigDecimal valorLiquidoPremio) {
         if (premioDTO.getConcursos() == null || premioDTO.getConcursos().size() == 0) {
             return "";
         }
 
-        ConcursoPremiadoDTO concursoPremiadoDTO = premioDTO.getConcursos().get(0);
+        List<ConcursoPremiadoDTO> listConcursoPremiadoDTO = premioDTO.getConcursos(); //.get(0);
         StringBuilder stringBuilder = new StringBuilder();
         boolean firstTime = true;
 
-        if (concursoPremiadoDTO != null) {
-            for (FaixaPremiadaDTO faixaPremiadaDTO: concursoPremiadoDTO.getFaixas()) {
+        if (listConcursoPremiadoDTO != null) {
+            for (ConcursoPremiadoDTO concursoPremiadoDTO: listConcursoPremiadoDTO) {
+                FaixaPremiadaDTO faixaPremiadaDTO = concursoPremiadoDTO.getFaixas().get(0);
                 stringBuilder.append("<tr style=\"height: 30px;\">");
                 stringBuilder.append(String.format("<td style=\"border-right: 1px solid orange; border-bottom: 1px solid orange;\">%s</td>", faixaPremiadaDTO.getNome()));
                 stringBuilder.append(String.format("<td style=\"border-right: 1px solid orange; border-bottom: 1px solid orange;\">%s</td>", ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorPremioCota())));
                 if (firstTime) {
                     firstTime = false;
-                    //stringBuilder.append(String.format("<th rowspan=\"%d\" style=\"border-right: 1px solid orange;\">%s</th>", concursoPremiadoDTO.getFaixas().size(), ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorLiquido())));
-                    stringBuilder.append(String.format("<th rowspan=\"%d\" style=\"border-right: 1px solid orange;\">%s</th>", concursoPremiadoDTO.getFaixas().size(), ViewUtils.getMoedaFormat(concursoPremiadoDTO.getValorLiquido())));
+                    stringBuilder.append(String.format("<th rowspan=\"%d\" style=\"border-right: 1px solid orange; text-align: center; vertical-align: middle;\">%s</th>", concursoPremiadoDTO.getFaixas().size(), ViewUtils.getMoedaFormat(valorLiquidoPremio)));
+                    //stringBuilder.append(String.format("<th rowspan=\"%d\" style=\"border-right: 1px solid orange;\">%s</th>", concursoPremiadoDTO.getFaixas().size(), ViewUtils.getMoedaFormat(concursoPremiadoDTO.getValorLiquido())));
                 }
             }
             stringBuilder.append("</tr>");

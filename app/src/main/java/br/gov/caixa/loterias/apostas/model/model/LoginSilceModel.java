@@ -7,7 +7,6 @@ import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -20,8 +19,7 @@ public class LoginSilceModel extends AppModel {
 	}
 
 	public void sair(OnSilceListener<NetworkResponse> listener) {
-		DadosUsuarioBO dadosUsuarioBO = DadosUsuarioBO_.getInstance_(getActivity());
-		dadosUsuarioBO.sair(new RequestListener<NetworkResponse>() {
+		DadosUsuarioBO.getInstance().sair(new RequestListener<NetworkResponse>() {
 			@Override
 			public void onResponse(NetworkResponse result) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_logout_sucesso));

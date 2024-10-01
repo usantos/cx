@@ -19,14 +19,12 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.custom.ModalidadeSorteioResultadoView;
-import br.gov.caixa.loterias.apostas.view.custom.ModalidadeSorteioResultadoView_;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnHomeListener;
 
@@ -93,9 +91,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> implements
                                                 ) {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(context);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(context);
-
-        apostaBO.getResultadoModalidade(modalidade, new RequestListener<ResultadoConcursoDTOResponse>() {
+        ApostaBO.getInstance().getResultadoModalidade(modalidade, new RequestListener<ResultadoConcursoDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -128,7 +124,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeViewHolder> implements
     @Override
     public void setLayoutResultado(LinearLayout linearLayoutResultadosApostas, int position) {
         linearLayoutResultadosApostas.removeAllViews();
-        ModalidadeSorteioResultadoView view = ModalidadeSorteioResultadoView_.build(context);
+        ModalidadeSorteioResultadoView view = ModalidadeSorteioResultadoView.build(context);
         view.setLayout(data.get(position));
         linearLayoutResultadosApostas.addView(view);
     }

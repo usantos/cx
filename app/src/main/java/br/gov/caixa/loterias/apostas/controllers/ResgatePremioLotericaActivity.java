@@ -22,7 +22,6 @@ import androidmads.library.qrgenearator.QRGEncoder;
 import br.gov.caixa.loterias.apostas.LoteriasAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTO;
@@ -155,9 +154,8 @@ public class ResgatePremioLotericaActivity extends LoteriasAppActivity {
     }
 
     protected void atualizaCodigoResgate() {
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(ResgatePremioLotericaActivity.this);
         AlertDialogUtils.show(this);
-        apostaBO.getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
+        ApostaBO.getInstance().getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
             @Override
             public void onResponse(CodigoResgateDTOResponse response) {
                 AlertDialogUtils.dismiss();

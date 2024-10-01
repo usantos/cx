@@ -6,9 +6,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -21,14 +18,37 @@ import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
  * Created by joafilho on 27/03/2018.
  * Class PartidasLotogolApostasConfirmadasView
  */
-@EViewGroup(R.layout.row_apostas_confirmadas_partidas_lotogol)
 public class PartidasLotogolApostasConfirmadasView extends LinearLayout {
 
-    @ViewById
-    ImageView imagemEscudoApostaEquipeLotogolUm, imagemPlacarApostaEquipeLotogolUm, imagemEscudoApostaEquipeLotogolDois, imagemPlacarApostaEquipeLotogolDois;
+    private boolean alreadyInflated = false;
 
-    @ViewById
-    TextView textoApostaEquipeLotogolUm, textoApostaEquipeLotogolDois;
+    private ImageView imagemEscudoApostaEquipeLotogolUm, imagemPlacarApostaEquipeLotogolUm, imagemEscudoApostaEquipeLotogolDois, imagemPlacarApostaEquipeLotogolDois;
+    private TextView textoApostaEquipeLotogolUm, textoApostaEquipeLotogolDois;
+
+    public static PartidasLotogolApostasConfirmadasView build(Context context) {
+        PartidasLotogolApostasConfirmadasView instance = new PartidasLotogolApostasConfirmadasView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.row_apostas_confirmadas_partidas_lotogol, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    private void init() {
+        this.imagemEscudoApostaEquipeLotogolUm = findViewById(R.id.imagemEscudoApostaEquipeLotogolUm);
+        this.imagemPlacarApostaEquipeLotogolUm = findViewById(R.id.imagemPlacarApostaEquipeLotogolUm);
+        this.imagemEscudoApostaEquipeLotogolDois = findViewById(R.id.imagemEscudoApostaEquipeLotogolDois);
+        this.imagemPlacarApostaEquipeLotogolDois = findViewById(R.id.imagemPlacarApostaEquipeLotogolDois);
+        this.textoApostaEquipeLotogolUm = findViewById(R.id.textoApostaEquipeLotogolUm);
+        this.textoApostaEquipeLotogolDois = findViewById(R.id.textoApostaEquipeLotogolDois);
+    }
 
     public void setLayout() {
 

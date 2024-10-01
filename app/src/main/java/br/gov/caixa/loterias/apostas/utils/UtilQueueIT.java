@@ -20,7 +20,7 @@ public class UtilQueueIT extends QueueListener {
     private ICallbackQueueIT callback;
     private void iniciaFila(Activity activity) {
         try {
-            QueueITEngine engine = new QueueITEngine(activity, BuildConfig.QUEUE_IT_CUSTOMER_ID, BuildConfig.QUEUE_IT_EVENT_ALIAS_ID, BuildConfig.QUEUE_IT_CUSTOM_LAYOUT_NAME, "pt-BR", this);
+            QueueITEngine engine = new QueueITEngine(activity, BuildConfigManager.getVariavel("QUEUE_IT_CUSTOMER_ID"), BuildConfigManager.getVariavel("QUEUE_IT_EVENT_ALIAS_ID"), BuildConfigManager.getVariavel("QUEUE_IT_CUSTOM_LAYOUT_NAME"), "pt-BR", this);
             engine.run(activity);
         } catch (QueueITException e) {
             Log.e(getClass().getName(), "Não consegui abrir a fila.");

@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -39,7 +40,6 @@ import java.util.Objects;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO_;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -74,6 +74,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -161,7 +162,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
 
         model = new ApostaFavoritaModel(ApostaConfirmadaDetalhesActivity.this);
-        apostaBO = ApostaBO_.getInstance_(this);
+        apostaBO = ApostaBO.getInstance();
 
         pegaExtras();
         setaViews();
@@ -374,7 +375,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void carrinhoApostasBtn() {
         AlertDialogUtils.show(this);
-        ApostaBO apostaBO = ApostaBO_.getInstance_(this);
 
         apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
@@ -432,11 +432,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void goToEditarAposta(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
         if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
-            SimularApostaActivity_.intent(this).aposta(aposta)
-                    .extra(getResources().getString(R.string.extra_tipo_aposta), aposta.getModalidade())
-                    .extra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacaoTrocado.getParametroJogo()))
-                    .extra(getResources().getString(R.string.extra_especial), isEspecial(aposta.getTipoConcurso().getValor()))
-                    .start();
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
+            intent.putExtra(SimularApostaActivity.APOSTA_EXTRA, ((Serializable) aposta));
+            intent.putExtra("tipoAposta", ((Serializable) aposta.getModalidade()));
+            intent.putExtra("modalidade", ((Serializable) (new Gson()).toJson(parametroSimulacaoTrocado.getParametroJogo())));
+            intent.putExtra("especial", isEspecial(aposta.getTipoConcurso().getValor()));
+            startActivity(intent);
         }
     }
 
@@ -729,7 +730,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void getResultadoModalidade(String txtmodalidade, String concurso) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        final ApostaBO apostaBO = ApostaBO_.getInstance_(this);
         apostaBO.getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
@@ -801,7 +801,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void getApostaDetalhePremio(Long apostaId, final Context contextParam, ComprovanteApostaDTO comprovante) {
-        ApostaBO apostaBO = ApostaBO_.getInstance_(contextParam);
         apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
@@ -817,7 +816,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 if (numerosFragment != null){
                     numerosFragment.setDetalhesPremio(result.getPayload());
                 }
-                ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
+                //ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
+                Intent intent = IntentUtil.getIntentOrigemDestino((Activity) contextParam, ResultadoApostaConfirmadaActivity.class);
+                intent.putExtra(ResultadoApostaConfirmadaActivity.DETALHES_PREMIO_DTO_EXTRA, ((Serializable) result.getPayload()));
+                intent.putExtra(ResultadoApostaConfirmadaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovante));
+                ((Activity) contextParam).startActivityForResult(intent, RESGATOU_MP);
             }
 
             @Override

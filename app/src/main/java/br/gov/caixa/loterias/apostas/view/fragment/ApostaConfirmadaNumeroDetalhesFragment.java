@@ -1,12 +1,9 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,20 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.VolleyError;
-import com.google.android.gms.common.util.DataUtils;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,8 +32,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.DataUtil;
-import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
@@ -151,7 +139,8 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				numerosSorteadosPrimeiro = getResultadoConcurso() != null ? getResultadoConcurso().getListaSorteadosPrimeiroSorteio() : null;
 				numerosSorteadosSegundo =  (List<Integer>) (getResultadoConcurso() != null && getResultadoConcurso().getNumerosSorteadosSegundoSorteio() != null  ?
 						getResultadoConcurso().getNumerosSorteadosSegundoSorteio() : new ArrayList<>());
-				fragment = NumerosFragment.newInstance(getContext().getResources().getString(R.string.seus_numeros),
+				fragment = NumerosFragment.newInstance(getContext().getResources().getString(R.string.seus_numeros) + "\n\n" +
+								getContext().getResources().getString(R.string.primeiro_sorteiro),
 						aposta.getListaNumerosSelecionados(), numerosSorteadosPrimeiro,
 						getEstiloNumeros(aposta), null);
 				break;
@@ -250,7 +239,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				rl_container_result_2.setVisibility(View.VISIBLE);
 			} else {
 				Collections.sort(numerosSorteadosSegundo);
-				fragResultado = NumerosFragment.newInstance("", aposta.getListaNumerosSelecionados() ,numerosSorteadosSegundo,getEstiloNumeros(aposta), null);
+				fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.segundo_sorteiro), aposta.getListaNumerosSelecionados() ,numerosSorteadosSegundo,getEstiloNumeros(aposta), null);
 				fm.beginTransaction().replace(R.id.rl_fg_numeros_2, fragResultado).commitAllowingStateLoss();
 				rl_fg_numeros_2.setVisibility(View.VISIBLE);
 
@@ -260,7 +249,6 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				rl_container_result_2.setVisibility(View.VISIBLE);
 			}
 		}
-
 	}
 
 	private ShapeConfig getTrevoShape() {

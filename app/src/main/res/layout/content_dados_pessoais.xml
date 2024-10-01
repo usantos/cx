@@ -34,7 +34,7 @@
                     android:id="@+id/editTextCpfContent"
                     android:ems="10"
                     android:hint="@string/title_cpf"
-                    style="@style/editTextRegisterTheme"
+                    style="@style/editTextRegisterThemeCaixa"
                     android:inputType="number"
                     app:mask="***.***.***-**"
                     app:notMaskedSymbol="*"
@@ -55,7 +55,7 @@
                     android:id="@+id/editTextNomeContent"
                     android:ems="10"
                     android:hint="@string/label_nome"
-                    style="@style/editTextRegisterTheme"
+                    style="@style/editTextRegisterThemeCaixa"
                     android:inputType="textPersonName"
                     android:enabled="false"
                     android:alpha="0.3"/>
@@ -117,7 +117,7 @@
 
                 <com.github.pinball83.maskededittext.MaskedEditText
                     android:id="@+id/editTextCepContent"
-                    style="@style/editTextRegisterTheme"
+                    style="@style/editTextRegisterThemeCaixa"
                     android:ems="10"
                     android:hint="@string/label_cep"
                     android:inputType="number"
@@ -138,7 +138,7 @@
                 <EditText
                     android:id="@+id/editTextUFContent"
                     android:drawableRight="@drawable/combo"
-                    style="@style/editTextRegisterTheme"
+                    style="@style/editTextRegisterThemeCaixa"
                     android:ems="10"
                     android:focusableInTouchMode="false"
                     android:hint="@string/title_uf"
@@ -158,7 +158,7 @@
                 <EditText
                     android:id="@+id/editTextMunicipioContent"
                     android:drawableRight="@drawable/combo"
-                    style="@style/editTextRegisterTheme"
+                    style="@style/editTextRegisterThemeCaixa"
                     android:ems="10"
                     android:focusableInTouchMode="false"
                     android:hint="@string/label_municipio"
@@ -177,7 +177,7 @@
 
                 <EditText
                     android:id="@+id/editTextEmailContent"
-                    style="@style/editTextRegisterTheme"
+                    style="@style/editTextRegisterThemeCaixa"
                     android:ems="10"
                     android:hint="@string/label_email"
                     android:inputType="textEmailAddress"
@@ -193,7 +193,7 @@
                 android:text="@string/seekbar_titulo"
                 android:layout_below="@id/editTextEmailContent"
                 android:textSize="15.7sp"
-                android:fontFamily="@font/futura_std_bold"
+                android:fontFamily="@font/caixa_std_bold"
                 />
 
             <TextView
@@ -204,6 +204,7 @@
                 android:layout_marginLeft="120dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textSize="15.7sp" />
 
             <SeekBar
@@ -232,6 +233,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/seekbar_val_min"
+                        android:fontFamily="@font/caixa_std_regular"
                         android:textSize="15.7sp" />
 
                     <TextView
@@ -243,6 +245,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/seekbar_val_max"
+                        android:fontFamily="@font/caixa_std_regular"
                         android:textSize="15.7sp" />
                 </TableRow>
             </TableLayout>
@@ -256,6 +259,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/verdeazul"
                 android:text="@string/dados_limite_compra"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textAllCaps="false"
                 android:textColor="@color/branco"
                 android:textSize="15.7sp"
@@ -285,7 +289,7 @@
             android:layout_height="84dp"
             android:layout_marginLeft="108dp"
             android:background="@color/verdeazul"
-            android:fontFamily="@font/futura_std_bold"
+            android:fontFamily="@font/caixa_std_bold"
             android:text="@string/atualizar"
             android:textAllCaps="false"
             android:textColor="@color/branco"

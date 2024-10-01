@@ -5,17 +5,14 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.androidannotations.annotations.EViewGroup;
-import org.androidannotations.annotations.ViewById;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 
-@EViewGroup(R.layout.item_retanglulo_texto)
 public class ItemRetanguloTextView extends RelativeLayout {
 
-    @ViewById
-    protected TextView descricaoText;
+    private boolean alreadyInflated = false;
+
+    private TextView descricaoText;
 
     private ParametroMesDeSorte mesDeSorte;
 
@@ -29,6 +26,26 @@ public class ItemRetanguloTextView extends RelativeLayout {
 
     public ItemRetanguloTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public static ItemRetanguloTextView build(Context context) {
+        ItemRetanguloTextView instance = new ItemRetanguloTextView(context);
+        instance.onFinishInflate();
+        return instance;
+    }
+
+    @Override
+    public void onFinishInflate() {
+        if (!alreadyInflated) {
+            alreadyInflated = true;
+            inflate(getContext(), R.layout.item_retanglulo_texto, this);
+        }
+        super.onFinishInflate();
+        init();
+    }
+
+    private void init() {
+        this.descricaoText = findViewById(R.id.descricaoText);
     }
 
     public void setLayout(ParametroMesDeSorte mes) {

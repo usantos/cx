@@ -10,7 +10,6 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.view.custom.ApostaPartidaComprasLotogolView;
-import br.gov.caixa.loterias.apostas.view.custom.ApostaPartidaComprasLotogolView_;
 
 /**
  * Created by cedesbr450 on 20/03/18.
@@ -27,7 +26,7 @@ public class DetalhesApostaLotogolDetalhesComprasAdapter extends RecyclerView.Ad
 
     @Override
     public ApostaLotogolHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ApostaPartidaComprasLotogolView view = ApostaPartidaComprasLotogolView_.build(parent.getContext());
+        ApostaPartidaComprasLotogolView view = ApostaPartidaComprasLotogolView.build(parent.getContext());
         return new ApostaLotogolHolder(view);
     }
 
