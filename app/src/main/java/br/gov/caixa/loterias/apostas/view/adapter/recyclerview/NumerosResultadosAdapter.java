@@ -15,7 +15,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 /**
@@ -59,14 +59,15 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        EstiloModalidade estilo = new EstiloModalidade(modalidade);
+        //EstiloModalidade estilo = new EstiloModalidade(modalidade);
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
         int numeroResultado = numeroslista.get(position);
         String numero = numeroResultado < 10 ? context.getResources().getString(R.string.zero) + numeroResultado : context.getResources().getString(R.string.string_vazia) + numeroResultado;
         if (numero.equals("100")){
             numero = "00";
         }
         holder.textViewTituloNumerosResultados.setText(numero);
-        holder.textViewTituloNumerosResultados.setTextColor(context.getResources().getColor(estilo.getCorClara()));
+        holder.textViewTituloNumerosResultados.setTextColor(context.getResources().getColor(estilo.getCorLetraLista()));
         GradientDrawable drawable = new GradientDrawable();
         drawable.setColor(context.getResources().getColor(R.color.branco));
         drawable.setShape(GradientDrawable.OVAL);

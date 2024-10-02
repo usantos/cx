@@ -22,6 +22,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -42,6 +43,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PremiacaoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado;
@@ -73,6 +75,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private Integer concursoAlvo;
     private Integer corClara;
     private Integer corEscura;
+    private Integer corFonte;
     private Integer resourceTrapezio;
     private int direcaoAnimacao;
 
@@ -110,6 +113,9 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private LinearLayout containerFragmentTrevos;
 
     private ImageView iv_header;
+    private ImageView iv_trevo;
+
+    private EstiloModalidadeMKP estilo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +150,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         etPesquisar = findViewById(R.id.et_pesquisar);
 
         //txtPremiados.setText(getString(R.string.label_premiados));
+        tvNumeroSorteio.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
         tvNumeroSorteio.setText(getString(R.string.resultados_numeros_sorteados));
         //btnVoltarInterno.setVisibility(View.GONE);
         ibPesquisar.setVisibility(View.VISIBLE);
@@ -156,6 +163,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         tvTrevos = findViewById(R.id.tv_trevos);
 
         iv_header = findViewById(R.id.iv_header);
+        iv_trevo  = findViewById(R.id.iv_trevo);
 
     }
     private void setaMetodos(){
@@ -258,65 +266,55 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         divisoria.setVisibility(View.VISIBLE);
         tvNumeroSorteio.setVisibility(View.VISIBLE);
         layoutListaPremiacao.setVisibility(View.VISIBLE);
-        dataSorteio.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_data_sorteio, ("_"+response.getConcurso().getDataSorteio()+"_"))));
+        dataSorteio.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+        dataSorteio.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.resultados_data_sorteio, ("_"+response.getConcurso().getDataSorteio()+"_"))));
+
+        setBackground(estilo.getCorClara(), estilo.getCorEscura(), estilo.getTrapezio());
 
         switch (ModalidadeEnum.toString(txtModalidade)) {
             case MEGA_SENA:
-                setBackground(R.color.megasenaclaro, R.color.megasenaescuro, R.drawable.background_trapeze_megasena);
                 configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
             case LOTOFACIL:
-                setBackground(R.color.lotofacilclaro, R.color.lotofacilescuro, R.drawable.background_trapeze_lotofacil);
                 configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
             case LOTOMANIA:
-                setBackground(R.color.lotomaniaclaro, R.color.lotomaniaescuro, R.drawable.background_trapeze_lotomania);
                 configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
             case QUINA:
-                setBackground(R.color.quinaclaro, R.color.quinaescuro, R.drawable.background_trapeze_quina);
                 configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
             case DUPLA_SENA:
-                setBackground(R.color.duplasenaclaro, R.color.duplasenaescuro, R.drawable.background_trapeze_duplasena);
                 configuraResultadoSuperior(response,ResultadoDuplaSenaFragment.newInstance(response));
-                //txtPremiados.setVisibility(View.GONE);
                 break;
             case TIMEMANIA:
-                setBackground(R.color.timemaniaclaro, R.color.timemaniamediaescuro, R.drawable.background_trapeze_timemania);
                 configuraResultadoSuperior(response, ResultadoTimemaniaDiaDeSorteFragment.newInstance(response));
                 break;
             case DIA_DE_SORTE:
-                setBackground(R.color.diasorteclaro, R.color.diasorteescuro, R.drawable.background_trapeze_dia_sorte);
                 configuraResultadoSuperior(response, ResultadoTimemaniaDiaDeSorteFragment.newInstance(response));
                 break;
             case LOTECA:
-                setBackground(R.color.lotecaclaro, R.color.lotecaescuro, R.drawable.background_trapeze_loteca);
                 configuraResultadoSuperior(response, ResultadoLotecaFragment.newInstance(response));
                 tvNumeroSorteio.setVisibility(View.GONE);
-                dataSorteio.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_data_resultado, ("_"+response.getConcurso().getDataSorteio()+"_"))));
+                dataSorteio.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.resultados_data_resultado, ("_"+response.getConcurso().getDataSorteio()+"_"))));
                 break;
             case LOTOGOL:
-                setBackground(R.color.lotogolclaro, R.color.lotogolescuro, R.drawable.background_trapeze_lotogol);
                 configuraResultadoSuperior(response, ResultadoLotogolFragment.newInstance(response));
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
             case SUPER_7:
-                setBackground(R.color.superseteclaro, R.color.supersetemedio, R.drawable.background_trapeze_super_sete);
                 SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout.build(this);
                 view7.setLayout(response.getMatrizNumerosSorteadosPrimeiroSorteio());
                 containerFragment.addView(view7);
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
             case MAIS_MILIONARIA:
-                setBackground(R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, R.drawable.mais_milionaria);
                 configuraResultadoSuperior(response, ResultadoMaisMilionariaFragment.newInstance(response));
                 containerFragmentTrevos.setVisibility(View.VISIBLE);
                 tvTrevos.setVisibility(View.VISIBLE);
                 configuraResultadoTrevos(response);
                 break;
             default:
-                setBackground(R.color.megasenaclaro, R.color.megasenaescuro, R.drawable.background_trapeze_megasena);
                 configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
         }
@@ -397,6 +395,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 concurso.getAberto(),
                 response.getPayload());
 
+        partidaViewDetalhesResultado.setIsFundoClaro(true);
         partidaViewDetalhesResultado.setLayout(modalidade);
 
         if(modalidade.getTipoModalidade().equals(ModalidadeEnum.MAIS_MILIONARIA)){
@@ -407,6 +406,8 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
             tituloModalidade.setVisibility(View.VISIBLE);
             iv_header.setVisibility(View.GONE);
             layoutTrevo.setVisibility(View.VISIBLE);
+            iv_trevo.setImageResource(estilo.getTrevoFundoEscuro());
+            tituloModalidade.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
             if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
                 tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
             }else {
@@ -500,6 +501,8 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             txtModalidade = bundle.getString(MODALIDADE);
+            estilo = new EstiloModalidadeMKP(ModalidadeEnum.toString(txtModalidade));
+
             if(bundle.getString(CONCURSO_ALVO) != null){
                 concursoAlvo = Integer.valueOf(bundle.getString(CONCURSO_ALVO));
                 concursoAtual = bundle.getInt(CONCURSO_ATUAL);

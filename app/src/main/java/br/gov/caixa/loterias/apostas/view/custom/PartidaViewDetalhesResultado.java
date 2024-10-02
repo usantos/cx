@@ -42,6 +42,8 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     private String modalidadeDescricao;
     private TipoConcursoEnum concurso1;
     private EstiloModalidadeMKP estilo;
+    private boolean isFundoClaro = false;
+    private int corFonte;
 
     public PartidaViewDetalhesResultado(Context context) {
         super(context);
@@ -189,6 +191,11 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
     public void setLayout(Modalidade modalidade) {
         estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+        if (isFundoClaro) {
+            corFonte = estilo.getCorFonteFundoClaro();
+        } else {
+            corFonte = estilo.getCorFonteFundoEscuro();
+        }
 
         if (modalidade.getTipoModalidade() != ModalidadeEnum.DUPLA_SENA) {
             TextView title1 = new TextView(getContext());
@@ -199,7 +206,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             layoutParams.setMargins(0, 20, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-            title1.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+            title1.setTextColor(ContextCompat.getColor(getContext(), corFonte));
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
             adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(), modalidade);
@@ -212,7 +219,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             layoutParamsGanhadores.setMargins(0, 20, 0, 0);
             titleGanhadores.setLayoutParams(layoutParamsGanhadores);
             titleGanhadores.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-            titleGanhadores.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+            titleGanhadores.setTextColor(ContextCompat.getColor(getContext(), corFonte));
 
             if (modalidade != null &&
                     modalidade.getResultadoConcursoDTO() != null &&
@@ -223,7 +230,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             }
         } else {
             TextView title1 = new TextView(getContext());
-            title1.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+            title1.setTextColor(ContextCompat.getColor(getContext(), corFonte));
             title1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_primeiro_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -236,12 +243,12 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             layoutParams4.setMargins(0, 20, 0, 0);
             title4.setLayoutParams(layoutParams4);
             title4.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-            title4.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+            title4.setTextColor(ContextCompat.getColor(getContext(), corFonte));
 
 
             layoutParams.setMargins(0, 20, 0, 0);
             title1.setLayoutParams(layoutParams);
-            title1.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+            title1.setTextColor(ContextCompat.getColor(getContext(), corFonte));
             title1.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
             //List<PremiacaoConcursoDTO> premiadosPrimeiro = modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio();
@@ -262,7 +269,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             layoutParams2.setMargins(0, 20, 0, 0);
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-            title2.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+            title2.setTextColor(ContextCompat.getColor(getContext(), corFonte));
 
             if (premiadosSegundo != null) {
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
@@ -277,7 +284,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             layoutParams3.setMargins(0, 20, 0, 0);
             title3.setLayoutParams(layoutParams3);
             title3.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-            title3.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+            title3.setTextColor(ContextCompat.getColor(getContext(), corFonte));
 
             if (modalidade != null &&
                     modalidade.getResultadoConcursoDTO() != null &&
@@ -412,7 +419,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             layoutParams.setMargins(0, 18, 0, 0);
             title1.setLayoutParams(layoutParams);
             title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
-            title1.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+            title1.setTextColor(ContextCompat.getColor(getContext(), corFonte));
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
 
@@ -430,7 +437,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
             title2.setLayoutParams(layoutParams2);
             title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
-            title2.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+            title2.setTextColor(ContextCompat.getColor(getContext(), corFonte));
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
 
 
@@ -440,7 +447,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
             title3.setLayoutParams(layoutParams3);
             title3.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
-            title3.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+            title3.setTextColor(ContextCompat.getColor(getContext(), corFonte));
             this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
 
         }
@@ -464,7 +471,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 layoutParams.setMargins(0, 18, 0, 0);
                 title1.setLayoutParams(layoutParams);
                 title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
-                title1.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+                title1.setTextColor(ContextCompat.getColor(getContext(), corFonte));
 
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
@@ -476,7 +483,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
                 title2.setLayoutParams(layoutParams2);
                 title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
-                title2.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+                title2.setTextColor(ContextCompat.getColor(getContext(), corFonte));
                 this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
 
                 if (count == 30) {
@@ -491,7 +498,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     title3.setLayoutParams(layoutParams3);
                     title3.setTextAppearance(getContext(), R.style.fontForTitle3Premiados);
-                    title3.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+                    title3.setTextColor(ContextCompat.getColor(getContext(), corFonte));
                     title3.setPadding(0, 10, 0, 0);
 
                     String strTextoHtml = "<a href=\"https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx"
@@ -519,7 +526,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         layoutParams.setMargins(0, 18, 0, 0);
         title.setLayoutParams(layoutParams);
         title.setTextAppearance(getContext(), R.style.fontForTitleTopoPremiados);
-        title.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+        title.setTextColor(ContextCompat.getColor(getContext(), corFonte));
         this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title);
 
         TextView text = new TextView(getContext());
@@ -531,7 +538,11 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
         layoutParams2.setMargins(0, 18, 0, 180);
         text.setLayoutParams(layoutParams2);
         text.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
-        text.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+        text.setTextColor(ContextCompat.getColor(getContext(), corFonte));
         this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(text);
+    }
+
+    public void setIsFundoClaro(boolean isFundoClaro) {
+        this.isFundoClaro = isFundoClaro;
     }
 }

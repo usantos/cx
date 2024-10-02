@@ -51,7 +51,6 @@ public class VisualizarModalidadesAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
-
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
             convertView = layoutInflater.inflate(R.layout.linearlayout_tipos_apostas, null);
@@ -63,13 +62,19 @@ public class VisualizarModalidadesAdapter extends BaseAdapter {
         final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloTipoApostaTextView);
 
         tituloTipoAposta.setText(tipoAposta.getTitulo());
-        if (tipoAposta.getValor() == 9){
-            imageViewTipoAPosta.setImageResource(R.drawable.ic_caixa_mm_amarelo_branco);
-        }else {
-            imageViewTipoAPosta.setImageResource(R.drawable.trevo);
-        }
+//        if (tipoAposta.getValor() == 9){
+//            imageViewTipoAPosta.setImageResource(R.drawable.ic_caixa_mm_amarelo_branco);
+//        }else {
+//            imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+//        }
+        imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
+
         linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
-        tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
+        if (tipoAposta.getTextColor() != null) {
+            tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, tipoAposta.getTextColor()));
+        } else {
+            tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
+        }
 
         convertView.setOnClickListener(v -> {
             if(listener != null){
