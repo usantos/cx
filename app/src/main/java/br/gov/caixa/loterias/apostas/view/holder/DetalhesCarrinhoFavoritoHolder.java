@@ -60,8 +60,12 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 		} else {
 			//Timemania
 			if (apostaAtual.getModalidade().getValor() == 20) {
-				tvModalidade.setText(apostaAtual.getModalidade().getDescricao().toLowerCase() + "\n\n" +
-						apostaAtual.getTimeDoCoracao().getNome()  + "/" + apostaAtual.getTimeDoCoracao().getUf());
+				tvModalidade.setText(apostaAtual.getModalidade().getDescricao().toLowerCase());
+
+				tvMesDaSorte.setVisibility(View.VISIBLE);
+				tvMesDaSorte.setText(apostaAtual.getTimeDoCoracao().getNome()  + "/" + apostaAtual.getTimeDoCoracao().getUf());
+				tvMesDaSorte.setTextColor(ContextCompat.getColor(ctx, estilo.getCorLetraLista()));
+
 			} else
 				tvModalidade.setText(apostaAtual.getModalidade().getDescricao().toLowerCase());
 		}
