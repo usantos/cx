@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
@@ -43,12 +44,8 @@ public class MeioPagamentoFragment extends Fragment {
 
 	private View view;
 	private AppCompatImageView imagem;
-	private AppCompatImageView imgBandeira1;
-	private AppCompatImageView imgBandeira2;
-	private AppCompatImageView imgBandeira3;
-	private AppCompatImageView imgBandeira4;
-	private AppCompatImageView imgBandeira5;
-	private AppCompatImageView imgBandeira6;
+	private int[] idsImageViewBandeiras = {R.id.imgBandeira1, R.id.imgBandeira2, R.id.imgBandeira3, R.id.imgBandeira4, R.id.imgBandeira5, R.id.imgBandeira6};
+	private AppCompatImageView[] imageViewBandeiras = new AppCompatImageView[idsImageViewBandeiras.length];
 	private TextView btnAdd;
 	private TextView textoSemCartao;
 	private TextView btnListaMaisMenos;
@@ -88,12 +85,9 @@ public class MeioPagamentoFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_meio_pagamento, container, false);
 		imagem = view.findViewById(R.id.imagemMeioPagamento);
-		imgBandeira1 = view.findViewById(R.id.imgBandeira1);
-		imgBandeira2 = view.findViewById(R.id.imgBandeira2);
-		imgBandeira3 = view.findViewById(R.id.imgBandeira3);
-		imgBandeira4 = view.findViewById(R.id.imgBandeira4);
-		imgBandeira5 = view.findViewById(R.id.imgBandeira5);
-		imgBandeira6 = view.findViewById(R.id.imgBandeira6);
+		for (int i = 0 ; i < idsImageViewBandeiras.length; i ++){
+			imageViewBandeiras[i] = view.findViewById(idsImageViewBandeiras[i]);
+		}
 		btnAdd = view.findViewById(R.id.linkAdicionaCartao);
 		textoSemCartao = view.findViewById(R.id.textoSemCartao);
 		btnListaMaisMenos = view.findViewById(R.id.linkListarMaisMenos);
@@ -250,23 +244,8 @@ public class MeioPagamentoFragment extends Fragment {
 			btnAdd.setPaintFlags(btnAdd.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			btnListaMaisMenos.setPaintFlags(btnListaMaisMenos.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			imagem.setBackground(getActivity().getDrawable(config.getIdImagem()));
-			imgBandeira1.setImageDrawable(getActivity().getDrawable(config.getIdBandeira1()));
-			imgBandeira2.setImageDrawable(getActivity().getDrawable(config.getIdBandeira2()));
-			imgBandeira3.setImageDrawable(getActivity().getDrawable(config.getIdBandeira3()));
-			if (config.getIdBandeira4() == 0) {
-				imgBandeira4.setVisibility(View.GONE);
-			} else {
-				imgBandeira4.setImageDrawable(getActivity().getDrawable(config.getIdBandeira4()));
-			}
-			if (config.getIdBandeira5() == 0) {
-				imgBandeira5.setVisibility(View.GONE);
-			} else {
-				imgBandeira5.setImageDrawable(getActivity().getDrawable(config.getIdBandeira5()));
-			}
-			if (config.getIdBandeira6() == 0) {
-				imgBandeira6.setVisibility(View.GONE);
-			} else {
-				imgBandeira6.setImageDrawable(getActivity().getDrawable(config.getIdBandeira6()));
+			for(int i = 0; i < config.getBandeirasMeioPagamento().size(); i++){
+				imageViewBandeiras[i].setImageDrawable(getActivity().getDrawable(config.getBandeirasMeioPagamento().get(i)));
 			}
 		}
 	}

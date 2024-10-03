@@ -121,9 +121,9 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private void configBandeiras() {
         if (!adicionaCartaoModel.isMercadoPago(config.getMeioPagamento().getValor())){
             findViewById(R.id.imgBandeira1).setVisibility(View.GONE);
-            findViewById(R.id.imgBandeira2).setVisibility(View.GONE);
             findViewById(R.id.imgBandeira4).setVisibility(View.GONE);
         }
+            findViewById(R.id.imgBandeira2).setVisibility(View.GONE);
     }
 
     private void startFragment() {
