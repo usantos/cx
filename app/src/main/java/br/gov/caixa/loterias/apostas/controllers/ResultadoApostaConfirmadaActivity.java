@@ -356,7 +356,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     }
 
     private void createToolBar() {
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
+        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
     }
 
     private Context getContext() {
