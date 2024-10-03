@@ -37,7 +37,6 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
 	private ConstraintLayout containerPix;
-	private List<Integer> bandeirasMercadoPago, bandeirasRecargaPay;
 	private MeioPagamentoModel model;
 	private boolean carregouConteudo = false;
 
@@ -175,7 +174,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 
 	private List<Integer> getBandeirasRecargaPay(){
 
-		bandeirasRecargaPay = new ArrayList<>();
+		List<Integer> bandeirasRecargaPay = new ArrayList<>();
 
 		//Lista de bandeiras de cartão de crédito que são aceitas pelo Recarga Pay
 		bandeirasRecargaPay.add(R.drawable.ic_bandeira_elo);
@@ -195,7 +194,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 
 	private List<Integer> getBandeirasMercadoPago(){
 
-		bandeirasMercadoPago = new ArrayList<>();
+		List<Integer> bandeirasMercadoPago = new ArrayList<>();
 
 		bandeirasMercadoPago.add(R.drawable.ic_bandeira_amex2);
 		//listaBrandeirasMercadoPago.add(R.drawable.ic_bandeira_diners); -> Bandeira excluida.
