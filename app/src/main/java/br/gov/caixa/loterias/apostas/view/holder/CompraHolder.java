@@ -84,7 +84,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		this.concursoListaComprasTextView.setTextColor(colorText);
 
 		this.statusResultadoApostaListaComprasTextView.setText(aposta.getSituacao().getDescricao());
-		this.statusResultadoApostaListaComprasTextView.setTextColor(itemView.getContext().getResources().getColor(estiloMKP.getCorFonteFundoClaro()));
+		this.statusResultadoApostaListaComprasTextView.setTextColor(itemView.getContext().getResources().getColor(estiloMKP.getCorFonteFundoEscuro()));
 
 		this.topListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estiloMKP.getCorClara()));
 
