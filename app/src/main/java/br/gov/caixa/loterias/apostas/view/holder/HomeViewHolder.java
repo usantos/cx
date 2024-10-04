@@ -111,7 +111,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		} else {
 			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
 			if (BuildVersionUtil.isAutomacao() && modalidade.getTipoModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-				this.tvNomeEspeciais.setText("+Milionária");
+				this.tvNomeEspeciais.setText(R.string.label_mais_milionaria);
 			}
 		}
 

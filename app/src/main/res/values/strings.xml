@@ -196,7 +196,7 @@
     <string name="label_encerramento">Encerramento</string>
     <string name="label_regras_jogo">Regras do jogo</string>
     <string name="label_mega_sena">mega-sena</string>
-    <string name="label_mais_milionaria">+Milionaria</string>
+    <string name="label_mais_milionaria">+milionária</string>
     <string name="label_lotofacil">lotofácil</string>
     <string name="label_quina">quina</string>
     <string name="label_dupla_sena">dupla sena</string>
@@ -956,7 +956,7 @@
     <string name="underline_lotogol_underline">_lotogol_</string>
     <string name="underline_dia_de_Sorte_underline">_dia de sorte_</string>
     <string name="underline_super_sete_underline">_super sete_</string>
-    <string name="underline_mais_milionaria_underline">_+Milionária_</string>
+    <string name="underline_mais_milionaria_underline">_+milionária_</string>
     <string name="extra_qtd_dezenas_possiveis_selecionado">qtdDezenasPossiveisSelecionado</string>
     <string name="extra_numero_concurso_atual">numeroConcursoAtual</string>
     <string name="extra_data_sorteio_atual">dataSorteioAtual</string>
@@ -1103,7 +1103,6 @@
     <string name="trevos_">Trevos:</string>
     <string name="n_mero">Números</string>
     <string name="escolha_a_quantidade_de_n_meros">Escolha a quantidade de números</string>
-    <string name="label_mais_milionaria_acentuado">+Milionária</string>
     <string name="ver_detalhe_da_aposta">Ver detalhe da aposta</string>
     <string name="Trevos">Trevos</string>
     <string name="vamos_comecar">Vamos começar?</string>
@@ -1392,5 +1391,7 @@
     <string name="nao_sei_cep">Não sei o meu CEP</string>
     <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
     <string name="voce_sera_redirecionado_para_o_site_dos_correios">Você será redirecionado para o site dos Correios</string>
+    <string name="conheca_mais_milionaria">Conheça o novo jogo +milionária. \nVamos explicar como funciona \n nessa nova modalidade.</string>
+    <string name="chegou_a_milionaria">Chegou a +milionária</string>
 
 </resources>

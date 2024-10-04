@@ -103,7 +103,7 @@ public class SelecaoModalidadesResultados extends AppCompatActivity {
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_loteca, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case MAIS_MILIONALIA:
-                    tipoAposta = new TipoAposta("+milionária", R.drawable.ic_caixa_mm_amarelo_branco, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
+                    tipoAposta = new TipoAposta(item.getDescricao().toLowerCase(), R.drawable.ic_caixa_mm_amarelo_branco, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 default:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_megasena, R.color.superseteclaro, false, item.getValor(), item.getDescricaoEspecial());

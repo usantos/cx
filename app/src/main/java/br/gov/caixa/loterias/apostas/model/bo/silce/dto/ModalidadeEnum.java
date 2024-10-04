@@ -1,9 +1,13 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
+import android.content.Context;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "")
@@ -45,7 +49,7 @@ public enum ModalidadeEnum implements Serializable {
             case SUPER_7:
                 return "super sete";
             case MAIS_MILIONARIA:
-                return "+Milionária";
+                return Aplicacao.application.getBaseContext().getString(R.string.label_mais_milionaria);
             case BOLAO:
                 return "bolão";
         }
@@ -151,6 +155,7 @@ public enum ModalidadeEnum implements Serializable {
     }
 
     public static String getDescricao(ModalidadeEnum modalidade) {
+        Context context = Aplicacao.application.getBaseContext();
         switch (modalidade) {
             case QUINA:
                 return "Quina";
@@ -173,7 +178,7 @@ public enum ModalidadeEnum implements Serializable {
             case SUPER_7:
                 return "Super Sete";
             case MAIS_MILIONARIA:
-                return "+Milionária";
+                return context.getString(R.string.label_mais_milionaria);
         }
         return "";
     }

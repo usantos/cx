@@ -146,7 +146,7 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(aposta.getModalidade().getDescricao().toLowerCase(new Locale(activity.getResources().getString(R.string.pt), activity.getResources().getString(R.string.br))));
 		if (modalidadeEnum.equals(ModalidadeEnum.MAIS_MILIONARIA)){
 			maisInformacoesMaisMilionaria.setVisibility(View.VISIBLE);
-			tituloApostaFavorita.setText("+Milionária");
+			tituloApostaFavorita.setText(R.string.label_mais_milionaria);
 
 			String trevos = " ";
 			for (Object i:  aposta.getParametroTrevo().getTrevosSelecionados()) {

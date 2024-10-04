@@ -297,7 +297,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }
 
         if (modalidadeEnum == ModalidadeEnum.MAIS_MILIONARIA){
-            contentResultadoPremiado.getTituloModalidadeTextView().setText(getResources().getString(R.string.label_mais_milionaria_acentuado));
+            contentResultadoPremiado.getTituloModalidadeTextView().setText(getResources().getString(R.string.label_mais_milionaria));
         } else {
             contentResultadoPremiado.getTituloModalidadeTextView().setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
         }
