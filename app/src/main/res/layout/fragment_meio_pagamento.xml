@@ -82,6 +82,7 @@
                 app:constraint_referenced_ids="imgBandeira1,imgBandeira2,imgBandeira3,imgBandeira4,imgBandeira5,imgBandeira6"
                 app:flow_horizontalAlign="center"
                 app:flow_horizontalGap="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="4dp"
                 app:flow_horizontalStyle="packed"
                 app:flow_maxElementsWrap="3"
                 app:flow_wrapMode="chain"
@@ -97,7 +98,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira2"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="4dp"
                 tools:src="@drawable/ic_bandeira_amex" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -107,7 +107,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira3"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira1"
-                tools:layout_editor_absoluteY="4dp"
                 tools:src="@drawable/ic_bandeira_elo" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -117,7 +116,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira4"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira2"
-                tools:layout_editor_absoluteY="4dp"
                 tools:src="@drawable/ic_hipercard" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -127,7 +125,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira5"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira3"
-                tools:layout_editor_absoluteY="34dp"
                 tools:src="@drawable/ic_master_card" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -137,7 +134,6 @@
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira6"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira4"
-                tools:layout_editor_absoluteY="34dp"
                 tools:src="@drawable/ic_bandeira_visa" />
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -147,8 +143,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira5"
-                android:visibility="gone"
-                tools:layout_editor_absoluteY="34dp" />
+                android:visibility="gone"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
