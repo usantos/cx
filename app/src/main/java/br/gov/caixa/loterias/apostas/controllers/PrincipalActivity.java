@@ -696,9 +696,11 @@ public class PrincipalActivity extends AppCompatActivity
         if (viewHolder != null) {
             //EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
             EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
-            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+            //buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
             buttonHomeBet.setTag(adapterPosition);
-            buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
+            //buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
+            buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoEscuro()));
             buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
                     getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
