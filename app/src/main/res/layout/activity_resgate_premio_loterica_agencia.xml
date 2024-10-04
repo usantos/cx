@@ -52,7 +52,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/branco"
                 android:textSize="16sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 tools:text="@string/label_resgatar_premio_loterica" />
         </RelativeLayout>
 
