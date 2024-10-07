@@ -58,11 +58,14 @@ public class ItemListaFaixaPremiacao extends LinearLayout {
         this.conteudoLinha = findViewById(R.id.conteudoLinha);
     }
 
-    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int color) {
-        conteudoLinha.setBackgroundColor(color);
+    public void setLayout(FaixaPremiadaDTO faixaPremiadaDTO, int colorFundo, int corFonte) {
+        conteudoLinha.setBackgroundColor(colorFundo);
 
         concursoTextView.setText(String.format(Locale.getDefault(), "%d", faixaPremiadaDTO.getId()));
+        concursoTextView.setTextColor(corFonte);
+
         situacaoTextView.setText(faixaPremiadaDTO.getSituacao());
+        situacaoTextView.setTextColor(corFonte);
 
         if (faixaPremiadaDTO.getNome() != null && !faixaPremiadaDTO.getNome().isEmpty()){
             faixaPremiacaoTextView.setText(faixaPremiadaDTO.getNome());
@@ -70,18 +73,22 @@ public class ItemListaFaixaPremiacao extends LinearLayout {
         } else {
             faixaPremiacaoTextView.setText("-");
         }
+        faixaPremiacaoTextView.setTextColor(corFonte);
+
 
         if (faixaPremiadaDTO.getQtd() >= 0){
             quantidadePremiacaoTextView.setText(String.valueOf(faixaPremiadaDTO.getQuantidadeAcertos()));
         } else {
             quantidadePremiacaoTextView.setText("-");
         }
+        quantidadePremiacaoTextView.setTextColor(corFonte);
 
         if (faixaPremiadaDTO.getSorteio() != null){
             sorteioTextView.setText(String.format(Locale.getDefault(), "%d", faixaPremiadaDTO.getSorteio()));
         } else {
             sorteioTextView.setText("-");
         }
+        sorteioTextView.setTextColor(corFonte);
 
         if (faixaPremiadaDTO.getValorPremioCota() != null){
             premiacaoTextView.setText(ViewUtils.getMoedaFormat(faixaPremiadaDTO.getValorPremioCota()));
@@ -90,6 +97,7 @@ public class ItemListaFaixaPremiacao extends LinearLayout {
         } else {
             premiacaoTextView.setText("-");
         }
+        premiacaoTextView.setTextColor(corFonte);
 
     }
 
