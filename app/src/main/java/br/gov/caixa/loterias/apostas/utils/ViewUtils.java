@@ -134,20 +134,42 @@ public class ViewUtils {
 
 
     public static AlertDialog.Builder dialogo(Context context, String mensagem) {
+
+        TextView messageView = new TextView(context);
+        messageView.setText(mensagem);
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+        messageView.setPadding(50,50,50,50);
+
         return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
-                .setMessage(mensagem);
+                //.setMessage(mensagem);
+                .setView(messageView);
+
     }
 
     public static AlertDialog.Builder dialogo(Context context, int titulo, String mensagem) {
+
+        TextView messageView = new TextView(context);
+        messageView.setText(mensagem);
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+        messageView.setPadding(50,50,50,50);
+
         return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
                 .setTitle(titulo)
-                .setMessage(mensagem);
+                //.setMessage(mensagem);
+                .setView(messageView);
     }
 
     public static AlertDialog.Builder dialogo(Context context, String titulo, String mensagem) {
+
+        TextView messageView = new TextView(context);
+        messageView.setText(mensagem);
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+        messageView.setPadding(50,50,50,50);
+
         return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
                 .setTitle(titulo)
-                .setMessage(mensagem);
+                //.setMessage(mensagem);
+                .setView(messageView);
     }
 
     public static Dialog alert(Context context, String mensagem) {
