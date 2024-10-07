@@ -139,9 +139,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				case QUINA:
 					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.cabecalho_sao_joao));
 					break;
-				case MAIS_MILIONARIA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mais_milionaria));
-					break;
 				default:
 					this.titulo.setVisibility(View.VISIBLE);
 					this.clEspeciais.setVisibility(View.GONE);

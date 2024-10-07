@@ -55,6 +55,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.ResultadoTimemaniaDiaDeSorteF
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoTrevosFragment;
 
 import static br.gov.caixa.loterias.apostas.controllers.SelecaoModalidadesResultados.MODALIDADE;
+import static br.gov.caixa.loterias.apostas.controllers.SelecaoModalidadesResultados.MODALIDADE_VALUE;
 
 public class VisualizarResultadosActivity extends AppCompatActivity {
 
@@ -108,8 +109,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private TextView tvTrevos;
     private LinearLayout containerFragmentTrevos;
-
-    private ImageView iv_header;
+    private int modalidadeValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,9 +155,8 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         containerFragmentTrevos = findViewById(R.id.v_container_trevos_fragment);
         tvTrevos = findViewById(R.id.tv_trevos);
 
-        iv_header = findViewById(R.id.iv_header);
-
     }
+
     private void setaMetodos(){
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -309,7 +308,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
             case MAIS_MILIONARIA:
-                setBackground(R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, R.drawable.mais_milionaria);
+                setBackground(R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, R.drawable.background_trapeze_mais_milionaria);
                 configuraResultadoSuperior(response, ResultadoMaisMilionariaFragment.newInstance(response));
                 containerFragmentTrevos.setVisibility(View.VISIBLE);
                 tvTrevos.setVisibility(View.VISIBLE);
@@ -367,7 +366,6 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 concursoAlvo = null;
                 if(!concurso.isEmpty()){
                     getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),getResources().getString(R.string.string_vazia));
-
                 }
             }
         });
@@ -399,21 +397,17 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
         partidaViewDetalhesResultado.setLayout(modalidade);
 
-        if(modalidade.getTipoModalidade().equals(ModalidadeEnum.MAIS_MILIONARIA)){
-            tituloModalidade.setVisibility(View.GONE);
-            iv_header.setVisibility(View.VISIBLE);
-            layoutTrevo.setVisibility(View.GONE);
-        } else {
-            tituloModalidade.setVisibility(View.VISIBLE);
-            iv_header.setVisibility(View.GONE);
-            layoutTrevo.setVisibility(View.VISIBLE);
-            if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
-                tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
-            }else {
+        tituloModalidade.setVisibility(View.VISIBLE);
+        layoutTrevo.setVisibility(View.VISIBLE);
+        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
+            tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+        }else {
+            if (modalidadeValue == ModalidadeEnum.fromStringToIdModalidade(ModalidadeEnum.MAIS_MILIONARIA)){
+                tituloModalidade.setText(R.string.label_mais_milionaria);
+            } else {
                 tituloModalidade.setText(txtModalidade);
             }
         }
-
 
         setButtons();
         setTitlePorConcurso(concursoAlvo);
@@ -500,6 +494,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             txtModalidade = bundle.getString(MODALIDADE);
+            modalidadeValue = bundle.getInt(MODALIDADE_VALUE);
             if(bundle.getString(CONCURSO_ALVO) != null){
                 concursoAlvo = Integer.valueOf(bundle.getString(CONCURSO_ALVO));
                 concursoAtual = bundle.getInt(CONCURSO_ATUAL);

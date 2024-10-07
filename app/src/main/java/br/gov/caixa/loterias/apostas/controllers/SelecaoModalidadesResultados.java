@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 public class SelecaoModalidadesResultados extends AppCompatActivity {
 
     public final static String MODALIDADE = "MODALIDADE";
+    public final static String MODALIDADE_VALUE = "MODALIDADE_VALUE";
 
     private ExpandableHeightGridView gridModalidades;
     private List<TipoAposta> tiposAposta = new ArrayList<>();
@@ -124,6 +125,7 @@ public class SelecaoModalidadesResultados extends AppCompatActivity {
             item.getDescricaoEspecial();
             Intent it = new Intent(SelecaoModalidadesResultados.this, VisualizarResultadosActivity.class);
             it.putExtra(MODALIDADE,item.getTitulo());
+            it.putExtra(MODALIDADE_VALUE, item.getValor());
             startActivity(it);
         };
         VisualizarModalidadesAdapter modalidadesAdapter = new VisualizarModalidadesAdapter( this, tiposAposta,listener);
