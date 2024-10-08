@@ -4,6 +4,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.NotificacaoDTO;
 
 public class UltimaNotificacaoSingleton {
     private NotificacaoDTO ultimaNoficacao;
+    private Boolean pagamentoNaoIdentificado;
     private static UltimaNotificacaoSingleton ultimaNoficacaoInstance;
 
     private UltimaNotificacaoSingleton(){ }
@@ -21,5 +22,13 @@ public class UltimaNotificacaoSingleton {
 
     public void setUltimaNoficacao(NotificacaoDTO ultimaNoficacao) {
         this.ultimaNoficacao = ultimaNoficacao;
+    }
+
+    public void setPagamentoNaoIdentificado(Boolean pagamentoNaoIdentificado) {
+        this.pagamentoNaoIdentificado = pagamentoNaoIdentificado;
+    }
+
+    public Boolean isPagamentoNaoIdentificado(){
+        return this.pagamentoNaoIdentificado;
     }
 }
