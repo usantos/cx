@@ -130,7 +130,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.trevo.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
 		this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrapezio()));
 		this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
-		this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
+		this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
 
 		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo)) || modalidade.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA) {
 			this.titulo.setVisibility(View.GONE);

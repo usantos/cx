@@ -60,6 +60,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
@@ -133,6 +134,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private Boolean flagApostaSalva = false;
 
     private Boolean isSurpresinha = false;
+
+    EstiloModalidadeMKP estilo;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -656,49 +659,52 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
 
+        estilo = new EstiloModalidadeMKP(tipoJogo);
+
         switch (tipoJogo) {
             case MEGA_SENA:
-                configuraTipoApostaTela(getResources().getString(R.string.unterline_mega_sena_underline), R.color.megasenaclaro, R.color.megasenaescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.unterline_mega_sena_underline), R.color.megasenaclaro, R.color.megasenaescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case QUINA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_quina_underline), R.color.quinaclaro, R.color.quinaescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_quina_underline), R.color.quinaclaro, R.color.quinaescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOFACIL:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacilclaro, R.color.lotofacilescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacilclaro, R.color.lotofacilescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case DUPLA_SENA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_dupla_sena_underline), R.color.duplasenaclaro, R.color.duplasenaescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_dupla_sena_underline), R.color.duplasenaclaro, R.color.duplasenaescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case TIMEMANIA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_timemania_underline), R.color.timemaniaclaro, R.color.timemaniaescuro, View.VISIBLE, View.GONE);
+                //configuraTipoApostaTela(getResources().getString(R.string.underline_timemania_underline), R.color.timemaniaclaro, R.color.timemaniaescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_timemania_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOMANIA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_lotomania_underline), R.color.lotomaniaclaro, R.color.lotomaniaescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_lotomania_underline), R.color.lotomaniaclaro, R.color.lotomaniaescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTECA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.lotecaclaro, R.color.lotecaescuro, View.GONE, View.VISIBLE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.lotecaclaro, R.color.lotecaescuro, View.GONE, View.VISIBLE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOGOL:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_lotogol_underline), R.color.lotogolclaro, R.color.lotogolescuro, View.GONE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_lotogol_underline), R.color.lotogolclaro, R.color.lotogolescuro, View.GONE, View.GONE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case DIA_DE_SORTE:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case SUPER_7:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.supersetemedio, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.supersetemedio, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case MAIS_MILIONARIA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline), R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline), R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
         }
@@ -869,8 +875,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return qtdNumerosButton;
     }
 
-    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
+    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca, int textColor) {
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, titleActivity));
+        //setTitleColor(getResources().getColor(textColor));
 
         if (BuildVersionUtil.isAutomacao() && tipoJogo == ModalidadeEnum.DUPLA_SENA){
             setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "dupla-sena"));
@@ -879,14 +886,16 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, darkColor));
         }
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, lightColor)));
+        //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, lightColor)));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, darkColor)));
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setElevation(0);
         }
 
-        toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
+        //toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
+        toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, lightColor));
         if (isEspecial) {
             switch (tipoJogo){
                 case MEGA_SENA:
