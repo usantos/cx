@@ -363,7 +363,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             contentResultadoPremiado.getNSBTextView().setVisibility(View.GONE);
             corpoBilheteNaoPremiadoLinearLayout.setVisibility(View.GONE);
 
-            contentResultadoPremiado.getBotaoAposteAgora().setText(ViewUtils.textFuturaAndFuturaBold(this ,getString(R.string.botao_aposte_agora)));
+            contentResultadoPremiado.getBotaoAposteAgora().setText(ViewUtils.textCaixaSTDBold(this ,getString(R.string.botao_aposte_agora)));
 
             atualizaTituloeBackground();
 
@@ -390,7 +390,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                 case StatusBilhete.NAO_PREMIADO:
                 case StatusBilhete.NAO_APURADO:
                     aposteAgoraNaoPremiadoLinearLayout.setVisibility(View.VISIBLE);
-                    botaoAposteAgora2.setText(ViewUtils.textFuturaAndFuturaBold(this ,getString(R.string.botao_aposte_agora)));
+                    botaoAposteAgora2.setText(ViewUtils.textCaixaSTDBold(this ,getString(R.string.botao_aposte_agora)));
                     statusResultadoNaoPremiadTextView.setText(R.string.label_nao_foi_dessa_vez);
                     break;
                 default:
@@ -400,7 +400,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     }
 
     private void createToolBar() {
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
