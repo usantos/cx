@@ -47,11 +47,11 @@ public class CopiaColaPixFragment extends Fragment {
 	private static final String ARG_PIX_COPIA_COLA = "ARG_MILLIS_FIM";
 
 	private View view;
-	private Button btnCopia, btnMinhasCompras;
+	private Button btnCopia, btnMinhasCompras, iconAtualizar;
 	private EditText edtNumeroPix;
 	private TextView timerView;
 	private TextView tvAtencao, tvAtencaoDescricao;
-	private ImageView iconTimer, iconAtualizar;
+	private ImageView iconTimer;
 	private ProgressBar progressBar;
 
 	private String numeroPix;
@@ -108,10 +108,9 @@ public class CopiaColaPixFragment extends Fragment {
 		progressBar = view.findViewById(R.id.pb_loading);
 		btnMinhasCompras = view.findViewById(R.id.btn_minhas_compras);
 		btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBoldTitle(getContext(), getString(R.string.ir_para_minhas_compras)));
-
+		tvAtencao = view.findViewById(R.id.id_atencao);
+		tvAtencaoDescricao = view.findViewById(R.id.atencao_descricao);
 		if (pixDTO.isDetalhesCompras()) {
-			tvAtencao = view.findViewById(R.id.id_atencao);
-			tvAtencaoDescricao = view.findViewById(R.id.atencao_descricao);
 			tvAtencao.setVisibility(View.GONE);
 			tvAtencaoDescricao.setVisibility(View.GONE);
 		}
@@ -148,6 +147,7 @@ public class CopiaColaPixFragment extends Fragment {
 					iconAtualizar.setVisibility(View.INVISIBLE);
 					iconAtualizar.setEnabled(false);
 					progressBar.setVisibility(View.GONE);
+					tvAtencaoDescricao.setText(R.string.orientacoes_pix_expirado_tela_pagamento);
 					if (!pixDTO.isDetalhesCompras()) {
 						btnMinhasCompras.setVisibility(View.VISIBLE);
 					}

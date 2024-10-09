@@ -300,7 +300,7 @@ public class ConfirmarCartaoActivity extends AppCompatActivity {
 		AppCenterManager.registraEvento(getResources().getString(R.string.evento_pagamento_sucesso));
 		RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
 		startActivity(new Intent(this, ConfirmacaoPagamentoActivity.class));
-		CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+		CarrinhoSingleton.getInstance().zerarCarrinho();
 		model.limparCarrinhoFavorito();
 	}
 

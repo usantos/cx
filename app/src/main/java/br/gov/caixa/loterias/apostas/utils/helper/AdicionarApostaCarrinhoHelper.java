@@ -164,8 +164,7 @@ public class AdicionarApostaCarrinhoHelper {
                         CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
                 } else {
                     if (CarrinhoSingleton.getInstance().getCarrinho() == null) {
-                        CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
-                        CarrinhoSingleton.getInstance().getCarrinho().setValorTotal(new BigDecimal(0));
+                        CarrinhoSingleton.getInstance().zerarCarrinho();
                     }
                     if (CarrinhoSingleton.getInstance().getCarrinho().getApostas() == null) {
                         CarrinhoSingleton.getInstance().getCarrinho().setApostas(new ArrayList<>());
