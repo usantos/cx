@@ -49,7 +49,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 
 public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopiaColaListener {
 	public static Boolean isRunning = false;
-	private boolean tempoExpirado = false;
+	private boolean tempoExpirado = false, gerouCodigoPix = false;
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private PixModel model;
 	private CardPixFragment pixFragment;
@@ -146,6 +146,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 				startFragment(payload);
 				swipeRefreshLayout.setEnabled(true);
 				CarrinhoSingleton.getInstance().zerarCarrinho();
+				gerouCodigoPix=true;
 			}
 
 			@Override
@@ -192,8 +193,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 
 	@Override
 	public boolean onSupportNavigateUp() {
-
-		if(!tempoExpirado){
+		if(!tempoExpirado && gerouCodigoPix){
 			confirmaSairTelaPix = DialogUtils.showDialogCustom(this,
 					getString(R.string.label_atencao),
 					getString(R.string.mensagem_pop_up_aguardando_confirmacao_pix_pergunta),
