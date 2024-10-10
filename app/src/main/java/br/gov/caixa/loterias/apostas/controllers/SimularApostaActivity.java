@@ -1,9 +1,15 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -64,6 +70,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
@@ -84,6 +91,10 @@ import static java.lang.String.format;
 
 public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener, OnPaginacaoListener {
 
+    public static String COR_FONTE_FUNDO_BRANCO = "COR_FONTE_FUNDO_BRANCO";
+    public static String COR_FONTE_FUNDO_CLARO = "COR_FONTE_FUNDO_CLARO";
+    public static String COR_FONTE_FUNDO_ESCURO = "COR_FONTE_FUNDO_ESCURO";
+
     public final static String APOSTA_EXTRA = "aposta";
     private static int RESULT_FINISH = 3;
 
@@ -97,7 +108,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private RelativeLayout salvarApostaLayout, carrinhoApostas, viewTabBar;
     private ImageButton btnSalvarAposta;
     private EditText editNomeAposta;
-    private ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton;
+    private ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton, imageQtdConcursosButton;
     private FrameLayout paginacaoView;
 
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
@@ -135,7 +146,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private Boolean isSurpresinha = false;
 
-    EstiloModalidadeMKP estilo;
+    private EstiloModalidadeMKP estilo;
+    private int corFonteFundoEscuro;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,6 +210,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         this.imageViewPaginacao = findViewById(R.id.imageViewPaginacao);
         this.iconStarSalvar = findViewById(R.id.iconStarSalvar);
         this.imageQtdNumerosButton = findViewById(R.id.imageQtdNumerosButton);
+        this.imageQtdConcursosButton = findViewById(R.id.imageQtdConcursosButton);
         this.paginacaoView = findViewById(R.id.paginacaoView);
     }
 
@@ -232,13 +246,19 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     public void atualizaTextoBotoesQtdSelecionadas() {
         qtdNumerosButton.setText(format(getResources().getString(R.string.percent_d_numeros), qtdDezenasPossiveisSelecionado));
+        qtdNumerosButton.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+        Drawable drawableQtdNumeros =  imageQtdNumerosButton.getDrawable();
+        ViewUtils.setColorDrawable(this, drawableQtdNumeros, estilo.getCorFonteFundoClaro());
+
         textoBotaoPrognosticosSelecionado = qtdNumerosButton.getText().toString();
         if ((qtdConcursosList != null && !qtdConcursosList.isEmpty()) && (qtdConcursosList.size() == 1 || qtdConcursoSelecionado == 0)) {
-//            qtdConcursosButton.setText(qtdConcursosList.get(0));
             qtdConcursosButton.setText(textoBotaoSurpresinhasSelecionado);
         } else {
             qtdConcursosButton.setText(format(getResources().getString(R.string.percent_d_concurso), qtdConcursoSelecionado));
         }
+        qtdConcursosButton.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+        Drawable drawableQtdConcursos = imageQtdConcursosButton.getDrawable();
+        ViewUtils.setColorDrawable(this, drawableQtdConcursos, estilo.getCorFonteFundoClaro());
     }
 
     // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
@@ -337,9 +357,16 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(toolBarMenu, menu);
 
+        MenuItem menuDuvida = menu.findItem(R.id.action_duvida);
+        Drawable drawable = menuDuvida.getIcon();
+        ViewUtils.setColorDrawable(this, drawable, corFonteFundoEscuro);
+
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
         ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.concurso));
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setTextColor(ContextCompat.getColor(SimularApostaActivity.this, corFonteFundoEscuro));
+
         ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setTextColor(ContextCompat.getColor(SimularApostaActivity.this, corFonteFundoEscuro));
 
         SimpleDateFormat formatterDateFinal = new SimpleDateFormat(getResources().getString(R.string.dd_mm));
         DateFormat formatterDate = new SimpleDateFormat(getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
@@ -352,7 +379,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             } else {
                 ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.sorteio));
             }
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setTextColor(ContextCompat.getColor(SimularApostaActivity.this, corFonteFundoEscuro));
+
             ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setTextColor(ContextCompat.getColor(SimularApostaActivity.this, corFonteFundoEscuro));
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -414,11 +445,14 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     public void setColorValuesLoteca() {
-        this.labelValueJogosLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-        this.labelValueSimplesLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-        this.labelValueDuplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-        this.labelValueTriplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-
+//        this.labelValueJogosLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+//        this.labelValueSimplesLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+//        this.labelValueDuplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+//        this.labelValueTriplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+        this.labelValueJogosLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
+        this.labelValueSimplesLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
+        this.labelValueDuplasLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
+        this.labelValueTriplasLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
     }
     public void setLabelValueJogosLoteca(String labelValueJogosLoteca) {
         this.labelValueJogosLoteca.setText(labelValueJogosLoteca);
@@ -561,7 +595,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         if (surpresinha) {
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+            //surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+            surpresinhaTela.setBackground(ic_surpresinha);
         }
         proximaPagina();
     }
@@ -602,7 +639,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         FragmentUtils.startFragmentAllowingStateLoss(fragmentManager, R.id.fragmentSimularApostas, surpresinhaFragment);
 
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-        surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+        //surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+        Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+        ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+        surpresinhaTela.setBackground(ic_surpresinha);
     }
 
     private void configuraParametrosJogo() {
@@ -663,48 +703,57 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         switch (tipoJogo) {
             case MEGA_SENA:
-                configuraTipoApostaTela(getResources().getString(R.string.unterline_mega_sena_underline), R.color.megasenaclaro, R.color.megasenaescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
+                //configuraTipoApostaTela(getResources().getString(R.string.unterline_mega_sena_underline), R.color.megasenaclaro, R.color.megasenaescuro, View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
+                configuraTipoApostaTela(getResources().getString(R.string.unterline_mega_sena_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case QUINA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_quina_underline), R.color.quinaclaro, R.color.quinaescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
+                //configuraTipoApostaTela(getResources().getString(R.string.underline_quina_underline), R.color.quinaclaro, R.color.quinaescuro, View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
+                configuraTipoApostaTela(getResources().getString(R.string.underline_quina_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOFACIL:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacilclaro, R.color.lotofacilescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
+                //configuraTipoApostaTela(getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacilclaro, R.color.lotofacilescuro, View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
+                configuraTipoApostaTela(getResources().getString(R.string.underline_lotofacil_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case DUPLA_SENA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_dupla_sena_underline), R.color.duplasenaclaro, R.color.duplasenaescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
+                //configuraTipoApostaTela(getResources().getString(R.string.underline_dupla_sena_underline), R.color.duplasenaclaro, R.color.duplasenaescuro, View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
+                configuraTipoApostaTela(getResources().getString(R.string.underline_dupla_sena_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case TIMEMANIA:
                 //configuraTipoApostaTela(getResources().getString(R.string.underline_timemania_underline), R.color.timemaniaclaro, R.color.timemaniaescuro, View.VISIBLE, View.GONE);
-                configuraTipoApostaTela(getResources().getString(R.string.underline_timemania_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorLetraLista());
+                configuraTipoApostaTela(getResources().getString(R.string.underline_timemania_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOMANIA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_lotomania_underline), R.color.lotomaniaclaro, R.color.lotomaniaescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
+                //configuraTipoApostaTela(getResources().getString(R.string.underline_lotomania_underline), R.color.lotomaniaclaro, R.color.lotomaniaescuro, View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
+                configuraTipoApostaTela(getResources().getString(R.string.underline_lotomania_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTECA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.lotecaclaro, R.color.lotecaescuro, View.GONE, View.VISIBLE, estilo.getCorLetraLista());
+                //configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.lotecaclaro, R.color.lotecaescuro, View.GONE, View.VISIBLE, estilo.getCorFonteFundoEscuro());
+                configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), estilo.getCorClara(), estilo.getCorEscura(), View.GONE, View.VISIBLE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOGOL:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_lotogol_underline), R.color.lotogolclaro, R.color.lotogolescuro, View.GONE, View.GONE, estilo.getCorLetraLista());
+                configuraTipoApostaTela(getResources().getString(R.string.underline_lotogol_underline), R.color.lotogolclaro, R.color.lotogolescuro, View.GONE, View.GONE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case DIA_DE_SORTE:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
+                //configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
+                configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case SUPER_7:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.supersetemedio, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
+                //configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.supersetemedio, View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
+                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case MAIS_MILIONARIA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline), R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, View.VISIBLE, View.GONE, estilo.getCorLetraLista());
+                //configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline), R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
+                configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline), estilo.getCorClara(), estilo.getCorEscura(), View.VISIBLE, View.GONE, estilo.getCorFonteFundoEscuro());
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
         }
@@ -719,13 +768,19 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         bundle.putString(getResources().getString(R.string.extra_data_sorteio_atual), dataSorteioAtual);
         bundle.putSerializable(getResources().getString(R.string.extra_type_game_color_light), typeGameColorLight);
         bundle.putSerializable(getResources().getString(R.string.extra_type_game_color_Dark), typeGameColorDark);
+        bundle.putSerializable(COR_FONTE_FUNDO_BRANCO, estilo.getCorLetraLista());
+        bundle.putSerializable(COR_FONTE_FUNDO_CLARO, estilo.getCorFonteFundoClaro());
+        bundle.putSerializable(COR_FONTE_FUNDO_ESCURO, estilo.getCorFonteFundoEscuro());
 
         cartelaFragment.cartelaFragmentBuilder(bundle);
         surpresinhaFragment.surpresinhaFragmentBuilder(bundle);
 
         atualizaTextoBotoesQtdSelecionadas();
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
-        surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+        //surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+        Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+        ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+        surpresinhaTela.setBackground(ic_surpresinha);
 
         configuraBotoesListeners();
     }
@@ -737,7 +792,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         qtdConcursosButton.setOnClickListener(this);
 
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
-        surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+        //surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+        Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+        ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+        surpresinhaTela.setBackground(ic_surpresinha);
     }
 
     private void modalNumeros() {
@@ -864,10 +922,16 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         if(surpresinha){
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+            //surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+            surpresinhaTela.setBackground(ic_surpresinha);
         }else{
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
-            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+            //surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+            surpresinhaTela.setBackground(ic_surpresinha);
         }
     }
 
@@ -875,9 +939,14 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         return qtdNumerosButton;
     }
 
-    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca, int textColor) {
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, titleActivity));
-        //setTitleColor(getResources().getColor(textColor));
+    private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca, int corFonteFundoEscuro) {
+        SpannableString tituloCor = new SpannableString(ViewUtils.textFuturaAndFuturaBoldTitle(this, titleActivity));
+        tituloCor.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, corFonteFundoEscuro)), 0, tituloCor.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        getSupportActionBar().setTitle(tituloCor);
+
+        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.seta_esquerda);
+        upArrow.mutate().setColorFilter(ContextCompat.getColor(this, corFonteFundoEscuro), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         if (BuildVersionUtil.isAutomacao() && tipoJogo == ModalidadeEnum.DUPLA_SENA){
             setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "dupla-sena"));
@@ -886,7 +955,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, darkColor));
         }
-        //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, lightColor)));
+
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, darkColor)));
 
         if (getSupportActionBar() != null) {
@@ -922,14 +991,19 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         typeGameColorLight = lightColor;
         typeGameColorDark = darkColor;
+        this.corFonteFundoEscuro = corFonteFundoEscuro;
     }
 
     private void iniciaCoresValoresLoteca () {
         //cores valores
-        labelValueSimplesLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-        labelValueDuplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-        labelValueTriplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-        labelValueJogosLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+//        labelValueSimplesLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+//        labelValueDuplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+//        labelValueTriplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+//        labelValueJogosLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
+        labelValueSimplesLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
+        labelValueDuplasLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
+        labelValueTriplasLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
+        labelValueJogosLoteca.setTextColor(getResources().getColor(estilo.getCorClara()));
     }
 
     private void configuraMenuItem(int id) {
@@ -1043,13 +1117,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if (parametroSimulacao != null && parametroSimulacao.getConcurso() != null && parametroSimulacao.getConcurso().getModalidade() != null){
             switch (parametroSimulacao.getConcurso().getModalidade()){
                 case MAIS_MILIONARIA:
-                    paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(), 0, R.color.mais_milionaria_escura);
+                    paginacao = PaginacaoUtils.getPaginacaoMaisMilionaria(getApplicationContext(),0, R.color.milionaria_claro_mkp);
                     break;
                 case TIMEMANIA:
-                    paginacao = PaginacaoUtils.getPaginacaoTimemania(getApplicationContext(), R.color.timemaniaescuro);
+                    paginacao = PaginacaoUtils.getPaginacaoTimemania(getApplicationContext(),R.color.timemania_letra_mkp);
                     break;
                 case DIA_DE_SORTE:
-                    paginacao = PaginacaoUtils.getPaginacaoDiaDeSorte(getApplicationContext(), R.color.diasorteescuro);
+                    paginacao = PaginacaoUtils.getPaginacaoDiaDeSorte(getApplicationContext(), R.color.dia_sorte_letra_mkp);
                     break;
             }
         }
