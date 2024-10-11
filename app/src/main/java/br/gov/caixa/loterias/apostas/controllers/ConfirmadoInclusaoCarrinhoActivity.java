@@ -2,15 +2,21 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,8 +42,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
@@ -47,6 +55,8 @@ import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CAR
 public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implements OnClickListener {
 
     public ParametroJogoDTO parametroSimulacao;
+
+    private EstiloModalidadeMKP estilo;
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
@@ -81,15 +91,22 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         ModalidadeEnum tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
         BigDecimal valorAposta = (BigDecimal) getIntent().getSerializableExtra(getResources().getString(R.string.valorAposta));
 
+        configuraLayoutTela(tipoJogo);
+
         TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
         valorApostaText.setText(ViewUtils.getMoedaFormat(valorAposta));
 
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         String valorCarrinho = ViewUtils.getMoedaFormat(sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta());
         TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
-        textObservacaoConfirmacao.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.infoValorMinimoCarrinho) + getResources().getString(R.string.underline_com_espaco) + valorCarrinho + getResources().getString(R.string.underline)));
+        textObservacaoConfirmacao.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.infoValorMinimoCarrinho) + getResources().getString(R.string.underline_com_espaco) + valorCarrinho + getResources().getString(R.string.underline)));
+        textObservacaoConfirmacao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
 
-        configuraLayoutTela(tipoJogo);
+        TextView textTituloTela = findViewById(R.id.textTituloTela);
+        textTituloTela.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+
+        ImageView imageSetaApontandoCarrinho = findViewById(R.id.imageSetaApontandoCarrinho);
+        imageSetaApontandoCarrinho.setImageDrawable(VectorUtils.getShape(R.drawable.rectangle_5_copy, estilo.getCorFonteFundoEscuro()));
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,19 +119,28 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     }
 
     private void configuraLayoutTela(ModalidadeEnum modalidadeEnum) {
-        EstiloModalidade estilo = new EstiloModalidade(modalidadeEnum);
+        //EstiloModalidade estilo = new EstiloModalidade(modalidadeEnum);
+        estilo = new EstiloModalidadeMKP(modalidadeEnum);
 
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getResources().getString(R.string.underline) + ModalidadeEnum.fromString(modalidadeEnum) + getResources().getString(R.string.underline)));
+        //setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getResources().getString(R.string.underline) + ModalidadeEnum.fromString(modalidadeEnum) + getResources().getString(R.string.underline)));
+        SpannableString tituloCor = new SpannableString(ViewUtils.textFuturaAndFuturaBoldTitle(this, getResources().getString(R.string.underline) + ModalidadeEnum.fromString(modalidadeEnum) + getResources().getString(R.string.underline)));
+        tituloCor.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro())), 0, tituloCor.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        getSupportActionBar().setTitle(tituloCor);
+
+        Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.seta_esquerda);
+        upArrow.mutate().setColorFilter(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
         }
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorClara())));
-        getWindow().getDecorView().setBackground(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorClara())));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorEscura())));
+        getWindow().getDecorView().setBackground(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorEscura())));
 
         GradientDrawable gd = new GradientDrawable();
-        gd.setColor(ContextCompat.getColor(this, estilo.getCorClara()));
-        gd.setStroke(2, Color.WHITE);
+        gd.setColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+        //gd.setStroke(2, Color.WHITE);
+        gd.setStroke(2, estilo.getCorFonteFundoEscuro());
     }
 
     // Mudando o texto dos MenuItem de acordo com os dados
@@ -135,9 +161,16 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.itens_simular_actionbar_termos, menu);
 
+        MenuItem menuDuvida = menu.findItem(R.id.action_termos);
+        Drawable drawable = menuDuvida.getIcon();
+        ViewUtils.setColorDrawable(this, drawable, estilo.getCorFonteFundoEscuro());
+
         MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
         ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText(getString(R.string.concurso));
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+
         ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
+        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
 
         SimpleDateFormat formatterDateFinal = new SimpleDateFormat(getResources().getString(R.string.dd_mm));
         DateFormat formatterDate = new SimpleDateFormat(getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
@@ -150,8 +183,11 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
             }else{
                 ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.sorteio));
             }
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
 
             ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
+            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
