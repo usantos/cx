@@ -164,7 +164,6 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	public void onFinish()
 	{
 		tempoExpirado = true;
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_Voltar_ Apostas Individuais"));
 		swipeRefreshLayout.setEnabled(false);
 	}
 
