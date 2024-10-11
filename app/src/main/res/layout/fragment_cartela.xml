@@ -24,8 +24,8 @@
                 android:id="@+id/tv_colunas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/superseteclaro"
-                android:fontFamily="@font/futura_std_bold"
+                android:background="@color/super_sete_escuro_mkp"
+                android:fontFamily="@font/caixa_std_bold"
                 android:padding="10dp"
                 android:text="@string/colunas"
                 android:textAlignment="center"
@@ -49,7 +49,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_1"
                     android:textColor="@color/branco" />
@@ -60,9 +60,8 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
-
                     android:text="@string/_2"
                     android:textColor="@color/branco" />
 
@@ -72,8 +71,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
-
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_3"
                     android:textColor="@color/branco" />
@@ -84,7 +82,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_4"
                     android:textColor="@color/branco" />
@@ -95,7 +93,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_5"
                     android:textColor="@color/branco" />
@@ -106,7 +104,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_6"
                     android:textColor="@color/branco" />
@@ -117,7 +115,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_7"
                     android:textColor="@color/branco" />
