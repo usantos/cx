@@ -196,8 +196,8 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 			confirmaSairTelaPix = DialogUtils.showDialogCustom(this,
 					getString(R.string.label_atencao),
 					getString(R.string.mensagem_pop_up_aguardando_confirmacao_pix_pergunta),
-					null, getString(R.string.label_sim),
-					getString(R.string.btn_title_voltarAoInicio), onDialogListener());
+					getString(R.string.label_voltar_ao_inicio), getString(R.string.label_sim),
+					null, onDialogListener());
 		}else{
 			voltarParaCarrossel();
 		}
@@ -211,16 +211,18 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 			@Override
 			public void leftButtom() {
 				//ocultado
+				voltarParaCarrossel();
+
 			}
 
 			@Override
 			public void centerButtom() {
-				confirmaSairTelaPix.dismiss();
+
 			}
 
 			@Override
 			public void rightButtom() {
-				voltarParaCarrossel();
+				confirmaSairTelaPix.dismiss();
 			}
 		};
 	}
