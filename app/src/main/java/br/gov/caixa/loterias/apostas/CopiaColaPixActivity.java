@@ -217,12 +217,12 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 
 			@Override
 			public void centerButtom() {
-
+				confirmaSairTelaPix.dismiss();
 			}
 
 			@Override
 			public void rightButtom() {
-				confirmaSairTelaPix.dismiss();
+
 			}
 		};
 	}
