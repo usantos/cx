@@ -84,6 +84,7 @@ import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -406,12 +407,11 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void trataPopupDeNotificacaoHandler() {
         if (UltimaNotificacaoSingleton.getInstance().isPagamentoNaoIdentificado()){
-            ViewUtils.alertTitleButton(this, R.string.label_atencao,
+            DialogUtils.showDialog1Botao(this, getString(R.string.label_atencao),
                     getString(R.string.alerta_descricao_pagamento_nao_identificado),
                     getString(R.string.acompanhe_suas_compras),
-                    dialog -> {
-                        startActivity(IntentUtil.getIntentOrigemDestino(PrincipalActivity.this, ListaComprasActivity.class));
-                    });
+                    () -> startActivity(IntentUtil.getIntentOrigemDestino(PrincipalActivity.this, ListaComprasActivity.class))
+                    );
         } else if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
             if(getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){
                 trataPopupDeNotificacao();

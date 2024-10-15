@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogUmBotaoListener;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 public class DialogUtils {
@@ -341,4 +342,24 @@ public class DialogUtils {
     }
 
 
+    public static void showDialog1Botao(Context contexto, String titulo, String descricao, String botao, OnDialogUmBotaoListener listener) {
+        showDialogCustom(contexto,  titulo, descricao, null, null, botao, onDialogListener1Botao(listener));
+    }
+
+    private static OnDialog3ButtonsListener onDialogListener1Botao(OnDialogUmBotaoListener listener) {
+        return new OnDialog3ButtonsListener() {
+            @Override
+            public void leftButtom() {
+            }
+
+            @Override
+            public void centerButtom() {
+            }
+
+            @Override
+            public void rightButtom() {
+                listener.ok();
+            }
+        };
+    }
 }
