@@ -308,7 +308,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
             case MAIS_MILIONARIA:
-                setBackground(R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, R.drawable.background_trapeze_mais_milionaria);
+                setBackground(R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, R.drawable.ic_trapezio_mkp);
                 configuraResultadoSuperior(response, ResultadoMaisMilionariaFragment.newInstance(response));
                 containerFragmentTrevos.setVisibility(View.VISIBLE);
                 tvTrevos.setVisibility(View.VISIBLE);
@@ -340,7 +340,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         this.corEscura = corEscura;
         this.resourceTrapezio = resourceTrapezio;
         scrollResultado.setBackgroundResource(corEscura);
-        layoutHeader.setBackgroundResource(corClara);
+        layoutHeader.setBackgroundResource(corEscura);
         divisoria.setBackgroundResource(corClara);
         layoutListaPremiacao.setBackgroundResource(corClara);
         layoutTrevo.setBackgroundResource(resourceTrapezio);
@@ -402,7 +402,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
             tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
         }else {
-            if (modalidadeValue == ModalidadeEnum.fromStringToIdModalidade(ModalidadeEnum.MAIS_MILIONARIA)){
+            if (modalidade.getTipoModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
                 tituloModalidade.setText(R.string.label_mais_milionaria);
             } else {
                 tituloModalidade.setText(txtModalidade);
