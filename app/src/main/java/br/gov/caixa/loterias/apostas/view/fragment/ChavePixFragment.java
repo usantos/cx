@@ -88,7 +88,7 @@ public class ChavePixFragment extends Fragment {
 					getString(R.string.trocar_tipo_chave),
 					getString(R.string.trocar_forma_resgate),
 					getString(R.string.pix_continuar),
-					onDialogListenerNaoCpf());
+					onDialogListenerNaoCpf(), true);
 			}
 		});
 	}
