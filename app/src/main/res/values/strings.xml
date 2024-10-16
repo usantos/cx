@@ -197,6 +197,7 @@
     <string name="label_regras_jogo">Regras do jogo</string>
     <string name="label_mega_sena">mega-sena</string>
     <string name="label_mais_milionaria">+milionária</string>
+    <string name="label_mais_milionaria_maiscula">+Milionária</string>
     <string name="label_lotofacil">lotofácil</string>
     <string name="label_quina">quina</string>
     <string name="label_dupla_sena">dupla sena</string>
