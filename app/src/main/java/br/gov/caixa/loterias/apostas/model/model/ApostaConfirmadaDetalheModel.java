@@ -16,6 +16,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTORespons
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 
 public class ApostaConfirmadaDetalheModel extends AppModel {
@@ -48,24 +49,26 @@ public class ApostaConfirmadaDetalheModel extends AppModel {
 	}
 
 	public ConfiguracaoNumeros configuraEstiloNumeros(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-		EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
-		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-			return new ConfiguracaoNumeros(estilo.getCorClara(), R.color.branco);
+		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(aposta.getModalidade());
+		if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA ||
+			aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
+			//Cor do numero quando selecionado, Cor Texto
+			return new ConfiguracaoNumeros(R.color.branco, estilo.getCorFonteFundoClaro());
 		} else {
-			return new ConfiguracaoNumeros(estilo.getCorEscura(), R.color.branco);
+			return new ConfiguracaoNumeros(estilo.getCorClara(), R.color.branco);
 		}
 	}
 
 	public ConfiguracaoNumerosSuperSete configuraEstiloSuperSete() {
-		return new ConfiguracaoNumerosSuperSete(R.color.supersetemedio,
+		return new ConfiguracaoNumerosSuperSete(R.color.super_sete_claro_mkp,
 				R.color.branco,
 				R.color.branco,
-				R.color.supersetemedio,
+				R.color.super_sete_claro_mkp,
 				R.color.branco,
-				R.color.supersetemedio,
-				R.color.supersetemedio,
-				R.color.superseteescuro,
-				R.color.supersetemedio);
+				R.color.super_sete_claro_mkp,
+				R.color.super_sete_claro_mkp,
+				R.color.super_sete_escuro_mkp,
+				R.color.super_sete_claro_mkp);
 	}
 
 }

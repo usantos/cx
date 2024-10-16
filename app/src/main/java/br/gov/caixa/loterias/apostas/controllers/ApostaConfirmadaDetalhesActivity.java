@@ -187,6 +187,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             validadePremioText.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
             validadePremioImg.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
             linhaSeparadora.setBackgroundColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
+        } if (!isApostaBolao(aposta)) {
+            validadePremioLabel.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            validadePremioText.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            validadePremioImg.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            linhaSeparadora.setBackgroundColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         }
     }
 
@@ -261,12 +266,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setaViews(){
-        //estilo = new EstiloModalidade(aposta.getModalidade());
-        estilo = new EstiloModalidade(aposta); //Colocar EstiloModalidadeMKP
+        //estilo = new EstiloModalidade(aposta); //Colocar EstiloModalidadeMKP
         estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade()); //Colocar EstiloModalidadeMKP
-        if(!aposta.getIndicadorCotaBolao()){
-            setTheme(estilo.getThemeId());
-        }
+
+//        if(!aposta.getIndicadorCotaBolao()){
+//            setTheme(estilo.getThemeId());
+//        }
 
         fragmentContainer       = findViewById(R.id.fragmentContainer);
         linearLayoutBottom      = findViewById(R.id.linearLayoutBottom);
@@ -350,10 +355,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             return estiloMKP.getCorEscura();
         } else {
             if (estilo != null) {
-                return estilo.getCorEscura();
+                return estiloMKP.getCorEscura();
             }
             estilo = new EstiloModalidade(aposta);
-            return estilo.getCorEscura();
+            return estiloMKP.getCorEscura();
         }
     }
 
@@ -366,10 +371,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             return estiloMKP.getCorClara();
         } else {
             if (estilo != null) {
-                return estilo.getCorClara();
+                return estiloMKP.getCorClara();
             }
             estilo = new EstiloModalidade(aposta);
-            return estilo.getCorClara();
+            return estiloMKP.getCorClara();
         }
     }
 
@@ -705,7 +710,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             if (aposta != null && aposta.getIndicadorCotaBolao()){
                 ViewUtils.setColorDrawable(this, drawable, estiloMKP.getCorFonteFundoClaro());
             } else {
-                ViewUtils.setColorDrawable(this, drawable, estilo.getMenuItemColor());
+                ViewUtils.setColorDrawable(this, drawable, estiloMKP.getCorFonteFundoClaro());
             }
         }
 
@@ -784,6 +789,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             }
             toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
         } else {
+            toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
             toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         }
         setSupportActionBar(toolbar);
@@ -791,11 +797,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setElevation(0);
-            if (isApostaBolao(aposta)){
+            //if (isApostaBolao(aposta)){
                 Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.seta_esquerda);
                 upArrow.mutate().setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()), PorterDuff.Mode.SRC_ATOP);
                 getSupportActionBar().setHomeAsUpIndicator(upArrow);
-            }
+            //}
         }
         setTitle(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
     }

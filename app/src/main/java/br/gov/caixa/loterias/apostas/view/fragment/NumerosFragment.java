@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -119,7 +120,9 @@ public class NumerosFragment extends Fragment {
 		} else {
 			titulo.setText(tituloTexto);
 		}
-		titulo.setTextColor(getActivity().getResources().getColor(R.color.branco));
+
+		//titulo.setTextColor(getActivity().getResources().getColor(R.color.branco));
+		titulo.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
 
 		listViewNumeros = view.findViewById(R.id.ehgv_numeros);
 
@@ -145,7 +148,8 @@ public class NumerosFragment extends Fragment {
 			shapeConfig = new ShapeConfig(R.color.branco, configuracao.getCorTextoCirculoSelecionado());
 		}
 
-		return new DezenaConfig(false, R.color.branco,
+		//return new DezenaConfig(false, R.color.branco,
+		return new DezenaConfig(false, configuracao.getCorTextoCirculo(),
 								R.layout.item_dezena_detalhe,
 								shapeConfig,false);
 	}

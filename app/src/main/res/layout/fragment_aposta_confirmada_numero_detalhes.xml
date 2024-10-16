@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tit_premio_pago"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="@color/branco"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -141,7 +141,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:background="?android:textColor" />
+                    android:background="@color/branco" />
 
                 <TextView
                     android:id="@+id/statusApostaTextView"
@@ -152,7 +152,7 @@
                     app:layout_constraintStart_toEndOf="@+id/divider"
                     android:text="@string/label_coluna"
                     android:visibility="gone"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/branco"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -178,7 +178,7 @@
                     app:layout_constraintStart_toStartOf="@+id/divider"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="10dp"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/branco"
                     android:textSize="12sp"
                     android:visibility="gone" />
 
@@ -190,7 +190,7 @@
                     app:layout_constraintStart_toStartOf="@+id/divider"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="10dp"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textColor="@color/branco"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:visibility="gone"
@@ -240,7 +240,7 @@
                 android:fontFamily="@font/arialmt"
                 android:gravity="bottom"
                 android:text="@string/label_aposta_troca"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@color/branco"
                 android:textSize="14sp"
                 android:visibility="gone" />
 
