@@ -29,6 +29,6 @@ public class UltimaNotificacaoSingleton {
     }
 
     public Boolean isPagamentoNaoIdentificado(){
-        return this.pagamentoNaoIdentificado;
+        return this.pagamentoNaoIdentificado != null ? this.pagamentoNaoIdentificado : false;
     }
 }
