@@ -92,7 +92,7 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
         holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
         holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-        holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(apostas.get(position).getModalidade())));
+        holder.textViewTipoAposta.setText(ModalidadeEnum.fromString(apostas.get(position).getModalidade()));
         holder.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, apostas.get( position ).getConcursoAlvo()));
         holder.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
@@ -138,9 +138,6 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
                 textViewTimeCoracao.setText(apostas.get(position).getMesDeSorte() != null && apostas.get(position).getMesDeSorte().getNome() != null
                                                     ? apostas.get(position).getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
         }
-
-
-
 
         //holder.itemView.findViewById(R.id.excluirApostaCarrinhoLayout).setOnClickListener(view -> onCarrinhoApostasRapidaoListener.onRemove( apostas.get( position ) ));
 
