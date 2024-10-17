@@ -8,12 +8,23 @@ public class TipoAposta {
 
     private String Titulo;
     private int ImagemTrevo;
+    private int ImagemTrevoFundoCor;
     private int CorBackground;
     private Integer valor;
     private String DescricaoEspecial;
     private Boolean isSelect;
     private Integer textColor;
 
+    public TipoAposta(String Titulo, int ImagemTrevo, int ImagemTrevoFundoCor, int CorBackground, Boolean isSelect, Integer valor, String DescricaoEspecial, Integer textColor) {
+        this.Titulo = Titulo;
+        this.ImagemTrevo = ImagemTrevo;
+        this.ImagemTrevoFundoCor = ImagemTrevoFundoCor;
+        this.CorBackground = CorBackground;
+        this.isSelect = isSelect;
+        this.valor = valor;
+        this.DescricaoEspecial = DescricaoEspecial;
+        this.textColor = textColor;
+    }
     public TipoAposta(String Titulo, int ImagemTrevo, int CorBackground, Boolean isSelect, Integer valor, String DescricaoEspecial, Integer textColor) {
         this.Titulo = Titulo;
         this.ImagemTrevo = ImagemTrevo;
@@ -86,5 +97,13 @@ public class TipoAposta {
 
     public void setTextColor(Integer textColor) {
         this.textColor = textColor;
+    }
+
+    public int getImagemTrevoFundoCor() {
+        return ImagemTrevoFundoCor;
+    }
+
+    public void setImagemTrevoFundoCor(int imagemTrevoFundoCor) {
+        ImagemTrevoFundoCor = imagemTrevoFundoCor;
     }
 }

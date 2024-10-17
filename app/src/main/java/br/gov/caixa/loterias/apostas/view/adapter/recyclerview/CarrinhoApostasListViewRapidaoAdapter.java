@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<CarrinhoApostasListViewRapidaoAdapter.ApostaHolder> {
@@ -77,7 +78,8 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
 
     @Override
     public void onBindViewHolder(ApostaHolder holder, final int position) {
-        EstiloModalidade estilo = new EstiloModalidade(apostas.get(position).getModalidade());
+        //EstiloModalidade estilo = new EstiloModalidade(apostas.get(position).getModalidade());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(apostas.get(position).getModalidade());
 
         final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;
         swipeLayout.setClickToClose(true);
@@ -89,11 +91,11 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
         TextView labelTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
         TextView textViewTimeCoracao = holder.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
 
-        holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
-        holder.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
-        holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-        holder.textViewTipoAposta.setText(ViewUtils.capitalized(ModalidadeEnum.fromString(apostas.get(position).getModalidade())));
+        holder.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
+        holder.textViewTipoAposta.setText(ModalidadeEnum.fromString(apostas.get(position).getModalidade()).toLowerCase());
+        holder.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
         holder.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, apostas.get( position ).getConcursoAlvo()));
+        holder.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorLetraLista()));
         holder.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
         TextView quantidadeApostadas = holder.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
