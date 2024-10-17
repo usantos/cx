@@ -1392,7 +1392,7 @@
     <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
     <string name="voce_sera_redirecionado_para_o_site_dos_correios">Você será redirecionado para o site dos Correios</string>
     <string name="orientacoes_pix_expirado_tela_pagamento">A validade do seu código de pagamento Pix expirou.\nCaso tenha realizado o pagamento, aguarde enquanto realizamos o processamento.\nPagamentos identificados fora do tempo limite para efetivação das apostas serão estornados.\nAcompanhe o status da sua compra acessando o menu "Minhas Compras".</string>
-    <string name="verificar_pagamento">Verificar Pagamento</string>
+    <string name="verificar_pagamento">_Verificar Pagamento_</string>
     <string name="mensagem_pop_up_aguardando_confirmacao_pix">Pagamento ainda não identificado.\nCaso tenha realizado o pagamento, aguarde enquanto realizamos o processamento.\nPagamentos identificados fora do tempo limite para efetivação de apostas serão estornados.\nAcompanhe o processamento do seu pedido na opção "Minhas Compras".</string>
     <string name="label_voltar_ao_inicio">Voltar ao início</string>
     <string name="label_aguardar_a_confirmaco_de_pagamento">Você deseja aguardar a confirmação de pagamento?</string>

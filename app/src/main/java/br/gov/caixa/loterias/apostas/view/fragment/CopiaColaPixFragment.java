@@ -105,6 +105,7 @@ public class CopiaColaPixFragment extends Fragment {
 		timerView = view.findViewById(R.id.txt_contador);
 		iconTimer = view.findViewById(R.id.img_timer);
 		iconAtualizar = view.findViewById(R.id.icon_atualizar);
+		iconAtualizar.setText(ViewUtils.textCaixaSTDBoldTitle(getContext(), getString(R.string.verificar_pagamento)));
 		progressBar = view.findViewById(R.id.pb_loading);
 		btnMinhasCompras = view.findViewById(R.id.btn_minhas_compras);
 		btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBoldTitle(getContext(), getString(R.string.ir_para_minhas_compras)));
