@@ -59,16 +59,19 @@ public class ApostaConfirmadaDetalheModel extends AppModel {
 		}
 	}
 
-	public ConfiguracaoNumerosSuperSete configuraEstiloSuperSete() {
-		return new ConfiguracaoNumerosSuperSete(R.color.super_sete_claro_mkp,
-				R.color.branco,
-				R.color.branco,
-				R.color.super_sete_claro_mkp,
-				R.color.branco,
-				R.color.super_sete_claro_mkp,
-				R.color.super_sete_claro_mkp,
-				R.color.super_sete_escuro_mkp,
-				R.color.super_sete_claro_mkp);
+	public ConfiguracaoNumerosSuperSete configuraEstiloSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(aposta.getModalidade());
+
+		return new ConfiguracaoNumerosSuperSete(
+				estilo.getCorClara(),			//corInteriorCirculo
+				estilo.getCorFonteFundoClaro(),	//corInteriorSelecionado
+				estilo.getCorFonteFundoClaro(),	//corTextoCirculo
+				R.color.branco,					//corTextoCirculoSelecionado
+				estilo.getCorFonteFundoClaro(),	//corBordaCirculo
+				R.color.super_sete_claro_mkp,	//corBordaCirculoSelecionado
+				estilo.getCorEscura(),			//corInteriorQuadrado
+				R.color.branco,					//corTextoQuadrado
+				estilo.getCorEscura());	//corBordaQuadrado
 	}
 
 }

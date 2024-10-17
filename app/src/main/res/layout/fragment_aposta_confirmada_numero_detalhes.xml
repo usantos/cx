@@ -331,7 +331,7 @@
                 android:layout_alignStart="@id/tv_sua_aposta"
                 android:layout_below="@+id/rl_fg_numeros_1"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:gravity="center"
                 android:text="@string/numeros_sorteados"
                 android:textSize="12sp"
@@ -344,7 +344,7 @@
                 android:layout_below="@id/tv_sua_aposta"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_toStartOf="@id/tv_sua_aposta"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/colunas"
                 android:textSize="12sp"
                 android:visibility="gone" />
@@ -357,7 +357,7 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_toStartOf="@+id/rl_container_result_1"
                 android:layout_alignTop="@+id/rl_container_result_1"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/colunas"
                 android:textSize="12sp"
                 android:visibility="gone" />

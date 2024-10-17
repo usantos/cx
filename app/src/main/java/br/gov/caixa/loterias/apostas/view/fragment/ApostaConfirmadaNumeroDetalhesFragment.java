@@ -272,25 +272,31 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	}
 
 	private void configuraFragmentSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-		FragmentManager fm          = getActivity().getSupportFragmentManager();
+		FragmentManager fm = getActivity().getSupportFragmentManager();
 
 		matrizSorteados = getResultadoConcurso() != null ? getResultadoConcurso().getMatrizNumerosSorteadosPrimeiroSorteio() : null;
 
 		NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment
-				.newInstance(aposta.getMatrizNumerosSelecionados(),matrizSorteados,getEstiloSuperSete());
+				.newInstance(aposta.getMatrizNumerosSelecionados(), matrizSorteados, getEstiloSuperSete(aposta));
 		fm.beginTransaction().replace(R.id.rl_fg_numeros_1, fragment).commitAllowingStateLoss();
 		rl_fg_numeros_1.setVisibility(View.VISIBLE);
 		tv_colunas.setVisibility(View.VISIBLE);
 		tv_sua_aposta.setVisibility(View.VISIBLE);
 
+		tv_sua_aposta.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		tv_colunas.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+
 		if (matrizSorteados != null) {
 			Utils.ordenaMatrizInteiro(matrizSorteados);
 			NumerosSuperSeteFragment frag = NumerosSuperSeteFragment
-					.newInstance(matrizSorteados,matrizSorteados,getEstiloSuperSete());
+					.newInstance(matrizSorteados, matrizSorteados, getEstiloSuperSete(aposta));
 			fm.beginTransaction().replace(R.id.rl_container_result_1, frag).commitAllowingStateLoss();
 			rl_container_result_1.setVisibility(View.VISIBLE);
 			tv_resultado_super_sete.setVisibility(View.VISIBLE);
 			tv_colunas_2.setVisibility(View.VISIBLE);
+
+			tv_resultado_super_sete.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			tv_colunas_2.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 		}
 	}
 
