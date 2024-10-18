@@ -197,7 +197,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 					getString(R.string.label_atencao),
 					getString(R.string.mensagem_pop_up_aguardando_confirmacao_pix_pergunta),
 					getString(R.string.label_voltar_ao_inicio), getString(R.string.label_sim),
-					null, onDialogListener());
+					null, onDialogListener(), true);
 		}else{
 			voltarParaCarrossel();
 		}
