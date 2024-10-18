@@ -21,10 +21,9 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:visibility="gone" />
-
-    <androidx.viewpager.widget.ViewPager
+    
+    <View
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        />
+        android:layout_height="120dp"/>
 
 </LinearLayout>

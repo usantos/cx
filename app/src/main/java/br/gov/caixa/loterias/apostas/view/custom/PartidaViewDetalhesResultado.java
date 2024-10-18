@@ -477,8 +477,8 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
 
                     String strTextoHtml = "<a href=\"https://loterias.caixa.gov.br/Paginas/Locais-Sorte.aspx"
                             + "?modalidade=" + modalidade.getResultadoConcursoDTO().getConcurso().getModalidade()
-                            + "?concurso=" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero()
-                            + "?titulo=" + modalidade.getResultadoConcursoDTO().getConcurso().getModalidadeDetalhada().getDescricao()
+                            + "&concurso=" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero()
+                            + "&titulo=" + modalidade.getResultadoConcursoDTO().getConcurso().getModalidadeDetalhada().getDescricao()
                             + "\" target=\"_blank\">Consulte aqui o restante da lista de municípios com ganhadores.</a>";
                     title3.setText(HtmlCompat.fromHtml(strTextoHtml, 0));
                     title3.setClickable(true);

@@ -173,7 +173,6 @@ public class AnimacoesAcessoRapido {
         });
     }
 
-
     // animacoes fade in
 
     private void AnimacaoFadeInRepassados(){
@@ -194,8 +193,8 @@ public class AnimacoesAcessoRapido {
             public void onAnimationRepeat(Animator animation) {}
         });
     }
-       private void AnimacaoFadeOutJr(){
-           rlJogoResponsavel.animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
+    private void AnimacaoFadeOutJr(){
+        rlJogoResponsavel.animate().alpha(1.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}
 
@@ -248,7 +247,6 @@ public class AnimacoesAcessoRapido {
         });
     }*/
 
-
     private void AnimacaoFadeInLerBilhetes(){
         relativeLayoutContentLerBilhetes.animate().alpha(0.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
             @Override
@@ -266,7 +264,6 @@ public class AnimacoesAcessoRapido {
             public void onAnimationRepeat(Animator animation) {}
         });
     }
-
 
     private void AnimacaoFadeInRapidao(){
         relativeLayoutContentRapidao.animate().alpha(0.0f).setDuration(200).setListener(new Animator.AnimatorListener() {
@@ -305,8 +302,6 @@ public class AnimacoesAcessoRapido {
             public void onAnimationRepeat(Animator animation) {}
         });
     }
-
-
 
     //mudar conteudo de posicao
 

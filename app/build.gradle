@@ -234,6 +234,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'br.gov.caixa.loterias.apostas'
 }
 
 repositories {
