@@ -51,8 +51,8 @@ android {
 
         //                   22                 1.15.0 = 01 015               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220101500
-        versionName "1.15.0"
+        versionCode 220101501
+        versionName "1.15.1"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -233,6 +233,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'br.gov.caixa.loterias.apostas'
 }
 
 repositories {
