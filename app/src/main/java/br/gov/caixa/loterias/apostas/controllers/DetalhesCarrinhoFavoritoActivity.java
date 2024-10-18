@@ -44,7 +44,7 @@ public class DetalhesCarrinhoFavoritoActivity extends SettingToolbarActivity {
 
     private void setaViews(){
         rvApostas = findViewById(R.id.rv_apostas);
-        setTitle(getString(R.string.title_activity_favoritas));
+        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.title_activity_favoritas)));
     }
 
     private void pegaExtras() {

@@ -20,14 +20,14 @@
         android:textAlignment="center"
         android:textColor="@color/verdeagua"
         android:textSize="18sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView6"
-        style="@style/editTextArialMTTheme"
+        style="@style/editTextCaixaStdTheme"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -78,7 +78,7 @@
         android:textAllCaps="false"
         android:textColor="@color/branco"
         android:textSize="17.7sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/view" />

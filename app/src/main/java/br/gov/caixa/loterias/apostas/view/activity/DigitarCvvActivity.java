@@ -48,7 +48,7 @@ public class DigitarCvvActivity extends AppCompatActivity {
 		toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.informarCvv)));
+		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.informarCvv)));
 
 		configMenu();
 

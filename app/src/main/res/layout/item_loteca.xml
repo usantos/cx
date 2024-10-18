@@ -16,7 +16,6 @@
 
     <TextView
         android:id="@+id/item_title"
-        style="@style/editTextArialMTTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -24,11 +23,11 @@
         android:text="@string/label_empate"
         android:textAlignment="center"
         android:textSize="14.2sp"
-        android:textStyle="bold" />
+        android:fontFamily="@font/caixa_std_bold"
+        android:textColor="@color/cinza" />
 
     <TextView
         android:id="@+id/item_description"
-        style="@style/editTextArialMTTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -36,5 +35,7 @@
         android:text=""
         android:textAlignment="center"
         android:textSize="14.2sp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textColor="@color/cinza"
         android:layout_marginBottom="10dp"/>
 </LinearLayout>

@@ -60,10 +60,9 @@
                     android:id="@+id/validadePremioLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/label_validade_premio"
                     android:textSize="14sp"
-                    android:textStyle="bold"
                     android:textColor="@color/branco"
                     android:layout_marginStart="16dp"
                     app:layout_constraintTop_toTopOf="@id/validadePremioImage"
@@ -77,7 +76,7 @@
                     android:layout_below="@+id/validadePremioLabel"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="4dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textColor="@color/branco"
                     android:text="@string/label_noventa_dias"
                     android:textSize="14sp"
@@ -129,6 +128,7 @@
                         android:layout_marginStart="34dp"
                         android:text="@string/gerar_comprovante"
                         android:textColor="@color/branco"
+                        android:fontFamily="@font/caixa_std_regular"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -186,6 +186,7 @@
                 android:gravity="center"
                 android:text="@string/label_editar_aposta"
                 android:textColor="@color/textColorToolbar"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textSize="12sp" />
 
         </RelativeLayout>
@@ -218,6 +219,7 @@
                 android:gravity="center"
                 android:text="@string/label_carrinho_apostas"
                 android:textColor="@color/textColorToolbar"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textSize="12sp" />
 
         </RelativeLayout>
@@ -267,6 +269,7 @@
                     android:layout_alignBottom="@+id/favoritadoImg"
                     android:layout_toEndOf="@id/favoritadoImg"
                     android:text="@string/label_aposta_salva_carinha"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textColor="@color/branco"
                     android:textSize="14sp" />
             </RelativeLayout>
@@ -306,6 +309,7 @@
                         android:layout_toEndOf="@id/favoritarImg"
                         android:text="@string/label_salve_aposta"
                         android:textColor="@color/branco"
+                        android:fontFamily="@font/caixa_std_regular"
                         android:textSize="14sp" />
                 </RelativeLayout>
 
@@ -319,7 +323,7 @@
 
                     <TextView
                         android:id="@+id/labelDeNomeTxt"
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/label_de_nome"
@@ -328,7 +332,7 @@
 
                     <EditText
                         android:id="@+id/nomeApostaEditTxt"
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/labelDeNomeTxt"
@@ -371,7 +375,7 @@
                     android:text="@string/label_adicionar"
                     android:textColor="@color/branco"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/caixa_std_bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -381,7 +385,8 @@
                     android:gravity="center"
                     android:text="@string/label_adicionar_carrinho_apostas"
                     android:textColor="@color/branco"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:fontFamily="@font/caixa_std_regular"/>
 
             </RelativeLayout>
 

@@ -27,7 +27,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="17dp"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/d_um_novo_nome_para_sua_aposta"
                 android:textColor="@color/verdeazul"
                 android:textSize="12sp" />
@@ -44,7 +44,8 @@
                 android:enabled="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:textColor="@color/branco" />
+                android:textColor="@color/branco"
+                android:fontFamily="@font/caixa_std_regular"/>
 
             <RelativeLayout
                 android:id="@+id/layoutSalvarNomeAposta"
@@ -84,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/label_otimo_novo_nome_sua_aposta"
                     android:textAlignment="center"
                     android:textColor="@color/branco"
@@ -95,12 +96,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:text="@string/quot_o_pr_mio_meu_quot"
                     android:textAlignment="center"
                     android:textColor="@color/branco"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -132,21 +132,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/futura_std_bold"
                     android:text=""
                     android:textColor="@color/verdeazul"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold" />
+                    android:textSize="14.2sp" />
 
                 <TextView
                     android:id="@+id/tituloNomeApostaFavorita"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:text="@string/agora_vai"
                     android:textColor="@color/cinza"
-                    android:textSize="14.2sp"
-                    android:textStyle="bold" />
+                    android:textSize="14.2sp" />
             </LinearLayout>
 
             <RelativeLayout
@@ -162,7 +160,8 @@
                     android:layout_marginEnd="123dp"
                     android:textColor="@color/azulescuroapostafavorita"
                     android:textSize="14.2sp"
-                    tools:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100" />
+                    tools:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100"
+                    android:fontFamily="@font/caixa_std_regular"/>
 
                 <RelativeLayout
                     android:id="@+id/rl_container_fragment"
@@ -243,21 +242,21 @@
 
                     <TextView
                         android:id="@+id/labelInformacaoText"
-                        style="@style/ArialMT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/azulescuroapostafavorita"
                         android:textSize="14sp"
-                        tools:text="Mes de Sorte: " />
+                        tools:text="Mes de Sorte: "
+                        android:fontFamily="@font/caixa_std_regular"/>
 
                     <TextView
                         android:id="@+id/informacaoText"
-                        style="@style/ArialMT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/azulescuroapostafavorita"
                         android:textSize="14sp"
-                        tools:text="Fevereiro" />
+                        tools:text="Fevereiro"
+                        android:fontFamily="@font/caixa_std_regular"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -272,22 +271,22 @@
 
                     <TextView
                         android:id="@+id/labelInformacaoMaisMilionaria"
-                        style="@style/ArialMT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/azulescuroapostafavorita"
                         android:textSize="14sp"
                         android:text="@string/trevos_"
-                        tools:text="Trevos: " />
+                        tools:text="Trevos: "
+                        android:fontFamily="@font/caixa_std_regular"/>
 
                     <TextView
                         android:id="@+id/informacaoTextMaisMilionaria"
-                        style="@style/ArialMT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/azulescuroapostafavorita"
                         android:textSize="14sp"
-                        tools:text="" />
+                        tools:text=""
+                        android:fontFamily="@font/caixa_std_regular"/>
 
                 </LinearLayout>
             </RelativeLayout>

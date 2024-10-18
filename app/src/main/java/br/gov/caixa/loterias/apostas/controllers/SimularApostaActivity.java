@@ -870,9 +870,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
+        //Modalidade Futura Bold
         setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, titleActivity));
 
         if (BuildVersionUtil.isAutomacao() && tipoJogo == ModalidadeEnum.DUPLA_SENA){
+            //Modalidade Futura Bold
             setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "dupla-sena"));
         }
 

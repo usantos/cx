@@ -116,7 +116,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_detalhes_compras))));
+        //setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_detalhes_compras))));
+        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_detalhes_compras))));
     }
 
     private void setaMetodos(){
@@ -412,13 +413,13 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         }
 
         TextView textTotal = findViewById(R.id.txtTotal);
-        textTotal.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_valor)));
+        textTotal.setText(ViewUtils.textCaixaSTDBold(this, this.getString(R.string.label_compra_lista_valor)));
 
         TextView valorCompra = findViewById(R.id.valorCompra);
         valorCompra.setText(ViewUtils.getMoedaFormat(compraDTO.getValorTotal()));
 
         TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
-        situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao_descricao,
+        situacaoCompraTextView.setText(ViewUtils.textCaixaSTDBold(this, this.getString(R.string.label_compra_lista_situacao_descricao,
                 SituacaoCompraUtil.getDescricao(compraDTO))));
 
         if (SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
@@ -474,7 +475,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 //                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_pix));
 //            }
             TextView txtProcessadaPor = findViewById(R.id.compraPossesada);
-            txtProcessadaPor.setText(ViewUtils.textFuturaAndFuturaBold(this,
+            txtProcessadaPor.setText(ViewUtils.textCaixaSTDBold(this,
                     getString(R.string.label_compra_lista_processada_por,
                             MeioPagamentoUtil.getDescricao(compraDTO.getMeioPagamento()))));
         }

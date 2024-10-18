@@ -282,7 +282,9 @@ public class ListaComprasActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
 
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
         selecaoMesSpinner.setAdapter(dataAdapter);
         selecaoMesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -290,7 +292,6 @@ public class ListaComprasActivity extends AppCompatActivity {
                 mes = listaMesAnoDTO.get(i).getMes().getValor().intValue();
                 ano = listaMesAnoDTO.get(i).getAno().intValue();
                 callWebServiceCompras();
-
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {

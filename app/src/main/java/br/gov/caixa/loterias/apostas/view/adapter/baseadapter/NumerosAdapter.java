@@ -18,6 +18,8 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class NumerosAdapter extends BaseAdapter {
@@ -83,7 +85,8 @@ public class NumerosAdapter extends BaseAdapter {
 		shape.setCornerRadius(sizeItens / 2);
 		textView.setBackground(shape);
 		textView.setText(dezenas.get(i).getValue());
-		textView.setTypeface(ViewUtils.getFontFutura(context));
+		//textView.setTypeface(ViewUtils.getFontFutura(context));
+		textView.setTypeface(FonteUtils.getFonte(FontCaixaEnum.REGULAR));
 		textView.setGravity(Gravity.CENTER);
 
 		return textView;

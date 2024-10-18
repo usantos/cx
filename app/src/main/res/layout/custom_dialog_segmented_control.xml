@@ -21,7 +21,7 @@
         android:paddingLeft="17dp"
         android:textColor="@color/branco"
         android:textSize="15.8sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintBottom_toBottomOf="@+id/vw_topo"
         app:layout_constraintTop_toTopOf="@+id/vw_topo"
         tools:text="@string/placeholder_titulo" />
@@ -33,6 +33,7 @@
         android:padding="20dp"
         android:text="@string/carrinho_fav_segmented_desc"
         android:textSize="15.8sp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vw_topo" />
@@ -62,6 +63,7 @@
             android:textSize="12dp"
             android:layout_weight="1"
             tools:text="@string/placeholder_one"
+            android:fontFamily="@font/caixa_std_regular"
             android:textColor="@color/branco" />
 
         <RadioButton
@@ -72,6 +74,7 @@
             android:layout_weight="1"
             android:textSize="12dp"
             android:lines="2"
+            android:fontFamily="@font/caixa_std_regular"
             tools:text="@string/placeholder_two" />
 
         <RadioButton
@@ -80,6 +83,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:lines="2"
+            android:fontFamily="@font/caixa_std_regular"
             android:textSize="12dp"
             android:layout_weight="1"
             tools:text="@string/placeholder_three" />
@@ -105,7 +109,7 @@
         android:textAllCaps="false"
         android:textColor="@color/cinzaescuro"
         android:textSize="15.8sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_divisao" />
 
@@ -119,7 +123,7 @@
         android:textAllCaps="false"
         android:textColor="@color/verdeazul"
         android:textSize="15.8sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_divisao" />
 

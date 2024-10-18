@@ -19,7 +19,9 @@ import javax.annotation.Nullable;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -109,7 +111,8 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
         imageView.setSelected(equipeDTO.getVitoria());
         apostaEquipeLotecaView.setText(equipeNome);
         if (equipeDTO.getVitoria()) {
-            apostaEquipeLotecaView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+            //apostaEquipeLotecaView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+            apostaEquipeLotecaView.setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
         }
     }
     private void preencheAcerto(ImageView imageView, TextView apostaEquipeLotecaView){
@@ -120,6 +123,7 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
         imageView.setBackground(wrappedDrawable);
         apostaEquipeLotecaView.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.branco));
         apostaEquipeLotecaView.setTextColor(corLoteca);
-        apostaEquipeLotecaView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+        //apostaEquipeLotecaView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+        apostaEquipeLotecaView.setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
     }
 }

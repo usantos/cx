@@ -7,5 +7,5 @@
     android:textSize="16sp"
     android:gravity="left"
     android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
-    android:fontFamily="@font/arialmt"
+    android:fontFamily="@font/caixa_std_regular"
     />

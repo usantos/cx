@@ -35,7 +35,7 @@
 
                 <TextView
                     android:id="@+id/labelQuantidadeApostadas"
-                    style="@style/ArialMT"
+                    style="@style/CaixaStdRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -45,7 +45,7 @@
 
                 <TextView
                     android:id="@+id/quantidadeApostadas"
-                    style="@style/ArialMT"
+                    style="@style/CaixaStdRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -63,7 +63,7 @@
 
                 <TextView
                     android:id="@+id/labelQuantidadeSorteios"
-                    style="@style/ArialMT"
+                    style="@style/CaixaStdRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="31dp"
@@ -73,7 +73,7 @@
 
                 <TextView
                     android:id="@+id/quantidadeSorteios"
-                    style="@style/ArialMT"
+                    style="@style/CaixaStdRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
@@ -95,7 +95,7 @@
             android:textAllCaps="false"
             android:textColor="@color/branco"
             android:textSize="14sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             android:visibility="gone" />
 
         <LinearLayout
@@ -110,7 +110,7 @@
 
             <TextView
                 android:id="@+id/labelTimeCoracaoTxt"
-                style="@style/ArialMT"
+                style="@style/CaixaStdRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_time_coracao"
@@ -119,12 +119,12 @@
 
             <TextView
                 android:id="@+id/textViewTimeCoracao"
-                style="@style/ArialMT"
+                style="@style/CaixaStdBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/branco"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                />
         </LinearLayout>
 
     </LinearLayout>
@@ -153,7 +153,7 @@
 
                 <TextView
                     android:id="@+id/tipoAposta"
-                    style="@style/editTextArialMTTheme"
+                    android:fontFamily="@font/futura_std_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
@@ -163,7 +163,7 @@
 
                 <TextView
                     android:id="@+id/numeroConcurso"
-                    style="@style/editTextArialMTTheme"
+                    style="@style/editTextCaixaStdTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tipoAposta"
@@ -186,7 +186,7 @@
 
                 <TextView
                     android:id="@+id/texto_coluna_loteca"
-                    style="@style/editTextArialMTTheme"
+                    style="@style/editTextCaixaStdTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_coluna"
@@ -195,7 +195,7 @@
 
                 <TextView
                     android:id="@+id/texto_time_loteca"
-                    style="@style/editTextArialMTTheme"
+                    style="@style/editTextCaixaStdTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="14dp"
@@ -217,7 +217,7 @@
 
             <TextView
                 android:id="@+id/numerosText"
-                style="@style/editTextArialMTTheme"
+                style="@style/editTextCaixaStdTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -229,7 +229,7 @@
 
             <TextView
                 android:id="@+id/valorAposta"
-                style="@style/editTextArialMTTheme"
+                style="@style/editTextCaixaStdTheme"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"

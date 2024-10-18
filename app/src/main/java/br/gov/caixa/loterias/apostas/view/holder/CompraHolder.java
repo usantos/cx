@@ -59,6 +59,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 
 		this.tipoPremioListaComprasTextView.setTextColor(colorText);
 		String nomeAposta =  ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase();
+		//modalidade fica em Futura Bold
 		this.tipoPremioListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(), itemView.getContext().getString(R.string.texto_futura_bold, nomeAposta)));
 
 		if (aposta.getIndicadorCotaBolao()) {
@@ -66,7 +67,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 			tagBolao.setImageResource(estiloMKP.getImagemTrianguloOutline());
 
 			this.dataConcursoListaComprasTextView.setText(aposta.getReservaCotaBolao().getDataRegistroBolao());
-			this.concursoListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
+			this.concursoListaComprasTextView.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
 							itemView.getContext().getString(R.string.label_aposta_concurso_bold,
 							aposta.getConcursoInicial())));
 			this.cotaListaComprasTextView.setVisibility(View.VISIBLE);
@@ -76,7 +77,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 									aposta.getReservaCotaBolao().getQtdCotaTotalBolao()));
 		} else {
 			this.dataConcursoListaComprasTextView.setText(aposta.getDataEfetivacao());
-			this.concursoListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),
+			this.concursoListaComprasTextView.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
 							itemView.getContext().getString(R.string.label_aposta_concurso_bold,
 									aposta.getConcursoInicial())));
 		}

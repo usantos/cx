@@ -20,6 +20,7 @@ import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.listener.MeusCartoesListener;
 
@@ -137,7 +138,7 @@ public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoe
         tvSemCartao = findViewById(R.id.tv_sem_cartao);
         scrollCartoes = findViewById(R.id.nsv_conteudo);
 
-        setTitle(getString(R.string.meus_cartoes));
+        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.meus_cartoes)));
     }
 
     @Override

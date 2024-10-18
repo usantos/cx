@@ -31,7 +31,7 @@
         android:layout_marginTop="5dp"
         android:textColor="@color/verdeazul"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/v_linha" />
@@ -44,7 +44,7 @@
         android:layout_marginTop="2dp"
         android:textColor="@color/amareloQueimado"
         android:textSize="25sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_bem_vindo" />
@@ -56,6 +56,7 @@
         android:layout_marginTop="15dp"
         android:paddingRight="30dp"
         android:paddingLeft="30dp"
+        android:fontFamily="@font/caixa_std_regular"
         android:text="@string/conf_rapd_selecione_limites"
         android:textAlignment="center"
         android:textSize="15sp"

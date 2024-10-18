@@ -53,6 +53,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.ResultadoLotogolFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoMaisMilionariaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoTimemaniaDiaDeSorteFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ResultadoTrevosFragment;
+import okhttp3.internal.Util;
 
 import static br.gov.caixa.loterias.apostas.controllers.SelecaoModalidadesResultados.MODALIDADE;
 
@@ -177,9 +178,9 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         }
         String anterior = String.valueOf(concursoAlvo-1);
         String proximo = String.valueOf(concursoAlvo +1);
-        btnProximoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,proximo)));
-        btnConcursoAnterior.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,anterior)));
-        btnVoltar.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.label_voltar_bold)));
+        btnProximoConcurso.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.resultados_botao,proximo)));
+        btnConcursoAnterior.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.resultados_botao,anterior)));
+        btnVoltar.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.label_voltar_bold)));
         if(concursoAlvo >= concursoAtual){
             btnProximoConcurso.setEnabled(false);
             btnProximoConcurso.setAlpha(.5f);
@@ -258,7 +259,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         divisoria.setVisibility(View.VISIBLE);
         tvNumeroSorteio.setVisibility(View.VISIBLE);
         layoutListaPremiacao.setVisibility(View.VISIBLE);
-        dataSorteio.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_data_sorteio, ("_"+response.getConcurso().getDataSorteio()+"_"))));
+        dataSorteio.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.resultados_data_sorteio, ("_"+response.getConcurso().getDataSorteio()+"_"))));
 
         switch (ModalidadeEnum.toString(txtModalidade)) {
             case MEGA_SENA:
@@ -294,7 +295,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 setBackground(R.color.lotecaclaro, R.color.lotecaescuro, R.drawable.background_trapeze_loteca);
                 configuraResultadoSuperior(response, ResultadoLotecaFragment.newInstance(response));
                 tvNumeroSorteio.setVisibility(View.GONE);
-                dataSorteio.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_data_resultado, ("_"+response.getConcurso().getDataSorteio()+"_"))));
+                dataSorteio.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.resultados_data_resultado, ("_"+response.getConcurso().getDataSorteio()+"_"))));
                 break;
             case LOTOGOL:
                 setBackground(R.color.lotogolclaro, R.color.lotogolescuro, R.drawable.background_trapeze_lotogol);
@@ -467,7 +468,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, List<PremiacaoConcursoDTO> listaPremiadosSegundoConcurso){
         TextView premiadosTextview1 = new TextView(VisualizarResultadosActivity.this);
-        premiadosTextview1.setText(ViewUtils.textFuturaAndFuturaBold(VisualizarResultadosActivity.this, getResources().getString(R.string.label_premiados_primeiro_sorteio_bold)));
+        premiadosTextview1.setText(ViewUtils.textCaixaSTDBold(VisualizarResultadosActivity.this, getResources().getString(R.string.label_premiados_primeiro_sorteio_bold)));
         LinearLayout.LayoutParams layoutParamsPremiadosTextview1 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParamsPremiadosTextview1.setMargins(0, 35, 0, 0);
@@ -479,7 +480,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         adicionarPremiados(listaPremiados);
 
         TextView premiadosTextview2= new TextView(VisualizarResultadosActivity.this);
-        premiadosTextview2.setText(ViewUtils.textFuturaAndFuturaBold(VisualizarResultadosActivity.this, getResources().getString(R.string.label_premiados_segundo_sorteio_bold)));
+        premiadosTextview2.setText(ViewUtils.textCaixaSTDBold(VisualizarResultadosActivity.this, getResources().getString(R.string.label_premiados_segundo_sorteio_bold)));
         LinearLayout.LayoutParams layoutParamspremiadosTextview2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParamspremiadosTextview2.setMargins(0, 20, 0, 0);
@@ -493,7 +494,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     }
 
     private void setTitlePorConcurso(int concurso) {
-        setTitle(getString(R.string.resultados_titulo, String.valueOf(concurso)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(VisualizarResultadosActivity.this, getString(R.string.resultados_titulo, String.valueOf(concurso))));
     }
 
     private void pegaExtras() {

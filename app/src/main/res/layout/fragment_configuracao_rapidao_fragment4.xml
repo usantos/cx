@@ -29,14 +29,13 @@
                 android:textAlignment="center"
                 android:textColor="@color/verdeagua"
                 android:textSize="18sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_descricao"
-                style="@style/editTextArialMTTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -46,6 +45,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/cinza"
                 android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_titulo_modalidade" />

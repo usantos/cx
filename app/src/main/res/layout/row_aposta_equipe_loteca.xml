@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
         android:textSize="14.2sp"
-        android:textColor="@color/cinza"/>
+        android:textColor="@color/cinza"
+        android:fontFamily="@font/caixa_std_regular"/>
 
 </LinearLayout>

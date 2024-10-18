@@ -19,7 +19,7 @@
             android:text="@string/titulo"
             android:textColor="@color/branco"
             android:textSize="15.8sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/caixa_std_bold" />
     </RelativeLayout>
 
     <LinearLayout
@@ -34,6 +34,7 @@
             android:layout_height="wrap_content"
             android:text="@string/valores_para_apostas_com_2_trevos"
             android:layout_margin="16dp"
+            android:fontFamily="@font/caixa_std_regular"
             android:visibility="gone"/>
 
         <ListView
@@ -67,7 +68,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/cinzaescuro"
                 android:textSize="15.8sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"/>
 
@@ -80,7 +81,7 @@
                 android:text="@string/ok"
                 android:textColor="@color/verdeazul"
                 android:textSize="15.8sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:gravity="center_vertical|right"
                 android:paddingRight="24dp"/>
         </LinearLayout>

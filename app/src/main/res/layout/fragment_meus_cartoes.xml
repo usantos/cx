@@ -59,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Confira aqui sua lista de cartoes salvos"
+            android:fontFamily="@font/caixa_std_regular"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toTopOf="parent"

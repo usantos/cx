@@ -11,7 +11,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/numeros_obrigatorios"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:textSize="18sp"
                 android:textAlignment="center"
                 android:layout_marginTop="40dp"
@@ -30,7 +30,7 @@
                 android:textAlignment="center"
                 android:id="@+id/tv_descricao"
                 app:layout_constraintTop_toBottomOf="@id/tv_titulo"
-                style="@style/editTextArialMTTheme"/>
+                style="@style/editTextCaixaStdTheme"/>
 
             <Button
                 android:layout_width="184dp"
@@ -39,6 +39,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/cinza"
                 android:textSize="14.2sp"
+                android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintTop_toBottomOf="@id/tv_descricao"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

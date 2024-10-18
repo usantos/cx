@@ -36,7 +36,7 @@
                 android:text="@string/label_veja_retirar_premio"
                 android:textColor="@color/verdeazul"
                 android:textSize="14.2sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold" />
 
             <LinearLayout
                 android:id="@+id/informacoesPremioZeradoLayout"
@@ -61,10 +61,10 @@
                         android:text="@string/label_numerico_um"
                         android:textColor="@color/colorAccent"
                         android:textSize="17.5sp"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/caixa_std_bold" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -95,10 +95,10 @@
                         android:text="@string/label_numerico_dois"
                         android:textColor="@color/colorAccent"
                         android:textSize="17.5sp"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/caixa_std_bold" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -123,7 +123,7 @@
                 android:visibility="gone">
 
                 <TextView
-                    style="@style/ArialMT"
+                    style="@style/CaixaStdRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/activity_vertical_margin"
@@ -149,10 +149,10 @@
                         android:text="@string/label_numerico_um"
                         android:textColor="@color/colorAccent"
                         android:textSize="17.5sp"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/caixa_std_bold" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -183,7 +183,7 @@
                         android:src="@drawable/ic_rectangle_8" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -207,7 +207,7 @@
                         android:src="@drawable/ic_rectangle_8" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -232,10 +232,10 @@
                         android:text="@string/label_numerico_dois"
                         android:textColor="@color/colorAccent"
                         android:textSize="17.5sp"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/caixa_std_bold" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -263,7 +263,7 @@
                         android:src="@drawable/ic_rectangle_8" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -286,7 +286,7 @@
                         android:src="@drawable/ic_rectangle_8" />
 
                     <TextView
-                        style="@style/ArialMT"
+                        style="@style/CaixaStdRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -318,7 +318,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/branco"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/caixa_std_bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -338,6 +338,7 @@
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="14.2sp"
+                    android:fontFamily="@font/caixa_std_regular"
                     tools:text="@string/label_aposte_agora" />
             </LinearLayout>
 
@@ -349,7 +350,7 @@
 
                 <TextView
                     android:id="@+id/mensagemNaoPremiadoTextView"
-                    style="@style/ArialMT"
+                    style="@style/CaixaStdRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="68dp"

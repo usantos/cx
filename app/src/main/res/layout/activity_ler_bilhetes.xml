@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="34dp"
-            android:fontFamily="@font/futura_std_bold"
+            android:fontFamily="@font/caixa_std_bold"
             android:text="@string/label_resultado"
             android:textColor="@color/branco"
             android:textSize="16sp" />
@@ -69,7 +69,7 @@
             android:layout_marginLeft="68dp"
             android:layout_marginTop="64dp"
             android:layout_marginRight="68dp"
-            android:fontFamily="@font/arialmt"
+            android:fontFamily="@font/caixa_std_regular"
             android:text="@string/title_orientacaoQrCode"
             android:textColor="@color/branco"
             android:textSize="14.2sp" />
@@ -94,7 +94,7 @@
                 android:drawablePadding="8dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/title_CodigoBarras"
                 android:textAlignment="center"
                 android:textAllCaps="false"
@@ -115,7 +115,7 @@
                 android:drawablePadding="8dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/title_QrCode"
                 android:textAlignment="center"
                 android:textAllCaps="false"
@@ -142,7 +142,7 @@
                 android:drawablePadding="8dp"
                 android:paddingLeft="10dp"
 
-
+                android:fontFamily="@font/caixa_std_regular"
                 android:paddingRight="10dp"
                 android:text="@string/title_digiteSuaAposta"
                 android:textAlignment="center"

@@ -13,7 +13,7 @@
         android:layout_margin="5dp"
         android:textColor="@drawable/btn_text_color"
         android:padding="10dp"
-        android:fontFamily="@font/font_family_futura"
+        android:fontFamily="@font/caixa_std_regular"
         android:textSize="17sp"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"

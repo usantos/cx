@@ -36,7 +36,7 @@
             android:text="@string/tit_premio_pago"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="16sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,10 +73,9 @@
                 android:id="@+id/concursoLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_bold"
                 android:text="@string/concurso"
                 android:textSize="14sp"
-                android:textStyle="bold"
                 android:layout_marginTop="8dp"/>
 
             <TextView
@@ -84,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/concursoLabel"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textSize="12sp"
                 tools:text="1234" />
 
@@ -95,7 +94,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/concursoTxt"
                 android:layout_below="@id/concursoTxt"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textSize="12sp"
                 tools:text="4 apostas" />
 
@@ -117,7 +116,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/divider"
                     android:text="@string/label_data_aposta"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textColor="@color/branco"
                     android:textSize="12sp" />
 
@@ -130,6 +129,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/label_data_aposta"
                     android:textColor="@color/branco"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textSize="12sp" />
 
                 <View
@@ -154,7 +154,7 @@
                     android:visibility="gone"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/caixa_std_bold" />
 
                 <TextView
                     android:id="@+id/resultTxt"
@@ -166,7 +166,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:textColor="@color/branco"
                     android:textSize="12sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     tools:text="Aguardando" />
 
                 <TextView
@@ -180,6 +180,7 @@
                     android:layout_marginStart="10dp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:visibility="gone" />
 
                 <TextView
@@ -192,7 +193,7 @@
                     android:layout_marginStart="10dp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:visibility="gone"
                     tools:text="@string/r_0_00" />
 
@@ -224,6 +225,7 @@
                     android:layout_height="wrap_content"
                     android:text="Resgatar prêmio"
                     android:textColor="@color/branco"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:layout_marginStart="16sp"
                     app:layout_constraintStart_toEndOf="@+id/ivResgatePremio"
                     app:layout_constraintTop_toTopOf="parent"
@@ -237,7 +239,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/concursoTxt"
                 android:layout_alignBottom="@id/informacaoAdicionalLayout"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:gravity="bottom"
                 android:text="@string/label_aposta_troca"
                 android:textColor="?android:attr/textColorSecondary"
@@ -259,7 +261,7 @@
                     android:id="@+id/labelInformacaoAdicionalTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/label_time_coracao"
                     android:textSize="12sp"
                     android:padding="5dp"/>
@@ -269,9 +271,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/labelInformacaoAdicionalTxt"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textSize="12sp"
-                    android:textStyle="bold"
                     tools:text="@string/label_time_coracao"
                     android:padding="5dp"/>
             </RelativeLayout>
@@ -287,10 +288,9 @@
                 android:id="@+id/modalidadeTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_bold"
                 android:text="@string/label_teimosinha"
                 android:textSize="14sp"
-                android:textStyle="bold"
                 android:visibility="invisible"
                 tools:visibility="visible" />
 
@@ -300,7 +300,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/modalidadeTxt"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:gravity="center"
                 android:text="@string/seus_numeros"
                 android:textSize="12sp"
@@ -331,7 +331,7 @@
                 android:layout_alignStart="@id/tv_sua_aposta"
                 android:layout_below="@+id/rl_fg_numeros_1"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:gravity="center"
                 android:text="@string/numeros_sorteados"
                 android:textSize="12sp"
@@ -344,7 +344,7 @@
                 android:layout_below="@id/tv_sua_aposta"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_toStartOf="@id/tv_sua_aposta"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/colunas"
                 android:textSize="12sp"
                 android:visibility="gone" />
@@ -357,7 +357,7 @@
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:layout_toStartOf="@+id/rl_container_result_1"
                 android:layout_alignTop="@+id/rl_container_result_1"
-                android:fontFamily="@font/arialmt"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/colunas"
                 android:textSize="12sp"
                 android:visibility="gone" />
@@ -396,7 +396,7 @@
                     android:id="@+id/tv_tit_time_mes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:background="@color/branco"
                     android:textColor="@color/timemaniaclaro"
                     android:text="@string/label_time_coracao"
@@ -408,11 +408,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/tv_tit_time_mes"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:background="@color/branco"
                     android:textColor="@color/timemaniaclaro"
                     android:textSize="12sp"
-                    android:textStyle="bold"
                     tools:text="@string/label_time_coracao"
                     android:padding="5dp" />
             </RelativeLayout>

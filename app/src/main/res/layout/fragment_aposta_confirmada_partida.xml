@@ -36,7 +36,7 @@
             android:text="@string/tit_premio_pago"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="16sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,22 +77,21 @@
             android:orientation="vertical">
 
             <TextView
-                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_concurso"
                 android:textColor="?android:attr/textColor"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold" />
 
             <TextView
                 android:id="@+id/concursoCabecalhoTextView"
-                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_concurso"
                 android:textColor="?android:attr/textColor"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_regular" />
         </LinearLayout>
 
         <LinearLayout
@@ -116,8 +115,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     android:text="@string/label_data_aposta"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="12sp" />
+                    android:textColor="?android:attr/textColor"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/caixa_std_bold"/>
 
                 <TextView
                     android:id="@+id/dataHoraTextView"
@@ -129,16 +129,16 @@
                     android:text="@string/label_data_aposta"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/caixa_std_regular"/>
 
                 <View
                     android:id="@+id/divider"
                     android:layout_width="1dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="20dp"
                     app:layout_constraintBottom_toBottomOf="@+id/dataHoraTextView"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/dataHoraTextView"
+                    app:layout_constraintStart_toEndOf="@+id/tv_titulo"
                     android:background="?android:textColor" />
 
                 <TextView
@@ -150,9 +150,10 @@
                     app:layout_constraintStart_toStartOf="@+id/divider"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:text="@string/label_coluna"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAlignment="textStart"
+                    android:textColor="?android:attr/textColor"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/caixa_std_bold"/>
 
                 <TextView
                     android:id="@+id/tv_val_premio_tit"
@@ -165,6 +166,7 @@
                     android:layout_marginStart="10dp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:visibility="gone" />
 
                 <TextView
@@ -177,7 +179,7 @@
                     android:layout_marginStart="10dp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="12sp"
-                    android:textStyle="bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:visibility="gone"
                     tools:text="@string/r_0_00" />
 
@@ -213,6 +215,7 @@
                     android:layout_height="wrap_content"
                     android:text="Resgatar prêmio"
                     android:textColor="@color/branco"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:layout_marginStart="16sp"
                     app:layout_constraintStart_toEndOf="@+id/ivResgatePremio"
                     app:layout_constraintTop_toTopOf="parent"
@@ -221,14 +224,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                style="@style/ArialMT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/label_sua_aposta"
                 android:textColor="?android:attr/textColor"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold"/>
 
             <LinearLayout
                 android:id="@+id/cabecalhoLotecaLinearLayout"
@@ -245,7 +247,7 @@
                     android:text="@string/label_coluna"
                     android:textColor="?android:attr/textColor"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/caixa_std_bold"/>
 
                 <TextView
                     style="@style/ArialMT"
@@ -255,7 +257,7 @@
                     android:text="@string/label_time"
                     android:textColor="?android:attr/textColor"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/caixa_std_bold"/>
 
             </LinearLayout>
 
@@ -267,12 +269,12 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    style="@style/ArialMT"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_concurso_abreviado_espaco"
                     android:textColor="?android:attr/textColor"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:fontFamily="@font/caixa_std_regular"/>
 
                 <TextView
                     android:id="@+id/concursoRodaPeTextView"
@@ -282,7 +284,7 @@
                     android:text="@string/label_concurso_abreviado_espaco"
                     android:textColor="?android:attr/textColor"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/caixa_std_bold"/>
             </LinearLayout>
 
             <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
