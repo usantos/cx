@@ -33,7 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StatusBilhete;
 import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.model.ConferirBilheteModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoAdapter;
@@ -61,7 +61,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private ModalidadeEnum modalidadeEnum;
 
     private ConferirBilheteModel model;
-    private EstiloModalidade estiloModalidade;
+    //private EstiloModalidade estiloModalidade;
+    private EstiloModalidadeMKP estiloModalidade;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -263,6 +264,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             String label = getResources().getString(R.string.label_voce_foi_premiado_exclamacao);
             contentResultadoPremiado.getValorPremioTituloTextView().setText(label);
         }
+        contentResultadoPremiado.getValorPremioTituloTextView().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoEscuro()));
 
         checkNsb();
 
@@ -293,7 +295,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorClara()));
             contentResultadoPremiado.getPremioGanhoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
             contentResultadoPremiado.getTopoResultadoPremioLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
-            contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrevoBackground()));
+            contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidade.getTrapezio()));
+            contentResultadoPremiado.getImgTrevoResultado().setImageDrawable(ContextCompat.getDrawable(this, estiloModalidade.getTrevoFundoEscuro()));
         }
 
         if (modalidadeEnum == ModalidadeEnum.MAIS_MILIONARIA){
@@ -301,12 +304,14 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         } else {
             contentResultadoPremiado.getTituloModalidadeTextView().setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
         }
+        contentResultadoPremiado.getTituloModalidadeTextView().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoClaro()));
+        contentResultadoPremiado.getPodeComemorar().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoEscuro()));
     }
 
     private void initEstiloModalidade() {
         if (estiloModalidade == null && resultadoConsultaBilheteDTO != null) {
             modalidadeEnum = ModalidadeEnum.fromInteger(resultadoConsultaBilheteDTO.getModalidadeDTO().getValor());
-            estiloModalidade = new EstiloModalidade(modalidadeEnum);
+            estiloModalidade = new EstiloModalidadeMKP(modalidadeEnum);
         }
     }
 
