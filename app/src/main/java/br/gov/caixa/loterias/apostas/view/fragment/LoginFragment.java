@@ -249,6 +249,7 @@ public class LoginFragment extends Fragment {
                     crud.deleteAll();
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                     UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
+                    UltimaNotificacaoSingleton.getInstance().setPagamentoNaoIdentificado(response.getPayload().getPagamentoNaoIdentificado());
 
                     Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), PrincipalActivity.class);
                     getActivity().startActivity(intent);

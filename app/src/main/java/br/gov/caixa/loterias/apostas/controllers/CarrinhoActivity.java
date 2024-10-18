@@ -279,12 +279,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         ViewUtils.alertTitleButton(this, R.string.label_atencao,
             getString(R.string.loteca_nao_favorita),
             getResources().getString(R.string.title_entendi),
-            new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    dialogFavoritar.show();
-                }
-            }
+                dialog -> dialogFavoritar.show()
         );
     }
 

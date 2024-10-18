@@ -134,7 +134,7 @@ public class ResgatePixActivity extends LoteriasAppActivity {
 															getString(R.string.trocar_tipo_chave),
 															getString(R.string.trocar_forma_resgate),
 															getString(R.string.pix_continuar),
-															onDialogListenerNaoCpf(position));
+															onDialogListenerNaoCpf(position), true);
 			}
 		};
 	}
