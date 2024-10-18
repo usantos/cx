@@ -71,76 +71,81 @@
             android:id="@+id/containerBandeiras"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="16dp"
-            app:layout_constraintTop_toBottomOf="@id/textoBandeiras"
-            app:layout_constraintBottom_toTopOf="@id/containerCartoes">
+            app:layout_constraintBottom_toTopOf="@id/containerCartoes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textoBandeiras">
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flowBandeiras"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:constraint_referenced_ids="imgBandeira1,imgBandeira2,imgBandeira3,imgBandeira4,imgBandeira5,imgBandeira6"
+                app:flow_horizontalAlign="center"
+                app:flow_horizontalGap="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="4dp"
+                app:flow_horizontalStyle="packed"
+                app:flow_maxElementsWrap="3"
+                app:flow_wrapMode="chain"
+                app:layout_constraintBaseline_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgBandeira1"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_bandeira_amex"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="0dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imgBandeira2"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                />
+                tools:src="@drawable/ic_bandeira_amex" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgBandeira2"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_bandeira_diners"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="16dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imgBandeira3"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira1"
-                />
+                tools:src="@drawable/ic_bandeira_elo" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgBandeira3"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_bandeira_elo"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="16dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imgBandeira4"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira2"
-                />
+                tools:src="@drawable/ic_hipercard" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgBandeira4"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_hipercard"
-                android:layout_marginTop="0dp"
-                android:layout_marginStart="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/imgBandeira1"
-                app:layout_constraintStart_toStartOf="@+id/imgBandeira1"
-                />
+                app:layout_constraintEnd_toStartOf="@+id/imgBandeira5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imgBandeira3"
+                tools:src="@drawable/ic_master_card" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgBandeira5"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_master_card"
-                android:layout_marginTop="0dp"
-                android:layout_marginStart="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/imgBandeira2"
-                app:layout_constraintStart_toStartOf="@+id/imgBandeira2"
-                />
+                app:layout_constraintEnd_toStartOf="@+id/imgBandeira6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imgBandeira4"
+                tools:src="@drawable/ic_bandeira_visa" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgBandeira6"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_bandeira_visa"
-                android:layout_marginTop="0dp"
-                android:layout_marginStart="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/imgBandeira3"
-                app:layout_constraintStart_toStartOf="@+id/imgBandeira3"
-                />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/imgBandeira5"
+                android:visibility="gone"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
