@@ -9,6 +9,8 @@ import javax.annotation.Nullable;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 
 /**
  * Created by cedesbr450 on 15/03/18.
@@ -61,7 +63,8 @@ public class PartidaViewLoteca extends LinearLayout {
         apostas_partida_loteca_view_um.getLayout_row_aposta_partida_loteca().setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_um.getImageApostaPartidaLoteca().setBackground(getContext().getResources().getDrawable(R.drawable.select_unselect_circle_generico));
         if (parametroPartida.getEquipe1().getVitoria()){
-            apostas_partida_loteca_view_um.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
+            //apostas_partida_loteca_view_um.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
+            apostas_partida_loteca_view_um.getTextApostaPartidaLoteca().setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
         }
         apostas_partida_loteca_view_empate.getTextApostaPartidaLoteca().setText("X");
         apostas_partida_loteca_view_empate.getTextApostaPartidaLoteca().setTextColor(getContext().getResources().getColor(R.color.branco));
@@ -69,7 +72,8 @@ public class PartidaViewLoteca extends LinearLayout {
         apostas_partida_loteca_view_empate.getLayout_row_aposta_partida_loteca().setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_empate.getImageApostaPartidaLoteca().setBackground(getContext().getResources().getDrawable(R.drawable.select_unselect_circle_generico));
         if(parametroPartida.getEmpate()){
-            apostas_partida_loteca_view_empate.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
+            //apostas_partida_loteca_view_empate.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
+            apostas_partida_loteca_view_empate.getTextApostaPartidaLoteca().setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
         }
         apostas_partida_loteca_view_dois.getTextApostaPartidaLoteca().setText(parametroPartida.getEquipe2().getNome() + " " + parametroPartida.getLegendaAbreviada());
         apostas_partida_loteca_view_dois.getTextApostaPartidaLoteca().setTextColor(getContext().getResources().getColor(R.color.branco));
@@ -78,7 +82,8 @@ public class PartidaViewLoteca extends LinearLayout {
         apostas_partida_loteca_view_dois.getLayout_row_aposta_partida_loteca().setBackground(getContext().getResources().getDrawable(R.color.transparente));
         apostas_partida_loteca_view_dois.getImageApostaPartidaLoteca().setBackground(getContext().getResources().getDrawable(R.drawable.select_unselect_circle_generico));
         if(parametroPartida.getEquipe2().getVitoria()){
-            apostas_partida_loteca_view_dois.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
+            //apostas_partida_loteca_view_dois.getTextApostaPartidaLoteca().setTypeface(Typeface.DEFAULT_BOLD);
+            apostas_partida_loteca_view_dois.getTextApostaPartidaLoteca().setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
         }
     }
 

@@ -16,6 +16,9 @@ import androidx.fragment.app.FragmentActivity;
 
 import java.util.ArrayList;
 
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
+
 public class SurpresinhaGridViewAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<String> rows;
@@ -64,6 +67,7 @@ public class SurpresinhaGridViewAdapter extends BaseAdapter {
 		shape.setCornerRadius(sizeItens / 2);
 		shape.setStroke(1, Color.GRAY);
 		textView.setBackground(shape);
+		textView.setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
 		textView.setText(rows.get(i));
 		textView.setGravity(Gravity.CENTER);
 

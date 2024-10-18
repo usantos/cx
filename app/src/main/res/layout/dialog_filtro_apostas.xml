@@ -22,7 +22,7 @@
             android:text="@string/tit_selecione_data"
             android:textColor="@color/branco"
             android:textSize="16sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,8 +41,7 @@
             android:descendantFocusability="blocksDescendants"
             android:layout_marginTop="10dp"
             android:layout_marginStart="50dp"
-            android:theme="@style/AppTheme.PickerDark"
-            android:layout_marginEnd="50dp"
+            android:theme="@style/AppTheme.PickerDarkCaixa"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -65,7 +64,7 @@
             android:textAllCaps="false"
             android:textColor="@color/cinza"
             android:textSize="16sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -80,7 +79,7 @@
             android:text="@string/ok"
             android:textColor="@color/verdeagua"
             android:textSize="16sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

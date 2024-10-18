@@ -48,7 +48,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_Forma de pagamento_"));
+		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_Forma de pagamento_"));
 
 		containerPix = findViewById(R.id.container_pix);
 		findViewById(R.id.btn_gerar_codigo).setOnClickListener(onGerarCodigoPixClick());

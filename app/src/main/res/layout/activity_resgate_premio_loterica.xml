@@ -50,7 +50,7 @@
                 android:gravity="center"
                 android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
                 android:textSize="14sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintTop_toBottomOf="@id/cl_background_qr"
                 tools:text="@string/rsgt_lt_msg_qr_valido" />
 
@@ -63,7 +63,7 @@
                 android:gravity="center"
                 android:textColor="@color/verde_card"
                 android:textSize="25sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/tv_desc_qr_code"
                 tools:text="05:00" />
@@ -79,7 +79,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/verdeazul"
                 android:textSize="16sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -136,7 +136,7 @@
                                 android:text="@string/label_numerico_um"
                                 android:textColor="@color/colorAccent"
                                 android:textSize="17.5sp"
-                                android:textStyle="bold" />
+                                android:fontFamily="@font/caixa_std_bold"/>
 
                             <TextView
                                 android:id="@+id/informacaoTopicoUmText"
@@ -152,7 +152,7 @@
                                 android:text="@string/label_diriga_unidade_loterica_preferencia"
                                 android:textColor="@color/cinza"
                                 android:textSize="16sp"
-                                android:textStyle="bold" />
+                                android:fontFamily="@font/caixa_std_bold"/>
 
                         </RelativeLayout>
 
@@ -179,7 +179,7 @@
                                 android:text="@string/label_numerico_dois"
                                 android:textColor="@color/colorAccent"
                                 android:textSize="17.5sp"
-                                android:textStyle="bold" />
+                                android:fontFamily="@font/caixa_std_bold"/>
 
                             <TextView
                                 android:id="@+id/informacaoTopicoDoisText"
@@ -195,7 +195,7 @@
                                 android:text="@string/label_apresente_qr_code_acima"
                                 android:textColor="@color/cinza"
                                 android:textSize="16sp"
-                                android:textStyle="bold" />
+                                android:fontFamily="@font/caixa_std_bold"/>
 
                         </RelativeLayout>
 
@@ -216,7 +216,7 @@
                                 android:text="@string/label_numerico_tres"
                                 android:textColor="@color/colorAccent"
                                 android:textSize="17.5sp"
-                                android:textStyle="bold" />
+                                android:fontFamily="@font/caixa_std_bold"/>
 
                             <TextView
                                 android:id="@+id/tv_topico_3"
@@ -231,7 +231,7 @@
                                 android:gravity="center_vertical"
                                 android:textColor="@color/cinza"
                                 android:textSize="16sp"
-                                android:textStyle="bold"
+                                android:fontFamily="@font/caixa_std_bold"
                                 tools:text="texto 03" />
 
                         </RelativeLayout>

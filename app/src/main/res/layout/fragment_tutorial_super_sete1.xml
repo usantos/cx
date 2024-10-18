@@ -28,7 +28,8 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_height="wrap_content"
-                tools:text="@string/bem_vindo_super_sete"/>
+                tools:text="@string/bem_vindo_super_sete"
+                android:fontFamily="@font/caixa_std_regular"/>
 
             <TextView
                 android:id="@+id/tv_jogo_simples"
@@ -36,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:gravity="center"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
                 tools:text="@string/jogo_simples"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -60,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/como_apostar"
                     android:textColor="@color/cinza_divisoria"
+                    android:fontFamily="@font/caixa_std_regular"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/v_divisor_dir"
                     app:layout_constraintStart_toEndOf="@+id/v_divisor_esq"

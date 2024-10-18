@@ -40,7 +40,7 @@ public class ApresentarCartaoActivity extends AppCompatActivity {
 
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.confirmarCartao)));
+		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.confirmarCartao)));
 		configMenu();
 
 		pegaExtras();

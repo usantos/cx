@@ -10,7 +10,7 @@
         android:id="@+id/lista_titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/arialmt"
+        android:fontFamily="@font/caixa_std_regular"
         android:gravity="center"
         android:text="@string/seus_numeros"
         android:textSize="12sp"

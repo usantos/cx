@@ -71,7 +71,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	}
 
 	private void setupToolbar(){
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.conf_rapd_titulo_bold)));
+		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.conf_rapd_titulo_bold)));
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}

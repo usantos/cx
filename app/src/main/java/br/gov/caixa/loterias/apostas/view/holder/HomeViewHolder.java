@@ -152,7 +152,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			String estimativaFormatado = ViewUtils.getMoedaFormat(modalidade.getConcurso().getEstimativa());
 			this.valorAcumulado.setText(estimativaFormatado);
 			this.valorAcumulado.setTextSize(20);
-			this.premioEstimadoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(), itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold,
+			//this.premioEstimadoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(), itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold,
+			this.premioEstimadoConcurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold,
 																											   modalidade.getConcurso().getNumero())));
 
 			this.premioEstimadoConcurso.setVisibility(View.VISIBLE);

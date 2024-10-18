@@ -260,14 +260,10 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	}
 
 	public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
-		//holder.stripe.setBackgroundColor(holder.color);
-		//holder.modalidadeTxt.setTextColor(holder.color);
-		//holder.situacaoTxt.setTextColor(holder.color);
 
 		if (situacao.getDescricao().equalsIgnoreCase(itemView.getContext().getResources().getString(R.string.premiada_maiusculo))) {
-			holder.situacaoTxt.setTypeface(null, Typeface.BOLD);
-			//holder.situacaoTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-			holder.situacaoTxt.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(),itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_underline) + situacao.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))) + itemView.getContext().getResources().getString(R.string.underline)));
+			//holder.situacaoTxt.setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
+			holder.situacaoTxt.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_underline) + situacao.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))) + itemView.getContext().getResources().getString(R.string.underline)));
 		} else {
 			holder.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_espaco)
 											 + situacao.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt),

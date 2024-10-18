@@ -214,7 +214,7 @@ public class ConfiguracaoRapidaoFragment2 extends Fragment {
 	}
 
 	private Spannable getStringDescricao(){
-		Typeface font    = ViewUtils.getFontFuturaBold(getActivity() );
+		Typeface font    = ViewUtils.getFontCaixaStdBold(getActivity() );
 
 		String   normal1 = "O ";
 		String   amarelo = "Rapidão";

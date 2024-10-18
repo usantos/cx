@@ -117,9 +117,14 @@
         <item name="android:fontFamily">@font/caixa_std_regular</item>
     </style>
 
+    <style name="CaixaStdBold" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
+    </style>
+
     <style name="FuturaStdBold" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/futura_std_bold</item>
     </style>
+
     <style name="ExplicativoArialMT" parent="ArialMT">
         <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/cinza</item>
@@ -142,6 +147,22 @@
     </style>
 
     <style name="editTextArialMTTheme" parent="ArialMT">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextFuturaBoldTheme" parent="FuturaStdBold">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextCaixaRegularTheme" parent="CaixaStdRegular">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextCaixaBoldTheme" parent="CaixaStdBold">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextCaixaStdTheme" parent="CaixaStdRegular">
         <item name="android:textColor">@color/cinza</item>
     </style>
 
@@ -310,6 +331,7 @@
         <!-- Used for the background -->
         <item name="android:background">@color/branco</item>
         <item name="android:textColor">@color/verdeagua</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
     </style>
 
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
@@ -318,12 +340,26 @@
         <item name="android:fontFamily">@font/futura_std_bold</item>
         <item name="colorControlNormal">@color/transparente</item>
     </style>
+    <style name="AppTheme.PickerCaixa" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/verde_card</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
+        <item name="colorControlNormal">@color/transparente</item>
+    </style>
 
     <style name="AppTheme.PickerDark">
         <item name="android:textColorPrimary">@color/cinza_total</item>
         <item name="android:textColor">@color/cinza_total</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/font_family_futura</item>
+        <item name="colorControlNormal">@color/cinza_total</item>
+    </style>
+
+    <style name="AppTheme.PickerDarkCaixa">
+        <item name="android:textColorPrimary">@color/cinza_total</item>
+        <item name="android:textColor">@color/cinza_total</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
         <item name="colorControlNormal">@color/cinza_total</item>
     </style>
 

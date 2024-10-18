@@ -199,7 +199,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             adicionarPremiados(modalidade.getResultadoConcursoDTO().getPremiacoesPrimeiroSorteio(), modalidade);
 
             TextView titleGanhadores = new TextView(getContext());
-            titleGanhadores.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_bold)));
+            titleGanhadores.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_bold)));
             LinearLayout.LayoutParams layoutParamsGanhadores = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -215,7 +215,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             }
         } else {
             TextView title1 = new TextView(getContext());
-            title1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_primeiro_sorteio_bold)));
+            title1.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_premiacao_primeiro_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -244,7 +244,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             adicionarPremiados(premiadosPrimeiro, modalidade);
 
             TextView title2 = new TextView(getContext());
-            title2.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_premiacao_segundo_sorteio_bold)));
+            title2.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_premiacao_segundo_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -258,7 +258,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
             }
 
             TextView title3 = new TextView(getContext());
-            title3.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_primeiro_sorteio_bold)));
+            title3.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_ganhadores_regiao_primeiro_sorteio_bold)));
             LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 

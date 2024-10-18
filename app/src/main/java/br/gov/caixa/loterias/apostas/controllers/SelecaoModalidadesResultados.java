@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.VisualizarModalidadesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
@@ -41,7 +42,7 @@ public class SelecaoModalidadesResultados extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         gridModalidades = findViewById(R.id.ehgv_grid_modalidades);
 
-        setTitle(getString(R.string.label_resultados));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_Resultados_"));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

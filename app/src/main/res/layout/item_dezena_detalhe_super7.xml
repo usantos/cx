@@ -10,6 +10,7 @@
         android:layout_height="30dp"
         android:text="1"
         android:textAlignment="center"
+        android:fontFamily="@font/caixa_std_regular"
         android:gravity="center"
         android:layout_margin="0dp"
         android:background="@drawable/ic_item_dezena"

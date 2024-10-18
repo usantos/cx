@@ -175,7 +175,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     private void configIncialButtons() {
         listener.getButtonQtdTrevos().setOnClickListener(onQtdTrevosClickListener());
 
-        SpannableStringBuilder stringBotao = ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente));
+        SpannableStringBuilder stringBotao = ViewUtils.textCaixaSTDBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente));
         listener.getButtonFinalizar().setText(stringBotao);
         listener.getButtonFinalizar().setBackgroundColor(getResources().getColor(R.color.cinzaescuro));
         listener.getButtonFinalizar().setOnClickListener(onFinalizarClickListener());
@@ -388,7 +388,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                 atualizaStatusBotao();
                 checaMostraBotaoLimpar();
                 if (trevoSelecionadoList.size() > valorApostaSelecionado.getNumeroTrevos()){
-                    listener.getButtonFinalizar().setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
+                    listener.getButtonFinalizar().setText(ViewUtils.textCaixaSTDBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
                     listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaescuro));
                     trevoSelecionadoList = new ArrayList<>();
                     adappter.atualizaSelecionados(trevoSelecionadoList);
@@ -415,7 +415,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
 
     private String getStringFormatada(int idString, String target, String replace){
         String s = getString(idString).replace(target, replace);
-        SpannableStringBuilder string = ViewUtils.textFuturaAndFuturaBold(getActivity(), s);
+        SpannableStringBuilder string = ViewUtils.textCaixaSTDBold(getActivity(), s);
 
         return string.toString();
     }
@@ -470,12 +470,12 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
 
     private void atualizaStatusBotao() {
         if (trevoSelecionadoList.size() >= valorApostaSelecionado.getNumeroTrevos()){
-            listener.getButtonFinalizar().setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
+            listener.getButtonFinalizar().setText(ViewUtils.textCaixaSTDBold(getActivity(), getString(R.string.adicionarAoCarrinho)));
             listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.mais_milionaria_escura));
 
             listener.getButtonSalvar().setVisibility(View.VISIBLE);
         }else {
-            listener.getButtonFinalizar().setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
+            listener.getButtonFinalizar().setText(ViewUtils.textCaixaSTDBold(getActivity(), getString(R.string.completar_trevos_aleatoriamente)));
             listener.getButtonFinalizar().setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaescuro));
 
             listener.getButtonSalvar().setVisibility(View.GONE);

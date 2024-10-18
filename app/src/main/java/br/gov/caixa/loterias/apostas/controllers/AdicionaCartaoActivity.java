@@ -59,7 +59,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         pegaExtras();
         configAparencia();
 
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
 
         configBandeiras();
 

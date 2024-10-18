@@ -96,7 +96,7 @@ public class CarrinhosFavoritosActivity extends AppCompatActivity {
 
 		setSupportActionBar(findViewById(R.id.toolbar));
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(CarrinhosFavoritosActivity.this, getString(R.string.carrinho_fav_titulo)));
+		setTitle(ViewUtils.textCaixaSTDBoldTitle(CarrinhosFavoritosActivity.this, getString(R.string.carrinho_fav_titulo)));
 	}
 	//endregion
 
