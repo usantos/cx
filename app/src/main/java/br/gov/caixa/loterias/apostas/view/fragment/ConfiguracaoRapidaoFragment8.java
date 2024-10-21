@@ -22,6 +22,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingleton;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumerosRapidaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TiposApostasAdapter;
@@ -192,7 +193,7 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.superseteclaro, false, item.getValor(), item.getDescricaoEspecial());
 					break;
 				case MAIS_MILIONALIA:
-					tipoAposta = new TipoAposta("+Milionária", R.drawable.trevo_mais_milionaria_nao_selecionado, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(Aplicacao.application.getString(R.string.label_mais_milionaria), R.drawable.trevo_mais_milionaria_nao_selecionado, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
 					break;
 				default:
 					break;

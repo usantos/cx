@@ -150,10 +150,10 @@ public class CarrinhosFavoritosAdapter extends RecyclerView.Adapter<CarrinhosFav
 				(Context.LAYOUT_INFLATER_SERVICE);
 
 		View v = inflater.inflate(R.layout.row_aposta_carrinho_favorito, null);
-		((TextView) v.findViewById(R.id.tv_nome_modalidade)).setText(aposta.getModalidade().getDescricao());
+		((TextView) v.findViewById(R.id.tv_nome_modalidade)).setText(aposta.getModalidade().getDescricao().toLowerCase());
 
 		if(aposta.getModalidade().getValor().equals(9)){
-			((TextView) v.findViewById(R.id.tv_nome_modalidade)).setText("+Milionária");
+			((TextView) v.findViewById(R.id.tv_nome_modalidade)).setText(R.string.label_mais_milionaria);
 			((TextView) v.findViewById(R.id.tv_qtd_numeros)).setText(aposta.getQuantidadeNumeros() + " num(s) " + aposta.getParametroTrevo().getTrevosSelecionados().size() +" trev(s)");
 		} else {
 			((TextView) v.findViewById(R.id.tv_qtd_numeros)).setText(aposta.getQuantidadeNumeros() + " num(s)");

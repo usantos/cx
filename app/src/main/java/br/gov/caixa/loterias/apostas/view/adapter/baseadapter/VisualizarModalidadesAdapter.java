@@ -64,6 +64,7 @@ public class VisualizarModalidadesAdapter extends BaseAdapter {
 
         tituloTipoAposta.setText(tipoAposta.getTitulo());
         if (tipoAposta.getValor() == 9){
+            tituloTipoAposta.setText(R.string.label_mais_milionaria);
             imageViewTipoAPosta.setImageResource(R.drawable.ic_caixa_mm_amarelo_branco);
         }else {
             imageViewTipoAPosta.setImageResource(R.drawable.trevo);

@@ -56,7 +56,7 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromModalidadeDTO(apostaAtual.getModalidade()));
 
 		if (apostaAtual.getModalidade().getValor() == 9){
-			tvModalidade.setText(ctx.getResources().getString(R.string.label_mais_milionaria_acentuado));
+			tvModalidade.setText(ctx.getResources().getString(R.string.label_mais_milionaria));
 		} else {
 			//Timemania
 			if (apostaAtual.getModalidade().getValor() == 20) {

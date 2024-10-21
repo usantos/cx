@@ -182,7 +182,7 @@
                         android:textColor="@color/branco"
                         android:textSize="18.0sp"
                         tools:text="@string/mega_sena"
-                        android:fontFamily="@font/caixa_std_bold"/>
+                        android:fontFamily="@font/futura_std_bold"/>
                 </LinearLayout>
 
                 <RelativeLayout

@@ -196,7 +196,8 @@
     <string name="label_encerramento">Encerramento</string>
     <string name="label_regras_jogo">Regras do jogo</string>
     <string name="label_mega_sena">mega-sena</string>
-    <string name="label_mais_milionaria">+milionaria</string>
+    <string name="label_mais_milionaria">+milionária</string>
+    <string name="label_mais_milionaria_maiscula">+Milionária</string>
     <string name="label_lotofacil">lotofácil</string>
     <string name="label_quina">quina</string>
     <string name="label_dupla_sena">dupla sena</string>
@@ -1392,6 +1393,7 @@
     <string name="nao_sei_cep">Não sei o meu CEP</string>
     <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
     <string name="voce_sera_redirecionado_para_o_site_dos_correios">Você será redirecionado para o site dos Correios</string>
+
     <string name="alerta_descricao_pagamento_nao_identificado">Você possui compra(s) cancelada(s) por falta de identificação do pagamento dentro do tempo limite para efetivação das apostas. As apostas contidas na compra não concorrem a qualquer concurso. Não se preocupe, caso tenha realizado o pagamento realizaremos o estorno do valor para a conta pagadora.</string>
     <string name="acompanhe_suas_compras">Acompanhe suas compras</string>
     <string name="orientacoes_pix_expirado_tela_pagamento">A validade do seu código de pagamento Pix expirou.\nCaso tenha realizado o pagamento, aguarde enquanto realizamos o processamento.\nPagamentos identificados fora do tempo limite para efetivação das apostas serão estornados.\nAcompanhe o status da sua compra acessando o menu "Minhas Compras".</string>
@@ -1400,5 +1402,7 @@
     <string name="label_voltar_ao_inicio">Voltar ao início</string>
     <string name="label_aguardar_a_confirmaco_de_pagamento">Você deseja aguardar a confirmação de pagamento?</string>
     <string name="mensagem_pop_up_aguardando_confirmacao_pix_pergunta">Pagamento ainda não identificado.\nCaso tenha realizado o pagamento, aguarde enquanto realizamos o processamento.\nPagamentos identificados fora do tempo limite para efetivação de apostas serão estornados.\nAcompanhe o processamento do seu pedido na opção "Minhas Compras".\n\nVocê deseja aguardar a confirmação de pagamento?</string>
+    <string name="conheca_mais_milionaria">Conheça o novo jogo +milionária. \nVamos explicar como funciona \n nessa nova modalidade.</string>
+    <string name="chegou_a_milionaria">Chegou a +milionária</string>
 
 </resources>
