@@ -22,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mega-Sena"
+        android:fontFamily="@font/futura_std_bold"
         android:textColor="@color/mega_verde_claro_mkp"
         android:layout_marginStart="20dp"
         app:layout_constraintTop_toTopOf="parent"
