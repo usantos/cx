@@ -111,7 +111,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		} else {
 			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
 			if (BuildVersionUtil.isAutomacao() && modalidade.getTipoModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-				this.tvNomeEspeciais.setText("+Milionária");
+				this.tvNomeEspeciais.setText(R.string.label_mais_milionaria);
 			}
 		}
 
@@ -138,9 +138,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 					break;
 				case QUINA:
 					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.cabecalho_sao_joao));
-					break;
-				case MAIS_MILIONARIA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mais_milionaria));
 					break;
 				default:
 					this.titulo.setVisibility(View.VISIBLE);

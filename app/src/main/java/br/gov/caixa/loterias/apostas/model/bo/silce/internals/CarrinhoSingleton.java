@@ -1,4 +1,6 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.internals;
+import java.math.BigDecimal;
+
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 
 public class CarrinhoSingleton {
@@ -24,5 +26,10 @@ public class CarrinhoSingleton {
         if (carrinho != null){
             this.carrinho.atualizaValorTotal();
         }
+    }
+
+    public void zerarCarrinho(){
+        this.carrinho = new CarrinhoDTO();
+        this.carrinho.setValorTotal(new BigDecimal(0));
     }
 }

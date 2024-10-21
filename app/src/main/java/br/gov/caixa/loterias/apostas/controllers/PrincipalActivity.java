@@ -84,6 +84,7 @@ import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -406,7 +407,13 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void trataPopupDeNotificacaoHandler() {
-        if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
+        if (UltimaNotificacaoSingleton.getInstance().isPagamentoNaoIdentificado()){
+            DialogUtils.showDialog1Botao(this, getString(R.string.label_atencao),
+                    getString(R.string.alerta_descricao_pagamento_nao_identificado),
+                    getString(R.string.acompanhe_suas_compras),
+                    () -> startActivity(IntentUtil.getIntentOrigemDestino(PrincipalActivity.this, ListaComprasActivity.class))
+                    );
+        } else if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
             if(getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){
                 trataPopupDeNotificacao();
             } else {
@@ -491,14 +498,6 @@ public class PrincipalActivity extends AppCompatActivity
 
     private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
-
-//        if (!BuildConfig.FLAVOR.equalsIgnoreCase("prd") && !conteMaisMilionaria()){
-//            ParametroSimulacao parametro = MaisMilionariaMock.getParametroMaisMilionaria();
-//            listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-//                                                parametro.getParametroJogo().getConcurso().getValorApostaMinima(), getResources().getString(R.string.string_vazia), getResources().getString(R.string.string_vazia), parametro.getParametroJogo().getConcurso().getModalidade(),
-//                                                parametro.getParametroJogo().getConcurso(), false, null));
-//            Toast.makeText(PrincipalActivity.this, "+Milionaria de forma mockada", Toast.LENGTH_LONG).show();
-//        }
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {

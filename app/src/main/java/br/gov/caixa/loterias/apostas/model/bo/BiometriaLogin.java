@@ -107,6 +107,7 @@ public class BiometriaLogin {
 
                     CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
                     UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
+                    UltimaNotificacaoSingleton.getInstance().setPagamentoNaoIdentificado(response.getPayload().getPagamentoNaoIdentificado());
 
                     crud.deleteAll();
 

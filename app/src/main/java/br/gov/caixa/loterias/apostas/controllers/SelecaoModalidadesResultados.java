@@ -25,6 +25,7 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 public class SelecaoModalidadesResultados extends AppCompatActivity {
 
     public final static String MODALIDADE = "MODALIDADE";
+    public final static String MODALIDADE_VALUE = "MODALIDADE_VALUE";
 
     private ExpandableHeightGridView gridModalidades;
     private List<TipoAposta> tiposAposta = new ArrayList<>();
@@ -104,7 +105,7 @@ public class SelecaoModalidadesResultados extends AppCompatActivity {
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_loteca, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 case MAIS_MILIONALIA:
-                    tipoAposta = new TipoAposta("+milionária", R.drawable.ic_caixa_mm_amarelo_branco, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
+                    tipoAposta = new TipoAposta(item.getDescricao().toLowerCase(), R.drawable.ic_caixa_mm_amarelo_branco, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
                     break;
                 default:
                     tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_megasena, R.color.superseteclaro, false, item.getValor(), item.getDescricaoEspecial());
@@ -125,6 +126,7 @@ public class SelecaoModalidadesResultados extends AppCompatActivity {
             item.getDescricaoEspecial();
             Intent it = new Intent(SelecaoModalidadesResultados.this, VisualizarResultadosActivity.class);
             it.putExtra(MODALIDADE,item.getTitulo());
+            it.putExtra(MODALIDADE_VALUE, item.getValor());
             startActivity(it);
         };
         VisualizarModalidadesAdapter modalidadesAdapter = new VisualizarModalidadesAdapter( this, tiposAposta,listener);

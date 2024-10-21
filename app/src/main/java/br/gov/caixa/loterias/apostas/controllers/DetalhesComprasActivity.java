@@ -235,7 +235,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 null,
                 getString(R.string.title_voltar),
                 getString(R.string.tenta_novamente_dialog),
-                onDialogListenerDevolucaoPix());
+                onDialogListenerDevolucaoPix(), true);
     }
 
     private void showDialogDebitoNaoAutorizado() {

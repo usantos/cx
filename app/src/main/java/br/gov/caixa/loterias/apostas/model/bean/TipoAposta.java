@@ -5,8 +5,6 @@ package br.gov.caixa.loterias.apostas.model.bean;
  */
 
 public class TipoAposta {
-
-
     private String Titulo;
     private int ImagemTrevo;
     private int CorBackground;
