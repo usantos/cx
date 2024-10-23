@@ -25,6 +25,8 @@ public class ExpandableListDataFiltro {
 	public static HashMap<String, List<String>> getDataSemConcurso() {
 		LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
 
+		List<String> tipoApostas = new ArrayList<>();
+		tipoApostas.add("tipo_apostas");
 		List<String> modalidades = new ArrayList<>();
 		modalidades.add("modalidades_item");
 		List<String> situacoes = new ArrayList<>();
@@ -32,9 +34,10 @@ public class ExpandableListDataFiltro {
 		List<String> ordenarPorOpcoes = new ArrayList<>();
 		ordenarPorOpcoes.add("ordenar_por_item");
 
-		expandableListDetail.put("Ordenar por", ordenarPorOpcoes);
+		expandableListDetail.put("Tipo de Apostas", tipoApostas);
 		expandableListDetail.put("Modalidades", modalidades);
 		expandableListDetail.put("Situação da aposta", situacoes);
+		expandableListDetail.put("Ordenar por", ordenarPorOpcoes);
 		return expandableListDetail;
 	}
 }

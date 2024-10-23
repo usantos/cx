@@ -34,19 +34,22 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
-    public static final int ORDENAR_POR = 0;
+	public static final int TIPO_APOSTAS = 0;
 	public static final int MODALIDADES = 1;
 	public static final int SITUACAO = 2;
-	public static final int CONCURSO = 3;
+	public static final int ORDENAR_POR = 3;
+	public static final int CONCURSO = 4;
 
 
 	private Context context;
 	private List<String> expandableListTitle;
 	private LinkedHashMap<Integer,String> situacoes;
 	private String[] opcoesDeOrdenacao = new String[]{"Padrão", "Data Crescente", "Data Decrescente"};
+	private String[] opcoesDeTipoApostas = new String[]{"Todos", "Individual", "Bolão"};
 	private HashMap<String, List<String>> expandableListDetail;
 	private NumberPicker npSituacao;
     private NumberPicker npOrdenarPor;
+    private NumberPicker npTipoAposta;
     private ExpandableHeightGridView gridModalidades;
 	private EditText etNumConcurso;
 	private List<TipoAposta> tiposAposta = new ArrayList<>();
@@ -58,9 +61,11 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	private View viewSituacao;
 	private View viewConcurso;
     private View viewOrdenarPor;
+    private View viewTipoAposta;
 
     private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
     private int numeroOrdenarPorSelecionada = 1;
+    private int numeroTipoApostaSelecionada = 1;
 
     private Boolean isUnicaSelecao = false;
 
@@ -111,6 +116,20 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		}
 		LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			switch (listPosition) {
+				case TIPO_APOSTAS:
+					if (viewTipoAposta == null) {
+						viewTipoAposta = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
+						if (npTipoAposta == null && viewTipoAposta.findViewById(R.id.np_ordenar_por) != null) {
+							setNpTipoAposta(viewTipoAposta.findViewById(R.id.np_ordenar_por));
+							npTipoAposta.setMinValue(1);
+							npTipoAposta.setMaxValue(opcoesDeTipoApostas.length);
+							npTipoAposta.setValue(1);
+							npTipoAposta.setDisplayedValues(opcoesDeTipoApostas);
+							npTipoAposta.setOnValueChangedListener(new ListenerTipoAposta());
+						}
+					}
+					convertView = viewTipoAposta;
+					break;
                 case ORDENAR_POR:
                     if (viewOrdenarPor == null) {
                         viewOrdenarPor = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
@@ -177,6 +196,13 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
             numeroOrdenarPorSelecionada = newVal;
         }
     }
+
+	private class ListenerTipoAposta implements NumberPicker.OnValueChangeListener {
+		@Override
+		public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+			numeroTipoApostaSelecionada = newVal;
+		}
+	}
 
 	private void configuraAdapter() {
 		populaArraysTipoAposta(getTiposAposta(), getModalidades());
@@ -293,6 +319,10 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			numeroOrdenarPorSelecionada = 0;
 			getNpOrdenarPor().setValue(0);
 		}
+		if(getNpTipoAposta() != null) {
+			numeroTipoApostaSelecionada = 0;
+			getNpTipoAposta().setValue(0);
+		}
 	}
 
 	private void populaArraysTipoAposta(List<TipoAposta> array, List<ModalidadeDTO> modalidades) {
@@ -352,6 +382,14 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
     public NumberPicker getNpSituacao() {
 		return npSituacao;
+	}
+
+	public NumberPicker getNpTipoAposta() {
+		return npTipoAposta;
+	}
+
+	public void setNpTipoAposta(NumberPicker npTipoAposta) {
+		this.npTipoAposta = npTipoAposta;
 	}
 
 	public void setNpSituacao(NumberPicker npSituacao) {
