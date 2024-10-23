@@ -1366,7 +1366,7 @@
     <string name="autoavaliacao_ajuda">Onde Procurar Ajuda</string>
     <string name="autoavaliacao_parabens">_Parabéns!_\nO seu hábito de apostar não está interferindo em sua vida, você é um jogador responsável.</string>
     <string name="autoavaliacao_atencao">_Muita atenção!_\nSe você respondeu "sim" para um ou mais dessas questões, recomendamos que você procure avaliação adicional.</string>
-    <string name="autosuspensao_suspensao">Auto-suspensão Jogo Responsável</string>
+    <string name="autosuspensao_suspensao">Autossuspensão Jogo Responsável</string>
     <string name="tv_autosuspensao_1">1.Essa ação acarretará na impossibilidade de efetuar compras de apostas no Portal loterias na internet e app loterias durante o periodo selecionado</string>
     <string name="tv_autosuspensao_2">1.1 O periodo de suspensão pode ser de 24 hs, 48 hs, 7 dias, 15 dias ou 30 dias, o critério do apostador </string>
     <string name="tv_autosuspensao_3">1.2 A suspensão passa a valer a partir da confirmação da solicitação</string>
