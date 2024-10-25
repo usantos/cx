@@ -113,6 +113,9 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 							 boolean isLastChild, View convertView, ViewGroup parent) {
 		if (!isUnicaSelecao) {
 			listPosition += 1;
+			if(listPosition == 3){//OrdenarPor não consta nos filtros em DetalhesComprasActivity. Em vez disso, renderiza Concurso.
+				listPosition = 4;
+			}
 		}
 		LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			switch (listPosition) {
