@@ -244,6 +244,11 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 				return true;
 			}
 		}
+		if (getNpTipoAposta() != null) {
+			if(getNpTipoAposta().getValue() != 0) {
+				return true;
+			}
+		}
 		return false;
 	}
 
