@@ -264,29 +264,9 @@ public class CartoesModel extends AppModel {
 
 	public String getBrand(String numeroCartao) {
 		numeroCartao = numeroCartao.replace(" ", "");
-		if (numeroCartao.startsWith("4011") || numeroCartao.startsWith("4576") ||
-				numeroCartao.startsWith("431274") || numeroCartao.startsWith("438935") ||
-				numeroCartao.startsWith("451416") || numeroCartao.startsWith("457393") ||
-				numeroCartao.startsWith("504175") || numeroCartao.startsWith("506699") ||
-				numeroCartao.startsWith("506700") || numeroCartao.startsWith("506779") ||
-				numeroCartao.startsWith("506788") || numeroCartao.startsWith("509876") ||
-				numeroCartao.startsWith("509998") || numeroCartao.startsWith("509999") ||
-				numeroCartao.startsWith("627780") || numeroCartao.startsWith("636297") ||
-				numeroCartao.startsWith("636368") || numeroCartao.startsWith("636369") ||
-				numeroCartao.startsWith("65003") || numeroCartao.startsWith("650049") ||
-				numeroCartao.startsWith("650411") || numeroCartao.startsWith("6509") ||
-				numeroCartao.startsWith("651770") || numeroCartao.startsWith("6550") ||
-				numeroCartao.startsWith("5016") || numeroCartao.startsWith("50672") ||
-				numeroCartao.startsWith("509") || numeroCartao.startsWith("6505")
-				|| numeroCartao.startsWith("6507")
-		){
+		if (isELO(numeroCartao)){
 			return "ELO";
-		} else if ((numeroCartao.compareTo("51") >= 0 && numeroCartao.compareTo("55") <= 0) ||
-				(numeroCartao.compareTo("2221") >= 0 && numeroCartao.compareTo("2720") <= 0) ||
-				numeroCartao.startsWith("5031") || numeroCartao.startsWith("5081") ||
-				numeroCartao.startsWith("5021") || numeroCartao.startsWith("5899") ||
-				numeroCartao.startsWith("5063")
-		) {
+		} else if (isMasterCard(numeroCartao)) {
 			return "MASTERCARD";
 		} else if (numeroCartao.startsWith("605032")){
 			return "GRANDCARD";
@@ -312,6 +292,34 @@ public class CartoesModel extends AppModel {
 		} else {
 			return "VISA";
 		}
+	}
+
+	private static boolean isMasterCard(String numeroCartao) {
+		return numeroCartao.startsWith("51") || numeroCartao.startsWith("52") ||
+				numeroCartao.startsWith("53") || numeroCartao.startsWith("54") ||
+				numeroCartao.startsWith("55") ||
+				(numeroCartao.compareTo("2221") >= 0 && numeroCartao.compareTo("2720") <= 0) ||
+				numeroCartao.startsWith("5031") || numeroCartao.startsWith("5081") ||
+				numeroCartao.startsWith("5021") || numeroCartao.startsWith("5899") ||
+				numeroCartao.startsWith("5063");
+	}
+
+	private static boolean isELO(String numeroCartao) {
+		return numeroCartao.startsWith("4011") || numeroCartao.startsWith("4576") ||
+				numeroCartao.startsWith("431274") || numeroCartao.startsWith("438935") ||
+				numeroCartao.startsWith("451416") || numeroCartao.startsWith("457393") ||
+				numeroCartao.startsWith("504175") || numeroCartao.startsWith("506699") ||
+				numeroCartao.startsWith("506700") || numeroCartao.startsWith("506779") ||
+				numeroCartao.startsWith("506788") || numeroCartao.startsWith("509876") ||
+				numeroCartao.startsWith("509998") || numeroCartao.startsWith("509999") ||
+				numeroCartao.startsWith("627780") || numeroCartao.startsWith("636297") ||
+				numeroCartao.startsWith("636368") || numeroCartao.startsWith("636369") ||
+				numeroCartao.startsWith("65003") || numeroCartao.startsWith("650049") ||
+				numeroCartao.startsWith("650411") || numeroCartao.startsWith("6509") ||
+				numeroCartao.startsWith("651770") || numeroCartao.startsWith("6550") ||
+				numeroCartao.startsWith("5016") || numeroCartao.startsWith("50672") ||
+				numeroCartao.startsWith("509") || numeroCartao.startsWith("6505")
+				|| numeroCartao.startsWith("6507");
 	}
 
 	public CardHolderRecargaPay getCardHolderRecargaPay(ApostadorDTO dadosPessoais) {

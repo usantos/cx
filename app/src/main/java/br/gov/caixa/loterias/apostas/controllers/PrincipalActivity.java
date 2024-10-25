@@ -476,7 +476,6 @@ public class PrincipalActivity extends AppCompatActivity
             }
         });
     }
-
     private void showMenu() {
         if (relativeContentPrincipal.isEnabled()) {
             AnimacaoAbrirMenuRapido(actionApresentarTrevo);
@@ -771,23 +770,27 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     protected void clickRelativeLayoutContentRepassados() {
-        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        showMenu();
         Intent activity = new Intent(PrincipalActivity.this, RepassesSociaisActivity.class);
         startActivity(activity);
     }
 
     protected void clickRelativeLayoutContentRapidao() {
         //AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        showMenu();
         redirecionaRapidao();
     }
 
     protected void clickrlJogoResponsavel() {
-        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        showMenu();
         redirecionaJogoResponsavel();
     }
 
     protected void clickrlMsgDisque180() {
-        AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        //AnimacaoFecharMenuRapido(relativeContentPrincipal);
+        showMenu();
         redirecionaMsgDisque180();
     }
 
@@ -803,6 +806,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     protected void clickRelativeLayoutContentLerBilhetes() {
+        showMenu();
         if (ContextCompat.checkSelfPermission(PrincipalActivity.this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(PrincipalActivity.this,
