@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -297,8 +298,15 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void fragmentRodape() {
-		rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(),
-				R.id.id_fg_rodape, getValorApostaBolao(), CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
+		try {
+			BigDecimal valorTotal = CarrinhoSingleton.getInstance().getCarrinho() != null ?
+									CarrinhoSingleton.getInstance().getCarrinho().getValorTotal()
+									: BigDecimal.ZERO;
+			rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(),
+					R.id.id_fg_rodape, getValorApostaBolao(), valorTotal);
+		} catch (Exception e){
+			Log.d("", e.getLocalizedMessage() != null ? e.getLocalizedMessage() : e.getMessage());
+		}
 	}
 
 	private BigDecimal getValorApostaBolao() {
