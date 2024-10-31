@@ -64,6 +64,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnAnimacaoViewListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -483,8 +484,6 @@ public class PrincipalActivity extends AppCompatActivity
             buttonHomeBolao.setVisibility(View.GONE);
         } else {
             AnimacaoFecharMenuRapido(actionApresentarTrevo);
-            buttonHomeBet.setVisibility(View.VISIBLE);
-            buttonHomeBolao.setVisibility(View.VISIBLE);
         }
     }
 
@@ -594,7 +593,6 @@ public class PrincipalActivity extends AppCompatActivity
                 relativeContentPrincipal,
                 relativeLayoutContentRapidao,
                 relativeLayoutContentLerBilhetes,
-                relativeLayoutContentFavoritas,
                 rlJogoResponsavel,
                 relativeLayoutContentRepassados,
                 rlMsgDisque180,
@@ -603,13 +601,23 @@ public class PrincipalActivity extends AppCompatActivity
                 buttonHomeBet,
                 actionApresentarTrevo,
                 PrincipalActivity.this,
-                estilo
-        );
+                estilo,
+                onAnimacaoAcessoRapido());
         int positionTopRodape = (int) relativeBlankView.getY();
 
         int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
 
-        animacoesAcessoRapido.AnimacaoDescerContent(positionTopRodape - itemSize);
+        animacoesAcessoRapido.animacaoDescerContent(positionTopRodape - itemSize);
+    }
+
+    private OnAnimacaoViewListener onAnimacaoAcessoRapido() {
+        return () -> {
+            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+                    temBolaoModalidadeDisponivel(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade())){
+                buttonHomeBolao.setVisibility(View.VISIBLE);
+            }
+            buttonHomeBet.setVisibility(View.VISIBLE);
+        };
     }
 
     private void AnimacaoFecharMenuRapido(View v) {
@@ -621,7 +629,6 @@ public class PrincipalActivity extends AppCompatActivity
                 relativeContentPrincipal,
                 relativeLayoutContentRapidao,
                 relativeLayoutContentLerBilhetes,
-                relativeLayoutContentFavoritas,
                 rlJogoResponsavel,
                 relativeLayoutContentRepassados,
                 rlMsgDisque180,
@@ -630,9 +637,9 @@ public class PrincipalActivity extends AppCompatActivity
                 buttonHomeBet,
                 actionApresentarTrevo,
                 PrincipalActivity.this,
-                estilo
-        );
-        animacoesAcessoRapido.AnimacaoSubirContent();
+                estilo,
+                onAnimacaoAcessoRapido());
+        animacoesAcessoRapido.animacaoSubirContent();
 
     }
 
