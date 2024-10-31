@@ -957,6 +957,10 @@
     <string name="underline_dia_de_Sorte_underline">_dia de sorte_</string>
     <string name="underline_super_sete_underline">_super sete_</string>
     <string name="underline_mais_milionaria_underline">_+Milionária_</string>
+    <string name="underline_mega_virada_underline">_mega da virada_</string>
+    <string name="underline_quina_sao_joao_underline">_quina de são joão_</string>
+    <string name="underline_lotofacil_independencia_underline">_lotofácil da independência_</string>
+    <string name="underline_dupla_pascoa_underline">_dupla de páscoa_</string>
     <string name="extra_qtd_dezenas_possiveis_selecionado">qtdDezenasPossiveisSelecionado</string>
     <string name="extra_numero_concurso_atual">numeroConcursoAtual</string>
     <string name="extra_data_sorteio_atual">dataSorteioAtual</string>
