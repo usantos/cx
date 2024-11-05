@@ -66,9 +66,11 @@ public class ApostaMicroServicoBO extends BaseMicroServicoBO {
         if(page.getModalidade() != 0){
             queryParams.put("modalidade", String.valueOf(page.getModalidade()));
         }
-
         if(page.getOrdenarPor() != 0) {
             queryParams.put("ordenacao", String.valueOf(page.getOrdenarPor()));
+        }
+        if(page.getTipoAposta() != 0) {
+            queryParams.put("tipoAposta", String.valueOf(page.getTipoAposta()));
         }
         //queryParams.put("situacao", String.valueOf(page.getSituacao()));
 
