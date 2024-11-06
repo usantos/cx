@@ -61,12 +61,12 @@ public class DadosUsuarioBO extends BaseBO {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
-        GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.LIST_CARTOES_PATH, queryParams, ListCartaoDTOResponse.class,
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.LIST_CARTOES_PATH, queryParams, ListCartaoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void sair(final RequestListener<NetworkResponse> listener) {
@@ -75,21 +75,21 @@ public class DadosUsuarioBO extends BaseBO {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
-        GsonRequest request = getSilceConnection().buildPostRequest(ServerMethods.SAIR_PATH, queryParams,
+        GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.SAIR_PATH, queryParams,
                 null, NetworkResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void gravarUsuario(CadastrarApostadorDTO apostadorDTO, @NonNull final RequestListener<ApostadorDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
-        final GsonRequest request = getSilceConnection().buildPostRequest(ServerMethods.GRAVAR_USUARIO_PATH, new LinkedHashMap<>(),
+        final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.GRAVAR_USUARIO_PATH, new LinkedHashMap<>(),
                 apostadorDTO,
                 ApostadorDTOResponse.class,
                 listener.getSilceListener(),
@@ -97,7 +97,7 @@ public class DadosUsuarioBO extends BaseBO {
                 headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public static void salvarUsuairo(String name, String cpf) {
@@ -220,14 +220,14 @@ public class DadosUsuarioBO extends BaseBO {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
-        GsonRequest request = getSilceConnection().buildPostRequest(ServerMethods.USUARIOS_RECALCULAR_LIMITE_AUTORIZADO_PATH, queryParams,
+        GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.USUARIOS_RECALCULAR_LIMITE_AUTORIZADO_PATH, queryParams,
                 null, ApostadorDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void getDadosUsuario(final RequestListener<ApostadorDTOResponse> listener) {
@@ -236,25 +236,25 @@ public class DadosUsuarioBO extends BaseBO {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
-        GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.USUARIOS_RECUPERAR_DADOS_PATH, queryParams, ApostadorDTOResponse.class,
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.USUARIOS_RECUPERAR_DADOS_PATH, queryParams, ApostadorDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void putDadosUsuario(ApostadorAlteracaoDTO apostadorAlteracaoDTO, final RequestListener<CadastrarApostadorDTOResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
-        final GsonRequest request = getSilceConnection().buildPutRequest(ServerMethods.USUARIOS_PATH, new LinkedHashMap<>(),
+        final GsonRequest request = getServiceConnection().buildPutRequest(ServerMethods.USUARIOS_PATH, new LinkedHashMap<>(),
                 apostadorAlteracaoDTO, CadastrarApostadorDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void postVerificarCadastro(final List<IdentificaoDeUmaApostaDas8Modalidades> listaApostas, final RequestListener<UsuarioLogadoResponse> listener) {
@@ -263,20 +263,20 @@ public class DadosUsuarioBO extends BaseBO {
 
         AutenticacaoDTO autenticacaoDTO = new AutenticacaoDTO();
         autenticacaoDTO.setApostas(listaApostas);
-        final GsonRequest request = getSilceConnection().buildPostRequest(ServerMethods.USUARIOS_VERIFICAR_CADASTRO_PATH, new LinkedHashMap<>(),
+        final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.USUARIOS_VERIFICAR_CADASTRO_PATH, new LinkedHashMap<>(),
                 autenticacaoDTO, UsuarioLogadoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void putLerNotificacao(final RequestListener<RetornoPadraoResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
-        final GsonRequest request = getSilceConnection().buildPutRequest(
+        final GsonRequest request = getServiceConnection().buildPutRequest(
                 ServerMethods.LER_NOTIFICACAO.replace("{idNotificacao}", UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getId().toString()),
                 new LinkedHashMap<>(),
                 null, RetornoPadraoResponse.class,
@@ -284,7 +284,7 @@ public class DadosUsuarioBO extends BaseBO {
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void deleteCartao(String idCartao, String meioPagamento, RequestListener<ListCartaoDTOResponse> listener) {
@@ -293,11 +293,11 @@ public class DadosUsuarioBO extends BaseBO {
 
         HashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
-        GsonRequest request = getSilceConnection().buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH + idCartao, queryParams, ListCartaoDTOResponse.class,
+        GsonRequest request = getServiceConnection().buildDeleteRequest(ServerMethods.EXCLUIR_CARTAO_PATH + idCartao, queryParams, ListCartaoDTOResponse.class,
                                                                  listener.getSilceListener(), listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
 }

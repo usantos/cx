@@ -28,7 +28,6 @@ import static com.android.volley.Request.Method.PUT;
 public class SilceConnection {
     private static final Bin KEY = Bin.fromBase64("QEm06ZAThg1E314zziahsg");
     private static final Bin IV = Bin.fromBase64("8hQLtNV44Y1bIeONmlr+Dg==");
-    private static final String TAG = SilceConnection.class.getName();
     private static final int TIMEOUT = 30000;
     private static final String TAG_REQUEST = "TAG_REQUEST";
 
@@ -261,7 +260,4 @@ public class SilceConnection {
         return sb.toString();
     }
 
-//    public void nuke() {
-//        SSLPiniingUtil.pinagem();
-//    }
 }

@@ -41,7 +41,7 @@ public class DadosCorporativosBO extends BaseBO{
 
     public void ufs(final RequestListener<UnidadeFederacaoDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        getSilceConnection().get(ServerMethods.UFS_PATH,
+        getServiceConnection().get(ServerMethods.UFS_PATH,
                             queryParams,
                             UnidadeFederacaoDTOResponse.class,
                             listener.getSilceListener(),
@@ -52,7 +52,7 @@ public class DadosCorporativosBO extends BaseBO{
     public void municipios(String idUf, final RequestListener<MunicipioDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("idUF", idUf);
-        getSilceConnection().get(ServerMethods.MUNICIPIOS_PATH,
+        getServiceConnection().get(ServerMethods.MUNICIPIOS_PATH,
                             queryParams,
                             MunicipioDTOResponse.class,
                             listener.getSilceListener(),
@@ -78,7 +78,7 @@ public class DadosCorporativosBO extends BaseBO{
             queryParams.put("cep", cep);
         }
 
-        getSilceConnection().get(ServerMethods.BAIRROS_PATH,
+        getServiceConnection().get(ServerMethods.BAIRROS_PATH,
                             queryParams,
                             BairroDTOResponse.class,
                             listener.getSilceListener(),
@@ -87,7 +87,7 @@ public class DadosCorporativosBO extends BaseBO{
     }
 
     public void termo(final RequestListener<TermoDeUsoDTOResponse> listener) {
-        getSilceConnection().get(ServerMethods.TERMO_PATH,
+        getServiceConnection().get(ServerMethods.TERMO_PATH,
                             new LinkedHashMap<>(),
                             TermoDeUsoDTOResponse.class,
                             listener.getSilceListener(),
@@ -96,7 +96,7 @@ public class DadosCorporativosBO extends BaseBO{
     }
 
     public void repasses(final RequestListener<RepassometroDTOResponse> listener) {
-        getSilceConnection().get(ServerMethods.REPASSOMETRO_PATH,
+        getServiceConnection().get(ServerMethods.REPASSOMETRO_PATH,
                             new LinkedHashMap<>(),
                             RepassometroDTOResponse.class,
                             listener.getSilceListener(),
@@ -107,42 +107,42 @@ public class DadosCorporativosBO extends BaseBO{
     public void parametrosSimulacao(final RequestListener<ParametrosSimulacaoResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
 
-        GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.PARAM_SIMULACAO_PATH,
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.PARAM_SIMULACAO_PATH,
                 new LinkedHashMap<>(),
                 ParametrosSimulacaoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 headers);
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void validarApostaFavorita(final ApostaFavoritaDTO aposta,
                                       final RequestListener<NetworkResponse> listener) {
-        GsonRequest request = getSilceConnection().buildPostRequest(ServerMethods.VALIDAR_FAVORITA_PATH,
+        GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.VALIDAR_FAVORITA_PATH,
                                                                 new LinkedHashMap<>(),
                                                                 aposta, NetworkResponse.class,
                                                                 listener.getSilceListener(),
                                                                 listener.getErrorListener(),
                                                                 getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void salvarApostaFavorita(final ApostaFavoritaDTO aposta,
                                      final RequestListener<NetworkResponse> listener) {
-        GsonRequest request = getSilceConnection().buildPostRequest(ServerMethods.INCLUIR_FAVORITA_PATH,
+        GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.INCLUIR_FAVORITA_PATH,
                                                                 new LinkedHashMap<>(),
                                                                 aposta, NetworkResponse.class,
                                                                 listener.getSilceListener(),
                                                                 listener.getErrorListener(),
                                                                 getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void buscarLotericasHabilitadas(final RequestListener<ListDTOEnumIntegerResponse> listener) {
-        getSilceConnection().get(ServerMethods.LOTERICAS_HABILITADAS_PATH,
+        getServiceConnection().get(ServerMethods.LOTERICAS_HABILITADAS_PATH,
                             new LinkedHashMap<>(),
                             ListDTOEnumIntegerResponse.class,
                             listener.getSilceListener(),
@@ -166,7 +166,7 @@ public class DadosCorporativosBO extends BaseBO{
             queryParams.put("pesquisaInteligente", "true");
         }
 
-        getSilceConnection().get(ServerMethods.LOTERICAS_PATH,
+        getServiceConnection().get(ServerMethods.LOTERICAS_PATH,
                             queryParams,
                             LotericaDTOResponse.class,
                             listener.getSilceListener(),
@@ -178,7 +178,7 @@ public class DadosCorporativosBO extends BaseBO{
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("codigoCompleto", codigoCompleto);
 
-        getSilceConnection().get(ServerMethods.LOTERICAS_CODIGO_COMPLETO_PATH,
+        getServiceConnection().get(ServerMethods.LOTERICAS_CODIGO_COMPLETO_PATH,
                             queryParams,
                             LotericaCodigoWrapperResponse.class,
                             listener.getSilceListener(),
@@ -190,29 +190,29 @@ public class DadosCorporativosBO extends BaseBO{
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("nomeCodigo", nomeCodigo);
 
-        GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.LOTERICAS_NOME_LOTERICO_PATH,
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.LOTERICAS_NOME_LOTERICO_PATH,
                 queryParams,
                 LotericaDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void validaTermoAceito(final RequestListener<ResourceResponse> listener) {
-        final GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.TERMO_VALIDA_ACEITO_PATH,
+        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.TERMO_VALIDA_ACEITO_PATH,
                                                                     new LinkedHashMap<>(),
                                                                     ResourceResponse.class,
                                                                     listener.getSilceListener(),
                                                                     listener.getErrorListener(),
                                                                     getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void aceiteTermo(final RequestListener<ResourceResponse> listener) {
-        GsonRequest request = getSilceConnection().buildPostRequest(ServerMethods.TERMO_ACEITAR_PATH,
+        GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.TERMO_ACEITAR_PATH,
                                                                 new LinkedHashMap<>(),
                                                                 null,
                                                                 ResourceResponse.class,
@@ -220,37 +220,37 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 listener.getErrorListener(),
                                                                 getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void secaoDuvidas(final RequestListener<ListSecaoDTOResponse> listener) {
-        GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.DUVIDAS_SECOES_PATH,
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.DUVIDAS_SECOES_PATH,
                                                                 new LinkedHashMap<>(),
                                                                 ListSecaoDTOResponse.class,
                                                                 listener.getSilceListener(),
                                                                 listener.getErrorListener(),
                                                                 new LinkedHashMap<>());
         request.setErrorListener(interceptError(request, new LinkedHashMap<>(), listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void duvidasPerguntasRespostas(Integer secao, final RequestListener<ListSecaoDTOResponse> listener) {
         HashMap queryParams = new LinkedHashMap<String, String>();
         queryParams.put("secao", secao.toString());
 
-        GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.DUVIDAS_PATH,
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.DUVIDAS_PATH,
                                                                 queryParams,
                                                                 ListSecaoDTOResponse.class,
                                                                 listener.getSilceListener(),
                                                                 listener.getErrorListener(),
                                                                 getHeader());
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void buscaKeyMercadoPago(Long id, final RequestListener<MeioPagamentoResponse> listener){
         String url = ServerMethods.MEIOS_PAGAMENTOS_ID.replace("{id}", String.valueOf(id));
-        final GsonRequest request = getSilceConnection().buildGetRequest(url,
+        final GsonRequest request = getServiceConnection().buildGetRequest(url,
                                                                   new HashMap<>(),
                                                                   MeioPagamentoResponse.class,
                                                                   listener.getSilceListener(),
@@ -258,12 +258,12 @@ public class DadosCorporativosBO extends BaseBO{
                                                                   getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void buscaMeiosPagamentos(final RequestListener<MeiosPagamentosResponse> listener){
         String url = ServerMethods.MEIOS_PAGAMENTOS;
-        final GsonRequest request = getSilceConnection().buildGetRequest(url,
+        final GsonRequest request = getServiceConnection().buildGetRequest(url,
                                                                     new HashMap<>(),
                                                                     MeiosPagamentosResponse.class,
                                                                     listener.getSilceListener(),
@@ -271,6 +271,6 @@ public class DadosCorporativosBO extends BaseBO{
                                                                     getHeader());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 }

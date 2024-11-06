@@ -16,13 +16,12 @@ import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSilceSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceConnection;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ServiceConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -35,19 +34,19 @@ import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
  */
 
 public abstract class BaseBO {
-    private SilceConnection silceConnection;
+    private ServiceConnection connection;
     private Context context;
 
     private static LinkedHashMap<String, String> header;
 
     public BaseBO(){
-        silceConnection = SilceConnection.create(SilceSingleton.getInstance().getRequestQueue(),
+        connection = ServiceConnection.create(SilceSingleton.getInstance().getRequestQueue(),
                 BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
         context = Aplicacao.application.getApplicationContext();
     }
 
-    public SilceConnection getSilceConnection(){
-        return this.silceConnection;
+    public ServiceConnection getServiceConnection(){
+        return this.connection;
     }
 
     public Context getContext(){
@@ -61,9 +60,9 @@ public abstract class BaseBO {
                 if (MensagensNetwork.isCertificadoInvalido(error)){
                     if (CertificadoSilceSingleton.getInstance().trocaCertificado()){
                         SilceSingleton.getInstance().initQueue();
-                        silceConnection = SilceConnection.create(SilceSingleton.getInstance().getRequestQueue(),
+                        connection = ServiceConnection.create(SilceSingleton.getInstance().getRequestQueue(),
                                 BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
-                        silceConnection.request(request, listener);
+                        connection.request(request, listener);
                         return;
                     } else {
                         listener.onErrorResponse(error);
@@ -101,7 +100,7 @@ public abstract class BaseBO {
                                         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
                                         request.setHeaders(headers);
                                         //Refaz a conexão
-                                        silceConnection.request(request, listener);
+                                        connection.request(request, listener);
                                     } else {
                                         listener.onErrorResponse(error);
                                     }

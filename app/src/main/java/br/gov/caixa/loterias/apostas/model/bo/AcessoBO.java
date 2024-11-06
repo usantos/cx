@@ -125,11 +125,11 @@ public class AcessoBO extends BaseBO {
 
         String path = ServerMethods.APP_VERSAO_ATUALIZACAO_PATH.replace("{versao-app}", String.valueOf( versao ));
 
-        GsonRequest request = getSilceConnection().buildGetRequest(path, queryParams, VersionResponse.class,
+        GsonRequest request = getServiceConnection().buildGetRequest(path, queryParams, VersionResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 }
