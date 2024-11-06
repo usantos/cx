@@ -7,11 +7,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListDTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaCodigoWrapperResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeiosPagamentosResponse;
@@ -40,24 +37,30 @@ public class DadosCorporativosBO extends BaseBO{
     }
 
     public void ufs(final RequestListener<UnidadeFederacaoDTOResponse> listener) {
+        LinkedHashMap<String, String> header = getHeader();
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        getServiceConnection().get(ServerMethods.UFS_PATH,
-                            queryParams,
-                            UnidadeFederacaoDTOResponse.class,
-                            listener.getSilceListener(),
-                            listener.getErrorListener(),
-                            new LinkedHashMap<>(), listener);
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.UFS_PATH,
+                queryParams,
+                UnidadeFederacaoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                header);
+        request.setErrorListener(interceptError(request, header, listener));
+        getServiceConnection().request(request, listener);
     }
 
     public void municipios(String idUf, final RequestListener<MunicipioDTOResponse> listener) {
+        LinkedHashMap<String, String> header = getHeader();
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("idUF", idUf);
-        getServiceConnection().get(ServerMethods.MUNICIPIOS_PATH,
-                            queryParams,
-                            MunicipioDTOResponse.class,
-                            listener.getSilceListener(),
-                            listener.getErrorListener(),
-                            new LinkedHashMap<>(), listener);
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.MUNICIPIOS_PATH,
+                queryParams,
+                MunicipioDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                header);
+        request.setErrorListener(interceptError(request, header, listener));
+        getServiceConnection().request(request, listener);
     }
 
     public void bairros(String idUf, String numeroCidade,
@@ -77,43 +80,50 @@ public class DadosCorporativosBO extends BaseBO{
         if (StringUtils.isNotEmpty(cep)) {
             queryParams.put("cep", cep);
         }
-
-        getServiceConnection().get(ServerMethods.BAIRROS_PATH,
-                            queryParams,
-                            BairroDTOResponse.class,
-                            listener.getSilceListener(),
-                            listener.getErrorListener(),
-                            new LinkedHashMap<>(), listener);
+        LinkedHashMap<String, String> header = getHeader();
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.BAIRROS_PATH,
+                queryParams,
+                BairroDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                header);
+        request.setErrorListener(interceptError(request, header, listener));
+        getServiceConnection().request(request, listener);
     }
 
     public void termo(final RequestListener<TermoDeUsoDTOResponse> listener) {
-        getServiceConnection().get(ServerMethods.TERMO_PATH,
-                            new LinkedHashMap<>(),
-                            TermoDeUsoDTOResponse.class,
-                            listener.getSilceListener(),
-                            listener.getErrorListener(),
-                            new LinkedHashMap<>(), listener);
+        LinkedHashMap<String, String> header = getHeader();
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.TERMO_PATH,
+                new LinkedHashMap<>(),
+                TermoDeUsoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                header);
+        request.setErrorListener(interceptError(request, header, listener));
+        getServiceConnection().request(request, listener);
     }
 
     public void repasses(final RequestListener<RepassometroDTOResponse> listener) {
-        getServiceConnection().get(ServerMethods.REPASSOMETRO_PATH,
-                            new LinkedHashMap<>(),
-                            RepassometroDTOResponse.class,
-                            listener.getSilceListener(),
-                            listener.getErrorListener(),
-                            new LinkedHashMap<>(), listener);
+        LinkedHashMap<String, String> header = getHeader();
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.REPASSOMETRO_PATH,
+                new LinkedHashMap<>(),
+                RepassometroDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                header);
+        request.setErrorListener(interceptError(request, header, listener));
+        getServiceConnection().request(request, listener);
     }
 
     public void parametrosSimulacao(final RequestListener<ParametrosSimulacaoResponse> listener) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-
+        LinkedHashMap<String, String> header = getHeader();
         GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.PARAM_SIMULACAO_PATH,
                 new LinkedHashMap<>(),
                 ParametrosSimulacaoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                headers);
-        request.setErrorListener(interceptError(request, headers, listener));
+                header);
+        request.setErrorListener(interceptError(request, header, listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -124,8 +134,8 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 aposta, NetworkResponse.class,
                                                                 listener.getSilceListener(),
                                                                 listener.getErrorListener(),
-                                                                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                                                                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -136,54 +146,9 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 aposta, NetworkResponse.class,
                                                                 listener.getSilceListener(),
                                                                 listener.getErrorListener(),
-                                                                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                                                                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
-    }
-
-    public void buscarLotericasHabilitadas(final RequestListener<ListDTOEnumIntegerResponse> listener) {
-        getServiceConnection().get(ServerMethods.LOTERICAS_HABILITADAS_PATH,
-                            new LinkedHashMap<>(),
-                            ListDTOEnumIntegerResponse.class,
-                            listener.getSilceListener(),
-                            listener.getErrorListener(),
-                            new LinkedHashMap<>(), listener);
-    }
-
-    public void buscarLotericasCepOrBairroDTO(String cep,
-                                              BairroDTO bairroDTO,
-                                              final RequestListener<LotericaDTOResponse> listener) {
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        if (StringUtils.isNotEmpty(cep)) {
-            queryParams.put("cep", cep);
-            queryParams.put("pesquisaInteligente", "true");
-        }
-        if (bairroDTO != null) {
-            queryParams.put("idBairro", bairroDTO.getId().toString());
-            queryParams.put("numero", bairroDTO.getMunicipio().getId().getNumero().toString());
-            queryParams.put("digitoVerificador", bairroDTO.getMunicipio().getId().getDigitoVerificador().toString());
-            queryParams.put("idUF", bairroDTO.getMunicipio().getUf().getId().toString());
-            queryParams.put("pesquisaInteligente", "true");
-        }
-
-        getServiceConnection().get(ServerMethods.LOTERICAS_PATH,
-                            queryParams,
-                            LotericaDTOResponse.class,
-                            listener.getSilceListener(),
-                            listener.getErrorListener(),
-                            new LinkedHashMap<>(), listener);
-    }
-
-    public void buscarLoteriasCodigoCompleto(String codigoCompleto, final RequestListener<LotericaCodigoWrapperResponse> listener) {
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        queryParams.put("codigoCompleto", codigoCompleto);
-
-        getServiceConnection().get(ServerMethods.LOTERICAS_CODIGO_COMPLETO_PATH,
-                            queryParams,
-                            LotericaCodigoWrapperResponse.class,
-                            listener.getSilceListener(),
-                            listener.getErrorListener(),
-                            new LinkedHashMap<>(), listener);
     }
 
     public void buscarLoteriasNomeCodigo(String nomeCodigo, final RequestListener<LotericaDTOResponse> listener) {
@@ -195,8 +160,8 @@ public class DadosCorporativosBO extends BaseBO{
                 LotericaDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -206,8 +171,8 @@ public class DadosCorporativosBO extends BaseBO{
                                                                     ResourceResponse.class,
                                                                     listener.getSilceListener(),
                                                                     listener.getErrorListener(),
-                                                                    getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                                                                    getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -218,8 +183,8 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 ResourceResponse.class,
                                                                 listener.getSilceListener(),
                                                                 listener.getErrorListener(),
-                                                                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                                                                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -243,8 +208,8 @@ public class DadosCorporativosBO extends BaseBO{
                                                                 ListSecaoDTOResponse.class,
                                                                 listener.getSilceListener(),
                                                                 listener.getErrorListener(),
-                                                                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                                                                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -255,9 +220,9 @@ public class DadosCorporativosBO extends BaseBO{
                                                                   MeioPagamentoResponse.class,
                                                                   listener.getSilceListener(),
                                                                   listener.getErrorListener(),
-                                                                  getHeader());
+                                                                  getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -268,9 +233,9 @@ public class DadosCorporativosBO extends BaseBO{
                                                                     MeiosPagamentosResponse.class,
                                                                     listener.getSilceListener(),
                                                                     listener.getErrorListener(),
-                                                                    getHeader());
+                                                                    getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 }

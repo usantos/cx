@@ -40,7 +40,7 @@ public abstract class BaseBO {
     private static LinkedHashMap<String, String> header;
 
     public BaseBO(){
-        connection = ServiceConnection.create(SilceSingleton.getInstance().getRequestQueue(),
+        connection = new ServiceConnection(SilceSingleton.getInstance().getRequestQueue(),
                 BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
         context = Aplicacao.application.getApplicationContext();
     }
@@ -60,7 +60,7 @@ public abstract class BaseBO {
                 if (MensagensNetwork.isCertificadoInvalido(error)){
                     if (CertificadoSilceSingleton.getInstance().trocaCertificado()){
                         SilceSingleton.getInstance().initQueue();
-                        connection = ServiceConnection.create(SilceSingleton.getInstance().getRequestQueue(),
+                        connection = new ServiceConnection(SilceSingleton.getInstance().getRequestQueue(),
                                 BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
                         connection.request(request, listener);
                         return;
@@ -134,12 +134,17 @@ public abstract class BaseBO {
         return Bin.fromBase64(request.getUrl().replaceAll(BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"),"")).toUtf8();
     }
 
-    protected LinkedHashMap<String, String> getHeader(){
+    protected LinkedHashMap<String, String> getHeaderToken(){
         if(header == null){
             this.header = new LinkedHashMap<>();
         }
         this.header.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
+        return header;
+    }
+
+    protected LinkedHashMap<String, String> getHeader(){
+        this.header = new LinkedHashMap<>();
         return header;
     }
 

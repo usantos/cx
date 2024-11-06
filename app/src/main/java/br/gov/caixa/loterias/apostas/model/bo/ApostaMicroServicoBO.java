@@ -9,8 +9,8 @@ import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ServiceConnection;
 
 public class ApostaMicroServicoBO extends BaseMicroServicoBO {
     private static ApostaMicroServicoBO instance;
@@ -36,7 +36,7 @@ public class ApostaMicroServicoBO extends BaseMicroServicoBO {
     }
 
     public void getApostasConfirmadasMicroServico(String urlBase, ApostaPageRequest page, RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
-        setConnection(MicroServicoConnection.create(MicroServicoSingleton.getInstance().getRequestQueue(), urlBase));
+        setConnection(new ServiceConnection(MicroServicoSingleton.getInstance().getRequestQueue(), urlBase));
 
         final Map<String, String> queryParams = getQueryParams(page);
 

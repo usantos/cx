@@ -14,10 +14,8 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -147,20 +145,6 @@ public class ServiceConnection {
         return request;
     }
 
-    public <T> void get(String path, Map<String, String> queryParams,
-                        Class<T> responseDataClass,
-                        Response.Listener<T> listener,
-                        Response.ErrorListener errorListener, Map<String, String> headers, final RequestListener<T> listenerService) {
-        request(buildGetRequest(path, queryParams, responseDataClass, listener, errorListener, headers), listenerService);
-    }
-
-    public <REQ, RSP, T> void post(String path, Map<String, String> queryParams,
-                                   REQ body, Class<RSP> responseDataClass,
-                                   Response.Listener<RSP> listener,
-                                   Response.ErrorListener errorListener, LinkedHashMap<String, String> headers, final RequestListener<T> listenerService) {
-        request(buildPostRequest(path, queryParams, body, responseDataClass, listener, errorListener, headers), listenerService);
-    }
-
     private String fillUrl(String path) {
         return baseUrl + Bin.fromUtf8(path).toBase64();
     }
@@ -206,24 +190,6 @@ public class ServiceConnection {
         }
     }
 
-    private String fillUrl(String path, Bin query) {
-        try {
-            String queryStr = "";
-            if (query != null) {
-                queryStr = "/?q=" + URLEncoder.encode(
-                        query.toIso8859_1() + "!#!#!" + KEY.toIso8859_1() + "!#!#!" + IV.toIso8859_1(),
-                        "UTF-8");
-            }
-            return fillUrl(path) + queryStr;
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Falha ao gerar a URL da requisição ao SILCE", e);
-        }
-    }
-
-    public static ServiceConnection create(RequestQueue requestQueue, String baseUrl) {
-        return new ServiceConnection(requestQueue, baseUrl);
-    }
-
     private String getPath(String path, Map<String, String> param) {
         StringBuilder sb = new StringBuilder();
         sb.append(path);
@@ -237,4 +203,5 @@ public class ServiceConnection {
         }
         return sb.toString();
     }
+
 }

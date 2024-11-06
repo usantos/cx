@@ -16,15 +16,14 @@ import net.openid.appauth.TokenRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoMicroServicoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ServiceConnection;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
@@ -32,19 +31,18 @@ import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 public abstract class BaseMicroServicoBO {
-
-    private MicroServicoConnection connection;
+    private ServiceConnection connection;
     private Context context;
 
     public BaseMicroServicoBO(){
         this.context = Aplicacao.application.getApplicationContext();
     }
 
-    public MicroServicoConnection getConnection() {
+    public ServiceConnection getConnection() {
         return connection;
     }
 
-    public void setConnection(MicroServicoConnection connection) {
+    public void setConnection(ServiceConnection connection) {
         this.connection = connection;
     }
 
@@ -60,7 +58,7 @@ public abstract class BaseMicroServicoBO {
                 if (MensagensNetwork.isCertificadoInvalido(error)){
                     if (CertificadoMicroServicoSingleton.getInstance().trocaCertificado()){
                         MicroServicoSingleton.getInstance().initQueue();
-                        connection = new MicroServicoConnection(MicroServicoSingleton.getInstance().getRequestQueue(), ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
+                        connection = new ServiceConnection(MicroServicoSingleton.getInstance().getRequestQueue(), ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
                         connection.request(request, listener);
                         return;
                     } else {

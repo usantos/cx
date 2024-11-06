@@ -2,9 +2,7 @@ package br.gov.caixa.loterias.apostas.model.bo;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,8 +12,6 @@ import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamentoPix;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoNovoRsp;
-import br.gov.caixa.loterias.apostas.model.bo.silce.data.CompletaJogoRsp;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorApostaCompraDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -80,8 +76,8 @@ public class ApostaBO extends BaseBO {
                 params, CarrinhoFavoritoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -96,8 +92,8 @@ public class ApostaBO extends BaseBO {
                 CarrinhoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -114,8 +110,8 @@ public class ApostaBO extends BaseBO {
                 ListApostaCarrinhoFavoritoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -128,8 +124,8 @@ public class ApostaBO extends BaseBO {
                 ListCarrinhoFavoritoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -162,8 +158,8 @@ public class ApostaBO extends BaseBO {
                 CarrinhoFavoritoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -174,8 +170,8 @@ public class ApostaBO extends BaseBO {
                 ListCarrinhoFavoritoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -186,50 +182,9 @@ public class ApostaBO extends BaseBO {
                 ListApostaCarrinhoFavoritoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
-    }
-
-
-    public void completaJogo(final int quantidadeTotalNumeros,
-                             final List<Integer> numerosMarcados,
-                             final int menorPrognostico,
-                             final int maiorPrognostico,
-                             final RequestListener<CompletaJogoRsp> listener) {
-
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-
-        queryParams.put("quantidadeTotalNumeros", String.valueOf(quantidadeTotalNumeros));
-        queryParams.put("numerosMarcados", join(numerosMarcados, ","));
-        queryParams.put("menorPrognostico", String.valueOf(menorPrognostico));
-        queryParams.put("maiorPrognostico", String.valueOf(maiorPrognostico));
-
-        getServiceConnection().get(ServerMethods.COMPLETA_JOGO_PATH,
-                queryParams,
-                CompletaJogoRsp.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                new LinkedHashMap<>(), listener);
-    }
-
-    public void completaJogoNovo(final int quantidadeTotalNumeros,
-                                 final ArrayList<ArrayList<Integer>> numerosMarcados,
-                                 final String modalidade,
-                                 final RequestListener<CompletaJogoNovoRsp> listener) {
-
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        String url = ServerMethods.COMPLETA_JOGO_NOVO_PATH.replace("{modalidade}",modalidade);
-        Gson gsonNumeros = new Gson();
-        queryParams.put("quantidadeTotalNumeros", String.valueOf(quantidadeTotalNumeros));
-        queryParams.put("numerosMarcadosMatriz",gsonNumeros.toJson(numerosMarcados));
-
-        getServiceConnection().get(url,
-                queryParams,
-                CompletaJogoNovoRsp.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                new LinkedHashMap<>(), listener);
     }
 
     //APOSTA
@@ -241,8 +196,8 @@ public class ApostaBO extends BaseBO {
                 ResultadoPesquisaPaginadaDTOApostaDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -288,8 +243,8 @@ public class ApostaBO extends BaseBO {
                 ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -304,8 +259,8 @@ public class ApostaBO extends BaseBO {
                 infoPgtoDTO, RetornoPadraoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -318,9 +273,9 @@ public class ApostaBO extends BaseBO {
                 StringResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -332,9 +287,9 @@ public class ApostaBO extends BaseBO {
                 StringResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -345,8 +300,8 @@ public class ApostaBO extends BaseBO {
                 MesAnoDTOResponse.class,
                 listener.getSilceListener(),
                 null,
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -356,8 +311,8 @@ public class ApostaBO extends BaseBO {
                 MesAnoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -371,9 +326,9 @@ public class ApostaBO extends BaseBO {
                 ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -386,9 +341,9 @@ public class ApostaBO extends BaseBO {
                 DetalhesHistoricoPremioDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -402,9 +357,9 @@ public class ApostaBO extends BaseBO {
                 CodigoResgateDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -417,9 +372,9 @@ public class ApostaBO extends BaseBO {
                 DetalhesPremioDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -432,9 +387,9 @@ public class ApostaBO extends BaseBO {
                 ComprovanteApostaDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -448,9 +403,9 @@ public class ApostaBO extends BaseBO {
                 DetalhesPremioDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -463,9 +418,9 @@ public class ApostaBO extends BaseBO {
                 DTOEnumIntegerResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -475,8 +430,8 @@ public class ApostaBO extends BaseBO {
                 ParametrosConfiguraveisDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -490,9 +445,9 @@ public class ApostaBO extends BaseBO {
                 RetornoPadraoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -502,9 +457,9 @@ public class ApostaBO extends BaseBO {
                 apostaFavoritaDTO, RetornoPadraoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -522,9 +477,9 @@ public class ApostaBO extends BaseBO {
                 CarrinhoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -538,9 +493,9 @@ public class ApostaBO extends BaseBO {
                     CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(),
-                    getHeader());
+                    getHeaderToken());
 
-            request.setErrorListener(interceptError(request, getHeader(), listener));
+            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
             getServiceConnection().request(request, listener);
         }
     }
@@ -553,9 +508,9 @@ public class ApostaBO extends BaseBO {
                     CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(),
-                    getHeader());
+                    getHeaderToken());
 
-            request.setErrorListener(interceptError(request, getHeader(), listener));
+            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
             getServiceConnection().request(request, listener);
         }
     }
@@ -566,9 +521,9 @@ public class ApostaBO extends BaseBO {
                 ResourceResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -580,9 +535,9 @@ public class ApostaBO extends BaseBO {
                 apostas, AgrupadorDTOApostaDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -595,9 +550,9 @@ public class ApostaBO extends BaseBO {
                     CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(),
-                    getHeader());
+                    getHeaderToken());
 
-            request.setErrorListener(interceptError(request, getHeader(), listener));
+            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
             getServiceConnection().request(request, listener);
         }
     }
@@ -609,9 +564,9 @@ public class ApostaBO extends BaseBO {
                     CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(),
-                    getHeader());
+                    getHeaderToken());
 
-            request.setErrorListener(interceptError(request, getHeader(), listener));
+            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
             getServiceConnection().request(request, listener);
         }
     }
@@ -623,8 +578,8 @@ public class ApostaBO extends BaseBO {
                     CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(),
-                    getHeader());
-            request.setErrorListener(interceptError(request, getHeader(), listener));
+                    getHeaderToken());
+            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
             getServiceConnection().request(request, listener);
         }
     }
@@ -636,9 +591,9 @@ public class ApostaBO extends BaseBO {
                 meioPagamento, RetornoPadraoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -648,9 +603,9 @@ public class ApostaBO extends BaseBO {
                 meioPagamento, CompraAsyncResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -663,9 +618,9 @@ public class ApostaBO extends BaseBO {
                 CompraAsyncResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -676,9 +631,9 @@ public class ApostaBO extends BaseBO {
                 RapidaoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -689,9 +644,9 @@ public class ApostaBO extends BaseBO {
                 rapidao, RapidaoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -708,9 +663,9 @@ public class ApostaBO extends BaseBO {
                 CarrinhoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -728,9 +683,9 @@ public class ApostaBO extends BaseBO {
                 ResultadoPesquisaPaginadaDTOCompraDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -741,9 +696,9 @@ public class ApostaBO extends BaseBO {
                 AgrupadorApostaCompraDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -753,9 +708,9 @@ public class ApostaBO extends BaseBO {
                 MesAnoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -770,9 +725,9 @@ public class ApostaBO extends BaseBO {
                 ResultadoConcursoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -786,9 +741,9 @@ public class ApostaBO extends BaseBO {
                 ModalidadeDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -837,9 +792,9 @@ public class ApostaBO extends BaseBO {
                 EscudoEquipeEsportivaDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -849,9 +804,9 @@ public class ApostaBO extends BaseBO {
                 EscudoEquipeEsportivaDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -862,9 +817,9 @@ public class ApostaBO extends BaseBO {
                 GerarPixResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -931,9 +886,9 @@ public class ApostaBO extends BaseBO {
                 BoloesDisponiveisResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -949,9 +904,9 @@ public class ApostaBO extends BaseBO {
                 DetalheBolaoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -961,8 +916,8 @@ public class ApostaBO extends BaseBO {
                 AutoavaliacaoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -975,8 +930,8 @@ public class ApostaBO extends BaseBO {
                 listAutoavaliacaoRespostaDTO, AutoavaliacaoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 
@@ -989,8 +944,8 @@ public class ApostaBO extends BaseBO {
                 autoSuspensaoRequest, AutoSuspensaoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
 }
