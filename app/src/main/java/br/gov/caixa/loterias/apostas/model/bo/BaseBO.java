@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.android.volley.NetworkResponse;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -18,11 +19,10 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnCertificadoListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSilceSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ServiceConnection;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
@@ -36,13 +36,15 @@ import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 public abstract class BaseBO {
     private ServiceConnection connection;
     private Context context;
-
+    private String baseURL;
+    private OnCertificadoListener certificadoListener;
     private static LinkedHashMap<String, String> header;
 
-    public BaseBO(){
-        connection = new ServiceConnection(SilceSingleton.getInstance().getRequestQueue(),
-                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
-        context = Aplicacao.application.getApplicationContext();
+    public BaseBO(RequestQueue requestQueue, String baseURL, OnCertificadoListener certificadoListener){
+        this.baseURL = baseURL;
+        this.certificadoListener = certificadoListener;
+        this.connection = new ServiceConnection(requestQueue, baseURL);
+        this.context = Aplicacao.application.getApplicationContext();
     }
 
     public ServiceConnection getServiceConnection(){
@@ -57,11 +59,11 @@ public abstract class BaseBO {
         return error -> {
             if(AppUtils.isNetworkAvailable(context)){
                 registraErro(error, request);
+
                 if (MensagensNetwork.isCertificadoInvalido(error)){
-                    if (CertificadoSilceSingleton.getInstance().trocaCertificado()){
-                        SilceSingleton.getInstance().initQueue();
-                        connection = new ServiceConnection(SilceSingleton.getInstance().getRequestQueue(),
-                                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
+                    RequestQueue requestQueue = certificadoListener.isPrecisouTrocar();
+                    if (requestQueue != null){
+                        connection = new ServiceConnection(requestQueue, baseURL);
                         connection.request(request, listener);
                         return;
                     } else {

@@ -54,7 +54,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 
-public class ApostaBO extends BaseBO {
+public class ApostaBO extends SilceBO {
     private static ApostaBO instance;
 
     private ApostaBO(){}
