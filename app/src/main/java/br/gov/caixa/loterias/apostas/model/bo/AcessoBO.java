@@ -24,7 +24,7 @@ import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 
-public class AcessoBO extends BaseBO {
+public class AcessoBO extends SilceBO {
     private static String OPENID  = "openid";
     private static String PROFILE = "profile";
     private static String OFFLINE = "offline_access";
@@ -33,7 +33,9 @@ public class AcessoBO extends BaseBO {
     private static AcessoBO instance;
     private AuthorizationService authorizationService;
 
-    private AcessoBO(){}
+    private AcessoBO(){
+        super();
+    }
 
     public static AcessoBO getInstance(){
         if (instance == null){

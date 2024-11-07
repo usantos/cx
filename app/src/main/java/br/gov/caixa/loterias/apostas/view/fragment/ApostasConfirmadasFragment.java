@@ -280,7 +280,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             if (ConfiguracaoAppSingleton.getInstance() != null
                     && ConfiguracaoAppSingleton.getInstance().isMicroServico() != null
                     && ConfiguracaoAppSingleton.getInstance().isMicroServico()){
-                requestApostasMicroServico(ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
+                requestApostasMicroServico();
             }else {
                 requesteApostasSilce();
             }
@@ -288,8 +288,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
 
-    private void requestApostasMicroServico(String urlBaseBuscaApostas) {
-        ApostaMicroServicoBO.getInstance().getApostasConfirmadasMicroServico(urlBaseBuscaApostas, page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+    private void requestApostasMicroServico() {
+        ApostaMicroServicoBO.getInstance().getApostasConfirmadasMicroServico(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
                 chamarApostaNovamente = false;

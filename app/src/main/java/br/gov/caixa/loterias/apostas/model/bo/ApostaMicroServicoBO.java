@@ -1,21 +1,23 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
-import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnCertificadoListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoMicroServicoSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.MicroServicoSingleton;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ServiceConnection;
 
-public class ApostaMicroServicoBO extends BaseMicroServicoBO {
+public class ApostaMicroServicoBO extends BaseBO {
     private static ApostaMicroServicoBO instance;
 
-    private ApostaMicroServicoBO(){}
+    private ApostaMicroServicoBO(){
+        super(MicroServicoSingleton.getInstance().getRequestQueue(), ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas(), onCertificadoListener());
+    }
 
     public static ApostaMicroServicoBO getInstance(){
         if (instance == null){
@@ -24,30 +26,28 @@ public class ApostaMicroServicoBO extends BaseMicroServicoBO {
         return instance;
     }
 
-    private static LinkedHashMap<String, String> header;
+    private static OnCertificadoListener onCertificadoListener() {
+        return () -> {
+            if (CertificadoMicroServicoSingleton.getInstance().trocaCertificado()){
+                MicroServicoSingleton.getInstance().initQueue();
+                return MicroServicoSingleton.getInstance().getRequestQueue();
+            }
 
-    private LinkedHashMap<String, String> getHeader(){
-        if(header == null){
-            this.header = new LinkedHashMap<>();
-        }
-        this.header.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
-
-        return header;
+            return null;
+        };
     }
 
-    public void getApostasConfirmadasMicroServico(String urlBase, ApostaPageRequest page, RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
-        setConnection(new ServiceConnection(MicroServicoSingleton.getInstance().getRequestQueue(), urlBase));
-
+    public void getApostasConfirmadasMicroServico(ApostaPageRequest page, RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
         final Map<String, String> queryParams = getQueryParams(page);
 
-        final GsonRequest request = getConnection().buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_PATH,
+        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_PATH,
                                                                     queryParams,
                                                                     ResultadoPesquisaPaginadaDTOApostaDTOResponse.class,
                                                                     listener.getSilceListener(),
                                                                     listener.getErrorListener(),
-                                                                    getHeader());
-        request.setErrorListener(interceptError(request, getHeader(), listener));
-        getConnection().request(request, listener);
+                                                                    getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
     }
 
     private Map<String, String> getQueryParams(ApostaPageRequest page) {

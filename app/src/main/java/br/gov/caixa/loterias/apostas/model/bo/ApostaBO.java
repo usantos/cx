@@ -57,7 +57,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace
 public class ApostaBO extends SilceBO {
     private static ApostaBO instance;
 
-    private ApostaBO(){}
+    private ApostaBO(){
+        super();
+    }
 
     public static ApostaBO getInstance(){
         if (instance == null){
