@@ -31,10 +31,12 @@ public class ServiceConnection {
     private final RequestQueue requestQueue;
     private final SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
     private String baseUrl;
+    private Boolean isEncoding = false;
 
-    public ServiceConnection(RequestQueue requestQueue, String baseUrl) {
+    public ServiceConnection(RequestQueue requestQueue, String baseUrl, Boolean isEncoding) {
         this.requestQueue = requestQueue;
         this.baseUrl = baseUrl;
+        this.isEncoding = isEncoding;
 
         if ((this.baseUrl.length() > 0) && (this.baseUrl.charAt(this.baseUrl.length() - 1) != '/')) {
             this.baseUrl += '/';
@@ -146,7 +148,10 @@ public class ServiceConnection {
     }
 
     private String fillUrl(String path) {
-        return baseUrl + Bin.fromUtf8(path).toBase64();
+        if (isEncoding)
+            return baseUrl + Bin.fromUtf8(path).toBase64();
+        else
+            return baseUrl + path;
     }
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {

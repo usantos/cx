@@ -16,7 +16,10 @@ public class ApostaMicroServicoBO extends BaseBO {
     private static ApostaMicroServicoBO instance;
 
     private ApostaMicroServicoBO(){
-        super(MicroServicoSingleton.getInstance().getRequestQueue(), ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas(), onCertificadoListener());
+        super(MicroServicoSingleton.getInstance().getRequestQueue(),
+                ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas(),
+                false,
+                onCertificadoListener());
     }
 
     public static ApostaMicroServicoBO getInstance(){

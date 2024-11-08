@@ -10,6 +10,7 @@ public abstract class SilceBO extends BaseBO {
     public SilceBO() {
         super(SilceSingleton.getInstance().getRequestQueue(),
                 BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"),
+                true,
                 onCertificadoListener());
     }
 

@@ -37,13 +37,15 @@ public abstract class BaseBO {
     private ServiceConnection connection;
     private Context context;
     private String baseURL;
+    private Boolean isEncoding;
     private OnCertificadoListener certificadoListener;
     private static LinkedHashMap<String, String> header;
 
-    public BaseBO(RequestQueue requestQueue, String baseURL, OnCertificadoListener certificadoListener){
+    public BaseBO(RequestQueue requestQueue, String baseURL, Boolean isEncoding, OnCertificadoListener certificadoListener){
         this.baseURL = baseURL;
+        this.isEncoding = isEncoding;
         this.certificadoListener = certificadoListener;
-        this.connection = new ServiceConnection(requestQueue, baseURL);
+        this.connection = new ServiceConnection(requestQueue, baseURL, isEncoding);
         this.context = Aplicacao.application.getApplicationContext();
     }
 
@@ -63,7 +65,7 @@ public abstract class BaseBO {
                 if (MensagensNetwork.isCertificadoInvalido(error)){
                     RequestQueue requestQueue = certificadoListener.isPrecisouTrocar();
                     if (requestQueue != null){
-                        connection = new ServiceConnection(requestQueue, baseURL);
+                        connection = new ServiceConnection(requestQueue, baseURL, isEncoding);
                         connection.request(request, listener);
                         return;
                     } else {
