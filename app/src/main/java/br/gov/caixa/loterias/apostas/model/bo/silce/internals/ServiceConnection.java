@@ -148,9 +148,13 @@ public class ServiceConnection {
     }
 
     private String fillUrl(String path) {
-        if (isEncoding)
-            return baseUrl + Bin.fromUtf8(path).toBase64();
-        else
+        if (isEncoding) {
+            String pathSemBarra = path;
+            if (path.startsWith("/")) {
+                pathSemBarra = path.substring(1);
+            }
+            return baseUrl + Bin.fromUtf8(pathSemBarra).toBase64();
+        } else
             return baseUrl + path;
     }
 

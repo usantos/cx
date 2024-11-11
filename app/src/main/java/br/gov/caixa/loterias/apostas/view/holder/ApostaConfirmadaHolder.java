@@ -146,7 +146,9 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 
 		if(parametroJogo != null && !ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial())){
-			if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+			if (ConfiguracaoAppSingleton.getInstance().isNovaApi()){
+				descricaoStatus = aposta.getSituacao().getDescricao();
+			} else if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
 				descricaoStatus = aposta.getSituacao().getDescricao();
 			}else {
 				descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado).toLowerCase();

@@ -42,6 +42,7 @@ import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.NovaAPIBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -279,6 +280,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         } else {
             if (ConfiguracaoAppSingleton.getInstance() != null
                     && ConfiguracaoAppSingleton.getInstance().isMicroServico() != null
+                    && ConfiguracaoAppSingleton.getInstance().isNovaApi()) {
+                requestApostasNovaApi();
+            } else if (ConfiguracaoAppSingleton.getInstance() != null
+                    && ConfiguracaoAppSingleton.getInstance().isMicroServico() != null
                     && ConfiguracaoAppSingleton.getInstance().isMicroServico()){
                 requestApostasMicroServico();
             }else {
@@ -287,7 +292,24 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
     }
 
+    private void requestApostasNovaApi() {
+        NovaAPIBO.getInstance().getApostasConfirmadas(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
+                chamarApostaNovamente = false;
+                for (ApostaDTO aposta: result.getPayload().getLista()){
+                    aposta.setValor(new BigDecimal(1));
+                }
+                rowCount = result.getPayload().getRowCount();
+                onApostasConfirmadasResult(result.getPayload().getLista());
+            }
 
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onApostasConfirmadasError500(error);
+            }
+        });
+    }
     private void requestApostasMicroServico() {
         ApostaMicroServicoBO.getInstance().getApostasConfirmadasMicroServico(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
             @Override

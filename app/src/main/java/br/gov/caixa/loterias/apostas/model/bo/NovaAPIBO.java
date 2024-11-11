@@ -8,6 +8,7 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnCertificadoListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoNovaAPISingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.NovaAPISingleton;
 
@@ -15,7 +16,7 @@ public class NovaAPIBO extends BaseBO {
     private static NovaAPIBO instance;
     private NovaAPIBO(){
         super(NovaAPISingleton.getInstance().getRequestQueue(),
-                "",
+                ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas(),
                 true,
                 onCertificadoListener());
     }
@@ -41,7 +42,7 @@ public class NovaAPIBO extends BaseBO {
     public void getApostasConfirmadas(ApostaPageRequest page, RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse> listener) {
         final Map<String, String> queryParams = getQueryParams(page);
 
-        final GsonRequest request = getServiceConnection().buildGetRequest("",
+        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.APOSTAS_CONFIRMADAS_NOVA_API_PATH,
                                                                     queryParams,
                                                                     ResultadoPesquisaPaginadaDTOApostaDTOResponse.class,
                                                                     listener.getSilceListener(),

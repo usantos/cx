@@ -28,7 +28,7 @@ public class ParametrosConfiguraveisDTO {
     @SerializedName("hostNovoMicroServicoConferenciaApostaPiloto")
     private String urlBaseNovaApiPLT;
     @SerializedName("grupoCpfsAcessamNovoConferenciaAposta")
-    private Integer grupoCpfNovaApi;
+    private Integer grupoCpfNovaApi = 0;
 
 
     public Boolean getMicroServico() {
