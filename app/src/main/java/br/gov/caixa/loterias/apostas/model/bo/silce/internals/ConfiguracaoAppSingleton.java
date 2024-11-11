@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.internals;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ConfiguracaoAppSingleton {
 
     public static final Boolean MOSTRA_MENU_APOSTAS_DEFAULT = true;
@@ -10,6 +12,11 @@ public class ConfiguracaoAppSingleton {
     private Boolean mostraMenuAposta;
     private Boolean isAtualizaPublicKey;
     private Boolean isBolaoHabilitado;
+
+    private String urlBaseNovaApiPRD;
+    private String urlBaseNovaApiPLT;
+    private Integer grupoCpfNovaApi;
+    private Boolean isNovaApi;
 
     private static ConfiguracaoAppSingleton configuracaoAppSingleton;
 
@@ -22,6 +29,10 @@ public class ConfiguracaoAppSingleton {
             configuracaoAppSingleton.isMicroServico = IS_MICRO_SERVICO_DEFAULT;
             configuracaoAppSingleton.isAtualizaPublicKey = Boolean.FALSE;
             configuracaoAppSingleton.isBolaoHabilitado = Boolean.FALSE;
+            configuracaoAppSingleton.urlBaseNovaApiPRD = "";
+            configuracaoAppSingleton.urlBaseNovaApiPLT = "";
+            configuracaoAppSingleton.grupoCpfNovaApi = 0;
+            configuracaoAppSingleton.isNovaApi = Boolean.FALSE;
         }
         return configuracaoAppSingleton;
     }
@@ -64,5 +75,37 @@ public class ConfiguracaoAppSingleton {
 
     public void setBolaoHabilitado(Boolean bolaoHabilitado) {
         isBolaoHabilitado = bolaoHabilitado;
+    }
+
+    public String getUrlBaseNovaApiPRD() {
+        return urlBaseNovaApiPRD;
+    }
+
+    public void setUrlBaseNovaApiPRD(String urlBaseNovaApiPRD) {
+        this.urlBaseNovaApiPRD = urlBaseNovaApiPRD;
+    }
+
+    public String getUrlBaseNovaApiPLT() {
+        return urlBaseNovaApiPLT;
+    }
+
+    public void setUrlBaseNovaApiPLT(String urlBaseNovaApiPLT) {
+        this.urlBaseNovaApiPLT = urlBaseNovaApiPLT;
+    }
+
+    public Integer getGrupoCpfNovaApi() {
+        return grupoCpfNovaApi;
+    }
+
+    public void setGrupoCpfNovaApi(Integer grupoCpfNovaApi) {
+        this.grupoCpfNovaApi = grupoCpfNovaApi;
+    }
+
+    public Boolean isNovaApi() {
+        return isNovaApi;
+    }
+
+    public void setNovaApi(Boolean novaApi) {
+        isNovaApi = novaApi;
     }
 }
