@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +48,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
@@ -483,6 +485,24 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     });
 
                 }
+            }
+
+            @Override
+            public void onItemReload(int position, ApostaConfirmadaHolder holder) {
+                NovaAPIBO.getInstance().getRecuperarAposta(apostasList.get(position).getId(), new RequestListener<ApostaDTOResponse>() {
+                    @Override
+                    public void onResponse(ApostaDTOResponse response) {
+                        Toast.makeText(view.getContext(), "OK-Clicou No Reload Item "+position, Toast.LENGTH_LONG).show();
+                        //TODO verificar se sobrepoe as outras colunas
+                        apostasList.get(position).setSituacao(response.getPayload().getApostaDTO().getSituacao());
+                        holder.showReloadImg(false);
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        RedirectNetwork.checkRedirect(error, getActivity());
+                    }
+                });
             }
 
             @Override

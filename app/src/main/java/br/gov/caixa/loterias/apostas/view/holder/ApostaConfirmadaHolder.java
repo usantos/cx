@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
@@ -17,6 +18,7 @@ import com.android.volley.VolleyError;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
@@ -47,6 +49,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private TextView situacaoTxt;
 	private Button btnAposteAqui;
 	private ProgressBar progressBarSituacao;
+	private AppCompatImageView reloadImg;
 	private int color;
 	private OnApostaConfirmadaListener onApostasConfirmadasListener;
 	private Activity parentActivity;
@@ -69,6 +72,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			tagBolao = view.findViewById(R.id.id_tag_bolao);
 			situacaoTxt = view.findViewById(R.id.situacaoTxt);
 			progressBarSituacao = view.findViewById(R.id.progressBarSituacao);
+			reloadImg = view.findViewById(R.id.reloadImg);
+			reloadImg.setOnClickListener(this);
 			addCarrinho.setOnClickListener(this);
 			detalheAposta.setOnClickListener(this);
 		} else {
@@ -87,11 +92,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 		int color;
 		color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorClara());
-//		if (isApostaBolao(aposta)) {
-//			color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorEscura());
-//		} else {
-//			color = ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorEscura());
-//		}
+
 		this.color = color;
 		this.stripe.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
 		this.modalidadeTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
@@ -139,6 +140,11 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		String descricaoStatus;
 
 		this.showProgressBarSituacao(false);
+
+		if (ConfiguracaoAppSingleton.getInstance().isNovaApi() &&
+			aposta.getSituacao().getValor() == 4L) {
+			reloadImg.setVisibility(View.VISIBLE);
+		}
 
 		ParametroSimulacao parametroJogo = getParametroPorJogo(aposta, TipoConcursoEnum.NORMAL);
 		if (parametroJogo == null) {
@@ -239,6 +245,13 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 	}
 
+	public void showReloadImg(boolean show){
+		if (show) {
+			this.reloadImg.setVisibility(View.VISIBLE);
+		} else {
+			this.reloadImg.setVisibility(View.INVISIBLE);
+		}
+	}
 	public boolean precisaConferirSituacao(){
 		if (this.situacaoTxt != null && this.situacaoTxt.getText().toString().contains(itemView.getContext().getString(R.string.a_conferir))){
 			return true;
@@ -287,6 +300,9 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 				onApostasConfirmadasListener.onEmptyCellClick();
 			} else {
 				switch (view.getId()) {
+					case R.id.reloadImg:
+						onApostasConfirmadasListener.onItemReload(getAbsoluteAdapterPosition(), this);
+						break;
 					case R.id.id_add_carrinho:
 						onApostasConfirmadasListener.onReload(getAbsoluteAdapterPosition());
 						break;

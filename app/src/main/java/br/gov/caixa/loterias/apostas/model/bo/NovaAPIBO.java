@@ -5,6 +5,8 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnCertificadoListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoNovaAPISingleton;
@@ -48,6 +50,21 @@ public class NovaAPIBO extends BaseBO {
                                                                     listener.getSilceListener(),
                                                                     listener.getErrorListener(),
                                                                     getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void getRecuperarAposta(Long id, final RequestListener<ApostaDTOResponse> listener) {
+
+        String url = ServerMethods.APOSTAS_RECUPERAR_NOVA_API_PATH.replace("{id}", id.toString());
+        final Map<String, String> queryParams = new HashMap<>();
+        final GsonRequest request = getServiceConnection().buildGetRequest(url,
+                queryParams,
+                ApostaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
