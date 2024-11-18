@@ -276,6 +276,12 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 					DetalhesBolaoActivity.this, getColunaConfig(), getDezenaConfig(), null);
 			listaJogos.setAdapter(superSeteAdpter);
 			listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
+		} else if (bolao.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+			if (bolao.getApostas() != null && !bolao.getApostas().isEmpty()){
+				listaAdapter = new JogosBolaoRecyclerView(bolao.getModalidade(), estilo.getCorLetraLista(), bolao.getApostas(), new ArrayList<>(), getDezenaConfig(), getTrevoConfig());
+				listaJogos.setAdapter(listaAdapter);
+				listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
+			}
 		} else {
 			if (bolao.getApostas() != null && !bolao.getApostas().isEmpty()){
 				listaAdapter = new JogosBolaoRecyclerView(bolao.getModalidade(), estilo.getCorLetraLista(), bolao.getApostas(), new ArrayList<>(), getDezenaConfig());
@@ -283,6 +289,16 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 				listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 			}
 		}
+	}
+
+	private DezenaConfig getTrevoConfig() {
+		ShapeConfig shapeConfig = new ShapeConfig(R.drawable.ic_item_trevo_branco,
+				R.drawable.ic_item_trevo_selecionado,
+				R.color.branco, R.color.milionaria_escuro_mkp);
+
+		return new DezenaConfig(false, R.color.milionaria_escuro_mkp,
+				R.layout.item_dezena_detalhe,
+				shapeConfig, false);
 	}
 
 	private ColunaConfig getColunaConfig() {
