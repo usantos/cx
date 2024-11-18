@@ -493,8 +493,25 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     @Override
                     public void onResponse(ApostaDTOResponse response) {
                         Toast.makeText(view.getContext(), "OK-Clicou No Reload Item "+position, Toast.LENGTH_LONG).show();
-                        //TODO verificar se sobrepoe as outras colunas
+                        //"id": 2154911539,
+                        //Combo
+                        //"especialInclusoTeimosinha": false,
+                        //"geraEspelho": false,
+                        //"horaCompra": "14:16:34",
+                        //"surpresinha": false,
                         apostasList.get(position).setSituacao(response.getPayload().getApostaDTO().getSituacao());
+                        apostasList.get(position).setModalidade(response.getPayload().getApostaDTO().getModalidade());
+                        apostasList.get(position).setConcursoInicial(response.getPayload().getApostaDTO().getConcursoInicial());
+                        apostasList.get(position).setDataCompra(response.getPayload().getApostaDTO().getDataCompra());
+                        apostasList.get(position).setEspelho(response.getPayload().getApostaDTO().getEspelho());
+                        apostasList.get(position).setIndicadorCotaBolao(response.getPayload().getApostaDTO().getIndicadorCotaBolao());
+                        apostasList.get(position).setIndicadorSurpresinha(response.getPayload().getApostaDTO().getIndicadorSurpresinha());
+                        apostasList.get(position).setNumerosSelecionados(response.getPayload().getApostaDTO().getNumerosSelecionados());
+                        apostasList.get(position).setQuantidadeApostas(response.getPayload().getApostaDTO().getQuantidadeApostas());
+                        apostasList.get(position).setQuantidadeTeimosinhas(response.getPayload().getApostaDTO().getQuantidadeTeimosinhas());
+                        apostasList.get(position).setTipoConcurso(response.getPayload().getApostaDTO().getTipoConcurso());
+                        apostasList.get(position).setTroca(response.getPayload().getApostaDTO().getTroca());
+
                         holder.showReloadImg(false);
                     }
 
