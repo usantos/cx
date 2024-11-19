@@ -73,6 +73,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoConcursoCanalEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -86,6 +87,7 @@ import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -501,12 +503,33 @@ public class PrincipalActivity extends AppCompatActivity
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
-                String descricao = getDescricaoModalidade(parametro);
-                listaModalidades.add(new Modalidade(descricao, parametro.getParametroJogo().getConcurso().getValorApostaMinima(),
-                                                    getResources().getString(R.string.string_vazia),
-                                                    getResources().getString(R.string.string_vazia),
-                                                    parametro.getParametroJogo().getConcurso().getModalidade(),
-                                                    parametro.getParametroJogo().getConcurso(), false, null));
+
+                //--APENAS PARA TESTE ***APAGA*** ESSE IF ELSE
+                if (parametro.getParametroJogo().getConcurso().getModalidade().equals(ModalidadeEnum.LOTOGOL)) {
+                    parametro.getParametroJogo().getConcurso().setModalidade(ModalidadeEnum.INSTANTANEA);
+                    parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().setValor(1502);
+                    parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().setDescricao("Instantânea");
+                    parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().setDescricaoEspecial("");
+                    parametro.getParametroJogo().getConcurso().setTipoConcurso(TipoConcursoEnum.NORMAL);
+                    parametro.getParametroJogo().getConcurso().setValorApostaMinima(BigDecimal.ZERO);
+                    parametro.getParametroJogo().setSituacaoConcursoCanal(SituacaoConcursoCanalEnum.ABERTO);
+                    String descricao = getDescricaoModalidade(parametro);
+                    listaModalidades.add(new Modalidade(descricao, parametro.getParametroJogo().getConcurso().getValorApostaMinima(),
+                            getResources().getString(R.string.string_vazia),
+                            getResources().getString(R.string.string_vazia),
+                            parametro.getParametroJogo().getConcurso().getModalidade(),
+                            parametro.getParametroJogo().getConcurso(), false, null));
+
+                } else {
+
+                    String descricao = getDescricaoModalidade(parametro);
+                    listaModalidades.add(new Modalidade(descricao, parametro.getParametroJogo().getConcurso().getValorApostaMinima(),
+                            getResources().getString(R.string.string_vazia),
+                            getResources().getString(R.string.string_vazia),
+                            parametro.getParametroJogo().getConcurso().getModalidade(),
+                            parametro.getParametroJogo().getConcurso(), false, null));
+
+                }
             }
         }
 
@@ -692,24 +715,32 @@ public class PrincipalActivity extends AppCompatActivity
     public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
-            EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
-            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
-            buttonHomeBet.setTag(adapterPosition);
-            //buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
-            buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
-                    getResources().getString(R.string.espaco_em_branco) +
-                    ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
-
-            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
-                temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
-
-                //buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
-                buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this,
-                                                                          getResources()
-                                                                                  .getString(R.string.apostas_boloes)));
-                buttonHomeBolao.setVisibility(View.VISIBLE);
+            if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA)) {
+                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
+                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                buttonHomeBet.setTag(adapterPosition);
+                buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
+                buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte)));
             } else {
-                buttonHomeBolao.setVisibility(View.GONE);
+                EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
+                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+                buttonHomeBet.setTag(adapterPosition);
+                //buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
+                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
+                        getResources().getString(R.string.espaco_em_branco) +
+                        ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+
+                if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+                        temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
+
+                    //buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
+                    buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this,
+                            getResources()
+                                    .getString(R.string.apostas_boloes)));
+                    buttonHomeBolao.setVisibility(View.VISIBLE);
+                } else {
+                    buttonHomeBolao.setVisibility(View.GONE);
+                }
             }
         }
     }
