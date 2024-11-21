@@ -115,6 +115,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
+    public static final String ENDERECO_INSTANTANEA = "https://instantanea.loterias.gov.br";
 
     public AppBarLayout navigationBarListaModalidade;
     public DiscreteScrollView homeCarousel;
@@ -504,7 +505,7 @@ public class PrincipalActivity extends AppCompatActivity
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
 
-                //--APENAS PARA TESTE ***APAGA*** ESSE IF ELSE
+                //--APENAS PARA TESTE ***APAGAR*** ESSE IF ELSE
                 if (parametro.getParametroJogo().getConcurso().getModalidade().equals(ModalidadeEnum.LOTOGOL)) {
                     parametro.getParametroJogo().getConcurso().setModalidade(ModalidadeEnum.INSTANTANEA);
                     parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().setValor(1502);
@@ -721,6 +722,7 @@ public class PrincipalActivity extends AppCompatActivity
                 buttonHomeBet.setTag(adapterPosition);
                 buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
                 buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte)));
+                buttonHomeBolao.setVisibility(View.GONE);
             } else {
                 EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
@@ -733,9 +735,7 @@ public class PrincipalActivity extends AppCompatActivity
                 if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
                         temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
 
-                    //buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
-                    buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this,
-                            getResources()
+                    buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
                                     .getString(R.string.apostas_boloes)));
                     buttonHomeBolao.setVisibility(View.VISIBLE);
                 } else {
@@ -786,7 +786,12 @@ public class PrincipalActivity extends AppCompatActivity
         int              selecionada   = Integer.parseInt(buttonHomeBet.getTag().toString());
         ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
-        if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
+        if (modalidade == ModalidadeEnum.INSTANTANEA) {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_instantanea));
+            Uri uri = Uri.parse(ENDERECO_INSTANTANEA);
+            Intent activity = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(activity);
+        } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
             Intent activity = new Intent(PrincipalActivity.this, clazz);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());

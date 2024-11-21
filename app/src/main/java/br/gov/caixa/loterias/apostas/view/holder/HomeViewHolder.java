@@ -133,6 +133,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.imageInstantanea.setVisibility(View.VISIBLE);
 			this.textPortal.setVisibility(View.VISIBLE);
 			this.textPortal.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.portal_instantanea)));
+			this.buttonActionResultadosModalidade.setVisibility(View.GONE);
+			this.imgSetaResultado.setVisibility(View.GONE);
 
 			return;
 		}
