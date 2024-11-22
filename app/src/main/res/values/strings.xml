@@ -1320,11 +1320,19 @@
     <string name="valor_minimo_aposta">Valor Mínimo Aposta</string>
     <string name="valor_maximo_aposta">Valor Máximo Aposta</string>
     <string name="quantidade_cotas">Quantidade de Cotas</string>
-    <string name="quantidade_dezenas">Quantidade de Dezenas</string>
+    <string name="quantidade_min_cotas">Quant. de Cotas Mínima</string>
+    <string name="quantidade_max_cotas">Quant. de Cotas Máxima</string>
+    <string name="quantidade_dezenas">Quant. de Dezenas</string>
+    <string name="qtd_min_menor_2">Quantidade mínima não pode ser menor que 2</string>
+    <string name="qtd_min_maior_max">Quantidade mínima não pode ser maior que a máxima</string>
+    <string name="qtd_max_menor_2">Quantidade máxima não pode ser menor que 2</string>
+    <string name="qtd_max_maior_100">Quantidade máxima não pode ser maior que 100</string>
+    <string name="qtd_dezenas_menor_5">Quantidade de dezenas não pode ser inferior a 5</string>
+    <string name="qtd_dezenas_maior_20">Quantidade de dezenas não pode ser superior a 21</string>
     <string name="limpar_filtros">Limpar Filtros</string>
     <string name="aplicar">Aplicar</string>
-    <string name="numeros_quero">Números que eu quero</string>
-    <string name="numeros_nao_quero">Números que eu não quero</string>
+    <string name="numeros_quero">Números que quero</string>
+    <string name="numeros_nao_quero">Números que não quero</string>
     <string name="nome_ou_codigo">Nome ou código</string>
     <string name="apostas_boloes">_Compre seu bolão_</string>
     <string name="descritivo_tela_bolao">Veja aqui os bolões em destaque. Você também pode personalizar sua busca no campo filtros</string>
@@ -1388,7 +1396,7 @@
     <string name="gerar_comprovante">Gerar Comprovante</string>
     <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
     <string name="usuario_bloqueio_parcial">Usuário habilitado apenas para consultas.</string>
-    <string name="label_loterica_filtro">Lotérica</string>
+    <string name="label_loterica_filtro">Lotéricas</string>
     <string name="nome_loteria">Nome da Lotérica:</string>
     <string name="nao_sei_cep">Não sei o meu CEP</string>
     <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
@@ -1404,5 +1412,9 @@
     <string name="mensagem_pop_up_aguardando_confirmacao_pix_pergunta">Pagamento ainda não identificado.\nCaso tenha realizado o pagamento, aguarde enquanto realizamos o processamento.\nPagamentos identificados fora do tempo limite para efetivação de apostas serão estornados.\nAcompanhe o processamento do seu pedido na opção "Minhas Compras".\n\nVocê deseja aguardar a confirmação de pagamento?</string>
     <string name="conheca_mais_milionaria">Conheça o novo jogo +milionária. \nVamos explicar como funciona \n nessa nova modalidade.</string>
     <string name="chegou_a_milionaria">Chegou a +milionária</string>
+    <string name="_100">100</string>
+    <string name="_5_a_21">5 a 21</string>
+    <string name="alerta_numero_ja_escolhido_quero_nao_quero">Não é possível selecionar um número já escolhido no outro filtro.</string>
+    <string name="Quero_Nao_Quero_Impossivel_de_Identificar">Dezenas Quero ou Não Quero impossível de identificar. Activity for result de FiltraMarketplaceActivity retornando dado incorreto</string>
 
 </resources>

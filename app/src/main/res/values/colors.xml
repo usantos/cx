@@ -8,6 +8,7 @@
     <color name="azulclaro">#d4dfe2</color>
     <color name="azulpush">#0066B3</color>
     <color name="azulBolao">#2F5095</color>
+    <color name="azulFiltro">#005EA8</color>
     <color name="pushbotaoaposteagora">#0164AF</color>
     <color name="pushbotaoconferiragora">#4BBDAC</color>/
     <color name="fundobrancocentralmsg">#F4F4F4</color>
@@ -79,14 +80,10 @@
     <color name="lotomaniaescuro">#D38127</color>
     <color name="lotomaniamedio">#f58220</color>
     <color name="lotomaniaEscuroToolBar">#f99d1c</color>
-
-
     <color name="timemaniaclaro">#C9C32D</color>
     <color name="timemaniamediaescuro">#B6B128</color>
     <color name="timemaniaescuro">#B6B128</color>
     <color name="timemaniaClaroToolBar">#BEB92A</color>
-
-
     <color name="azulescuro">#3964a4</color>
     <color name="azulTexto">#004c8c</color>
     <color name="azulFormNovoTipoPagamento">#005cad</color>

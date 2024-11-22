@@ -9,6 +9,8 @@ public class DezenaConfig {
 	private boolean isClickable;
 	private int layout;
 
+	private boolean isQueroNaoQuero;
+
 	public DezenaConfig(boolean isDezena, int color, int layout, ShapeConfig shapeConfig, boolean isClickable) {
 		this.isLabelDezena = isDezena;
 		this.color = color;
@@ -25,6 +27,14 @@ public class DezenaConfig {
 		this.layout = R.layout.item_dezena;
 	}
 
+	public DezenaConfig(boolean isDezena, int color, int textColor, boolean isClickable, boolean isQueroNaoQuero) {
+		this.isLabelDezena = isDezena;
+		this.color = color;
+		this.isClickable = isClickable;
+		this.shapeConfig = new ShapeConfig(color, textColor);
+		this.layout = R.layout.item_dezena_quero_nao_quero_cartela;
+		this.isQueroNaoQuero = isQueroNaoQuero;
+	}
 	public boolean isLabelDezena() {
 		return isLabelDezena;
 	}
@@ -61,4 +71,7 @@ public class DezenaConfig {
 		return layout;
 	}
 
+	public boolean isQueroNaoQuero() {
+		return isQueroNaoQuero;
+	}
 }
