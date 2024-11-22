@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.model.bo;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -15,7 +16,6 @@ import net.openid.appauth.ResponseTypeValues;
 
 import java.util.LinkedHashMap;
 
-import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostas.controllers.TokenActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
@@ -44,21 +44,26 @@ public class AcessoBO extends BaseBO {
 
     public void iniciarLoginSSO(Activity activity){
         if(activity != null) {
-            AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
-                    Uri.parse(BuildConfigManager.getVariavel("URL_SSO_AUTH")),
-                    Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
-            );
+            try {
+                AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
+                        Uri.parse(BuildConfigManager.getVariavel("URL_SSO_AUTH")),
+                        Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
+                );
 
-            AuthorizationRequest.Builder builder = getAuthorizationRequestBuilder(activity, authorizationServiceConfiguration);
+                AuthorizationRequest.Builder builder = getAuthorizationRequestBuilder(activity, authorizationServiceConfiguration);
 
-            AuthorizationRequest authorizationRequest = builder.build();
-            Intent intent = new Intent(activity, TokenActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                AuthorizationRequest authorizationRequest = builder.build();
+                Intent intent = new Intent(activity, TokenActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            PendingIntent pendingIntent = getPendingIntent(intent);
+                PendingIntent pendingIntent = getPendingIntent(intent);
 
-            authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
-            authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
+                authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
+                authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
+            } catch (ActivityNotFoundException e){
+
+            }
+
         }
     }
 
