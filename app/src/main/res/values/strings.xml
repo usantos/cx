@@ -1329,6 +1329,7 @@
     <string name="apostas_boloes">_Compre seu bolão_</string>
     <string name="descritivo_tela_bolao">Veja aqui os bolões em destaque. Você também pode personalizar sua busca no campo filtros</string>
     <string name="cotas_bolao">Cotas bolão</string>
+    <string name="combo_apostas">Combo de apostas</string>
     <string name="apostas_individuais">Apostas individuais</string>
     <string name="cota_reservada">Cota reservada</string>
     <string name="cota_expirada">Cota expirada</string>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:background="@color/branco">
+
+    <TextView
+        android:id="@+id/descricaoCombo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="18dp"
+        android:textSize="14.2sp"
+        tools:text="Fezinha do Mes"
+        android:textColor="@color/bolao_azul_subtitulo"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/imageViewDetalheCombos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/ic_trevo_carrinho_bolao"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/valorAposta"
+    />
+
+    <TextView
+        android:id="@+id/valorAposta"
+        android:layout_width="118dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:layout_marginEnd="15dp"
+        android:text="@string/r_0_00"
+        android:textAlignment="textEnd"
+        android:textSize="14.2sp"
+        android:textColor="@color/bolao_azul_subtitulo"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/excluirApostaCarrinho"
+    />
+
+    <ImageView
+        android:id="@+id/excluirApostaCarrinho"
+        android:layout_width="18dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_lixeira_mkp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvQtdApostasCombo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-10dp"
+        android:text="apostas"
+        android:textColor="@color/bolao_azul_subtitulo"
+        android:textSize="12sp"
+        android:visibility="visible"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintStart_toStartOf="@+id/imageViewDetalheCombos"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDetalheCombos"
+    />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:paddingStart="0dp"
+        android:background="@color/cinzaclaro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvQtdApostasCombo"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
