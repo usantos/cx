@@ -25,14 +25,12 @@ import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity;
+import br.gov.caixa.loterias.apostas.view.activity.DetalhesComboActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaCarrinhoComboHolder;
-import br.gov.caixa.loterias.apostas.view.holder.ApostaCarrinhoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaCarrinhoListener;
-import br.gov.caixa.loterias.apostas.view.listener.BolaoCarrinhoListener;
+import br.gov.caixa.loterias.apostas.view.listener.ComboCarrinhoListener;
 
 public class CarrinhoApostasListViewComboAdapter extends RecyclerView.Adapter<ApostaCarrinhoComboHolder> {
 	private Context context;
@@ -61,7 +59,7 @@ public class CarrinhoApostasListViewComboAdapter extends RecyclerView.Adapter<Ap
 	public ApostaCarrinhoComboHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view;
 		view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view_combos, parent, false);
-		return new ApostaCarrinhoComboHolder(view, parentActivity, onApostaCarrinhoListener(), onBolaoCarrinhoListener());
+		return new ApostaCarrinhoComboHolder(view, parentActivity, onApostaCarrinhoListener(), onComboCarrinhoListener());
 	}
 
 	@Override
@@ -71,18 +69,14 @@ public class CarrinhoApostasListViewComboAdapter extends RecyclerView.Adapter<Ap
 		holder.bind(comboAposta, position);
 	}
 
-	private BolaoCarrinhoListener onBolaoCarrinhoListener() {
-		return aposta -> detalheCotaBolao(aposta);
+	private ComboCarrinhoListener onComboCarrinhoListener() {
+		return comboAposta -> detalheComboAposta(comboAposta);
 	}
 
-	private void detalheCotaBolao(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+	private void detalheComboAposta(ComboApostaDTO comboAposta) {
 		Bundle bundle = new Bundle();
-		bundle.putString(DetalhesBolaoActivity.ARG_CODIGO_BOLAO, aposta.getReservaCotaBolao().getCodigoBolaoReserva());
-		bundle.putString(DetalhesBolaoActivity.ARG_MODALIDADE, new Gson().toJson(aposta.getModalidade()));
-		bundle.putString(DetalhesBolaoActivity.ARG_MODO_VISUALIZACAO, new Gson().toJson(ModoVisualizacaoBolaoEnum.LEITURA));
-		bundle.putString(DetalhesBolaoActivity.ARG_NUMERO_COTA, aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" +
-				aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
-		Intent intent = IntentUtil.getIntentOrigemDestino(parentActivity, DetalhesBolaoActivity.class, bundle);
+		bundle.putString(DetalhesComboActivity.ARG_COMBO_APOSTA_DTO, new Gson().toJson(comboAposta));
+		Intent intent = IntentUtil.getIntentOrigemDestino(parentActivity, DetalhesComboActivity.class, bundle);
 		parentActivity.startActivity(intent);
 	}
 
