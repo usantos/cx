@@ -410,6 +410,18 @@ public class CarrinhoActivity extends AppCompatActivity {
         } catch (Exception e){}
     }
 
+    public void deletaCombo(int position, ComboApostaDTO comboApostaDTO) {
+        synchronized (rvListaCombos) {
+            listCombos.remove(position);
+            rvListaCombos.getAdapter().notifyItemRemoved(position);
+            setValorTotalCarrinho();
+            configuraBotoesSuperiores();
+        }
+        if (listCombos.size() == 0) {
+            desabilitaCombos();
+        }
+    }
+
     public void deletaAposta(int position, IdentificaoDeUmaApostaDas8Modalidades aposta, boolean isBolao) {
         if (isBolao) {
             synchronized (rvListaBoloes) {
@@ -670,6 +682,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         if (listBoloes != null && listBoloes.size() == 0) {
             if (temBolaoCarrinho()) {
                 listBoloes.addAll(carrinho.getBoloes());
+                vLoading.setVisibility(View.GONE);
             }
         }
     }
@@ -677,6 +690,7 @@ public class CarrinhoActivity extends AppCompatActivity {
         if (listCombos != null && listCombos.size() == 0) {
             if (temCombosCarrinho()) {
                 listCombos.addAll(carrinho.getCombos());
+                vLoading.setVisibility(View.GONE);
             }
         }
     }
