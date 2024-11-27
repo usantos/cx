@@ -472,7 +472,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:orientation="vertical"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_numeros_quero">
@@ -483,6 +483,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"/>
+                <Button
+                    android:id="@+id/btn_excluir_num_quero"
+                    android:layout_width="127dp"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Excluir Números"
+                    android:layout_gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                    android:background="@drawable/btn_round_outlined"
+                    android:textColor="@color/azulFiltro"
+                    android:textSize="14sp"
+                    android:textFontWeight="600"
+                    android:fontFamily="@font/caixa_std_regular" />
 
             </LinearLayout>
 
@@ -530,7 +543,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:orientation="vertical"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_numeros_nao_quero">
@@ -541,6 +554,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"/>
+                <Button
+                    android:id="@+id/btn_excluir_num_nao_quero"
+                    android:layout_width="127dp"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Excluir Números"
+                    android:layout_gravity="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                    android:background="@drawable/btn_round_outlined"
+                    android:textColor="@color/azulFiltro"
+                    android:textSize="14sp"
+                    android:textFontWeight="600"
+                    android:fontFamily="@font/caixa_std_regular" />
 
             </LinearLayout>
 
