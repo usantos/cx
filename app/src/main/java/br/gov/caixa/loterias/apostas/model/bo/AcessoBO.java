@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.biometric.BiometricManager;
 
@@ -52,16 +53,22 @@ public class AcessoBO extends BaseBO {
 
                 AuthorizationRequest.Builder builder = getAuthorizationRequestBuilder(activity, authorizationServiceConfiguration);
 
-                AuthorizationRequest authorizationRequest = builder.build();
-                Intent intent = new Intent(activity, TokenActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                AuthorizationService service = new AuthorizationService(activity);
+                if (service.getBrowserDescriptor() != null) {
+                    AuthorizationRequest authorizationRequest = builder.build();
+                    Intent intent = new Intent(activity, TokenActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                PendingIntent pendingIntent = getPendingIntent(intent);
+                    PendingIntent pendingIntent = getPendingIntent(intent);
 
-                authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
-                authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
+                    authorizationService = AuthorizationServiceFactory.getAuthorizationService(activity);
+                    authorizationService.performAuthorizationRequest(authorizationRequest, pendingIntent);
+                } else {
+                    Log.d("ERRO_SSO", "Sem navegador compativel");
+                }
+
             } catch (ActivityNotFoundException e){
-
+                Log.d("ERRO_SSO", e.getLocalizedMessage());
             }
 
         }
