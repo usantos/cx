@@ -504,33 +504,12 @@ public class PrincipalActivity extends AppCompatActivity
 
         for (ParametroSimulacao parametro : modalidadesParaListar) {
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
-
-                //--APENAS PARA TESTE ***APAGAR*** ESSE IF ELSE
-                if (parametro.getParametroJogo().getConcurso().getModalidade().equals(ModalidadeEnum.LOTOGOL)) {
-                    parametro.getParametroJogo().getConcurso().setModalidade(ModalidadeEnum.INSTANTANEA);
-                    parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().setValor(1502);
-                    parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().setDescricao("Instantânea");
-                    parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().setDescricaoEspecial("");
-                    parametro.getParametroJogo().getConcurso().setTipoConcurso(TipoConcursoEnum.NORMAL);
-                    parametro.getParametroJogo().getConcurso().setValorApostaMinima(BigDecimal.ZERO);
-                    parametro.getParametroJogo().setSituacaoConcursoCanal(SituacaoConcursoCanalEnum.ABERTO);
-                    String descricao = getDescricaoModalidade(parametro);
-                    listaModalidades.add(new Modalidade(descricao, parametro.getParametroJogo().getConcurso().getValorApostaMinima(),
-                            getResources().getString(R.string.string_vazia),
-                            getResources().getString(R.string.string_vazia),
-                            parametro.getParametroJogo().getConcurso().getModalidade(),
-                            parametro.getParametroJogo().getConcurso(), false, null));
-
-                } else {
-
-                    String descricao = getDescricaoModalidade(parametro);
-                    listaModalidades.add(new Modalidade(descricao, parametro.getParametroJogo().getConcurso().getValorApostaMinima(),
-                            getResources().getString(R.string.string_vazia),
-                            getResources().getString(R.string.string_vazia),
-                            parametro.getParametroJogo().getConcurso().getModalidade(),
-                            parametro.getParametroJogo().getConcurso(), false, null));
-
-                }
+                String descricao = getDescricaoModalidade(parametro);
+                listaModalidades.add(new Modalidade(descricao, parametro.getParametroJogo().getConcurso().getValorApostaMinima(),
+                        getResources().getString(R.string.string_vazia),
+                        getResources().getString(R.string.string_vazia),
+                        parametro.getParametroJogo().getConcurso().getModalidade(),
+                        parametro.getParametroJogo().getConcurso(), false, null));
             }
         }
 
