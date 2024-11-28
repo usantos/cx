@@ -250,6 +250,7 @@
     <color name="verdeazul_inativo">#DDF1EE</color>
     <color name="cinza_desativado">#8FB5BC</color>
     <color name="cinza_desativado_mkp">#E5E5E5</color>
+    <color name="azul_combo">#007BBC</color>
 
 
 </resources>
