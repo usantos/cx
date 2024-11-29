@@ -1405,5 +1405,7 @@
     <string name="mensagem_pop_up_aguardando_confirmacao_pix_pergunta">Pagamento ainda não identificado.\nCaso tenha realizado o pagamento, aguarde enquanto realizamos o processamento.\nPagamentos identificados fora do tempo limite para efetivação de apostas serão estornados.\nAcompanhe o processamento do seu pedido na opção "Minhas Compras".\n\nVocê deseja aguardar a confirmação de pagamento?</string>
     <string name="conheca_mais_milionaria">Conheça o novo jogo +milionária. \nVamos explicar como funciona \n nessa nova modalidade.</string>
     <string name="chegou_a_milionaria">Chegou a +milionária</string>
+    <string name="interrogacoes">\???</string>
+    <string name="apostas_inclu_das_no_combo">Apostas incluídas no combo</string>
 
 </resources>
