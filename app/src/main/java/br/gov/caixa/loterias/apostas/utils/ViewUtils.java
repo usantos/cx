@@ -813,6 +813,10 @@ public class ViewUtils {
         return numConc;
     }
 
+    public static Integer getConcursoAtualPorApostaBolao(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : 0;
+    }
+
     public static List<ParametroSimulacao> getListaParametroSimulacao(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum) {
         ArrayList<ParametroSimulacao> parametos = new ArrayList<>();
         if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
