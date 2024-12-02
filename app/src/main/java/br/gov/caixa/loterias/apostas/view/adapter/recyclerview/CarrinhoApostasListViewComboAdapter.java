@@ -29,7 +29,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.DetalhesComboActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaCarrinhoComboHolder;
-import br.gov.caixa.loterias.apostas.view.listener.ApostaCarrinhoListener;
+import br.gov.caixa.loterias.apostas.view.listener.ApostaComboCarrinhoListener;
 import br.gov.caixa.loterias.apostas.view.listener.ComboCarrinhoListener;
 
 public class CarrinhoApostasListViewComboAdapter extends RecyclerView.Adapter<ApostaCarrinhoComboHolder> {
@@ -59,7 +59,7 @@ public class CarrinhoApostasListViewComboAdapter extends RecyclerView.Adapter<Ap
 	public ApostaCarrinhoComboHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view;
 		view = LayoutInflater.from(context).inflate(R.layout.row_apostas_list_view_combos, parent, false);
-		return new ApostaCarrinhoComboHolder(view, parentActivity, onApostaCarrinhoListener(), onComboCarrinhoListener());
+		return new ApostaCarrinhoComboHolder(view, parentActivity, onApostaComboCarrinhoListener(), onComboCarrinhoListener());
 	}
 
 	@Override
@@ -80,69 +80,49 @@ public class CarrinhoApostasListViewComboAdapter extends RecyclerView.Adapter<Ap
 		parentActivity.startActivity(intent);
 	}
 
-	private ApostaCarrinhoListener onApostaCarrinhoListener() {
-		return aposta -> deletarAposta(aposta);
+	private ApostaComboCarrinhoListener onApostaComboCarrinhoListener() {
+		return comboAposta -> deletarComboAposta(comboAposta);
 	}
 
-	private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
-
+	private void deletarComboAposta(final ComboApostaDTO comboApostaDTO) {
 		ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), (dialogInterface, i) -> {
-			int positionAposta = getPositionAposta(aposta);
-			if(positionAposta >= 0) {
+			int positionCombo = getPositionCombo(comboApostaDTO);
+			if(positionCombo >= 0) {
 				AlertDialogUtils.show(parentActivity);
-				//???model.deletaApostaCarrinho(aposta, onDeletaApostaCarrinho(aposta, positionAposta, isBolao));
+				model.deletaComboCarrinho(comboApostaDTO, onDeletaComboCarrinho(comboApostaDTO, positionCombo));
 			}
 		});
 	}
 
-	private OnSilceListener<CarrinhoDTO> onDeletaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades aposta, int positionAposta, boolean isBolao) {
+	private OnSilceListener<CarrinhoDTO> onDeletaComboCarrinho(ComboApostaDTO comboApostaDTO, int positionCombo) {
 		return new OnSilceListener<CarrinhoDTO>() {
 			@Override
 			public void success(CarrinhoDTO payload) {
 				parentActivity.setCarrinho(payload);
-				deletarApostaBaseLocal(aposta, Boolean.FALSE);
-				parentActivity.deletaAposta(positionAposta, aposta, isBolao);
-				deletaCarrinhoFavorito();
+				//deletarApostaBaseLocal(aposta, Boolean.FALSE);
+				parentActivity.deletaCombo(positionCombo, comboApostaDTO);
+				//deletaCarrinhoFavorito();
 			}
 
 			@Override
 			public void error(VolleyError error) {
 				AlertDialogUtils.dismiss();
-				deletarApostaBaseLocal(aposta, Boolean.TRUE);
-				parentActivity.deletaAposta(positionAposta, aposta, isBolao);
+				//deletarApostaBaseLocal(aposta, Boolean.TRUE);
+				parentActivity.deletaCombo(positionCombo, comboApostaDTO);
 			}
 		};
 	}
 
-	private int getPositionAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+	private int getPositionCombo(ComboApostaDTO aposta) {
 		int position = -1;
-		for (int i = 0; i <= comboApostas.size() - 1; i++){
+		for (int i = 0; i <= comboApostas.size() - 1; i++) {
 			if (LoginSP.isLoginRealizado()) {
 				if (comboApostas.get(i).getId() == aposta.getId()) {
 					position = i;
 					break;
 				}
-			}else {
-//				if (comboApostas.get(i).getIdDB() == aposta.getIdDB()){
-//					position = i;
-//					break;
-//				}
 			}
 		}
 		return position;
-	}
-
-	public void deletaCarrinhoFavorito() {
-		if(this.comboApostas.size() == 0){
-			CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(context);
-			crud.deletaTodos();
-		}
-	}
-
-	private void deletarApostaBaseLocal(IdentificaoDeUmaApostaDas8Modalidades aposta, boolean local) {
-		model.deletarApostaLocal(aposta);
-		if (local) {
-			parentActivity.lerCarrinhoLocal();
-		}
 	}
 }

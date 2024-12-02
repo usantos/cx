@@ -15,7 +15,7 @@
         android:paddingLeft="18dp"
         android:textSize="14.2sp"
         tools:text="Fezinha do Mes"
-        android:textColor="@color/bolao_azul_subtitulo"
+        android:textColor="@color/black"
         android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -24,10 +24,10 @@
         android:id="@+id/imageViewDetalheCombos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
         android:background="@drawable/ic_trevo_carrinho_bolao"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/valorAposta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
     />
 
     <TextView
@@ -39,7 +39,7 @@
         android:text="@string/r_0_00"
         android:textAlignment="textEnd"
         android:textSize="14.2sp"
-        android:textColor="@color/bolao_azul_subtitulo"
+        android:textColor="@color/black"
         android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/excluirApostaCarrinho"
@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="-10dp"
         android:text="apostas"
-        android:textColor="@color/bolao_azul_subtitulo"
+        android:textColor="@color/black"
         android:textSize="12sp"
         android:visibility="visible"
         android:fontFamily="@font/caixa_std_regular"

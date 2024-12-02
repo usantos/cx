@@ -77,8 +77,7 @@ public class ComboApostaDTO implements Serializable {
     }
     ComboApostaDTO comboApostaDTO = (ComboApostaDTO) o;
     return Objects.equals(this.id, comboApostaDTO.id) &&
-        Objects.equals(this.tipoCombo, comboApostaDTO.tipoCombo) &&
-        Objects.equals(this.apostas, comboApostaDTO.apostas);
+        Objects.equals(this.tipoCombo, comboApostaDTO.tipoCombo);
   }
 
   @Override

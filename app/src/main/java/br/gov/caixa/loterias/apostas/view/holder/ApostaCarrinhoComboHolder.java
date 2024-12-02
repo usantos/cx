@@ -13,7 +13,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.listener.ApostaCarrinhoListener;
+import br.gov.caixa.loterias.apostas.view.listener.ApostaComboCarrinhoListener;
 import br.gov.caixa.loterias.apostas.view.listener.ComboCarrinhoListener;
 
 public class ApostaCarrinhoComboHolder extends LoteriasHolder<ComboApostaDTO> {
@@ -24,11 +24,11 @@ public class ApostaCarrinhoComboHolder extends LoteriasHolder<ComboApostaDTO> {
 
 	private Context context;
 	private AppCompatActivity activity;
-	private ApostaCarrinhoListener listener;
+	private ApostaComboCarrinhoListener listener;
 	private ComboCarrinhoListener listenerCombo;
 
 
-	public ApostaCarrinhoComboHolder(View view, AppCompatActivity activity, ApostaCarrinhoListener listener, ComboCarrinhoListener listenerCombo) {
+	public ApostaCarrinhoComboHolder(View view, AppCompatActivity activity, ApostaComboCarrinhoListener listener, ComboCarrinhoListener listenerCombo) {
 		super(view);
 
 		this.context = view.getContext();
@@ -60,11 +60,10 @@ public class ApostaCarrinhoComboHolder extends LoteriasHolder<ComboApostaDTO> {
 				this.tvQtdApostasCombo.setText(comboAposta.getApostas().size() + " apostas");
 		}
 
-		//this.itemView.findViewById(R.id.excluirApostaCarrinho)
-		//		.setOnClickListener(view -> listener.onDeletaAposta(aposta));
+		this.itemView.findViewById(R.id.excluirApostaCarrinho)
+				.setOnClickListener(view -> listener.onDeletaComboAposta(comboAposta));
 
 		this.imageDetalheCombos.setOnClickListener(view -> listenerCombo.onComboClick(comboAposta));
-
 	}
 
 }
