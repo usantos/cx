@@ -658,19 +658,19 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         switch (tipoJogo) {
             case MEGA_SENA:
-                configuraTipoApostaTela(getResources().getString(R.string.unterline_mega_sena_underline), R.color.megasenaclaro, R.color.megasenaescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_mega_virada_underline) : getResources().getString(R.string.unterline_mega_sena_underline), R.color.megasenaclaro, R.color.megasenaescuro, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case QUINA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_quina_underline), R.color.quinaclaro, R.color.quinaescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_quina_sao_joao_underline) : getResources().getString(R.string.underline_quina_underline), R.color.quinaclaro, R.color.quinaescuro, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOFACIL:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacilclaro, R.color.lotofacilescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_lotofacil_independencia_underline) : getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacilclaro, R.color.lotofacilescuro, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case DUPLA_SENA:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_dupla_sena_underline), R.color.duplasenaclaro, R.color.duplasenaescuro, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_dupla_pascoa_underline) : getResources().getString(R.string.underline_dupla_sena_underline), R.color.duplasenaclaro, R.color.duplasenaescuro, View.VISIBLE, View.GONE);
                 this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case TIMEMANIA:

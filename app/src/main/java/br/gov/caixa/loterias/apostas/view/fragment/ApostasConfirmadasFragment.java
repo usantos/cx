@@ -186,7 +186,18 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private int getPageSize(){
-        return PAGE_SIZE;
+        if (isFiltro45Dias())
+            return 32;
+        else
+            return PAGE_SIZE;
+    }
+
+    private boolean isFiltro45Dias() {
+        return mesesAnosDisponiveis != null && !mesesAnosDisponiveis.isEmpty() &&
+                mesesAnosDisponiveis.get(numeroDataSelecionada) != null &&
+                mesesAnosDisponiveis.get(numeroDataSelecionada).getMes() != null &&
+                (mesesAnosDisponiveis.get(numeroDataSelecionada).getMes().getValor() == 45 ||
+                        mesesAnosDisponiveis.get(numeroDataSelecionada).getMes().getValor().equals(45l));
     }
 
     private void dateSelectorBtn() {
@@ -224,6 +235,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         MesAnoDTO mesAnoSelecionado =  mesesAnosDisponiveis.get(numeroDataSelecionada);
         if(page == null){
             page = new ApostaPageRequest(getPageSize());
+        } else {
+            page.setSize(getPageSize());
         }
         page.setAno(mesAnoSelecionado.getAno().intValue());
         page.setMes(mesAnoSelecionado.getMes().getValor().intValue());
@@ -607,6 +620,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             int ano = mesAno.getAno().intValue();
             if(page == null){
                 page = new ApostaPageRequest(getPageSize());
+            } else {
+                page.setSize(getPageSize());
             }
             page.setAno(ano);
             page.setMes(mes);

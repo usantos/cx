@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -197,9 +198,14 @@ public class AdicionarApostaCarrinhoHelper {
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse result) {
-                AlertDialogUtils.dismiss();
-                AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
-                CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
+                try {
+                    AlertDialogUtils.dismiss();
+                    AppCenterManager.registraEvento("ENTROU_ADICAO_APOSTA_CARRINHO_ONLINE");
+                    CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
+                } catch (Exception e){
+                    Log.d("", e.getLocalizedMessage());
+                }
+
                 activity.startActivity(new Intent(activity, CarrinhoActivity.class));
             }
 
@@ -315,9 +321,14 @@ public class AdicionarApostaCarrinhoHelper {
                 if (apostaDas8Modalidades.getDataSorteio() != null && apostaDas8Modalidades.getDataSorteio().length() >= 5) {
                     telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_sorteio_atual), apostaDas8Modalidades.getDataSorteio().substring(0, 5));
                 }
-                telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_hora_expiracao_reserva),
-                        buscaBolaoCarrinho(((IdentificaoDeUmBolao) aposta).getIdBolao(), carrinhoDtoResponse));
-                telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_especial_reserva), ((IdentificaoDeUmBolao) aposta).getTipoConcurso().getValor().equals("2"));
+                String expiracaoReserva = buscaBolaoCarrinho(((IdentificaoDeUmBolao) aposta).getIdBolao(), carrinhoDtoResponse);
+                if (expiracaoReserva != null){
+                    telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_data_hora_expiracao_reserva), expiracaoReserva);
+                    telaConfirmacao.putExtra(activity.getResources().getString(R.string.extra_especial_reserva), ((IdentificaoDeUmBolao) aposta).getTipoConcurso().getValor().equals("2"));
+                } else {
+                    telaConfirmacao = null;
+                }
+
             } else {
                 //telaConfirmacao.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades).getParametroJogo()));
                 ParametroSimulacao parametroSimulacao =  ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, apostaDas8Modalidades);
@@ -338,7 +349,9 @@ public class AdicionarApostaCarrinhoHelper {
             ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).zerarApostas();
         } else {
             if(AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
-                ((OnCompraBolaoListener) AdicionarApostaCarrinhoHelper.activity).compraSucesso(telaConfirmacao);
+                if (telaConfirmacao != null){
+                    ((OnCompraBolaoListener) AdicionarApostaCarrinhoHelper.activity).compraSucesso(telaConfirmacao);
+                }
             } else {
                 AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
             }
