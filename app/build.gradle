@@ -48,7 +48,7 @@ android {
         applicationId "br.gov.caixa.loterias.apostas"
         minSdkVersion 22
         targetSdkVersion 34
-
+        
         //                   22                 1.15.2 = 01 015               02
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
         versionCode 220101502
