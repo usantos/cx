@@ -916,6 +916,15 @@ public class ApostaBO extends BaseBO {
         if (filtro.getQtdMaximaCota() > 0){
             queryParams.put("qtdMaximaCota",String.valueOf(filtro.getQtdMaximaCota()));
         }
+        if(filtro.getQtdDezenas() > 0){
+            queryParams.put("qtdDezenas", String.valueOf(filtro.getQtdDezenas()));
+        }
+        if(filtro.getNumerosQuero() != null && !filtro.getNumerosQuero().isEmpty()){
+            queryParams.put("numerosEscolhidos", filtro.getNumerosQuero());
+        }
+        if(filtro.getNumerosNaoQuero() != null && !filtro.getNumerosNaoQuero().isEmpty()){
+            queryParams.put("numerosNaoEscolhidos", filtro.getNumerosNaoQuero());
+        }
         if (filtro.getNumeroLoterico() != null){
             queryParams.put("numeroLoterico",String.valueOf(filtro.getNumeroLoterico()));
         }

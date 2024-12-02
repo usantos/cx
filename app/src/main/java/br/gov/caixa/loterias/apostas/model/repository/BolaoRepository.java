@@ -32,8 +32,25 @@ public class BolaoRepository extends AppRepository {
         FiltroMarketPlace filtro = getFiltroMarketPlace(paginacao);
 
         if (filtroAplicado != null){
-            filtro.setQtdMinimaCota(filtroAplicado.getQtdMinCotas().intValue());
-            filtro.setQtdMaximaCota(filtroAplicado.getQtdMaxCotas().intValue());
+            if (filtroAplicado.getQtdMinCotas() !=null && filtroAplicado.getQtdMinCotas() > 0){
+                filtro.setQtdMinimaCota(filtroAplicado.getQtdMinCotas());
+            }
+
+            if(filtroAplicado.getQtdMaxCotas() != null && filtroAplicado.getQtdMaxCotas() > 0){
+                filtro.setQtdMaximaCota(filtroAplicado.getQtdMaxCotas());
+            }
+
+            if(filtroAplicado.getQtdDezenas() != null && filtroAplicado.getQtdDezenas() > 0){
+                filtro.setQtdDezenas(filtroAplicado.getQtdDezenas());
+            }
+
+            if(filtroAplicado.getNumerosQuero() !=null && !filtroAplicado.getNumerosQuero().isEmpty()){
+                filtro.setNumerosQuero(filtroAplicado.getNumerosQuero());
+            }
+
+            if(filtroAplicado.getNumerosNaoQuero() !=null && !filtroAplicado.getNumerosNaoQuero().isEmpty()){
+                filtro.setNumerosNaoQuero(filtroAplicado.getNumerosNaoQuero());
+            }
 
             if (filtroAplicado.getValorMinimoAposta() != null && !filtroAplicado.getValorMinimoAposta().isEmpty()){
                 filtro.setValorMinimoCota(new BigDecimal(filtroAplicado.getValorMinimoAposta()));
