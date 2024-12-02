@@ -52,7 +52,6 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoPremiadoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
@@ -169,8 +168,8 @@ public class ViewUtils {
         return alertTitulo(context, titulo, mensagem, null);
     }
 
-    public static Dialog alertTitleButton(Context context, int title, String message, String buttonName) {
-        return alertTitleButton(context, title, message, buttonName, null);
+    public static void alertTitleButton(Context context, int title, String message, String buttonName) {
+        alertTitleButton(context, title, message, buttonName, null);
     }
 
     public static Dialog alert(Context context, String mensagem, DialogInterface.OnDismissListener listener) {
@@ -196,17 +195,20 @@ public class ViewUtils {
         return dialog;
     }
 
-    public static Dialog alertTitleButton(Context context, int title, String message, String buttonName, DialogInterface.OnDismissListener listener) {
-        Dialog dialog = ViewUtils.dialogo(context, title, message)
-                .setCancelable(false)
-                .setOnDismissListener(listener)
-                .setPositiveButton(buttonName, (dialog1, which) -> dialog1.dismiss()).show();
+    public static void alertTitleButton(Context context, int title, String message, String buttonName, DialogInterface.OnDismissListener listener) {
+        try {
+            Dialog dialog = ViewUtils.dialogo(context, title, message)
+                    .setCancelable(false)
+                    .setOnDismissListener(listener)
+                    .setPositiveButton(buttonName, (dialog1, which) -> dialog1.dismiss()).show();
 
-        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
-        TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
-        return dialog;
+            DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+            TextView textMessageView = dialog.findViewById(android.R.id.message);
+            textTitleView.setTypeface(getFontFuturaBold(context));
+            textMessageView.setTypeface(getFontFutura(context));
+        }catch (Exception e){
+            Log.d("", e.getLocalizedMessage());
+        }
     }
 
     public static Dialog alertTitleButtonPositiveListener(Context context, int title, String message, int buttonName, DialogInterface.OnClickListener listener) {
@@ -809,6 +811,10 @@ public class ViewUtils {
             }
         }
         return numConc;
+    }
+
+    public static Integer getConcursoAtualPorApostaBolao(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : 0;
     }
 
     public static List<ParametroSimulacao> getListaParametroSimulacao(SessaoUsuario sessaoUsuario, ModalidadeEnum modalidadeEnum) {

@@ -336,7 +336,7 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 						" e R$ " +
 						StringUtils.formatDouble(limiteDiario),
 				getString(R.string.ok)
-								  ).show();
+								  );
 	}
 
 	private void mostraMsgValorAjustado(){
@@ -349,7 +349,7 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 						StringUtils.formatDouble(valorSelecionadoMin)+
 						" assim tudo vai funcionar perfeitamente.",
 				getString(R.string.ok)
-								  ).show();
+								  );
 	}
 
 	private Spannable pegaMinMaxTexto(Double valMin, Double valMax){

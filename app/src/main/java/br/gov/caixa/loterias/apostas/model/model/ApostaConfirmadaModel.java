@@ -35,7 +35,7 @@ public class ApostaConfirmadaModel {
 	private void iniciaMesesPadrao() {
 		mesesPadrao = new ArrayList<>();
 		mesesPadrao.add(setMesAnoPadroes(90l));
-		//mesesPadrao.add(setMesAnoPadroes(45l));
+		mesesPadrao.add(setMesAnoPadroes(45l));
 		mesesPadrao.add(setMesAnoPadroes(30l));
 	}
 

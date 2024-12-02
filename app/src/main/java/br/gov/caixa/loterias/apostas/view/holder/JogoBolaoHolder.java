@@ -129,11 +129,11 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 			return this.trevoConfig;
 		}
 
-		ShapeConfig shapeConfig = new ShapeConfig(R.drawable.ic_item_trevo,
+		ShapeConfig shapeConfig = new ShapeConfig(R.drawable.ic_item_trevo_branco,
 				R.drawable.ic_item_trevo_selecionado,
-				R.color.milionaria_escuro_mkp, R.color.milionaria_escuro_mkp);
+				R.color.branco, R.color.milionaria_escuro_mkp);
 
-		return new DezenaConfig(false, R.color.milionaria_escuro_mkp,
+		return new DezenaConfig(false, R.color.branco,
 				R.layout.item_dezena_detalhe,
 				shapeConfig, false);
 	}

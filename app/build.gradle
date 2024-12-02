@@ -49,10 +49,10 @@ android {
         minSdkVersion 22
         targetSdkVersion 34
 
-        //                   22                 1.15.0 = 01 015               00
+        //                   22                 1.15.2 = 01 015               02
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220101501
-        versionName "1.15.1"
+        versionCode 220101502
+        versionName "1.15.2"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -284,7 +284,7 @@ repositories {
         implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
 
         //AppAuth
-        implementation 'net.openid:appauth:0.7.1'
+        implementation 'net.openid:appauth:0.11.1'
 
         //DiscreteScrollView - RecyclerView com animação
         //implementation 'com.yarolegovich:discrete-scrollview:1.3.1'

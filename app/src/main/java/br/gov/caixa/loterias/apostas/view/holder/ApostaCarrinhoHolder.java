@@ -116,7 +116,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
 		this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 		this.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorApostaDuasLinas(aposta).toLowerCase());
-		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+		preencheNumeroConcurso(aposta, textViewNumeroConcurso);
 		this.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
 
 		if (isBolao) {
@@ -251,7 +251,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 						}
 
 						this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-						this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+						preencheNumeroConcurso(aposta, this.tvNumeroConcursoNovo);
 						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 						this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 					} else {
@@ -285,7 +285,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 					break;
 				case IndicadorSurpresinha.SURPRESINHA:
 				case IndicadorSurpresinha.SURPRESINHA_NUMERICA:
-					this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+					preencheNumeroConcurso(aposta, this.tvNumeroConcursoNovo);
 					this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 					this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
 					this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
@@ -334,6 +334,15 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		if (animacao) {
 			AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
+		}
+	}
+
+	private void preencheNumeroConcurso(IdentificaoDeUmaApostaDas8Modalidades aposta, TextView textView) {
+		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+		if (aposta.getIndicadorCotaBolao() != null && aposta.getIndicadorCotaBolao()){
+			textView.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorApostaBolao(aposta)));
+		} else {
+			textView.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 		}
 	}
 
