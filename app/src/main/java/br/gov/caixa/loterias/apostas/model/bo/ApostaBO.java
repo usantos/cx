@@ -616,6 +616,18 @@ public class ApostaBO extends BaseBO {
         }
     }
 
+    public void deleteComboCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
+        if (verificaAcessToken(listener)) {
+            final GsonRequest request = getSilceConnection().buildDeleteRequest(ServerMethods.DELETE_APOSTA_COMBO_CARRINHO_PATH + id,
+                    new LinkedHashMap<>(),
+                    CarrinhoDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeader());
+            request.setErrorListener(interceptError(request, getHeader(), listener));
+            getSilceConnection().request(request, listener);
+        }
+    }
     public void  deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = getSilceConnection().buildDeleteRequest(ServerMethods.DELETE_APOSTA_CARRINHO_PATH + id,

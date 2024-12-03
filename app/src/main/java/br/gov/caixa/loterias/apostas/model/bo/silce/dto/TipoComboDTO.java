@@ -15,14 +15,17 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Objects;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * TipoComboDTO
  */
-public class TipoComboDTO {
+@ApiModel(description = "")
+public class TipoComboDTO implements Serializable {
   @SerializedName("codigo")
   private Integer codigo = null;
 

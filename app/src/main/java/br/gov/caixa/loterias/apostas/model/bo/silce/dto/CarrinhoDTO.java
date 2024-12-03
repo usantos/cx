@@ -33,6 +33,8 @@ public class CarrinhoDTO implements Serializable {
     protected List<IdentificaoDeUmaApostaDas8Modalidades> apostasIndividuais = null;
     @SerializedName("cotas")
     protected List<IdentificaoDeUmaApostaDas8Modalidades> boloes = null;
+    @SerializedName("combos")
+    protected List<ComboApostaDTO> combos = null;
     @SerializedName("id")
     protected Long id = null;
     @SerializedName("msgCotaExcluida")
@@ -112,6 +114,14 @@ public class CarrinhoDTO implements Serializable {
 
     public void setMsgCotaExcluida(Boolean msgCotaExcluida) {
         this.msgCotaExcluida = msgCotaExcluida;
+    }
+
+    public List<ComboApostaDTO> getCombos() {
+        return combos;
+    }
+
+    public void setCombos(List<ComboApostaDTO> combos) {
+        this.combos = combos;
     }
 
     @Override
