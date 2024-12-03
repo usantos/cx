@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         tools:text="lotofacil"
         android:layout_marginStart="16dp"
-        android:fontFamily="@font/caixa_std_regular"
+        android:fontFamily="@font/futura_std_bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
