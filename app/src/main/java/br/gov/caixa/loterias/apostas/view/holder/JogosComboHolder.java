@@ -41,8 +41,12 @@ public class JogosComboHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8M
 		modalidade.setText(ViewUtils.getNomeModalidadePorApostaDuasLinas(aposta).toLowerCase());
 		if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
 			modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.timemania_letra_mkp));
+			concurso.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.timemania_letra_mkp));
+			valor.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.timemania_letra_mkp));
 		} else {
 			modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorClara()));
+			concurso.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorClara()));
+			valor.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorClara()));
 		}
 		concurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 		ViewUtils.setMoedaFormatHtml(aposta.getValor(), this.valor);
