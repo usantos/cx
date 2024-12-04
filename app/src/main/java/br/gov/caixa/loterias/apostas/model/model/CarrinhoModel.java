@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
@@ -171,6 +172,27 @@ public class CarrinhoModel {
 		});
 	}
 
+	public void deletaComboCarrinho(ComboApostaDTO comboApostaDTO, OnSilceListener listener) {
+		apostaBO.deleteComboCarrinho(comboApostaDTO.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
+			@Override
+			public void onResponse(CarrinhoDTOResponse response) {
+				AlertDialogUtils.dismiss();
+				if (response.getRedirect() != null) {
+					RedirectNetwork.checkRedirectSucesso(response.getRedirect(), activity);
+				}
+				listener.success(response.getPayload());
+			}
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				if (MensagensNetwork.isUnauthorizedError(error)) {
+					listener.error(error);
+				}else {
+					RedirectNetwork.checkRedirect(error, activity);
+				}
+			}
+		});
+	}
 	public void deletaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades aposta, OnSilceListener listener) {
 		apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
 			@Override

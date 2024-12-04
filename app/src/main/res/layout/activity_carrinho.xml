@@ -122,12 +122,46 @@
                 app:layout_constraintTop_toBottomOf="@id/v_div_bottom"
                 tools:layout_editor_absoluteX="0dp" />
 
+            <TextView
+                android:id="@+id/tv_combo_apostas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="start"
+                android:paddingLeft="20dp"
+                android:text="@string/combo_apostas"
+                android:textColor="@color/bolao_azul_subtitulo"
+                android:textAlignment="textStart"
+                android:textSize="14.2sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/erv_apostas_listas" />
+
+            <View
+                android:id="@+id/v_div_bottom_combos"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="1dp"
+                android:background="@color/cinzaclaro"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/tv_combo_apostas" />
+
+            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
+                android:id="@+id/erv_combos_listas"
+                style="@style/editTextCaixaRegularTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:nestedScrollingEnabled="false"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/v_div_bottom_combos" />
+
             <ProgressBar
                 android:id="@+id/pb_loading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@id/erv_apostas_listas"/>
+                app:layout_constraintTop_toBottomOf="@id/erv_combos_listas"/>
 
             <View
                 android:layout_width="match_parent"
