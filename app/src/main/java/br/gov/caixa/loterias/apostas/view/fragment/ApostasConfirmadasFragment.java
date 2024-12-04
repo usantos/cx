@@ -492,7 +492,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 NovaAPIBO.getInstance().getRecuperarAposta(apostasList.get(position).getId(), new RequestListener<ApostaDTOResponse>() {
                     @Override
                     public void onResponse(ApostaDTOResponse response) {
-                        Toast.makeText(view.getContext(), "OK-Clicou No Reload Item "+position, Toast.LENGTH_LONG).show();
                         //"id": 2154911539,
                         //Combo
                         //"especialInclusoTeimosinha": false,
@@ -512,7 +511,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         apostasList.get(position).setTipoConcurso(response.getPayload().getApostaDTO().getTipoConcurso());
                         apostasList.get(position).setTroca(response.getPayload().getApostaDTO().getTroca());
 
-                        holder.showReloadImg(false);
+                        holder.bind(apostasList.get(position), position);
+                        //holder.showReloadImg(false);
                     }
 
                     @Override
