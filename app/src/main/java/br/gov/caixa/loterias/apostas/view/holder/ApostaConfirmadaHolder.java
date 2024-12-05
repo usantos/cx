@@ -1,14 +1,11 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.app.Activity;
-import android.graphics.Typeface;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
@@ -18,7 +15,6 @@ import com.android.volley.VolleyError;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
@@ -34,6 +30,7 @@ import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
+import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
@@ -110,7 +107,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		trataStyleSituacao(aposta);
 		preencheTeimosinha(aposta);
 
-		if (precisaConferirSituacaoAutomaticamente(descricaoStatus)){
+		if (!ConfiguracaoAppSingleton.getInstance().isMicroServico() && !NovaApiUtils.isPossoBuscarNovaAPI() && ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial())){
 			fragment.conferirResultado(position, aposta, this);
 		}
 	}
@@ -152,9 +149,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 
 		if(parametroJogo != null && !ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial())){
-			if (ConfiguracaoAppSingleton.getInstance().isNovaApi()){
-				descricaoStatus = aposta.getSituacao().getDescricao();
-			} else if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
+			if (ConfiguracaoAppSingleton.getInstance().isNovaApi() || ConfiguracaoAppSingleton.getInstance().isMicroServico()){
 				descricaoStatus = aposta.getSituacao().getDescricao();
 			}else {
 				descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado).toLowerCase();
@@ -170,31 +165,15 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			if (parametroJogo != null){
 				// 4 = aposta efetivada
 				if (aposta.getSituacao().getValor() == 4) {
-					//this.situacaoTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.azulescuroapostafavorita));
 					descricaoStatus = itemView.getContext().getResources().getString(R.string.a_conferir);
-
-					conferirResultado(position, aposta);
-					if (parametroJogo != null) {
-						String msgLog = "Chama: true" + " = MP: " + parametroJogo.getParametroJogo().getConcurso().getModalidade() + "-" + parametroJogo.getParametroJogo().getConcurso().getNumero() + " = " + aposta.getModalidade() + "-" + aposta.getConcursoInicial() + " = diff: " + (parametroJogo.getParametroJogo().getConcurso().getNumero() - aposta.getConcursoInicial());
-						Log.d("RESULTADO-APOSTA", msgLog);
-					} else {
-						Log.d("RESULTADO-APOSTA", "Chama: true");
-					}
 				} else {
 					descricaoStatus = aposta.getSituacao().getDescricao();
-					String msgLog = "Chama: false" + " - JÁ TEMOS O RESULTADO";
-					Log.d("RESULTADO-APOSTA", msgLog);
 				}
 			} else {
 				descricaoStatus = "";
 			}
 		}
 		return descricaoStatus;
-	}
-
-	private void conferirResultado(int position, ApostaDTO aposta) {
-		this.showProgressBarSituacao(true);
-		fragment.conferirResultado(position, aposta, this);
 	}
 
 	private ParametroSimulacao getParametroPorJogo(ApostaDTO aposta, TipoConcursoEnum tipoConcurso) {
@@ -266,18 +245,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		return false;
 	}
 
-	public boolean precisaConferirSituacaoAutomaticamente(String descricaoStatus){
-		if (ConfiguracaoAppSingleton.getInstance().isMicroServico() && descricaoStatus != null
-				&& descricaoStatus.equalsIgnoreCase(parentActivity.getResources().getString(R.string.label_efetivada))){
-			return true;
-		}
-		return false;
-	}
-
 	public void handle(int position, ApostaConfirmadaHolder holder, DTOEnumLong situacao) {
-
 		if (situacao.getDescricao().equalsIgnoreCase(itemView.getContext().getResources().getString(R.string.premiada_maiusculo))) {
-			//holder.situacaoTxt.setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
 			holder.situacaoTxt.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_underline) + situacao.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))) + itemView.getContext().getResources().getString(R.string.underline)));
 		} else {
 			holder.situacaoTxt.setText(itemView.getContext().getResources().getString(R.string.situacao_dois_pontos_espaco)
