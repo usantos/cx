@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.android.volley.NetworkResponse;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -18,11 +19,10 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnCertificadoListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSilceSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceConnection;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.SilceSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ServiceConnection;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
@@ -34,19 +34,23 @@ import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
  */
 
 public abstract class BaseBO {
-    private SilceConnection silceConnection;
+    private ServiceConnection connection;
     private Context context;
-
+    private String baseURL;
+    private Boolean isEncoding;
+    private OnCertificadoListener certificadoListener;
     private static LinkedHashMap<String, String> header;
 
-    public BaseBO(){
-        silceConnection = SilceConnection.create(SilceSingleton.getInstance().getRequestQueue(),
-                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
-        context = Aplicacao.application.getApplicationContext();
+    public BaseBO(RequestQueue requestQueue, String baseURL, Boolean isEncoding, OnCertificadoListener certificadoListener){
+        this.baseURL = baseURL;
+        this.isEncoding = isEncoding;
+        this.certificadoListener = certificadoListener;
+        this.connection = new ServiceConnection(requestQueue, baseURL, isEncoding);
+        this.context = Aplicacao.application.getApplicationContext();
     }
 
-    public SilceConnection getSilceConnection(){
-        return this.silceConnection;
+    public ServiceConnection getServiceConnection(){
+        return this.connection;
     }
 
     public Context getContext(){
@@ -57,12 +61,12 @@ public abstract class BaseBO {
         return error -> {
             if(AppUtils.isNetworkAvailable(context)){
                 registraErro(error, request);
+
                 if (MensagensNetwork.isCertificadoInvalido(error)){
-                    if (CertificadoSilceSingleton.getInstance().trocaCertificado()){
-                        SilceSingleton.getInstance().initQueue();
-                        silceConnection = SilceConnection.create(SilceSingleton.getInstance().getRequestQueue(),
-                                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"));
-                        silceConnection.request(request, listener);
+                    RequestQueue requestQueue = certificadoListener.isPrecisouTrocar();
+                    if (requestQueue != null){
+                        connection = new ServiceConnection(requestQueue, baseURL, isEncoding);
+                        connection.request(request, listener);
                         return;
                     } else {
                         listener.onErrorResponse(error);
@@ -100,7 +104,7 @@ public abstract class BaseBO {
                                         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
                                         request.setHeaders(headers);
                                         //Refaz a conexão
-                                        silceConnection.request(request, listener);
+                                        connection.request(request, listener);
                                     } else {
                                         listener.onErrorResponse(error);
                                     }
@@ -134,12 +138,17 @@ public abstract class BaseBO {
         return Bin.fromBase64(request.getUrl().replaceAll(BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"),"")).toUtf8();
     }
 
-    protected LinkedHashMap<String, String> getHeader(){
+    protected LinkedHashMap<String, String> getHeaderToken(){
         if(header == null){
             this.header = new LinkedHashMap<>();
         }
         this.header.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
+        return header;
+    }
+
+    protected LinkedHashMap<String, String> getHeader(){
+        this.header = new LinkedHashMap<>();
         return header;
     }
 

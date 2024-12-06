@@ -8,7 +8,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.dao.crud.BiometriaCRUD;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 
-public class DadosBiometriaBO extends BaseBO {
+public class DadosBiometriaBO extends SilceBO {
 
     public static void salvarBiometria(String refresh, String nome, String cpf) {
         Context context = Aplicacao.application.getApplicationContext();

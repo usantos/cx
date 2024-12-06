@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,10 +43,12 @@ import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.NovaAPIBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
@@ -292,17 +295,38 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         } else {
             if (ConfiguracaoAppSingleton.getInstance() != null
                     && ConfiguracaoAppSingleton.getInstance().isMicroServico() != null
+                    && ConfiguracaoAppSingleton.getInstance().isNovaApi()) {
+                requestApostasNovaApi();
+            } else if (ConfiguracaoAppSingleton.getInstance() != null
+                    && ConfiguracaoAppSingleton.getInstance().isMicroServico() != null
                     && ConfiguracaoAppSingleton.getInstance().isMicroServico()){
-                requestApostasMicroServico(ConfiguracaoAppSingleton.getInstance().getUrlBaseBuscaApostas());
+                requestApostasMicroServico();
             }else {
                 requesteApostasSilce();
             }
         }
     }
 
+    private void requestApostasNovaApi() {
+        NovaAPIBO.getInstance().getApostasConfirmadas(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
+                chamarApostaNovamente = false;
+                for (ApostaDTO aposta: result.getPayload().getLista()){
+                    aposta.setValor(new BigDecimal(1));
+                }
+                rowCount = result.getPayload().getRowCount();
+                onApostasConfirmadasResult(result.getPayload().getLista());
+            }
 
-    private void requestApostasMicroServico(String urlBaseBuscaApostas) {
-        ApostaMicroServicoBO.getInstance().getApostasConfirmadasMicroServico(urlBaseBuscaApostas, page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onApostasConfirmadasError500(error);
+            }
+        });
+    }
+    private void requestApostasMicroServico() {
+        ApostaMicroServicoBO.getInstance().getApostasConfirmadasMicroServico(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
                 chamarApostaNovamente = false;
@@ -474,6 +498,41 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     });
 
                 }
+            }
+
+            @Override
+            public void onItemReload(int position, ApostaConfirmadaHolder holder) {
+                NovaAPIBO.getInstance().getRecuperarAposta(apostasList.get(position).getId(), new RequestListener<ApostaDTOResponse>() {
+                    @Override
+                    public void onResponse(ApostaDTOResponse response) {
+                        //"id": 2154911539,
+                        //Combo
+                        //"especialInclusoTeimosinha": false,
+                        //"geraEspelho": false,
+                        //"horaCompra": "14:16:34",
+                        //"surpresinha": false,
+                        apostasList.get(position).setSituacao(response.getPayload().getApostaDTO().getSituacao());
+                        apostasList.get(position).setModalidade(response.getPayload().getApostaDTO().getModalidade());
+                        apostasList.get(position).setConcursoInicial(response.getPayload().getApostaDTO().getConcursoInicial());
+                        apostasList.get(position).setDataCompra(response.getPayload().getApostaDTO().getDataCompra());
+                        apostasList.get(position).setEspelho(response.getPayload().getApostaDTO().getEspelho());
+                        apostasList.get(position).setIndicadorCotaBolao(response.getPayload().getApostaDTO().getIndicadorCotaBolao());
+                        apostasList.get(position).setIndicadorSurpresinha(response.getPayload().getApostaDTO().getIndicadorSurpresinha());
+                        apostasList.get(position).setNumerosSelecionados(response.getPayload().getApostaDTO().getNumerosSelecionados());
+                        apostasList.get(position).setQuantidadeApostas(response.getPayload().getApostaDTO().getQuantidadeApostas());
+                        apostasList.get(position).setQuantidadeTeimosinhas(response.getPayload().getApostaDTO().getQuantidadeTeimosinhas());
+                        apostasList.get(position).setTipoConcurso(response.getPayload().getApostaDTO().getTipoConcurso());
+                        apostasList.get(position).setTroca(response.getPayload().getApostaDTO().getTroca());
+
+                        holder.bind(apostasList.get(position), position);
+                        //holder.showReloadImg(false);
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        RedirectNetwork.checkRedirect(error, getActivity());
+                    }
+                });
             }
 
             @Override
