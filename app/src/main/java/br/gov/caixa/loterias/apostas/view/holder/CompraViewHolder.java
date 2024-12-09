@@ -28,7 +28,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 	protected TextView itemCompraOrdemTextView;
 	protected TextView textTotal;
 	protected ImageButton ibFavoritar;
-	protected TextView processadaPor;
+	protected TextView meioDePagamento;
 	protected TextView textContadorDown;
 	protected ImageView imageViewRelogio;
 	protected Button btnMinhasCompras;
@@ -41,7 +41,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		itemCompraOrdemTextView = itemView.findViewById(R.id.situacaoCompraTextView);
 		textTotal = itemView.findViewById(R.id.txtTotal);
 		dataCompra = itemView.findViewById(R.id.dataCompraTextView);
-		processadaPor = itemView.findViewById(R.id.processadaPor);
+		meioDePagamento = itemView.findViewById(R.id.meioDePagamento);
 		textContadorDown = itemView.findViewById(R.id.contadorDown);
 		valorCompra = itemView.findViewById(R.id.valorCompra);
 		ibFavoritar = itemView.findViewById(R.id.ib_favoritar);
@@ -78,8 +78,8 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 
 		this.valorCompra.setText(ViewUtils.getMoedaFormat(item.getValorTotal()));
 
-		this.processadaPor.setText(ViewUtils.textCaixaSTDBold(context,
-				context.getString(R.string.label_compra_lista_processada_por,
+		this.meioDePagamento.setText(ViewUtils.textCaixaSTDBold(context,
+				context.getString(R.string.label_compra_lista_meio_de_pagamento,
 						MeioPagamentoUtil.getDescricao(item.getMeioPagamento()))));
 
 		//PIX

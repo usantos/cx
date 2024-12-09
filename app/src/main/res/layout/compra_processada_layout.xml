@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@string/label_compra_lista_processada_por"
+        android:text="@string/label_compra_lista_meio_de_pagamento"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintStart_toStartOf="parent"

@@ -49,6 +49,7 @@
     <string name="label_compra_lista_situacao">Situação:</string>
     <string name="label_compra_lista_situacao_descricao">Situação: _%s_</string>
     <string name="label_compra_lista_processada_por">Compra processada por: _%s_</string>
+    <string name="label_compra_lista_meio_de_pagamento">Meio de pagamento: _%s_</string>
     <string name="label_compra_lista_alterar_compra">Alterar Compra</string>
     <string name="label_compra_lista_tentar_novamente">Tentar Novamente</string>
 
@@ -680,7 +681,7 @@
     <string name="conferir_aposta">Conferir Aposta</string>
     <string name="selecione_a_aposta_realizada">Selecione a aposta realizada:</string>
     <string name="acompanhe_todas_as_compras_que_voc_j_realizou_em_nosso_aplicativo">Acompanhe todas as compras que você já realizou em nosso aplicativo.</string>
-    <string name="selecione_o_m_s">Selecione o mês</string>
+    <string name="selecione_o_m_s">Selecione o mês e ano</string>
     <string name="o_seu_pacote_de_apostas_prontas_para_serem_adquiridas_em_um_toque">O seu pacote de apostas prontas para serem adquiridas em um toque</string>
     <string name="n_meros_obrigat_rios">Números obrigatórios</string>
     <string name="selecione_os_n_meros_que_dever_o_aparecer_em_suas_apostas">Selecione os números que deverão aparecer em suas apostas.</string>

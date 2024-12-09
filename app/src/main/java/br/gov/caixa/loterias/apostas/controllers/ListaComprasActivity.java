@@ -3,18 +3,20 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -39,10 +43,15 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
@@ -58,7 +67,11 @@ public class ListaComprasActivity extends AppCompatActivity {
     private Boolean isMaisCompras = true, bloquearRequestScroll = false, mantemSurpresinhas = true;
     int offsetItem = 0, mes, ano;
     private Dialog dialogFavoritar;
-
+    private Dialog dialogFiltrar;
+    private ExpandableListView listViewFiltro;
+    private Toolbar toolbar;
+    private ImageButton btnDuvidas;
+    private ImageButton btnFiltro;
     private ListaComprasRecyclerViewAdapter listaComprasRecyclerViewAdapter;
     private OnFavoritarClickListener listenerFavoritar;
 
@@ -73,6 +86,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_compras);
         setaViews();
+        setaMetodos();
     }
 
     @Override
@@ -129,17 +143,101 @@ public class ListaComprasActivity extends AppCompatActivity {
     }
 
     private void setaViews(){
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        btnDuvidas = findViewById(R.id.ib_duvidas);
+        btnFiltro = findViewById(R.id.ib_filtrar);
+        btnFiltro.setVisibility(View.VISIBLE);
+        btnDuvidas.setVisibility(View.VISIBLE);
+
         setSupportActionBar(toolbar);
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setElevation(0);
+        }
+
         setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_lista_compras))));
+
         scrollViewContentViewCompras = findViewById(R.id.scrollViewContentViewCompras);
 
         progressLoadingMore = findViewById(R.id.compras_loading_more);
         recyclerViewCompras = findViewById(R.id.recyclerCompras);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_compras));
         setaDialogFavoritar();
+    }
+
+    private void setaMetodos(){
+        btnFiltro.setOnClickListener(view -> {
+            //dialogFiltrar.show();
+        });
+        btnDuvidas.setOnClickListener(view -> {
+            abrirTermosUso();
+        });
+    }
+
+    private void setaDialogFiltrar(List<ModalidadeDTO> modalidades) {
+        dialogFiltrar = new Dialog(this);
+        dialogFiltrar.setContentView(R.layout.dialog_filtro_compras);
+        listViewFiltro = dialogFiltrar.findViewById(R.id.elv_filtros);
+        Button      btnOk       = dialogFiltrar.findViewById(R.id.btn_ok);
+        Button      btnCancelar = dialogFiltrar.findViewById(R.id.btn_cancelar);
+        ImageButton btnLimpar   = dialogFiltrar.findViewById(R.id.ib_filtro_limpar);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialogFiltrar.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        dialogFiltrar.getWindow().setAttributes(lp);
+
+//        btnOk.setOnClickListener(v -> {
+//            if (fragmentApostas != null) {
+//                if (filtroAdapter.isAddBadge()) {
+//                    tvBadge.setVisibility(View.VISIBLE);
+//                } else {
+//                    tvBadge.setVisibility(View.GONE);
+//                }
+//                fragmentApostas.filtraDados();
+//                dialogFiltrar.dismiss();
+//            }
+//        });
+//        btnCancelar.setOnClickListener(v -> dialogFiltrar.dismiss());
+//        btnLimpar.setOnClickListener(v -> {
+//            filtroAdapter.limpaFiltros();
+//            tvBadge.setText(String.valueOf(0));
+//            tvBadge.setVisibility(View.GONE);
+//            fragmentApostas.filtraDados();
+//            dialogFiltrar.dismiss();
+//        });
+//
+//        final List<String>                  expandableListTitle;
+//        final HashMap<String, List<String>> expandableListDetail;
+//
+//        listViewFiltro.setGroupIndicator(null);
+//        expandableListDetail = ExpandableListDataFiltro.getDataSemConcurso();
+//        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+//
+//        LinkedHashMap<Integer,String> mapSituacoes;
+//        if (ConfiguracaoAppSingleton.getInstance().isMicroServico()) {
+//            mapSituacoes = SituacoesApostaFiltroEnum.getSituacoesMicroServico();
+//        } else {
+//            mapSituacoes = SituacoesApostaFiltroEnum.getSituacoes();
+//        }
+//        filtroAdapter = new FiltroApostasAdapter(this,
+//                expandableListTitle,
+//                expandableListDetail,
+//                modalidades,
+//                MinhasApostasActivity.this,
+//                true,
+//                mapSituacoes);
+//
+//        listViewFiltro.setAdapter(filtroAdapter);
+//        btnLimpar.setOnClickListener(v -> {
+//            filtroAdapter.limpaFiltros();
+//            dialogFiltrar.dismiss();
+//            tvBadge.setText(String.valueOf(0));
+//            fragmentApostas.filtraDados();
+//            tvBadge.setVisibility(View.GONE);
+//        });
     }
 
     private void setaDialogFavoritar() {
@@ -236,37 +334,37 @@ public class ListaComprasActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.settings, menu);
-
-        return true;
-    }
-
-    // Mudando o texto dos MenuItem de acordo com os dados
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            abrirTermosUso();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        super.onCreateOptionsMenu(menu);
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.settings, menu);
+//
+//        return true;
+//    }
+//
+//    // Mudando o texto dos MenuItem de acordo com os dados
+//    @Override
+//    public boolean onPrepareOptionsMenu(Menu menu) {
+//        super.onPrepareOptionsMenu(menu);
+//
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        if (id == R.id.action_settings) {
+//            abrirTermosUso();
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void abrirTermosUso(){
         Intent activity = new Intent(this, TermosUsoActivity.class);
