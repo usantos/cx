@@ -80,6 +80,7 @@ class ServerMethods {
      static final String COMPRAS_PATH = "/compras";
      static final String COMPRAS_MESES_PATH = "/compras/meses";
      static final String DETALHES_COMPRAS_PATH = "/compras/{id}/apostas";
+     static final String SITUACOES_COMPRA_PATH = "/compras/situacoes-compra";
 
      static final String DUVIDAS_SECOES_PATH = "/duvidas/secoes";
      static final String DUVIDAS_PATH = "/duvidas";

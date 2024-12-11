@@ -15,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,16 +22,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.VolleyError;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -41,17 +38,18 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeiosPagamentosResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
@@ -59,22 +57,25 @@ import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
 public class ListaComprasActivity extends AppCompatActivity {
 
     private static final int PAGE_SIZE = 10;
-
     private List<MesAnoDTO> listaMesAnoDTO;
     private List<CompraDTO> listaComprasDto;
     private List<ApostaDTO> listaAposta = new ArrayList<>();
+    private List<MeioPagamentoDTO> listaMeioPagamentoDTO = new ArrayList<>();
+    private List<SituacoesCompraDTO> listaSituacoesCompraDTO = new ArrayList<>();
     private CompraDTO compraSelecionada;
     private Boolean isMaisCompras = true, bloquearRequestScroll = false, mantemSurpresinhas = true;
     int offsetItem = 0, mes, ano;
+    long  idMeioPagamento, idSituacao;
     private Dialog dialogFavoritar;
     private Dialog dialogFiltrar;
     private ExpandableListView listViewFiltro;
     private Toolbar toolbar;
+    private FiltroComprasAdapter filtroAdapter;
     private ImageButton btnDuvidas;
     private ImageButton btnFiltro;
+    private TextView tvBadge;
     private ListaComprasRecyclerViewAdapter listaComprasRecyclerViewAdapter;
     private OnFavoritarClickListener listenerFavoritar;
-
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerViewCompras;
     private ProgressBar progressLoadingMore;
@@ -122,7 +123,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         isMaisCompras = true;
         bloquearRequestScroll = false;
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getCompras(mes, ano, offsetItem, PAGE_SIZE ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        ApostaBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -142,10 +143,49 @@ public class ListaComprasActivity extends AppCompatActivity {
         });
     }
 
+    private void callWebServiceMeioPagamento(){
+
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        DadosCorporativosBO.getInstance().buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
+            @Override
+            public void onResponse(MeiosPagamentosResponse response) {
+                loadViewProgress.dismiss();
+                listaMeioPagamentoDTO = response.getPayload();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+
+            }
+        });
+    }
+
+    private void callWebServiceSituacoesCompra(Long idMeioPagamento){
+
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
+            @Override
+            public void onResponse(SituacoesCompraResponse response) {
+                loadViewProgress.dismiss();
+                listaSituacoesCompraDTO = response.getPayload();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                loadViewProgress.dismiss();
+                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+
+            }
+        });
+    }
+
     private void setaViews(){
         toolbar = findViewById(R.id.toolbar);
         btnDuvidas = findViewById(R.id.ib_duvidas);
         btnFiltro = findViewById(R.id.ib_filtrar);
+        tvBadge = findViewById(R.id.tv_badge);
         btnFiltro.setVisibility(View.VISIBLE);
         btnDuvidas.setVisibility(View.VISIBLE);
 
@@ -169,14 +209,23 @@ public class ListaComprasActivity extends AppCompatActivity {
 
     private void setaMetodos(){
         btnFiltro.setOnClickListener(view -> {
-            //dialogFiltrar.show();
+            if(listaMeioPagamentoDTO.isEmpty())
+            {
+                callWebServiceMeioPagamento();
+            }
+            if(listaSituacoesCompraDTO.isEmpty()){
+                callWebServiceSituacoesCompra(null);//vem todas as situacoes
+            }
+            setaDialogFiltrar();
+            dialogFiltrar.show();
         });
         btnDuvidas.setOnClickListener(view -> {
             abrirTermosUso();
         });
+
     }
 
-    private void setaDialogFiltrar(List<ModalidadeDTO> modalidades) {
+    private void setaDialogFiltrar() {
         dialogFiltrar = new Dialog(this);
         dialogFiltrar.setContentView(R.layout.dialog_filtro_compras);
         listViewFiltro = dialogFiltrar.findViewById(R.id.elv_filtros);
@@ -189,55 +238,93 @@ public class ListaComprasActivity extends AppCompatActivity {
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         dialogFiltrar.getWindow().setAttributes(lp);
 
-//        btnOk.setOnClickListener(v -> {
-//            if (fragmentApostas != null) {
-//                if (filtroAdapter.isAddBadge()) {
-//                    tvBadge.setVisibility(View.VISIBLE);
-//                } else {
-//                    tvBadge.setVisibility(View.GONE);
-//                }
-//                fragmentApostas.filtraDados();
-//                dialogFiltrar.dismiss();
-//            }
-//        });
-//        btnCancelar.setOnClickListener(v -> dialogFiltrar.dismiss());
-//        btnLimpar.setOnClickListener(v -> {
-//            filtroAdapter.limpaFiltros();
-//            tvBadge.setText(String.valueOf(0));
-//            tvBadge.setVisibility(View.GONE);
-//            fragmentApostas.filtraDados();
-//            dialogFiltrar.dismiss();
-//        });
-//
-//        final List<String>                  expandableListTitle;
-//        final HashMap<String, List<String>> expandableListDetail;
-//
-//        listViewFiltro.setGroupIndicator(null);
-//        expandableListDetail = ExpandableListDataFiltro.getDataSemConcurso();
-//        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
-//
-//        LinkedHashMap<Integer,String> mapSituacoes;
+        final List<String>                  expandableListTitle;
+        final HashMap<String, List<String>> expandableListDetail;
+
+        listViewFiltro.setGroupIndicator(null);
+        expandableListDetail = ExpandableListDataFiltro.getDataFiltroCompras();
+        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+
+        LinkedHashMap<Long, String> mapSituacoesCompra = new LinkedHashMap<>(montaMapSituacoesCompra(listaSituacoesCompraDTO));
+        LinkedHashMap<Long, String> mapMeiosDePagamento = new LinkedHashMap<>(montaMapMeiosPagamento(listaMeioPagamentoDTO));
+
+//        LinkedHashMap<Integer,String> mapSituacoesCompra;
+//        LinkedHashMap<Integer,String> mapMeiosDePagamento;
+
+        //mapSituacoesCompra = SituacoesCompraEnum.getSituacoes();//Implementar logica para recuperar Situacoes Compra
+        //mapMeiosDePagamento = MeioDePagamentoEnum.getMeiosDePagamento();//Implementar logica para recuperar meios de pagamento
+
 //        if (ConfiguracaoAppSingleton.getInstance().isMicroServico()) {
 //            mapSituacoes = SituacoesApostaFiltroEnum.getSituacoesMicroServico();
 //        } else {
 //            mapSituacoes = SituacoesApostaFiltroEnum.getSituacoes();
 //        }
-//        filtroAdapter = new FiltroApostasAdapter(this,
-//                expandableListTitle,
-//                expandableListDetail,
-//                modalidades,
-//                MinhasApostasActivity.this,
-//                true,
-//                mapSituacoes);
-//
-//        listViewFiltro.setAdapter(filtroAdapter);
-//        btnLimpar.setOnClickListener(v -> {
-//            filtroAdapter.limpaFiltros();
-//            dialogFiltrar.dismiss();
-//            tvBadge.setText(String.valueOf(0));
-//            fragmentApostas.filtraDados();
-//            tvBadge.setVisibility(View.GONE);
-//        });
+        filtroAdapter = new FiltroComprasAdapter(this,
+                expandableListTitle,
+                expandableListDetail,
+                ListaComprasActivity.this,
+                mapSituacoesCompra,
+                mapMeiosDePagamento);
+
+        listViewFiltro.setAdapter(filtroAdapter);
+        btnLimpar.setOnClickListener(v -> {
+              filtroAdapter.limpaFiltros();
+              if(isParamMeioPagamentoESituacaoAlterado()){
+                  callWebServiceCompras();
+              }
+              dialogFiltrar.dismiss();
+              tvBadge.setText(String.valueOf(0));
+              tvBadge.setVisibility(View.GONE);
+        });
+        btnOk.setOnClickListener(v -> {
+            if (filtroAdapter.isAddBadge()) {
+                tvBadge.setVisibility(View.VISIBLE);
+            } else {
+                tvBadge.setVisibility(View.GONE);
+            }
+            tvBadge.setVisibility(View.VISIBLE);
+            if (isParamMeioPagamentoESituacaoAlterado()){
+                callWebServiceCompras();
+            }
+            dialogFiltrar.dismiss();
+
+        });
+        btnCancelar.setOnClickListener(v -> dialogFiltrar.dismiss());
+    }
+
+     private boolean isParamMeioPagamentoESituacaoAlterado(){
+        Long idMeioPagamentoTemp, idSituacaoTemp;
+        idMeioPagamentoTemp = idMeioPagamento;
+        idSituacaoTemp = idSituacao;
+        idMeioPagamento = filtroAdapter.getIdMeioPagamentoSelecionado();
+        idSituacao = filtroAdapter.getIdSituacaoSelecionada();
+        if(idMeioPagamentoTemp == idMeioPagamento && idSituacaoTemp == idSituacao){
+            return false;
+        }else{
+            return true;
+        }
+
+     }
+    private LinkedHashMap<Long, String> montaMapSituacoesCompra(List<SituacoesCompraDTO> listaSituacoes){
+        LinkedHashMap<Long, String> map = new LinkedHashMap<>();
+        if(listaSituacoes != null){
+            map.put(0l, "Todas");
+            for(SituacoesCompraDTO situacaoCompra: listaSituacoes){
+                map.put(situacaoCompra.getId(), situacaoCompra.getDescricao());
+            }
+        }
+        return map;
+    }
+
+    private LinkedHashMap<Long, String> montaMapMeiosPagamento(List<MeioPagamentoDTO> listaMeiosPagamento){
+        LinkedHashMap<Long, String> map = new LinkedHashMap<>();
+        if(listaMeiosPagamento != null){
+            map.put(0l, "Todos");
+            for(MeioPagamentoDTO meioPagamento: listaMeiosPagamento){
+                map.put(meioPagamento.getId(), meioPagamento.getNomePagamentoPremio());
+            }
+        }
+        return map;
     }
 
     private void setaDialogFavoritar() {
@@ -465,7 +552,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         }
         progressLoadingMore.setVisibility(View.VISIBLE);
 
-        ApostaBO.getInstance().getCompras(mes, ano, offsetItem, PAGE_SIZE, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        ApostaBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE,idMeioPagamento, idSituacao, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);

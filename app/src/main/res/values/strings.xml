@@ -627,6 +627,7 @@
     <string name="ops">Ops!</string>
 
     <string name="titulo_dialog_filtro_apostas">Filtro de Apostas</string>
+    <string name="titulo_dialog_filtro_compras">Filtro de Compras</string>
 
     <!-- Filtros -->
     <string name="modalidades_selecionadas">Modalidades Selecionadas</string>

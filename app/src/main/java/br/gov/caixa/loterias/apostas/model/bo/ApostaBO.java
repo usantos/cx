@@ -54,6 +54,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginad
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaFiltroEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
@@ -745,6 +746,30 @@ public class ApostaBO extends BaseBO {
         request.setErrorListener(interceptError(request, getHeader(), listener));
         getSilceConnection().request(request, listener);
     }
+    public void getComprasFiltradaMeioPagamentoSituacao(final int mes, final int ano, final int offset, final int size, Long meioPagamento, Long situacao,  final RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+
+        queryParams.put("mes", String.valueOf(mes));
+        queryParams.put("ano", String.valueOf(ano));
+        queryParams.put("offset", String.valueOf(offset));
+        queryParams.put("size", String.valueOf(size));
+        if(meioPagamento !=null){
+            queryParams.put("meio", String.valueOf(meioPagamento));
+        }
+        if(situacao != null){
+            queryParams.put("situacao", String.valueOf(situacao));
+        }
+
+        final GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.COMPRAS_PATH,
+                queryParams,
+                ResultadoPesquisaPaginadaDTOCompraDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+
+        request.setErrorListener(interceptError(request, getHeader(), listener));
+        getSilceConnection().request(request, listener);
+    }
 
     public void getDetalhesCompras(final String idSelecionado, final RequestListener<AgrupadorApostaCompraDTOResponse> listener) {
         String url = ServerMethods.DETALHES_COMPRAS_PATH.replace("{id}", idSelecionado);
@@ -771,6 +796,21 @@ public class ApostaBO extends BaseBO {
         getSilceConnection().request(request, listener);
     }
 
+    public void getSituacoesCompra(final Long idMeioPagamento, final RequestListener<SituacoesCompraResponse> listener){
+        Map<String, String> params = new HashMap<>();
+        if(idMeioPagamento != null){
+            params.put("meioPagamento", idMeioPagamento.toString());
+        }
+
+        final GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.SITUACOES_COMPRA_PATH,
+                params,
+                SituacoesCompraResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeader());
+        request.setErrorListener(interceptError(request,getHeader(),listener));
+        getSilceConnection().request(request,listener);
+    }
     //RESULTADOS
     public void getResultadoModalidade(final String modalidade, final String concurso, final RequestListener<ResultadoConcursoDTOResponse> listener) {
         Map<String, String> queryParams = new HashMap<>();
