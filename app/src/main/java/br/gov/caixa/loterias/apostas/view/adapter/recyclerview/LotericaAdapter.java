@@ -3,17 +3,13 @@ package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
-import br.gov.caixa.loterias.apostas.view.holder.LoteriasHolder;
 import br.gov.caixa.loterias.apostas.view.holder.LotericaViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 

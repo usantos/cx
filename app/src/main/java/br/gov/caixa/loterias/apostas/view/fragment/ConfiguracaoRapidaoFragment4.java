@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
@@ -25,8 +27,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingl
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
-import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TiposApostasMultiplaSelecaoAdapter;
-import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TipoApostaMultiplaSelecaoAdapter;
+import br.gov.caixa.loterias.apostas.view.listener.TipoApostaListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,7 +39,7 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 	List<TipoAposta> tiposAposta = new ArrayList<>();
 	List<TipoAposta> tiposApostasSalvas = new ArrayList<>();
 	ScrollView scrollModalides;
-	ExpandableHeightGridView gridViewTiposAposta;
+	private RecyclerView gridViewTiposAposta;
 	private View view = null;
 	private RapidaoDTO rapidaoConfig = RapidaoConfigSingleton.getInstance().getRapidaoConfig();
 
@@ -62,9 +64,30 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 	}
 
 	private void gridViewTipoAposta () {
-		TiposApostasMultiplaSelecaoAdapter tiposApostasAdapter = new TiposApostasMultiplaSelecaoAdapter(getActivity(), tiposAposta);
-		gridViewTiposAposta.setAdapter(tiposApostasAdapter);
-		gridViewTiposAposta.setExpanded(true);
+		TipoApostaMultiplaSelecaoAdapter adapter = new TipoApostaMultiplaSelecaoAdapter(tiposAposta, onItemClicked());
+		gridViewTiposAposta.setLayoutManager(new GridLayoutManager(getContext(), 2));
+		gridViewTiposAposta.setAdapter(adapter);
+	}
+
+	private TipoApostaListener onItemClicked() {
+		return (tipoAposta, position) -> {
+			tiposAposta.set(position, tipoAposta);
+			RapidaoConfigSingleton.getInstance().getRapidaoConfig().setModalidades(convertTipoApostaParaModalidades());
+		};
+	}
+
+	private List<ModalidadeDTO> convertTipoApostaParaModalidades() {
+		List<ModalidadeDTO> modalidades = new ArrayList<>();
+		for (TipoAposta tipoAposta: tiposAposta) {
+			if(tipoAposta.getSelect()){
+				ModalidadeDTO modalidade = new ModalidadeDTO();
+				modalidade.setDescricao(tipoAposta.getTitulo());
+				modalidade.setDescricaoEspecial(tipoAposta.getDescricaoEspecial());
+				modalidade.setValor(tipoAposta.getValor());
+				modalidades.add(modalidade);
+			}
+		}
+		return modalidades;
 	}
 
 	private void setaViews (View view){
