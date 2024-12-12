@@ -42,22 +42,12 @@ public class TipoApostaHolder extends LoteriasHolder<TipoAposta> {
 			modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.cinzatextoselecionado));
 		}
 
-		itemView.setOnClickListener(v -> {
-			if (tipoAposta.getSelect()){
-				tipoAposta.setSelect(false);
-				trevo.setImageResource(tipoAposta.getImagemTrevo());
-				background.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.branco));
-				background.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.custom_border_cinza));
-				modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.cinzatextoselecionado));
-			}else{
-				tipoAposta.setSelect(true);
-				trevo.setImageResource(R.drawable.trevo);
-				background.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), tipoAposta.getCorBackground()));
-				modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.branco));
-			}
+		if (listener != null){
+			itemView.setOnClickListener(v -> {
+				listener.onItemClicked(tipoAposta, getAbsoluteAdapterPosition());
+			});
+		}
 
-			listener.onItemClicked(tipoAposta, getAbsoluteAdapterPosition());
-		});
 	}
 
 }
