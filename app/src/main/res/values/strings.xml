@@ -114,7 +114,7 @@
     <string name="erro_mail_provider">Não há nenhum aplicativo de e-mail instalado!</string>
     <string name="sistema_indisponivel">O Tempo de conexão expirou.</string>
     <string name="btn_finalizar">Finalizar</string>
-    <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com o</string>
+    <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com os</string>
     <string name="termo_de_uso_underline"><u>termos de uso</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
@@ -1408,6 +1408,6 @@
     <string name="mensagem_pop_up_aguardando_confirmacao_pix_pergunta">Pagamento ainda não identificado.\nCaso tenha realizado o pagamento, aguarde enquanto realizamos o processamento.\nPagamentos identificados fora do tempo limite para efetivação de apostas serão estornados.\nAcompanhe o processamento do seu pedido na opção "Minhas Compras".\n\nVocê deseja aguardar a confirmação de pagamento?</string>
     <string name="conheca_mais_milionaria">Conheça o novo jogo +milionária. \nVamos explicar como funciona \n nessa nova modalidade.</string>
     <string name="chegou_a_milionaria">Chegou a +milionária</string>
-    <string name="cep_invalido">CEP inválido!</string>
+    <string name="cep_invalido">O CEP informado não foi localizado. Por favor, informe um CEP válido.</string>
 
 </resources>

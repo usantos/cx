@@ -48,9 +48,10 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.Utils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
+
 public class DadosPessoaisActivity extends AppCompatActivity {
     int progressChangedValue = 0;
     private EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent;
@@ -66,8 +67,8 @@ public class DadosPessoaisActivity extends AppCompatActivity {
     protected String ufSelect;
     protected String municipioSelect;
     protected MunicipioIdDTO municipioIdDTOSelect;
-    SeekBar seekbarLimite;
-    ApostadorDTO apostadorDTO;
+    private SeekBar seekbarLimite;
+    private ApostadorDTO apostadorDTO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,11 +176,10 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         );
 
         naoSeiCepButton.setOnClickListener(view ->{
-            modalNaoSeiCep();
+            DialogUtils.modalNaoSeiCep(DadosPessoaisActivity.this);
         });
 
         updateDadosPessoaisLimiteButton.setOnClickListener(view -> {
-
             AlertDialogUtils.show(DadosPessoaisActivity.this);
             DadosUsuarioBO.getInstance().recalcularLimite( new RequestListener<ApostadorDTOResponse>() {
                 @Override
@@ -255,7 +255,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 }
                 seekbarLimite.setProgress(apostadorDTO.getLimiteDiario().intValue());
 
-
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
@@ -271,249 +270,26 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         } );
     }
 
-    private void getUFS() {
-        if (listUf == null || listUFString == null) {
-            AlertDialogUtils.show(DadosPessoaisActivity.this);
-            DadosCorporativosBO.getInstance().ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
-                @Override
-                public void onResponse(UnidadeFederacaoDTOResponse response) {
-                    AlertDialogUtils.dismiss();
-                    listUFString = new ArrayList<>();
-                    listUf = response.getPayload();
-                    for (UnidadeFederacaoDTO uf : response.getPayload()) {
-                        listUFString.add(uf.getSigla());
-                    }
-                    modalUfs();
-                    if (response.getRedirect() != null) {
-                        RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DadosPessoaisActivity.this);
-                    }
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    AlertDialogUtils.dismiss();
-                    RedirectNetwork.checkRedirect(error, DadosPessoaisActivity.this);
-                }
-            });
-        }else {
-            modalUfs();
-        }
-    }
-
-
-    private void modalNaoSeiCep() {
-        // custom dialog
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_padrao);
-
-        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText(getResources().getString(R.string.nao_sei_cep));
-        TextView descricaoView= dialog.findViewById(R.id.descricaoDialog);
-
-        descricaoView.setText(R.string.voce_sera_redirecionado_para_o_site_dos_correios);
-
-        Button dialogButtonConfirmar = dialog.findViewById(R.id.rightButton);
-        dialogButtonConfirmar.setBackground(getDrawable(R.drawable.button_rounded_verdeazul));
-        dialogButtonConfirmar.setTextColor(getResources().getColor(R.color.branco));
-        dialogButtonConfirmar.setText(R.string.confirmar);
-
-        Button dialogButtonCancelar = dialog.findViewById(R.id.leftButton);
-        dialogButtonCancelar.setBackground(getDrawable(R.drawable.background_border_verde));
-        dialogButtonCancelar.setTextColor(getResources().getColor(R.color.verdeazul));
-        dialogButtonCancelar.setText(R.string.cancelar);
-
-
-        dialogButtonConfirmar.setOnClickListener(v -> {
-            Utils.abreUrl(this, R.string.Url_Correios);
-            dialog.dismiss();
-        });
-
-        dialogButtonCancelar.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-
-        dialog.show();
-    }
-
-
-    private void modalUfs() {
-        // custom dialog
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_list_view);
-
-        // set the custom dialog components - listview and button
-
-        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText(getResources().getString(R.string.uf));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(DadosPessoaisActivity.this,
-                R.layout.item_text_popup, R.id.textList, listUFString);
-
-        // Assign adapter to ListView
-        listViewItens.setAdapter(adapter);
-        // ListView Item Click Listener
-        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
-            // ListView Clicked item index
-            int itemPosition = position;
-
-            // ListView Clicked item value
-            String itemValue = (String) listViewItens.getItemAtPosition(position);
-            ufSelect = itemValue;
-        });
-
-        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
-
-        // if button is clicked, close the custom dialog
-        dialogButtonOk.setOnClickListener(v -> {
-            if (!ufSelect.isEmpty() && !ufSelect.equals( editTextUFContent.getText().toString() )){
-                editTextUFContent.setText(ufSelect);
-                editTextMunicipioContent.setText( "" );
-                municipioIdDTOSelect = null;
-                buscaMunicipio();
-            }
-
-            dialog.dismiss();
-        });
-
-        dialogButtonCancelar.setOnClickListener(v -> {
-            ufSelect = editTextUFContent.getText().toString();
-            dialog.dismiss();
-        });
-
-        dialog.show();
-    }
-
-    private void buscaMunicipio() {
-        String idUF = getIdUF(ufSelect);
-
-        if (idUF != null && !idUF.isEmpty()){
-            AlertDialogUtils.show(DadosPessoaisActivity.this);
-
-            DadosCorporativosBO.getInstance().municipios(idUF, new RequestListener<MunicipioDTOResponse>() {
-                @Override
-                public void onResponse(MunicipioDTOResponse response) {
-                    AlertDialogUtils.dismiss();
-                    listMunicipios = new ArrayList<>();
-                    municipioDTOList = response.getPayload();
-                    for (MunicipioDTO municipio : municipioDTOList) {
-                        listMunicipios.add(municipio.getNome());
-                    }
-                    if (response.getRedirect() != null){
-                        RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
-                    }
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    AlertDialogUtils.dismiss();
-                    RedirectNetwork.checkRedirect( error, DadosPessoaisActivity.this );
-                }
-            });
-        }else {
-            showDialog();
-        }
-    }
-
-    private String getIdUF(String ufSelect) {
-        String idUf = null;
-        if (!ufSelect.isEmpty()) {
-            for (UnidadeFederacaoDTO uf : listUf) {
-                if (uf.getSigla().equalsIgnoreCase(ufSelect)) {
-                    idUf = uf.getId().toString();
-                    break;
-                }
-            }
-        }
-        return idUf;
-    }
-
-    private AlertDialog myDialog;
-
-    public void showDialog() {
-        if (myDialog == null) {
-            myDialog = new AlertDialog.Builder(this)
-                    .setTitle(getResources().getString(R.string.label_atencao))
-                    .setMessage(getResources().getString(R.string.selecione_primeiro_uf))
-                    .setPositiveButton(getResources().getString(R.string.ok), (dialog, which) -> myDialog.dismiss())
-                    .create();
-        }
-        myDialog.show();
-    }
-
-    private void modalMunicipios() {
-        municipioSelect = "";
-        // custom dialog
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_list_view);
-
-        // set the custom dialog components - listview and button
-
-        final ListView listViewItens = dialog.findViewById(R.id.listaItensDialog);
-        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText(getResources().getString(R.string.cidade));
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(DadosPessoaisActivity.this,
-                R.layout.item_text_popup, R.id.textList, listMunicipios);
-
-        // Assign adapter to ListView
-        listViewItens.setAdapter(adapter);
-        // ListView Item Click Listener
-        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
-            // ListView Clicked item index
-            // ListView Clicked item value
-            String itemValue = (String) listViewItens.getItemAtPosition(position);
-            municipioIdDTOSelect = municipioDTOList.get( position ).getId();
-            municipioSelect = itemValue;
-        });
-
-        Button dialogButtonOk = dialog.findViewById(R.id.dialogButtonOK);
-        Button dialogButtonCancelar = dialog.findViewById(R.id.dialogButtonCancelar);
-
-        // if button is clicked, close the custom dialog
-        dialogButtonOk.setOnClickListener(v -> {
-            if (!municipioSelect.isEmpty() && !municipioSelect.equals( editTextMunicipioContent.getText().toString() ) ) {
-                editTextMunicipioContent.setText(municipioSelect);
-            }
-            dialog.dismiss();
-        });
-
-        dialogButtonCancelar.setOnClickListener(v -> {
-            municipioSelect = "";
-            dialog.dismiss();
-        });
-
-        dialog.show();
-    }
-
     private TextWatcher getTextWatcher(final EditText editText) {
         return new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                // do what you want with your EditText
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editText == editTextCepContent){
-                        String cep = editable.toString().replace( getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia) ).trim();
-                        if (cep.length() == 8) {
-                            editText.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.icon_input_ok, 0 );
-                            buscarBairroPorCep( cep );
-                        } else {
-                            editText.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0 );
-                            //habilitaBotao(true);
-                        }
-
+                    String cep = editable.toString().replace( getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia) ).trim();
+                    if (cep.length() == 8) {
+                        editText.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.icon_input_ok, 0 );
+                        buscarBairroPorCep( cep );
+                    } else {
+                        editText.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0 );
+                        //habilitaBotao(true);
+                    }
                 }
-
             }
         };
     }
