@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,18 +48,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 public class DadosPessoaisActivity extends AppCompatActivity {
     int progressChangedValue = 0;
-    EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent;
-    TextView editValMaximoCompraContent, editValMinCompraContent, seekBarValor;
-    MaskedEditText editTextCpfContent, editTextCepContent;
-    SegmentedButtonGroup segmentedButtonSexo;
-    Button updateDadosPesoaisButton, naoSeiCepButton;
-    Button updateDadosPessoaisLimiteButton;
+    private EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent;
+    private TextView editValMaximoCompraContent, editValMinCompraContent, seekBarValor;
+    private MaskedEditText editTextCpfContent, editTextCepContent;
+    private SegmentedButtonGroup segmentedButtonSexo;
+    private Button updateDadosPesoaisButton, naoSeiCepButton;
+    private Button updateDadosPessoaisLimiteButton;
 
     private List<String> listUFString, listMunicipios, listBairros;
     private List<MunicipioDTO> municipioDTOList;
@@ -113,10 +111,9 @@ public class DadosPessoaisActivity extends AppCompatActivity {
         editValMinCompraContent =  findViewById(R.id.seekbar_valor_min);
         editValMaximoCompraContent = findViewById(R.id.seekbar_valor_max);
 
-        seekbarLimite = (SeekBar) findViewById(R.id.seekBar);
+        seekbarLimite = findViewById(R.id.seekBar);
 
         seekbarLimite.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if(apostadorDTO != null && apostadorDTO.getLimiteMinimoDiario() != null && progress <= apostadorDTO.getLimiteMinimoDiario().intValue()) {
@@ -124,7 +121,6 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                 }
                 progressChangedValue = progress;
                 seekBarValor.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(progress));
-
             }
 
             @Override
@@ -534,26 +530,31 @@ public class DadosPessoaisActivity extends AppCompatActivity {
                     ufSelect = bairroDTO.getMunicipio().getUf().getSigla();
                     editTextMunicipioContent.setText(bairroDTO.getMunicipio().getNome());
                     municipioIdDTOSelect = bairroDTO.getMunicipio().getId();
+                } else {
+                    cepInvalido(getString(R.string.cep_invalido));
                 }
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
-
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                ViewUtils.alertTitleButton(DadosPessoaisActivity.this,
-                        R.string.label_atencao,
-                        MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this),
-                        getApplicationContext().getResources().getString( R.string.ok ));
-                editTextUFContent.setText("");
-                editTextMunicipioContent.setText("");
-                editTextCepContent.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0 );
+                cepInvalido(MensagensNetwork.setMensagem(error, DadosPessoaisActivity.this));
                 //habilitaBotao(false);
             }
         });
+    }
+
+    private void cepInvalido(String msg) {
+        ViewUtils.alertTitleButton(DadosPessoaisActivity.this,
+                R.string.label_atencao,
+                msg,
+                getApplicationContext().getResources().getString(R.string.ok));
+        editTextUFContent.setText("");
+        editTextMunicipioContent.setText("");
+        editTextCepContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
     }
 
     private void habilitaBotao(boolean isHabilita){
