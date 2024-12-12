@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.view.adapter.baseadapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,8 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
     private Activity activity;
     private View viewMeioPagamento;
     private View viewSituacao;
-    private int numeroMeioPagamentoSelecionado;
-    private int numeroSituacaoCompraSelecionada;
+    private int numeroMeioPagamentoSelecionado = 1;//inicia na primeira opcao
+    private int numeroSituacaoCompraSelecionada = 1;//inicia na primeira opcao
 
     public FiltroComprasAdapter(Context context, List<String> expandableListTitle, HashMap<String, List<String>> expandableListDetail,
                                 Activity activity, LinkedHashMap<Long, String> situacoesCompra,LinkedHashMap<Long, String> meiosPagamento){
@@ -166,26 +167,25 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             numeroMeioPagamentoSelecionado = newVal;//verificar. Especialmente o valor inicial que carrega.
             callWebServiceSituacoesCompra(getIdMeioPagamentoSelecionado());
-            notifyDataSetChanged();
 
         }
     }
 
     public Long getIdMeioPagamentoSelecionado(){
-        return getIdMeioPagamentoESituacaoCompra(meiosPagamento);
+        return getIdMeioPagamentoESituacaoCompra(meiosPagamento, numeroMeioPagamentoSelecionado);
     }
 
     public Long getIdSituacaoSelecionada(){
-        return getIdMeioPagamentoESituacaoCompra(situacoesCompra);
+        return getIdMeioPagamentoESituacaoCompra(situacoesCompra, numeroSituacaoCompraSelecionada);
     }
 
-    private Long getIdMeioPagamentoESituacaoCompra(LinkedHashMap<Long, String> map){
+    private Long getIdMeioPagamentoESituacaoCompra(LinkedHashMap<Long, String> map, int numeroSelecionado){
         Set<Long> keySet = map.keySet();
         Long[] keyArray = keySet.toArray(new Long[keySet.size()]);
-        if(numeroSituacaoCompraSelecionada == 1){
+        if(numeroSelecionado == 1){
             return null;
         }else{
-            return keyArray[numeroSituacaoCompraSelecionada - 1];
+            return keyArray[numeroSelecionado - 1];
         }
     }
 
@@ -293,21 +293,32 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
     private void callWebServiceSituacoesCompra(Long idMeioPagamento){
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(context);
-        ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
-            @Override
-            public void onResponse(SituacoesCompraResponse response) {
-                loadViewProgress.dismiss();
-                situacoesCompra = montaMapSituacoesCompra(response.getPayload());
-                notifyDataSetChanged();
-            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, getActivity());
+        try{
+            ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
+                @Override
+                public void onResponse(SituacoesCompraResponse response) {
+                    loadViewProgress.dismiss();
+                    if(response.getPayload() != null){
+                        situacoesCompra = montaMapSituacoesCompra(response.getPayload());
+                        notifyDataSetChanged();
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
+                    Log.e("FiltroComprasAdapter", "Erro ao recuperar situações de compra", error);
+                    RedirectNetwork.checkRedirect( error, getActivity());
+
+                }
+            });
+
+        } catch (Exception e){
+            loadViewProgress.dismiss();
+            Log.e("FiltroComprasAdapter", "Erro ao tentar chamar o serviço de recuperar situações de compra", e);
+
+        }
     }
 
     private LinkedHashMap<Long, String> montaMapSituacoesCompra(List<SituacoesCompraDTO> listaSituacoes){

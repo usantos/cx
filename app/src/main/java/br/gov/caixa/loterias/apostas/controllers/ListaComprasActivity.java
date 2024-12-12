@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -23,10 +24,9 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+
+import java.util.*;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
@@ -65,7 +65,8 @@ public class ListaComprasActivity extends AppCompatActivity {
     private CompraDTO compraSelecionada;
     private Boolean isMaisCompras = true, bloquearRequestScroll = false, mantemSurpresinhas = true;
     int offsetItem = 0, mes, ano;
-    long  idMeioPagamento, idSituacao;
+    Long  idMeioPagamento = null;
+    Long  idSituacao = null;
     private Dialog dialogFavoritar;
     private Dialog dialogFiltrar;
     private ExpandableListView listViewFiltro;
@@ -105,7 +106,6 @@ public class ListaComprasActivity extends AppCompatActivity {
             public void onResponse(MesAnoDTOResponse response) {
                 loadViewProgress.dismiss();
                 listaMesAnoDTO = response.getPayload();
-
                 addSpinner();
             }
 
@@ -123,63 +123,103 @@ public class ListaComprasActivity extends AppCompatActivity {
         isMaisCompras = true;
         bloquearRequestScroll = false;
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
-            @Override
-            public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
-                loadViewProgress.dismiss();
-                listaComprasDto = response.getPayload().getLista();
-                offsetItem = PAGE_SIZE;
-                initRecyclerView();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaComprasActivity.this);
+        try{
+            ApostaBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+                @Override
+                public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
+                    loadViewProgress.dismiss();
+                    if(response.getPayload() != null){
+                        listaComprasDto = response.getPayload().getLista();
+                        offsetItem = PAGE_SIZE;
+                        initRecyclerView();
+                    }else{
+                        Log.e("ListaComprasActivity", "O payload da resposta do servico que busca as compras é nulo");
+                    }
+
+                    if (response.getRedirect() != null){
+                        RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaComprasActivity.this);
+                    }
                 }
-            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
-            }
-        });
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
+                    Log.e("listaComprasActivity", "Erro ao recuperar as compras", error);
+                    RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+                }
+            });
+        }catch (Exception e){
+            loadViewProgress.dismiss();
+            Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de compras", e);
+        }
+
     }
 
-    private void callWebServiceMeioPagamento(){
+    private void callWebServiceMeioPagamento(boolean chamaServicoSituacoesCompra){
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO.getInstance().buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
-            @Override
-            public void onResponse(MeiosPagamentosResponse response) {
-                loadViewProgress.dismiss();
-                listaMeioPagamentoDTO = response.getPayload();
-            }
+        try{
+            DadosCorporativosBO.getInstance().buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
+                @Override
+                public void onResponse(MeiosPagamentosResponse response) {
+                    loadViewProgress.dismiss();
+                    if (response.getPayload() != null) {
+                        listaMeioPagamentoDTO = response.getPayload();
+                        if(chamaServicoSituacoesCompra) {
+                            callWebServiceSituacoesCompra(idMeioPagamento, true);//se idMeioPagamento for nulo ele chama todas as situacoes de compra
+                        }
+                    } else {
+                        Log.e("ListaComprasActivity", "O payload da resposta do servico que busca os meios de pagamento é nulo");
+                    }
+                }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
+                    Log.e("ListaComprasActivity", "Erro ao recuperar os meios de pagamento", error);
+                    RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
 
-            }
-        });
+                }
+            });
+        } catch (Exception e){
+            loadViewProgress.dismiss();
+            Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de meios de pagamento", e);
+        }
     }
 
-    private void callWebServiceSituacoesCompra(Long idMeioPagamento){
+    public void callWebServiceSituacoesCompra(Long idMeioPagamento, boolean abreModalFiltro){
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
-            @Override
-            public void onResponse(SituacoesCompraResponse response) {
-                loadViewProgress.dismiss();
-                listaSituacoesCompraDTO = response.getPayload();
-            }
+        try{
+            ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
+                @Override
+                public void onResponse(SituacoesCompraResponse response) {
+                    loadViewProgress.dismiss();
+                    if(response.getPayload() != null){
+                        listaSituacoesCompraDTO = response.getPayload();
+                        if(abreModalFiltro){
+                            setaDialogFiltrar();//Somente após a recuperação dos meios de pagamento e situacoes de compra que abre a modal
+                            dialogFiltrar.show();
+                        }
+                    }else{
+                        Log.e("ListaComprasActivity", "O payload da resposta do servico que busca as situações de compra é nulo");
+                    }
+                }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
+                    Log.e("ListaComprasActivity", "Erro ao recuperar as siturações de compra", error);
+                    RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
 
-            }
-        });
+                }
+            });
+        } catch (Exception e){
+            loadViewProgress.dismiss();
+            Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de situações de compra", e);
+        }
     }
+
 
     private void setaViews(){
         toolbar = findViewById(R.id.toolbar);
@@ -205,19 +245,23 @@ public class ListaComprasActivity extends AppCompatActivity {
 
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_compras));
         setaDialogFavoritar();
+        setFiltroAdapterDialogFiltrar();
     }
 
     private void setaMetodos(){
         btnFiltro.setOnClickListener(view -> {
-            if(listaMeioPagamentoDTO.isEmpty())
+            if(listaMeioPagamentoDTO.isEmpty())//só chama a o serviço para recuperar os meios de pagamento na primeira vez que clica no botao
             {
-                callWebServiceMeioPagamento();
+                callWebServiceMeioPagamento(true);
+            }else{
+                if(isMeioPagamentoAlterado()||listaSituacoesCompraDTO.isEmpty()){
+                    callWebServiceSituacoesCompra(idMeioPagamento, true);
+                }else{
+                    setaDialogFiltrar();
+                    dialogFiltrar.show();
+                }
             }
-            if(listaSituacoesCompraDTO.isEmpty()){
-                callWebServiceSituacoesCompra(null);//vem todas as situacoes
-            }
-            setaDialogFiltrar();
-            dialogFiltrar.show();
+
         });
         btnDuvidas.setOnClickListener(view -> {
             abrirTermosUso();
@@ -225,6 +269,23 @@ public class ListaComprasActivity extends AppCompatActivity {
 
     }
 
+
+    private void setFiltroAdapterDialogFiltrar(){
+        final List<String>                  expandableListTitle;
+        final HashMap<String, List<String>> expandableListDetail;
+        expandableListDetail = ExpandableListDataFiltro.getDataFiltroCompras();
+        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+
+        LinkedHashMap<Long, String> mapSituacoesCompra = new LinkedHashMap<>(montaMapSituacoesCompra(listaSituacoesCompraDTO));
+        LinkedHashMap<Long, String> mapMeiosDePagamento = new LinkedHashMap<>(montaMapMeiosPagamento(listaMeioPagamentoDTO));
+
+        filtroAdapter = new FiltroComprasAdapter(this,
+                expandableListTitle,
+                expandableListDetail,
+                ListaComprasActivity.this,
+                mapSituacoesCompra,
+                mapMeiosDePagamento);
+    }
     private void setaDialogFiltrar() {
         dialogFiltrar = new Dialog(this);
         dialogFiltrar.setContentView(R.layout.dialog_filtro_compras);
@@ -237,17 +298,9 @@ public class ListaComprasActivity extends AppCompatActivity {
         lp.copyFrom(dialogFiltrar.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         dialogFiltrar.getWindow().setAttributes(lp);
-
-        final List<String>                  expandableListTitle;
-        final HashMap<String, List<String>> expandableListDetail;
-
         listViewFiltro.setGroupIndicator(null);
-        expandableListDetail = ExpandableListDataFiltro.getDataFiltroCompras();
-        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
 
-        LinkedHashMap<Long, String> mapSituacoesCompra = new LinkedHashMap<>(montaMapSituacoesCompra(listaSituacoesCompraDTO));
-        LinkedHashMap<Long, String> mapMeiosDePagamento = new LinkedHashMap<>(montaMapMeiosPagamento(listaMeioPagamentoDTO));
-
+        //setAdapterListViewFiltro();
 //        LinkedHashMap<Integer,String> mapSituacoesCompra;
 //        LinkedHashMap<Integer,String> mapMeiosDePagamento;
 
@@ -259,17 +312,12 @@ public class ListaComprasActivity extends AppCompatActivity {
 //        } else {
 //            mapSituacoes = SituacoesApostaFiltroEnum.getSituacoes();
 //        }
-        filtroAdapter = new FiltroComprasAdapter(this,
-                expandableListTitle,
-                expandableListDetail,
-                ListaComprasActivity.this,
-                mapSituacoesCompra,
-                mapMeiosDePagamento);
 
+        setFiltroAdapterDialogFiltrar();//Chama novamente para atualizar as listas
         listViewFiltro.setAdapter(filtroAdapter);
         btnLimpar.setOnClickListener(v -> {
               filtroAdapter.limpaFiltros();
-              if(isParamMeioPagamentoESituacaoAlterado()){
+              if(isParamMeioPagamentoOuSituacaoAlterado()){
                   callWebServiceCompras();
               }
               dialogFiltrar.dismiss();
@@ -283,7 +331,7 @@ public class ListaComprasActivity extends AppCompatActivity {
                 tvBadge.setVisibility(View.GONE);
             }
             tvBadge.setVisibility(View.VISIBLE);
-            if (isParamMeioPagamentoESituacaoAlterado()){
+            if (isParamMeioPagamentoOuSituacaoAlterado()){
                 callWebServiceCompras();
             }
             dialogFiltrar.dismiss();
@@ -292,36 +340,45 @@ public class ListaComprasActivity extends AppCompatActivity {
         btnCancelar.setOnClickListener(v -> dialogFiltrar.dismiss());
     }
 
-     private boolean isParamMeioPagamentoESituacaoAlterado(){
-        Long idMeioPagamentoTemp, idSituacaoTemp;
-        idMeioPagamentoTemp = idMeioPagamento;
-        idSituacaoTemp = idSituacao;
+    private boolean isMeioPagamentoAlterado(){
+        Long idMeioPagamentoTemp = idMeioPagamento;
         idMeioPagamento = filtroAdapter.getIdMeioPagamentoSelecionado();
-        idSituacao = filtroAdapter.getIdSituacaoSelecionada();
-        if(idMeioPagamentoTemp == idMeioPagamento && idSituacaoTemp == idSituacao){
-            return false;
-        }else{
-            return true;
-        }
-
+        //idMeioPagamento = null;
+//        if(idMeioPagamentoTemp !=null && idMeioPagamentoTemp != null && idMeioPagamentoTemp.equals(idMeioPagamento)){
+//            return false;
+//        }else if(idMeioPagamentoTemp == null && idMeioPagamentoTemp == null){
+//            return false;
+//        }else {
+//            return true;
+//        }
+        return !Objects.equals(idMeioPagamentoTemp, idMeioPagamento);
+    }
+     private boolean isParamMeioPagamentoOuSituacaoAlterado(){
+         //Long idMeioPagamentoTemp = idMeioPagamento;
+         Long idSituacaoTemp = idSituacao;
+         //idMeioPagamento = filtroAdapter.getIdMeioPagamentoSelecionado();
+         idSituacao = filtroAdapter.getIdSituacaoSelecionada();
+         return isMeioPagamentoAlterado() || !Objects.equals(idSituacaoTemp, idSituacao);
      }
-    private LinkedHashMap<Long, String> montaMapSituacoesCompra(List<SituacoesCompraDTO> listaSituacoes){
+
+
+    private LinkedHashMap<Long, String> montaMapMeiosPagamento(List<MeioPagamentoDTO> listaMeiosPagamento){
         LinkedHashMap<Long, String> map = new LinkedHashMap<>();
-        if(listaSituacoes != null){
-            map.put(0l, "Todas");
-            for(SituacoesCompraDTO situacaoCompra: listaSituacoes){
-                map.put(situacaoCompra.getId(), situacaoCompra.getDescricao());
+        if(listaMeiosPagamento != null){
+            map.put(0L, "Todos");
+            for(MeioPagamentoDTO meioPagamento: listaMeiosPagamento){
+                map.put(meioPagamento.getId(), meioPagamento.getNomePagamentoPremio());
             }
         }
         return map;
     }
 
-    private LinkedHashMap<Long, String> montaMapMeiosPagamento(List<MeioPagamentoDTO> listaMeiosPagamento){
+    private LinkedHashMap<Long, String> montaMapSituacoesCompra(List<SituacoesCompraDTO> listaSituacoes){
         LinkedHashMap<Long, String> map = new LinkedHashMap<>();
-        if(listaMeiosPagamento != null){
-            map.put(0l, "Todos");
-            for(MeioPagamentoDTO meioPagamento: listaMeiosPagamento){
-                map.put(meioPagamento.getId(), meioPagamento.getNomePagamentoPremio());
+        if(listaSituacoes != null){
+            map.put(0L, "Todas");
+            for(SituacoesCompraDTO situacaoCompra: listaSituacoes){
+                map.put(situacaoCompra.getId(), situacaoCompra.getDescricao());
             }
         }
         return map;
