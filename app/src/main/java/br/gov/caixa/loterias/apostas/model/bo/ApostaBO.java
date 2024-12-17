@@ -446,6 +446,26 @@ public class ApostaBO extends BaseBO {
         Volley.newRequestQueue(getContext()).add(stringRequest);
     }
 
+    public void baixarComprovantePremio(Long id, final RequestListener<String> listener) {
+        String baseUrl = getSilceConnection().getBaseUrl();
+        baseUrl = baseUrl.substring(0, baseUrl.length()-1);
+
+        String endPoint = ServerMethods.APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PREMIO_PATH.replace("{id}", id.toString());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, baseUrl + endPoint, response -> {
+            listener.onResponse(response);
+        }, error -> {
+            listener.onErrorResponse(error);
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> header = (Map<String, String>) getHeader().clone();
+                header.put("Disable-Crypto", "true");
+                return header;
+            }
+        };
+        Volley.newRequestQueue(getContext()).add(stringRequest);
+    }
+
     public void getApostaDetalheComprovante(Long id, final RequestListener<ComprovanteApostaDTOResponse> listener) {
 
         String url = ServerMethods.APOSTAS_CONFIRMADAS_COMPROVANTE_PATH.replace("{id}", id.toString());

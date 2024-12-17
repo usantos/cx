@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,14 +48,11 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BaixarComprovanteResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -151,7 +149,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private boolean criouFragmentDetalhe = false;
 
     private SessaoUsuario sessaoUsuario;
-    private Uri fileUri;
+    private Uri fileApostaUri;
+    private Uri filePremioUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -295,7 +294,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         layoutTextoSalveAposta.setOnClickListener(v -> layoutTextoSalveAposta());
         editarApostaBtn.setOnClickListener(v -> editarApostaBtn());
         adicionarCarrinhoBtn.setOnClickListener(v -> adicionarCarrinhoBtn());
-        comprovanteLayout.setOnClickListener(v -> comprovanteLayout());
+        comprovanteLayout.setOnClickListener(v -> getComprovantePdf());
         salvarApostaImg.setOnClickListener(v -> salvarApostaImg());
     }
 
@@ -593,35 +592,60 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         });
     }
 
-    private void comprovanteLayout() {
-        if(fileUri != null){
-            abrirPdf();
-        } else {
-            AlertDialogUtils.show(this);
-            apostaBO.baixarComprovanteAposta(aposta.getId(), new RequestListener<String>() {
-                @Override
-                public void onResponse(String  response) {
-                    AlertDialogUtils.dismiss();
-                    fileUri = PdfUtils.baixarPdf(response, ApostaConfirmadaDetalhesActivity.this);
-                    abrirPdf();
-                }
+    private void getComprovantePdf() {
+        if(!premioPago){
+            if(fileApostaUri != null){
+                PdfUtils.abrirPdf(fileApostaUri, ApostaConfirmadaDetalhesActivity.this);
+            } else {
+                AlertDialogUtils.show(this);
+                try {
+                    apostaBO.baixarComprovanteAposta(aposta.getId(), new RequestListener<String>() {
+                        @Override
+                        public void onResponse(String  response) {
+                            AlertDialogUtils.dismiss();
+                            fileApostaUri = PdfUtils.baixarPdfAposta(response, ApostaConfirmadaDetalhesActivity.this);
+                            PdfUtils.abrirPdf(fileApostaUri, ApostaConfirmadaDetalhesActivity.this);
+                        }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    AlertDialogUtils.dismiss();
-                    RedirectNetwork.checkRedirect(error,ApostaConfirmadaDetalhesActivity.this);
-                    error.getLocalizedMessage();
-                }
-            });
-        }
-    }
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                            RedirectNetwork.checkRedirect(error,ApostaConfirmadaDetalhesActivity.this);
+                            error.getLocalizedMessage();
+                        }
+                    });
 
-    private void abrirPdf() {
-        if (fileUri != null){
-            Intent myIntent = new Intent(Intent.ACTION_VIEW)
-                    .setDataAndType(fileUri, "application/pdf")
-                    .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            startActivity(myIntent);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.d("ApostaConfirmadaDetAct", "Não foi possível acessar o serviço para baixar comprovante de aposta");
+                }
+            }
+        }else{
+            if(filePremioUri != null){
+                PdfUtils.abrirPdf(filePremioUri, ApostaConfirmadaDetalhesActivity.this);
+            } else {
+                AlertDialogUtils.show(this);
+                try{
+                    apostaBO.baixarComprovantePremio(aposta.getId(), new RequestListener<String>() {
+                        @Override
+                        public void onResponse(String  response) {
+                            AlertDialogUtils.dismiss();
+                            filePremioUri = PdfUtils.baixarPdfPremio(response, ApostaConfirmadaDetalhesActivity.this);
+                            PdfUtils.abrirPdf(filePremioUri, ApostaConfirmadaDetalhesActivity.this);
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                            RedirectNetwork.checkRedirect(error,ApostaConfirmadaDetalhesActivity.this);
+                            error.getLocalizedMessage();
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.d("ApostaConfirmadaDetAct", "Não foi possível acessar o serviço para baixar comprovante de prêmio");
+                }
+            }
         }
     }
 

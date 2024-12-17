@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTORespons
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ValidacaoUtils;
@@ -49,6 +51,8 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     private ConstraintLayout comprovanteLayout;
     private AlertDialog loadViewProgress;
     private String valorPremio = "";
+
+    Uri fileUri;
 
 
     @Override
@@ -147,7 +151,9 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
                 getSupportActionBar().setHomeButtonEnabled(false);
                 ((TextView) findViewById(R.id.voltarPremioButton)).setText(ViewUtils.textFuturaAndFuturaBold(getApplicationContext(), getString(R.string.btn_title_voltarAoInicio)));
 
-                atualizaComprovante();
+                comprovanteLayout.setOnClickListener(view -> {
+                    getComprovante();
+                });
             }
 
             @Override
@@ -158,23 +164,33 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         });
     }
 
-    private void atualizaComprovante(){
-        ApostaBO.getInstance().getApostaComprovantePremio(idAposta, new RequestListener<DetalhesPremioDTOResponse>() {
-            @Override
-            public void onResponse(DetalhesPremioDTOResponse result) {
-                loadViewProgress.dismiss();
-                detalhesPremioDTO = result.getPayload();
-                comprovanteLayout.setOnClickListener(view -> PdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTO, JogosConfirmadosPremioMercadoPagoActivity.this));
-            }
+    private void getComprovante(){
+        if (fileUri != null) {
+            PdfUtils.abrirPdf(fileUri, JogosConfirmadosPremioMercadoPagoActivity.this);
+        } else {
+            AlertDialogUtils.show(this);
+            try {
+                ApostaBO.getInstance().baixarComprovantePremio(idAposta, new RequestListener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        AlertDialogUtils.dismiss();
+                        fileUri = PdfUtils.baixarPdfPremio(response, JogosConfirmadosPremioMercadoPagoActivity.this);
+                        PdfUtils.abrirPdf(fileUri, JogosConfirmadosPremioMercadoPagoActivity.this);
+                    }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect(error, JogosConfirmadosPremioMercadoPagoActivity.this);
-
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        AlertDialogUtils.dismiss();
+                        RedirectNetwork.checkRedirect(error, JogosConfirmadosPremioMercadoPagoActivity.this);
+                        error.getLocalizedMessage();
+                    }
+                });
+            } catch (Exception e){
+                e.printStackTrace();
+                Log.d("JogosConfPremMerPagAct", "Não foi possível acessar o serviço de baixar o comprovante de prêmio");
             }
-        });
-    }
+        }
+   }
 
     public void redirectMp() {
 

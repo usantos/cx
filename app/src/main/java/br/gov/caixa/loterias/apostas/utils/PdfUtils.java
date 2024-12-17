@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.print.PdfConverter;
 import android.util.Base64;
@@ -19,13 +20,88 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
  * Class PdfUtils
  */
 
-public class PdfUtils {
+public class PdfUtils{
     public static final String DIRETORIO_COMPROVANTE = "Comprovantes";
     public static final String ARQUIVO_COMPROV_PREMIO = "Premio";
     public static final String ARQUIVO_COMPROV_APOSTA = "Aposta";
 
 
-    public static void createComprovanteApostaPdf(ComprovanteApostaDTO comprovanteApostaDTO, AppCompatActivity activity) {
+    public static void abrirPdf(Uri fileUri, AppCompatActivity context) {
+        if (fileUri != null){
+            Intent myIntent = new Intent(Intent.ACTION_VIEW)
+                    .setDataAndType(fileUri, "application/pdf")
+                    .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            context.startActivity(myIntent);
+        }
+    }
+
+
+
+    private static String getFileApostaPath(AppCompatActivity activity, String diretorio) throws Exception {
+        // cria a estrutura de diretório
+        File dir = new File(FileUtils.getDownloadsDir(activity), diretorio);
+        dir.mkdirs();
+
+        return dir + "/" + ARQUIVO_COMPROV_APOSTA + ".pdf";
+    }
+
+
+    public static Uri baixarPdfAposta(String stringBase64, AppCompatActivity activity) {
+        Uri fileUri = null;
+        try {
+            File file = new File(getFileApostaPath(activity, DIRETORIO_COMPROVANTE));
+
+            byte[] pdfBytes = Base64.decode(stringBase64, Base64.DEFAULT);
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                fos.write(pdfBytes);
+                fos.flush();
+            }
+
+            fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".fileprovider" , file);
+        } catch (Exception ex) {
+            Toast.makeText(activity, "Ocorreu um erro inesperado, por favor tente novamente.", Toast.LENGTH_LONG).show();
+        }
+
+        return fileUri;
+    }
+
+    private static String getFilePremioPath(AppCompatActivity activity, String diretorio) throws Exception {
+        // cria a estrutura de diretório
+        File dir = new File(FileUtils.getDownloadsDir(activity), diretorio);
+        dir.mkdirs();
+
+        return dir + "/" + ARQUIVO_COMPROV_PREMIO + ".pdf";
+    }
+
+    public static Uri baixarPdfPremio(String stringBase64, AppCompatActivity activity) {
+        Uri fileUri = null;
+        try {
+            File file = new File(getFilePremioPath(activity, DIRETORIO_COMPROVANTE));
+
+            byte[] pdfBytes = Base64.decode(stringBase64, Base64.DEFAULT);
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                fos.write(pdfBytes);
+                fos.flush();
+            }
+
+            fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".fileprovider" , file);
+        } catch (Exception ex) {
+            Toast.makeText(activity, "Ocorreu um erro inesperado, por favor tente novamente.", Toast.LENGTH_LONG).show();
+        }
+
+        return fileUri;
+    }
+
+//codigo legado. Relacionado a geração dos comprovantes de aposta e de premio pelo App, quando não havia serviço de geração dos comprovantes.
+    private static String getFilePath(AppCompatActivity activity, String diretorio) throws Exception {
+        // cria a estrutura de diretório
+        File dir = new File(FileUtils.getDownloadsDir(activity), diretorio);
+        dir.mkdirs();
+
+        return dir + "/" + ARQUIVO_COMPROV_APOSTA + ".pdf";
+    }
+
+        public static void createComprovanteApostaPdf(ComprovanteApostaDTO comprovanteApostaDTO, AppCompatActivity activity) {
         try {
             String html = HtmlUtils.getComprovanteCabecalhoRodapeAposta(comprovanteApostaDTO, activity);
 
@@ -36,13 +112,6 @@ public class PdfUtils {
         }
     }
 
-    private static String getFilePath(AppCompatActivity activity, String diretorio) throws Exception {
-        // cria a estrutura de diretório
-        File dir = new File(FileUtils.getDownloadsDir(activity), diretorio);
-        dir.mkdirs();
-
-        return dir + "/" + ARQUIVO_COMPROV_APOSTA + ".pdf";
-    }
 
     public static void createComprovantePremioPdf(DetalhesPremioDTO detalhesPremioDTO, AppCompatActivity activity) {
         try {
@@ -87,24 +156,5 @@ public class PdfUtils {
 
             throw new Exception(exception);
         }
-    }
-
-    public static Uri baixarPdf(String stringBase64, AppCompatActivity activity) {
-        Uri fileUri = null;
-        try {
-            File file = new File(getFilePath(activity, DIRETORIO_COMPROVANTE));
-
-            byte[] pdfBytes = Base64.decode(stringBase64, Base64.DEFAULT);
-            try (FileOutputStream fos = new FileOutputStream(file)) {
-                fos.write(pdfBytes);
-                fos.flush();
-            }
-
-            fileUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".fileprovider" , file);
-        } catch (Exception ex) {
-            Toast.makeText(activity, "Ocorreu um erro inesperado, por favor tente novamente.", Toast.LENGTH_LONG).show();
-        }
-
-        return fileUri;
     }
 }

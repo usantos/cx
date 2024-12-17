@@ -33,8 +33,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
-import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
-import br.gov.caixa.loterias.apostas.utils.DataUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -45,7 +43,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteSorteado
 import br.gov.caixa.loterias.apostas.view.config.ColunaConfig;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
-import br.gov.caixa.loterias.apostas.view.holder.SuperSeteSorteadosHolder;
+
 
 public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetalhesFragment {
 	private static final String ARG_APOSTA = "ARG_APOSTA";
@@ -208,8 +206,8 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private String getDataBolao(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
-        String dataString = DataUtil.formatStringData(DataUtil.DD_MM_YYYY, aposta.getReservaCotaBolao().getDataHoraReserva());
-        String horaString = DataUtil.formatStringData(DataUtil.HH_MM_SS, aposta.getReservaCotaBolao().getDataHoraReserva());
+		String dataString = aposta.getReservaCotaBolao().getDataRegistroBolao();
+		String horaString = aposta.getReservaCotaBolao().getHoraRegistroBolao();
 
         return dataString + "\n" + horaString;
     }

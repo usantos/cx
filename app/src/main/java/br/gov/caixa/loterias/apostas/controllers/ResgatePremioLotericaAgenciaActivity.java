@@ -1,19 +1,27 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
+
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CanalEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -34,10 +42,13 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
     private Boolean isLoterica;
     private ComprovanteApostaDTO comprovante;
     private DetalhesPremioDTO detalhesPremioDTO;
+    private Uri fileUri;
+    private ApostaBO apostaBO;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resgate_premio_loterica_agencia);
+        apostaBO = ApostaBO.getInstance();
         init();
     }
 
@@ -106,11 +117,43 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
 
     private void adicionarListeners() {
         buttonGerarPDF.setOnClickListener(view -> {
-            PdfUtils.createComprovanteApostaPdf(comprovante, ResgatePremioLotericaAgenciaActivity.this);
+            getComprovanteApostaPdf();
         });
 
         duploResgateRelativeLayout.setOnClickListener(view -> {
             atualizaLayout(true);
         });
     }
+
+    private void getComprovanteApostaPdf() {
+        if(fileUri != null){
+            PdfUtils.abrirPdf(fileUri, ResgatePremioLotericaAgenciaActivity.this);
+        } else {
+            AlertDialogUtils.show(this);
+            try {
+                apostaBO.baixarComprovanteAposta(detalhesPremioDTO.getAposta().getId(), new RequestListener<String>() {
+                    @Override
+                    public void onResponse(String  response) {
+                        AlertDialogUtils.dismiss();
+                        fileUri = PdfUtils.baixarPdfAposta(response, ResgatePremioLotericaAgenciaActivity.this);
+                        PdfUtils.abrirPdf(fileUri, ResgatePremioLotericaAgenciaActivity.this);
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        AlertDialogUtils.dismiss();
+                         RedirectNetwork.checkRedirect(error,ResgatePremioLotericaAgenciaActivity.this);
+                        error.getLocalizedMessage();
+                    }
+                });
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.d("ResgatePremioLotAgenAct", "Não foi possível acessar serviço para baixar comprovante de aposta");
+            }
+
+        }
+    }
+
+
+
 }

@@ -3,8 +3,6 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -27,7 +25,7 @@ public class DataUtil {
 	}
 
 	private static Date parseIsoDateString(String isoDateString) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX", Locale.getDefault());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
 
 		try {
 			return sdf.parse(isoDateString);
