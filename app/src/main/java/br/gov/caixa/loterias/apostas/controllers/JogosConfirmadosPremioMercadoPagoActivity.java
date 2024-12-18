@@ -137,6 +137,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         ApostaBO.getInstance().postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoResponse>() {
             @Override
             public void onResponse(RetornoPadraoResponse response) {
+                loadViewProgress.dismiss();
                 setResult(RESULT_OK);
                 contentTopoConfirmarLinearLayout.setVisibility(View.GONE);
                 contentTopoConfirmadoLinearLayout.setVisibility(View.VISIBLE);
@@ -154,6 +155,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
                 comprovanteLayout.setOnClickListener(view -> {
                     getComprovante();
                 });
+
             }
 
             @Override
