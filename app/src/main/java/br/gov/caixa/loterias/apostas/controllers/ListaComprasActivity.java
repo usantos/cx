@@ -254,7 +254,7 @@ public class ListaComprasActivity extends AppCompatActivity {
             {
                 callWebServiceMeioPagamento(true);
             }else{
-                if(isMeioPagamentoAlterado()||listaSituacoesCompraDTO.isEmpty()){
+                if(listaSituacoesCompraDTO.isEmpty()){
                     callWebServiceSituacoesCompra(idMeioPagamento, true);
                 }else{
                     setaDialogFiltrar();
@@ -300,24 +300,12 @@ public class ListaComprasActivity extends AppCompatActivity {
         dialogFiltrar.getWindow().setAttributes(lp);
         listViewFiltro.setGroupIndicator(null);
 
-        //setAdapterListViewFiltro();
-//        LinkedHashMap<Integer,String> mapSituacoesCompra;
-//        LinkedHashMap<Integer,String> mapMeiosDePagamento;
+        setFiltroAdapterDialogFiltrar();
 
-        //mapSituacoesCompra = SituacoesCompraEnum.getSituacoes();//Implementar logica para recuperar Situacoes Compra
-        //mapMeiosDePagamento = MeioDePagamentoEnum.getMeiosDePagamento();//Implementar logica para recuperar meios de pagamento
-
-//        if (ConfiguracaoAppSingleton.getInstance().isMicroServico()) {
-//            mapSituacoes = SituacoesApostaFiltroEnum.getSituacoesMicroServico();
-//        } else {
-//            mapSituacoes = SituacoesApostaFiltroEnum.getSituacoes();
-//        }
-
-        setFiltroAdapterDialogFiltrar();//Chama novamente para atualizar as listas
         listViewFiltro.setAdapter(filtroAdapter);
         btnLimpar.setOnClickListener(v -> {
               filtroAdapter.limpaFiltros();
-              if(isParamMeioPagamentoOuSituacaoAlterado()){
+              if(isMeioPagamentoOuSituacaoAlterado()){
                   callWebServiceCompras();
               }
               dialogFiltrar.dismiss();
@@ -330,8 +318,7 @@ public class ListaComprasActivity extends AppCompatActivity {
             } else {
                 tvBadge.setVisibility(View.GONE);
             }
-            tvBadge.setVisibility(View.VISIBLE);
-            if (isParamMeioPagamentoOuSituacaoAlterado()){
+            if (isMeioPagamentoOuSituacaoAlterado()){
                 callWebServiceCompras();
             }
             dialogFiltrar.dismiss();
@@ -343,20 +330,11 @@ public class ListaComprasActivity extends AppCompatActivity {
     private boolean isMeioPagamentoAlterado(){
         Long idMeioPagamentoTemp = idMeioPagamento;
         idMeioPagamento = filtroAdapter.getIdMeioPagamentoSelecionado();
-        //idMeioPagamento = null;
-//        if(idMeioPagamentoTemp !=null && idMeioPagamentoTemp != null && idMeioPagamentoTemp.equals(idMeioPagamento)){
-//            return false;
-//        }else if(idMeioPagamentoTemp == null && idMeioPagamentoTemp == null){
-//            return false;
-//        }else {
-//            return true;
-//        }
+
         return !Objects.equals(idMeioPagamentoTemp, idMeioPagamento);
     }
-     private boolean isParamMeioPagamentoOuSituacaoAlterado(){
-         //Long idMeioPagamentoTemp = idMeioPagamento;
+     private boolean isMeioPagamentoOuSituacaoAlterado(){
          Long idSituacaoTemp = idSituacao;
-         //idMeioPagamento = filtroAdapter.getIdMeioPagamentoSelecionado();
          idSituacao = filtroAdapter.getIdSituacaoSelecionada();
          return isMeioPagamentoAlterado() || !Objects.equals(idSituacaoTemp, idSituacao);
      }
@@ -374,11 +352,23 @@ public class ListaComprasActivity extends AppCompatActivity {
     }
 
     private LinkedHashMap<Long, String> montaMapSituacoesCompra(List<SituacoesCompraDTO> listaSituacoes){
+        String descricao;
         LinkedHashMap<Long, String> map = new LinkedHashMap<>();
         if(listaSituacoes != null){
             map.put(0L, "Todas");
             for(SituacoesCompraDTO situacaoCompra: listaSituacoes){
-                map.put(situacaoCompra.getId(), situacaoCompra.getDescricao());
+                switch (situacaoCompra.getId().intValue()){
+                    case 9:
+                        descricao = situacaoCompra.getDescricao().replace(" - ", "-");
+                        map.put(9L, descricao);
+                        break;
+                    case 12:
+                        descricao = situacaoCompra.getDescricao().replace(" - ", "-");
+                        map.put(12L, descricao);
+                        break;
+                    default:
+                        map.put(situacaoCompra.getId(), situacaoCompra.getDescricao());
+                }
             }
         }
         return map;
@@ -478,37 +468,6 @@ public class ListaComprasActivity extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        super.onCreateOptionsMenu(menu);
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.settings, menu);
-//
-//        return true;
-//    }
-//
-//    // Mudando o texto dos MenuItem de acordo com os dados
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        super.onPrepareOptionsMenu(menu);
-//
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        if (id == R.id.action_settings) {
-//            abrirTermosUso();
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     private void abrirTermosUso(){
         Intent activity = new Intent(this, TermosUsoActivity.class);

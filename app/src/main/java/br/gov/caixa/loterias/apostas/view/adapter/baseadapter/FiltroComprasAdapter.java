@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.view.adapter.baseadapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,24 +11,16 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-
-import com.android.volley.VolleyError;
-
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 
@@ -46,8 +37,8 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
     private Activity activity;
     private View viewMeioPagamento;
     private View viewSituacao;
-    private int numeroMeioPagamentoSelecionado = 1;//inicia na primeira opcao
-    private int numeroSituacaoCompraSelecionada = 1;//inicia na primeira opcao
+    private int numeroMeioPagamentoSelecionado = 1;//inicia na primeira opcao ("Todos")
+    private int numeroSituacaoCompraSelecionada = 1;//inicia na primeira opcao ("Todas")
 
     public FiltroComprasAdapter(Context context, List<String> expandableListTitle, HashMap<String, List<String>> expandableListDetail,
                                 Activity activity, LinkedHashMap<Long, String> situacoesCompra,LinkedHashMap<Long, String> meiosPagamento){
@@ -165,9 +156,7 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
     private class ListenerMeioPagamento implements NumberPicker.OnValueChangeListener {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-            numeroMeioPagamentoSelecionado = newVal;//verificar. Especialmente o valor inicial que carrega.
-            callWebServiceSituacoesCompra(getIdMeioPagamentoSelecionado());
-
+            numeroMeioPagamentoSelecionado = newVal;
         }
     }
 
@@ -189,6 +178,24 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
         }
     }
 
+    private String getNomeMeioPagamento(LinkedHashMap<Long, String> map, int numeroSelecionado){
+        Collection<String> MP = map.values();
+        String value = null;
+        int index = 0;
+        Iterator<String> iterator = MP.iterator();
+        if(numeroSelecionado == 1){
+            return null;
+        }else{
+            while(iterator.hasNext()){
+                value = iterator.next();
+                if(index == numeroSelecionado-1){
+                    break;
+                }
+                index++;
+            }
+            return value;
+        }
+    }
 
     public String[] listaSituacoesCompra (){
         return situacoesCompra.values().toArray(new String[situacoesCompra.size()]);
@@ -201,7 +208,7 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 
     public Boolean isAddBadge(){
         if (getNpSituacao() != null) {
-            if(getNpSituacao().getValue() != 1){//verificar este dado
+            if(getNpSituacao().getValue() != 1){
                 return true;
             }
         }
@@ -210,55 +217,19 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
                 return true;
             }
         }
-        return false;
-    }
+        return false;    }
 
-//    public Tupla<List<CompraDTO>, Boolean> getComprasFiltradasMeioPagamento(List<CompraDTO> listaCompras){
-//        List<CompraDTO> listaFiltrada = new ArrayList<>();
-//        Boolean incrementaContador = false;
-//        if(getNpMeioPagamento() != null){
-//            int meioPagamento = numeroMeioPagamentoSelecionado;
-//            String meioPagamentoSelecionado = meiosPagamento.get(meioPagamento).toLowerCase();
-//            if(!meioPagamentoSelecionado.equals("todos")){//Alterar o get(1) pelo elemento que vem todos
-//                for(CompraDTO compra: listaCompras){
-//                    if(meioPagamentoSelecionado.equals(compra.getSituacao().getDescricao().toLowerCase())){
-//                        listaFiltrada.add(compra);
-//                    }
-//                }
-//                incrementaContador = true;
-//            }
-//        }
-//        return new Tupla<>(listaFiltrada, incrementaContador);
-//    }
-//
-//    public Tupla<List<CompraDTO>, Boolean> getComprasFiltradasSituacao(List<CompraDTO> listaCompras){
-//        List<CompraDTO> listaFiltrada = new ArrayList<>();
-//        Boolean incrementaContador = false;
-//
-//        if(getNpSituacao() != null){
-//            int situacao = numeroSituacaoCompraSelecionada;
-//            String situacaoSelecionada = situacoesCompra.get(situacao).toLowerCase();
-//            if(!situacaoSelecionada.equals("todas")){//substituir o get(1) pelo elemento que traz todos
-//                for(CompraDTO compra:listaCompras){
-//                    if(situacaoSelecionada.equals(compra.getSituacao().getDescricao().toLowerCase())){
-//                        listaFiltrada.add(compra);
-//                    }
-//                }
-//                incrementaContador = true;
-//            }
-//        }
-//        return new Tupla<>(listaFiltrada, incrementaContador);
-//    }
+
 
     public void limpaFiltros(){
         if(getNpMeioPagamento() != null){
-            numeroMeioPagamentoSelecionado = 1;//Meio de pagamento padrao, que mostra por primeiro no number picker
-            getNpMeioPagamento().setValue(numeroMeioPagamentoSelecionado); // seta para mostrar o meio padrao
+            numeroMeioPagamentoSelecionado = 1;//Opção padrão
+            getNpMeioPagamento().setValue(numeroMeioPagamentoSelecionado);
         }
 
         if(getNpSituacao() != null){
-            numeroSituacaoCompraSelecionada = 1; // situacao padao
-            getNpSituacao().setValue(numeroSituacaoCompraSelecionada);// seta para mostrar o meio padrao
+            numeroSituacaoCompraSelecionada = 1; //Opção padrão
+            getNpSituacao().setValue(numeroSituacaoCompraSelecionada);
         }
     }
 
@@ -290,47 +261,6 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
         this.activity = activity;
     }
 
-    private void callWebServiceSituacoesCompra(Long idMeioPagamento){
-
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(context);
-
-        try{
-            ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
-                @Override
-                public void onResponse(SituacoesCompraResponse response) {
-                    loadViewProgress.dismiss();
-                    if(response.getPayload() != null){
-                        situacoesCompra = montaMapSituacoesCompra(response.getPayload());
-                        notifyDataSetChanged();
-                    }
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    loadViewProgress.dismiss();
-                    Log.e("FiltroComprasAdapter", "Erro ao recuperar situações de compra", error);
-                    RedirectNetwork.checkRedirect( error, getActivity());
-
-                }
-            });
-
-        } catch (Exception e){
-            loadViewProgress.dismiss();
-            Log.e("FiltroComprasAdapter", "Erro ao tentar chamar o serviço de recuperar situações de compra", e);
-
-        }
-    }
-
-    private LinkedHashMap<Long, String> montaMapSituacoesCompra(List<SituacoesCompraDTO> listaSituacoes){
-        LinkedHashMap<Long, String> map = new LinkedHashMap<>();
-        if(listaSituacoes != null){
-            map.put(0L, "Todas");
-            for(SituacoesCompraDTO situacaoCompra: listaSituacoes){
-                map.put(situacaoCompra.getId(), situacaoCompra.getDescricao());
-            }
-        }
-        return map;
-    }
 
 }
 
