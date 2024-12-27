@@ -637,7 +637,9 @@
     <string name="numeros_proibidos">Números proibidos</string>
     <string name="apostas_favoritas">Apostas favoritas</string>
     <string name="resgatar">Resgatar</string>
+    <string name="resgatar_premio_mp">Resgatar prêmio</string>
     <string name="excelente">Excelente :)</string>
+    <string name="solicitacao_efetuada_sucesso">Solicitação efetuada com sucesso!</string>
     <string name="confirmar_email">Para receber seu prêmio, por favor confirme seu email:</string>
     <string name="premio_disponivel">Em breve seu prêmio estará disponível em sua conta no mercado pago</string>
     <string name="placeholder_versao">v1.0.0</string>
@@ -672,11 +674,12 @@
     <string name="loterica_placeholder">Lotérica QI 25</string>
     <string name="placeholder_endereco">SHIS QI 25 - Lago Sul, Brasília - DF CEP 71660 440 3367-6888</string>
     <string name="pr_mio">Prêmio</string>
-    <string name="para_receber_seu_pr_mio_npor_favor_confirme_seu_email">Para receber seu prêmio, por favor confirme seu email:</string>
+    <string name="para_receber_seu_pr_mio_npor_favor_confirme_seu_email">Para receber seu prêmio,  \npor favor confirme seu e-mail:</string>
     <string name="e_mail">E-mail</string>
     <string name="em_breve_seu_pr_mio_estar_dispon_vel_em_sua_conta_no_mercado_pago">Em breve seu prêmio estará disponível em sua conta no mercado pago</string>
     <string name="um_email_foi_enviado_para_dmalva_monumenta_com_br_com_todas_as_informa_es_e_passo_a_passo_para_o_recebimento_de_seu_pr_mio">Um email foi enviado para dmalva@monumenta.com.br com todas as informações e passo-a-passo para o recebimento de seu prêmio</string>
     <string name="voltar">Voltar</string>
+    <string name="resgatar_novo_premio">Resgatar novo prêmio</string>
     <string name="conferir_aposta">Conferir Aposta</string>
     <string name="selecione_a_aposta_realizada">Selecione a aposta realizada:</string>
     <string name="acompanhe_todas_as_compras_que_voc_j_realizou_em_nosso_aplicativo">Acompanhe todas as compras que você já realizou em nosso aplicativo.</string>
