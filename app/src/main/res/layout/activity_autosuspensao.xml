@@ -17,7 +17,6 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardSuspensao"
         android:layout_width="0dp"

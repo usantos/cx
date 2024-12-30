@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatCheckBox;
-import androidx.core.content.res.ResourcesCompat;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
@@ -25,7 +24,6 @@ import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
@@ -34,7 +32,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioIdDTO;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
@@ -48,13 +48,13 @@ public class CadastrarActivity extends CadastroActivity {
 
     private static final String FORMATO_YYYYMMDD = "yyyyMMdd";
 
-    EditText editTextNomeContent, editTextEmailContent, editTextMunicipioContent, editTextUFContent;
-    MaskedEditText editTextCpfContent, editTextCepContent;
-    Button buttonFinalizarCadastro;
-    SegmentedButtonGroup segmentedButtonSexo;
-    TextView textViewTituloCadastrar2, termoPolitica;
-    ArrayList<String> listUFString, listMunicipios;
-    AppCompatCheckBox aceiteTermo;
+    private EditText editTextNomeContent, editTextEmailContent, editTextMunicipioContent, editTextUFContent;
+    private MaskedEditText editTextCpfContent, editTextCepContent;
+    private Button buttonFinalizarCadastro, naoSeiCepButton;
+    private SegmentedButtonGroup segmentedButtonSexo;
+    private TextView textViewTituloCadastrar2, termoPolitica;
+    private ArrayList<String> listUFString, listMunicipios;
+    private AppCompatCheckBox aceiteTermo;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +111,7 @@ public class CadastrarActivity extends CadastroActivity {
         this.textViewTituloCadastrar2 = findViewById(R.id.textViewTituloCadastrar2);
         this.termoPolitica = findViewById(R.id.termoPolitica);
         this.aceiteTermo = findViewById(R.id.aceiteTermo);
+        this.naoSeiCepButton = findViewById(R.id.naoSeiCep);
     }
 
     private void loadFields() {
@@ -131,17 +132,6 @@ public class CadastrarActivity extends CadastroActivity {
         addRightImg(findViewById(R.id.editTextCpfContent));
         addRightImg(findViewById(R.id.editTextEmailContent));
         addListenerFinalizar();
-
-    }
-
-
-    private void configuraNavigation() {
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient, null));
     }
 
     private void addListenerFinalizar() {
@@ -163,13 +153,15 @@ public class CadastrarActivity extends CadastroActivity {
                         ViewUtils.alert(CadastrarActivity.this, MensagensNetwork.setMensagem(error, CadastrarActivity.this));
                     }
                 });
-
             }
         });
     }
 
 
     private void initOnclick() {
+        naoSeiCepButton.setOnClickListener(view ->{
+            DialogUtils.modalNaoSeiCep(CadastrarActivity.this);
+        });
         this.termoPolitica.setOnClickListener(v -> {
             Intent intent = new Intent(CadastrarActivity.this, TermosUsoActivity.class);
             startActivity(intent.putExtra("IS_CADASTRO",true));
@@ -197,13 +189,16 @@ public class CadastrarActivity extends CadastroActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String cep = editable.toString().replace(getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia)).trim();
+                String cep = editable.toString().replace( getResources().getString(R.string.traco), getResources().getString(R.string.string_vazia) ).trim();
                 if (cep.length() == 8) {
-                    buscarBairroPorCep(cep);
+                    editTextCepContent.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.icon_input_ok, 0 );
+                    buscarBairroPorCep( cep );
+                } else {
+                    editTextCepContent.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0 );
+                    //habilitaBotao(true);
                 }
             }
         });
-
     }
 
     private boolean validarCamposObrigatorios() {
@@ -253,41 +248,40 @@ public class CadastrarActivity extends CadastroActivity {
         }
     }
 
-
     private void buscarBairroPorCep(String cep) {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(this);
         DadosCorporativosBO.getInstance().bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
             @Override
             public void onResponse(BairroDTOResponse response) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getPayload() != null && !response.getPayload().isEmpty()) {
                     BairroDTO bairroDTO = response.getPayload().get(0);
                     editTextUFContent.setText(bairroDTO.getMunicipio().getUf().getSigla());
                     editTextMunicipioContent.setText(bairroDTO.getMunicipio().getNome());
                     cadastrarApostadorDTO.setMunicipioId(bairroDTO.getMunicipio().getId());
                 } else {
-                    limparBuscaPorCep();
+                    cepInvalido(getString(R.string.cep_invalido));
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                limparBuscaPorCep();
-                RedirectNetwork.checkRedirect( error, CadastrarActivity.this );
+                AlertDialogUtils.dismiss();
+                cepInvalido(MensagensNetwork.setMensagem(error, CadastrarActivity.this));
 
             }
         });
     }
 
-    private void limparBuscaPorCep() {
+    private void cepInvalido(String msg) {
+        ViewUtils.alertTitleButton(CadastrarActivity.this,
+                R.string.label_atencao,
+                msg,
+                getApplicationContext().getResources().getString(R.string.ok));
         editTextUFContent.setText("");
         editTextMunicipioContent.setText("");
-        cadastrarApostadorDTO.setMunicipioId(null);
+        editTextCepContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
     }
-
-
-
 
     private void atualizaLayout(DadosUsuarioToken dadosUsuarioToken) {
         editTextCpfContent.setMaskedText( dadosUsuarioToken.getCpf() );
@@ -296,6 +290,6 @@ public class CadastrarActivity extends CadastroActivity {
         editTextCpfContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextNomeContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextEmailContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
-
     }
+
 }

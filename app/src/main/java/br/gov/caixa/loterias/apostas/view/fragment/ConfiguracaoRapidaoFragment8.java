@@ -9,6 +9,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingl
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumerosRapidaoAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TiposApostasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TipoApostaMultiplaSelecaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 
@@ -37,7 +39,8 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 	private ImageButton ibEditApostaMin,ibEditApostaMax,ibEditPremioMin,
 			ibEditModalidades,ibEditNumerosObrigatorios,ibEditNumerosProibidos;//ibEditApostasFavoritas;
 	private BigDecimal valorMinApostaCarrinho, valorMaxApostaCarrinho, valorPremioMinimo;
-	private ExpandableHeightGridView gridModalidades, gridObrigatorios, gridProibidos;
+	private ExpandableHeightGridView gridObrigatorios, gridProibidos;
+	private RecyclerView gridModalidades;
 	//private RecyclerView rvApostasFavoritas;
 
 
@@ -113,9 +116,8 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 
 		populaArraysTipoAposta(array,rapidaoConfig.getModalidades());
 
-		TiposApostasAdapter tiposApostasAdapter = new TiposApostasAdapter(getActivity(), array);
-		gridModalidades.setAdapter(tiposApostasAdapter);
-		gridModalidades.setExpanded(true);
+		gridModalidades.setLayoutManager(new GridLayoutManager(getContext(), 2));
+		gridModalidades.setAdapter(new TipoApostaMultiplaSelecaoAdapter(array, null));
 
 		NumerosRapidaoAdapter numerosObrigatoriosAdapter = new NumerosRapidaoAdapter(getActivity(), rapidaoConfig.getPrognosticosObrigatorios(), true);
 		gridObrigatorios.setAdapter(numerosObrigatoriosAdapter);
@@ -169,31 +171,31 @@ public class ConfiguracaoRapidaoFragment8 extends Fragment implements View.OnCli
 			TipoAposta tipoAposta = null;
 			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
 				case QUINA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_5, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_5, R.color.quinaclaro, true, item.getValor(), item.getDescricaoEspecial());
 					break;
 				case LOTOFACIL:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_6, R.color.lotofacilclaro, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_6, R.color.lotofacilclaro, true, item.getValor(), item.getDescricaoEspecial());
 					break;
 				case LOTOMANIA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_4, R.color.lotomaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_4, R.color.lotomaniaclaro, true, item.getValor(), item.getDescricaoEspecial());
 					break;
 				case MEGA_SENA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_megasena, R.color.megasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_megasena, R.color.megasenaclaro, true, item.getValor(), item.getDescricaoEspecial());
 					break;
 				case TIMEMANIA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.timemaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.timemaniaclaro, true, item.getValor(), item.getDescricaoEspecial());
 					break;
 				case DUPLA_SENA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_9, R.color.duplasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_9, R.color.duplasenaclaro, true, item.getValor(), item.getDescricaoEspecial());
 					break;
 				case DIA_DE_SORTE:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_2, R.color.diasorteclaro, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_2, R.color.diasorteclaro, true, item.getValor(), item.getDescricaoEspecial());
 					break;
 				case SUPER_SETE:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.superseteclaro, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.superseteclaro, true, item.getValor(), item.getDescricaoEspecial());
 					break;
 				case MAIS_MILIONALIA:
-					tipoAposta = new TipoAposta(Aplicacao.application.getString(R.string.label_mais_milionaria), R.drawable.trevo_mais_milionaria_nao_selecionado, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(Aplicacao.application.getString(R.string.label_mais_milionaria), R.drawable.trevo_mais_milionaria_nao_selecionado, R.color.mais_milionaria_clara, true, item.getValor(), item.getDescricaoEspecial());
 					break;
 				default:
 					break;

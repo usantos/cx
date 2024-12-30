@@ -262,7 +262,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
         switch (ModalidadeEnum.toString(txtModalidade)) {
             case MEGA_SENA:
-                setBackground(R.color.megasenaclaro, R.color.megasenaescuro, R.drawable.background_trapeze_megasena);
+                setBackground(R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp, R.drawable.background_trapeze_megasena);
                 configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
             case LOTOFACIL:
@@ -278,7 +278,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
             case DUPLA_SENA:
-                setBackground(R.color.duplasenaclaro, R.color.duplasenaescuro, R.drawable.background_trapeze_duplasena);
+                setBackground(R.color.dupla_sena_claro_mkp, R.color.dupla_sena_escuro_mkp, R.drawable.background_trapeze_duplasena);
                 configuraResultadoSuperior(response,ResultadoDuplaSenaFragment.newInstance(response));
                 //txtPremiados.setVisibility(View.GONE);
                 break;
@@ -287,7 +287,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 configuraResultadoSuperior(response, ResultadoTimemaniaDiaDeSorteFragment.newInstance(response));
                 break;
             case DIA_DE_SORTE:
-                setBackground(R.color.diasorteclaro, R.color.diasorteescuro, R.drawable.background_trapeze_dia_sorte);
+                setBackground(R.color.dia_sorte_claro_mkp, R.color.dia_sorte_escuro_mkp, R.drawable.background_trapeze_dia_sorte);
                 configuraResultadoSuperior(response, ResultadoTimemaniaDiaDeSorteFragment.newInstance(response));
                 break;
             case LOTECA:
@@ -309,7 +309,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
             case MAIS_MILIONARIA:
-                setBackground(R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, R.drawable.ic_trapezio_mkp);
+                setBackground(R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, R.drawable.background_trapeze_mais_milionaria);
                 configuraResultadoSuperior(response, ResultadoMaisMilionariaFragment.newInstance(response));
                 containerFragmentTrevos.setVisibility(View.VISIBLE);
                 tvTrevos.setVisibility(View.VISIBLE);
@@ -341,7 +341,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         this.corEscura = corEscura;
         this.resourceTrapezio = resourceTrapezio;
         scrollResultado.setBackgroundResource(corEscura);
-        layoutHeader.setBackgroundResource(corEscura);
+        layoutHeader.setBackgroundResource(corClara);
         divisoria.setBackgroundResource(corClara);
         layoutListaPremiacao.setBackgroundResource(corClara);
         layoutTrevo.setBackgroundResource(resourceTrapezio);

@@ -369,4 +369,11 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		return true;
 	}
 
+	@Override
+	public void onBackPressed() {
+		if (precisaAtualizarLista){
+			setResult(RESULT_OK);
+		}
+		finish();
+	}
 }

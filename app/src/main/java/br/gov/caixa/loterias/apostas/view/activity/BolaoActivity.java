@@ -392,6 +392,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 			if (result.getResultCode() == Activity.RESULT_OK) {
 				AlertDialogUtils.show(BolaoActivity.this);
 				model.zeraPaginacao();
+				listAdapter = null;
 				if (filtro != null){
 					cotasFiltradas = null;
 					buscaBoloesFiltro();

@@ -23,6 +23,14 @@ public class ParametrosConfiguraveisDTO {
     @SerializedName("habilitaRevendaBolaoApp")
     private Boolean bolaoHabilitado;
 
+    @SerializedName("hostNovoMicroServicoConferenciaApostaProducao")
+    private String urlBaseNovaApiPRD;
+    @SerializedName("hostNovoMicroServicoConferenciaApostaPiloto")
+    private String urlBaseNovaApiPLT;
+    @SerializedName("grupoCpfsAcessamNovoConferenciaAposta")
+    private Integer grupoCpfNovaApi = 0;
+
+
     public Boolean getMicroServico() {
         return isMicroServico;
     }
@@ -86,5 +94,29 @@ public class ParametrosConfiguraveisDTO {
 
     public void setBolaoHabilitado(Boolean bolaoHabilitado) {
         this.bolaoHabilitado = bolaoHabilitado;
+    }
+
+    public String getUrlBaseNovaApiPRD() {
+        return urlBaseNovaApiPRD;
+    }
+
+    public void setUrlBaseNovaApiPRD(String urlBaseNovaApiPRD) {
+        this.urlBaseNovaApiPRD = urlBaseNovaApiPRD;
+    }
+
+    public String getUrlBaseNovaApiPLT() {
+        return urlBaseNovaApiPLT;
+    }
+
+    public void setUrlBaseNovaApiPLT(String urlBaseNovaApiPLT) {
+        this.urlBaseNovaApiPLT = urlBaseNovaApiPLT;
+    }
+
+    public Integer getGrupoCpfNovaApi() {
+        return grupoCpfNovaApi;
+    }
+
+    public void setGrupoCpfNovaApi(Integer grupoCpfNovaApi) {
+        this.grupoCpfNovaApi = grupoCpfNovaApi;
     }
 }

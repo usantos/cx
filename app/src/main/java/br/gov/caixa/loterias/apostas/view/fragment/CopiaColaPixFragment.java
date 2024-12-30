@@ -186,7 +186,9 @@ public class CopiaColaPixFragment extends Fragment {
 				btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_pix_copiado, null));
 				btnCopia.setEnabled(false);
 				Utils.delay(2, () -> {
-					btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_button_copia, null));
+					try {
+						btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_button_copia, null));
+					} catch (Exception e){}
 					btnCopia.setEnabled(true);
 				});
 				Utils.delay(10,() -> model.verificaStatusPixPeriodicamente(pixDTO,onCheckPixPagoListener()));

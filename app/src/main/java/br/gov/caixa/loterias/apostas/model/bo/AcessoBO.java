@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 
-public class AcessoBO extends BaseBO {
+public class AcessoBO extends SilceBO {
     private static String OPENID  = "openid";
     private static String PROFILE = "profile";
     private static String OFFLINE = "offline_access";
@@ -34,7 +34,9 @@ public class AcessoBO extends BaseBO {
     private static AcessoBO instance;
     private AuthorizationService authorizationService;
 
-    private AcessoBO(){}
+    private AcessoBO(){
+        super();
+    }
 
     public static AcessoBO getInstance(){
         if (instance == null){
@@ -137,11 +139,11 @@ public class AcessoBO extends BaseBO {
 
         String path = ServerMethods.APP_VERSAO_ATUALIZACAO_PATH.replace("{versao-app}", String.valueOf( versao ));
 
-        GsonRequest request = getSilceConnection().buildGetRequest(path, queryParams, VersionResponse.class,
+        GsonRequest request = getServiceConnection().buildGetRequest(path, queryParams, VersionResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
         request.setErrorListener(interceptError(request, headers, listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 }
