@@ -405,6 +405,10 @@ public class PrincipalActivity extends AppCompatActivity
         montarCarrossel();
 
         trataPopupDeNotificacaoHandler();
+
+        redirectDeepLink();
+        //***APAGAR
+        //redirectDeepLinkMock();
     }
 
     private void trataPopupDeNotificacaoHandler() {
@@ -1080,6 +1084,27 @@ public class PrincipalActivity extends AppCompatActivity
         super.onDestroy();
     }
 
+    private boolean redirectDeepLink() {
+        Intent appLinkIntent = getIntent();
+        String appLinkAction = appLinkIntent.getAction();
+        Uri appLinkData = appLinkIntent.getData();
+        if (appLinkData != null && appLinkData.toString().length() >0) {
+            Intent intent = IntentUtil.getIntentDeepLink(this, appLinkData.toString());
+            if (intent != null) {
+                startActivity(intent);
+                return true;
+            }
+        }
+        return false;
+    }
 
-
+    //*** APAGAR ***
+    private boolean redirectDeepLinkMock() {
+        Intent intent = IntentUtil.getIntentDeepLink(this, this.getResources().getString(R.string.depplink_path_mega_sena));
+        if (intent != null) {
+            startActivity(intent);
+            return true;
+        }
+        return false;
+    }
 }
