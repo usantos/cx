@@ -717,15 +717,15 @@ public class ApostaBO extends SilceBO {
             queryParams.put("situacao", String.valueOf(situacao));
         }
 
-        final GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.COMPRAS_PATH,
+        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.COMPRAS_PATH,
                 queryParams,
                 ResultadoPesquisaPaginadaDTOCompraDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
 
         request.setErrorListener(interceptError(request, getHeader(), listener));
-        getSilceConnection().request(request, listener);
+        getServiceConnection().request(request, listener);
     }
 
     public void getDetalhesCompras(final String idSelecionado, final RequestListener<AgrupadorApostaCompraDTOResponse> listener) {
@@ -759,14 +759,14 @@ public class ApostaBO extends SilceBO {
             params.put("meioPagamento", idMeioPagamento.toString());
         }
 
-        final GsonRequest request = getSilceConnection().buildGetRequest(ServerMethods.SITUACOES_COMPRA_PATH,
+        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.SITUACOES_COMPRA_PATH,
                 params,
                 SituacoesCompraResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
-                getHeader());
+                getHeaderToken());
         request.setErrorListener(interceptError(request,getHeader(),listener));
-        getSilceConnection().request(request,listener);
+        getServiceConnection().request(request,listener);
     }
     //RESULTADOS
     public void getResultadoModalidade(final String modalidade, final String concurso, final RequestListener<ResultadoConcursoDTOResponse> listener) {
