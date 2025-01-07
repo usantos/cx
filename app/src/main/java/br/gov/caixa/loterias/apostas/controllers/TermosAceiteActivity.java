@@ -81,7 +81,7 @@ public class TermosAceiteActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_toolbar)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.termos_de_uso)));
 
         webViewConteudo = findViewById(R.id.webViewConteudo2);
         clTermoAceite = findViewById(R.id.cl_termo_aceite2);
