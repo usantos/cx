@@ -48,6 +48,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasRecyclerViewAdapter;
@@ -345,7 +346,8 @@ public class ListaComprasActivity extends AppCompatActivity {
         if(listaMeiosPagamento != null){
             map.put(0L, "Todos");
             for(MeioPagamentoDTO meioPagamento: listaMeiosPagamento){
-                map.put(meioPagamento.getId(), meioPagamento.getNomePagamentoPremio());
+                map.put(meioPagamento.getId(), StringUtils.capitalizer(
+                        meioPagamento.getNomePagamentoPremio()));
             }
         }
         return map;
