@@ -1,13 +1,9 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -21,9 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -84,19 +80,17 @@ import static java.lang.String.format;
 public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener, OnPaginacaoListener {
 
     public final static String APOSTA_EXTRA = "aposta";
-    private static int RESULT_FINISH = 3;
+    private static final int RESULT_FINISH = 3;
 
-    private DrawerLayout drawerLayout;
-    private ConstraintLayout toolBarLoteca, simularApostaLayoutCarrinhoApostas;
-    private Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela, botaoCarrinho;
-    private FrameLayout fragmentSimularApostas;
+    private ConstraintLayout toolBarLoteca;
+    private Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela;
     private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
-            labelValueTriplasLoteca, textoDeNomeInfo, textoSalveEstaAposta, textViewCarrinhoCartelaCount;
+            labelValueTriplasLoteca, textoSalveEstaAposta;
     private LinearLayout toolBarSimularAposta;
-    private RelativeLayout salvarApostaLayout, carrinhoApostas, viewTabBar;
+    private RelativeLayout salvarApostaLayout;
     private ImageButton btnSalvarAposta;
     private EditText editNomeAposta;
-    private ImageView imageViewPaginacao, iconStarSalvar, imageQtdNumerosButton;
+    private ImageView iconStarSalvar, imageQtdNumerosButton;
     private FrameLayout paginacaoView;
 
     protected IdentificaoDeUmaApostaDas8Modalidades aposta;
@@ -110,7 +104,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private TrevosFragment trevosFragment;
     private RodapeSimulacaoApostaFragment rodapeFragment;
 
-    private String dataSorteioAtual;
     private int typeGameColorLight;
     private int typeGameColorDark;
     private List<String> qtdNumerosList;
@@ -119,8 +112,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private String textoBotaoPrognosticosSelecionado;
     private String textoBotaoSurpresinhasSelecionado;
     private ParametroJogoDTO parametroSimulacao;
-    private int toolBarMenu;
-    private Bundle bundle;
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
     private Boolean isEspecial = false;
@@ -132,8 +123,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     public int qtdConcursoSelecionado;
     private Boolean flagApostaSalva = false;
 
-    private Boolean isSurpresinha = false;
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simular_aposta);
@@ -143,8 +132,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     protected void init() {
         dadosCorporativosBO = DadosCorporativosBO.getInstance();
         getExtras();
+        preencheBarraTitulo();
         setViews();
-        isEspecial =  getIntent().getBooleanExtra(getResources().getString(R.string.extra_especial), false);
+
         invalidateOptionsMenu();
         zerarApostas();
         if(aposta != null){
@@ -157,41 +147,81 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         }
     }
 
+    private void preencheBarraTitulo() {
+        FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                tipoJogo, parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(), isEspecial, getCorBackgroundBarraTitulo());
+    }
+
+    private int getCorBackgroundBarraTitulo() {
+        switch (tipoJogo) {
+            case QUINA:
+                return R.color.quinaclaro;
+            case LOTOFACIL:
+                return R.color.lotofacilclaro;
+            case DUPLA_SENA:
+                return R.color.duplasenaclaro;
+            case TIMEMANIA:
+                return R.color.timemaniaclaro;
+            case LOTOMANIA:
+                return R.color.lotomaniaclaro;
+            case LOTECA:
+                return R.color.lotecaclaro;
+            case LOTOGOL:
+                return R.color.lotogolclaro;
+            case DIA_DE_SORTE:
+                return R.color.diasorteclaro;
+            case SUPER_7:
+                return R.color.superseteclaro;
+            case MAIS_MILIONARIA:
+                return R.color.mais_milionaria_clara;
+            default:
+                return R.color.megasenaclaro;
+        }
+    }
+
+    private String getDataSorteio() {
+        String dataSorteio = "";
+        SimpleDateFormat formatterDateFinal = new SimpleDateFormat(getResources().getString(R.string.dd_mm));
+        DateFormat formatterDate = new SimpleDateFormat(getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
+
+        try {
+            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
+            dataSorteio = formatterDateFinal.format(dataFormatada);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dataSorteio;
+    }
+
     private void getExtras() {
-        Bundle extras_ = getIntent().getExtras();
-        if (extras_!= null) {
-            if (extras_.containsKey(APOSTA_EXTRA)) {
-                this.aposta = ((IdentificaoDeUmaApostaDas8Modalidades) extras_.getSerializable(APOSTA_EXTRA));
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.containsKey(APOSTA_EXTRA)) {
+                this.aposta = ((IdentificaoDeUmaApostaDas8Modalidades) extras.getSerializable(APOSTA_EXTRA));
             }
+            isEspecial = extras.getBoolean(getResources().getString(R.string.extra_especial), false);
+            tipoJogo = (ModalidadeEnum) extras.getSerializable(getResources().getString(R.string.tipoAposta));
+            parametroSimulacao = new Gson().fromJson(extras.getString(getResources().getString(R.string.extra_modalidade)), ParametroJogoDTO.class);
         }
     }
 
     private void setViews() {
-        this.drawerLayout = findViewById(R.id.drawerLayout);
         this.toolBarLoteca = findViewById(R.id.toolBarLoteca);
-        this.simularApostaLayoutCarrinhoApostas = findViewById(R.id.simularApostaLayoutCarrinhoApostas);
         this.simularTelaAposta = findViewById(R.id.simularTelaAposta);
         this.surpresinhaTela = findViewById(R.id.surpresinhaTela);
         this.qtdNumerosButton = findViewById(R.id.qtdNumerosButton);
         this.qtdConcursosButton = findViewById(R.id.qtdConcursosButton);
         this.botaoLimparAposta = findViewById(R.id.botaoLimparAposta);
         this.botaoAdicionarCompletarCartela = findViewById(R.id.botaoAdicionarCompletarCartela);
-        this.botaoCarrinho = findViewById(R.id.botaoCarrinho);
-        this.fragmentSimularApostas = findViewById(R.id.fragmentSimularApostas);
         this.labelValueJogosLoteca = findViewById(R.id.labelValueJogosLoteca);
         this.labelValueSimplesLoteca = findViewById(R.id.labelValueSimplesLoteca);
         this.labelValueDuplasLoteca = findViewById(R.id.labelValueDuplasLoteca);
         this.labelValueTriplasLoteca = findViewById(R.id.labelValueTriplasLoteca);
-        this.textoDeNomeInfo = findViewById(R.id.textoDeNomeInfo);
         this.textoSalveEstaAposta = findViewById(R.id.textoSalveEstaAposta);
-        this.textViewCarrinhoCartelaCount = findViewById(R.id.textViewCarrinhoCartelaCount);
         this.toolBarSimularAposta = findViewById(R.id.toolBarSimularAposta);
         this.salvarApostaLayout = findViewById(R.id.salvarApostaLayout);
-        this.carrinhoApostas = findViewById(R.id.carrinhoApostas);
-        this.viewTabBar = findViewById(R.id.viewTabBar);
         this.btnSalvarAposta = findViewById(R.id.btnSalvarAposta);
         this.editNomeAposta = findViewById(R.id.editNomeAposta);
-        this.imageViewPaginacao = findViewById(R.id.imageViewPaginacao);
         this.iconStarSalvar = findViewById(R.id.iconStarSalvar);
         this.imageQtdNumerosButton = findViewById(R.id.imageQtdNumerosButton);
         this.paginacaoView = findViewById(R.id.paginacaoView);
@@ -212,7 +242,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         textoBotaoSurpresinhasSelecionado = getString(R.string.label_sem_teimosinha);
         mesDeSorteCartela = null;
         mesDeSorteSurpresinha = null;
-        parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.extra_modalidade)), ParametroJogoDTO.class);
         configuraParametrosJogo();
         configuraFragments();
         configuraActivity();
@@ -240,14 +269,11 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
     public void onClick(View v) {
-
         switch (v.getId()) {
-            case R.id.simularTelaAposta: {
+            case R.id.simularTelaAposta:
                 voltaPraEscolhaDeNumeros();
                 break;
-            }
-
-            case R.id.surpresinhaTela: {
+            case R.id.surpresinhaTela:
                 surpresinhaFragment.setArguments(new Bundle());
                 abrirTelaSurprezinha();
                 if (temPaginacao()){
@@ -260,17 +286,14 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
                 }
                 break;
-            }
 
-            case R.id.qtdNumerosButton: {
+            case R.id.qtdNumerosButton:
                 modalNumeros();
                 break;
-            }
 
-            case R.id.qtdConcursosButton: {
+            case R.id.qtdConcursosButton:
                 modalTeimosinhas();
                 break;
-            }
         }
     }
 
@@ -316,59 +339,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         finish();
 
         return true;
-    }
-
-    // Mudando o texto dos MenuItem de acordo com os dados
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        configuraMenuItem(R.id.concursoAtual);
-        configuraMenuItem(R.id.sorteioAtual);
-
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(toolBarMenu, menu);
-
-        MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
-        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.concurso));
-        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
-
-        SimpleDateFormat formatterDateFinal = new SimpleDateFormat(getResources().getString(R.string.dd_mm));
-        DateFormat formatterDate = new SimpleDateFormat(getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
-        MenuItem dataSorteio = menu.findItem(R.id.sorteioAtual);
-
-        try {
-            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
-            if(tipoJogo.equals(ModalidadeEnum.LOTECA)) {
-                ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.label_resultado));
-            } else {
-                ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.sorteio));
-            }
-            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_termos) {
-            abrirTermos();
-            return true;
-        } else if (id == R.id.action_duvida) {
-            abrirAjuda();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     // MÉTODOS DO FRAGMENT CARTELAFRAGMENTLISTENER
@@ -604,11 +574,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private void configuraParametrosJogo() {
         if (parametroSimulacao != null) {
-            ModalidadeEnum modalidade = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
             for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
-
-                if (modalidade == ModalidadeEnum.MAIS_MILIONARIA){
-                    if (parametro.getNumeroTrevos() == parametroSimulacao.getTrevos().getQtdMinima()){
+                if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
+                    if (parametro.getNumeroTrevos().equals(parametroSimulacao.getTrevos().getQtdMinima())){
                         qtdNumerosList.add(getResources().getString(R.string.string_vazia) + parametro.getNumeroPrognosticos()
                                                    + getResources().getString(R.string.espaco_numeros_por_espaco)
                                                    + ViewUtils.getMoedaFormat(parametro.getValor()));
@@ -653,62 +621,48 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     private void configuraActivity() {
-
-        tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
-
         switch (tipoJogo) {
             case MEGA_SENA:
                 configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_mega_virada_underline) : getResources().getString(R.string.unterline_mega_sena_underline), R.color.megasenaclaro, R.color.megasenaescuro, View.VISIBLE, View.GONE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case QUINA:
                 configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_quina_sao_joao_underline) : getResources().getString(R.string.underline_quina_underline), R.color.quinaclaro, R.color.quinaescuro, View.VISIBLE, View.GONE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOFACIL:
                 configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_lotofacil_independencia_underline) : getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacilclaro, R.color.lotofacilescuro, View.VISIBLE, View.GONE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case DUPLA_SENA:
                 configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_dupla_pascoa_underline) : getResources().getString(R.string.underline_dupla_sena_underline), R.color.duplasenaclaro, R.color.duplasenaescuro, View.VISIBLE, View.GONE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case TIMEMANIA:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_timemania_underline), R.color.timemaniaclaro, R.color.timemaniaescuro, View.VISIBLE, View.GONE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOMANIA:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_lotomania_underline), R.color.lotomaniaclaro, R.color.lotomaniaescuro, View.VISIBLE, View.GONE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTECA:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.lotecaclaro, R.color.lotecaescuro, View.GONE, View.VISIBLE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case LOTOGOL:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_lotogol_underline), R.color.lotogolclaro, R.color.lotogolescuro, View.GONE, View.GONE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case DIA_DE_SORTE:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), R.color.diasorteclaro, R.color.diasorteescuro, View.VISIBLE, View.GONE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case SUPER_7:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.superseteclaro, R.color.supersetemedio, View.VISIBLE, View.GONE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
             case MAIS_MILIONARIA:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline).toLowerCase(), R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, View.VISIBLE, View.GONE);
-                this.toolBarMenu = R.menu.itens_simular_actionbar_duvida;
                 break;
         }
 
         qtdDezenasPossiveisSelecionado = parametroSimulacao.getQuantidadeMinima() != null ? parametroSimulacao.getQuantidadeMinima() : 0;
         qtdConcursoSelecionado = parametroSimulacao.getTeimosinhas() != null ? parametroSimulacao.getTeimosinhas().get(0) == 0 ? 0 : parametroSimulacao.getTeimosinhas().get(0) : 0;
-        dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
+        String dataSorteioAtual = parametroSimulacao.getConcurso().getDataSorteio();
 
         // Passando um link
-        bundle = new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putInt(getResources().getString(R.string.extra_qtd_dezenas_possiveis_selecionado), qtdDezenasPossiveisSelecionado);
         bundle.putString(getResources().getString(R.string.extra_data_sorteio_atual), dataSorteioAtual);
         bundle.putSerializable(getResources().getString(R.string.extra_type_game_color_light), typeGameColorLight);
@@ -753,13 +707,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
             public void itemSelecionado(int position) {
                 String itemValue = (String) qtdNumerosList.get(position);
                 if(tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
-                    String stringNumero = "";
+                    String stringNumero;
                     if (itemValue.startsWith("1")){
                         stringNumero = itemValue.substring(0,2);
                     }else {
                         stringNumero = itemValue.substring(0, 1);
                     }
-                    ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(new Integer(stringNumero), 2);
+                    ParametroValorApostaDTO valorAposta = parametroSimulacao.getValorApostaBy(Integer.valueOf(stringNumero), 2);
                     
                     if (valorAposta != null){
                         textoBotaoPrognosticosSelecionado = valorAposta.getNumeroPrognosticos() + getResources().getString(R.string.espaco_numeros);
@@ -865,47 +819,29 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         }
     }
 
-    public Button getQtdNumerosButton() {
-        return qtdNumerosButton;
-    }
-
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
-        //Modalidade Futura Bold
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, titleActivity));
-
-        if (BuildVersionUtil.isAutomacao() && tipoJogo == ModalidadeEnum.DUPLA_SENA){
-            //Modalidade Futura Bold
-            setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "dupla-sena"));
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, darkColor));
         }
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, lightColor)));
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setElevation(0);
-        }
-
+//        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, lightColor)));
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
         if (isEspecial) {
             switch (tipoJogo){
                 case MEGA_SENA:
-                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_mega_da_virada_superior));
-                    toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_mega_da_virada_inferior));
+//                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_mega_da_virada_superior));
+                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_mega_da_virada_inferior));
                     break;
                 case DUPLA_SENA:
-                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_dupla_de_pascoa_superior));
-                    toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_dupla_de_pascoa_inferior));
+//                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_dupla_de_pascoa_superior));
+                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_dupla_de_pascoa_inferior));
                     break;
                 case LOTOFACIL:
-                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_lotofacil_da_independencia_superior));
-                    toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_lotofacil_da_independencia_inferior));
+//                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_lotofacil_da_independencia_superior));
+                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_lotofacil_da_independencia_inferior));
                     break;
                 case QUINA:
-                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_sao_joao_superior));
-                    toolBarSimularAposta.setBackground(getDrawable(R.drawable.rodape_sao_joao_inferior));
+//                    getSupportActionBar().setBackgroundDrawable(getDrawable(R.drawable.rodape_sao_joao_superior));
+                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_sao_joao_inferior));
                     break;
                 default:
             }
@@ -915,23 +851,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         typeGameColorLight = lightColor;
         typeGameColorDark = darkColor;
-    }
-
-    private void iniciaCoresValoresLoteca () {
-        //cores valores
-        labelValueSimplesLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-        labelValueDuplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-        labelValueTriplasLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-        labelValueJogosLoteca.setTextColor(getResources().getColor(R.color.lotecaclaro));
-    }
-
-    private void configuraMenuItem(int id) {
-        View menuItem = findViewById(id);
-
-        if (menuItem != null && menuItem instanceof TextView) {
-            ((TextView) menuItem).setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-            menuItem.setPadding(5, 5, 5, 5);
-        }
     }
 
     private void abrirTermos() {

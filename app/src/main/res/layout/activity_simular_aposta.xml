@@ -7,13 +7,21 @@
     android:background="@color/branco"
     tools:context="br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity">
 
+    <FrameLayout
+        android:id="@+id/id_fg_barra_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/id_fg_barra_titulo">
 
         <LinearLayout
             android:id="@+id/toolBarSimularAposta"
@@ -102,6 +110,7 @@
                     android:layout_marginRight="5dp"
                     android:src="@drawable/combo2" />
             </RelativeLayout>
+
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

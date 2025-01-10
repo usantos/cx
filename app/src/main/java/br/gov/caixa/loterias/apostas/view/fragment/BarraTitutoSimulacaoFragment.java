@@ -1,0 +1,147 @@
+package br.gov.caixa.loterias.apostas.view.fragment;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.gson.Gson;
+
+import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+
+public class BarraTitutoSimulacaoFragment extends Fragment {
+	private static final String ARG_MODALIDADE = "ARG_MODALIDADE";
+	private static final String ARG_CONCURSO = "ARG_CONCURSO";
+	private static final String ARG_SORTEIO = "ARG_SORTEIO";
+	private static final String ARG_ESPECIAL = "AR_ESPECIAL";
+	private static final String ARG_COR_BACK = "AR_COR_BACK";
+
+	private  View view;
+	private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio;
+	private ConstraintLayout background;
+	private ImageView btnVoltar, btnDuvida;
+	private String concurso;
+	private String sorteio;
+	private boolean isEspecial;
+	private int corBackground;
+	private ModalidadeEnum modalidade;
+	private EstiloModalidadeMKP estilo;
+
+	private BarraTitutoSimulacaoFragment() {}
+
+	public static BarraTitutoSimulacaoFragment newInstance(ModalidadeEnum modalidade, String concuso,
+                                                           String sorteio, boolean especial, int corBackground) {
+		BarraTitutoSimulacaoFragment fragment = new BarraTitutoSimulacaoFragment();
+		Bundle                  args     = new Bundle();
+		args.putString(ARG_MODALIDADE, new Gson().toJson(modalidade));
+		args.putSerializable(ARG_CONCURSO, concuso);
+		args.putSerializable(ARG_SORTEIO, sorteio);
+		args.putBoolean(ARG_ESPECIAL, especial);
+		args.putInt(ARG_COR_BACK, corBackground);
+		fragment.setArguments(args);
+		return fragment;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (getArguments() != null) {
+			concurso = getArguments().getString(ARG_CONCURSO);
+			sorteio = getArguments().getString(ARG_SORTEIO);
+			isEspecial = getArguments().getBoolean(ARG_ESPECIAL);
+			modalidade = new Gson().fromJson(getArguments().getString(ARG_MODALIDADE), ModalidadeEnum.class);
+			corBackground = getArguments().getInt(ARG_COR_BACK);
+			estilo = new EstiloModalidadeMKP(modalidade);
+		}
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.fragment_barra_titulo_simulacao, container, false);
+
+		tvModalidade = view.findViewById(R.id.id_modalidade);
+		tvConcurso = view.findViewById(R.id.id_concurso);
+		tvSorteio = view.findViewById(R.id.id_sorteio);
+		background = view.findViewById(R.id.layout_fragmento);
+		btnVoltar = view.findViewById(R.id.seta_voltar);
+		btnDuvida = view.findViewById(R.id.duvida);
+		labelConcurso = view.findViewById(R.id.label_concurso);
+		labelSorteio = view.findViewById(R.id.label_sorteio);
+
+		setClickListener();
+
+		preencheDados();
+		aplicaEstilo();
+		aplicaEstiloFonte();
+
+		return view;
+	}
+
+	private void setClickListener() {
+		btnDuvida.setOnClickListener(v -> {
+			Intent intent = new Intent(getContext(), TermosUsoActivity.class);
+			startActivity(intent);
+		});
+
+		btnVoltar.setOnClickListener(v -> getActivity().onBackPressed());
+	}
+
+	private void aplicaEstiloFonte() {
+		tvModalidade.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		tvConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		tvSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		labelConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		labelSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+	}
+
+	private void aplicaEstilo() {
+		background.setBackgroundColor(ContextCompat.getColor(getContext(), corBackground));
+		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1){
+			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
+		}
+
+		if (isEspecial) {
+			switch (modalidade){
+				case MEGA_SENA:
+					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_mega_da_virada_superior));
+					break;
+				case DUPLA_SENA:
+					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_dupla_de_pascoa_superior));
+					break;
+				case LOTOFACIL:
+					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_lotofacil_da_independencia_superior));
+					break;
+				case QUINA:
+					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_sao_joao_superior));
+					break;
+				default:
+			}
+		}
+	}
+
+	private void preencheDados() {
+		if (isEspecial){
+			if (modalidade == ModalidadeEnum.LOTOFACIL){
+				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+			} else {
+				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
+			}
+		} else {
+			tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
+		}
+		tvConcurso.setText(concurso);
+		tvSorteio.setText(sorteio);
+	}
+}
