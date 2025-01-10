@@ -26,6 +26,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 	private static final String ARG_SORTEIO = "ARG_SORTEIO";
 	private static final String ARG_ESPECIAL = "AR_ESPECIAL";
 	private static final String ARG_COR_BACK = "AR_COR_BACK";
+	private static final String ARG_SHOW_BG = "AR_SHOW_BG";
 
 	private  View view;
 	private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio;
@@ -33,15 +34,14 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 	private ImageView btnVoltar, btnDuvida;
 	private String concurso;
 	private String sorteio;
-	private boolean isEspecial;
+	private boolean isEspecial, showBackground;
 	private int corBackground;
 	private ModalidadeEnum modalidade;
 	private EstiloModalidadeMKP estilo;
 
 	private BarraTitutoSimulacaoFragment() {}
 
-	public static BarraTitutoSimulacaoFragment newInstance(ModalidadeEnum modalidade, String concuso,
-                                                           String sorteio, boolean especial, int corBackground) {
+	public static BarraTitutoSimulacaoFragment newInstance(ModalidadeEnum modalidade, String concuso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
 		BarraTitutoSimulacaoFragment fragment = new BarraTitutoSimulacaoFragment();
 		Bundle                  args     = new Bundle();
 		args.putString(ARG_MODALIDADE, new Gson().toJson(modalidade));
@@ -49,6 +49,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 		args.putSerializable(ARG_SORTEIO, sorteio);
 		args.putBoolean(ARG_ESPECIAL, especial);
 		args.putInt(ARG_COR_BACK, corBackground);
+		args.putBoolean(ARG_SHOW_BG, showBGEspecial);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -63,6 +64,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 			modalidade = new Gson().fromJson(getArguments().getString(ARG_MODALIDADE), ModalidadeEnum.class);
 			corBackground = getArguments().getInt(ARG_COR_BACK);
 			estilo = new EstiloModalidadeMKP(modalidade);
+			showBackground = getArguments().getBoolean(ARG_SHOW_BG);
 		}
 	}
 
@@ -112,7 +114,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
 		}
 
-		if (isEspecial) {
+		if (isEspecial && showBackground) {
 			switch (modalidade){
 				case MEGA_SENA:
 					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_mega_da_virada_superior));

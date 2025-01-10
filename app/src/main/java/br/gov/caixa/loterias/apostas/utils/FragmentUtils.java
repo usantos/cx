@@ -130,8 +130,8 @@ public class FragmentUtils {
 	}
 
 	public static BarraTitutoSimulacaoFragment startFragmentBarraTituloSimulacao(FragmentManager fm, int id, ModalidadeEnum modalidade,
-																			 String concurso, String sorteio, boolean especial, int corBackground) {
-		BarraTitutoSimulacaoFragment frag = BarraTitutoSimulacaoFragment.newInstance(modalidade, concurso, sorteio, especial, corBackground);
+																				 String concurso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
+		BarraTitutoSimulacaoFragment frag = BarraTitutoSimulacaoFragment.newInstance(modalidade, concurso, sorteio, especial, corBackground, showBGEspecial);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}

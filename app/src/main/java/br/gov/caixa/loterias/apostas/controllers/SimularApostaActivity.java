@@ -149,7 +149,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private void preencheBarraTitulo() {
         FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
-                tipoJogo, parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(), isEspecial, getCorBackgroundBarraTitulo());
+                tipoJogo, parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(), isEspecial, getCorBackgroundBarraTitulo(), true);
     }
 
     private int getCorBackgroundBarraTitulo() {
