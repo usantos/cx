@@ -233,7 +233,8 @@
         <activity
             android:name=".controllers.ConfirmadoInclusaoCarrinhoActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".controllers.ConfirmadoInclusaoBolaoCarrinhoActivity"
             android:exported="false"

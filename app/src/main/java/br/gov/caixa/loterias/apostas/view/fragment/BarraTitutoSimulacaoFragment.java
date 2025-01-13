@@ -110,7 +110,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 
 	private void aplicaEstilo() {
 		background.setBackgroundColor(ContextCompat.getColor(getContext(), corBackground));
-		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1){
+		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1 && showBackground){
 			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
 		}
 
