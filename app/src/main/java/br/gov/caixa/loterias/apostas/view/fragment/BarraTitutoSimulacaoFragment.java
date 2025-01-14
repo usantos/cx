@@ -135,11 +135,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 
 	private void preencheDados() {
 		if (isEspecial){
-			if (modalidade == ModalidadeEnum.LOTOFACIL){
-				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
-			} else {
-				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
-			}
+			tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
 		} else {
 			tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
 		}
