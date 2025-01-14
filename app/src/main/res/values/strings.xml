@@ -1190,7 +1190,7 @@
     <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
 
     <!-- Popup Pix Pagamento Não Realizado -->
-    <string name="title_activity_resgate_pix">_Resgate de Prêmio_</string>
+    <string name="title_activity_resgate_pix">_Resgate de prêmio_</string>
     <string name="popup_pix_cpf_vinculado">Somente será realizado resgate em Chave Pix vinculada ao CPF do apostador.</string>
 
     <!-- Pix Resgate Prêmio -->
