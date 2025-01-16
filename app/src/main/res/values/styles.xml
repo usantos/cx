@@ -363,6 +363,14 @@
         <item name="colorControlNormal">@color/cinza_total</item>
     </style>
 
+    <style name="AppTheme.PickerDarkCaixaFiltroCompras">
+        <item name="android:textColorPrimary">@color/cinza_total</item>
+        <item name="android:textColor">@color/cinza_total</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+        <item name="colorControlNormal">@color/cinza_total</item>
+    </style>
+
     <style name="MyMaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Add attributes here -->
         <item name="colorPrimary">@color/colorPrimary</item>
