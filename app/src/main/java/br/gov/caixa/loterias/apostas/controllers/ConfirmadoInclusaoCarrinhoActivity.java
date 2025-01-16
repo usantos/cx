@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -59,9 +60,34 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.modalidade)), ParametroJogoDTO.class);
         ((TextView) findViewById(R.id.txtVoltarAoInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
 
-        invalidateOptionsMenu();
+        preencheBarraTitulo();
         configuraActivityIncluidoApostaCarrinho();
         fragmentSomadorCarrinho();
+    }
+    private void preencheBarraTitulo() {
+        FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                parametroSimulacao.getConcurso().getModalidade(),
+                parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(),
+                parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)),
+                getCor(), false);
+    }
+
+    private int getCor() {
+        return new EstiloModalidade(parametroSimulacao.getConcurso().getModalidade()).getCorClara();
+    }
+
+    private String getDataSorteio() {
+        String dataSorteio = "";
+        SimpleDateFormat formatterDateFinal = new SimpleDateFormat(getResources().getString(R.string.dd_mm));
+        DateFormat formatterDate = new SimpleDateFormat(getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
+
+        try {
+            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
+            dataSorteio = formatterDateFinal.format(dataFormatada);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dataSorteio;
     }
 
     @Override
@@ -104,84 +130,14 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     private void configuraLayoutTela(ModalidadeEnum modalidadeEnum) {
         EstiloModalidade estilo = new EstiloModalidade(modalidadeEnum);
 
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getResources().getString(R.string.underline) + ModalidadeEnum.fromString(modalidadeEnum) + getResources().getString(R.string.underline)));
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
         }
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorClara())));
         getWindow().getDecorView().setBackground(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorClara())));
 
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(ContextCompat.getColor(this, estilo.getCorClara()));
         gd.setStroke(2, Color.WHITE);
-    }
-
-    // Mudando o texto dos MenuItem de acordo com os dados
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        configuraMenuItem(R.id.concursoAtual);
-        configuraMenuItem(R.id.sorteioAtual);
-
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.itens_simular_actionbar_termos, menu);
-
-        MenuItem concursoAtual = menu.findItem(R.id.concursoAtual);
-        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_titulo)).setText(getString(R.string.concurso));
-        ((TextView) concursoAtual.getActionView().findViewById(R.id.item_descricao)).setText(parametroSimulacao.getConcurso().getNumero().toString());
-
-        SimpleDateFormat formatterDateFinal = new SimpleDateFormat(getResources().getString(R.string.dd_mm));
-        DateFormat formatterDate = new SimpleDateFormat(getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
-        MenuItem dataSorteio = menu.findItem(R.id.sorteioAtual);
-
-        try {
-            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
-            if (parametroSimulacao.getConcurso().getModalidade().toString() == "LOTECA"){
-                ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.resultado));
-            }else{
-                ((TextView) dataSorteio.getActionView().findViewById(R.id.item_titulo)).setText(getResources().getString(R.string.sorteio));
-            }
-
-            ((TextView) dataSorteio.getActionView().findViewById(R.id.item_descricao)).setText(formatterDateFinal.format(dataFormatada));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_termos) {
-            abrirTermos();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void configuraMenuItem(int id) {
-        View menuItem = findViewById(id);
-
-        if (menuItem != null && menuItem instanceof TextView) {
-            ((TextView) menuItem).setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-            menuItem.setPadding(5, 5, 5, 5);
-        }
-    }
-
-    private void abrirTermos() {
-        Intent activity = new Intent(ConfirmadoInclusaoCarrinhoActivity.this, TermosUsoActivity.class);
-        activity.putExtra(getResources().getString(R.string.ajuda), true);
-        startActivity(activity);
     }
 
     @Override
