@@ -163,7 +163,6 @@
 
                 <TextView
                     android:id="@+id/numeroConcurso"
-                    style="@style/editTextCaixaStdTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tipoAposta"
@@ -172,6 +171,7 @@
                     android:maxWidth="100dp"
                     android:paddingEnd="0dp"
                     android:textSize="14.2sp"
+                    android:fontFamily="@font/caixa_std_regular"
                     tools:text="Conc. 777" />
             </LinearLayout>
 
@@ -229,7 +229,6 @@
 
             <TextView
                 android:id="@+id/valorAposta"
-                style="@style/editTextCaixaStdTheme"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="14dp"
@@ -237,9 +236,11 @@
                 android:layout_alignParentEnd="true"
                 android:text="@string/r_0_00"
                 android:textAlignment="textEnd"
+                android:fontFamily="@font/caixa_std_regular"
                 android:textSize="14.2sp" />
 
         </RelativeLayout>
+
     </RelativeLayout>
 
 </com.daimajia.swipe.SwipeLayout>

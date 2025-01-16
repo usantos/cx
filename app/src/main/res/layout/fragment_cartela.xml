@@ -24,7 +24,7 @@
                 android:id="@+id/tv_colunas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/superseteclaro"
+                android:background="@color/super_sete_escuro_mkp"
                 android:fontFamily="@font/caixa_std_bold"
                 android:padding="10dp"
                 android:text="@string/colunas"
@@ -62,7 +62,6 @@
                     android:background="@drawable/rounded_text_view_colunas"
                     android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
-
                     android:text="@string/_2"
                     android:textColor="@color/branco" />
 
@@ -73,7 +72,6 @@
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
                     android:fontFamily="@font/caixa_std_bold"
-
                     android:gravity="center"
                     android:text="@string/_3"
                     android:textColor="@color/branco" />
@@ -121,7 +119,9 @@
                     android:gravity="center"
                     android:text="@string/_7"
                     android:textColor="@color/branco" />
+
             </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
@@ -151,8 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintTop_toTopOf="parent">
-                </LinearLayout>
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listaDezenas"
@@ -301,6 +300,7 @@
                             android:verticalSpacing="10dp" />
                     </LinearLayout>
                 </ScrollView>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -393,6 +393,7 @@
                             android:textColor="@color/verdeazul"
                             android:textSize="14sp"
                             android:fontFamily="@font/caixa_std_regular"/>
+
                     </LinearLayout>
 
                     <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
@@ -404,7 +405,9 @@
                         android:nestedScrollingEnabled="false"
                         android:orientation="vertical"
                         android:paddingBottom="119dp" />
+
                 </LinearLayout>
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

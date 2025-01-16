@@ -9,11 +9,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
 
@@ -57,7 +59,9 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
     public void setLayout(Modalidade modalidade) {
 
         this.modalidade = modalidade;
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
 
+        this.numeroeDataConcursoResultadoMegaSena.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
         this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.fromHtml("Nº <b>" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "</b> | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
         if (ModalidadeEnum.LOTECA.toString().equalsIgnoreCase(modalidade.getTipoModalidade().toString())) {
             EscudoBO.getInstance().carregaEscudos(getContext(), new OnEscudoListener() {

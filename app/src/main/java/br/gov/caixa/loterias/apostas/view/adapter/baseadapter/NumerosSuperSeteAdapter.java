@@ -106,7 +106,8 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		if (configuracao == null) {
 			shape.setColor(Color.WHITE);
 			shape.setStroke(3, context.getResources().getColor(corSuperSete));
-			textView.setTextColor(ContextCompat.getColor(context, R.color.black));
+			//textView.setTextColor(ContextCompat.getColor(context, R.color.black));
+			textView.setTextColor(ContextCompat.getColor(context, R.color.super_sete_letra_mkp));
 		} else {
 			if (dezenas.get(i).isSelected()) {
 				shape.setColor(ContextCompat.getColor(context,configuracao.getCorInteriorSelecionado()));

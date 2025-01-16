@@ -139,8 +139,8 @@ public abstract class ApostaConfirmadaDetalhesFragment extends Fragment {
 		return this.resultadoConcurso;
 	}
 
-	public ConfiguracaoNumerosSuperSete getEstiloSuperSete(){
-		return model.configuraEstiloSuperSete();
+	public ConfiguracaoNumerosSuperSete getEstiloSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta){
+		return model.configuraEstiloSuperSete(aposta);
 	}
 
 	public ConfiguracaoNumeros getEstiloNumeros(IdentificaoDeUmaApostaDas8Modalidades aposta){

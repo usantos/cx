@@ -23,7 +23,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
@@ -87,16 +87,15 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 
 		swipeLayout.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener(aposta, swipeLayout, position));
 
-		EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(aposta.getModalidade().getDescricao().toLowerCase(new Locale(activity.getResources().getString(R.string.pt), activity.getResources().getString(R.string.br)))));
-		//modalidade Futura Bold
-		tituloApostaFavorita.setText(aposta.getModalidade().getDescricao().toLowerCase());
-		tituloApostaFavorita.setTextColor(activity.getResources().getColor(estilo.getCorClara()));
+		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.toString(aposta.getModalidade().getDescricao().toLowerCase(new Locale(activity.getResources().getString(R.string.pt), activity.getResources().getString(R.string.br)))));
+		tituloApostaFavorita.setText(aposta.getModalidade().getDescricao());
+		tituloApostaFavorita.setTextColor(activity.getResources().getColor(estilo.getCorLetraLista()));
 		tituloNomeApostaFavorita.setText(activity.getResources().getString(R.string.espaco_barra_reta_espaco) + aposta.getNome());
 
 		StringBuilder numeroStr = new StringBuilder();
 
 		if(aposta.getModalidade().getValor().intValue() == 7) {
-			tituloApostaFavorita.setTextColor(activity.getResources().getColor(estilo.getCorEscura()));
+			//tituloApostaFavorita.setTextColor(activity.getResources().getColor(estilo.getCorEscura()));
 			configuraFragment(aposta);
 			containerFragment.setVisibility(View.VISIBLE);
 		} else {

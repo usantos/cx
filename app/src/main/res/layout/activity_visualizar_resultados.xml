@@ -139,7 +139,6 @@
                         android:textColor="@color/branco"
                         android:textSize="18.0sp"
                         android:fontFamily="@font/futura_std_bold"
-                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/cl_trevo"
                         tools:text="mega-sena" />
@@ -216,8 +215,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ll_premiados" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </RelativeLayout>
+
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -241,6 +243,7 @@
             android:textAllCaps="false"
             android:textColor="@color/azulescuro"
             android:textSize="12sp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -259,6 +262,7 @@
             android:textAllCaps="false"
             android:textColor="@color/azulescuro"
             android:textSize="12sp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -274,6 +278,5 @@
         app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
     <include layout="@layout/app_bar_degrade_pesquisa" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

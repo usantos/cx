@@ -204,7 +204,7 @@ public class MesesFragment extends Fragment {
         int colorText;
 
         if (habilitar) {
-            colorBackground = R.color.diasorteclaro;
+            colorBackground = R.color.dia_sorte_escuro_mkp;
             colorText = R.color.branco;
         } else {
             colorBackground = R.color.cinzaclaro;

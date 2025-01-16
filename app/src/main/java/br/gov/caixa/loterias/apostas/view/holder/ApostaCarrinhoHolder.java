@@ -99,7 +99,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 	@Override
 	public void bind(IdentificaoDeUmaApostaDas8Modalidades aposta, int position) {
-		EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
+		//EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
 		EstiloModalidadeMKP estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
 		if (position >= 4) {
@@ -112,12 +112,12 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.dadosApostaCarrinho));
 		swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
 
-		this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
-		this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorClara()));
-		this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+		this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+		this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+		this.valorAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 		this.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorApostaDuasLinas(aposta).toLowerCase());
-		preencheNumeroConcurso(aposta, textViewNumeroConcurso);
-		this.dadosApostaCarrinho.setBackgroundResource(estilo.getCorEscura());
+		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+		this.dadosApostaCarrinho.setBackgroundResource(estiloMKP.getCorEscura());
 
 		if (isBolao) {
 			this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
@@ -137,6 +137,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			startTimer(dataHoraExpiracao);
 		}
 
+
+		TextView labelQuantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.labelQuantidadeApostadas);
+		TextView labelQuantidadeSorteios = this.dadosApostaCarrinho.findViewById(R.id.labelQuantidadeSorteios);
 		TextView     quantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
 		TextView     quantidadeSorteios  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
 		Button       buttonApostaEspelho = this.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
@@ -162,7 +165,12 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			quantidadeSorteiosString = context.getString(R.string.label_sorteio);
 		}
 
+		labelQuantidadeApostadas.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
+		labelQuantidadeSorteios.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
+
+		quantidadeApostadas.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
 		quantidadeApostadas.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeNumeros, quantidadeApostadasString));
+		quantidadeSorteios.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
 		quantidadeSorteios.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeTeimosinhas, quantidadeSorteiosString));
 
 		if (aposta.getEspelho() != null && aposta.getEspelho()) {
@@ -211,6 +219,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 					timeCoracao = timeCoracao + "/" + aposta.getTimeDoCoracao().getUf();
 				}
 
+				labelTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
+				textViewTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
 				textViewTimeCoracao.setText(timeCoracao);
 				if (aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
 					textViewTimeCoracao.setText(context.getResources().getString(R.string.tres_interrogacoes));
@@ -218,7 +228,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			}
 		} else if (ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade()) {
 			layoutTimeCoracao.setVisibility(View.VISIBLE);
+			labelTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
 			labelTimeCoracao.setText(R.string.label_mes_sorte);
+			textViewTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
 			textViewTimeCoracao.setText(aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNome() != null ? aposta.getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
 		} else if(ModalidadeEnum.MAIS_MILIONARIA == aposta.getModalidade()){
 			layoutTimeCoracao.setVisibility(View.VISIBLE);
@@ -234,7 +246,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			SpannableStringBuilder qtdBold = ViewUtils.textCaixaSTDBold(context, qtd);
 			SpannableStringBuilder trevosBold = ViewUtils.textCaixaSTDBold(context, context.getResources().getString(R.string.underline_trevos_underline));
 
+			labelTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
 			labelTimeCoracao.setText(qtdBold);
+			textViewTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
 			textViewTimeCoracao.setText(" " + trevosBold);
 		}
 
@@ -250,10 +264,10 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 							this.textViewNumeroConcurso.setVisibility(View.GONE);
 						}
 
-						this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-						preencheNumeroConcurso(aposta, this.tvNumeroConcursoNovo);
-						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-						this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+						this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+						this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+						this.valorAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 					} else {
 						IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> apostaNumerica = aposta;
 						if (apostaNumerica.getListaNumerosSelecionados() != null) {
@@ -285,11 +299,11 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 					break;
 				case IndicadorSurpresinha.SURPRESINHA:
 				case IndicadorSurpresinha.SURPRESINHA_NUMERICA:
-					preencheNumeroConcurso(aposta, this.tvNumeroConcursoNovo);
-					this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-					this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-					this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
-					this.valorAposta.setTextColor(ContextCompat.getColor(context, estilo.getCorEscura()));
+					this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+					this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+					this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+					this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+					this.valorAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 
 					for (int i = 0; i < aposta.getQuantidadeNumeros(); i++) {
 						if (i == aposta.getQuantidadeNumeros() - 1) {

@@ -87,6 +87,7 @@ import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -606,7 +607,7 @@ public class PrincipalActivity extends AppCompatActivity
         relativeContentPrincipal.setEnabled(false);
         actionApresentarTrevo.setEnabled(false);
         atalhoRapidoLoterias.setVisibility(View.VISIBLE);
-        EstiloModalidade estilo = new EstiloModalidade(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,
@@ -642,7 +643,7 @@ public class PrincipalActivity extends AppCompatActivity
     private void AnimacaoFecharMenuRapido(View v) {
         relativeContentPrincipal.setEnabled(true);
         actionApresentarTrevo.setEnabled(false);
-        EstiloModalidade estilo = new EstiloModalidade(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,
@@ -716,11 +717,14 @@ public class PrincipalActivity extends AppCompatActivity
     public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
-            EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
-            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+            //EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
+            //buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
             buttonHomeBet.setTag(adapterPosition);
-            //buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
-            buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
+            //buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
+            buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoEscuro()));
+            buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
                     getResources().getString(R.string.espaco_em_branco) +
                     ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
 

@@ -144,12 +144,12 @@ public class NumerosSuperSeteFragment extends Fragment {
 			if (BuildVersionUtil.isAutomacao()){
 				int index = 0;
 				for (List<Integer> lista: matrizInteiros) {
-					listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), lista, AutomacaoUtils.getSuperSeteEnumPorColuna(index)));
+					listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.super_sete_claro_mkp, getActivity(), lista, AutomacaoUtils.getSuperSeteEnumPorColuna(index)));
 					index++;
 				}
 			} else {
 				for (List<Integer> lista: matrizInteiros) {
-					listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.supersetemedio, getActivity(), lista));
+					listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.super_sete_claro_mkp, getActivity(), lista));
 				}
 			}
 

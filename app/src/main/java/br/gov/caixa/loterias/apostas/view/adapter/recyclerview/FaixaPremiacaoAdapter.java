@@ -18,13 +18,13 @@ import br.gov.caixa.loterias.apostas.view.custom.ItemListaFaixaPremiacao;
 public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAdapter.FaixaPremiacaoHolder> {
 
     private List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList;
-    private int color;
-    private int darkColor;
+    private int colorFundo;
+    private int colorFonte;
 
-    public FaixaPremiacaoAdapter(List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList, int color, int darkColor) {
+    public FaixaPremiacaoAdapter(List<FaixaPremiadaDTO> itemListaFaixaPremiacaoList, int colorFundo, int colorFonte) {
         this.itemListaFaixaPremiacaoList = itemListaFaixaPremiacaoList;
-        this.color = color;
-        this.darkColor = darkColor;
+        this.colorFundo = colorFundo;
+        this.colorFonte = colorFonte;
     }
 
     @Override
@@ -39,11 +39,12 @@ public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAd
 
     @Override
     public void onBindViewHolder(FaixaPremiacaoHolder holder, int position) {
-        if (position % 2 == 0){
-            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), darkColor);
-        } else {
-            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), color);
-        }
+//        if (position % 2 == 0){
+//            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), colorFonte);
+//        } else {
+//            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), colorFundo);
+//        }
+        holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), colorFundo, colorFonte);
     }
 
     @Override

@@ -67,6 +67,7 @@ public class TiposApostasAdapter extends BaseAdapter {
         linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
 
         final TextView tituloTipoAposta = convertView.findViewById(R.id.tituloTipoApostaTextView);
+        tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, tipoAposta.getTextColor()));
         tituloTipoAposta.setText(tipoAposta.getTitulo());
 
         return convertView;

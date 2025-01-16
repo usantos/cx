@@ -32,6 +32,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
@@ -39,16 +40,18 @@ import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDetalhesFragment {
 	private static final String ARG_APOSTA = "ARG_APOSTA";
 
-	private View view;
-	private TextView concursoTxt, quantidadeApostadasTxt, dataApostaTxt, resultTxt, modalidadeTxt,
+	private View view, divider;
+	private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, resultTxt, modalidadeTxt,
 			apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta,
-			tv_colunas_2, tv_resultado_super_sete, tv_tit_time_mes, tv_time_mes, tv_val_premio, tv_val_premio_tit;
+			tv_colunas_2, tv_resultado_super_sete, tv_tit_time_mes, tv_time_mes, tv_val_premio, tv_val_premio_tit,
+			tv_premio_pago_tit;
 	private RelativeLayout informacaoAdicionalLayout, rl_fg_numeros_1, rl_fg_numeros_2 ,rl_container_result_1, rl_container_result_2,
 			rl_time_mes;
 	private ConstraintLayout cl_premio_pago, clResgatePremio;
 
 	private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
+	private EstiloModalidadeMKP estilo;
 	List<Integer> numerosSorteadosPrimeiro, numerosSorteadosSegundo;
 	List<List<Integer>> matrizSorteados;
 
@@ -81,6 +84,9 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_aposta_confirmada_numero_detalhes, container, false);
+
+		estilo = new EstiloModalidadeMKP(aposta.getModalidade());
+
 		setaViews();
 
 		clResgatePremio.setOnClickListener(onResgateClickListenr());
@@ -97,7 +103,11 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	}
 
 	private void preencheDadosAposta() {
+
+		concursoLabel.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		concursoTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 		concursoTxt.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
+
 		preencheData();
 
 		preenchSituacaoPremio();
@@ -118,6 +128,8 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		} else {
 			dataApostaTxt.setText(aposta.getDataEfetivacao() + "\n" + aposta.getHoraEfetivacao());
 		}
+		dataAposta.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		dataApostaTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 		dataApostaTxt.setVisibility(View.VISIBLE);
 	}
 
@@ -161,7 +173,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				numerosSorteadosPrimeiro = getResultadoConcurso() != null ? getResultadoConcurso().getListaSorteadosPrimeiroSorteio() : null;
 				fragment = NumerosFragment.newInstance(getContext()
 						.getResources().getString(R.string.seus_numeros),
-						aposta.getListaNumerosSelecionados(),numerosSorteadosPrimeiro,
+						aposta.getListaNumerosSelecionados(), numerosSorteadosPrimeiro,
 						getEstiloNumeros(aposta), null);
 				break;
 		}
@@ -192,7 +204,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 			if (aposta.getModalidade().equals(ModalidadeEnum.TIMEMANIA)) {
 				int corBranco = ContextCompat.getColor(getContext(), R.color.branco);
-				int corTime = ContextCompat.getColor(getContext(), R.color.timemaniaclaro);
+				int corTime = ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro());
 				String equipe = getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome();
 				boolean apostaValida = aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getNome() != null;
 				if (apostaValida && equipe.equalsIgnoreCase(aposta.getTimeDoCoracao().getNome())) {
@@ -201,6 +213,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 					informacaoAdicionalTxt.setBackgroundColor(corBranco);
 					labelInformacaoAdicionalTxt.setBackgroundColor(corBranco);
 				}
+				tv_time_mes.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 				tv_time_mes.setText(getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome() +
 						"/" + getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getUf());
 				rl_time_mes.setVisibility(View.VISIBLE);
@@ -208,7 +221,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 			if (aposta.getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE)) {
 				int corBranco = ContextCompat.getColor(getContext(), R.color.branco);
-				int corDia = ContextCompat.getColor(getContext(), R.color.diasorteclaro);
+				int corDia = ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro());
 				String mesDaSorte = getResultadoConcurso().getPremiacaoMesDeSorte().getMesDeSorte().getNome();
 				if (mesDaSorte.equalsIgnoreCase(aposta.getMesDeSorte().getNome())) {
 					informacaoAdicionalTxt.setTextColor(corDia);
@@ -216,11 +229,12 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 					informacaoAdicionalTxt.setBackgroundColor(corBranco);
 					labelInformacaoAdicionalTxt.setBackgroundColor(corBranco);
 				}
-				tv_time_mes.setText(mesDaSorte);
-				tv_tit_time_mes.setText(R.string.label_mes_sorte);
 				tv_time_mes.setTextColor(corDia);
+				tv_time_mes.setText(mesDaSorte);
 				tv_tit_time_mes.setTextColor(corDia);
+				tv_tit_time_mes.setText(R.string.label_mes_sorte);
 
+				labelInformacaoAdicionalTxt.setTextColor(corDia);
 				labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
 				rl_time_mes.setVisibility(View.VISIBLE);
 			}
@@ -258,35 +272,45 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	}
 
 	private void configuraFragmentSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-		FragmentManager fm          = getActivity().getSupportFragmentManager();
+		FragmentManager fm = getActivity().getSupportFragmentManager();
 
 		matrizSorteados = getResultadoConcurso() != null ? getResultadoConcurso().getMatrizNumerosSorteadosPrimeiroSorteio() : null;
 
 		NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment
-				.newInstance(aposta.getMatrizNumerosSelecionados(),matrizSorteados,getEstiloSuperSete());
+				.newInstance(aposta.getMatrizNumerosSelecionados(), matrizSorteados, getEstiloSuperSete(aposta));
 		fm.beginTransaction().replace(R.id.rl_fg_numeros_1, fragment).commitAllowingStateLoss();
 		rl_fg_numeros_1.setVisibility(View.VISIBLE);
 		tv_colunas.setVisibility(View.VISIBLE);
 		tv_sua_aposta.setVisibility(View.VISIBLE);
 
+		tv_sua_aposta.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		tv_colunas.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+
 		if (matrizSorteados != null) {
 			Utils.ordenaMatrizInteiro(matrizSorteados);
 			NumerosSuperSeteFragment frag = NumerosSuperSeteFragment
-					.newInstance(matrizSorteados,matrizSorteados,getEstiloSuperSete());
+					.newInstance(matrizSorteados, matrizSorteados, getEstiloSuperSete(aposta));
 			fm.beginTransaction().replace(R.id.rl_container_result_1, frag).commitAllowingStateLoss();
 			rl_container_result_1.setVisibility(View.VISIBLE);
 			tv_resultado_super_sete.setVisibility(View.VISIBLE);
 			tv_colunas_2.setVisibility(View.VISIBLE);
+
+			tv_resultado_super_sete.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			tv_colunas_2.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 		}
 	}
 
 	private void preencheTimeCoracaoDiaSorte() {
 		if (aposta.getTimeDoCoracao() != null) {
 			informacaoAdicionalLayout.setVisibility(View.VISIBLE);
+			labelInformacaoAdicionalTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			informacaoAdicionalTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 			informacaoAdicionalTxt.setText(aposta.getTimeDoCoracao().getNome() + "/" + aposta.getTimeDoCoracao().getUf());
 		} else if (aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNumero() != null) {
 			informacaoAdicionalLayout.setVisibility(View.VISIBLE);
+			labelInformacaoAdicionalTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 			labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
+			informacaoAdicionalTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 			informacaoAdicionalTxt.setText(aposta.getMesDeSorte().getNome());
 		}
 	}
@@ -308,9 +332,18 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	}
 
 	private void preenchSituacaoPremio() {
+
+		divider.setBackgroundResource(estilo.getCorFonteFundoClaro());
+		resultTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+
 		if (aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO || isApostaPremiada(aposta)) {
 			tv_val_premio.setVisibility(View.VISIBLE);
 			tv_val_premio_tit.setVisibility(View.VISIBLE);
+
+			tv_val_premio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			tv_val_premio_tit.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			tv_premio_pago_tit.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+
 			if (getValorDoPremio() != null) {
 				tv_val_premio.setText(ViewUtils.getMoedaFormat(getValorDoPremio()));
 			} else {
@@ -345,10 +378,13 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	}
 
 	private void setaViews() {
+		concursoLabel = view.findViewById(R.id.concursoLabel);
 		concursoTxt = view.findViewById(R.id.concursoTxt);
 		quantidadeApostadasTxt = view.findViewById(R.id.quantidadeApostadasTxt);
+		dataAposta = view.findViewById(R.id.dataAposta);
 		dataApostaTxt = view.findViewById(R.id.dataApostaTxt);
 		resultTxt = view.findViewById(R.id.resultTxt);
+		divider = view.findViewById(R.id.divider);
 		modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
 		apostaTrocaTxt = view.findViewById(R.id.apostaTrocaTxt);
 		informacaoAdicionalTxt = view.findViewById(R.id.informacaoAdicionalTxt);
@@ -370,6 +406,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		tv_val_premio = view.findViewById(R.id.tv_val_premio);
 		tv_val_premio_tit = view.findViewById(R.id.tv_val_premio_tit);
 		cl_premio_pago = view.findViewById(R.id.cl_premio_pago);
+		tv_premio_pago_tit = view.findViewById(R.id.tv_premio_pago_tit);
 		clResgatePremio = view.findViewById(R.id.clResgatePremio);
 	}
 

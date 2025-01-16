@@ -17,11 +17,13 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TipoApostaMultiplaSelecaoAdapter;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 
 public class SelecaoModalidadesResultados extends AppCompatActivity {
 
@@ -76,40 +78,14 @@ public class SelecaoModalidadesResultados extends AppCompatActivity {
 
     private void atualizarLayout() {
         for (ModalidadeDTO item : modalidades) {
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromModalidadeDTO(item));
             TipoAposta tipoAposta = null;
             switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
-                case QUINA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_5, R.color.quinaclaro, true, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case LOTOFACIL:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_6, R.color.lotofacilclaro, true, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case LOTOMANIA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_4, R.color.lotomaniaclaro, true, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case MEGA_SENA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_megasena, R.color.megasenaclaro, true, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case TIMEMANIA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.timemaniaclaro, true, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case DUPLA_SENA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_9, R.color.duplasenaclaro, true, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case DIA_DE_SORTE:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_2, R.color.diasorteclaro, true, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case LOTOGOL:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_lotogol, R.color.lotogolclaro, true, item.getValor(), item.getDescricaoEspecial());
-                    break;
-                case LOTECA:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_loteca, R.color.lotecaclaro, true, item.getValor(), item.getDescricaoEspecial());
-                    break;
                 case MAIS_MILIONALIA:
-                    tipoAposta = new TipoAposta(getString(R.string.label_mais_milionaria), R.drawable.ic_caixa_mm_amarelo_branco, R.color.mais_milionaria_clara, true, item.getValor(), item.getDescricaoEspecial());
+                    tipoAposta = new TipoAposta("+milionária", estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), estilo.getCorFonteFundoClaro());
                     break;
                 default:
-                    tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_megasena, R.color.superseteclaro, true, item.getValor(), item.getDescricaoEspecial());
+                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), estilo.getCorFonteFundoClaro());
                     break;
             }
             if (tipoAposta != null) {
