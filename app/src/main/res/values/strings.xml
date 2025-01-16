@@ -1306,9 +1306,48 @@
     <string name="confirmarDadosCartao">_Confirmar dados do cartão_</string>
     <string name="confirmarDigitado">Confirme os dados digitados</string>
 
+    <!-- Deeplink -->
     <string name="deeplink_path_combos">https://loteriasonline.caixa.gov.br/silce-web/#combos</string>
     <string name="deeplink_path_apostas">https://loteriasonline.caixa.gov.br/silce-web/#apostas</string>
     <string name="depplink_path_compras">https://loteriasonline.caixa.gov.br/silce-web/#compras</string>
+
+    <string name="depplink_path_carrinho">https://www.loteriasonline.caixa.gov.br/silce-web/#/carrinho</string>
+    <string name="depplink_path_bolao_todas">https://www.loteriasonline.caixa.gov.br/silce-web/#/bolao-caixa/todas-modalidades</string>
+    <string name="depplink_path_bolao">https://www.loteriasonline.caixa.gov.br/silce-web/#/bolao-caixa</string>
+
+    <string name="depplink_path_bolao_loterico">https://www.loteriasonline.caixa.gov.br/silce-web/#/bolao-caixa/</string>
+
+    <string name="depplink_path_apostador">https://www.loteriasonline.caixa.gov.br/silce-web/#/apostador/atualizar</string>
+    <string name="depplink_path_cartoes">https://www.loteriasonline.caixa.gov.br/silce-web/#/cartoes</string>
+    <string name="depplink_path_carrinhos_favoritos"> https://www.loteriasonline.caixa.gov.br/silce-web/#/carrinhos/favoritos</string>
+    <string name="depplink_path_apostas_favoritas">https://www.loteriasonline.caixa.gov.br/silce-web/#/apostas/favoritas</string>
+
+    <string name="depplink_path_resultado_mais_milionaria">https://loterias.caixa.gov.br/Paginas/Mais-Milionaria.aspx</string>
+    <string name="depplink_path_resultado_mega_sena">https://loterias.caixa.gov.br/Paginas/Mega-Sena.aspx</string>
+    <string name="depplink_path_resultado_lotofacil">https://loterias.caixa.gov.br/Paginas/Lotofacil.aspx</string>
+    <string name="depplink_path_resultado_quina">https://loterias.caixa.gov.br/Paginas/Quina.aspx</string>
+    <string name="depplink_path_resultado_lotomania">https://loterias.caixa.gov.br/Paginas/Lotomania.aspx</string>
+    <string name="depplink_path_resultado_timemania">https://loterias.caixa.gov.br/Paginas/Timemania.aspx</string>
+    <string name="depplink_path_resultado_dupla_sena">https://loterias.caixa.gov.br/Paginas/Dupla-Sena.aspx</string>
+    <string name="depplink_path_resultado_loteca">https://loterias.caixa.gov.br/Paginas/Loteca.aspx</string>
+    <string name="depplink_path_resultado_dia_sorte">https://loterias.caixa.gov.br/Paginas/Dia-de-Sorte.aspx</string>
+    <string name="depplink_path_resultado_super_sete">https://loterias.caixa.gov.br/Paginas/Super-Sete.aspx</string>
+
+    <string name="depplink_path_mais_milionaria">https://www.loteriasonline.caixa.gov.br/silce-web/#/mais-milionaria</string>
+    <string name="depplink_path_mega_sena">https://www.loteriasonline.caixa.gov.br/silce-web/#/mega-sena</string>
+    <string name="depplink_path_lotofacil">https://www.loteriasonline.caixa.gov.br/silce-web/#/lotofacil</string>
+    <string name="depplink_path_quina">https://www.loteriasonline.caixa.gov.br/silce-web/#/quina</string>
+    <string name="depplink_path_lotomania">https://www.loteriasonline.caixa.gov.br/silce-web/#/lotomania</string>
+    <string name="depplink_path_timemania">https://www.loteriasonline.caixa.gov.br/silce-web/#/timemania</string>
+    <string name="depplink_path_dupla_sena">https://www.loteriasonline.caixa.gov.br/silce-web/#/dupla-sena</string>
+    <string name="depplink_path_loteca">https://www.loteriasonline.caixa.gov.br/silce-web/#/loteca</string>
+    <string name="depplink_path_dia_sorte">https://www.loteriasonline.caixa.gov.br/silce-web/#/dia-de-sorte</string>
+    <string name="depplink_path_super_sete">https://www.loteriasonline.caixa.gov.br/silce-web/#/super-sete</string>
+
+    <string name="depplink_path_mega_sena_especial">https://www.loteriasonline.caixa.gov.br/silce-web/#/mega-sena/especial</string>
+    <string name="depplink_path_dupla_sena_especial">https://www.loteriasonline.caixa.gov.br/silce-web/#/dupla-sena/especial</string>
+    <string name="depplink_path_quina_especial">https://www.loteriasonline.caixa.gov.br/silce-web/#/quina/especial</string>
+    <string name="depplink_path_lotofacil_especial">https://www.loteriasonline.caixa.gov.br/silce-web/#/lotofacil/especial</string>
 
     <!-- Push Notification -->
     <string name="default_notification_channel_id">CanalLoteriasId</string>
