@@ -93,7 +93,7 @@
     <string name="title_activity_main_teste">MainTesteActivity</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_principal">PrincipalActivity</string>
-    <string name="title_activity_termos_uso">Loterias Caixa</string>
+    <string name="title_activity_termos_uso">_Termo de uso_</string>
     <string name="title_activity_repasses_sociais">_Repasses sociais_</string>
     <string name="title_activity_teste">TesteActivity</string>
     <string name="title_activity_toolbar">_Loterias Caixa_</string>
@@ -115,8 +115,8 @@
     <string name="erro_mail_provider">Não há nenhum aplicativo de e-mail instalado!</string>
     <string name="sistema_indisponivel">O Tempo de conexão expirou.</string>
     <string name="btn_finalizar">Finalizar</string>
-    <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com os</string>
-    <string name="termo_de_uso_underline"><u>termos de uso</u>.</string>
+    <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com o</string>
+    <string name="termo_de_uso_underline"><u>termo de uso</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
     <string name="enviando_email">Enviar e-mail usando:"</string>
@@ -715,7 +715,8 @@
     <string name="outros">Outros</string>
     <string name="o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios">*O valor inclui a parcela correspondente ao imposto de renda sobre os prêmios.</string>
     <string name="aposte_ne_ajude_ainda_mais">Aposte e ajude ainda mais</string>
-    <string name="termos_de_uso">Termos de uso</string>
+    <string name="termos_de_uso">_Termo de uso_</string>
+    <string name="termos_de_uso_sem_">Termo de uso</string>
     <string name="pol_tica_nde_privacidade">Política de privacidade</string>
     <string name="d_vidas">Dúvidas</string>
     <string name="nome_do_carrinho_favorito">Nome do carrinho favorito</string>
@@ -983,7 +984,7 @@
     <string name="mailto_dois_pontos">mailto:</string>
     <string name="utf_8">UTF-8</string>
     <string name="text_html_charset_utf_8">text/html; charset=UTF-8</string>
-    <string name="evento_entrou_termos_de_uso">ENTROU_TERMOS_DE_USO</string>
+    <string name="evento_entrou_termos_de_uso">ENTROU_TERMO_DE_USO</string>
     <string name="evento_entrou_duvidas">ENTROU_DUVIDAS</string>
     <string name="evento_efetuou_login_sucesso">EFETUOU_LOGIN_SUCESSO</string>
     <string name="cpf_minusculo">cpf</string>
