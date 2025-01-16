@@ -37,4 +37,18 @@ public class ExpandableListDataFiltro {
 		expandableListDetail.put("Situação da aposta", situacoes);
 		return expandableListDetail;
 	}
+
+	public static HashMap<String, List<String>> getDataFiltroCompras() {
+		LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
+
+		List<String> situacoesCompra = new ArrayList<>();
+		situacoesCompra.add("situacoes_item");
+		List<String> meiosDePagamento = new ArrayList<>();
+		meiosDePagamento.add("meios_de_pagamento_item");
+
+		expandableListDetail.put("Meio de pagamento", meiosDePagamento);
+		expandableListDetail.put("Situação da compra", situacoesCompra);
+		return expandableListDetail;
+	}
+
 }

@@ -1,11 +1,13 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -43,10 +45,11 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     private EditText emailPremioMercadoPagoEditText;
     private TextView valorPremioTextView;
     private Long idAposta;
-    private Button resgatarPremioButton, voltarPremioButton;
+    private Button resgatarPremioButton, resgatarNovoPremioButton,  voltarPremioButton;
     private TextView textoTituloPremioConfirmado, textoPremioConfirmado;
-    private LinearLayout contentTopoConfirmarLinearLayout, contentTopoConfirmadoLinearLayout, contentConfirmarLinearLayout, contentConfirmadoLinearLayout;
-    private ConstraintLayout comprovanteLayout;
+
+    private View viewCinzaBottom;
+     private ConstraintLayout comprovanteLayout, efetuarResgateLayout, resgateConcluidoLayout;
     private AlertDialog loadViewProgress;
     private String valorPremio = "";
 
@@ -70,7 +73,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     }
 
     private void setaViews() {
-        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.title_activity_resultado_ler_bilhetes)));
+        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.title_activity_resgate_pix)));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,15 +84,13 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         textoPremioConfirmado = findViewById(R.id.textoPremioConfirmado);
         valorPremioTextView = findViewById(R.id.valorPremioTextView);
         resgatarPremioButton = findViewById(R.id.resgatarPremioButton);
+        resgatarNovoPremioButton = findViewById(R.id.resgatarNovoPremioButton);
         voltarPremioButton = findViewById(R.id.voltarPremioButton);
         comprovanteLayout = findViewById(R.id.comprovanteLayout);
 
-        contentTopoConfirmarLinearLayout = findViewById(R.id.contentTopoConfirmarLinearLayout);
-        contentTopoConfirmadoLinearLayout = findViewById(R.id.contentTopoConfirmadoLinearLayout);
-        contentConfirmarLinearLayout = findViewById(R.id.contentConfirmarLinearLayout);
-        contentConfirmadoLinearLayout = findViewById(R.id.contentConfirmadoLinearLayout);
-
-
+        efetuarResgateLayout = findViewById(R.id.layout_efetuar_resgate);
+        resgateConcluidoLayout = findViewById(R.id.layout_resgate_concluido);
+        viewCinzaBottom = findViewById(R.id.viewCinzaBottom);
         textoTituloPremioConfirmado.setText(getResources().getString(R.string.premio_disponivel_em_breve_mp));
         textoPremioConfirmado.setText(getResources().getString(R.string.email_enviado_para) + emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.com_o_passo_a_passo));
 
@@ -118,6 +119,12 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         });
+
+        resgatarNovoPremioButton.setOnClickListener(view ->{
+            Intent intent = IntentUtil.getIntentOrigemDestino(JogosConfirmadosPremioMercadoPagoActivity.this, MinhasApostasActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        });
     }
 
     private void callWebserviceResgatarPremio() {
@@ -134,18 +141,20 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
             @Override
             public void onResponse(RetornoPadraoResponse response) {
                 setResult(RESULT_OK);
-                contentTopoConfirmarLinearLayout.setVisibility(View.GONE);
-                contentTopoConfirmadoLinearLayout.setVisibility(View.VISIBLE);
-                contentConfirmarLinearLayout.setVisibility(View.GONE);
-                contentConfirmadoLinearLayout.setVisibility(View.VISIBLE);
+                efetuarResgateLayout.setVisibility(View.GONE);
+                resgateConcluidoLayout.setVisibility(View.VISIBLE);
                 resgatarPremioButton.setVisibility(View.GONE);
                 voltarPremioButton.setVisibility(View.VISIBLE);
+                resgatarNovoPremioButton.setVisibility(View.VISIBLE);
+                ViewGroup.LayoutParams layoutParams = viewCinzaBottom.getLayoutParams();
+                layoutParams.height = converterParaPixels(JogosConfirmadosPremioMercadoPagoActivity.this, 176);
+                viewCinzaBottom.setLayoutParams(layoutParams);
                 textoPremioConfirmado.setText(getResources().getString(R.string.email_enviado_para) + emailPremioMercadoPagoEditText.getText().toString() + getResources().getString(R.string.com_o_passo_a_passo));
                 comprovanteLayout.setVisibility(View.VISIBLE);
 
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 getSupportActionBar().setHomeButtonEnabled(false);
-                ((TextView) findViewById(R.id.voltarPremioButton)).setText(ViewUtils.textFuturaAndFuturaBold(getApplicationContext(), getString(R.string.btn_title_voltarAoInicio)));
+                //((TextView) findViewById(R.id.voltarPremioButton)).setText(ViewUtils.textCaixaSTDBold(getApplicationContext(), getString(R.string.btn_title_voltarAoInicio)));
 
                 atualizaComprovante();
             }
@@ -250,4 +259,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         startActivity(activity);
     }
 
+    private static int converterParaPixels(Context context, int dp){
+        return (int) (dp * context.getResources().getDisplayMetrics().density);
+    }
 }

@@ -432,8 +432,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
         if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) &&
                 SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
-            TextView processadaPor = findViewById(R.id.processadaPor);
-            processadaPor.setText(getString(R.string.id_pagamento)+"\n"+compraDTO.getE2eId());
+            TextView meioDePagamento = findViewById(R.id.meioDePagamento);
+            meioDePagamento.setText(getString(R.string.id_pagamento)+"\n"+compraDTO.getE2eId());
         }
 
         ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
@@ -474,9 +474,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 //            if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())) {
 //                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_pix));
 //            }
-            TextView txtProcessadaPor = findViewById(R.id.compraPossesada);
-            txtProcessadaPor.setText(ViewUtils.textCaixaSTDBold(this,
-                    getString(R.string.label_compra_lista_processada_por,
+            TextView txtMeioDePagamento = findViewById(R.id.compraPossesada);
+            txtMeioDePagamento.setText(ViewUtils.textCaixaSTDBold(this,
+                    getString(R.string.label_compra_lista_meio_de_pagamento,
                             MeioPagamentoUtil.getDescricao(compraDTO.getMeioPagamento()))));
         }
     }

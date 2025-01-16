@@ -98,11 +98,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/processadaPor"
+                android:id="@+id/meioDePagamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
-                tools:text="@string/label_compra_lista_processada_por"
+                tools:text="@string/label_compra_lista_meio_de_pagamento"
                 android:fontFamily="@font/caixa_std_regular"/>
 
             <ImageView
