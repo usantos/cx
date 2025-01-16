@@ -1,7 +1,10 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
 import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -54,6 +57,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
+import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 public class ApostaBO extends SilceBO {
     private static ApostaBO instance;
@@ -379,6 +383,42 @@ public class ApostaBO extends SilceBO {
 
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
+    }
+
+    public void baixarComprovanteAposta(Long id, final RequestListener<String> listener) {
+        String endPoint = ServerMethods.APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH.replace("{id}", id.toString());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE") + endPoint, response -> {
+            listener.onResponse(response);
+        }, error -> {
+            listener.onErrorResponse(error);
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> header = (Map<String, String>) getHeader().clone();
+                header.put("Disable-Crypto", "true");
+                return header;
+            }
+        };
+        Volley.newRequestQueue(getContext()).add(stringRequest);
+    }
+
+    public void baixarComprovantePremio(Long id, final RequestListener<String> listener) {
+        String endPoint = ServerMethods.APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PREMIO_PATH.replace("{id}", id.toString());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE") + endPoint, response -> {
+            listener.onResponse(response);
+        }, error -> {
+            listener.onErrorResponse(error);
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> header = (Map<String, String>) getHeader().clone();
+                header.put("Disable-Crypto", "true");
+                return header;
+            }
+        };
+        Volley.newRequestQueue(getContext()).add(stringRequest);
     }
 
     public void getApostaDetalheComprovante(Long id, final RequestListener<ComprovanteApostaDTOResponse> listener) {

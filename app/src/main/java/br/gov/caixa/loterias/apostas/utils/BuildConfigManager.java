@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostas.utils;
 
-import android.widget.ActionMenuView;
-
 import br.gov.caixa.loterias.apostas.BuildConfig;
 
 public class BuildConfigManager {
