@@ -137,7 +137,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private boolean premioPago;
     private ApostaFavoritaDTO apostaFavoritaDTO;
     private ParametroSimulacao parametroSimulacao, parametroSimulacaoTrocado;
-    private boolean isHistorico;
+    private boolean isHistorico, apresentouSituacaoAposta = false, apresentouTeimosinha = false;
     private int RESGATOU_MP = 2000;
 
     private BigDecimal valorPremio;
@@ -688,11 +688,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void getResultadoModalidade(String txtmodalidade, String concurso) {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(this);
         apostaBO.getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), ApostaConfirmadaDetalhesActivity.this);
                 }
@@ -704,7 +704,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 apresentaBySituacao(aposta.getSituacao());
             }
         });
@@ -722,11 +722,14 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void inibirTeim() {
-        if (aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
-            ViewUtils.alertTitleButton(this,
-                                       R.string.label_atencao ,
-                                       getResources().getString(R.string.inibir_teimosinha),
-                                       getResources().getString(R.string.title_entendi));
+        if(!apresentouTeimosinha){
+            if (aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
+                ViewUtils.alertTitleButton(this,
+                        R.string.label_atencao ,
+                        getResources().getString(R.string.inibir_teimosinha),
+                        getResources().getString(R.string.title_entendi));
+                apresentouTeimosinha = true;
+            }
         }
     }
 
@@ -798,16 +801,19 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void apresentaBySituacao(DTOEnumLong situacao) {
-        aposta.setSituacao(situacao);
+        if (!apresentouSituacaoAposta){
+            apresentouSituacaoAposta = true;
+            aposta.setSituacao(situacao);
 
-        chooseFragmentToPresent();
+            chooseFragmentToPresent();
 
-        if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor(), situacao.getValor())||
-                Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor(), situacao.getValor())) {
-            getApostaDetalhePremio(aposta.getId(), this, comprovanteApostaDTO);
-        }
-        if(!situacao.getDescricao().equalsIgnoreCase("Premiada")){
-            inibirTeim();
+            if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor(), situacao.getValor())||
+                    Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor(), situacao.getValor())) {
+                getApostaDetalhePremio(aposta.getId(), this, comprovanteApostaDTO);
+            }
+            if(!situacao.getDescricao().equalsIgnoreCase("Premiada")){
+                inibirTeim();
+            }
         }
     }
 
