@@ -504,15 +504,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
-
-        ParametroSimulacao parametroInstantanea = null; //Apagar apos aprovar branch
-
         for (ParametroSimulacao parametro : modalidadesParaListar) {
-
-            //Deleta INSTANTANEA - EXCLUIR IF Quando Aprovar Branch
-            if (parametro.getParametroJogo().getConcurso().getModalidade() == null) {
-                parametroInstantanea = parametro;
-            }
 
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
                 String descricao = getDescricaoModalidade(parametro);
@@ -522,11 +514,6 @@ public class PrincipalActivity extends AppCompatActivity
                         parametro.getParametroJogo().getConcurso().getModalidade(),
                         parametro.getParametroJogo().getConcurso(), false, null));
             }
-        }
-
-        //Deleta INSTANTANEA - EXCLUIR IF Quando Aprovar Branch
-        if (parametroInstantanea != null) {
-            modalidadesParaListar.remove(parametroInstantanea);
         }
 
         return listaModalidades;

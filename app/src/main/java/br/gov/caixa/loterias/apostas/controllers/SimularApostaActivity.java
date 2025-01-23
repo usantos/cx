@@ -151,6 +151,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         preencheBarraTitulo();
         setViews();
 
+        estilo = new EstiloModalidadeMKP(tipoJogo);
         zerarApostas();
         if(aposta != null){
             mesDeSorteCartela = aposta.getMesDeSorte();

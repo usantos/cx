@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +25,6 @@ import com.google.gson.Gson;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
@@ -34,7 +32,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
 import br.gov.caixa.loterias.apostas.model.model.PixModel;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
@@ -238,12 +235,6 @@ public class CopiaColaPixFragment extends Fragment {
 
 			@Override
 			public void errorCompra(VolleyError volleyError) {
-				try {
-					RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
-				} catch (Exception e){
-					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
-				}
-
 				if (pixDTO.estaNoPrazo()){
 					iconAtualizar.setEnabled(true);
 					iconAtualizar.setVisibility(View.VISIBLE);
