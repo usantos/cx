@@ -230,6 +230,7 @@
                         android:orientation="vertical">
 
                         <View
+                            android:id="@+id/viewSeparador"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginLeft="18dp"
@@ -237,6 +238,7 @@
                             android:background="@color/cinza2" />
 
                         <LinearLayout
+                            android:id="@+id/linearCalendar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="19dp"
@@ -285,6 +287,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/linearRelogio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="19dp"
@@ -331,6 +334,27 @@
                             </LinearLayout>
 
                         </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/imageInstantanea"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/branco"
+                            android:src="@drawable/imagem_instantanea"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textPortalInstantanea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/cinzaescuro"
+                            android:textSize="13.8sp"
+                            tools:text="@string/portal_instantanea"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
