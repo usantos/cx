@@ -242,6 +242,10 @@
     <color name="cotas_boloes">#373E4A</color>
     <color name="azul_detalhe_aposta">#4FA7B2</color>
 
+    <!-- Instantanea -->
+    <color name="instantanea_claro">#00BBE6</color>
+    <color name="instantanea_escuro">#009CB5</color>
+
     <!--  Novas cores -->
     <color name="blue_caixa">#0066B3</color>
     <color name="verdeazul_inativo">#DDF1EE</color>
