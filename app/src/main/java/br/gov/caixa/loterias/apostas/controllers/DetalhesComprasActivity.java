@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -62,11 +63,12 @@ import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapt
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 
-public class DetalhesComprasActivity extends AppCompatActivity {
+public class DetalhesComprasActivity extends AppCompatActivity implements OnCopiaColaListener {
 
     public static final String DETALHES_COMPRA_ACTIVITY = "DETALHES_COMPRA_ACTIVITY";
 
@@ -74,6 +76,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     public static final int NORMAL = 1;
     public static final int ESPECIAL = 2;
 
+    public static Boolean isRunning = false;
     private CompraDTO compraDTO;
     private ArrayList<ApostaDTO> listaAposta = new ArrayList<>();
     private ArrayList<ApostaDTO> listaFiltrada = new ArrayList<>();;
@@ -144,6 +147,18 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
             tempo_acabar_pix = bundle.getLong("tempoPix", 0l);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isRunning = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isRunning = false;
     }
 
     private void verificaStatusPopUp() {
@@ -445,7 +460,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void verificaPixCopiaCola() {
         if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) &&
-            SituacaoCompraUtil.isSituacaoProcessamento(compraDTO.getSituacao())) {
+            SituacaoCompraUtil.isSituacaoAguardandoPagamento(compraDTO.getSituacao())) {
 
             startFragment();
         }
@@ -487,7 +502,6 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void buscaDetalhesCompras() {
-
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         ApostaBO.getInstance().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
@@ -724,5 +738,18 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    @Override
+    public void onFinish() {
+    }
+
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void irParaCompras() {
+        Log.d("", "");
     }
 }

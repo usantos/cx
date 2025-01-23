@@ -64,6 +64,11 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private RelativeLayout setaDireitaAcaoRelativeLayout;
 	private RelativeLayout setaEsquerdaAcaoRelativeLayout;
 	private ImageView imgSetaResultado;
+	private View viewSeparador;
+	private LinearLayout linearCalendar;
+	private LinearLayout linearRelogio;
+	private ImageView imageInstantanea;
+	private TextView textPortal;
 
 	//private EstiloModalidade estilo;
 	private EstiloModalidadeMKP estilo;
@@ -83,6 +88,11 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		relogio = itemView.findViewById(R.id.imageWatch);
 		titulo = itemView.findViewById(R.id.linearLayoutTopModalidades);
 		valorAcumulado = itemView.findViewById(R.id.textVieCardAcumulatedValue);
+		viewSeparador = itemView.findViewById(R.id.viewSeparador);
+		linearCalendar = itemView.findViewById(R.id.linearCalendar);
+		linearRelogio = itemView.findViewById(R.id.linearRelogio);
+		imageInstantanea = itemView.findViewById(R.id.imageInstantanea);
+		textPortal = itemView.findViewById(R.id.textPortalInstantanea);
 		premioEstimadoConcurso = itemView.findViewById(R.id.textPremioEstimadoConcurso);
 		dataSorteio = itemView.findViewById(R.id.textVieCardDrawDate);
 		textViewSorteioOuEncerramento = itemView.findViewById(R.id.textViewSorteioOuEncerramento);
@@ -110,6 +120,30 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
 
 		this.game.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorFonteFundoClaro()));
+
+		if (modalidade.getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA)) {
+			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
+			this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
+			this.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
+			//TODO: Altera a cor do título do carrosel
+			this.trevo.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+			this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrapezio()));
+			this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
+			this.valorAcumulado.setVisibility(View.INVISIBLE);
+			this.premioEstimadoConcurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.instantanea_texto_card)));
+			this.viewSeparador.setVisibility(View.GONE);
+			this.linearCalendar.setVisibility(View.GONE);
+			this.linearRelogio.setVisibility(View.GONE);
+			this.imageInstantanea.setVisibility(View.VISIBLE);
+			this.textPortal.setVisibility(View.VISIBLE);
+			this.textPortal.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.portal_instantanea)));
+			this.buttonActionResultadosModalidade.setVisibility(View.GONE);
+			this.imgSetaResultado.setVisibility(View.GONE);
+
+			return;
+		}
+
 		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo))) {
 			this.game.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
 			this.tvNomeEspeciais.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
@@ -158,7 +192,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			String estimativaFormatado = ViewUtils.getMoedaFormat(modalidade.getConcurso().getEstimativa());
 			this.valorAcumulado.setText(estimativaFormatado);
 			this.valorAcumulado.setTextSize(20);
-			//this.premioEstimadoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(), itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold,
 			this.premioEstimadoConcurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold,
 																											   modalidade.getConcurso().getNumero())));
 			this.premioEstimadoConcurso.setVisibility(View.VISIBLE);
