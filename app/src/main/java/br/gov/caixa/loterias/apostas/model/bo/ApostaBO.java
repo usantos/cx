@@ -228,8 +228,11 @@ public class ApostaBO extends SilceBO {
         if(page.getOrdenarPor() != 0) {
             queryParams.put("ordenacao", String.valueOf(page.getOrdenarPor()));
         }
-        //queryParams.put("situacao", String.valueOf(page.getSituacao()));
 
+        if(page.getTipoAposta() != 0) {
+            queryParams.put("tipoAposta", String.valueOf(page.getTipoAposta()));
+        }
+        //queryParams.put("situacao", String.valueOf(page.getSituacao()));
         //        queryParams.put("idsApostas", idsApostas);
         return queryParams;
     }
