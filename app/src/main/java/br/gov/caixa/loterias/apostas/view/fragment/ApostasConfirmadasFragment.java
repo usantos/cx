@@ -73,6 +73,7 @@ import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
+import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -293,9 +294,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 }
             });
         } else {
-            if (ConfiguracaoAppSingleton.getInstance() != null
-                    && ConfiguracaoAppSingleton.getInstance().isMicroServico() != null
-                    && ConfiguracaoAppSingleton.getInstance().isNovaApi()) {
+            if (NovaApiUtils.isPossoBuscarNovaAPI()) {
                 requestApostasNovaApi();
             } else if (ConfiguracaoAppSingleton.getInstance() != null
                     && ConfiguracaoAppSingleton.getInstance().isMicroServico() != null
