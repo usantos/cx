@@ -193,40 +193,15 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         this.sorteioTextView = findViewById(R.id.sorteioTextView);
         this.premiacaoTextView = findViewById(R.id.premiacaoTextView);
 
-        lotericaLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickLotericaLayout();
-            }
-        });
+        lotericaLayout.setOnClickListener(view -> clickLotericaLayout());
 
-        botaoAposteAgora.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickBotaoAposteAgora();
-            }
-        });
+        botaoAposteAgora.setOnClickListener(view -> clickBotaoAposteAgora());
 
-        agenciaCaixaLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickAgenciaCaixaLayout();
-            }
-        });
+        agenciaCaixaLayout.setOnClickListener(view -> clickAgenciaCaixaLayout());
 
-        pixLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickPixLayout();
-            }
-        });
+        pixLayout.setOnClickListener(view -> clickPixLayout());
 
-        mercadoPagoLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickMercadoPagoLayout();
-            }
-        });
+        mercadoPagoLayout.setOnClickListener(view -> clickMercadoPagoLayout());
     }
 
     protected void clickLotericaLayout() {
