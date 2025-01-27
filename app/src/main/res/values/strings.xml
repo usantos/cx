@@ -245,7 +245,7 @@
     <string name="title_activity_ler_bilhetes">LerBilhetesActivity</string>
     <string name="title_activity_ler_bilhetes_escolha_jogo">Resultado</string>
     <string name="label_x_minusculo">x</string>
-    <string name="title_activity_resultado_ler_bilhetes">_Resultado_</string>
+    <string name="title_activity_resultado_ler_bilhetes">_Resultado da aposta_</string>
     <string name="title_activity_detalhes_compras">Apostas da Compra</string>
     <string name="label_empty_list_compras">Você ainda não possui compras neste mês.</string>
     <string name="label_declaracao_termo_uso">Declaro ter lido e concordado com os\ntermos de uso</string>
