@@ -137,7 +137,7 @@
                         android:autoSizeTextType="uniform"
                         android:textColor="@color/branco"
                         android:textSize="18.0sp"
-                        android:fontFamily="@font/caixa_std_bold"
+                        android:fontFamily="@font/futura_std_bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
