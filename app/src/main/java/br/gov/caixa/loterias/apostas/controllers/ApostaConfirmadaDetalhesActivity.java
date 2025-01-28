@@ -137,7 +137,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private boolean premioPago;
     private ApostaFavoritaDTO apostaFavoritaDTO;
     private ParametroSimulacao parametroSimulacao, parametroSimulacaoTrocado;
-    private boolean isHistorico, apresentouSituacaoAposta = false, apresentouTeimosinha = false;
+    private boolean apresentouTeimosinha = false, chamouResultado = false;
     private int RESGATOU_MP = 2000;
 
     private BigDecimal valorPremio;
@@ -221,7 +221,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         if (comprovanteApostaDTO != null) {
             premioPago = false;
-            isHistorico = false;
             aposta = comprovanteApostaDTO.getAposta();
             if (comprovanteApostaDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)){
                 apostaMatriz = comprovanteApostaDTO.getAposta();
@@ -237,7 +236,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                     apostaMatriz.setNumerosSelecionados(detalhesPremioDTO.getAposta().getMatrizNumerosSelecionados());
                 }
                 valorPremio = detalhesPremioDTO.getPremio().getValorLiquido();
-                isHistorico = false;
             } else {
                 aposta = detalhesHistoricoPremioDTO.getAposta();
                 if (detalhesHistoricoPremioDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)){
@@ -245,7 +243,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                     apostaMatriz.setNumerosSelecionados(detalhesHistoricoPremioDTO.getAposta().getMatrizNumerosSelecionados());
                 }
                 valorPremio = detalhesHistoricoPremioDTO.getPremioDTO().getValorLiquido();
-                isHistorico = true;
             }
         }
 
@@ -781,11 +778,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 if (numerosFragment != null){
                     numerosFragment.setDetalhesPremio(result.getPayload());
                 }
-                //ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
-                Intent intent = IntentUtil.getIntentOrigemDestino((Activity) contextParam, ResultadoApostaConfirmadaActivity.class);
-                intent.putExtra(ResultadoApostaConfirmadaActivity.DETALHES_PREMIO_DTO_EXTRA, ((Serializable) result.getPayload()));
-                intent.putExtra(ResultadoApostaConfirmadaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovante));
-                ((Activity) contextParam).startActivityForResult(intent, RESGATOU_MP);
+                if(!chamouResultado) {
+                    chamouResultado = true;
+                    Intent intent = IntentUtil.getIntentOrigemDestino((Activity) contextParam, ResultadoApostaConfirmadaActivity.class);
+                    intent.putExtra(ResultadoApostaConfirmadaActivity.DETALHES_PREMIO_DTO_EXTRA, ((Serializable) result.getPayload()));
+                    intent.putExtra(ResultadoApostaConfirmadaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovante));
+                    ((Activity) contextParam).startActivityForResult(intent, RESGATOU_MP);
+                }
             }
 
             @Override
@@ -801,19 +800,14 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void apresentaBySituacao(DTOEnumLong situacao) {
-        if (!apresentouSituacaoAposta){
-            apresentouSituacaoAposta = true;
-            aposta.setSituacao(situacao);
-
-            chooseFragmentToPresent();
-
-            if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor(), situacao.getValor())||
-                    Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor(), situacao.getValor())) {
-                getApostaDetalhePremio(aposta.getId(), this, comprovanteApostaDTO);
-            }
-            if(!situacao.getDescricao().equalsIgnoreCase("Premiada")){
-                inibirTeim();
-            }
+        aposta.setSituacao(situacao);
+        chooseFragmentToPresent();
+        if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor(), situacao.getValor())||
+                Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor(), situacao.getValor())) {
+            getApostaDetalhePremio(aposta.getId(), this, comprovanteApostaDTO);
+        }
+        if(!situacao.getDescricao().equalsIgnoreCase("Premiada")){
+            inibirTeim();
         }
     }
 
