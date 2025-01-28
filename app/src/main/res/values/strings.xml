@@ -1194,7 +1194,7 @@
     <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
 
     <!-- Popup Pix Pagamento Não Realizado -->
-    <string name="title_activity_resgate_pix">_Resgate de prêmio_</string>
+    <string name="title_activity_resgate_pix">_Resgate de Prêmio via Pix_</string>
     <string name="popup_pix_cpf_vinculado">Somente será realizado resgate em Chave Pix vinculada ao CPF do apostador.</string>
 
     <!-- Pix Resgate Prêmio -->
@@ -1474,5 +1474,7 @@
     <string name="interrogacoes">\???</string>
     <string name="apostas_inclu_das_no_combo">Apostas incluídas no combo</string>
     <string name="cep_invalido">O CEP informado não foi localizado. Por favor, informe um CEP válido.</string>
+    <string name="valor_do_credito">Valor do Crédito</string>
+    <string name="resgate_processado_via">Resgate processado via</string>
 
 </resources>
