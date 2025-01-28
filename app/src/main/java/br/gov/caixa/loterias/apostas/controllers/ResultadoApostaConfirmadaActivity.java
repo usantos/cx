@@ -292,20 +292,14 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     private void trataFormasDeResgate() {
         for (TipoPagamentoDTO meioPagamento: detalhesPremioDTO.getMeiosResgate()) {
-            switch (meioPagamento.getCanal()) {
-                case SILCE:
-                    if (meioPagamento.getId().intValue() == MeioPagamentoUtil.MERCADO_PAGO.intValue())
-                        mercadoPagoLayout.setVisibility(View.VISIBLE);
-                    //Bloqueado para garantir que não chame o resgate PIX
-                    //if (meioPagamento.getId().intValue() == MeioPagamentoUtil.PIX.intValue())
-                    //    pixLayout.setVisibility(View.VISIBLE);
-                    break;
-                case SISPL:
-                    lotericaLayout.setVisibility(View.VISIBLE);
-                    break;
-                case SIGEL:
-                    agenciaCaixaLayout.setVisibility(View.VISIBLE);
-                    break;
+            if (meioPagamento.getId().equals(MeioPagamentoUtil.MERCADO_PAGO)) {
+                mercadoPagoLayout.setVisibility(View.VISIBLE);
+            } else if (meioPagamento.getId().equals(MeioPagamentoUtil.LOTERICA)) {
+                lotericaLayout.setVisibility(View.VISIBLE);
+            } else if (meioPagamento.getId().equals(MeioPagamentoUtil.AGENCIA)) {
+                agenciaCaixaLayout.setVisibility(View.VISIBLE);
+            } else if (meioPagamento.getId().equals(MeioPagamentoUtil.PIX)) {
+                pixLayout.setVisibility(View.VISIBLE);
             }
         }
         if (detalhesPremioDTO.getMensagemInformativaIR() != null && !detalhesPremioDTO.getMensagemInformativaIR().isEmpty()){

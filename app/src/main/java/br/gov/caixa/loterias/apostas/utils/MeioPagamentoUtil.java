@@ -7,6 +7,8 @@ public class MeioPagamentoUtil {
 	public static final Long MERCADO_PAGO = 1L;
 	public static final Long RECARGA_PAY  = 5L;
 	public static final Long PIX = 6L;
+	public static final Long AGENCIA = 9770L;
+	public static final Long LOTERICA = 9660L;
 
 	public static final String MERCADO_PAGO_DESCRICAO = "Mercado Pago";
 	public static final String RECARGA_PAY_DESCRICAO = "Recarga Pay";
