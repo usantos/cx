@@ -1476,5 +1476,8 @@
     <string name="cep_invalido">O CEP informado não foi localizado. Por favor, informe um CEP válido.</string>
     <string name="valor_do_credito">Valor do Crédito</string>
     <string name="resgate_processado_via">Resgate processado via</string>
+    <string name="escolha_chave_pix_restae_premio">Escolha a chave Pix que deseja receber o resgate do prêmio</string>
+    <string name="outra_chave">Outra Chave</string>
+    <string name="label_chave">Chave</string>
 
 </resources>
