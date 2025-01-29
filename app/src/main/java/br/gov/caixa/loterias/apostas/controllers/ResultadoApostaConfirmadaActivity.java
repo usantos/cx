@@ -251,6 +251,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             if (meioPagamento.getId().equals(MeioPagamentoUtil.PIX)) {
                 list.add(new OpcaoResgatePremio(getDrawable(R.drawable.icone_do_pix), getString(R.string.label_pix), v -> {
                     Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);
+                    intent.putExtra(ResgatePixActivity.ARG_VALOR, detalhesPremioDTO.getPremio().getValorLiquido());
                     startActivity(intent);
                 }));
             } else if (meioPagamento.getId().equals(MeioPagamentoUtil.MERCADO_PAGO)) {
