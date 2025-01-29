@@ -1479,5 +1479,7 @@
     <string name="escolha_chave_pix_restae_premio">Escolha a chave Pix que deseja receber o resgate do prêmio</string>
     <string name="outra_chave">Outra Chave</string>
     <string name="label_chave">Chave</string>
+    <string name="hint_outra_chave">Celular / e-mail / Chave aleatória</string>
+    <string name="ciente_resgate_pix">Estou ciente que o resgate de prêmio só poderá ser realizado para uma conta de titularidade do apostador.</string>
 
 </resources>
