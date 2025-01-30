@@ -78,14 +78,14 @@
         android:fontFamily="@font/caixa_std_bold"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="@id/labelChave"
-        app:layout_constraintTop_toBottomOf="@id/labelChave"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@id/labelChave"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/containerOutraChave"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/labelChave"
         app:layout_constraintStart_toStartOf="@id/labelChave"
         app:layout_constraintEnd_toEndOf="parent">
@@ -112,6 +112,5 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
