@@ -52,7 +52,7 @@ public class ApostaCarrinhoComboHolder extends LoteriasHolder<ComboApostaDTO> {
 			for (IdentificaoDeUmaApostaDas8Modalidades umaAposta : comboAposta.getApostas()) {
 				valAposta = valAposta.add(umaAposta.getValor());
 			}
-			ViewUtils.setMoedaFormatHtml(valAposta, valorAposta);
+			ViewUtils.setMoedaFormatHtmlCombo(valAposta, valorAposta);
 
 			if (comboAposta.getApostas().size() == 1)
 				this.tvQtdApostasCombo.setText(comboAposta.getApostas().size() + " aposta");

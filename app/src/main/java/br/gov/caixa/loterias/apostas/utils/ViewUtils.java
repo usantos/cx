@@ -380,6 +380,19 @@ public class ViewUtils {
         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
+    public static void setMoedaFormatHtmlCombo(BigDecimal valor, TextView valorTextView) {
+        String valorFormatoMoeda = getMoedaFormat(valor);
+
+        if (Build.VERSION.SDK_INT < 28) {
+            if (!valorFormatoMoeda.contains(" ")) {
+                valorFormatoMoeda = new StringBuffer(valorFormatoMoeda).insert(2, " ").toString();
+            }
+        }
+
+        String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
+        valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + valorFormatoMoedaArray[1]));
+    }
+
     public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView, String complemento) {
         String valorFormatoMoeda = getMoedaFormat(valor);
 
