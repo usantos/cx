@@ -8,5 +8,5 @@
     android:layout_height="wrap_content"
     android:paddingTop="17dp"
     android:ellipsize="marquee"
-    android:fontFamily="@font/font_caixa_std"
+    android:fontFamily="@font/caixa_std_regular"
     />
