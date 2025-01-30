@@ -88,7 +88,7 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		swipeLayout.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener(aposta, swipeLayout, position));
 
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.toString(aposta.getModalidade().getDescricao().toLowerCase(new Locale(activity.getResources().getString(R.string.pt), activity.getResources().getString(R.string.br)))));
-		tituloApostaFavorita.setText(aposta.getModalidade().getDescricao());
+		tituloApostaFavorita.setText(aposta.getModalidade().getDescricao().toLowerCase());
 		tituloApostaFavorita.setTextColor(activity.getResources().getColor(estilo.getCorLetraLista()));
 		tituloNomeApostaFavorita.setText(activity.getResources().getString(R.string.espaco_barra_reta_espaco) + aposta.getNome());
 
