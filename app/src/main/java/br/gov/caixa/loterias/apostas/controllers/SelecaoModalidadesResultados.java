@@ -82,10 +82,10 @@ public class SelecaoModalidadesResultados extends AppCompatActivity {
             TipoAposta tipoAposta = null;
             switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
                 case MAIS_MILIONALIA:
-                    tipoAposta = new TipoAposta("+milionária", estilo.getTrevoFundoEscuro(), estilo.getCorClara(), true, item.getValor(), item.getDescricaoEspecial(), estilo.getCorFonteFundoClaro());
+                    tipoAposta = new TipoAposta("+Milionária", R.drawable.trevo_mais_milionaria_nao_selecionado, estilo.getTrevoFundoEscuro(), estilo.getCorClara(), true, item.getValor(), item.getDescricaoEspecial(), estilo.getCorFonteFundoClaro());
                     break;
                 default:
-                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), true, item.getValor(), item.getDescricaoEspecial(), estilo.getCorFonteFundoClaro());
+                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), true, item.getValor(), item.getDescricaoEspecial(), estilo.getCorFonteFundoClaro());
                     break;
             }
             if (tipoAposta != null) {
