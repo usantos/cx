@@ -44,10 +44,11 @@ import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 
 public class FragmentUtils {
 
-	public static void startFragmentAllowingStateLoss(FragmentManager fm, int id, Fragment fragment){
+	public static Fragment startFragmentAllowingStateLoss(FragmentManager fm, int id, Fragment fragment){
 		FragmentTransaction fragmentTransaction = fm.beginTransaction();
 		fragmentTransaction.replace(id, fragment);
 		fragmentTransaction.commitAllowingStateLoss();
+		return fragment;
 	}
 
 	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, String TAG) {

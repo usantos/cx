@@ -29,8 +29,17 @@ public class EscolhaChavePixResgateFragment extends Fragment {
 	private AppCompatCheckBox checkBox;
 	private OnEscolhaChavePisResgateListener listener;
 	private boolean isOutraChaveValid = false;
+	private CHAVE tipoChave = CHAVE.CPF;
 
 	private EscolhaChavePixResgateFragment() {}
+
+	public String getChavePIX() {
+		if (tipoChave == CHAVE.CPF){
+			return txtChaveCPF.getText().toString();
+		} else {
+			return editOutraChave.getText().toString();
+		}
+	}
 
 	private enum CHAVE{
 		CPF, OUTRA
@@ -101,6 +110,7 @@ public class EscolhaChavePixResgateFragment extends Fragment {
 				containerOutraChave.setVisibility(View.VISIBLE);
 				break;
 		}
+		this.tipoChave = tipoChave;
 		checagemValidade(tipoChave);
 	}
 

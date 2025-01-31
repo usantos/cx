@@ -30,6 +30,9 @@ class ServerMethods {
      // PIX
      static final String GERAR_CODIGO_PIX = "/carrinhos/gerar-cobranca-pix";
 
+     // RESGATE PIX
+     static final String CONSULTA_DADOS_CHAVE = "/apostas/{id}/consulta-dados-chave";
+
      //MEIO PAGAMENTO
      static final String MEIOS_PAGAMENTOS_ID = "/meios-pagamento/{id}";
      static final String MEIOS_PAGAMENTOS = "/meios-pagamento";
