@@ -337,6 +337,7 @@
     <string name="label_aposta">aposta</string>
     <string name="label_apostas">apostas</string>
     <string name="label_resultado">Resultado</string>
+    <string name="label_loterica_titulo">_Lotérica_</string>
     <string name="label_loterica">Lotérica</string>
     <string name="label_agencia_caixa">Agência CAIXA</string>
     <string name="label_mercado_pago">Mercado Pago</string>

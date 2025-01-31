@@ -116,7 +116,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolBarLoteca"
             android:layout_width="0dp"
-            android:layout_height="140dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/drawer_linha_divisao_bg"
             android:orientation="vertical"
             android:visibility="visible"
