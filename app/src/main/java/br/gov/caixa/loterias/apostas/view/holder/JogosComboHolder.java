@@ -36,7 +36,7 @@ public class JogosComboHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8M
 		containerTimemania = itemView.findViewById(R.id.id_timemania);
 		containerMaisMilionaria = itemView.findViewById(R.id.id_mais_milionaria);
 		trevosListView = itemView.findViewById(R.id.id_lista_trevos);
-		calendarioDiaSorte = itemView.findViewById(R.id.id_img_calendar);
+
 	}
 
 	@Override
@@ -48,9 +48,6 @@ public class JogosComboHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8M
 			modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorLetraLista()));
 			concurso.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorLetraLista()));
 			valor.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorLetraLista()));
-			if(aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE){
-				calendarioDiaSorte.setImageDrawable(VectorUtils.getShape(R.drawable.ic_calendario, new EstiloModalidadeMKP(aposta.getModalidade()).getCorLetraLista()));
-			}
 
 		} else {
 			modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorClara()));
