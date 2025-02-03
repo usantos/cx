@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,13 +16,14 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaComboRecyclerView;
 
 public class JogosComboHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8Modalidades> {
 	private TextView modalidade, concurso, valor;
 	private RecyclerView listView, trevosListView;
-
+	private ImageView calendarioDiaSorte;
 	private ConstraintLayout containerDiaSorte, containerTimemania, containerMaisMilionaria;
 
 	public JogosComboHolder(View itemView) {
@@ -34,15 +36,22 @@ public class JogosComboHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8M
 		containerTimemania = itemView.findViewById(R.id.id_timemania);
 		containerMaisMilionaria = itemView.findViewById(R.id.id_mais_milionaria);
 		trevosListView = itemView.findViewById(R.id.id_lista_trevos);
+		calendarioDiaSorte = itemView.findViewById(R.id.id_img_calendar);
 	}
 
 	@Override
 	public void bind(IdentificaoDeUmaApostaDas8Modalidades aposta, int position) {
 		modalidade.setText(ViewUtils.getNomeModalidadePorApostaDuasLinas(aposta).toLowerCase());
-		if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
-			modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.timemania_letra_mkp));
-			concurso.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.timemania_letra_mkp));
-			valor.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.timemania_letra_mkp));
+		if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA ||
+			aposta.getModalidade() == ModalidadeEnum.SUPER_7 ||
+			aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE){
+			modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorLetraLista()));
+			concurso.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorLetraLista()));
+			valor.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorLetraLista()));
+			if(aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE){
+				calendarioDiaSorte.setImageDrawable(VectorUtils.getShape(R.drawable.ic_calendario, new EstiloModalidadeMKP(aposta.getModalidade()).getCorLetraLista()));
+			}
+
 		} else {
 			modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorClara()));
 			concurso.setTextColor(ContextCompat.getColor(itemView.getContext(), new EstiloModalidadeMKP(aposta.getModalidade()).getCorClara()));
