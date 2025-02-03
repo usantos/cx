@@ -32,6 +32,7 @@ class ServerMethods {
 
      // RESGATE PIX
      static final String CONSULTA_DADOS_CHAVE = "/apostas/{id}/consulta-dados-chave";
+     static final String CANCELA_RESGATE_PIX = "/apostas/{id}/cancelar-resgate-pix";
 
      //MEIO PAGAMENTO
      static final String MEIOS_PAGAMENTOS_ID = "/meios-pagamento/{id}";

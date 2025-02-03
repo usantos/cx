@@ -1070,4 +1070,18 @@ public class ApostaBO extends SilceBO {
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
+
+    public void cancelarPix(String idAposta, final RequestListener<ConsultaDadosChavePixResponse> listener) {
+        String url = ServerMethods.CANCELA_RESGATE_PIX.replace("{id}", idAposta);
+
+        final GsonRequest request = getServiceConnection().buildGetRequest(url,
+                new LinkedHashMap<>(),
+                ConsultaDadosChavePixResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
 }

@@ -247,7 +247,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     private void trataFormasDeResgate() {
         ArrayList<OpcaoResgatePremio> list = new ArrayList<>();
-        for (TipoPagamentoDTO meioPagamento: detalhesPremioDTO.getMeiosResgate()) {
+        for (int i = 0; i < detalhesPremioDTO.getMeiosResgate().size(); i++){
+            TipoPagamentoDTO meioPagamento = detalhesPremioDTO.getMeiosResgate().get(i);
             if (meioPagamento.getId().equals(MeioPagamentoUtil.PIX)) {
                 list.add(new OpcaoResgatePremio(getDrawable(R.drawable.icone_do_pix), getString(R.string.label_pix), v -> {
                     Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);

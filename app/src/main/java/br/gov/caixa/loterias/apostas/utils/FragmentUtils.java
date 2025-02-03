@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DadosChavePixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -23,6 +24,7 @@ import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoSimulacaoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.ConfirmacaoChavePixResgateFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
@@ -218,5 +220,9 @@ public class FragmentUtils {
     public static ApostasConfirmadasFragment getApostasConfirmadasFragment(boolean isHistorico) {
 		ApostasConfirmadasFragment fragment = ApostasConfirmadasFragment.newInstance(isHistorico);
 		return fragment;
+	}
+
+	public static void startConfirmacaoChavePixResgate(FragmentManager fm, int id, DadosChavePixDTO dadosChavePix) {
+		startFragmentAllowingStateLoss(fm, id, ConfirmacaoChavePixResgateFragment.newInstance(dadosChavePix));
 	}
 }

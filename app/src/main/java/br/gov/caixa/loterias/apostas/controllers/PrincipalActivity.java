@@ -310,6 +310,17 @@ public class PrincipalActivity extends AppCompatActivity
 
         layoutSideMenu();
         fragmentSomadorCarrinho();
+        checkRedirecionamento();
+    }
+
+    private void checkRedirecionamento() {
+        if (isGoToMinhasApostas()){
+            startActivity(new Intent(PrincipalActivity.this, MinhasApostasActivity.class));
+        }
+    }
+
+    private boolean isGoToMinhasApostas() {
+        return getIntent() != null && getIntent().getBooleanExtra(getString(R.string.arg_goto_minhas_apostas), false);
     }
 
     private void fragmentSomadorCarrinho() {

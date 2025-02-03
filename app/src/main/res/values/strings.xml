@@ -1481,5 +1481,11 @@
     <string name="label_chave">Chave</string>
     <string name="hint_outra_chave">Celular / e-mail / Chave aleatória</string>
     <string name="ciente_resgate_pix">Estou ciente que o resgate de prêmio só poderá ser realizado para uma conta de titularidade do apostador.</string>
+    <string name="confirmar_chave_pix_resgate">Confirmar a chave Pix para o resgate</string>
+    <string name="dados_titular_chave">Dados do titular da chave:</string>
+    <string name="seu_resgate_foi_solicitado_com_sucesso">Seu resgate foi solicitado com sucesso!</string>
+    <string name="voce_pode_acompanhar_situacao">Voçê pode acompanhar a situação do \nresgate pelo menu Minhas apostas \nenquanto ele é processado</string>
+    <string name="acesse_minhas_apostas">Acesse \n_Minhas apostas_</string>
+    <string name="arg_goto_minhas_apostas">GO_TO_MINHAS_APOSTAS</string>
 
 </resources>
