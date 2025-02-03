@@ -215,7 +215,7 @@ public class ViewUtils {
 
             DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
             TextView textMessageView = dialog.findViewById(android.R.id.message);
-            textTitleView.setTypeface(getFontFuturaBold(context));
+            textTitleView.setTypeface(getFontCaixaStdBold(context));
             textMessageView.setTypeface(getFontCaixaStdRegular(context));
         }catch (Exception e){
             Log.d("", e.getLocalizedMessage());
