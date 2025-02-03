@@ -46,4 +46,8 @@ public class LoteriasAppActivity extends AppCompatActivity {
 		this.toolbar = toolbar;
 	}
 
+	public void hideHomeAsUpButton(){
+		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+	}
+
 }
