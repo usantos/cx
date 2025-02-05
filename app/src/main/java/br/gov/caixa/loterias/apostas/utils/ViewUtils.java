@@ -215,7 +215,7 @@ public class ViewUtils {
 
             DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
             TextView textMessageView = dialog.findViewById(android.R.id.message);
-            textTitleView.setTypeface(getFontFuturaBold(context));
+            textTitleView.setTypeface(getFontCaixaStdBold(context));
             textMessageView.setTypeface(getFontCaixaStdRegular(context));
         }catch (Exception e){
             Log.d("", e.getLocalizedMessage());
@@ -378,6 +378,19 @@ public class ViewUtils {
 
         String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
+    }
+
+    public static void setMoedaFormatHtmlCombo(BigDecimal valor, TextView valorTextView) {
+        String valorFormatoMoeda = getMoedaFormat(valor);
+
+        if (Build.VERSION.SDK_INT < 28) {
+            if (!valorFormatoMoeda.contains(" ")) {
+                valorFormatoMoeda = new StringBuffer(valorFormatoMoeda).insert(2, " ").toString();
+            }
+        }
+
+        String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
+        valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + valorFormatoMoedaArray[1]));
     }
 
     public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView, String complemento) {

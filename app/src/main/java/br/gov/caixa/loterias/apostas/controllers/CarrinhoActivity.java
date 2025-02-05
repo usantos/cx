@@ -646,6 +646,9 @@ public class CarrinhoActivity extends AppCompatActivity {
         if (temBolaoCarrinho()){
             carrinho.getBoloes().removeAll(carrinho.getBoloes());
         }
+        if(temCombosCarrinho()){
+            carrinho.getCombos().removeAll(carrinho.getCombos());
+        }
         carrinho.setValorTotal(BigDecimal.ZERO);
         CarrinhoSingleton.getInstance().setCarrinho(carrinho);
         synchronized (rvListaApostas) {

@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.VolleyError;
@@ -25,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaConfirmadaLotecaAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaConfirmadaLotogolAdapter;
@@ -39,10 +41,11 @@ public class ApostaConfirmadaPartidaDetalhesFragment extends ApostaConfirmadaDet
 
 	private View view;
 
+	private EstiloModalidadeMKP estilo;
 	private LinearLayout cabecalhoLotecaLinearLayout,  concursoRodapeLinearLayout;
 
 	private TextView concursoCabecalhoTextView, concursoRodaPeTextView, dataHoraTextView,
-			statusApostaTextView, tv_val_premio, tv_val_premio_tit;
+			statusApostaTextView, tv_val_premio, tv_val_premio_tit, tv_premio_pago_tit;
 	private ConstraintLayout cl_premio_pago, clResgatePremio;
 	private ExpandableHeightRecyclerView listaPartidasApostadasExpandebleRecyclerView;
 
@@ -79,6 +82,8 @@ public class ApostaConfirmadaPartidaDetalhesFragment extends ApostaConfirmadaDet
 		view = inflater.inflate(R.layout.fragment_aposta_confirmada_partida, container, false);
 		setaViews();
 
+		estilo = new EstiloModalidadeMKP(aposta.getModalidade());
+
 		clResgatePremio.setOnClickListener(onResgateClickListenr());
 
 		preencheDadosAposta();
@@ -100,6 +105,10 @@ public class ApostaConfirmadaPartidaDetalhesFragment extends ApostaConfirmadaDet
 
 			tv_val_premio.setVisibility(View.VISIBLE);
 			tv_val_premio_tit.setVisibility(View.VISIBLE);
+			tv_val_premio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			tv_val_premio_tit.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			tv_premio_pago_tit.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+
 			if (getValorDoPremio() != null) {
 				tv_val_premio.setText(ViewUtils.getMoedaFormat(getValorDoPremio()));
 			} else {
@@ -166,6 +175,7 @@ public class ApostaConfirmadaPartidaDetalhesFragment extends ApostaConfirmadaDet
 		listaPartidasApostadasExpandebleRecyclerView = view.findViewById(R.id.listaPartidasApostadasExpandebleRecyclerView);
 		tv_val_premio = view.findViewById(R.id.tv_val_premio);
 		tv_val_premio_tit = view.findViewById(R.id.tv_val_premio_tit);
+		tv_premio_pago_tit = view.findViewById(R.id.tv_premio_pago_tit);
 		cl_premio_pago = view.findViewById(R.id.cl_premio_pago);
 		clResgatePremio = view.findViewById(R.id.clResgatePremio);
 	}
