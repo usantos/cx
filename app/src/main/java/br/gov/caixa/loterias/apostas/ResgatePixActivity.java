@@ -1,207 +1,161 @@
 package br.gov.caixa.loterias.apostas;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.AppCompatButton;
 
-import java.util.ArrayList;
+import com.android.volley.VolleyError;
 
-import br.gov.caixa.loterias.apostas.mock.ChaveFavoritaMockSingleton;
-import br.gov.caixa.loterias.apostas.model.bean.ChavePix;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import java.math.BigDecimal;
+
+import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoResgatePixActivity;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DadosChavePixDTO;
 import br.gov.caixa.loterias.apostas.model.model.ResgatePixModel;
-import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
-import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.activity.ConfirmaDadosPixActivity;
-import br.gov.caixa.loterias.apostas.view.activity.DigitaChaveActivity;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaChavePixFavoritaRecyclerView;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaChavePixRecyclerView;
-import br.gov.caixa.loterias.apostas.view.fragment.ChavePixFragment;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnChaveFavoritaClickListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
-import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
+import br.gov.caixa.loterias.apostas.view.fragment.EscolhaChavePixResgateFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnEscolhaChavePisResgateListener;
 
-public class ResgatePixActivity extends LoteriasAppActivity {
-
-	private static final int RESGATE_PIX = 123;
-
-	private RecyclerView listaChaves, listaChavesFavoritas;
-	private ConstraintLayout containerFav;
-	private Dialog dialogNaoCPF;
-
+public class ResgatePixActivity extends LoteriasAppActivity implements OnEscolhaChavePisResgateListener {
+	public static final String ARG_VALOR = "ARG_VALOR";
+	public static final String ARG_ID_APOSTA = "ARG_ID_APOSTA";
 	private ResgatePixModel model;
-	private ListaChavePixFavoritaRecyclerView chavesFavAdapter;
-	private ArrayList<ChavePix> listaChaveFavorita;
+	private BigDecimal valor;
+	private String idAposta;
+	private TextView txtValor;
+	private AppCompatButton btnCancelar, btnContinuar;
+	private ETAPA etapa = ETAPA.ESCOLHA_CHAVE;
+	private EscolhaChavePixResgateFragment escolhaChavePixResgateFragment;
+	private DadosChavePixDTO dadosChavePix;
+
+	private enum ETAPA {
+		ESCOLHA_CHAVE, CONFIRMACAO
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_resgate_pix);
 		configToolbar(R.id.toolbar);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_resgate_pix)));
+		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_resgate_pix)));
 
 		model = new ResgatePixModel(this);
+		getExtras();
+		setViews();
+		setListeners();
 
-		listaChaves = findViewById(R.id.listaChaves);
-		listaChavesFavoritas = findViewById(R.id.listaChavesFavoritas);
-		containerFav = findViewById(R.id.containerFavoritas);
+		txtValor.setText(ViewUtils.getMoedaFormat(valor));
 
-		configListaChave();
+		startFragment();
+	}
+
+	private void setListeners() {
+		btnCancelar.setOnClickListener(v -> handleCancelar());
+		btnContinuar.setOnClickListener(v -> handleContinuar());
+	}
+
+	private void handleContinuar() {
+		switch (etapa){
+			case ESCOLHA_CHAVE:
+				AlertDialogUtils.show(this);
+				model.consultaDadosChave(idAposta, getChavePIX(), onConsultaDadosListener());
+				break;
+			case CONFIRMACAO:
+				AlertDialogUtils.show(this);
+				model.resgatarPremio(idAposta, getChavePIX(), onResgatePixListener());
+		}
+	}
+
+	private OnSilceListener onResgatePixListener() {
+		return new OnSilceListener() {
+			@Override
+			public void success(Object payload) {
+				AlertDialogUtils.dismiss();
+				startActivity(IntentUtil.getIntentOrigemDestino(ResgatePixActivity.this, ConfirmacaoResgatePixActivity.class));
+				finish();
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
+	}
+
+	private void handleCancelar() {
+		switch (etapa){
+			case ESCOLHA_CHAVE:
+				onBackPressed();
+				break;
+			case CONFIRMACAO:
+				AlertDialogUtils.show(this);
+				model.cancelarPix(idAposta, onCancelaPixListener());
+		}
+	}
+
+	private OnSilceListener<DadosChavePixDTO> onCancelaPixListener() {
+		return new OnSilceListener<DadosChavePixDTO>() {
+			@Override
+			public void success(DadosChavePixDTO payload) {
+				AlertDialogUtils.dismiss();
+				onBackPressed();
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
+	}
+
+	private String getChavePIX() {
+		return escolhaChavePixResgateFragment.getChavePIX();
+	}
+
+	private OnSilceListener<DadosChavePixDTO> onConsultaDadosListener() {
+		return new OnSilceListener<DadosChavePixDTO>() {
+			@Override
+			public void success(DadosChavePixDTO payload) {
+				AlertDialogUtils.dismiss();
+				etapa = ETAPA.CONFIRMACAO;
+				btnContinuar.setText(R.string.resgatar);
+				dadosChavePix = payload;
+				FragmentUtils.startConfirmacaoChavePixResgate(getSupportFragmentManager(), R.id.containerFragment, dadosChavePix);
+			}
+
+			@Override
+			public void error(VolleyError error) {
+				AlertDialogUtils.dismiss();
+			}
+		};
+	}
+
+	private void startFragment() {
+		escolhaChavePixResgateFragment = (EscolhaChavePixResgateFragment) FragmentUtils.startFragmentAllowingStateLoss(getSupportFragmentManager(), R.id.containerFragment, EscolhaChavePixResgateFragment.newInstance());
+	}
+
+	private void getExtras() {
+		valor = (BigDecimal) getIntent().getSerializableExtra(ARG_VALOR);
+		idAposta = ((Long) getIntent().getSerializableExtra(ARG_ID_APOSTA)).toString();
+	}
+
+	private void setViews() {
+		txtValor 		= findViewById(R.id.txtValorDoCredito);
+		btnCancelar		= findViewById(R.id.btnCancelar);
+		btnContinuar		= findViewById(R.id.btnContinuar);
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-		configListaChaveFavoritas();
-	}
-
-	private void configListaChaveFavoritas() {
-		if (temChaveFavoristas()){
-			containerFav.setVisibility(View.VISIBLE);
-			listaChaveFavorita = model.getListaChaveFavorita();
-			chavesFavAdapter = new ListaChavePixFavoritaRecyclerView(listaChaveFavorita, onListaChaveFavoritaListener());
-			listaChavesFavoritas.setAdapter(chavesFavAdapter);
-			listaChavesFavoritas.setLayoutManager(new LinearLayoutManager(this));
+	public void habilitaContinuar(boolean show) {
+		btnContinuar.setEnabled(show);
+		if (show){
+			btnContinuar.setAlpha(1.0f);
 		} else {
-			containerFav.setVisibility(View.GONE);
-		}
-	}
-
-	private boolean temChaveFavoristas() {
-		return model.temChaveFavorita();
-	}
-
-	private OnChaveFavoritaClickListener onListaChaveFavoritaListener() {
-		return new OnChaveFavoritaClickListener() {
-			@Override
-			public void itemClick(int position) {
-				starConfirmaCPFActivity(false);
-			}
-
-			@Override
-			public void excluir(int position) {
-				ChavePix chavePix = listaChaveFavorita.get(position);
-				DialogUtils.showDialogLeftRight(ResgatePixActivity.this, getString(R.string.label_atencao),
-												getString(R.string.tem_certeza_excluir_chave_favorita_xxxx).replace("xxxx", chavePix.getValue()),
-												getString(R.string.label_sim),
-												getString(R.string.desistir),
-												onExcluirFavoritaPopupListener(chavePix));
-			}
-		};
-	}
-
-	private OnDialogListenerLeftRight onExcluirFavoritaPopupListener(ChavePix chavePix) {
-		return new OnDialogListenerLeftRight() {
-			@Override
-			public void left() {
-				model.excluirChaveFavorita(chavePix);
-				chavesFavAdapter.atualizaLista(ChaveFavoritaMockSingleton.getInstance().getChaves());
-				if(ChaveFavoritaMockSingleton.getInstance().getChaves().isEmpty()){
-					containerFav.setVisibility(View.GONE);
-				}
-			}
-
-			@Override
-			public void right() {
-
-			}
-		};
-	}
-
-	private void configListaChave() {
-		listaChaves.setAdapter(new ListaChavePixRecyclerView(model.getListaChave(), onListaChaveListener()));
-		listaChaves.setLayoutManager(new LinearLayoutManager(this));
-	}
-
-	private OnItemClickListener onListaChaveListener() {
-		return (holder, position) -> {
-			if (isCPF(position)){
-				starConfirmaCPFActivity(true);
-			} else {
-				dialogNaoCPF = DialogUtils.showDialogCustom(ResgatePixActivity.this,
-															getString(R.string.label_atencao),
-															getString(R.string.popup_pix_cpf_vinculado),
-															getString(R.string.trocar_tipo_chave),
-															getString(R.string.trocar_forma_resgate),
-															getString(R.string.pix_continuar),
-															onDialogListenerNaoCpf(position), true);
-			}
-		};
-	}
-
-	private boolean isCPF(int position) {
-		return model.getListaChave().get(position).equalsIgnoreCase(ChavePixEnum.CPF.getTexto()) ;
-	}
-
-	private void starConfirmaCPFActivity(Boolean showSalvar) {
-		Intent intent = new Intent(this, ConfirmaDadosPixActivity.class);
-		intent.putExtra(ConfirmaDadosPixActivity.NOME_ARG, DadosUsuarioBO.obterNome());
-		intent.putExtra(ConfirmaDadosPixActivity.CPF_ARG, "***.345.678-***");
-		intent.putExtra(ConfirmaDadosPixActivity.INSTITUICAO_ARG, "Caixa Econômica Federal");
-		intent.putExtra(ConfirmaDadosPixActivity.TIPO_CHAVE_ARG, ChavePixEnum.CPF);
-		intent.putExtra(ConfirmaDadosPixActivity.VALOR_CHAVE_ARG, DadosUsuarioBO.obterCpf());
-		if (showSalvar){
-			intent.putExtra(ConfirmaDadosPixActivity.SALVAR_CHAVE_ARG, true);
-		}
-		startActivityForResult(intent, RESGATE_PIX);
-	}
-
-	private void startNextActivity(ChavePixEnum chave) {
-		Intent intent = new Intent(this, DigitaChaveActivity.class);
-		intent.putExtra(DigitaChaveActivity.VALOR_ARG,"36");
-		intent.putExtra(DigitaChaveActivity.CHAVE_ARG, chave);
-		startActivityForResult(intent, RESGATE_PIX);
-	}
-
-	private OnDialog3ButtonsListener onDialogListenerNaoCpf(int position) {
-		return new OnDialog3ButtonsListener() {
-			@Override
-			public void leftButtom() {
-				dialogNaoCPF.dismiss();
-			}
-
-			@Override
-			public void centerButtom() {
-				dialogNaoCPF.dismiss();
-				finish();
-			}
-
-			@Override
-			public void rightButtom() {
-				dialogNaoCPF.dismiss();
-				startNextActivity(getChaveEnumByPosition(position));
-			}
-
-			private ChavePixEnum getChaveEnumByPosition(int position) {
-				if(position == 1){
-					return ChavePixEnum.EMAIL;
-				} else if (position == 2){
-					return ChavePixEnum.CELULAR;
-				} else {
-					return ChavePixEnum.CHAVE_ALEATORIA;
-				}
-			}
-		};
-	}
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (requestCode == RESGATE_PIX && resultCode == Activity.RESULT_CANCELED) {
-			if (data != null && data.getStringExtra(ChavePixFragment.ARG_TROCAR_RESGATE) != null){
-				finish();
-			}
+			btnContinuar.setAlpha(0.3f);
 		}
 	}
 }

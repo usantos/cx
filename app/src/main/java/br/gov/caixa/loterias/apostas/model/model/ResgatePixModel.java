@@ -2,38 +2,40 @@ package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.annotation.NonNull;
 
-import br.gov.caixa.loterias.apostas.mock.ChaveFavoritaMockSingleton;
-import br.gov.caixa.loterias.apostas.model.bean.ChavePix;
-import br.gov.caixa.loterias.apostas.utils.ChavePixEnum;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DadosChavePixDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
+import br.gov.caixa.loterias.apostas.model.repository.ResgatePremioPixRepository;
+import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 
 public class ResgatePixModel extends AppModel {
+	private ResgatePremioPixRepository repository;
 
 	public ResgatePixModel(Activity activity) {
 		super(activity);
+		repository = new ResgatePremioPixRepository(getActivity());
 	}
 
-	public List<String> getListaChave() {
-		List<String> chaves = new ArrayList<>();
-		chaves.add(ChavePixEnum.CPF.getTexto());
-		chaves.add(ChavePixEnum.EMAIL.getTexto());
-		chaves.add(ChavePixEnum.CELULAR.getTexto());
-		chaves.add(ChavePixEnum.CHAVE_ALEATORIA.getTexto());
-		return chaves;
+	public void consultaDadosChave(String idAposta, String chavePix, OnSilceListener<DadosChavePixDTO> listener) {
+		repository.consultaDadosChave(idAposta, getInformacaoPagamentoDTO(chavePix), listener);
 	}
 
-	public ArrayList<ChavePix> getListaChaveFavorita(){
-		return ChaveFavoritaMockSingleton.getInstance().getChaves();
+	@NonNull
+	private static InformacaoPagamentoDTO getInformacaoPagamentoDTO(String chavePix) {
+		InformacaoPagamentoDTO informacaoPagamentoDTO = new InformacaoPagamentoDTO();
+		informacaoPagamentoDTO.setChavePix(chavePix);
+		informacaoPagamentoDTO.setMeioPagamento(MeioPagamentoUtil.PIX);
+		return informacaoPagamentoDTO;
 	}
 
-	public boolean temChaveFavorita() {
-		return !ChaveFavoritaMockSingleton.getInstance().getChaves().isEmpty();
+	public void cancelarPix(String idAposta, OnSilceListener<DadosChavePixDTO> listener) {
+		repository.cancelarPix(idAposta, listener);
 	}
 
-	public ArrayList<ChavePix> excluirChaveFavorita(ChavePix chavePix) {
-		ChaveFavoritaMockSingleton.getInstance().excluirPorId(chavePix.getId());
-		return ChaveFavoritaMockSingleton.getInstance().getChaves();
+	public void resgatarPremio(String id, String chavePix, OnSilceListener listener){
+		repository.resgatarPremioPix(id, getInformacaoPagamentoDTO(chavePix), listener);
 	}
+
 }
