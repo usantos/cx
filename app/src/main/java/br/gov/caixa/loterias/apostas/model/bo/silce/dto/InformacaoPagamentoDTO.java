@@ -26,6 +26,8 @@ public class InformacaoPagamentoDTO {
     private Long meioPagamento = null;
     @SerializedName("parametrosPagamento")
     private Map<String, String> parametrosPagamento = null;
+    @SerializedName("chavePix")
+    private String chavePix;
 
     /**
      * Identificação do meio de pagamento selecionado para o pagamento da compra ou resgate do prêmio
@@ -51,6 +53,13 @@ public class InformacaoPagamentoDTO {
         this.parametrosPagamento = parametrosPagamento;
     }
 
+    public String getChavePix() {
+        return chavePix;
+    }
+
+    public void setChavePix(String chavePix) {
+        this.chavePix = chavePix;
+    }
 
     @Override
     public boolean equals(Object o) {

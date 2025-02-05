@@ -92,16 +92,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.activity.DigitaChaveActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.ConfirmaDadosPixActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".WebViewActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -422,7 +412,7 @@
             android:name=".controllers.ConfirmacaoResgatePixActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".controllers.RestritoDezoitoAnosActivity"
