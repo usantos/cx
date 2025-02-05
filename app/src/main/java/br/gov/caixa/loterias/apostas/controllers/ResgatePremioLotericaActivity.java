@@ -76,7 +76,7 @@ public class ResgatePremioLotericaActivity extends LoteriasAppActivity {
         btnNovaAposta = findViewById(R.id.btn_nova_aposta);
         ivQrCode = findViewById(R.id.iv_qr_code);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.label_loterica)));
+        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.label_loterica_titulo)));
         tvTopico3.setText(ViewUtils.textColor(this,getResources().getString(R.string.rsgt_lt_msg_info_3),R.color.verde_card));
     }
 

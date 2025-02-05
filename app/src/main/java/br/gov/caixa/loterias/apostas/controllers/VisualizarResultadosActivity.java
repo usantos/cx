@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -374,19 +375,20 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         partidaViewDetalhesResultado.setIsFundoClaro(true);
         partidaViewDetalhesResultado.setLayout(modalidade);
 
-        if(modalidade.getTipoModalidade().equals(ModalidadeEnum.MAIS_MILIONARIA)){
-            tituloModalidade.setVisibility(View.GONE);
-            layoutTrevo.setVisibility(View.GONE);
-        } else {
-            tituloModalidade.setVisibility(View.VISIBLE);
-            layoutTrevo.setVisibility(View.VISIBLE);
-            iv_trevo.setImageResource(estilo.getTrevoFundoEscuro());
-            tituloModalidade.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-            if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
-                tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
-            }else {
-                tituloModalidade.setText(txtModalidade);
+        tituloModalidade.setVisibility(View.VISIBLE);
+        layoutTrevo.setVisibility(View.VISIBLE);
+        iv_trevo.setImageResource(estilo.getTrevoFundoEscuro());
+        tituloModalidade.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
+            tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+            if(modalidade.getTipoModalidade().equals(ModalidadeEnum.LOTOFACIL)){//Ajuste da posição do texto da lotofacil da indepencia, estava cortando o início da palavra.
+                ConstraintSet tituloHorizontalBias = new ConstraintSet();
+                tituloHorizontalBias.clone(layoutHeader);
+                tituloHorizontalBias.setHorizontalBias(R.id.tv_titulo_modalidade, 0.70f);
+                tituloHorizontalBias.applyTo(layoutHeader);
             }
+        }else {
+            tituloModalidade.setText(txtModalidade);
         }
 
         setButtons();

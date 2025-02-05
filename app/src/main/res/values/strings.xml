@@ -120,7 +120,7 @@
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
     <string name="enviando_email">Enviar e-mail usando:"</string>
-    <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo</string>
+    <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo é </string>
     <string name="numeros_sorteados">Números sorteados</string>
     <string name="inibir_teimosinha">Para Teimosinhas são exibidos os números apostados e os números sorteados apenas do primeiro concurso apostado. A conferência das apostas, no entanto, é realizada para todos os concursos. Em breve a funcionalidade será aprimorada para exibir os números apostados e os números sorteados de todos os concursos da Teimosinha.</string>
 
@@ -337,6 +337,7 @@
     <string name="label_aposta">aposta</string>
     <string name="label_apostas">apostas</string>
     <string name="label_resultado">Resultado</string>
+    <string name="label_loterica_titulo">_Lotérica_</string>
     <string name="label_loterica">Lotérica</string>
     <string name="label_agencia_caixa">Agência CAIXA</string>
     <string name="label_mercado_pago">Mercado Pago</string>
@@ -1472,6 +1473,8 @@
     <string name="alerta_numero_ja_escolhido_quero_nao_quero">Não é possível selecionar um número já escolhido no outro filtro.</string>
     <string name="Quero_Nao_Quero_Impossivel_de_Identificar">Dezenas Quero ou Não Quero impossível de identificar. Activity for result de FiltraMarketplaceActivity retornando dado incorreto</string>
     <string name="interrogacoes">\???</string>
+    <string name="mes_da_sorte_interrogacoes">\nMês da sorte: ???</string>
+    <string name="time_do_coracao_interrogacoes">\nTime do coração: ???</string>
     <string name="apostas_inclu_das_no_combo">Apostas incluídas no combo</string>
     <string name="cep_invalido">O CEP informado não foi localizado. Por favor, informe um CEP válido.</string>
 

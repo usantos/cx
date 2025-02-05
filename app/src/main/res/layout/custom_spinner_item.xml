@@ -6,4 +6,4 @@
     android:textSize="14sp"
     android:gravity="left"
     android:textColor="@color/transparente"
-    android:fontFamily="@font/font_family_futura" />
+    android:fontFamily="@font/font_caixa_std" />

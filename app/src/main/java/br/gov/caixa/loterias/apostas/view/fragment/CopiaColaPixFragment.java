@@ -104,7 +104,7 @@ public class CopiaColaPixFragment extends Fragment {
 		iconAtualizar.setText(ViewUtils.textCaixaSTDBoldTitle(getContext(), getString(R.string.verificar_pagamento)));
 		progressBar = view.findViewById(R.id.pb_loading);
 		btnMinhasCompras = view.findViewById(R.id.btn_minhas_compras);
-		btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBoldTitle(getContext(), getString(R.string.ir_para_minhas_compras)));
+		btnMinhasCompras.setText(ViewUtils.textCaixaSTDBoldTitle(getContext(), getString(R.string.ir_para_minhas_compras)));
 		tvAtencao = view.findViewById(R.id.id_atencao);
 		tvAtencaoDescricao = view.findViewById(R.id.atencao_descricao);
 		if (pixDTO.isDetalhesCompras()) {

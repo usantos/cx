@@ -83,7 +83,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     }
 
     private int getCor() {
-        return new EstiloModalidade(parametroSimulacao.getConcurso().getModalidade()).getCorClara();
+        return new EstiloModalidadeMKP(parametroSimulacao.getConcurso().getModalidade()).getCorClara();
     }
 
     private String getDataSorteio() {
@@ -145,8 +145,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
         }
-        getWindow().getDecorView().setBackground(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorEscura())));
-
+        getWindow().getDecorView().setBackground(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorClara())));
 
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(ContextCompat.getColor(this, estilo.getCorEscura()));
