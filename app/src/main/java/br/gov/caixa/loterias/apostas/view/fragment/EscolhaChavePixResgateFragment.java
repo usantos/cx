@@ -90,7 +90,9 @@ public class EscolhaChavePixResgateFragment extends Fragment {
 			this.isOutraChaveValid = isValid;
 			checagemValidade(CHAVE.OUTRA);
 			if (!isValid){
-				// verificar nessecidade de apresentar alerta de chave invalida ja que o botao fica desabilitado
+				editOutraChave.setError("Chave inválida!");
+			} else {
+				editOutraChave.setError(null);
 			}
 		});
 	}
