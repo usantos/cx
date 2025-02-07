@@ -79,7 +79,9 @@ public class SubBarraModalidadeFragment extends Fragment {
 		icMoneyBolao = view.findViewById(R.id.trevoImagem);
 		labelConcurso = view.findViewById(R.id.label_concurso);
 		labelSorteio = view.findViewById(R.id.label_sorteio);
-
+		if (ModalidadeEnum.LOTECA.equals(modalidade)) {
+			labelSorteio.setText(getString(R.string.resultado));
+		}
 		preencheDados();
 		aplicaEstilo();
 		aplicaEstiloFonte();

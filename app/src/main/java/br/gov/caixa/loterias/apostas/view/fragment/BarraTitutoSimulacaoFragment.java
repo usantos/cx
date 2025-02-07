@@ -81,9 +81,6 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 		btnDuvida = view.findViewById(R.id.duvida);
 		labelConcurso = view.findViewById(R.id.label_concurso);
 		labelSorteio = view.findViewById(R.id.label_sorteio);
-		if(modalidade.equals(ModalidadeEnum.LOTECA)){
-			labelSorteio.setText(R.string.label_resultado);
-		}
 
 		setClickListener();
 
