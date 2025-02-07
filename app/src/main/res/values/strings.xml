@@ -627,8 +627,8 @@
     <string name="conf_rapd_verifique_opcoes">Verifique e confirme suas opções de Rapidão.</string>
     <string name="ops">Ops!</string>
 
-    <string name="titulo_dialog_filtro_apostas">Filtro de Apostas</string>
-    <string name="titulo_dialog_filtro_compras">Filtro de Compras</string>
+    <string name="titulo_dialog_filtro_apostas">Filtro de apostas</string>
+    <string name="titulo_dialog_filtro_compras">Filtro de compras</string>
 
     <!-- Filtros -->
     <string name="modalidades_selecionadas">Modalidades Selecionadas</string>
