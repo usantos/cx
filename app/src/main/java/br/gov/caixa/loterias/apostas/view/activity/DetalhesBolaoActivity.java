@@ -49,6 +49,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpites;
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
 public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implements OnCompraBolaoListener {
@@ -257,7 +258,10 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
 
 		textQtdDezenas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
-				getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
+						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
+						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+
 
 		textQtdCotas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
 				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
