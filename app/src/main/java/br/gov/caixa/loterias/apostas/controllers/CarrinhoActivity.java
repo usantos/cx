@@ -454,7 +454,7 @@ public class CarrinhoActivity extends AppCompatActivity {
             if (carrinho != null) {
                 if (temBolaoCarrinho()) {
                     configuraRecyclerViewCarrinhoBoloes();;
-                    //fragmentSomadorCarrinho();
+                    fragmentSomadorCarrinho();
                     habilitaBoloes();
                 }
                 if (temApostasIndividuaisCarrinho()) {
@@ -464,7 +464,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                 }
                 if (temCombosCarrinho()) {
                     configuraRecyclerViewCarrinhoCombos();
-                    //fragmentSomadorCarrinho();
+                    fragmentSomadorCarrinho();
                     habilitaCombos();
                 }
             } else {
@@ -685,17 +685,18 @@ public class CarrinhoActivity extends AppCompatActivity {
         if (listBoloes != null && listBoloes.size() == 0) {
             if (temBolaoCarrinho()) {
                 listBoloes.addAll(carrinho.getBoloes());
-                vLoading.setVisibility(View.GONE);
             }
         }
+        vLoading.setVisibility(View.GONE);
     }
     public void configuraRecyclerViewCarrinhoCombos() {
         if (listCombos != null && listCombos.size() == 0) {
             if (temCombosCarrinho()) {
                 listCombos.addAll(carrinho.getCombos());
-                vLoading.setVisibility(View.GONE);
+
             }
         }
+        vLoading.setVisibility(View.GONE);
     }
     public void configuraRecyclerViewCarrinhoAposta(int offSet) {
         int cont;
