@@ -52,9 +52,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:layout_marginTop="24dp"
                         android:fontFamily="@font/caixa_std_regular"
                         android:gravity="center"
+                        android:textAlignment="center"
+                        android:justificationMode="inter_word"
                         android:text="@string/voce_pode_acompanhar_situacao"
                         android:textColor="@color/cinzaescuro"
                         android:textSize="20dp" />
