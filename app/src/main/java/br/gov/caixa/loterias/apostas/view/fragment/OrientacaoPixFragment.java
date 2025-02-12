@@ -12,12 +12,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.CopiaColaPixActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.OrientacaoPix;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.model.PixModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.OrientacaoPixRecyclerView;
 
@@ -27,6 +35,7 @@ public class OrientacaoPixFragment extends Fragment {
 	private RecyclerView listView;
 	private AppCompatCheckBox checkBox;
 	private Button btnPagarAgora;
+	private PixModel model;
 
 	public OrientacaoPixFragment() {}
 
@@ -53,6 +62,7 @@ public class OrientacaoPixFragment extends Fragment {
 		listView = view.findViewById(R.id.lista_orientacao);
 		checkBox = view.findViewById(R.id.checkbox_orientacao);
 		btnPagarAgora = view.findViewById(R.id.button_pagar_agora);
+		model = new PixModel(getActivity());
 		startListaOrientacao();
 		configListeners();
 
@@ -67,10 +77,29 @@ public class OrientacaoPixFragment extends Fragment {
 	private View.OnClickListener onPagarAgoraListener() {
 		return v -> {
 			if (checkBox.isChecked()){
-				Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), CopiaColaPixActivity.class);
-				startActivity(intent);
-			} else {
-				//TestVisao.toast("Sinto muito! Ta desabilitado.");
+				btnPagarAgora.setEnabled(false);
+				AlertDialogUtils.show(getContext());
+				model.gerarCodigoPix(new OnSilceListener<GerarPixDTO>() {
+					@Override
+					public void success(GerarPixDTO payload) {
+						AlertDialogUtils.dismiss();
+						CarrinhoSingleton.getInstance().zerarCarrinho();
+
+						Bundle bundle = new Bundle();
+						bundle.putBoolean(CopiaColaPixActivity.ARG_GEROU_CODIGO, true);
+						bundle.putString(CopiaColaPixActivity.ARG_PIX, new Gson().toJson(payload));
+
+						Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), CopiaColaPixActivity.class, bundle);
+						startActivity(intent);
+						getActivity().finish();
+					}
+
+					@Override
+					public void error(VolleyError error) {
+						AlertDialogUtils.dismiss();
+						btnPagarAgora.setEnabled(true);
+					}
+				});
 			}
 		};
 	}
