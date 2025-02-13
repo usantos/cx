@@ -125,7 +125,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private boolean isOnCreate;
     private int ordenacaoDefault = 3;
 
-    private ApostasConfirmadasFragment(){}
+    public ApostasConfirmadasFragment(){}
 
     public static ApostasConfirmadasFragment newInstance(boolean isHistorico){
         Bundle args = new Bundle();
