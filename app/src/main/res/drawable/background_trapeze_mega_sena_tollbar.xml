@@ -21,7 +21,7 @@
         <rotate
             android:fromDegrees="20">
             <shape android:shape="rectangle">
-                <solid android:color="@color/megasenaclaro" />
+                <solid android:color="@color/mega_verde_claro_mkp" />
             </shape>
         </rotate>
     </item>

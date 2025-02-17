@@ -714,10 +714,12 @@ public class PrincipalActivity extends AppCompatActivity
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
                 buttonHomeBolao.setVisibility(View.GONE);
             } else {
-                EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
+                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
+                if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
+                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+                }
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
                 buttonHomeBet.setTag(adapterPosition);
-                //buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
                         getResources().getString(R.string.espaco_em_branco) +
                         ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));

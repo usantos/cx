@@ -398,7 +398,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/caixa_std_regular"
                     android:background="@color/branco"
-                    android:textColor="@color/timemaniaclaro"
+                    android:textColor="@color/timemania_claro_mkp"
                     android:text="@string/label_time_coracao"
                     android:textSize="12sp"
                     android:padding="5dp" />
@@ -410,7 +410,7 @@
                     android:layout_toEndOf="@+id/tv_tit_time_mes"
                     android:fontFamily="@font/caixa_std_bold"
                     android:background="@color/branco"
-                    android:textColor="@color/timemaniaclaro"
+                    android:textColor="@color/timemania_claro_mkp"
                     android:textSize="12sp"
                     tools:text="@string/label_time_coracao"
                     android:padding="5dp" />

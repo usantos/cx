@@ -207,7 +207,7 @@ public class ComprasDezenasView extends LinearLayout {
     private DezenaConfig getTrevoConfig() {
         ShapeConfig shapeConfig = new ShapeConfig(R.drawable.ic_item_trevo,
                 R.drawable.ic_item_trevo_selecionado,
-                R.color.branco, R.color.mais_milionaria_escura);
+                R.color.branco, R.color.milionaria_escuro_mkp);
 
         return new DezenaConfig(false, corFonte,
                 R.layout.item_dezena_detalhe,

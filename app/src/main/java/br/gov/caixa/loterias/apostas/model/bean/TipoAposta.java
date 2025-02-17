@@ -13,6 +13,7 @@ public class TipoAposta {
     private String DescricaoEspecial;
     private Boolean isSelect;
     private Integer textColor;
+    private Integer textSelectColor;
 
     public TipoAposta(String Titulo, int ImagemTrevo, int ImagemTrevoFundoCor, int CorBackground, Boolean isSelect, Integer valor, String DescricaoEspecial, Integer textColor) {
         this.Titulo = Titulo;
@@ -104,5 +105,13 @@ public class TipoAposta {
 
     public void setImagemTrevoFundoCor(int imagemTrevoFundoCor) {
         ImagemTrevoFundoCor = imagemTrevoFundoCor;
+    }
+
+    public Integer getTextSelectColor() {
+        return textSelectColor;
+    }
+
+    public void setTextSelectColor(Integer textSelectColor) {
+        this.textSelectColor = textSelectColor;
     }
 }

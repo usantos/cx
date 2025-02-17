@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.ResgatePixActivity;
+//import br.gov.caixa.loterias.apostas.ResgatePixActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -264,11 +264,11 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     }
 
     protected void clickPixLayout() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            constraintLayoutPix.setBackgroundColor(getColor(R.color.azul_botao_pix));
-        }
-        Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);
-        startActivity(intent);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            constraintLayoutPix.setBackgroundColor(getColor(R.color.azul_botao_pix));
+//        }
+//        Intent intent = new Intent( ResultadoApostaConfirmadaActivity.this, ResgatePixActivity.class);
+//        startActivity(intent);
     }
 
     protected void clickMercadoPagoLayout() {

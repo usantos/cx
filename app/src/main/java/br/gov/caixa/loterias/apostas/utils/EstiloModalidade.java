@@ -27,9 +27,9 @@ public class EstiloModalidade {
     public EstiloModalidade(ModalidadeEnum modalidade) {
         switch (modalidade) {
             case QUINA:
-                corClara = R.color.quinaclaro;
+                corClara = R.color.quina_claro_mkp;
                 corMedia = R.color.quinamedio;
-                corEscura = R.color.quinaescuro;
+                corEscura = R.color.quina_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_quina;
                 imagemRelogio = R.drawable.icon_horario_quina;
                 trevoBackground = R.drawable.background_trapeze_quina;
@@ -42,9 +42,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case LOTECA:
-                corClara = R.color.lotecaclaro;
-                corMedia = R.color.lotecaescuro;
-                corEscura = R.color.lotecaescuro;
+                corClara = R.color.loteca_claro_mkp;
+                corMedia = R.color.loteca_escuro_mkp;
+                corEscura = R.color.loteca_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_loteca;
                 imagemRelogio = R.drawable.icon_horario_loteca;
                 trevoBackground = R.drawable.background_trapeze_loteca;
@@ -56,17 +56,6 @@ public class EstiloModalidade {
                 trevo = R.drawable.trevo_10;
                 colorTextAlpha6 = R.color.white_6;
                 break;
-//            case FEDERAL:
-//                corClara = R.color.federalclaro;
-//                corMedia = R.color.federalescuro;
-//                corEscura = R.color.federalescuro;
-//                imagemCalendario = R.drawable.icon_data_federal;
-//                imagemRelogio = R.drawable.icon_horario_federal;
-//                trevoBackground= R.drawable.background_trapeze_federal;
-//                themeId = R.style.AppTheme_Modalidade_Federal;
-//                stringId = R.string.label_federal;
-//                menuItemColor = R.color.branco;
-//                break;
             case LOTOGOL:
                 corClara = R.color.lotogolclaro;
                 corMedia = R.color.lotogolescuro;
@@ -83,9 +72,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case DUPLA_SENA:
-                corClara = R.color.duplasenaclaro;
+                corClara = R.color.dupla_sena_claro_mkp;
                 corMedia = R.color.duplasenamedio;
-                corEscura = R.color.duplasenaescuro;
+                corEscura = R.color.dupla_sena_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_duplasena;
                 imagemRelogio = R.drawable.icon_horario_duplasena;
                 trevoBackground = R.drawable.background_trapeze_duplasena;
@@ -98,9 +87,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case LOTOFACIL:
-                corClara = R.color.lotofacilclaro;
+                corClara = R.color.lotofacil_claro_mkp;
                 corMedia = R.color.lotofacilmedio;
-                corEscura = R.color.lotofacilescuro;
+                corEscura = R.color.lotofacil_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_lotofacil;
                 imagemRelogio = R.drawable.icon_horario_lotofacil;
                 trevoBackground = R.drawable.background_trapeze_lotofacil;
@@ -113,9 +102,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case LOTOMANIA:
-                corClara = R.color.lotomaniaclaro;
-                corMedia = R.color.lotomaniaescuro;
-                corEscura = R.color.lotomaniaescuro;
+                corClara = R.color.lotomania_claro_mkp;
+                corMedia = R.color.lotomania_escuro_mkp;
+                corEscura = R.color.lotomania_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_lotomania;
                 imagemRelogio = R.drawable.icon_horario_lotomania;
                 trevoBackground = R.drawable.background_trapeze_lotomania;
@@ -128,9 +117,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case TIMEMANIA:
-                corClara = R.color.timemaniaclaro;
+                corClara = R.color.timemania_claro_mkp;
                 corMedia = R.color.timemaniamediaescuro;
-                corEscura = R.color.timemaniaescuro;
+                corEscura = R.color.timemania_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_timemania;
                 imagemRelogio = R.drawable.icon_horario_timemania;
                 trevoBackground = R.drawable.background_trapeze_timemania;
@@ -143,9 +132,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.verdemediotransparente;
                 break;
             case DIA_DE_SORTE:
-                corClara = R.color.diasorteclaro;
+                corClara = R.color.dia_sorte_claro_mkp;
                 corMedia = R.color.diasortemedio;
-                corEscura = R.color.diasorteescuro;
+                corEscura = R.color.dia_sorte_escuro_mkp;
                 imagemCalendario = R.drawable.rectangle_6_copy_5;
                 imagemRelogio = R.drawable.shape_3;
                 trevoBackground = R.drawable.background_trapeze_dia_sorte;
@@ -158,8 +147,8 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case SUPER_7:
-                corClara = R.color.superseteclaro;
-                corMedia = R.color.superseteescuro;
+                corClara = R.color.super_sete_claro_mkp;
+                corMedia = R.color.super_sete_escuro_mkp;
                 corEscura = R.color.supersetemedio;
                 imagemCalendario = R.drawable.icon_data_timemania;
                 imagemRelogio = R.drawable.icon_horario_timemania;
@@ -173,9 +162,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case MAIS_MILIONARIA:
-                corClara = R.color.mais_milionaria_clara;
+                corClara = R.color.milionaria_claro_mkp;
                 corMedia = R.color.mais_milionaria_media;
-                corEscura = R.color.mais_milionaria_escura;
+                corEscura = R.color.milionaria_escuro_mkp;
                 imagemCalendario = R.drawable.ic_calendario;
                 imagemRelogio = R.drawable.ic_relogio;
                 trevoBackground = R.drawable.background_trapeze_mais_milionaria;
@@ -189,9 +178,9 @@ public class EstiloModalidade {
                 break;
             default: {
                 //MEGASENA
-                corClara = R.color.megasenaclaro;
+                corClara = R.color.mega_verde_claro_mkp;
                 corMedia = R.color.megasenamedio;
-                corEscura = R.color.megasenaescuro;
+                corEscura = R.color.mega_verde_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_megasena;
                 imagemRelogio = R.drawable.icon_horario_megasena;
                 trevoBackground = R.drawable.background_trapeze_megasena;
@@ -210,9 +199,9 @@ public class EstiloModalidade {
     public EstiloModalidade(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         switch (aposta.getModalidade()) {
             case QUINA:
-                corClara = R.color.quinaclaro;
+                corClara = R.color.quina_claro_mkp;
                 corMedia = R.color.quinamedio;
-                corEscura = R.color.quinaescuro;
+                corEscura = R.color.quina_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_quina;
                 imagemRelogio = R.drawable.icon_horario_quina;
                 trevoBackground = R.drawable.background_trapeze_quina;
@@ -225,9 +214,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case LOTECA:
-                corClara = R.color.lotecaclaro;
-                corMedia = R.color.lotecaescuro;
-                corEscura = R.color.lotecaescuro;
+                corClara = R.color.loteca_claro_mkp;
+                corMedia = R.color.loteca_escuro_mkp;
+                corEscura = R.color.lotomania_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_loteca;
                 imagemRelogio = R.drawable.icon_horario_loteca;
                 trevoBackground = R.drawable.background_trapeze_loteca;
@@ -239,17 +228,6 @@ public class EstiloModalidade {
                 trevo = R.drawable.trevo_10;
                 colorTextAlpha6 = R.color.white_6;
                 break;
-//            case FEDERAL:
-//                corClara = R.color.federalclaro;
-//                corMedia = R.color.federalescuro;
-//                corEscura = R.color.federalescuro;
-//                imagemCalendario = R.drawable.icon_data_federal;
-//                imagemRelogio = R.drawable.icon_horario_federal;
-//                trevoBackground= R.drawable.background_trapeze_federal;
-//                themeId = R.style.AppTheme_Modalidade_Federal;
-//                stringId = R.string.label_federal;
-//                menuItemColor = R.color.branco;
-//                break;
             case LOTOGOL:
                 corClara = R.color.lotogolclaro;
                 corMedia = R.color.lotogolescuro;
@@ -266,9 +244,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case DUPLA_SENA:
-                corClara = R.color.duplasenaclaro;
+                corClara = R.color.dupla_sena_claro_mkp;
                 corMedia = R.color.duplasenamedio;
-                corEscura = R.color.duplasenaescuro;
+                corEscura = R.color.dupla_sena_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_duplasena;
                 imagemRelogio = R.drawable.icon_horario_duplasena;
                 trevoBackground = R.drawable.background_trapeze_duplasena;
@@ -281,9 +259,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case LOTOFACIL:
-                corClara = R.color.lotofacilclaro;
+                corClara = R.color.lotofacil_claro_mkp;
                 corMedia = R.color.lotofacilmedio;
-                corEscura = R.color.lotofacilescuro;
+                corEscura = R.color.lotomania_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_lotofacil;
                 imagemRelogio = R.drawable.icon_horario_lotofacil;
                 trevoBackground = R.drawable.background_trapeze_lotofacil;
@@ -296,9 +274,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case LOTOMANIA:
-                corClara = R.color.lotomaniaclaro;
-                corMedia = R.color.lotomaniaescuro;
-                corEscura = R.color.lotomaniaescuro;
+                corClara = R.color.lotomania_claro_mkp;
+                corMedia = R.color.lotomania_escuro_mkp;
+                corEscura = R.color.lotomania_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_lotomania;
                 imagemRelogio = R.drawable.icon_horario_lotomania;
                 trevoBackground = R.drawable.background_trapeze_lotomania;
@@ -311,9 +289,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case TIMEMANIA:
-                corClara = R.color.timemaniaclaro;
+                corClara = R.color.timemania_claro_mkp;
                 corMedia = R.color.timemaniamediaescuro;
-                corEscura = R.color.timemaniaescuro;
+                corEscura = R.color.timemania_escuro_mkp;
                 imagemCalendario = R.drawable.icon_data_timemania;
                 imagemRelogio = R.drawable.icon_horario_timemania;
                 trevoBackground = R.drawable.background_trapeze_timemania;
@@ -326,9 +304,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.verdemediotransparente;
                 break;
             case DIA_DE_SORTE:
-                corClara = R.color.diasorteclaro;
+                corClara = R.color.dia_sorte_claro_mkp;
                 corMedia = R.color.diasortemedio;
-                corEscura = R.color.diasorteescuro;
+                corEscura = R.color.dia_sorte_escuro_mkp;
                 imagemCalendario = R.drawable.rectangle_6_copy_5;
                 imagemRelogio = R.drawable.shape_3;
                 trevoBackground = R.drawable.background_trapeze_dia_sorte;
@@ -341,8 +319,8 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case SUPER_7:
-                corClara = R.color.superseteclaro;
-                corMedia = R.color.superseteescuro;
+                corClara = R.color.super_sete_claro_mkp;
+                corMedia = R.color.super_sete_escuro_mkp;
                 corEscura = R.color.supersetemedio;
                 imagemCalendario = R.drawable.icon_data_timemania;
                 imagemRelogio = R.drawable.icon_horario_timemania;
@@ -356,9 +334,9 @@ public class EstiloModalidade {
                 colorTextAlpha6 = R.color.white_6;
                 break;
             case MAIS_MILIONARIA:
-                corClara = R.color.mais_milionaria_clara;
+                corClara = R.color.milionaria_claro_mkp;
                 corMedia = R.color.mais_milionaria_media;
-                corEscura = R.color.mais_milionaria_escura;
+                corEscura = R.color.milionaria_escuro_mkp;
                 imagemCalendario = R.drawable.ic_calendario;
                 imagemRelogio = R.drawable.ic_relogio;
                 trevoBackground = R.drawable.background_trapeze_mais_milionaria;
@@ -377,9 +355,9 @@ public class EstiloModalidade {
                     corMedia = R.color.mega_verde_claro_mkp;
                     corEscura = R.color.mega_verde_escuro_mkp;
                 } else {
-                    corClara = R.color.megasenaclaro;
+                    corClara = R.color.mega_verde_claro_mkp;
                     corMedia = R.color.megasenamedio;
-                    corEscura = R.color.megasenaescuro;
+                    corEscura = R.color.mega_verde_escuro_mkp;
                 }
                 imagemCalendario = R.drawable.icon_data_megasena;
                 imagemRelogio = R.drawable.icon_horario_megasena;

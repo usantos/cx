@@ -61,14 +61,22 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 		tituloTipoAposta.setText(tipoAposta.getTitulo());
 
 		if (tipoAposta.getSelect()) {
-			imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+			imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevoFundoCor());
 			linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
-			tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
+			if (tipoAposta.getTextSelectColor() > 0){
+				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, tipoAposta.getTextSelectColor()));
+			} else {
+				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
+			}
 		} else {
 			imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
 			linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
 			linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_cinza));
-			tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.cinzatextoselecionado));
+			if (tipoAposta.getTextColor() > 0){
+				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, tipoAposta.getTextColor()));
+			} else {
+				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.cinzatextoselecionado));
+			}
 		}
 
 		convertView.setOnClickListener(v -> {

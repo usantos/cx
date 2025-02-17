@@ -78,7 +78,6 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
 
     @Override
     public void onBindViewHolder(ApostaHolder holder, final int position) {
-        //EstiloModalidade estilo = new EstiloModalidade(apostas.get(position).getModalidade());
         EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(apostas.get(position).getModalidade());
 
         final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;

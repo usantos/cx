@@ -230,7 +230,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="10dp"
-            android:background="@color/superseteclaro" />
+            android:background="@color/super_sete_claro_mkp" />
 
         <br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado
             android:id="@+id/partidaViewDetalhesResultadoView"

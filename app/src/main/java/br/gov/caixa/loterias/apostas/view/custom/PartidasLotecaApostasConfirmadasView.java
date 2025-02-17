@@ -116,7 +116,7 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
         }
     }
     private void preencheAcerto(ImageView imageView, TextView apostaEquipeLotecaView){
-        int corLoteca = ContextCompat.getColor(getContext(),R.color.lotecaclaro);
+        int corLoteca = ContextCompat.getColor(getContext(),R.color.loteca_claro_mkp);
         Drawable unwrappedDrawable = AppCompatResources.getDrawable(getContext(), R.drawable.navegacao_branco);
         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
         DrawableCompat.setTint(wrappedDrawable,ContextCompat.getColor(getContext(),R.color.branco));
