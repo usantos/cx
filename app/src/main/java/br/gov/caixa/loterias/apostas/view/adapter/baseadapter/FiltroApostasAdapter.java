@@ -344,16 +344,17 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 				case MAIS_MILIONALIA:
 					tipoAposta = new TipoAposta("+Milionária", estilo.getTrevoFundoClaro(),  estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
 					break;
+				case TIMEMANIA:
+				case DIA_DE_SORTE:
+				case SUPER_SETE:
+					tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+					tipoAposta.setTextSelectColor(estilo.getCorLetraLista());
+					break;
 				default:
 					tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
 					break;
 			}
 
-			if (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao()).equals(ModalidadeEnumSelecaoModalidades.TIMEMANIA)){
-				tipoAposta.setTextSelectColor(R.color.timemania_letra_mkp);
-			} else {
-				tipoAposta.setTextSelectColor(R.color.branco);
-			}
 			if (tipoAposta != null) {
 				tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale("pt", "BR")));
 				array.add(tipoAposta);

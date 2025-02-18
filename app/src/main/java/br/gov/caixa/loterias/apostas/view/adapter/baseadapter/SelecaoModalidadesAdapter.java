@@ -63,7 +63,7 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 		if (tipoAposta.getSelect()) {
 			imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevoFundoCor());
 			linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
-			if (tipoAposta.getTextSelectColor() > 0){
+			if (tipoAposta.getTextSelectColor() != null && tipoAposta.getTextSelectColor() > 0){
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, tipoAposta.getTextSelectColor()));
 			} else {
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
@@ -72,7 +72,7 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 			imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
 			linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, R.color.branco));
 			linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(mContext, R.drawable.custom_border_cinza));
-			if (tipoAposta.getTextColor() > 0){
+			if (tipoAposta.getTextColor() != null && tipoAposta.getTextColor() > 0){
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, tipoAposta.getTextColor()));
 			} else {
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.cinzatextoselecionado));
@@ -92,7 +92,7 @@ public class SelecaoModalidadesAdapter extends BaseAdapter {
 					limpaSelecaoModalidades();
 				}
 				tiposAposta.get(position).setSelect(true);
-				imageViewTipoAPosta.setImageResource(R.drawable.trevo);
+				imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevoFundoCor());
 				linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(mContext, tipoAposta.getCorBackground()));
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(mContext, R.color.branco));
 
