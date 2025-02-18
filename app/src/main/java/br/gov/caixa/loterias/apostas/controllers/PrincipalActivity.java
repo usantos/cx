@@ -717,6 +717,8 @@ public class PrincipalActivity extends AppCompatActivity
                 EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
                 if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
                     buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+                } else {
+                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, R.color.branco));
                 }
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
                 buttonHomeBet.setTag(adapterPosition);
