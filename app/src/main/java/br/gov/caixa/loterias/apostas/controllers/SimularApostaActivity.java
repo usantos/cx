@@ -842,19 +842,17 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         fragmentManager.beginTransaction().replace(R.id.fragmentSimularApostas, cartelaFragment).commit();
 
         if(surpresinha){
-            if (tipoJogo == ModalidadeEnum.TIMEMANIA){
-                simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-                surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
-            } else {
-                simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-                surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
-            }
+            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+            simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
         }else{
-            simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);// faltando
-            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
-            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
-            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-            surpresinhaTela.setBackground(ic_surpresinha);
+            simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
+            if (tipoJogo == ModalidadeEnum.TIMEMANIA){
+                Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+                ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+                surpresinhaTela.setBackground(ic_surpresinha);
+            } else {
+                surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+            }
         }
     }
 
