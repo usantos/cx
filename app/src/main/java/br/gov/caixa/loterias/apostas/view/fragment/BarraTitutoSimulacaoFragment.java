@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 
 public class BarraTitutoSimulacaoFragment extends Fragment {
 	private static final String ARG_MODALIDADE = "ARG_MODALIDADE";
@@ -31,7 +32,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 	private  View view;
 	private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio;
 	private ConstraintLayout background;
-	private ImageView btnVoltar, btnDuvida;
+	private AppCompatImageView btnVoltar, btnDuvida;
 	private String concurso;
 	private String sorteio;
 	private boolean isEspecial, showBackground;
@@ -109,6 +110,8 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 		tvSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 		labelConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 		labelSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		btnDuvida.setImageDrawable(VectorUtils.getShape(R.drawable.duvidas_toolbar_icon, estilo.getCorFonteFundoClaro()));
+		btnVoltar.setImageDrawable(VectorUtils.getShape(R.drawable.seta_esquerda, estilo.getCorFonteFundoClaro()));
 	}
 
 	private void aplicaEstilo() {
