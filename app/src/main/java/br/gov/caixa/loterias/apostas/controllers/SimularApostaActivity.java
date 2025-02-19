@@ -698,11 +698,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         surpresinhaFragment.surpresinhaFragmentBuilder(bundle);
 
         atualizaTextoBotoesQtdSelecionadas();
+
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
-        //surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
-        Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
-        ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-        surpresinhaTela.setBackground(ic_surpresinha);
+        if (tipoJogo == ModalidadeEnum.TIMEMANIA){
+            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+            surpresinhaTela.setBackground(ic_surpresinha);
+        } else {
+            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+        }
 
         configuraBotoesListeners();
     }
@@ -712,11 +716,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         surpresinhaTela.setOnClickListener(this);
         qtdNumerosButton.setOnClickListener(this);
         qtdConcursosButton.setOnClickListener(this);
-
-        simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
-        Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
-        ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-        surpresinhaTela.setBackground(ic_surpresinha);
     }
 
     private void modalNumeros() {
