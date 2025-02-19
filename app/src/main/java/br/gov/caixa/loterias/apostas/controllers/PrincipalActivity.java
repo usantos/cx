@@ -720,7 +720,7 @@ public class PrincipalActivity extends AppCompatActivity
                 } else {
                     buttonHomeBet.setTextColor(ContextCompat.getColor(this, R.color.branco));
                 }
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 buttonHomeBet.setTag(adapterPosition);
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
                         getResources().getString(R.string.espaco_em_branco) +

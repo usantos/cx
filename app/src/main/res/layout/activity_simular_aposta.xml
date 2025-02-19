@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/drawer_linha_divisao_bg"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

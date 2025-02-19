@@ -3,13 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -593,9 +587,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         FragmentUtils.startFragmentAllowingStateLoss(fragmentManager, R.id.fragmentSimularApostas, surpresinhaFragment);
 
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-        Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
-        ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-        surpresinhaTela.setBackground(ic_surpresinha);
+        surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+//        Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha2);
+//        ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+//        surpresinhaTela.setBackground(ic_surpresinha);
     }
 
     private void configuraParametrosJogo() {
@@ -846,16 +841,16 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         if(surpresinha){
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
-            //surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
-            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
-            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-            surpresinhaTela.setBackground(ic_surpresinha);
+            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
+//            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+//            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+//            surpresinhaTela.setBackground(ic_surpresinha);
         }else{
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
-            //surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
-            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
-            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-            surpresinhaTela.setBackground(ic_surpresinha);
+            surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
+//            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+//            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+//            surpresinhaTela.setBackground(ic_surpresinha);
         }
     }
 
