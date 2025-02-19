@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -88,7 +89,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private static final int RESULT_FINISH = 3;
 
     private ConstraintLayout toolBarLoteca;
-    private Button simularTelaAposta, surpresinhaTela, qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela;
+    private Button qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela;
+    private AppCompatImageView simularTelaAposta, surpresinhaTela;
     private TextView labelValueJogosLoteca, labelValueSimplesLoteca, labelValueDuplasLoteca,
             labelValueTriplasLoteca, textoSalveEstaAposta;
     private LinearLayout toolBarSimularAposta;
@@ -269,9 +271,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     public void atualizaTextoBotoesQtdSelecionadas() {
         qtdNumerosButton.setText(format(getResources().getString(R.string.percent_d_numeros), qtdDezenasPossiveisSelecionado));
-        qtdNumerosButton.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+        qtdNumerosButton.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
         Drawable drawableQtdNumeros =  imageQtdNumerosButton.getDrawable();
-        ViewUtils.setColorDrawable(this, drawableQtdNumeros, estilo.getCorFonteFundoClaro());
+        ViewUtils.setColorDrawable(this, drawableQtdNumeros, estilo.getCorFonteFundoEscuro());
 
         textoBotaoPrognosticosSelecionado = qtdNumerosButton.getText().toString();
         if ((qtdConcursosList != null && !qtdConcursosList.isEmpty()) && (qtdConcursosList.size() == 1 || qtdConcursoSelecionado == 0)) {
@@ -279,9 +281,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         } else {
             qtdConcursosButton.setText(format(getResources().getString(R.string.percent_d_concurso), qtdConcursoSelecionado));
         }
-        qtdConcursosButton.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+        qtdConcursosButton.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
         Drawable drawableQtdConcursos = imageQtdConcursosButton.getDrawable();
-        ViewUtils.setColorDrawable(this, drawableQtdConcursos, estilo.getCorFonteFundoClaro());
+        ViewUtils.setColorDrawable(this, drawableQtdConcursos, estilo.getCorFonteFundoEscuro());
     }
 
     // Pegar o handle dos botoes que mostrarao o seu respectivo fragment na activity
@@ -588,9 +590,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
         simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
         surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
-//        Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha2);
-//        ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-//        surpresinhaTela.setBackground(ic_surpresinha);
+        Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha2);
+        ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+        surpresinhaTela.setBackground(ic_surpresinha);
     }
 
     private void configuraParametrosJogo() {
@@ -842,15 +844,15 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if(surpresinha){
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona2);
             surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha2);
-//            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
-//            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-//            surpresinhaTela.setBackground(ic_surpresinha);
+            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+            surpresinhaTela.setBackground(ic_surpresinha);
         }else{
             simularTelaAposta.setBackgroundResource(R.drawable.icon_seleciona);
             surpresinhaTela.setBackgroundResource(R.drawable.icon_surpresinha);
-//            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
-//            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
-//            surpresinhaTela.setBackground(ic_surpresinha);
+            Drawable ic_surpresinha = ContextCompat.getDrawable(this, R.drawable.icon_surpresinha);
+            ViewUtils.setColorDrawable(this, ic_surpresinha, estilo.getCorFonteFundoClaro());
+            surpresinhaTela.setBackground(ic_surpresinha);
         }
     }
 
