@@ -48,13 +48,6 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		preencheNumeros();
 	}
 
-	public NumerosSuperSeteAdapter(ConfiguracaoNumerosSuperSete configuracao, Activity parentActivity, List<Integer> dezenasSelecionadas) {
-		this.dezenasSelecionadas = dezenasSelecionadas;
-		this.context = parentActivity;
-		this.configuracao = configuracao;
-		preencheNumeros();
-	}
-
 	public NumerosSuperSeteAdapter(ConfiguracaoNumerosSuperSete configuracao, Activity parentActivity, List<Integer> dezenasSelecionadas, List<Integer> listaNumerosSelecionados) {
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.context = parentActivity;
