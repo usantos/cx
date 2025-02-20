@@ -674,7 +674,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
                 configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), R.color.dia_sorte_claro_mkp, R.color.dia_sorte_escuro_mkp, View.VISIBLE, View.GONE);
                 break;
             case SUPER_7:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.super_sete_claro_mkp, R.color.supersetemedio, View.VISIBLE, View.GONE);
+                configuraTipoApostaTela(getResources().getString(R.string.underline_super_sete_underline), R.color.super_sete_claro_mkp, R.color.super_sete_escuro_mkp, View.VISIBLE, View.GONE);
                 break;
             case MAIS_MILIONARIA:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_mais_milionaria_underline).toLowerCase(), R.color.milionaria_claro_mkp, R.color.milionaria_escuro_mkp, View.VISIBLE, View.GONE);
@@ -858,7 +858,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
 
     private void configuraTipoApostaTela(String titleActivity, int lightColor, int darkColor, int visibilityToolBarSimularAposta, int visibilityToolBarLoteca) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, darkColor));
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, lightColor));
         }
 
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
