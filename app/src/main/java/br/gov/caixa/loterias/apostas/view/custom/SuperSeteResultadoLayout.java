@@ -12,7 +12,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 
 public class SuperSeteResultadoLayout extends LinearLayout {
 
@@ -55,7 +55,7 @@ public class SuperSeteResultadoLayout extends LinearLayout {
 
 	public void setLayout(Modalidade modalidade) {
 
-		EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
 		tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
 
 		List<List<Integer>> matrizResultado = modalidade.getResultadoConcursoDTO().getMatrizNumerosSorteadosPrimeiroSorteio();

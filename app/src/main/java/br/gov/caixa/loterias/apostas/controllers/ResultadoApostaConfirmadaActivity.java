@@ -34,7 +34,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
@@ -70,7 +69,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     ModalidadeEnum modalidadeEnum;
 
     protected ComprovanteApostaDTO comprovante;
-    private EstiloModalidade estiloModalidade;
     private EstiloModalidadeMKP estiloModalidadeMKP;
 
     private TextView concursoTextView, situacaoTextView, faixaPremiacaoTextView, quantidadePremiacaoTextView, sorteioTextView, premiacaoTextView;

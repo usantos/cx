@@ -18,7 +18,7 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 
 public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<FavoritasRapidaoRecyclerAdapter.ViewHolder> {
 
@@ -54,7 +54,7 @@ public final class FavoritasRapidaoRecyclerAdapter extends RecyclerView.Adapter<
     @Override
     public void onBindViewHolder(@NonNull FavoritasRapidaoRecyclerAdapter.ViewHolder holder, int position) {
         if (listaApostaFavorita.size() > 0) {
-            EstiloModalidade estilo = new EstiloModalidade(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br)))));
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.toString(listaApostaFavorita.get(position).getModalidade().getDescricao().toLowerCase(new Locale(context.getResources().getString(R.string.pt), context.getResources().getString(R.string.br)))));
             holder.modalidades.setText(listaApostaFavorita.get(position).getModalidade().getDescricao());
             holder.modalidades.setTextColor(context.getResources().getColor(estilo.getCorClara()));
             holder.setIsRecyclable(false);
