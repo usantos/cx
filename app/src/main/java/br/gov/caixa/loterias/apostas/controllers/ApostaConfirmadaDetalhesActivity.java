@@ -735,17 +735,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setupToolbar() {
-        if (isApostaBolao(aposta)) {
-            if (isEspecial(aposta.getTipoConcurso().getValor())) {
-                toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
-            } else {
-                toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
-            }
-            toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
+        if (isEspecial(aposta.getTipoConcurso().getValor())) {
+            toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
         } else {
-            toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
             toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         }
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {

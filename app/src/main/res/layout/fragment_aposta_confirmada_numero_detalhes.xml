@@ -95,6 +95,8 @@
                 android:layout_toEndOf="@id/concursoTxt"
                 android:layout_below="@id/concursoTxt"
                 android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/branco"
+                tools:textColor="@color/black"
                 android:textSize="12sp"
                 tools:text="4 apostas" />
 
@@ -291,8 +293,9 @@
                 android:fontFamily="@font/caixa_std_bold"
                 android:text="@string/label_teimosinha"
                 android:textSize="14sp"
-                android:visibility="invisible"
-                tools:visibility="visible" />
+                android:textColor="@color/branco"
+                tools:textColor="@color/black"
+                android:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_sua_aposta"
