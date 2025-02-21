@@ -398,7 +398,7 @@ public class ApostaBO extends SilceBO {
         }) {
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> header = (Map<String, String>) getHeader().clone();
+                Map<String, String> header = (Map<String, String>) getHeaderToken().clone();
                 header.put("Disable-Crypto", "true");
                 return header;
             }
@@ -416,7 +416,7 @@ public class ApostaBO extends SilceBO {
         }) {
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> header = (Map<String, String>) getHeader().clone();
+                Map<String, String> header = (Map<String, String>) getHeaderToken().clone();
                 header.put("Disable-Crypto", "true");
                 return header;
             }
