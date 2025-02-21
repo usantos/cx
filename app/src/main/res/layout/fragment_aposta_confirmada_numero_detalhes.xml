@@ -295,7 +295,7 @@
                 android:textSize="14sp"
                 android:textColor="@color/branco"
                 tools:textColor="@color/black"
-                android:visibility="visible" />
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/tv_sua_aposta"

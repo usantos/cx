@@ -328,8 +328,8 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				textoTeimosinha = String.format(Locale.getDefault(), "%d %s", quantidade, getActivity().getString(R.string.label_apostas));
 			}
 			quantidadeApostadasTxt.setText(textoTeimosinha);
-			quantidadeApostadasTxt.setTextColor(estilo.getTrevoFundoClaro());
-			modalidadeTxt.setTextColor(estilo.getTrevoFundoClaro());
+			quantidadeApostadasTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			modalidadeTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 		}
 	}
 
