@@ -215,7 +215,7 @@ public class ComprasDezenasView extends LinearLayout {
     }
 
     private ConfiguracaoNumeros configuraEstiloNumerosTrevos() {
-        return new ConfiguracaoNumeros(0, 0);
+        return new ConfiguracaoNumeros(R.color.branco, R.color.branco);
     }
 
     private void configuraSuperSeteFragment(ApostaDTO aposta) {
