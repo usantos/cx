@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -12,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.os.CountDownTimer;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -32,11 +32,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -294,11 +292,11 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
 
 //			//MOCK ***** APAGAR *****
-// 			EncerramentoUtil.mockSetDataHoraEncerramento(
-//					 "24/02/2025",
-//					"16:00:00",
-//					"16:33:00",
-//					ModalidadeEnum.DUPLA_SENA, TipoConcursoEnum.ESPECIAL, 5455); //Concurso
+//			EncerramentoUtil.mockSetDataHoraEncerramento(
+//					"25/02/2025",
+//					"11:00:00",
+//					"11:15:00",
+//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.NORMAL, 5622); //Concurso
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -563,8 +561,12 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 			@Override
 			public void onFinish() {
-				parentActivity.recreate();
+				refazCarrossel();
 			}
 		}.start();
+	}
+
+	private void refazCarrossel() {
+		parentActivity.recreate();
 	}
 }
