@@ -39,6 +39,8 @@ public class ModalidadeDisponivelCota implements Serializable {
     private String dataEncerramentoRevenda = null;
     @SerializedName("horaEncerramentoRevenda")
     private String horaEncerramentoRevenda = null;
+    @SerializedName("dataHoraSorteio")
+    private String dataHoraSorteio = null;
 
     public Integer getConcurso() {
         return concurso;
@@ -94,6 +96,14 @@ public class ModalidadeDisponivelCota implements Serializable {
 
     public void setHoraEncerramentoRevenda(String horaEncerramentoRevenda) {
         this.horaEncerramentoRevenda = horaEncerramentoRevenda;
+    }
+
+    public String getDataHoraSorteio() {
+        return dataHoraSorteio;
+    }
+
+    public void setDataHoraSorteio(String dataHoraSorteio) {
+        this.dataHoraSorteio = dataHoraSorteio;
     }
 
     @Override

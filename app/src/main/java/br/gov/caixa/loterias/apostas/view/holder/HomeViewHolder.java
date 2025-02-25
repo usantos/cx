@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -207,7 +208,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 																											   modalidade.getConcurso().getNumero())));
 			this.premioEstimadoConcurso.setVisibility(View.VISIBLE);
 		} else {
-			//this.valorAcumulado.setText(retornaStringConcursoSemEstimativa(modalidade.getConcurso().getNumero().toString(), estilo.getCorClara()));
 			this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
 			this.valorAcumulado.setText(retornaStringConcursoSemEstimativa(modalidade.getConcurso().getNumero().toString(), estilo.getCorLetraLista()));
 			this.valorAcumulado.setTextSize(14);
@@ -229,7 +229,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		Date dataFechamentoSorteio = null;
 
 		try {
-			dataSorteioFormatada = formatterDate.parse(modalidade.getConcurso().getDataHoraSorteio());
+			if (modalidade.getConcurso().getDataHoraSorteio() != null) {
+				dataSorteioFormatada = formatterDate.parse(modalidade.getConcurso().getDataHoraSorteio());
+			}
 			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
 			if (modalidade.getTipoModalidade() == ModalidadeEnum.LOTECA){
 				dataSorteioFormatada = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
@@ -245,13 +247,17 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.textViewSorteioOuEncerramento.setText(R.string.label_sorteio_case);
 
 		}
-		String dmy = formatterDataBr.format(dataSorteioFormatada);
-		String dataDia[] = formatterDia.format(dataSorteioFormatada).split( itemView.getContext().getResources().getString(R.string.virgula));
-		String dia_dmy = dataDia[0] + ",\n" + dmy;
-		String horaMinSeg = formatterTime.format(dataSorteioFormatada);
-		this.dataSorteio.setText(ViewUtils.capitalized(dia_dmy) +
-										   itemView.getContext().getResources().getString(R.string.as_espacado) +
-										   horaMinSeg);
+		if (dataSorteioFormatada != null) {
+			String dmy = formatterDataBr.format(dataSorteioFormatada);
+			String dataDia[] = formatterDia.format(dataSorteioFormatada).split(itemView.getContext().getResources().getString(R.string.virgula));
+			String dia_dmy = dataDia[0] + ",\n" + dmy;
+			String horaMinSeg = formatterTime.format(dataSorteioFormatada);
+			this.dataSorteio.setText(ViewUtils.capitalized(dia_dmy) +
+					itemView.getContext().getResources().getString(R.string.as_espacado) +
+					horaMinSeg);
+		} else {
+			this.linearCalendar.setVisibility(View.GONE);
+		}
 
 //		this.calendario.setImageResource(estilo.getImagemCalendario());
 //		this.relogio.setImageResource(estilo.getImagemRelogio());
@@ -287,12 +293,12 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		try {
 			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
 
-			//MOCK ***** APAGAR *****
- 			EncerramentoUtil.mockSetDataHoraEncerramento(
-					 "19/02/2025",
-					"16:30:00",
-					"17:00:00",
-					ModalidadeEnum.LOTOFACIL, TipoConcursoEnum.NORMAL, 1569); //Concurso
+//			//MOCK ***** APAGAR *****
+// 			EncerramentoUtil.mockSetDataHoraEncerramento(
+//					 "24/02/2025",
+//					"16:00:00",
+//					"16:33:00",
+//					ModalidadeEnum.DUPLA_SENA, TipoConcursoEnum.ESPECIAL, 5455); //Concurso
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -350,9 +356,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	}
 
 	private SpannableStringBuilder retornaStringConcursoSemEstimativa(String numConcurso, int corModalidadeInt) {
-		final SpannableStringBuilder sb = new SpannableStringBuilder(itemView.getContext().getResources().getString(R.string.concurso_barra_n_barra_n) +
+		final SpannableStringBuilder sb = new SpannableStringBuilder(itemView.getContext().getResources().getString(R.string.proximo_concurso_barra_n_barra_n) +
 																			 numConcurso +
-																			 itemView.getContext().getResources().getString(R.string.barra_n_barra_n_ainda_sem_estimativa_de_premio));
+																			 itemView.getContext().getResources().getString(R.string.barra_n_barra_n_aguardando_estimativa_de_premio));
 
 		final ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), corModalidadeInt));
 		final ForegroundColorSpan corTexto      = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), R.color.cinzaescuro));
@@ -526,28 +532,38 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			@Override
 			public void onTick(long millisUntilFinished) {
 
+				Long hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished);
+				millisUntilFinished -= TimeUnit.HOURS.toMillis(hours);
 				Long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
 				millisUntilFinished -= TimeUnit.MINUTES.toMillis(minutes);
 				Long seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished);
 
-				String tempoRestante = "MM:SS";
+				String tempoRestante;
+				if (hours > 0) {
+					tempoRestante = "HH:MM:SS";
+					tempoRestante = tempoRestante.replace("HH", StringUtils.padZeroLeft(hours.intValue(), 2));
+				} else {
+					tempoRestante = "MM:SS";
+				}
 				tempoRestante = tempoRestante.replace("MM", StringUtils.padZeroLeft(minutes.intValue(), 2));
 				tempoRestante = tempoRestante.replace("SS", StringUtils.padZeroLeft(seconds.intValue(), 2));
 
 				tvContadorCard.setText(tempoRestante);
 
-				if (minutes <= 5) {
-					imgRelogioCard.setImageDrawable(VectorUtils.getShape(R.drawable.icon_horario_megasena, R.color.vermelho_dialog));
-					tvContadorCard.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.vermelho_dialog));
-				} else if (minutes <= 10){
-					imgRelogioCard.setImageDrawable(VectorUtils.getShape(R.drawable.icon_horario_megasena, R.color.jr_amarelo));
-					tvContadorCard.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.jr_amarelo));
+				if (hours <= 0) {
+					if (minutes <= 5) {
+						imgRelogioCard.setImageDrawable(VectorUtils.getShape(R.drawable.icon_horario_megasena, R.color.vermelho_dialog));
+						tvContadorCard.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.vermelho_dialog));
+					} else if (minutes <= 10){
+						imgRelogioCard.setImageDrawable(VectorUtils.getShape(R.drawable.icon_horario_megasena, R.color.jr_amarelo));
+						tvContadorCard.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.jr_amarelo));
+					}
 				}
 			}
 
 			@Override
 			public void onFinish() {
-
+				parentActivity.recreate();
 			}
 		}.start();
 	}

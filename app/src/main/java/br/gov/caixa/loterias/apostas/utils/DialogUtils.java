@@ -286,7 +286,8 @@ public class DialogUtils {
             button1.setText(textBotao1);
             button1.setOnClickListener(v -> {
                 dialog.dismiss();
-                listener.leftButtom();
+                if (listener != null)
+                    listener.leftButtom();
             });
         }
 
@@ -297,7 +298,8 @@ public class DialogUtils {
             button2.setText(textBotao2);
             button2.setOnClickListener(v -> {
                 dialog.dismiss();
-                listener.centerButtom();
+                if (listener != null)
+                    listener.centerButtom();
             });
         }
 
@@ -308,7 +310,8 @@ public class DialogUtils {
             button3.setText(textBotao3);
             button3.setOnClickListener(v -> {
                 dialog.dismiss();
-                listener.rightButtom();
+                if (listener != null)
+                    listener.rightButtom();
             });
         }
 

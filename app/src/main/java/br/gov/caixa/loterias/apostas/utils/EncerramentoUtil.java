@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
@@ -27,14 +29,10 @@ public class EncerramentoUtil {
         if (parametrosSimulacao != null && parametrosSimulacao.getModalidadesDisponiveisCotas() != null) {
             for (ModalidadeDisponivelCota modalidadeDC : parametrosSimulacao.getModalidadesDisponiveisCotas()) {
                 if (modalidade == modalidadeDC.getModalidade() &&
-                    modalidadeDC.getTipoConcurso() == tipoConcurso) {
-                    if (concurso != null && modalidadeDC.getConcurso().intValue() == concurso.intValue()) {
+                    modalidadeDC.getTipoConcurso() == tipoConcurso &&
+                    modalidadeDC.getConcurso().intValue() == concurso.intValue()) {
                         modalidadeDisponivelCota = modalidadeDC;
                         break;
-                    } else {
-                        modalidadeDisponivelCota = modalidadeDC;
-                        break;
-                    }
                 }
             }
         }
@@ -47,14 +45,10 @@ public class EncerramentoUtil {
             if (parametrosSimulacao != null && parametrosSimulacao.getParametros() != null) {
                 for (ParametroSimulacao parametro : parametrosSimulacao.getParametros()){
                     if (modalidade == parametro.getParametroJogo().getConcurso().getModalidade() &&
-                        parametro.getParametroJogo().getConcurso().getTipoConcurso() == tipoConcurso) {
-                        if (concurso != null && parametro.getParametroJogo().getConcurso().getNumero().intValue() == concurso.intValue()) {
+                        parametro.getParametroJogo().getConcurso().getTipoConcurso() == tipoConcurso &&
+                        parametro.getParametroJogo().getConcurso().getNumero().intValue() == concurso.intValue()) {
                             parametroJogoDTO = parametro.getParametroJogo();
                             break;
-                        } else {
-                            parametroJogoDTO = parametro.getParametroJogo();
-                            break;
-                        }
                     }
                 }
         }
@@ -97,6 +91,69 @@ public class EncerramentoUtil {
         }
 
         return null;
+    }
+
+    public static void verificaSeCriaCardTemporario() {
+        List<ModalidadeDisponivelCota> listModalidadeDC = SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas();
+        for (int i = 0; i < listModalidadeDC.size(); i++) {
+            ModalidadeDisponivelCota modalidadeDC = SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas().get(i);
+
+            //Se já encerrada
+            try {
+                Date dataHoraErramentoFinal = DATE_TIME_FORMATE.parse(
+                        modalidadeDC.getDataEncerramentoRevenda() + " " +
+                                modalidadeDC.getHoraEncerramentoRevenda());
+
+                long tempoAtualMillis = System.currentTimeMillis();
+
+                if (tempoAtualMillis > dataHoraErramentoFinal.getTime()) {
+                    continue;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                continue;
+            }
+
+
+            ParametroJogoDTO parametroJogo = getParametroJogo(modalidadeDC.getModalidade(), modalidadeDC.getTipoConcurso(), modalidadeDC.getConcurso().intValue());
+            if (parametroJogo == null) {
+                criarCardTemporario(modalidadeDC);
+            }
+        }
+    }
+    private static void criarCardTemporario(ModalidadeDisponivelCota modalidadeDC) {
+
+        ConcursoDTO concursoDTO = new ConcursoDTO();
+        concursoDTO.setNumero(modalidadeDC.getConcurso());
+        concursoDTO.setModalidade(modalidadeDC.getModalidade());
+        concursoDTO.setModalidadeDetalhada(modalidadeDC.getModalidadeDetalhada());
+        concursoDTO.setTipoConcurso(modalidadeDC.getTipoConcurso());
+        concursoDTO.setEstimativa(modalidadeDC.getEstimativa());
+        concursoDTO.setDataFechamento(DATE_TIME_FORMATE.format(new Date()));
+        concursoDTO.setDataHoraSorteio(modalidadeDC.getDataHoraSorteio());
+
+        ParametroJogoDTO parametroJogoDTO = new ParametroJogoDTO();
+        parametroJogoDTO.setConcurso(concursoDTO);
+
+        ParametroSimulacao parametroSimulacao = new ParametroSimulacao();
+        parametroSimulacao.setParametroJogo(parametroJogoDTO);
+
+        SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().add(parametroSimulacao);
+    }
+
+    public static void mockApagaModalidadeNosParametroJogo(ModalidadeEnum modalidade,
+                                           TipoConcursoEnum tipoConcurso, Integer concurso) {
+        List<ParametroSimulacao> listParametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+        for (int i = 0; i < listParametros.size(); i++) {
+            ParametroSimulacao parametro = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().get(i);
+            if (parametro.getParametroJogo().getConcurso().getModalidade() == modalidade &&
+                parametro.getParametroJogo().getConcurso().getTipoConcurso() == tipoConcurso &&
+                parametro.getParametroJogo().getConcurso().getNumero().intValue() == concurso.intValue()) {
+
+                SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().remove(i);
+                break;
+            }
+        }
     }
 
     //MOCK APAGAR - data "19/02/2025", hora "16:00:00"

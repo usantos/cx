@@ -89,6 +89,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
@@ -109,6 +110,7 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
 
@@ -418,13 +420,16 @@ public class PrincipalActivity extends AppCompatActivity
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
+        //*** APAGAR ***
+        //EncerramentoUtil.mockApagaModalidadeNosParametroJogo(
+        //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
+        EncerramentoUtil.verificaSeCriaCardTemporario();
+
         montarCarrossel();
 
         trataPopupDeNotificacaoHandler();
 
         redirectDeepLink();
-        //***APAGAR
-        //redirectDeepLinkMock();
     }
 
     private void trataPopupDeNotificacaoHandler() {
@@ -787,14 +792,31 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void nextActivity(Class clazz) {
 
-//        ViewUtils.alertTitleButton(this, R.string.label_atencao, "Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.",
-//                getString(R.string.title_entendi), (DialogInterface.OnDismissListener) dialog -> {
-//                    return;
-//       });
-
         int              selecionada   = Integer.parseInt(buttonHomeBet.getTag().toString());
         ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
+
+        //
+        Long tempoExtraRestanteAposEncerrmento = EncerramentoUtil.
+                tempoExtraRestanteAposEncerramento(modalidade,
+                        modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso(),
+                        modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero());
+        if (tempoExtraRestanteAposEncerrmento != null) {
+            //ViewUtils.alertTitleButton(this, R.string.label_atencao,
+            //    ViewUtils.textCaixaSTDBold(this, getString(R.string.ainda_da_tempo,
+            //        modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero())).toString(),
+            //    getString(R.string.title_entendi),
+            //    (DialogInterface.OnDismissListener) dialog -> {});
+
+             DialogUtils.showDialogCustom(this,
+                    getString(R.string.label_atencao),
+                    getString(R.string.ainda_da_tempo,
+                    modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero()),
+                    null, getString(R.string.title_entendi),
+                    null, null, false);
+            return;
+       }
+
         if (modalidade == ModalidadeEnum.INSTANTANEA) {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_instantanea));
             Uri uri = Uri.parse(ENDERECO_INSTANTANEA);
@@ -1115,16 +1137,6 @@ public class PrincipalActivity extends AppCompatActivity
                 startActivity(intent);
                 return true;
             }
-        }
-        return false;
-    }
-
-    //*** APAGAR ***
-    private boolean redirectDeepLinkMock() {
-        Intent intent = IntentUtil.getIntentDeepLink(this, this.getResources().getString(R.string.depplink_path_mega_sena));
-        if (intent != null) {
-            startActivity(intent);
-            return true;
         }
         return false;
     }
