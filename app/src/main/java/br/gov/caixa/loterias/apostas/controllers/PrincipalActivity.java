@@ -2,8 +2,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -76,7 +74,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoConcursoCanalEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -110,7 +107,6 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
 
