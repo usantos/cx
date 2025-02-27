@@ -731,10 +731,14 @@ public class PrincipalActivity extends AppCompatActivity
                 EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
                 buttonHomeBet.setTag(adapterPosition);
-                //buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
-                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
-                        getResources().getString(R.string.espaco_em_branco) +
-                        ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+                if (modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima() == null ||
+                    modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima().compareTo(BigDecimal.ZERO) == 0) {
+                    buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
+                } else {
+                    buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
+                            getResources().getString(R.string.espaco_em_branco) +
+                            ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+                }
 
                 if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
                         temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
