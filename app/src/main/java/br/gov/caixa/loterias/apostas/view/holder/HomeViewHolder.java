@@ -31,10 +31,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -82,6 +86,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private ImageView imgRelogioCard;
 	private TextView tvContadorCard;
 	private ConstraintLayout clTimer30Min;
+	private TextView tvVoceTem;
 
 	public HomeViewHolder(View itemView, OnHomeListener listener, Activity parentActivity) {
 		super(itemView);
@@ -95,6 +100,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		imgRelogioCard = itemView.findViewById(R.id.img_relogio_card);
 		tvContadorCard = itemView.findViewById(R.id.tv_contador_card);
 		clTimer30Min = itemView.findViewById(R.id.cl_timer30Min);
+		tvVoceTem = itemView.findViewById(R.id.tv_voce_tem);
 		titulo = itemView.findViewById(R.id.linearLayoutTopModalidades);
 		valorAcumulado = itemView.findViewById(R.id.textVieCardAcumulatedValue);
 		viewSeparador = itemView.findViewById(R.id.viewSeparador);
@@ -293,10 +299,10 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 //			//MOCK ***** APAGAR *****
 //			EncerramentoUtil.mockSetDataHoraEncerramento(
-//					"25/02/2025",
+//					"27/02/2025",
+//					"10:53:00",
 //					"11:00:00",
-//					"11:15:00",
-//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.NORMAL, 5622); //Concurso
+//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5626);
 
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -528,7 +534,14 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 		linearRelogio.setVisibility(View.GONE);
 		clTimer30Min.setVisibility(View.VISIBLE);
-
+		if (!BuildConfig.FLAVOR.equals("prd")) {
+			ModalidadeDisponivelCota modalidadeDisponivelCota = EncerramentoUtil.
+					getModalidadeDisponivelCota(modalidade.getTipoModalidade(),
+							modalidade.getConcurso().getTipoConcurso(),
+							modalidade.getConcurso().getNumero());
+			tvVoceTem.setText(modalidadeDisponivelCota.getDataEncerramentoRevenda().substring(0,5) + " " +
+					modalidadeDisponivelCota.getHoraEncerramentoRevenda().substring(0,5) + "\nVocê tem");
+		}
 		new CountDownTimer(tempoRestanteMillis, 1000) {
 
 			@Override
