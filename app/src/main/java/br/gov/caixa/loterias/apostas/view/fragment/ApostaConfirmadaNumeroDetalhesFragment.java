@@ -159,6 +159,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			case MAIS_MILIONARIA:
 				numerosSorteadosPrimeiro = getResultadoConcurso() != null ? getResultadoConcurso().getListaSorteadosPrimeiroSorteio() : null;
 				List<Integer> trevoList = getResultadoConcurso() != null ? getResultadoConcurso().getTrevosSorteadosPrimeiroSorteio() : null;
+				Collections.sort(numerosSorteadosPrimeiro);
 				fragment = NumerosTrevosFragment
 						.newInstance(getContext().getResources().getString(R.string.seus_numeros),
 								getContext().getResources().getString(R.string.trevosTitulo),
