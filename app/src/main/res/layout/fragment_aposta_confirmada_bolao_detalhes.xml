@@ -6,14 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/id_tag_bolao"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_tag_bolao_outline"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_premio_pago"
         android:layout_width="match_parent"
@@ -62,7 +54,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_premio_pago_tit"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/id_tag_bolao"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/ic_tag_bolao_outline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/id_cabecalho_concurso"

@@ -179,7 +179,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 					txtMesTime.setVisibility(View.VISIBLE);
 					labelMesTime.setText(R.string.label_time_coracao_dois_pontos);
 					labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-					txtMesTime.setText(getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome());
+					txtMesTime.setText(getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome() + "-" + getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getUf());
 				}
 				break;
 			case MAIS_MILIONARIA:

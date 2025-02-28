@@ -322,11 +322,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-        if (aposta.getIndicadorCotaBolao()){
-            containerConteudo.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-        } else {
-            fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
-        }
+        fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
     }
 
     private int getCorEscura() {
