@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 
 public final class AppCenterManager {
@@ -20,6 +21,7 @@ public final class AppCenterManager {
 
     // constants para evento
     public static final String ERRO_GENERICO = "ERRO";
+    public static final String ERRO_RESPONSE = "ERRO_RESPONSE";
     public static final String ERRO_GENERICO_SERIALIZACAO = "ERRO_SERIALIZACAO";
     public static final String ERRO_UNSUPPORTED_ENCODING = "ERRO_UNSUPPORTED_ENCODING";
     public static final String ERRO_SERVICO_SEM_RESPONSEDATA = "ERRO_SERVICO_SEM_RESPONSEDATA";
@@ -55,6 +57,12 @@ public final class AppCenterManager {
 
     public static void registraEventoErro(String evento, VolleyError error) {
         registraEventoErro(evento, error, null);
+    }
+
+    public static void registraEventoErro(String evento, ErrorResponse error) {
+        Map<String, String> properties = new HashMap<>();
+        properties.put(evento, error.toString());
+        Analytics.trackEvent(evento, properties, Flags.CRITICAL);
     }
     
     private static String createStringProperties(VolleyError error, String body){
