@@ -454,19 +454,21 @@ public class PrincipalActivity extends AppCompatActivity
         return new OnNotificacaoListener() {
             @Override
             public void removePopup() {
+                popupNotification.dismiss();
+                if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null &&
+                        UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getId() != null){
+                    DadosUsuarioBO.getInstance().putLerNotificacao(new RequestListener<RetornoPadraoResponse>() {
+                        @Override
+                        public void onResponse(RetornoPadraoResponse result) {
+                            UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
+                        }
 
-                DadosUsuarioBO.getInstance().putLerNotificacao(new RequestListener<RetornoPadraoResponse>() {
-                    @Override
-                    public void onResponse(RetornoPadraoResponse result) {
-                        popupNotification.dismiss();
-                        UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
-                    }
-                });
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                        }
+                    });
+                }
             }
 
             @Override
