@@ -20,6 +20,7 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 	private List<Dezena> dezenas;
 	private List<Integer> dezenasSelecionadas;
 	private int color;
+	private boolean isSurpresinha = false;
 	private DezenaConfig dezenaConfig;
 	private OnItemClickListener listener;
 
@@ -39,6 +40,14 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 		this.listener = listener;
 	}
 
+	public ListaDezenaRecyclerView(boolean isSurpresinha, List<Dezena> dezenas, List<Integer> dezenasSelecionadas, DezenaConfig dezenaConfig, OnItemClickListener listener) {
+		this.dezenas = dezenas;
+		this.dezenasSelecionadas = dezenasSelecionadas;
+		this.dezenaConfig = dezenaConfig;
+		this.color = dezenaConfig.getColor();
+		this.listener = listener;
+		this.isSurpresinha = isSurpresinha;
+	}
 	@NonNull
 	@Override
 	public DezenaHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,18 +59,18 @@ public class ListaDezenaRecyclerView extends RecyclerView.Adapter<DezenaHolder>{
 	@Override
 	public void onBindViewHolder(@NonNull DezenaHolder holder, int position) {
 		Dezena dezena = dezenas.get(position);
-		if (dezenasSelecionadas!= null && dezenasSelecionadas.contains(Integer.valueOf(dezena.getValue()))) {
-			dezena.setSelected(Boolean.TRUE);
-		} else {
-			dezena.setSelected(Boolean.FALSE);
+		if(!isSurpresinha){
+			if (dezenasSelecionadas!= null && dezenasSelecionadas.contains(Integer.valueOf(dezena.getValue()))) {
+				dezena.setSelected(Boolean.TRUE);
+			} else {
+				dezena.setSelected(Boolean.FALSE);
+			}
 		}
 		holder.bind(dezena, position);
 	}
 
 	@Override
-	public int getItemCount() {
-		return dezenas.size();
-	}
+	public int getItemCount() {	return dezenas.size(); }
 
 	public void atualizaSelecionados(List<Integer> selecionados) {
 		this.dezenasSelecionadas = selecionados;
