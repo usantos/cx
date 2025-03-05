@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_chave"
-        android:textColor="@color/fonte_verde_resgate"
+        android:textColor="@color/fonte_resgate"
         android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@id/radioChave"
         app:layout_constraintStart_toStartOf="parent"
