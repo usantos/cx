@@ -51,6 +51,10 @@ public class StringUtils {
         return "_"+aposta+"_ "+apostaText+" de _"+dezena+"_ dezenas";
     }
 
+    public static String getApostasDePalpites(int aposta, int dezena) {
+        String apostaText = (aposta <= 1) ? "aposta" : "apostas";
+        return "_"+aposta+"_ "+apostaText+" de _"+dezena+"_ palpites";
+    }
     public static String getCotaDeTotal(int cota, int total) {
         String cotaText = (cota <= 1) ? "cota disponível" : "cotas disponíveis";
         return "_"+cota+"_ "+cotaText+" de _"+total+"_";
