@@ -15,7 +15,7 @@ import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaResultadoTimesAdapter;
 
 /**
@@ -58,7 +58,7 @@ public class ModalidadeSorteioLotecaResultadoView extends LinearLayout implement
 
     public void setLayout(Modalidade modalidade) {
 
-        EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
         tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
         LotecaResultadoTimesAdapter lotecaResultadoTimesAdapter;
         lotecaResultadoTimesAdapter = new LotecaResultadoTimesAdapter(getContext(), modalidade.getResultadoConcursoDTO().getPartidasLoteca(), modalidade.getTipoModalidade());

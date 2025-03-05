@@ -27,7 +27,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
@@ -84,7 +83,6 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 	@Override
 	public void bind(ApostaDTO aposta, int position) {
-		EstiloModalidade estiloModalidade = new EstiloModalidade(aposta.getModalidade());
 		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
 		int color;
@@ -107,9 +105,13 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		trataStyleSituacao(aposta);
 		preencheTeimosinha(aposta);
 
-		if (!ConfiguracaoAppSingleton.getInstance().isMicroServico() && !NovaApiUtils.isPossoBuscarNovaAPI() && ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial())){
+		if (!ConfiguracaoAppSingleton.getInstance().isMicroServico() && !NovaApiUtils.isPossoBuscarNovaAPI() && ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial()) && isEfetivada(aposta)){
 			fragment.conferirResultado(position, aposta, this);
 		}
+	}
+
+	private boolean isEfetivada(ApostaDTO aposta) {
+		return aposta.getSituacao() != null && aposta.getSituacao().getValor() != null && aposta.getSituacao().getValor() == SituacaoAposta.EFETIVADA;
 	}
 
 	private void checaBolao(ApostaDTO aposta) {

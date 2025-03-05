@@ -40,9 +40,7 @@ public class NumerosSuperSeteFragment extends Fragment {
 	private List<List<Integer>> matrizInteiros, matrizMarcada;
 	private ConfiguracaoNumerosSuperSete configuracao;
 
-	public NumerosSuperSeteFragment() {
-
-	}
+	public NumerosSuperSeteFragment() {}
 
 	public static NumerosSuperSeteFragment newInstance(List<List<Integer>> matrizSelecionada) {
 		NumerosSuperSeteFragment fragment = new NumerosSuperSeteFragment();

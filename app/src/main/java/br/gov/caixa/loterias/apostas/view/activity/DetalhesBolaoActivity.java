@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -124,6 +125,9 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void aplicaEstilo() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+		}
 		configBackgroundColorMenu(estilo.getCorEscura());
 		configColorTextMenu(estilo.getCorFonteFundoEscuro());
 

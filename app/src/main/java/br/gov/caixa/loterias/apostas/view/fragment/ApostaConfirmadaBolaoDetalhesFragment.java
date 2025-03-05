@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -178,7 +179,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 					txtMesTime.setVisibility(View.VISIBLE);
 					labelMesTime.setText(R.string.label_time_coracao_dois_pontos);
 					labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-					txtMesTime.setText(getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome());
+					txtMesTime.setText(getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome() + "-" + getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getUf());
 				}
 				break;
 			case MAIS_MILIONARIA:
@@ -358,6 +359,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private List<Dezena> getDezenas(List<Integer> listaInteiros) {
+		Collections.sort(listaInteiros);
 		List<Dezena> dezenas = new ArrayList<>();
 		for (int i = 0; i < listaInteiros.size(); i++) {
 			if (listaInteiros.get(i) == 100 || listaInteiros.get(i) == 0){

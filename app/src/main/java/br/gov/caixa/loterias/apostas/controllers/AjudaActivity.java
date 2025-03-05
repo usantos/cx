@@ -50,49 +50,49 @@ public class AjudaActivity extends AppCompatActivity {
         switch (tipoJogo) {
             case MEGA_SENA:
                 titulo = R.string.label_mega_sena;
-                corEscura = R.color.megasenaescuro;
-                backGroundToolBar = R.color.megasenaclaro;
+                corEscura = R.color.mega_verde_escuro_mkp;
+                backGroundToolBar = R.color.mega_verde_claro_mkp;
                 toolBarTrapezio = R.drawable.background_trapeze_mega_sena_tollbar;
                 iconFechar = R.drawable.btn_fechar;
                 break;
             case LOTOFACIL:
                 titulo = R.string.label_lotofacil;
-                corEscura = R.color.lotofacilescuro;
-                backGroundToolBar = R.color.lotofacilclaro;
+                corEscura = R.color.lotomania_escuro_mkp;
+                backGroundToolBar = R.color.lotofacil_claro_mkp;
                 toolBarTrapezio = R.drawable.background_trapeze_lotofacil_tollbar;
                 iconFechar = R.drawable.btn_fechar;
                 break;
             case QUINA:
                 titulo = R.string.label_quina;
-                corEscura = R.color.quinaescuro;
-                backGroundToolBar = R.color.quinaclaro;
+                corEscura = R.color.quina_escuro_mkp;
+                backGroundToolBar = R.color.quina_claro_mkp;
                 toolBarTrapezio = R.drawable.background_trapeze_quina_tollbar;
                 iconFechar = R.drawable.btn_fechar;
                 break;
             case DUPLA_SENA:
                 titulo = R.string.label_dupla_sena;
-                corEscura = R.color.duplasenaescuro;
-                backGroundToolBar = R.color.duplasenaclaro;
+                corEscura = R.color.dupla_sena_escuro_mkp;
+                backGroundToolBar = R.color.dupla_sena_claro_mkp;
                 toolBarTrapezio = R.drawable.background_trapeze_dupla_sena_tollbar;
                 iconFechar = R.drawable.btn_fechar;
                 break;
             case LOTOMANIA:
                 titulo = R.string.label_lotomania;
-                corEscura = R.color.lotomaniaescuro;
+                corEscura = R.color.lotomania_escuro_mkp;
                 backGroundToolBar = R.color.lotomaniaEscuroToolBar;
                 toolBarTrapezio = R.drawable.background_trapeze_lotomania_tollbar;
                 iconFechar = R.drawable.btn_fechar;
                 break;
             case TIMEMANIA:
                 titulo = R.string.label_timemania;
-                corEscura = R.color.timemaniaescuro;
+                corEscura = R.color.timemania_escuro_mkp;
                 backGroundToolBar = R.color.timemaniaClaroToolBar;
                 toolBarTrapezio = R.drawable.background_trapeze_timemania_tollbar;
                 iconFechar = R.drawable.fechar_verde;
                 break;
             case LOTECA:
                 titulo = R.string.label_loteca;
-                corEscura = R.color.lotecaescuro;
+                corEscura = R.color.loteca_escuro_mkp;
                 backGroundToolBar = R.color.lotecaEscuroToolbar;
                 toolBarTrapezio = R.drawable.background_trapeze_loteca_tollbar;
                 iconFechar = R.drawable.btn_fechar;
@@ -106,8 +106,8 @@ public class AjudaActivity extends AppCompatActivity {
                 break;
             default:
                 titulo = R.string.label_ajuda;
-                corEscura = R.color.megasenaescuro;
-                backGroundToolBar = R.color.megasenaclaro;
+                corEscura = R.color.mega_verde_escuro_mkp;
+                backGroundToolBar = R.color.mega_verde_claro_mkp;
                 toolBarTrapezio = R.drawable.background_trapeze_mega_sena_tollbar;
                 iconFechar = R.drawable.btn_fechar;
                 break;

@@ -39,7 +39,7 @@
                 android:layout_weight="0.4"
                 android:orientation="horizontal">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/simularTelaAposta"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -47,7 +47,7 @@
                     android:layout_marginTop="8dp"
                     android:background="@drawable/icon_seleciona2" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/surpresinhaTela"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/drawer_linha_divisao_bg"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -185,7 +185,7 @@
                 android:paddingLeft="65dp"
                 android:paddingTop="6dp"
                 android:text="@string/zero"
-                android:textColor="@color/lotecaclaro"
+                android:textColor="@color/loteca_claro_mkp"
                 android:textSize="18sp"
                 android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
@@ -227,7 +227,7 @@
                 android:paddingLeft="155dp"
                 android:paddingTop="6dp"
                 android:text="@string/zero"
-                android:textColor="@color/lotecaclaro"
+                android:textColor="@color/loteca_claro_mkp"
                 android:textSize="18sp"
                 android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
@@ -268,7 +268,7 @@
                 android:paddingLeft="232dp"
                 android:paddingTop="6dp"
                 android:text="@string/zero"
-                android:textColor="@color/lotecaclaro"
+                android:textColor="@color/loteca_claro_mkp"
                 android:textSize="18sp"
                 android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"
@@ -309,7 +309,7 @@
                 android:paddingLeft="315dp"
                 android:paddingTop="6dp"
                 android:text="@string/zero"
-                android:textColor="@color/lotecaclaro"
+                android:textColor="@color/loteca_claro_mkp"
                 android:textSize="18sp"
                 android:fontFamily="@font/caixa_std_bold"
                 app:layout_constraintStart_toStartOf="@id/labelTituloLoteca"

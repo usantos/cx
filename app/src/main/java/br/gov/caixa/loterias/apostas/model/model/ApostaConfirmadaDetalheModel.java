@@ -15,7 +15,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 
@@ -45,7 +44,7 @@ public class ApostaConfirmadaDetalheModel extends AppModel {
 	public ShapeConfig getTrevoShape() {
 		return new ShapeConfig(R.drawable.ic_item_trevo,
 				R.drawable.ic_item_trevo_selecionado,
-				R.color.branco, R.color.mais_milionaria_escura);
+				R.color.branco, R.color.milionaria_escuro_mkp);
 	}
 
 	public ConfiguracaoNumeros configuraEstiloNumeros(IdentificaoDeUmaApostaDas8Modalidades aposta) {

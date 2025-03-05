@@ -307,7 +307,7 @@
     <string name="label_limite_diario">Limite diário</string>
     <string name="label_abertura_aposta">Abertura da aposta</string>
     <string name="label_premio">Prêmio</string>
-    <string name="label_veja_retirar_premio">Veja como retirar o seu prêmio:</string>
+    <string name="label_veja_retirar_premio">Escolha como resgatar seu prêmio</string>
     <string name="label_time_coracao">Time do coração&#160;</string>
     <string name="label_time_coracao_dois_pontos">Time do coração:&#160;</string>
     <string name="label_dia_sorte_dois_pontos">Mês da sorte:&#160;</string>
@@ -627,8 +627,8 @@
     <string name="conf_rapd_verifique_opcoes">Verifique e confirme suas opções de Rapidão.</string>
     <string name="ops">Ops!</string>
 
-    <string name="titulo_dialog_filtro_apostas">Filtro de Apostas</string>
-    <string name="titulo_dialog_filtro_compras">Filtro de Compras</string>
+    <string name="titulo_dialog_filtro_apostas">Filtro de apostas</string>
+    <string name="titulo_dialog_filtro_compras">Filtro de compras</string>
 
     <!-- Filtros -->
     <string name="modalidades_selecionadas">Modalidades Selecionadas</string>

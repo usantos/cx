@@ -70,7 +70,6 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
@@ -128,8 +127,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private EditText nomeApostaEditTxt;
     private View id_view_divisao, linhaSeparadora;
-
-    private EstiloModalidade estilo;
     private EstiloModalidadeMKP estiloMKP;
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
     private IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaMatriz;
@@ -258,13 +255,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setaViews(){
-        //estilo = new EstiloModalidade(aposta); //Colocar EstiloModalidadeMKP
-        estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade()); //Colocar EstiloModalidadeMKP
-
-//        if(!aposta.getIndicadorCotaBolao()){
-//            setTheme(estilo.getThemeId());
-//        }
-
+        estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
         fragmentContainer       = findViewById(R.id.fragmentContainer);
         linearLayoutBottom      = findViewById(R.id.linearLayoutBottom);
         toolbar                 = findViewById(R.id.toolbar);
@@ -331,11 +322,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-        if (aposta.getIndicadorCotaBolao()){
-            containerConteudo.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-        } else {
-            fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
-        }
+        fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
     }
 
     private int getCorEscura() {
@@ -346,10 +333,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
             return estiloMKP.getCorEscura();
         } else {
-            if (estilo != null) {
-                return estiloMKP.getCorEscura();
-            }
-            estilo = new EstiloModalidade(aposta);
             return estiloMKP.getCorEscura();
         }
     }
@@ -362,10 +345,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
             return estiloMKP.getCorClara();
         } else {
-            if (estilo != null) {
-                return estiloMKP.getCorClara();
-            }
-            estilo = new EstiloModalidade(aposta);
             return estiloMKP.getCorClara();
         }
     }
@@ -735,17 +714,12 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setupToolbar() {
-        if (isApostaBolao(aposta)) {
-            if (isEspecial(aposta.getTipoConcurso().getValor())) {
-                toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
-            } else {
-                toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
-            }
-            toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
+        if (isEspecial(aposta.getTipoConcurso().getValor())) {
+            toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
         } else {
-            toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
             toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         }
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
