@@ -75,7 +75,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_lotomania;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
-                corLetraLista = R.color.lotomaniaclaro;
+                corLetraLista = R.color.lotomania_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_lotomania_fundo_branco;

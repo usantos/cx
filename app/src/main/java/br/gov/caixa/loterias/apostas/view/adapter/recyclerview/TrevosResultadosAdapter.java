@@ -16,8 +16,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 
 /**
  * Created by cedesbr450 on 27/03/18.
@@ -50,7 +49,7 @@ public final class TrevosResultadosAdapter extends RecyclerView.Adapter<TrevosRe
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        EstiloModalidade estilo = new EstiloModalidade(modalidade);
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
         int numeroResultado = numeroslista.get(position);
         holder.textViewTituloNumerosResultados.setText(numeroResultado < 10 ? context.getResources().getString(R.string.zero) + numeroResultado : context.getResources().getString(R.string.string_vazia) + numeroResultado);
         holder.textViewTituloNumerosResultados.setTextColor(context.getResources().getColor(estilo.getCorClara()));

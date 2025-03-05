@@ -230,36 +230,41 @@ public class  RedirectNetwork {
     }
 
     private static void trataRedict(Activity activity, ErrorResponse errorResponse) {
-        RedirectEnum redirectEnum = RedirectEnum.fromString(errorResponse.getRedirect());
-        switch (redirectEnum) {
-            case ACEITAR_TERMO_DE_USO:
-                verificaRedirectTermo(activity);
-                return;
-            case LOGIN:
-                connectKeycloak(activity);
-                return;
-            case CADASTRAR_APOSTADOR:
-                if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
-                    activity.startActivity(new Intent(activity, CadastrarActivity.class));
-                }
-                return;
-            case INDISPONIVEL:
-                if (activity.getClass() != AppIndisponivelActivity.class) {
-                    activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
-                } else {
-                    ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> {});
-                }
-                return;
-            case CARRINHO:
-                activity.startActivity(new Intent(activity, CarrinhoActivity.class));
-                return;
-            case CARRINHOS_FAVORITOS:
-                activity.startActivity(new Intent(activity, CarrinhosFavoritosActivity.class));
-                return;
-            case VERIFICA_COMPRA_PROCESSAMENTO:
-                return;
-            default:
-                break;
+        try{
+            RedirectEnum redirectEnum = RedirectEnum.fromString(errorResponse.getRedirect());
+            switch (redirectEnum) {
+                case ACEITAR_TERMO_DE_USO:
+                    verificaRedirectTermo(activity);
+                    return;
+                case LOGIN:
+                    connectKeycloak(activity);
+                    return;
+                case CADASTRAR_APOSTADOR:
+                    if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
+                        activity.startActivity(new Intent(activity, CadastrarActivity.class));
+                    }
+                    return;
+                case INDISPONIVEL:
+                    if (activity.getClass() != AppIndisponivelActivity.class) {
+                        activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
+                    } else {
+                        ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> {});
+                    }
+                    return;
+                case CARRINHO:
+                    activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+                    return;
+                case CARRINHOS_FAVORITOS:
+                    activity.startActivity(new Intent(activity, CarrinhosFavoritosActivity.class));
+                    return;
+                case VERIFICA_COMPRA_PROCESSAMENTO:
+                    return;
+                default:
+                    break;
+            }
+        } catch (Exception e){
+            AppCenterManager.registraEventoErro(AppCenterManager.ERRO_RESPONSE, errorResponse);
+            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> {});
         }
     }
 

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -170,7 +171,9 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 				break;
 			case MAIS_MILIONARIA:
 				if (trevosAdapter != null && resultado.getTrevosSorteadosPrimeiroSorteio() != null ){
-					trevosAdapter.atualizaSelecionados(resultado.getTrevosSorteadosPrimeiroSorteio());
+					List trevosSorteadosPrimeiroSorteio = resultado.getTrevosSorteadosPrimeiroSorteio();
+					Collections.sort(trevosSorteadosPrimeiroSorteio);
+					trevosAdapter.atualizaSelecionados(trevosSorteadosPrimeiroSorteio);
 				}
 				break;
 		}

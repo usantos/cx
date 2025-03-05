@@ -308,7 +308,7 @@
                 android:id="@+id/backgroundTopoNaoPremiadoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="111dp"
-                android:background="@color/megasenaescuro">
+                android:background="@color/mega_verde_escuro_mkp">
 
                 <TextView
                     android:id="@+id/statusResultadoNaoPremiadTextView"

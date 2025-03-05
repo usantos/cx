@@ -74,7 +74,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoConcursoCanalEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -87,7 +86,6 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -456,19 +454,21 @@ public class PrincipalActivity extends AppCompatActivity
         return new OnNotificacaoListener() {
             @Override
             public void removePopup() {
+                popupNotification.dismiss();
+                if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null &&
+                        UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getId() != null){
+                    DadosUsuarioBO.getInstance().putLerNotificacao(new RequestListener<RetornoPadraoResponse>() {
+                        @Override
+                        public void onResponse(RetornoPadraoResponse result) {
+                            UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
+                        }
 
-                DadosUsuarioBO.getInstance().putLerNotificacao(new RequestListener<RetornoPadraoResponse>() {
-                    @Override
-                    public void onResponse(RetornoPadraoResponse result) {
-                        popupNotification.dismiss();
-                        UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(null);
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
-                    }
-                });
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            RedirectNetwork.checkRedirect(error, PrincipalActivity.this);
+                        }
+                    });
+                }
             }
 
             @Override
@@ -725,10 +725,14 @@ public class PrincipalActivity extends AppCompatActivity
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
                 buttonHomeBolao.setVisibility(View.GONE);
             } else {
-                EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
-                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
+                if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
+                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+                } else {
+                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, R.color.branco));
+                }
+                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 buttonHomeBet.setTag(adapterPosition);
-                //buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
                         getResources().getString(R.string.espaco_em_branco) +
                         ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));

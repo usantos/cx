@@ -10,8 +10,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 public interface CartelaFragmentListener {
     int verificaNovoQtdDezenasMax(int qtdDezenasAtual);
 
-    void adicionarApostaCarrinho();
-
     void adicionarTimeSurpresa(ParametroEquipe equipeSelecionada);
 
 }

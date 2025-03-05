@@ -145,7 +145,7 @@
 
             <LinearLayout
                 android:id="@+id/modalidadeConcursoLayout"
-                android:layout_width="85dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
@@ -156,10 +156,9 @@
                     style="@style/editTextFuturaBoldTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxWidth="100dp"
-                    android:paddingEnd="0dp"
+                    android:maxWidth="110dp"
                     android:textSize="14.2sp"
-                    tools:text="Dia de Sorte" />
+                    tools:text="lotofácil da independência" />
 
                 <TextView
                     android:id="@+id/numeroConcurso"
@@ -367,6 +366,7 @@
                     android:layout_marginTop="2dp"
                     android:src="@drawable/ic_lixeira_mkp" />
             </RelativeLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RelativeLayout

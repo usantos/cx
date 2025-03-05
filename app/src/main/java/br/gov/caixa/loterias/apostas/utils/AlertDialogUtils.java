@@ -16,10 +16,11 @@ public class AlertDialogUtils {
     private static AlertDialog alertDialog;
 
     public static void show(Context contextParam) {
-        if(!isShow()){
-            alertDialog = LoadingViewLoterias.show(contextParam);
-        }
-
+        try{
+            if(!isShow()){
+                alertDialog = LoadingViewLoterias.show(contextParam);
+            }
+        }catch (Exception e){}
     }
 
     public static boolean isShow(){

@@ -113,20 +113,10 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         this.botaoAposteAgora = findViewById(R.id.botaoAposteAgora);
 
         if (botaoAposteAgora != null) {
-            botaoAposteAgora.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickBotaoAposteAgora();
-                }
-            });
+            botaoAposteAgora.setOnClickListener(view -> clickBotaoAposteAgora());
         }
         if (this.botaoAposteAgora2 != null) {
-            this.botaoAposteAgora2 .setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    clickBotaoAposteAgora2();
-                }
-            });
+            this.botaoAposteAgora2 .setOnClickListener(view -> clickBotaoAposteAgora2());
         }
     }
 
@@ -407,8 +397,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private void createListPremiacao(List<FaixaPremiadaDTO>       faixa) {
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
         initEstiloModalidade();
-        FaixaPremiacaoAdapter adapter = new FaixaPremiacaoAdapter(faixa, ContextCompat.getColor(this, estiloModalidade.getCorClara()),
-                ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
+        FaixaPremiacaoAdapter adapter = new FaixaPremiacaoAdapter(faixa, ContextCompat.getColor(this, estiloModalidade.getCorEscura()),
+                ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoClaro()));
 
         listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(adapter);
         listaFaixaPremiacaoExpandableHeightRecyclerView.setExpanded(Boolean.TRUE);
