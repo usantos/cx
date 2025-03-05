@@ -371,21 +371,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     @Override
-    public void adicionarApostaCarrinho() {
-        Intent activity = new Intent(this, ConfirmadoInclusaoCarrinhoActivity.class);
-        activity.putExtra(getResources().getString(R.string.extra_tipo_aposta), tipoJogo);
-
-        if (isFragmentCartela()) {
-            activity.putExtra(getResources().getString(R.string.extra_valor_aposta), cartelaFragment.valorTotalAposta);
-        } else {
-            activity.putExtra(getResources().getString(R.string.extra_valor_aposta), surpresinhaFragment.getValorTotalAposta());
-        }
-        activity.putExtra(getResources().getString(R.string.extra_modalidade), (new Gson()).toJson(parametroSimulacao));
-        this.init();
-        startActivityForResult(activity, 0);
-    }
-
-    @Override
     public void adicionarTimeSurpresa(ParametroEquipe equipeSelecionada) {
         Bundle bundle = new Bundle();
         bundle.putString(getResources().getString(R.string.extra_equipe_selecionada), (new Gson()).toJson(equipeSelecionada));
@@ -640,7 +625,9 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if (getPaginacao() != null) {
             paginacaoFragment = FragmentUtils.startPaginacaoFragment(getSupportFragmentManager(), paginacaoFragment, R.id.paginacaoView);
         }else {
-            paginacaoView.setVisibility(View.GONE);
+            if (paginacaoView != null){
+                paginacaoView.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -885,17 +872,6 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         typeGameColorLight = lightColor;
         typeGameColorDark = darkColor;
         this.corFonteFundoEscuro = corFonteFundoEscuro;
-    }
-
-    private void abrirTermos() {
-        Intent activity = new Intent(SimularApostaActivity.this, TermosUsoActivity.class);
-        startActivity(activity);
-    }
-
-    private void abrirAjuda() {
-        Intent activity = new Intent(SimularApostaActivity.this, TermosUsoActivity.class);
-        activity.putExtra(getResources().getString(R.string.extra_ajuda), true);
-        startActivity(activity);
     }
 
     @Override
