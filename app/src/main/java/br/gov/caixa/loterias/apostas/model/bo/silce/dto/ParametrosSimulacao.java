@@ -29,6 +29,8 @@ public class ParametrosSimulacao {
     private BigDecimal valorMinimoCarrinho = null;
     @SerializedName("quantidadeMaximaApostasCarrinho")
     private Integer quantidadeMaximaApostasCarrinho = null;
+    @SerializedName("dataHoraServidor")
+    private String dataHoraServidor = null;
     @SerializedName("parametros")
     private List<ParametroSimulacao> parametros = null;
     @SerializedName("modalidadesDisponiveisCotas")
@@ -68,6 +70,14 @@ public class ParametrosSimulacao {
 
     public void setQuantidadeMaximaApostasCarrinho(Integer quantidadeMaximaApostasCarrinho) {
         this.quantidadeMaximaApostasCarrinho = quantidadeMaximaApostasCarrinho;
+    }
+
+    public String getDataHoraServidor() {
+        return dataHoraServidor;
+    }
+
+    public void setDataHoraServidor(String dataHoraServidor) {
+        this.dataHoraServidor = dataHoraServidor;
     }
 
     /**

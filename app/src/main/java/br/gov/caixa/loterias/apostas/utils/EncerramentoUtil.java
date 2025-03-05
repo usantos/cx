@@ -17,6 +17,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSingleton;
 
 public class EncerramentoUtil {
 
@@ -79,7 +80,8 @@ public class EncerramentoUtil {
 
             Date dataHoraEncerramentoInicial = DATE_TIME_FORMATE.parse(parametroJogo.getConcurso().getDataFechamento());
 
-            long tempoAtualMillis = System.currentTimeMillis();
+            //long tempoAtualMillis = System.currentTimeMillis();
+            long tempoAtualMillis = DataHoraServidorSingleton.getInstance().getDataHoraServidorMillis();
 
             if (dataHoraEncerramentoInicial.getTime() <= tempoAtualMillis &&
                 dataHoraErramentoFinal.getTime() >= tempoAtualMillis) {
@@ -104,7 +106,8 @@ public class EncerramentoUtil {
                         modalidadeDC.getDataEncerramentoRevenda() + " " +
                                 modalidadeDC.getHoraEncerramentoRevenda());
 
-                long tempoAtualMillis = System.currentTimeMillis();
+                //long tempoAtualMillis = System.currentTimeMillis();
+                long tempoAtualMillis = DataHoraServidorSingleton.getInstance().getDataHoraServidorMillis();
 
                 if (tempoAtualMillis > dataHoraErramentoFinal.getTime()) {
                     continue;

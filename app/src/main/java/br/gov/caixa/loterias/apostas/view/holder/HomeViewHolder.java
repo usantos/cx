@@ -37,8 +37,7 @@ import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -309,7 +308,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		}
 
 		if (dataFechamentoSorteio != null) {
-			long tempoRestanteMillis = dataFechamentoSorteio.getTime() - System.currentTimeMillis();
+			//long tempoRestanteMillis = dataFechamentoSorteio.getTime() - System.currentTimeMillis();
+			long tempoRestanteMillis = dataFechamentoSorteio.getTime() - DataHoraServidorSingleton.getInstance().getDataHoraServidorMillis();
 
 			if (tempoRestanteMillis > 0) {
 				Date finalDataFechamentoSorteio = dataFechamentoSorteio;
