@@ -74,16 +74,20 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 	}
 
 	private void apresentaAlertaPreCompra() {
-		String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
-		ViewUtils.alertTitleCustomPositiveListener(FormaPagamentoActivity.this,
-												   "Cancelar",
-												   "Confirmar",
-												   FormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valor), (dialog, which) -> {
+		try {
+			String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
+			ViewUtils.alertTitleCustomPositiveNegativeListener(FormaPagamentoActivity.this,
+					"Cancelar",
+					"Confirmar",
+					FormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valor), (dialog, which) -> {
+						AlertDialogUtils.dismiss();
+						dialog.dismiss();
+					}, (dialog, which) -> {
+						finish();
+					} );
+		} catch (Exception e){
 			AlertDialogUtils.dismiss();
-			dialog.dismiss();
-		}, (dialog, which) -> {
-			finish();
-		} );
+		}
 	}
 
 	private void buscaMeiosPagamentos() {
