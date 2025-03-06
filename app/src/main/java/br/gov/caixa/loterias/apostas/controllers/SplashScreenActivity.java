@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -29,7 +28,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -62,6 +60,9 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         //Cria canal de Notificacao
         MessagingUtils.criaCanalNotificacaoApp(this);
+        //Permissao de Notificacao
+        //MessagingPermission messagingPermission = new MessagingPermission(this);
+        //messagingPermission.requestNotificationPermission();
 
         startaFila();
     }
