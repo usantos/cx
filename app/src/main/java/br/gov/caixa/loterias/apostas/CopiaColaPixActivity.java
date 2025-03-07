@@ -1,30 +1,23 @@
 package br.gov.caixa.loterias.apostas;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 
-import androidx.biometric.BiometricManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.VolleyError;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
-import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -36,16 +29,13 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 
 public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopiaColaListener {
 	public static Boolean isRunning = false;
@@ -176,6 +166,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	public void irParaCompras() {
 		Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, ListaComprasActivity.class);
 		startActivity(intent);
+		finish();
 	}
 
 	private void restart() {
