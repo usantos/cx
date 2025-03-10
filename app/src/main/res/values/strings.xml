@@ -1127,7 +1127,7 @@
     <string name="bundle_key_url">url</string>
     <string name="url_ajuda_mercado_pago">https://www.mercadopago.com.br/ajuda#from-section=menu</string>
     <string name="url_ajuda_recarga_pay"><![CDATA[https://recargapay.com.br/ajuda_caixa_form?reason=loterias-caixa&sub_reason=Problemas-com-meu-pagamento&subject=Ajuda%20com%20meu%20pagamento]]></string>
-    <string name="compra_existente_24_horas">Há uma compra efetivada ou em processamento com o mesmo valor do carrinho atual nas últimas 24 horas. Deseja rever o carrinho atual?</string>
+    <string name="compra_existente_24_horas">Atenção! Existe compra efetivada, em processamento ou aguardando efetivação da aposta com o mesmo valor do carrinho atual nas últimas 24 horas. Você gostaria de revisar o carrinho atual?</string>
     <string name="verificamos_compra_demorando_ou_processando">Verificamos que sua compra está em processamento e está demorando mais que o esperado. Aguarde alguns instantes e verifique na área  "Minhas compras" se a compra foi processada antes de tentar novamente.</string>
 
     <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>

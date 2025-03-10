@@ -134,5 +134,8 @@ class ServerMethods {
 
      static final String AUTOSUSPENSAO_APOSTADOR = "/usuarios/suspender-conta-apostador";
 
+     static final String VALIDA_REPRESA = "/parametros/valida-represa";
+
+
      private ServerMethods(){}
 }
