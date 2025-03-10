@@ -1,15 +1,18 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -36,13 +39,15 @@ public class MessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
         }
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            //String notificationBody = remoteMessage.getNotification().getBody();
+        if (remoteMessage.getNotification() == null) {
+            if (remoteMessage.getData() != null) {
+                sendNotificationHeadsUp(remoteMessage.getData().get("title"),
+                                        remoteMessage.getData().get("message"));
+            }
+        } else if (remoteMessage.getNotification() != null) {
             if (remoteMessage.getNotification().getBody() != null) {
-                //sendNotification(remoteMessage.getNotification());
-                sendNotificationHeadsUp(remoteMessage.getNotification());
+                sendNotificationHeadsUp(remoteMessage.getNotification().getTitle(),
+                                        remoteMessage.getNotification().getBody());
             }
         }
     }
@@ -90,7 +95,7 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     //Notificacao com Banner - Utiliza a prioridade ALTA
-    private void sendNotificationHeadsUp(RemoteMessage.Notification notification) {
+    private void sendNotificationHeadsUp(String titulo, String mensagem) {
         String CHANNEL_ID = getString(R.string.default_notification_channel_id);
         String CHANNEL_NAME = getString(R.string.default_notification_name);
         String CHANNEL_DESCRIPTION = getString(R.string.default_notification_channel_descricao);
@@ -106,8 +111,8 @@ public class MessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.trevo)             //Utilizado se o app estiver aberto, se fechado utiliza o do próprio app
                 //.setSmallIcon(R.mipmap.ic_launcher)       //Icone do app
-                .setContentTitle(notification.getTitle())   //Pode alterar o titulo/text se o app estiver aberto, se fechado utiliza o recebido na msg
-                .setContentText(notification.getBody())
+                .setContentTitle(titulo)   //Pode alterar o titulo/text se o app estiver aberto, se fechado utiliza o recebido na msg
+                .setContentText(mensagem)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 //.setSound(defaultSoundUri)
                 //.setColor(ContextCompat.getColor(this, R.color.branco))
@@ -126,6 +131,16 @@ public class MessagingService extends FirebaseMessagingService {
         //Utilizar NotificationManagerCompat para compatibilizar versoes mais antigas
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         int notificationId = 0; //(int) System.currentTimeMillis();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         notificationManager.notify(notificationId, notificationBuilder.build());
     }
 
