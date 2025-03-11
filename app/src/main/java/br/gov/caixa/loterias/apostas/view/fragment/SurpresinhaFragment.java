@@ -535,7 +535,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     private void initDiaDeSorte() {
         escolhaItemImageView.setImageDrawable(getResources().getDrawable(R.drawable.agrupar_1));
         infoItemSurpresaTextView.setText(R.string.label_mes_sorte);
-        //infoItemSurpresaTextView.setTextColor(getResources().getColor(R.color.diasortemedio));
         infoItemSurpresaTextView.setTextColor(getResources().getColor(corFonteFundoBranco));
         escolherOutroItemBtn.setText(R.string.label_escolher_outro_mes);
         escolherOutroItemBtn.setVisibility(View.GONE);
@@ -547,6 +546,6 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
         atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
         qtdSurpresinhasSelecionadasTrevos.setText(String.format(Locale.getDefault(), "%d", qtdTrevos));
         btnMenosTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinzaescuro));
-        btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.mais_milionaria_escura));
+        btnMaisTrevos.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.milionaria_escuro_mkp));
     }
 }

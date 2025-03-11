@@ -20,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -121,7 +122,6 @@ public class NumerosFragment extends Fragment {
 			titulo.setText(tituloTexto);
 		}
 
-		//titulo.setTextColor(getActivity().getResources().getColor(R.color.branco));
 		titulo.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
 
 		listViewNumeros = view.findViewById(R.id.ehgv_numeros);
@@ -157,6 +157,7 @@ public class NumerosFragment extends Fragment {
 	@NotNull
 	private List<Dezena> getDezenas() {
 		List<Dezena> dezenas = new ArrayList<>();
+		Collections.sort(listaInteiros);
 		for (int i = 0; i < listaInteiros.size(); i++) {
 			if (listaInteiros.get(i) == 100 || listaInteiros.get(i) == 0){
 				dezenas.add(new Dezena("" + listaInteiros.get(i), Boolean.FALSE, "00"));

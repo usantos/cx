@@ -134,7 +134,12 @@ public class ConfiguracaoRapidaoFragment4 extends Fragment {
 			TipoAposta tipoAposta = null;
 			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
 				case MAIS_MILIONALIA:
-					tipoAposta = new TipoAposta("+Milionária", R.drawable.trevo_mais_milionaria_nao_selecionado, estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), estilo.getCorFonteFundoClaro());
+					tipoAposta = new TipoAposta("+Milionária",  estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), estilo.getCorFonteFundoClaro());
+					break;
+				case LOTECA:
+				case LOTOGOL:
+				case FEDERAL:
+					//nao cria tipo para adicionar na tela
 					break;
 				default:
 					tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), estilo.getCorFonteFundoClaro());

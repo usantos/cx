@@ -34,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tit_premio_pago"
+            tools:textColor="@color/black"
             android:textColor="@color/branco"
             android:textSize="16sp"
             android:fontFamily="@font/caixa_std_bold"
@@ -53,6 +54,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_premio_pago_tit"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -75,6 +77,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/caixa_std_bold"
                 android:text="@string/concurso"
+                tools:textColor="@color/black"
+                android:textColor="@color/branco"
                 android:textSize="14sp"
                 android:layout_marginTop="8dp"/>
 
@@ -85,6 +89,8 @@
                 android:layout_below="@id/concursoLabel"
                 android:fontFamily="@font/caixa_std_regular"
                 android:textSize="12sp"
+                tools:textColor="@color/black"
+                android:textColor="@color/branco"
                 tools:text="1234" />
 
             <TextView
@@ -95,6 +101,8 @@
                 android:layout_toEndOf="@id/concursoTxt"
                 android:layout_below="@id/concursoTxt"
                 android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/branco"
+                tools:textColor="@color/black"
                 android:textSize="12sp"
                 tools:text="4 apostas" />
 
@@ -117,6 +125,7 @@
                     app:layout_constraintEnd_toStartOf="@id/divider"
                     android:text="@string/label_data_aposta"
                     android:fontFamily="@font/caixa_std_bold"
+                    tools:textColor="@color/black"
                     android:textColor="@color/branco"
                     android:textSize="12sp" />
 
@@ -128,6 +137,7 @@
                     app:layout_constraintStart_toStartOf="@id/dataAposta"
                     android:layout_height="wrap_content"
                     android:text="@string/label_data_aposta"
+                    tools:textColor="@color/black"
                     android:textColor="@color/branco"
                     android:fontFamily="@font/caixa_std_regular"
                     android:textSize="12sp" />
@@ -141,7 +151,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:background="@color/branco" />
+                    android:background="@color/branco"
+                    tools:background="@color/black"/>
 
                 <TextView
                     android:id="@+id/statusApostaTextView"
@@ -152,6 +163,7 @@
                     app:layout_constraintStart_toEndOf="@+id/divider"
                     android:text="@string/label_coluna"
                     android:visibility="gone"
+                    tools:textColor="@color/black"
                     android:textColor="@color/branco"
                     android:textSize="12sp"
                     android:fontFamily="@font/caixa_std_bold" />
@@ -164,6 +176,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/divider"
                     app:layout_constraintEnd_toEndOf="parent"
+                    tools:textColor="@color/black"
                     android:textColor="@color/branco"
                     android:textSize="12sp"
                     android:fontFamily="@font/caixa_std_bold"
@@ -178,6 +191,7 @@
                     app:layout_constraintStart_toStartOf="@+id/divider"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="10dp"
+                    tools:textColor="@color/black"
                     android:textColor="@color/branco"
                     android:textSize="12sp"
                     android:fontFamily="@font/caixa_std_regular"
@@ -191,6 +205,7 @@
                     app:layout_constraintStart_toStartOf="@+id/divider"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="10dp"
+                    tools:textColor="@color/black"
                     android:textColor="@color/branco"
                     android:textSize="12sp"
                     android:fontFamily="@font/caixa_std_bold"
@@ -208,8 +223,7 @@
                 android:layout_below="@id/cl_data"
                 android:background="@drawable/rounded_text_view_colunas"
                 android:backgroundTint="#FFA829"
-                android:layout_centerInParent="true"
-                >
+                android:layout_centerInParent="true">
 
                 <ImageView
                     android:id="@+id/ivResgatePremio"
@@ -242,6 +256,7 @@
                 android:fontFamily="@font/caixa_std_regular"
                 android:gravity="bottom"
                 android:text="@string/label_aposta_troca"
+                tools:textColor="@color/black"
                 android:textColor="@color/branco"
                 android:textSize="14sp"
                 android:visibility="gone" />
@@ -264,6 +279,8 @@
                     android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/label_time_coracao"
                     android:textSize="12sp"
+                    tools:textColor="@color/black"
+                    android:textColor="@color/branco"
                     android:padding="5dp"/>
 
                 <TextView
@@ -273,8 +290,11 @@
                     android:layout_toEndOf="@+id/labelInformacaoAdicionalTxt"
                     android:fontFamily="@font/caixa_std_bold"
                     android:textSize="12sp"
+                    tools:textColor="@color/black"
+                    android:textColor="@color/branco"
                     tools:text="@string/label_time_coracao"
                     android:padding="5dp"/>
+
             </RelativeLayout>
 
         </RelativeLayout>
@@ -291,8 +311,9 @@
                 android:fontFamily="@font/caixa_std_bold"
                 android:text="@string/label_teimosinha"
                 android:textSize="14sp"
-                android:visibility="invisible"
-                tools:visibility="visible" />
+                android:textColor="@color/branco"
+                tools:textColor="@color/black"
+                android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/tv_sua_aposta"
@@ -303,6 +324,8 @@
                 android:fontFamily="@font/caixa_std_regular"
                 android:gravity="center"
                 android:text="@string/seus_numeros"
+                tools:textColor="@color/black"
+                android:textColor="@color/branco"
                 android:textSize="12sp"
                 android:visibility="gone" />
 
@@ -334,6 +357,8 @@
                 android:fontFamily="@font/caixa_std_regular"
                 android:gravity="center"
                 android:text="@string/numeros_sorteados"
+                tools:textColor="@color/black"
+                android:textColor="@color/branco"
                 android:textSize="12sp"
                 android:visibility="gone" />
 
@@ -347,6 +372,8 @@
                 android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/colunas"
                 android:textSize="12sp"
+                tools:textColor="@color/black"
+                android:textColor="@color/branco"
                 android:visibility="gone" />
 
             <TextView
@@ -360,6 +387,8 @@
                 android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/colunas"
                 android:textSize="12sp"
+                tools:textColor="@color/black"
+                android:textColor="@color/branco"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -389,7 +418,6 @@
                 android:layout_marginStart="3dp"
                 android:paddingBottom="16dp"
                 android:visibility="gone"
-                tools:visibility="gone"
                 android:padding="5dp" >
 
                 <TextView
@@ -398,7 +426,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/caixa_std_regular"
                     android:background="@color/branco"
-                    android:textColor="@color/timemaniaclaro"
+                    android:textColor="@color/timemania_letra_mkp"
                     android:text="@string/label_time_coracao"
                     android:textSize="12sp"
                     android:padding="5dp" />
@@ -410,12 +438,15 @@
                     android:layout_toEndOf="@+id/tv_tit_time_mes"
                     android:fontFamily="@font/caixa_std_bold"
                     android:background="@color/branco"
-                    android:textColor="@color/timemaniaclaro"
+                    android:textColor="@color/timemania_letra_mkp"
                     android:textSize="12sp"
                     tools:text="@string/label_time_coracao"
                     android:padding="5dp" />
+
             </RelativeLayout>
+
         </RelativeLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

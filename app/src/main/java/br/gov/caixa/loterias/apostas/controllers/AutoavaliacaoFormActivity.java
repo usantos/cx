@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -34,7 +33,6 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.BottomSheetFragment;
 
 public class AutoavaliacaoFormActivity extends AppCompatActivity {
-
     private List<AutoavaliacaoPerguntaDTO> listPergunta;
     private List<AutoavaliacaoRespostaDTO> listResposta;
     private int indiceTelaAtual = 0;
@@ -47,7 +45,6 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
     private Button btnAjuda;
     private BottomSheetFragment bottomSheetFragment;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,15 +53,10 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        //setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autoavaliacao_apostador))));
         setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autoavaliacao_apostador))));
 
         configurar();
         buscaPerguntas();
-    }
-
-    @Override
-    public void onBackPressed() {
     }
 
     private void configurar() {
@@ -74,55 +66,39 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
         if (!SessaoUsuario.getInstance().getResponderAutoavaliacao()) {
             btnFecharTop.setVisibility(View.VISIBLE);
-            btnFecharTop.setOnClickListener(v -> {
-                finish();
-            });
+            btnFecharTop.setOnClickListener(v -> finish());
         }
 
         btnProximo = findViewById(R.id.btnAutoProximo);
-        btnProximo.setOnClickListener(v -> {
-            clickProximo();
-        });
+        btnProximo.setOnClickListener(v -> clickProximo());
 
         btnAnterior = findViewById(R.id.btnAutoAnterior);
-        btnAnterior.setOnClickListener(v -> {
-            clickAnterior();
-        });
+        btnAnterior.setOnClickListener(v -> clickAnterior());
 
         btnFechar = findViewById(R.id.btnAutoFechar);
-        btnFechar.setOnClickListener(v -> {
-            finish();
-        });
+        btnFechar.setOnClickListener(v -> finish());
 
         btnAjuda = findViewById(R.id.btnAutoAjuda);
         btnAjuda.setOnClickListener(v -> {
-            //startActivity(new Intent(this, PrincipalActivity_.class));
             bottomSheetFragment = new BottomSheetFragment();
             bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
-            //finish();
         });
 
         desabilitaAnterior();
         desabilitaProximo();
 
-        rgAutoavaliacao.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                habilitaProximo();
-            }
-        });
+        rgAutoavaliacao.setOnCheckedChangeListener((group, checkedId) -> habilitaProximo());
     }
 
     private void clickProximo() {
-
         //Clicou Concluido
-        if (indiceTelaAtual == (listPergunta.size() -1)) {
+        if (listPergunta != null && indiceTelaAtual == (listPergunta.size() -1)) {
             salvaNoListResposta();
             salvarRespostas();
             return;
         }
 
-        if (indiceTelaAtual < (listPergunta.size() -1)) {
+        if (listPergunta != null && indiceTelaAtual < (listPergunta.size() -1)) {
             salvaNoListResposta();
 
             rgAutoavaliacao.clearCheck();
@@ -137,13 +113,11 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
                 alteraBtnToConcluido();
             }
         }
-
     }
 
 
     private void clickAnterior() {
-
-        if (indiceTelaAtual > 0) {
+        if (indiceTelaAtual > 0 && listPergunta != null) {
             //Ultima tela
             if (indiceTelaAtual == (listPergunta.size() -1)) {
                 alteraBtnToProximo();
@@ -163,7 +137,6 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
 
     private void salvaNoListResposta() {
-
         boolean indicadorResposta = false;
         int selectedId = rgAutoavaliacao.getCheckedRadioButtonId();
         if (selectedId == R.id.rbYes) {
@@ -264,7 +237,6 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
         });
     }
 
-
     private void salvarRespostas() {
         AlertDialogUtils.show(this);
         ApostaBO.getInstance().postAutoavaliacaoRespostas(listResposta, new RequestListener<AutoavaliacaoResponse>() {
@@ -291,4 +263,3 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
         });
     }
 }
-

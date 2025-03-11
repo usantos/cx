@@ -27,9 +27,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 public class FiltroApostasAdapter extends BaseExpandableListAdapter {
@@ -336,43 +336,22 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	private void populaArraysTipoAposta(List<TipoAposta> array, List<ModalidadeDTO> modalidades) {
 		for (ModalidadeDTO item : modalidades) {
 			TipoAposta tipoAposta = null;
-			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
-				case QUINA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_5, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case LOTOFACIL:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_6, R.color.lotofacilclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case LOTOMANIA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_4, R.color.lotomaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case MEGA_SENA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_megasena, R.color.megasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
+			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromModalidadeDTO(item));
+			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
+				case MAIS_MILIONALIA:
+					tipoAposta = new TipoAposta("+Milionária", estilo.getTrevoFundoClaro(),  estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
 					break;
 				case TIMEMANIA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.timemaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case DUPLA_SENA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_9, R.color.duplasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
 				case DIA_DE_SORTE:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_2, R.color.diasorteclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
 				case SUPER_SETE:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.superseteclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case LOTOGOL:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_lotogol, R.color.lotogolclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case LOTECA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_loteca, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case MAIS_MILIONALIA:
-					tipoAposta = new TipoAposta(context.getString(R.string.label_mais_milionaria), R.drawable.trevo_mais_milionaria_nao_selecionado, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+					tipoAposta.setTextSelectColor(estilo.getCorLetraLista());
 					break;
 				default:
+					tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
 					break;
 			}
+
 			if (tipoAposta != null) {
 				tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale("pt", "BR")));
 				array.add(tipoAposta);

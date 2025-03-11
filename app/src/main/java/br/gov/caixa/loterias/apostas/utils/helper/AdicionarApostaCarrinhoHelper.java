@@ -58,7 +58,6 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
-
 /**
  * Created by joafilho on 10/04/2018.
  * Class helper AdicionarApostaCarrinhoHelper
@@ -340,13 +339,15 @@ public class AdicionarApostaCarrinhoHelper {
         } else {
             if(incluirSurpresinhaDTO != null){
                 telaConfirmacao.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, incluirSurpresinhaDTO).getParametroJogo()));
-
             }
         }
 
         if(AdicionarApostaCarrinhoHelper.activity instanceof SimularApostaActivity){
             AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
             ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).zerarApostas();
+            if (modalidadeEnum == ModalidadeEnum.LOTECA){
+                ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).finish();
+            }
         } else {
             if(AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
                 if (telaConfirmacao != null){

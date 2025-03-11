@@ -322,7 +322,7 @@ public class ViewUtils {
         return dialog;
     }
 
-    public static Dialog alertTitleCustomPositiveListener(Context context,String negativeTitle, String positiveTitle, String message, DialogInterface.OnClickListener listener, DialogInterface.OnClickListener  listenerNo) {
+    public static Dialog alertTitleCustomPositiveNegativeListener(Context context,String negativeTitle, String positiveTitle, String message, DialogInterface.OnClickListener listener, DialogInterface.OnClickListener  listenerNo) throws Exception {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
                 .setCancelable(false)
                 .setNegativeButton (negativeTitle, listenerNo)

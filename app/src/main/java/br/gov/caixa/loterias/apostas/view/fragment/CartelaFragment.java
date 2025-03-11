@@ -1226,7 +1226,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private void configuraSuperSete(View viewLayout) {
 		listaGridsSuperSete = cartelaModel.getListGridSuperSete(viewLayout);
 
-		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorDark, parentActivity);
+		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorLight, parentActivity);
 
 		cartelaModel.preencheGridComListaSuperSete(listaGridsSuperSete, listaAdaptersSuperSete);
 
@@ -1392,12 +1392,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			valorTotalJogos.setTextColor(getResources().getColor(R.color.verdeazul));
 			valorTotalSimples.setTextColor(getResources().getColor(R.color.verdeazul));
 		} else {
-			valorTotalJogos.setTextColor(getResources().getColor(R.color.lotecaclaro));
-			valorTotalSimples.setTextColor(getResources().getColor(R.color.lotecaclaro));
+			valorTotalJogos.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
+			valorTotalSimples.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
 		}
 		if (valueDuplas  == 0 && valueTriplas == 0) {
-			valorTotalDuplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
-			valorTotalTriplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
+			valorTotalDuplas.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
+			valorTotalTriplas.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
 		} else {
 			valorTotalDuplas.setTextColor(getResources().getColor(R.color.verdeazul));
 			valorTotalTriplas.setTextColor(getResources().getColor(R.color.verdeazul));

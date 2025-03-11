@@ -11,7 +11,7 @@
         android:id="@+id/topoModalidadeResultadoLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/megasenaclaro"
+        android:background="@color/mega_verde_claro_mkp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -55,7 +55,7 @@
         android:id="@+id/topoResultadoPremioLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/megasenaescuro"
+        android:background="@color/mega_verde_escuro_mkp"
         android:orientation="vertical">
 
         <TextView
@@ -102,7 +102,7 @@
         android:id="@+id/premioInfoLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/megasenaescuro"
+        android:background="@color/mega_verde_escuro_mkp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -297,7 +297,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ver_detalhe_da_aposta"
-                android:textColor="@color/mais_milionaria_escura"
+                android:textColor="@color/milionaria_escuro_mkp"
                 android:fontFamily="@font/caixa_std_regular"
                 android:layout_marginStart="16sp"
                 app:layout_constraintStart_toEndOf="@+id/ivDetalheAposta"

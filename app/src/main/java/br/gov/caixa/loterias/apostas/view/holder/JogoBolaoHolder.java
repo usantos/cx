@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -101,7 +102,7 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 					mes = aposta.getMesSorte().getNome();
 				}
 				apresentaDiaSorteTimeMania(context.getString(R.string.label_mes_sorte_dois_pontos), mes,
-						estilo.getCorFonteFundoClaro());
+						estilo.getCorFonteFundoEscuro());
 				break;
 			case MAIS_MILIONARIA:
 				txtIndividualidade.setVisibility(View.VISIBLE);
@@ -170,7 +171,9 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 				break;
 			case MAIS_MILIONARIA:
 				if (trevosAdapter != null && resultado.getTrevosSorteadosPrimeiroSorteio() != null ){
-					trevosAdapter.atualizaSelecionados(resultado.getTrevosSorteadosPrimeiroSorteio());
+					List trevosSorteadosPrimeiroSorteio = resultado.getTrevosSorteadosPrimeiroSorteio();
+					Collections.sort(trevosSorteadosPrimeiroSorteio);
+					trevosAdapter.atualizaSelecionados(trevosSorteadosPrimeiroSorteio);
 				}
 				break;
 		}

@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpites;
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
 public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implements OnCompraBolaoListener {
@@ -124,6 +126,9 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void aplicaEstilo() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+		}
 		configBackgroundColorMenu(estilo.getCorEscura());
 		configColorTextMenu(estilo.getCorFonteFundoEscuro());
 
@@ -257,7 +262,10 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
 
 		textQtdDezenas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
-				getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
+						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
+						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+
 
 		textQtdCotas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
 				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));

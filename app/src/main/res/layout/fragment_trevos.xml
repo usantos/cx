@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="@string/subtitulo_trevos"
             android:textSize="16sp"
-            android:textColor="@color/mais_milionaria_escura"
+            android:textColor="@color/milionaria_escuro_mkp"
             android:layout_marginTop="36dp"
             android:layout_marginStart="60dp"
             android:layout_marginEnd="60dp"

@@ -26,9 +26,7 @@ import br.gov.caixa.loterias.apostas.controllers.ListaRapidaoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<CarrinhoApostasListViewRapidaoAdapter.ApostaHolder> {
     private Context context;
@@ -78,7 +76,6 @@ public class CarrinhoApostasListViewRapidaoAdapter extends RecyclerView.Adapter<
 
     @Override
     public void onBindViewHolder(ApostaHolder holder, final int position) {
-        //EstiloModalidade estilo = new EstiloModalidade(apostas.get(position).getModalidade());
         EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(apostas.get(position).getModalidade());
 
         final SwipeLayout swipeLayout = (SwipeLayout) holder.itemView;

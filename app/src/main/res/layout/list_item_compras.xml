@@ -11,7 +11,7 @@
         android:id="@+id/topListItemComprasLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/verdesenaclaro"
+        android:background="@color/mega_verde_claro_mkp"
         android:orientation="vertical"
         android:paddingHorizontal="13dp"
         android:paddingVertical="15dp"
