@@ -123,7 +123,7 @@
     <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo é </string>
     <string name="numeros_sorteados">Números sorteados</string>
     <string name="inibir_teimosinha">Para Teimosinhas são exibidos os números apostados e os números sorteados apenas do primeiro concurso apostado. A conferência das apostas, no entanto, é realizada para todos os concursos. Em breve a funcionalidade será aprimorada para exibir os números apostados e os números sorteados de todos os concursos da Teimosinha.</string>
-
+    <string name="inibir_teimosinha_V2">A conferência dos jogos da Teimosinha é realizada para todos os concursos apostados, no entanto, é exibida apenas a do primeiro concurso.</string>
 
     <!-- email-->
     <string name="email_padrao">CEDESBR456@caixa.gov.br</string>
@@ -311,6 +311,7 @@
     <string name="label_time_coracao">Time do coração&#160;</string>
     <string name="label_time_coracao_dois_pontos">Time do coração:&#160;</string>
     <string name="label_dia_sorte_dois_pontos">Mês da sorte:&#160;</string>
+    <string name="label_trevos_dois_pontos">Trevos: </string>
     <string name="label_empty"> </string>
     <string name="label_rapidao">Rapidão</string>
     <string name="label_apostas_fav_rapidao_empty">Você ainda não possui apostas favoritas. É muito fácil! Simule uma aposta e adicione como favorita.</string>

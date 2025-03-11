@@ -42,8 +42,8 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 	private View view, divider;
 	private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, resultTxt, modalidadeTxt,
-			apostaTrocaTxt, informacaoAdicionalTxt, labelInformacaoAdicionalTxt, tv_colunas, tv_sua_aposta,
-			tv_colunas_2, tv_resultado_super_sete, tv_tit_time_mes, tv_time_mes, tv_val_premio, tv_val_premio_tit,
+			apostaTrocaTxt, txtTimeDiaAposta, labelTimeDiaAposta, tv_colunas, tv_sua_aposta,
+			tv_colunas_2, tv_resultado_super_sete, labelTimeDiaResultado, txtTimeDiaResultado, tv_val_premio, tv_val_premio_tit,
 			tv_premio_pago_tit;
 	private RelativeLayout informacaoAdicionalLayout, rl_fg_numeros_1, rl_fg_numeros_2 ,rl_container_result_1, rl_container_result_2,
 			rl_time_mes;
@@ -104,8 +104,10 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 	private void preencheDadosAposta() {
 
-		concursoLabel.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-		concursoTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
+			concursoLabel.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			concursoTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		}
 		concursoTxt.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
 
 		preencheData();
@@ -128,8 +130,10 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		} else {
 			dataApostaTxt.setText(aposta.getDataEfetivacao() + "\n" + aposta.getHoraEfetivacao());
 		}
-		dataAposta.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-		dataApostaTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
+			dataAposta.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			dataApostaTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		}
 		dataApostaTxt.setVisibility(View.VISIBLE);
 	}
 
@@ -159,7 +163,9 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			case MAIS_MILIONARIA:
 				numerosSorteadosPrimeiro = getResultadoConcurso() != null ? getResultadoConcurso().getListaSorteadosPrimeiroSorteio() : null;
 				List<Integer> trevoList = getResultadoConcurso() != null ? getResultadoConcurso().getTrevosSorteadosPrimeiroSorteio() : null;
-				Collections.sort(numerosSorteadosPrimeiro);
+				if (numerosSorteadosPrimeiro != null){
+					Collections.sort(numerosSorteadosPrimeiro);
+				}
 				fragment = NumerosTrevosFragment
 						.newInstance(getContext().getResources().getString(R.string.seus_numeros),
 								getContext().getResources().getString(R.string.trevosTitulo),
@@ -209,13 +215,13 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				String equipe = getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome();
 				boolean apostaValida = aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getNome() != null;
 				if (apostaValida && equipe.equalsIgnoreCase(aposta.getTimeDoCoracao().getNome())) {
-					informacaoAdicionalTxt.setTextColor(corTime);
-					labelInformacaoAdicionalTxt.setTextColor(corTime);
-					informacaoAdicionalTxt.setBackgroundColor(corBranco);
-					labelInformacaoAdicionalTxt.setBackgroundColor(corBranco);
+					txtTimeDiaAposta.setTextColor(corTime);
+					labelTimeDiaAposta.setTextColor(corTime);
+					txtTimeDiaAposta.setBackgroundColor(corBranco);
+					labelTimeDiaAposta.setBackgroundColor(corBranco);
 				}
-				tv_time_mes.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-				tv_time_mes.setText(getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome() +
+				txtTimeDiaResultado.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+				txtTimeDiaResultado.setText(getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome() +
 						"/" + getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getUf());
 				rl_time_mes.setVisibility(View.VISIBLE);
 			}
@@ -225,18 +231,21 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				int corDia = ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro());
 				String mesDaSorte = getResultadoConcurso().getPremiacaoMesDeSorte().getMesDeSorte().getNome();
 				if (mesDaSorte.equalsIgnoreCase(aposta.getMesDeSorte().getNome())) {
-					informacaoAdicionalTxt.setTextColor(corDia);
-					labelInformacaoAdicionalTxt.setTextColor(corDia);
-					informacaoAdicionalTxt.setBackgroundColor(corBranco);
-					labelInformacaoAdicionalTxt.setBackgroundColor(corBranco);
-				}
-				tv_time_mes.setTextColor(corDia);
-				tv_time_mes.setText(mesDaSorte);
-				tv_tit_time_mes.setTextColor(corDia);
-				tv_tit_time_mes.setText(R.string.label_mes_sorte);
+					txtTimeDiaAposta.setTextColor(corDia);
+					txtTimeDiaAposta.setBackgroundColor(corBranco);
 
-				labelInformacaoAdicionalTxt.setTextColor(corDia);
-				labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
+					labelTimeDiaAposta.setTextColor(corDia);
+					labelTimeDiaAposta.setBackgroundColor(corBranco);
+				}
+
+				txtTimeDiaResultado.setTextColor(corDia);
+				txtTimeDiaResultado.setBackgroundColor(corBranco);
+				labelTimeDiaResultado.setTextColor(corDia);
+				labelTimeDiaResultado.setBackgroundColor(corBranco);
+
+				labelTimeDiaResultado.setText(R.string.label_mes_sorte);
+				txtTimeDiaResultado.setText(mesDaSorte);
+				labelTimeDiaAposta.setText(R.string.label_mes_sorte);
 				rl_time_mes.setVisibility(View.VISIBLE);
 			}
 		}
@@ -284,8 +293,8 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		tv_colunas.setVisibility(View.VISIBLE);
 		tv_sua_aposta.setVisibility(View.VISIBLE);
 
-		tv_sua_aposta.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-		tv_colunas.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		tv_sua_aposta.setTextColor(ContextCompat.getColor(getContext(), R.color.branco));
+		tv_colunas.setTextColor(ContextCompat.getColor(getContext(), R.color.branco));
 
 		if (matrizSorteados != null) {
 			Utils.ordenaMatrizInteiro(matrizSorteados);
@@ -296,23 +305,23 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			tv_resultado_super_sete.setVisibility(View.VISIBLE);
 			tv_colunas_2.setVisibility(View.VISIBLE);
 
-			tv_resultado_super_sete.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-			tv_colunas_2.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			tv_resultado_super_sete.setTextColor(ContextCompat.getColor(getContext(), R.color.branco));
+			tv_colunas_2.setTextColor(ContextCompat.getColor(getContext(), R.color.branco));
 		}
 	}
 
 	private void preencheTimeCoracaoDiaSorte() {
 		if (aposta.getTimeDoCoracao() != null) {
 			informacaoAdicionalLayout.setVisibility(View.VISIBLE);
-			labelInformacaoAdicionalTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-			informacaoAdicionalTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-			informacaoAdicionalTxt.setText(aposta.getTimeDoCoracao().getNome() + "/" + aposta.getTimeDoCoracao().getUf());
+			labelTimeDiaAposta.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			txtTimeDiaAposta.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			txtTimeDiaAposta.setText(aposta.getTimeDoCoracao().getNome() + "/" + aposta.getTimeDoCoracao().getUf());
 		} else if (aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNumero() != null) {
 			informacaoAdicionalLayout.setVisibility(View.VISIBLE);
-			labelInformacaoAdicionalTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-			labelInformacaoAdicionalTxt.setText(R.string.label_mes_sorte);
-			informacaoAdicionalTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-			informacaoAdicionalTxt.setText(aposta.getMesDeSorte().getNome());
+			labelTimeDiaAposta.setTextColor(ContextCompat.getColor(getContext(), R.color.branco));
+			labelTimeDiaAposta.setText(R.string.label_mes_sorte);
+			txtTimeDiaAposta.setTextColor(ContextCompat.getColor(getContext(), R.color.branco));
+			txtTimeDiaAposta.setText(aposta.getMesDeSorte().getNome());
 		}
 	}
 
@@ -329,23 +338,31 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				textoTeimosinha = String.format(Locale.getDefault(), "%d %s", quantidade, getActivity().getString(R.string.label_apostas));
 			}
 			quantidadeApostadasTxt.setText(textoTeimosinha);
-			quantidadeApostadasTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-			modalidadeTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
+				quantidadeApostadasTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+				modalidadeTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			}
 		}
 	}
 
 	private void preenchSituacaoPremio() {
 
-		divider.setBackgroundResource(estilo.getCorFonteFundoClaro());
-		resultTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
+			divider.setBackgroundResource(estilo.getCorFonteFundoClaro());
+			resultTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			view.findViewById(R.id.v_separador_esq).setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			view.findViewById(R.id.v_separador_dir).setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+		}
 
 		if (aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO || isApostaPremiada(aposta)) {
 			tv_val_premio.setVisibility(View.VISIBLE);
 			tv_val_premio_tit.setVisibility(View.VISIBLE);
 
-			tv_val_premio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-			tv_val_premio_tit.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-			tv_premio_pago_tit.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
+				tv_val_premio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+				tv_val_premio_tit.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+				tv_premio_pago_tit.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+			}
 
 			if (getValorDoPremio() != null) {
 				tv_val_premio.setText(ViewUtils.getMoedaFormat(getValorDoPremio()));
@@ -390,14 +407,14 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		divider = view.findViewById(R.id.divider);
 		modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
 		apostaTrocaTxt = view.findViewById(R.id.apostaTrocaTxt);
-		informacaoAdicionalTxt = view.findViewById(R.id.informacaoAdicionalTxt);
-		labelInformacaoAdicionalTxt = view.findViewById(R.id.labelInformacaoAdicionalTxt);
+		txtTimeDiaAposta = view.findViewById(R.id.informacaoAdicionalTxt);
+		labelTimeDiaAposta = view.findViewById(R.id.labelInformacaoAdicionalTxt);
 		tv_colunas = view.findViewById(R.id.tv_colunas);
 		tv_sua_aposta = view.findViewById(R.id.tv_sua_aposta);
 		tv_colunas_2 = view.findViewById(R.id.tv_colunas_2);
 		tv_resultado_super_sete = view.findViewById(R.id.tv_resultado_super_sete);
-		tv_tit_time_mes = view.findViewById(R.id.tv_tit_time_mes);
-		tv_time_mes = view.findViewById(R.id.tv_time_mes);
+		labelTimeDiaResultado = view.findViewById(R.id.tv_tit_time_mes);
+		txtTimeDiaResultado = view.findViewById(R.id.tv_time_mes);
 
 		informacaoAdicionalLayout = view.findViewById(R.id.informacaoAdicionalLayout);
 		rl_fg_numeros_1 = view.findViewById(R.id.rl_fg_numeros_1);

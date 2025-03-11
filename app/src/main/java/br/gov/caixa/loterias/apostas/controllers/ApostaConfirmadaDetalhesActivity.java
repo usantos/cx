@@ -320,7 +320,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             criouFragmentDetalhe = true;
         }
 
-        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
+        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
         informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
         fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
     }
@@ -702,7 +702,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             if (aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
                 ViewUtils.alertTitleButton(this,
                         R.string.label_atencao ,
-                        getResources().getString(R.string.inibir_teimosinha),
+                        getResources().getString(R.string.inibir_teimosinha_V2),
                         getResources().getString(R.string.title_entendi));
                 apresentouTeimosinha = true;
             }

@@ -123,8 +123,12 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         String valorCarrinho = ViewUtils.getMoedaFormat(sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta());
         TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
-        textObservacaoConfirmacao.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.infoValorMinimoCarrinho) + getResources().getString(R.string.underline_com_espaco) + valorCarrinho + getResources().getString(R.string.underline)));
-        textObservacaoConfirmacao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+        if(valorCarrinho != null && sessaoUsuario.getValorMinimimoAposta().compareTo(BigDecimal.ZERO) > 0){
+            textObservacaoConfirmacao.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.infoValorMinimoCarrinho) + getResources().getString(R.string.underline_com_espaco) + valorCarrinho + getResources().getString(R.string.underline)));
+            textObservacaoConfirmacao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+        }else{
+            textObservacaoConfirmacao.setVisibility(View.GONE);
+        }
 
         TextView textTituloTela = findViewById(R.id.textTituloTela);
         textTituloTela.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));

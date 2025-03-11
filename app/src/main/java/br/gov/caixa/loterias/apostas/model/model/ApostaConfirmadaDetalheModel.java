@@ -49,12 +49,10 @@ public class ApostaConfirmadaDetalheModel extends AppModel {
 
 	public ConfiguracaoNumeros configuraEstiloNumeros(IdentificaoDeUmaApostaDas8Modalidades aposta) {
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(aposta.getModalidade());
-		if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA ||
-			aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
-			//Cor do numero quando selecionado, Cor Texto
+		if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA) {
 			return new ConfiguracaoNumeros(R.color.branco, estilo.getCorFonteFundoClaro());
 		} else {
-			return new ConfiguracaoNumeros(estilo.getCorClara(), R.color.branco);
+			return new ConfiguracaoNumeros(estilo.getCorEscura(), R.color.branco);
 		}
 	}
 
