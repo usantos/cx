@@ -1491,5 +1491,8 @@
     <string name="voce_pode_acompanhar_situacao">Você pode acompanhar a situação do \nresgate pelo menu Minhas apostas \nenquanto ele é processado.</string>
     <string name="acesse_minhas_apostas">Acesse \n_Minhas apostas_</string>
     <string name="arg_goto_minhas_apostas">GO_TO_MINHAS_APOSTAS</string>
+    <string name="confirmacao_continuar_experimente">Para continuar utilizando a funcionalidade você precisa efetuar o login no app Loterias Caixa.</string>
+    <string name="continuar_experimente">Continuar no Experimente</string>
+    <string name="efetuar_login">Efetuar o login</string>
 
 </resources>
