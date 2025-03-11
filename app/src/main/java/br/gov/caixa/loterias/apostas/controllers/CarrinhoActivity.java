@@ -186,8 +186,8 @@ public class CarrinhoActivity extends AppCompatActivity {
 
     private boolean podeHabilitarFavoritar(){
         return (carrinho != null && carrinho.getApostas() != null && !carrinho.getApostas().isEmpty()) &&
-                (carrinho.getBoloes() == null || (carrinho.getBoloes() != null && carrinho.getBoloes().isEmpty()));
-
+                (carrinho.getBoloes() == null || (carrinho.getBoloes() != null && carrinho.getBoloes().isEmpty())) &&
+                        (carrinho.getCombos() == null || (carrinho.getCombos() != null && carrinho.getCombos().isEmpty()));
     }
 
     private void setaDialogFavoritar() {
@@ -464,6 +464,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                     fragmentSomadorCarrinho();
                     habilitaCombos();
                 }
+                configuraBotoesSuperiores();
             } else {
                 callWebservice();
             }
@@ -723,8 +724,6 @@ public class CarrinhoActivity extends AppCompatActivity {
             listApostas.addAll(apostas);
         }
 
-        configuraBotoesSuperiores();
-
         if (listApostas != null) {
             synchronized (rvListaApostas) {
                 rvListaApostas.getAdapter().notifyItemRangeInserted(offSet, maximoLista);
@@ -734,7 +733,6 @@ public class CarrinhoActivity extends AppCompatActivity {
             this.offSet += PAGE_SIZE;
         }
         bloqScroll = false;
-
     }
 
     private void desabilitaBoloes() {
@@ -780,7 +778,9 @@ public class CarrinhoActivity extends AppCompatActivity {
     }
 
     private void configuraBotoesSuperiores() {
-        if (carrinho.getApostas().size() > 0) {
+        if ((carrinho.getApostas() != null && !carrinho.getApostas().isEmpty()) ||
+                (carrinho.getBoloes() != null && !carrinho.getBoloes().isEmpty()) ||
+                (carrinho.getCombos() != null && !carrinho.getCombos().isEmpty())) {
             btnLimpar.setVisibility(View.VISIBLE);
             if (DadosUsuarioBO.checarUsuarioLogado(this)) {
                 if (podeHabilitarFavoritar()) {

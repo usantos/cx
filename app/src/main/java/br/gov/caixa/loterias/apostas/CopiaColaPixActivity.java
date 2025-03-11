@@ -151,6 +151,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	public void irParaCompras() {
 		Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, ListaComprasActivity.class);
 		startActivity(intent);
+		finish();
 	}
 
 	@Override
