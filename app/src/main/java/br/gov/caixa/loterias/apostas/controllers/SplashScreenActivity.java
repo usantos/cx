@@ -60,9 +60,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         //Cria canal de Notificacao
         MessagingUtils.criaCanalNotificacaoApp(this);
-        //Permissao de Notificacao
-        //MessagingPermission messagingPermission = new MessagingPermission(this);
-        //messagingPermission.requestNotificationPermission();
 
         startaFila();
     }
