@@ -1369,8 +1369,8 @@
     <string name="filtrar">_Filtrar_</string>
     <string name="filtrar_modalidades">Filtrar</string>
     <string name="modalidades">Modalidades</string>
-    <string name="valor_minimo_aposta">Valor Mínimo Aposta</string>
-    <string name="valor_maximo_aposta">Valor Máximo Aposta</string>
+    <string name="valor_minimo_cota">Valor Mínimo Cota</string>
+    <string name="valor_maximo_cota">Valor Máximo Cota</string>
     <string name="quantidade_cotas">Quantidade de Cotas</string>
     <string name="quantidade_min_cotas">Quant. de Cotas Mínima</string>
     <string name="quantidade_max_cotas">Quant. de Cotas Máxima</string>
