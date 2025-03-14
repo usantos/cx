@@ -45,8 +45,6 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 		Intent intent = IntentUtil.getIntentOrigemDestino(LoteriasAppMarketPlaceActivity.this, FiltraMarketplaceActivity.class);
 		intent.putExtras(args);
 		return v -> IntentUtil.startActivityForResult(launcher, intent);
-		//return v -> IntentUtil.startActivityForResult(launcher, LoteriasAppMarketPlaceActivity.this,
-		//										  FiltraMarketplaceActivity.class);
 	}
 
 	public void configBackgroundColorMenu(int cor){

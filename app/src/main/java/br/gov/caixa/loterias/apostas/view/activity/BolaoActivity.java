@@ -20,6 +20,7 @@ import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -105,8 +106,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
 		launcherCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
 		launcherDetalhes = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
-		filtro.setModalidade(ModalidadeEnum.fromInteger(idModalidade));
-		filtro.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcurso));
+		filtro.setModalidade(ModalidadeEnum.fromInteger(idModalidadeInicial));
+		filtro.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcursoInicial));
 		configFiltrar(launcherFiltro,filtro);
 		setTitle("");
 		toolBarTxt = findViewById(R.id.toolbar_title);
@@ -379,8 +380,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				Intent data = result.getData();
 				if (data != null) {
 					filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
-//					idModalidade = ModalidadeEnum.fromStringToIdModalidade(filtro.getModalidade());
-//					tipoConcurso = TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso());
 					if (filtro != null) {
 						configFiltrar(launcherFiltro, filtro);
 					}
@@ -528,8 +527,19 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 			case VAZIO:
 				frameEstadoVazio.setVisibility(View.GONE);
 				scrollView.setVisibility(View.VISIBLE);
+				if(!Objects.equals(ModalidadeEnum.fromStringToIdModalidade(filtro.getModalidade()), idModalidadeInicial)
+						|| !Objects.equals(TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso()), tipoConcursoInicial)){
+					model.setIdModalidade(idModalidadeInicial);
+					model.setIdTipoConcurso(tipoConcursoInicial);
+					buscaBoloes();
+				}
 				break;
 			case ERRO:
+				if(!Objects.equals(ModalidadeEnum.fromStringToIdModalidade(filtro.getModalidade()), idModalidadeInicial)
+						|| !Objects.equals(TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso()), tipoConcursoInicial)){
+					model.setIdModalidade(idModalidadeInicial);
+					model.setIdTipoConcurso(tipoConcursoInicial);
+				}
 				buscaBoloes();
 				break;
 		}
