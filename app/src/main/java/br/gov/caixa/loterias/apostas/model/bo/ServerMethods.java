@@ -134,6 +134,7 @@ class ServerMethods {
 
      static final String AUTOSUSPENSAO_APOSTADOR = "/usuarios/suspender-conta-apostador";
      static final String NOTIFICACAO_REGISTRAR_DISPOSITIVO_PATH = "/push/v3/registros";
+     static final String PUSH_NOTIFICACAO_REGISTRAR_DISPOSITIVO_PATH = "/push/registros";
 
      private ServerMethods(){}
 }

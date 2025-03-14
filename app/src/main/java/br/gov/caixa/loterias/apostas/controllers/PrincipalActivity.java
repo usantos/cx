@@ -72,10 +72,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PushRegistrarDispositivoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerNotificarCotasExpiradasSingleton;
@@ -256,13 +258,33 @@ public class PrincipalActivity extends AppCompatActivity
 
         recolherMenu.setOnClickListener(view -> clickRecolherMenu());
 
-        //Envia Token Dispositivo
+        registrarDispositivo();
+    }
+
+    private void registrarDispositivo() {
         String tokenDispositivo = SharedPreferencesUtils.getValorString(TOKEN_DISPOSITIVO, null);
         String cpf = DadosUsuarioBO.obterCpf();
         if ((tokenDispositivo != null && tokenDispositivo.length() > 0) && (cpf != null && cpf.length() > 0)) {
             MessagingConnection.callMessagingCaixaSalvaToken(this, cpf, tokenDispositivo, onMessagingListener());
+//            DadosUsuarioBO.getInstance().postPushRegistrarDispositivo(cpf, tokenDispositivo, new RequestListener<PushRegistrarDispositivoResponse>() {
+//                @Override
+//                public void onResponse(PushRegistrarDispositivoResponse response) {
+//                    if (response.getCodigo().equals("200")) {
+//                        if (!BuildVersionUtil.isPRD()) {
+//                            ViewUtils.alert(PrincipalActivity.this, "GRAVOU O TOKEN DO DISPOSITIVO COM SUCESSO\n" + tokenDispositivo);
+//                        }
+//                        //Apaga o Token após o envio para não enviar novamente
+//                        SharedPreferencesUtils.setValor(TOKEN_DISPOSITIVO, "");
+//                    }
+//                }
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    if (!BuildVersionUtil.isPRD()) {
+//                        ViewUtils.alert(PrincipalActivity.this, "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenDispositivo);
+//                    }
+//                }
+//            });
         }
-
     }
 
     @Override
