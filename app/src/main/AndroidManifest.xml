@@ -51,6 +51,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false"
         tools:replace="android:allowBackup">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/trevo" />
         <activity
             android:name=".controllers.QueroNaoQueroActivity"
             android:exported="false"
