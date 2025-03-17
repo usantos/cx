@@ -17,7 +17,6 @@ import com.google.gson.annotations.SerializedName;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
-import org.joda.time.Seconds;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -244,14 +243,19 @@ public class CompraDTO {
         this.pixCopiaECola = pixCopiaECola;
     }
 
-    public int getTimerSeconds() {
+    public int getTimerSeconds(String dataHoraServidor) {
         DateTimeZone timeZone = DateTimeZone.forID("America/Sao_Paulo");
-        DateTime agora = DateTime.now(timeZone);
-
+        DateTime inicio;
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").withZone(timeZone);
+
+        try {
+            inicio = formatter.parseDateTime(dataHoraServidor);
+        } catch (Exception e){
+            inicio = DateTime.now(timeZone);
+        }
         DateTime expiracao = formatter.parseDateTime(getDataHoraExpiracaoPagamento());
 
-        Duration duration = new Duration(agora, expiracao);
+        Duration duration = new Duration(inicio, expiracao);
         long diffInSeconds = duration.getStandardSeconds();
 
         return (int) diffInSeconds;

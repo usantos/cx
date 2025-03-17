@@ -12,9 +12,7 @@
 
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
-import java.util.*;
 import io.swagger.annotations.*;
-import com.google.gson.annotations.SerializedName;
 
 @ApiModel(description = "")
 public class AgrupadorApostaCompraDTOResponse extends SilceResponse<AgrupadorApostaCompraDTO> {}

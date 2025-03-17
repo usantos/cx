@@ -24,7 +24,6 @@ import org.joda.time.format.DateTimeFormatter;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "")
@@ -109,18 +108,22 @@ public class GerarPixDTO {
         return sec * 1000;
     }
 
-    public int getTimerZoneMilleSeconds() {
+    public int getTimerZoneMilleSeconds(String dataHoraServidor) {
         DateTimeZone timeZone = DateTimeZone.forID("America/Sao_Paulo");
 
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").withZone(timeZone);
         DateTime agora ;
         try {
-            DateTimeFormatter formatterWithZone = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZone(timeZone);
-            agora = formatterWithZone.parseDateTime(this.getDataHoraCriacao());
+            if (dataHoraServidor != null){
+                agora = formatter.parseDateTime(dataHoraServidor);
+            } else {
+                DateTimeFormatter formatterWithZone = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZone(timeZone);
+                agora = formatterWithZone.parseDateTime(this.getDataHoraCriacao());
+            }
         } catch (Exception e){
             agora = DateTime.now(timeZone);
         }
 
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").withZone(timeZone);
         DateTime expiracao = formatter.parseDateTime(this.getDataHoraExpiracao());
 
         Duration duration = new Duration(agora, expiracao);
