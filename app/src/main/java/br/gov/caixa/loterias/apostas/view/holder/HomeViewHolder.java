@@ -37,6 +37,7 @@ import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
@@ -298,10 +299,10 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 //			//MOCK ***** APAGAR *****
 //			EncerramentoUtil.mockSetDataHoraEncerramento(
-//					"27/02/2025",
-//					"10:53:00",
-//					"11:00:00",
-//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5626);
+//					"21/03/2025",
+//					"11:45:00",
+//					"12:30:00",
+//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.NORMAL, 5637);
 
 		} catch (ParseException e) {
 			e.printStackTrace();
