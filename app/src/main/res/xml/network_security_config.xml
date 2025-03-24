@@ -4,7 +4,6 @@
         <domain includeSubdomains="true"> simlo.tqs.caixa </domain>
         <domain includeSubdomains="true"> simlo.tqs.caixa.gov.br </domain>
         <domain includeSubdomains="true"> sispl-api-apostas-des-esteiras.nprd2.caixa </domain>
-        <domain includeSubdomains="true"> api.des.caixa </domain>
     </domain-config>
 <!--    <base-config>-->
 <!--        <trust-anchors>-->

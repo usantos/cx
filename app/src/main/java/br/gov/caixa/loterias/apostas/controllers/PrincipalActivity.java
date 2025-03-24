@@ -62,7 +62,6 @@ import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.MessagingConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnAnimacaoViewListener;
@@ -77,7 +76,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerNotificarCotasExpiradasSingleton;
@@ -88,9 +86,9 @@ import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
-import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -109,7 +107,6 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacoesAcessoRapido;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
-import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
 
@@ -265,25 +262,25 @@ public class PrincipalActivity extends AppCompatActivity
         String tokenDispositivo = SharedPreferencesUtils.getValorString(TOKEN_DISPOSITIVO, null);
         String cpf = DadosUsuarioBO.obterCpf();
         if ((tokenDispositivo != null && tokenDispositivo.length() > 0) && (cpf != null && cpf.length() > 0)) {
-            MessagingConnection.callMessagingCaixaSalvaToken(this, cpf, tokenDispositivo, onMessagingListener());
-//            DadosUsuarioBO.getInstance().postPushRegistrarDispositivo(cpf, tokenDispositivo, new RequestListener<PushRegistrarDispositivoResponse>() {
-//                @Override
-//                public void onResponse(PushRegistrarDispositivoResponse response) {
-//                    if (response.getCodigo().equals("200")) {
-//                        if (!BuildVersionUtil.isPRD()) {
-//                            ViewUtils.alert(PrincipalActivity.this, "GRAVOU O TOKEN DO DISPOSITIVO COM SUCESSO\n" + tokenDispositivo);
-//                        }
-//                        //Apaga o Token após o envio para não enviar novamente
-//                        SharedPreferencesUtils.setValor(TOKEN_DISPOSITIVO, "");
-//                    }
-//                }
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    if (!BuildVersionUtil.isPRD()) {
-//                        ViewUtils.alert(PrincipalActivity.this, "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenDispositivo);
-//                    }
-//                }
-//            });
+            //MessagingConnection.callMessagingCaixaSalvaToken(this, cpf, tokenDispositivo, onMessagingListener());
+            DadosUsuarioBO.getInstance().postPushRegistrarDispositivo(cpf, tokenDispositivo, new RequestListener<PushRegistrarDispositivoResponse>() {
+                @Override
+                public void onResponse(PushRegistrarDispositivoResponse response) {
+                    if (response.getPayload().getCodigo().equals("200")) {
+                        if (!BuildVersionUtil.isPRD()) {
+                            ViewUtils.alert(PrincipalActivity.this, "GRAVOU O TOKEN DO DISPOSITIVO COM SUCESSO\n" + tokenDispositivo);
+                        }
+                        //Apaga o Token após o envio para não enviar novamente
+                        SharedPreferencesUtils.setValor(TOKEN_DISPOSITIVO, "");
+                    }
+                }
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (!BuildVersionUtil.isPRD()) {
+                        ViewUtils.alert(PrincipalActivity.this, "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenDispositivo);
+                    }
+                }
+            });
         }
     }
 
@@ -1145,28 +1142,6 @@ public class PrincipalActivity extends AppCompatActivity
             }
         }
         return false;
-    }
-
-    private MessagingConnection.MessagingListener onMessagingListener() {
-        return new MessagingConnection.MessagingListener() {
-            @Override
-            public void onSucesso(String codigo, String descricao, String tokenDispositivo) {
-                if (codigo.equals("200")) {
-                    if (!BuildVersionUtil.isPRD()) {
-                        ViewUtils.alert(PrincipalActivity.this, "GRAVOU O TOKEN DO DISPOSITIVO COM SUCESSO\n" + tokenDispositivo);
-                    }
-                    //Apaga o Token após o envio para não enviar novamente
-                    SharedPreferencesUtils.setValor(TOKEN_DISPOSITIVO, "");
-                }
-            }
-
-            @Override
-            public void onErro(String tokenDispositivo, String msgError) {
-                if (!BuildVersionUtil.isPRD()) {
-                    ViewUtils.alert(PrincipalActivity.this, "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenDispositivo + "\n" + msgError);
-                }
-            }
-        };
     }
 
 }
