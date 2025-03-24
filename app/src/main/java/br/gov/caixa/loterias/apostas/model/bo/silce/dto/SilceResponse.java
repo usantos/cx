@@ -37,6 +37,8 @@ public class SilceResponse<T> implements Serializable {
     private String versao = null;
     @SerializedName("payload")
     protected T payload = null;
+    @SerializedName("dataHoraServidor")
+    private String dataHoraServidor = null;
 
     /**
      * Código do erro
@@ -122,6 +124,13 @@ public class SilceResponse<T> implements Serializable {
         this.payload = payload;
     }
 
+    public String getDataHoraServidor() {
+        return dataHoraServidor;
+    }
+
+    public void setDataHoraServidor(String dataHoraServidor) {
+        this.dataHoraServidor = dataHoraServidor;
+    }
 
     @Override
     public boolean equals(Object o) {

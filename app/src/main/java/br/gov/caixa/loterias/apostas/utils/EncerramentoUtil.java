@@ -17,6 +17,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSingleton;
 
 public class EncerramentoUtil {
@@ -62,6 +63,11 @@ public class EncerramentoUtil {
                                                            TipoConcursoEnum tipoConcurso,
                                                            Integer concurso) {
 
+        //Verifica se Bolao Habilitado
+        if (!ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()) {
+            return null;
+        }
+
         ModalidadeDisponivelCota modalidadeDisponivelCota = getModalidadeDisponivelCota(modalidade,
                                                                                         tipoConcurso,
                                                                                         concurso);
@@ -96,6 +102,12 @@ public class EncerramentoUtil {
     }
 
     public static void verificaSeCriaCardTemporario() {
+
+        //Verifica se Bolao Habilitado
+        if (!ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()) {
+            return;
+        }
+
         List<ModalidadeDisponivelCota> listModalidadeDC = SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas();
         for (int i = 0; i < listModalidadeDC.size(); i++) {
             ModalidadeDisponivelCota modalidadeDC = SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas().get(i);

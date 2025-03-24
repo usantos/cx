@@ -297,12 +297,11 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		try {
 			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
 
-//			//MOCK ***** APAGAR *****
 //			EncerramentoUtil.mockSetDataHoraEncerramento(
-//					"21/03/2025",
-//					"11:45:00",
-//					"12:30:00",
-//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.NORMAL, 5637);
+//					"24/03/2025",
+//					"10:00:00",
+//					"11:00:00",
+//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.NORMAL, 5638);
 
 		} catch (ParseException e) {
 			e.printStackTrace();
