@@ -92,6 +92,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MessagingToken;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
@@ -177,6 +178,8 @@ public class PrincipalActivity extends AppCompatActivity
         //getExtras();
         setViews();
 
+        registrarDispositivo();
+
         setSupportActionBar(toolbar);
 
         if (!BuildConfig.FLAVOR.equals("prd")) {
@@ -254,34 +257,6 @@ public class PrincipalActivity extends AppCompatActivity
         relativeLayoutContentLerBilhetes.setOnClickListener(view -> clickRelativeLayoutContentLerBilhetes());
 
         recolherMenu.setOnClickListener(view -> clickRecolherMenu());
-
-        registrarDispositivo();
-    }
-
-    private void registrarDispositivo() {
-        String tokenDispositivo = SharedPreferencesUtils.getValorString(TOKEN_DISPOSITIVO, null);
-        String cpf = DadosUsuarioBO.obterCpf();
-        if ((tokenDispositivo != null && tokenDispositivo.length() > 0) && (cpf != null && cpf.length() > 0)) {
-            //MessagingConnection.callMessagingCaixaSalvaToken(this, cpf, tokenDispositivo, onMessagingListener());
-            DadosUsuarioBO.getInstance().postPushRegistrarDispositivo(cpf, tokenDispositivo, new RequestListener<PushRegistrarDispositivoResponse>() {
-                @Override
-                public void onResponse(PushRegistrarDispositivoResponse response) {
-                    if (response.getPayload().getCodigo().equals("200")) {
-                        if (!BuildVersionUtil.isPRD()) {
-                            ViewUtils.alert(PrincipalActivity.this, "GRAVOU O TOKEN DO DISPOSITIVO COM SUCESSO\n" + tokenDispositivo);
-                        }
-                        //Apaga o Token após o envio para não enviar novamente
-                        SharedPreferencesUtils.setValor(TOKEN_DISPOSITIVO, "");
-                    }
-                }
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (!BuildVersionUtil.isPRD()) {
-                        ViewUtils.alert(PrincipalActivity.this, "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenDispositivo);
-                    }
-                }
-            });
-        }
     }
 
     @Override
@@ -1142,6 +1117,41 @@ public class PrincipalActivity extends AppCompatActivity
             }
         }
         return false;
+    }
+
+    private void registrarDispositivo() {
+        String cpf = DadosUsuarioBO.obterCpf();
+        MessagingToken messagingToken = new MessagingToken();
+        messagingToken.tokenFirebase(new MessagingToken.OnTokenListener() {
+            @Override
+            public void onSucesso(String tokenFirebase) {
+
+                if ((cpf != null && cpf.length() > 0) &&
+                     !messagingToken.isTokenEnviado(cpf, tokenFirebase)) {
+                    DadosUsuarioBO.getInstance().postPushRegistrarDispositivo(cpf, tokenFirebase, new RequestListener<PushRegistrarDispositivoResponse>() {
+                        @Override
+                        public void onResponse(PushRegistrarDispositivoResponse response) {
+                            if (response.getPayload().getCodigo().equals("200")) {
+                                if (!BuildVersionUtil.isPRD()) {
+                                    ViewUtils.alert(PrincipalActivity.this, "GRAVOU O TOKEN DO DISPOSITIVO COM SUCESSO\n" + tokenFirebase);
+                                }
+                                messagingToken.setTokenEnviado(cpf, tokenFirebase);
+                            }
+                        }
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (!BuildVersionUtil.isPRD()) {
+                                ViewUtils.alert(PrincipalActivity.this, "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenFirebase);
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onErro(Exception e) {
+            }
+        });
     }
 
 }

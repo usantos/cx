@@ -104,22 +104,4 @@ public class MessagingUtils {
         notificationManager.cancelAll();
     }
 
-    public static void getMessageTeoken() {
-//        FirebaseMessaging.getInstance().getToken()
-//                .addOnCompleteListener(new OnCompleteListener<String>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<String> task) {
-//                        if (!task.isSuccessful()) {
-//                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-//                            return;
-//                        }
-//
-//                        // Get new FCM registration token
-//                        String token = task.getResult();
-//
-//                        //Log.d(TAG, token);
-//                    }
-//                });
-    }
-
 }

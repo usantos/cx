@@ -53,12 +53,12 @@ public class MessagingService extends FirebaseMessagingService {
         }
     }
 
-    @Override
-    public void onNewToken(String token) {
-        Log.d(TAG, "Refreshed token: " + token);
-
-        //Salva Token para futuro envio para o Servico Caixa de Mensagens
-        SharedPreferencesUtils.setValor(TOKEN_DISPOSITIVO, token);
-    }
+//    @Override
+//    public void onNewToken(String token) {
+//        Log.d(TAG, "Refreshed token: " + token);
+//
+//        //Salva Token para futuro envio para o Servico Caixa de Mensagens
+//        SharedPreferencesUtils.setValor(TOKEN_DISPOSITIVO, token);
+//    }
 
 }
