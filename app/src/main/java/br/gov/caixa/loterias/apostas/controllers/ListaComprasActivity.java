@@ -132,7 +132,7 @@ public class ListaComprasActivity extends AppCompatActivity {
                     if(response.getPayload() != null){
                         listaComprasDto = response.getPayload().getLista();
                         offsetItem = PAGE_SIZE;
-                        initRecyclerView();
+                        initRecyclerView(response.getDataHoraServidor());
                     }else{
                         Log.e("ListaComprasActivity", "O payload da resposta do servico que busca as compras é nulo");
                     }
@@ -503,14 +503,14 @@ public class ListaComprasActivity extends AppCompatActivity {
         });
     }
 
-    private void initRecyclerView() {
+    private void initRecyclerView(String dataHoraServidor) {
         layoutManager = new LinearLayoutManager(this);
         recyclerViewCompras.setHasFixedSize(true);
         OnFavoritarClickListener listener = item -> {
             compraSelecionada = item;
             pegaApostasDaCompra();
         };
-        listaComprasRecyclerViewAdapter = new ListaComprasRecyclerViewAdapter(this, listaComprasDto,listener);
+        listaComprasRecyclerViewAdapter = new ListaComprasRecyclerViewAdapter(this, listaComprasDto, dataHoraServidor,listener);
         recyclerViewCompras.setAdapter(listaComprasRecyclerViewAdapter);
         recyclerViewCompras.setLayoutManager(layoutManager);
 

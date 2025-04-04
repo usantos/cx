@@ -34,6 +34,7 @@ public class SilceSingleton {
         if (BuildVersionUtil.isPRD()){
             this.queue = SSLPinningUtil.pinagemPRD(ctx, ServicoEnum.SILCE);
         } else {
+            SSLPinningUtil.pinagemTQS();
             this.queue = new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
         }
         this.queue.start();
