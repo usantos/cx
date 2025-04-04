@@ -25,11 +25,13 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
 
     private final Context context;
     private final List<CompraDTO> listaCompras;
+    private String dataHoraServidor;
     private final OnFavoritarClickListener listener;
 
-    public ListaComprasRecyclerViewAdapter(final Context context, final List<CompraDTO> listaCompras, OnFavoritarClickListener listener) {
+    public ListaComprasRecyclerViewAdapter(final Context context, final List<CompraDTO> listaCompras, String dataHoraServidor, OnFavoritarClickListener listener) {
         this.context = context;
         this.listaCompras = listaCompras;
+        this.dataHoraServidor = dataHoraServidor;
         this.listener = listener;
     }
 
@@ -48,7 +50,7 @@ public final class ListaComprasRecyclerViewAdapter extends RecyclerView.Adapter<
                     false);
         }
 
-        final CompraViewHolder viewHolder = new CompraViewHolder(view, context, listener);
+        final CompraViewHolder viewHolder = new CompraViewHolder(view, context, dataHoraServidor, listener);
         return viewHolder;
     }
 

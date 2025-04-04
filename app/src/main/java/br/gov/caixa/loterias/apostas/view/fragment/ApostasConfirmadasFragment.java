@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,14 +50,14 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PeriodoConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
@@ -106,7 +105,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     protected FiltroApostasAdapter filtroAdapter;
     private Dialog dialogData;
     private NumberPicker npData;
-    private List<MesAnoDTO> mesesAnosDisponiveis;
+    private List<PeriodoConsultaDTO> mesesAnosDisponiveis;
     private List<String> valoresApresentados;
     private boolean hasMoreItems;
     private boolean isLoading;
@@ -114,7 +113,6 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private boolean reloadingEntireList = false;
     private int numeroDataSelecionada = 1;
     private boolean chamarApostaNovamente = true;
-    private MesAnoDTOResponse resultMesAno;
     private Long rowCount = Long.MAX_VALUE;
 
     private ApostaPageRequest page;
@@ -124,6 +122,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private boolean isOnCreate;
     private int ordenacaoDefault = 3;
+    private ConfigConsultaDTO configConsulta;
 
     public ApostasConfirmadasFragment(){}
 
@@ -236,14 +235,18 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private void filtrarData(){
-        MesAnoDTO mesAnoSelecionado =  mesesAnosDisponiveis.get(numeroDataSelecionada);
+        PeriodoConsultaDTO periodo = mesesAnosDisponiveis.get(numeroDataSelecionada);
         if(page == null){
             page = new ApostaPageRequest(getPageSize());
         } else {
             page.setSize(getPageSize());
         }
-        page.setAno(mesAnoSelecionado.getAno().intValue());
-        page.setMes(mesAnoSelecionado.getMes().getValor().intValue());
+        if (periodo.getAno() != null){
+            page.setAno(periodo.getAno().intValue());
+        } else {
+            page.setAno(0);
+        }
+        page.setMes(periodo.getMes().getValor().intValue());
 
         page.setOffset(0);
 
@@ -643,43 +646,47 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private void requestMesesAnosDisponiveis() {
         AlertDialogUtils.show(getActivity());
+        model.requestConfigConsulta(onConfigConsultaListener());
+    }
 
-        RequestListener listener = new RequestListener<MesAnoDTOResponse>() {
+    private OnSilceListener<ConfigConsultaDTO> onConfigConsultaListener() {
+        return new OnSilceListener<ConfigConsultaDTO>() {
             @Override
-            public void onResponse(MesAnoDTOResponse result) {
-                resultMesAno = result;
-                onMesesAnosDisponiveisResult(resultMesAno);
+            public void success(ConfigConsultaDTO payload) {
+                configConsulta = payload;
+                onMesesAnosDisponiveisResult();
             }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void error(VolleyError error) {
                 onMesesAnosDisponiveisError(error);
             }
         };
-
-        if (isHistorico) {
-            apostaBO.getDatasApostasHistorico(listener);
-        } else {
-            apostaBO.getDatasApostasConfirmadas(listener);
-        }
     }
 
-    private void onMesesAnosDisponiveisResult(MesAnoDTOResponse result) {
+    private void onMesesAnosDisponiveisResult() {
         if (getActivity() == null) {
             return;
         }
 
         AlertDialogUtils.dismiss();
         mesesAnosDisponiveis = new ArrayList<>();
-        if(!isHistorico){
-            mesesAnosDisponiveis.addAll(model.getMesesPadrao());
-        }
-        mesesAnosDisponiveis.addAll(result.getPayload());
+        mesesAnosDisponiveis.addAll(configConsulta.getPeriodos());
 
         if (mesesAnosDisponiveis != null && !mesesAnosDisponiveis.isEmpty()) {
-            MesAnoDTO mesAno = mesesAnosDisponiveis.get(numeroDataSelecionada);
-            int mes = mesAno.getMes().getValor().intValue();
-            int ano = mesAno.getAno().intValue();
+            PeriodoConsultaDTO periodo;
+            if (configConsulta.getPeriodoPadrao() != null && listaPeriodoContemPadrao()){
+                periodo = configConsulta.getPeriodoPadrao();
+            } else {
+                periodo = mesesAnosDisponiveis.get(0);
+            }
+
+            int mes = periodo.getMes().getValor().intValue();
+            int ano = 0;
+            if(periodo.getAno() != null){
+                ano = periodo.getAno().intValue();
+            }
+
             if(page == null){
                 page = new ApostaPageRequest(getPageSize());
             } else {
@@ -701,12 +708,21 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
 
         updateResultDate();
-        if (result.getRedirect() != null) {
-            RedirectNetwork.checkRedirectSucesso(result.getRedirect(), getActivity());
-        }
     }
 
-    private void setValoresApresentados(List<MesAnoDTO> listaMesesAnos){
+    private boolean listaPeriodoContemPadrao() {
+        if (configConsulta.getPeriodoPadrao() != null && configConsulta.getPeriodos() != null &&
+            !configConsulta.getPeriodos().isEmpty()){
+            for (PeriodoConsultaDTO periodo : configConsulta.getPeriodos()){
+                if (periodo.getMes().getValor().equals(configConsulta.getPeriodoPadrao().getMes().getValor())){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void setValoresApresentados(@NonNull List<PeriodoConsultaDTO> listaMesesAnos){
         valoresApresentados = new ArrayList<>();
         for (int contMesAno = 0; contMesAno < listaMesesAnos.size(); contMesAno++) {
             valoresApresentados.add(getTextoDataSelecionada(contMesAno));
@@ -732,18 +748,12 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         if (page != null) {
             dateResultTxt.setText(getTextoDataSelecionada(numeroDataSelecionada));
         } else {
-            //TODO: validar mensagem de erro.
             dateResultTxt.setText("Nenhuma aposta disponível.");
         }
     }
 
     private String getTextoDataSelecionada(int indice){
-        MesAnoDTO mesAnoSelecionado = mesesAnosDisponiveis.get(indice);
-        if(indice > model.getQtdMesAnoPadrao() - 1 || isHistorico){
-            return formatMesAno(mesAnoSelecionado.getMes().getValor().intValue(),mesAnoSelecionado.getAno().intValue());
-        } else {
-            return mesAnoSelecionado.getMes().getDescricao();
-        }
+        return mesesAnosDisponiveis.get(indice).getMes().getDescricao();
     }
 
     private String formatMesAno(int mes, int ano) {
@@ -775,7 +785,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             if (chamarApostaNovamente && error != null && error.networkResponse != null && error.networkResponse.statusCode == 500) {
                 chamarApostaNovamente = false;
                 numeroDataSelecionada = 2;
-                onMesesAnosDisponiveisResult(resultMesAno);
+                onMesesAnosDisponiveisResult();
             }else {
                 RedirectNetwork.checkRedirect(error, getActivity());
             }

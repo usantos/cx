@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConsultaDadosChavePixResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
@@ -304,24 +305,12 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
-
-    public void getDatasApostasConfirmadas(final RequestListener<MesAnoDTOResponse> listener) {
-        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.APOSTAS_MES_ANO_PATH,
+    public void buscaConfigConsultaApostasConfirmadas(final RequestListener<ConfigConsultaResponse> listener) {
+        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.APOSTAS_CONFIG_CONSULTA,
                 new LinkedHashMap<>(),
-                MesAnoDTOResponse.class,
+                ConfigConsultaResponse.class,
                 listener.getSilceListener(),
                 null,
-                getHeaderToken());
-        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
-        getServiceConnection().request(request, listener);
-    }
-
-    public void getDatasApostasHistorico(final RequestListener<MesAnoDTOResponse> listener) {
-        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.APOSTAS_HISTORICO_MES_ANO_PATH,
-                new LinkedHashMap<>(),
-                MesAnoDTOResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
                 getHeaderToken());
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
