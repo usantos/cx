@@ -111,7 +111,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private boolean isLoading;
     private boolean firstTime = true;
     private boolean reloadingEntireList = false;
-    private int numeroDataSelecionada = 1;
+    private int numeroDataSelecionada = 0;
     private boolean chamarApostaNovamente = true;
     private Long rowCount = Long.MAX_VALUE;
 
@@ -677,8 +677,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
             PeriodoConsultaDTO periodo;
             if (configConsulta.getPeriodoPadrao() != null && listaPeriodoContemPadrao()){
                 periodo = configConsulta.getPeriodoPadrao();
+                numeroDataSelecionada = getIndicePeriodo(periodo);
             } else {
                 periodo = mesesAnosDisponiveis.get(0);
+                numeroDataSelecionada = 0;
             }
 
             int mes = periodo.getMes().getValor().intValue();
@@ -708,6 +710,15 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
 
         updateResultDate();
+    }
+
+    private int getIndicePeriodo(PeriodoConsultaDTO periodo) {
+        for (int i = 0; i < configConsulta.getPeriodos().size(); i++){
+            if (periodo.getMes().equals(configConsulta.getPeriodos().get(i).getMes())){
+                return i;
+            }
+        }
+        return 0;
     }
 
     private boolean listaPeriodoContemPadrao() {
@@ -784,7 +795,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
             if (chamarApostaNovamente && error != null && error.networkResponse != null && error.networkResponse.statusCode == 500) {
                 chamarApostaNovamente = false;
-                numeroDataSelecionada = 2;
+                numeroDataSelecionada = 0;
                 onMesesAnosDisponiveisResult();
             }else {
                 RedirectNetwork.checkRedirect(error, getActivity());
