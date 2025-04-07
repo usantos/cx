@@ -14,6 +14,10 @@ public class ConfiguracaoAppSingleton {
     private Integer grupoCpfNovaApi;
     private Boolean isNovaApi;
 
+    private String urlBaseCarrinhoPiloto;
+    private String urlBaseCarrinhoProducao;
+    private Integer grupoDeCpfsQueAcessamOServicoDaAzure;
+
     private static ConfiguracaoAppSingleton configuracaoAppSingleton;
 
     private ConfiguracaoAppSingleton(){ }
@@ -25,8 +29,13 @@ public class ConfiguracaoAppSingleton {
             configuracaoAppSingleton.isMicroServico = IS_MICRO_SERVICO_DEFAULT;
             configuracaoAppSingleton.isAtualizaPublicKey = Boolean.FALSE;
             configuracaoAppSingleton.isBolaoHabilitado = Boolean.FALSE;
+
             configuracaoAppSingleton.grupoCpfNovaApi = 0;
             configuracaoAppSingleton.isNovaApi = Boolean.FALSE;
+
+            configuracaoAppSingleton.urlBaseCarrinhoPiloto="-";
+            configuracaoAppSingleton.urlBaseCarrinhoProducao="-";
+            configuracaoAppSingleton.grupoDeCpfsQueAcessamOServicoDaAzure = 0;
         }
         return configuracaoAppSingleton;
     }
@@ -85,5 +94,30 @@ public class ConfiguracaoAppSingleton {
 
     public void setNovaApi(Boolean novaApi) {
         isNovaApi = novaApi;
+    }
+
+    public String getUrlBaseCarrinhoPiloto() {
+        return urlBaseCarrinhoPiloto;
+    }
+
+    public void setUrlBaseCarrinhoPiloto(String urlBaseCarrinhoPiloto) {
+        this.urlBaseCarrinhoPiloto = urlBaseCarrinhoPiloto;
+    }
+
+    public String getUrlBaseCarrinhoProducao() {
+        return urlBaseCarrinhoProducao;
+    }
+
+    public void setUrlBaseCarrinhoProducao(String urlBaseCarrinhoProducao) {
+        this.urlBaseCarrinhoProducao = urlBaseCarrinhoProducao;
+    }
+
+    public Integer getGrupoDeCpfsQueAcessamOServicoDaAzure() {
+        return grupoDeCpfsQueAcessamOServicoDaAzure;
+    }
+
+    public void setGrupoDeCpfsQueAcessamOServicoDaAzure(Integer grupoDeCpfsQueAcessamOServicoDaAzure) {
+        this.grupoDeCpfsQueAcessamOServicoDaAzure = grupoDeCpfsQueAcessamOServicoDaAzure;
+
     }
 }

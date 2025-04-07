@@ -523,6 +523,10 @@ public class ApostaBO extends SilceBO {
     public void adicionarApostaNoCarrinho(final IdentificaoDeUmaApostaDas8Modalidades aposta,
                                           final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
+            //Incluido por causa do carrinho na NUVEM
+            if (aposta != null) {
+                aposta.setId(null);
+            }
             final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.INCLUIR_APOSTA_CARRINHO_PATH,
                     new LinkedHashMap<>(),
                     aposta,

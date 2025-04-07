@@ -58,7 +58,8 @@ public class MessagingUtils {
                 .setPriority(PRIORITY);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(NOTIFICATION_VARIAVEL, builder.build());
+        //notificationManager.notify(NOTIFICATION_VARIAVEL, builder.build());
+        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
     }
 
     public static void limpaNotificacoesDoApp(Context context) {

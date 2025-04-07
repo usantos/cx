@@ -1,10 +1,5 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.internals;
 
-import static com.android.volley.Request.Method.DELETE;
-import static com.android.volley.Request.Method.GET;
-import static com.android.volley.Request.Method.POST;
-import static com.android.volley.Request.Method.PUT;
-
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -15,12 +10,24 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
+
+import static com.android.volley.Request.Method.DELETE;
+import static com.android.volley.Request.Method.GET;
+import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.PUT;
 
 public class ServiceConnection {
     private static final Bin KEY = Bin.fromBase64("QEm06ZAThg1E314zziahsg");
@@ -30,6 +37,43 @@ public class ServiceConnection {
 
     private final RequestQueue requestQueue;
     private final SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
+
+    private static final String AZURE_API = "azure-api.net";
+    //private static final String AZURE_API = ":8080";
+
+    private static final String PUBLICO = "/publico";
+    private static final String LOGADO = "/logado";
+    private static final List<String> listPublico = Arrays.asList(
+                                        "/equipes-esportivas/listaEquipes",
+                                        "/parametros-simulacao",
+                                        "/combos");
+    private static final List<String> listLogadoExato = Arrays.asList(
+                                        "/carrinhos",
+                                        "/carrinhos/atualiza-teimosinha-aposta",
+                                        "/carrinhos/incluir-aposta",
+                                        "/carrinhos/incluir-apostas",
+                                        "/carrinhos/incluir-combo",
+                                        "/carrinhos/incluir-surpresinha",
+                                        "/carrinhos/incluir-surpresinhas",
+                                        "/carrinhos/iniciar-pagamento-externo",
+                                        "/carrinhos/limpar",
+                                        "/carrinhos/limpar-carrinho-favorito",
+                                        "/carrinhos/registrar-apostas",
+                                        "/carrinhos/registrar-apostas-async",
+                                        "/carrinhos/registrar-apostas-sem-carrinho",
+                                        "/carrinhos/salvar-carrinho-favorito",
+                                        "/carrinhos/validar",
+                                        "/carrinhos/validar-aposta-identica",
+                                        "/carrinhos/verifica-compra-processamento",
+                                        "/usuarios/verificar-cadastro");
+    private static final List<String> listLogadoParcial = Arrays.asList(
+                                        "/apostas-favoritas",
+                                        "/carrinhos-favoritos",
+                                        "/carrinhos/apostas",
+                                        "/carrinhos/combos",
+                                        "/carrinhos/incluir-aposta-favorita",
+                                        "/carrinhos/incluir-carrinho-favorito");
+
     private String baseUrl;
     private Boolean isEncoding = false;
 
@@ -56,6 +100,8 @@ public class ServiceConnection {
             if (!precisaRefreshToken) {
                 req.getHeaders().put("cookie", "security=false");
                 req.getHeaders().put("Subcanal", "3");
+                //Apenas para teste
+                req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
             }
 
         } catch (Exception e) {
@@ -76,6 +122,8 @@ public class ServiceConnection {
                     req.getHeaders().put("Authorization", "Bearer " + keycloakBO.getAccessToken());
                     req.getHeaders().put("cookie", "security=false");
                     req.getHeaders().put("Subcanal", "3");
+                    //Necessario no Carrinho Nuvem
+                    req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -115,7 +163,13 @@ public class ServiceConnection {
                                                    Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        //Apenas para teste
+        GsonRequest request;
+        if (url.contains(AZURE_API)) {
+            request = new GsonRequest<>(POST, url, body, responseDataClass, headers, listener, errorListener);
+        } else {
+            request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        }
 
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
@@ -128,7 +182,13 @@ public class ServiceConnection {
                                                   Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        //Apenas para teste
+        GsonRequest request;
+        if (url.contains(AZURE_API)) {
+            request = new GsonRequest<>(PUT, url, body, responseDataClass, headers, listener, errorListener);
+        } else {
+            request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        }
 
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
@@ -159,6 +219,17 @@ public class ServiceConnection {
     }
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
+
+        String novoCaminho = alteraCaminhoCarrinho(path);
+        if (novoCaminho != null) {
+            if (BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")){
+                //ToastUtil.toastShort(novoCaminho + fillParamToString(queryParams));
+                MessagingUtils.criaNotificacaoNova(Aplicacao.application.getApplicationContext(),
+                        DateUtils.getDateTime(), novoCaminho + fillParamToString(queryParams));
+            }
+            return novoCaminho + fillParamToString(queryParams);
+        }
+
         return fillUrl(path) + fillParamStr(queryParams);
     }
 
@@ -213,4 +284,87 @@ public class ServiceConnection {
         return sb.toString();
     }
 
+    private String fillParamToString(Map<String, String> queryParams) {
+        if ((queryParams == null) || (queryParams.isEmpty())) {
+            return "";
+        }
+        StringBuilder singleParam = new StringBuilder();
+        for (Map.Entry<String, String> param : queryParams.entrySet()) {
+            if (param.getValue() != null) {
+                singleParam.append(param.getKey()).append("==").append(param.getValue()).append("&&");
+            }
+        }
+        return "/?q=" + singleParam.toString();
+    }
+
+    private String alteraCaminhoCarrinho(String path) {
+
+        String baseUrlCarrinho;
+
+        if(BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")) {
+            baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
+
+            //Apenas para teste
+            baseUrlCarrinho = "https://apim-lce-des.azure-api.net/loterias-web/carrinho/v1";
+            //baseUrlCarrinho = "http://localhost:8080/v1";
+        } else {
+            baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
+        }
+
+        if (baseUrlCarrinho.equals("-")) {
+            return null;
+        }
+
+        if (listPublico.contains(path)) {
+            if (finalCPFAcessaNuvem()) {
+                return baseUrlCarrinho + PUBLICO + path;
+            }
+            return null;
+        }
+
+        if (listLogadoExato.contains(path)) {
+            if (finalCPFAcessaNuvem()) {
+                return baseUrlCarrinho + LOGADO + path;
+            }
+            return null;
+        }
+
+        for(String parcial : listLogadoParcial) {
+            //if (parcial.startsWith(path)) {
+            if (path.startsWith(parcial)) {
+                if (finalCPFAcessaNuvem()) {
+                    return baseUrlCarrinho + LOGADO + path;
+                }
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+    private boolean finalCPFAcessaNuvem() {
+
+        int finalCpfAcessamNuvem = ConfiguracaoAppSingleton.getInstance().getGrupoDeCpfsQueAcessamOServicoDaAzure();
+
+        //Apenas para teste
+        finalCpfAcessamNuvem = 100;
+
+        if (finalCpfAcessamNuvem == 0) {
+            return false;
+        }
+
+        String cpf = DadosUsuarioBO.obterCpf();
+        if (cpf != null && !cpf.isEmpty() && cpf.length() >= 2) {
+            //Verifica se o final do CPF < finalCpfAcessamNuvem
+            if (Integer.parseInt(cpf.substring(cpf.length() -2)) < finalCpfAcessamNuvem) {
+                return true;
+            }
+        }
+
+        if (finalCpfAcessamNuvem == 100) {
+            return true;
+        }
+
+        return false;
+    }
 }
