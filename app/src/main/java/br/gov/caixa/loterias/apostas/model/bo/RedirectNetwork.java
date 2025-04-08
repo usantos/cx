@@ -7,6 +7,7 @@ import android.os.Build;
 import android.text.Html;
 import android.widget.Toast;
 
+import br.gov.caixa.loterias.apostas.controllers.*;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -15,16 +16,7 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
-import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
-import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
-import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
-import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
@@ -268,7 +260,7 @@ public class  RedirectNetwork {
         }
     }
 
-    public static void trataBloqueioTotal(VolleyError error, final Activity activity) {
+    public static Boolean trataBloqueioTotal(VolleyError error, final Activity activity) {
         Gson gsonResponse = new Gson();
         ErrorResponse errorResponse = new ErrorResponse();
         String body = null;
@@ -286,17 +278,18 @@ public class  RedirectNetwork {
                                     DadosUsuarioBO.updateUsuarioLogado(activity, false);
                                     activity.finish();
                                     dialogInterface.dismiss();
-                                    return;
+                                    //return;
                                 }
                             );
-                            return;
+                            return true;
                         }
                     }
                 }
             } catch (Exception e) {
             }
         }
-        activity.finish();
+        //activity.finish();
+        return false;
     }
 
     public static void trataBloqueioParcial(final Activity activity) {

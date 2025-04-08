@@ -135,5 +135,6 @@ class ServerMethods {
 
      static final String AUTOSUSPENSAO_APOSTADOR = "/usuarios/suspender-conta-apostador";
 
+     static final String VERIFICA_USUARIO_BLOQUEADO = "/usuarios/verificar-apostador-bloqueado";
      private ServerMethods(){}
 }

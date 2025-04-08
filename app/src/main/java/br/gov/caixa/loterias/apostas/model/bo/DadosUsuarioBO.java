@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.NetworkResponse;
 
 import org.apache.commons.codec.binary.Base64;
@@ -16,16 +17,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorAlteracaoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutenticacaoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
@@ -239,6 +230,19 @@ public class DadosUsuarioBO extends SilceBO {
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
 
         GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.USUARIOS_RECUPERAR_DADOS_PATH, queryParams, ApostadorDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void getVerificaUsuarioBloqueado(final RequestListener<RetornoPadraoResponse> listener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
+
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.VERIFICA_USUARIO_BLOQUEADO, new LinkedHashMap<>(), RetornoPadraoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);
 
