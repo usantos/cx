@@ -76,7 +76,7 @@ public class JogosComboHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8M
 			containerTimemania.setVisibility(View.GONE);
 			containerDiaSorte.setVisibility(View.GONE);
 			trevosListView.setLayoutManager(new GridLayoutManager(itemView.getContext(), 6));
-			trevosListView.setAdapter(new ListaDezenaComboRecyclerView(getListXX(aposta.getQuantidadeTrevos()), true));
+			trevosListView.setAdapter(new ListaDezenaComboRecyclerView(getListXX(aposta.getTrevosSelecionados().size()), true));
 		} else if (aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE){
 			containerMaisMilionaria.setVisibility(View.GONE);
 			containerTimemania.setVisibility(View.GONE);
