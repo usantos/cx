@@ -320,7 +320,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             criouFragmentDetalhe = true;
         }
 
-        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
+        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
         informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
         fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
     }

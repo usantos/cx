@@ -2,14 +2,11 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 
@@ -34,9 +31,10 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 	protected Button btnMinhasCompras;
 
 	private Context context;
+	private String dataHoraServidor;
 	private OnFavoritarClickListener listener;
 
-	public CompraViewHolder(View itemView, Context activity, OnFavoritarClickListener listener) {
+	public CompraViewHolder(View itemView, Context activity, String dataHoraServidor, OnFavoritarClickListener listener) {
 		super(itemView);
 		itemCompraOrdemTextView = itemView.findViewById(R.id.situacaoCompraTextView);
 		textTotal = itemView.findViewById(R.id.txtTotal);
@@ -48,6 +46,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		imageViewRelogio = itemView.findViewById(R.id.imageViewRelogio);
 		btnMinhasCompras = itemView.findViewById(R.id.btnMinhasCompras);
 		context = activity;
+		this.dataHoraServidor = dataHoraServidor;
 		this.listener = listener;
 	}
 
@@ -93,7 +92,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 				textContadorDown.setVisibility(View.VISIBLE);
 				btnMinhasCompras.setVisibility(View.GONE);
 
-				tempo_inicial_pix = item.getTimerSeconds();
+				tempo_inicial_pix = item.getTimerSeconds(dataHoraServidor);
 				contagemRegressiva = new ContagemRegressiva(textContadorDown,tempo_inicial_pix * 1000, 1 * 1000) {
 					@Override
 					public void onFinish() {

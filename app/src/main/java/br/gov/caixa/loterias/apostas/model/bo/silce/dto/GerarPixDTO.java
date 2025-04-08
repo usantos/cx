@@ -38,6 +38,8 @@ public class GerarPixDTO implements Serializable {
     private String qrcodeArrByte = null;
     @SerializedName("dataHoraExpiracao")
     private String dataHoraExpiracao;
+    @SerializedName("dataHoraCriacao")
+    private String dataHoraCriacao;
     @SerializedName("idCompra")
     private Long idCompra = null;
     @SerializedName("valorCobranca")
@@ -67,6 +69,14 @@ public class GerarPixDTO implements Serializable {
 
     public void setDataHoraExpiracao(String dataHoraExpiracao) {
         this.dataHoraExpiracao = dataHoraExpiracao;
+    }
+
+    public String getDataHoraCriacao() {
+        return dataHoraCriacao;
+    }
+
+    public void setDataHoraCriacao(String dataHoraCriacao) {
+        this.dataHoraCriacao = dataHoraCriacao;
     }
 
     public Long getIdCompra() {
@@ -99,11 +109,22 @@ public class GerarPixDTO implements Serializable {
         return sec * 1000;
     }
 
-    public int getTimerZoneMilleSeconds() {
+    public int getTimerZoneMilleSeconds(String dataHoraServidor) {
         DateTimeZone timeZone = DateTimeZone.forID("America/Sao_Paulo");
-        DateTime agora = DateTime.now(timeZone);
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").withZone(timeZone);
+        DateTime agora ;
+        try {
+            if (dataHoraServidor != null){
+                agora = formatter.parseDateTime(dataHoraServidor);
+            } else {
+                DateTimeFormatter formatterWithZone = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").withZone(timeZone);
+                agora = formatterWithZone.parseDateTime(this.getDataHoraCriacao());
+            }
+        } catch (Exception e){
+            agora = DateTime.now(timeZone);
+        }
+
         DateTime expiracao = formatter.parseDateTime(this.getDataHoraExpiracao());
 
         Duration duration = new Duration(agora, expiracao);
@@ -130,12 +151,12 @@ public class GerarPixDTO implements Serializable {
         if (o == null || getClass() != o.getClass())
             return false;
         GerarPixDTO that = (GerarPixDTO) o;
-        return pixCopiaECola.equals(that.pixCopiaECola) && txId.equals(that.txId) && qrcodeArrByte.equals(that.qrcodeArrByte) && dataHoraExpiracao.equals(that.dataHoraExpiracao) && idCompra.equals(that.idCompra) && isDetalhesCompras.equals(that.isDetalhesCompras);
+        return dataHoraCriacao.equals(that.dataHoraCriacao) && pixCopiaECola.equals(that.pixCopiaECola) && txId.equals(that.txId) && qrcodeArrByte.equals(that.qrcodeArrByte) && dataHoraExpiracao.equals(that.dataHoraExpiracao) && idCompra.equals(that.idCompra) && isDetalhesCompras.equals(that.isDetalhesCompras);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pixCopiaECola, txId, qrcodeArrByte, dataHoraExpiracao, idCompra, isDetalhesCompras);
+        return Objects.hash(pixCopiaECola, txId, qrcodeArrByte, dataHoraExpiracao, idCompra, isDetalhesCompras, dataHoraCriacao);
     }
 
     @Override
@@ -145,6 +166,7 @@ public class GerarPixDTO implements Serializable {
                 ", txId='" + txId + '\'' +
                 ", qrcodeArrByte='" + qrcodeArrByte + '\'' +
                 ", dataHoraExpiracao='" + dataHoraExpiracao + '\'' +
+                ", dataHoraCriacao='" + dataHoraCriacao + '\'' +
                 ", idCompra=" + idCompra +
                 ", isDetalhesCompras=" + isDetalhesCompras +
                 '}';

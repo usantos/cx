@@ -85,6 +85,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
     long tempo_acabar_pix;
     private Dialog dialogDevolucaoPix;
     private ImageButton ibFavoritar;
+    private String dataHoraServidor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -481,7 +482,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
         gerarPixDTO.setPixCopiaECola(compraDTO.getPixCopiaECola());
         gerarPixDTO.setDataHoraExpiracao(compraDTO.getDataHoraExpiracaoPagamento());
         gerarPixDTO.setDetalhesCompras(true);
-        fragCopiaCola = FragmentUtils.startCopiaColaPix(gerarPixDTO, getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe);
+        fragCopiaCola = FragmentUtils.startCopiaColaPix(gerarPixDTO, dataHoraServidor, getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe);
     }
 
     private void verificaCompraProcessada() {
@@ -516,6 +517,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
         ApostaBO.getInstance().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
+                dataHoraServidor = response.getDataHoraServidor();
                 loadViewProgress.dismiss();
                 AppCenterManager.registraEvento("ENTROU_COMPRAS_DETALHE");
 
