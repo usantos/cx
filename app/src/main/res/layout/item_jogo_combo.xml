@@ -59,6 +59,7 @@
         app:layout_constraintTop_toBottomOf="@id/id_lista">
 
         <TextView
+            android:id="@+id/mes_sorte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mes_da_sorte_interrogacoes"
@@ -79,6 +80,7 @@
         app:layout_constraintTop_toBottomOf="@id/id_lista">
 
         <TextView
+            android:id="@+id/time_coracao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/time_do_coracao_interrogacoes"
