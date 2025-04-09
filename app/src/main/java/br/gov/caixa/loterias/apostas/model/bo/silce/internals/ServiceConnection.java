@@ -101,7 +101,8 @@ public class ServiceConnection {
                 req.getHeaders().put("cookie", "security=false");
                 req.getHeaders().put("Subcanal", "3");
                 //Apenas para teste
-                req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
+                //req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
+                req.getHeaders().put("ocp-apim-subscription-key", "8f9c0e5ec9604864acd357706e7b6522");
             }
 
         } catch (Exception e) {
@@ -123,7 +124,8 @@ public class ServiceConnection {
                     req.getHeaders().put("cookie", "security=false");
                     req.getHeaders().put("Subcanal", "3");
                     //Necessario no Carrinho Nuvem
-                    req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
+                    //req.getHeaders().put("ocp-apim-subscription-key", "0e7610943a994c118c171031b54ed4b7");
+                    req.getHeaders().put("ocp-apim-subscription-key", "8f9c0e5ec9604864acd357706e7b6522");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -305,7 +307,9 @@ public class ServiceConnection {
             baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
 
             //Apenas para teste
-            baseUrlCarrinho = "https://apim-lce-des.azure-api.net/loterias-web/carrinho/v1";
+            //baseUrlCarrinho = "https://apim-lce-des.azure-api.net/loterias-web/carrinho/v1";
+            //baseUrlCarrinho = "http://apim-silce-des.azure-api.net/loterias-web/carrinho/v1/";
+            baseUrlCarrinho = "https://apim-silce-des.azure-api.net/loterias-web/carrinho/v1";
             //baseUrlCarrinho = "http://localhost:8080/v1";
         } else {
             baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
