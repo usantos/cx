@@ -8,6 +8,11 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 
 public class ServicoNuvemUtil {
+
+	public static final String APIKEY_DESCRICAO = "ocp-apim-subscription-key";
+	//public static final String APIKEY_CHAVE = "8f9c0e5ec9604864acd357706e7b6522"; //DES
+	public static final String APIKEY_CHAVE = "ca5af87c9f7647de88eb7dcb93c7b021"; //TQS
+
 	private static final String PUBLICO = "/publico";
 	private static final String LOGADO = "/logado";
 	private static final List<String> listPublico = Arrays.asList(
@@ -42,7 +47,7 @@ public class ServicoNuvemUtil {
 			"/carrinhos/incluir-carrinho-favorito");
 
 
-	public static String alteraCaminhoCarrinho(String path) {
+	public static String alteraCaminhoNuvem(String path) {
 
 		String baseUrlCarrinho;
 
@@ -52,7 +57,8 @@ public class ServicoNuvemUtil {
 			//Apenas para teste
 			//baseUrlCarrinho = "https://apim-lce-des.azure-api.net/loterias-web/carrinho/v1";
 			//baseUrlCarrinho = "http://apim-silce-des.azure-api.net/loterias-web/carrinho/v1/";
-			baseUrlCarrinho = "https://apim-silce-des.azure-api.net/loterias-web/carrinho/v1";
+			//baseUrlCarrinho = "https://apim-silce-des.azure-api.net/loterias-web/carrinho/v1"; //DES
+			baseUrlCarrinho = "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1"; //TQS
 			//baseUrlCarrinho = "http://localhost:8080/v1";
 		} else {
 			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
@@ -64,6 +70,7 @@ public class ServicoNuvemUtil {
 
 		if (listPublico.contains(path)) {
 			if (finalCPFAcessaNuvem()) {
+				apresentaCaminhoTQS(baseUrlCarrinho, PUBLICO, path);
 				return baseUrlCarrinho + PUBLICO + path;
 			}
 			return null;
@@ -71,15 +78,16 @@ public class ServicoNuvemUtil {
 
 		if (listLogadoExato.contains(path)) {
 			if (finalCPFAcessaNuvem()) {
+				apresentaCaminhoTQS(baseUrlCarrinho, PUBLICO, path);
 				return baseUrlCarrinho + LOGADO + path;
 			}
 			return null;
 		}
 
 		for(String parcial : listLogadoParcial) {
-			//if (parcial.startsWith(path)) {
 			if (path.startsWith(parcial)) {
 				if (finalCPFAcessaNuvem()) {
+					apresentaCaminhoTQS(baseUrlCarrinho, PUBLICO, path);
 					return baseUrlCarrinho + LOGADO + path;
 				}
 				return null;
@@ -113,6 +121,14 @@ public class ServicoNuvemUtil {
 		}
 
 		return false;
+	}
+
+	private static void apresentaCaminhoTQS(String baseUrlCarrinho, String pubLog, String path) {
+		if (BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")){
+			//ToastUtil.toastShort(novoCaminho + fillParamToString(queryParams));
+			MessagingUtils.criaNotificacaoNova(Aplicacao.application.getApplicationContext(),
+					DateUtils.getDateTime(), baseUrlCarrinho + "\n" + pubLog + path);
+		}
 	}
 
 
