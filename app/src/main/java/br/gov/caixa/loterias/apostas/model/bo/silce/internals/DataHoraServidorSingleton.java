@@ -1,68 +1,47 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.internals;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-import java.util.Timer;
-import java.util.TimerTask;
+import android.os.SystemClock;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class DataHoraServidorSingleton {
     private static DataHoraServidorSingleton instance;
-    private static final long UPDATE_INTERVAL = 1000;
-
-    private long serverTimeMillis;
-    private Timer timer;
+    public static final DateTimeZone SAO_PAULO_ZONE = DateTimeZone.forID("America/Sao_Paulo");
+    private static final String DEFAULT_DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    private static final DateTimeFormatter DEFAULT_FORMATTER_SP = DateTimeFormat
+            .forPattern(DEFAULT_DATE_TIME_PATTERN).withZone(SAO_PAULO_ZONE);
+    private DateTime serverReferenceTime;
+    private long syncElapserRealTimeMillis;
 
     private DataHoraServidorSingleton() {
+        this.serverReferenceTime = new DateTime(SAO_PAULO_ZONE);
+        this.syncElapserRealTimeMillis = SystemClock.elapsedRealtime();
     }
 
-    public static DataHoraServidorSingleton getInstance(){
+    public static synchronized DataHoraServidorSingleton getInstance(){
         if (instance == null){
             instance = new DataHoraServidorSingleton();
         }
         return instance;
     }
 
-    private void startTimer() {
-        if (timer == null) {
-            timer = new Timer();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    serverTimeMillis += UPDATE_INTERVAL;
-                }
-            }, UPDATE_INTERVAL, UPDATE_INTERVAL);
-        }
-    }
-
-    public void stopTimer() {
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-        }
-    }
-
     public void atualizaDataHoraServidor(String dataHoraServidor) {
-        stopTimer();
-        if (dataHoraServidor == null) {
-            serverTimeMillis = System.currentTimeMillis();
-        } else {
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
-                sdf.setTimeZone(TimeZone.getTimeZone("America/Sao_Paulo"));
-                Date date = sdf.parse(dataHoraServidor);
-                serverTimeMillis = date.getTime();
-            } catch (ParseException e) {
-                e.printStackTrace();
-                serverTimeMillis = System.currentTimeMillis();
-            }
-        }
-        startTimer();
+        DateTime parseTime = DEFAULT_FORMATTER_SP.parseDateTime(dataHoraServidor);
+        this.serverReferenceTime = parseTime;
+        this.syncElapserRealTimeMillis = SystemClock.elapsedRealtime();
+    }
+
+    public DateTime getCurrentDateTime() {
+        long nowElapsedRealTimeMillis = SystemClock.elapsedRealtime();
+        long millisPassaedSinceSync = nowElapsedRealTimeMillis - this.syncElapserRealTimeMillis;
+        return this.serverReferenceTime.plus(millisPassaedSinceSync);
     }
 
     public long getDataHoraServidorMillis() {
-        return serverTimeMillis;
+        DateTime currentTime = getCurrentDateTime();
+        return currentTime.getMillis();
     }
 }

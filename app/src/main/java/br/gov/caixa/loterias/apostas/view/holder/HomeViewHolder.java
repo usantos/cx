@@ -17,6 +17,8 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import org.joda.time.DateTime;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -37,9 +39,9 @@ import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
@@ -223,20 +225,21 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		DateFormat formatterDia;
 		DateFormat formatterTime;
 
-		DateFormat formatterDate = new SimpleDateFormat(itemView.getContext().getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
+		String formatoData = itemView.getContext().getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss);
+		DateFormat formatterDate = new SimpleDateFormat(formatoData);
 		Locale BRAZIL = new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br));
 		formatterDataBr = SimpleDateFormat.getDateInstance(DateFormat.SHORT, BRAZIL);
 		formatterTime = new SimpleDateFormat(itemView.getContext().getResources().getString(R.string.hh_mm_ss));
 		formatterDia = new SimpleDateFormat(itemView.getContext().getResources().getString(R.string.eeee));
 		formatterDia =  formatterDia.getDateInstance(DateFormat.FULL ,BRAZIL);
 		Date dataSorteioFormatada  = null;
-		Date dataFechamentoSorteio = null;
+		DateTime dataFechamentoSorteio = null;
 
 		try {
 			if (modalidade.getConcurso().getDataHoraSorteio() != null) {
 				dataSorteioFormatada = formatterDate.parse(modalidade.getConcurso().getDataHoraSorteio());
 			}
-			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
+			dataFechamentoSorteio = DateUtils.criaDataHora(modalidade.getConcurso().getDataFechamento(), formatoData);
 			if (modalidade.getTipoModalidade() == ModalidadeEnum.LOTECA){
 				dataSorteioFormatada = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
 			}
@@ -295,24 +298,22 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.setaDireitaAcaoRelativeLayout.setOnClickListener(this);
 
 		try {
-			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
+			dataFechamentoSorteio = DateUtils.criaDataHora(modalidade.getConcurso().getDataFechamento(), formatoData);
 
 //			EncerramentoUtil.mockSetDataHoraEncerramento(
-//					"24/03/2025",
-//					"10:00:00",
-//					"11:00:00",
-//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.NORMAL, 5638);
+//					"14/04/2025",
+//					"16:00:00",
+//					"17:30:00",
+//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.NORMAL, 5652);
 
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		if (dataFechamentoSorteio != null) {
-			//long tempoRestanteMillis = dataFechamentoSorteio.getTime() - System.currentTimeMillis();
-			long tempoRestanteMillis = dataFechamentoSorteio.getTime() - DataHoraServidorSingleton.getInstance().getDataHoraServidorMillis();
+			long tempoRestanteMillis = dataFechamentoSorteio.getMillis() - DataHoraServidorSingleton.getInstance().getDataHoraServidorMillis();
 
 			if (tempoRestanteMillis > 0) {
-				Date finalDataFechamentoSorteio = dataFechamentoSorteio;
 				new CountDownTimer(tempoRestanteMillis, 1000) {
 
 					public void onTick(long millisUntilFinished) {

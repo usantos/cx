@@ -1,11 +1,8 @@
 package br.gov.caixa.loterias.apostas.utils;
 
-import java.text.ParseException;
+import org.joda.time.DateTime;
+
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +19,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSi
 
 public class EncerramentoUtil {
 
-    private static final SimpleDateFormat DATE_TIME_FORMATE = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+    private static final String FORMATO_DATA_HORA = "dd/MM/yyyy HH:mm:ss";
+    private static final SimpleDateFormat DATE_TIME_FORMATE = new SimpleDateFormat(FORMATO_DATA_HORA);
     public static ModalidadeDisponivelCota getModalidadeDisponivelCota(ModalidadeEnum modalidade,
                                                                        TipoConcursoEnum tipoConcurso,
                                                                        Integer concurso) {
@@ -81,17 +79,16 @@ public class EncerramentoUtil {
         }
 
         try {
-            Date dataHoraErramentoFinal = DATE_TIME_FORMATE.parse(modalidadeDisponivelCota.getDataEncerramentoRevenda() + " " +
-                                                                    modalidadeDisponivelCota.getHoraEncerramentoRevenda());
+            DateTime dataHoraErramentoFinal = DateUtils.criaDataHora(modalidadeDisponivelCota.getDataEncerramentoRevenda() + " " +
+                                                                    modalidadeDisponivelCota.getHoraEncerramentoRevenda(), FORMATO_DATA_HORA);
 
-            Date dataHoraEncerramentoInicial = DATE_TIME_FORMATE.parse(parametroJogo.getConcurso().getDataFechamento());
+            DateTime dataHoraEncerramentoInicial = DateUtils.criaDataHora(parametroJogo.getConcurso().getDataFechamento(), FORMATO_DATA_HORA);
 
-            //long tempoAtualMillis = System.currentTimeMillis();
             long tempoAtualMillis = DataHoraServidorSingleton.getInstance().getDataHoraServidorMillis();
 
-            if (dataHoraEncerramentoInicial.getTime() <= tempoAtualMillis &&
-                dataHoraErramentoFinal.getTime() >= tempoAtualMillis) {
-                return dataHoraErramentoFinal.getTime() - tempoAtualMillis; //Tempo Restente
+            if (dataHoraEncerramentoInicial.getMillis() <= tempoAtualMillis &&
+                dataHoraErramentoFinal.getMillis() >= tempoAtualMillis) {
+                return dataHoraErramentoFinal.getMillis() - tempoAtualMillis; //Tempo Restente
             }
 
         } catch (Exception e) {
@@ -114,17 +111,16 @@ public class EncerramentoUtil {
 
             //Se já encerrada
             try {
-                Date dataHoraErramentoFinal = DATE_TIME_FORMATE.parse(
+                DateTime dataHoraErramentoFinal = DateUtils.criaDataHora(
                         modalidadeDC.getDataEncerramentoRevenda() + " " +
-                                modalidadeDC.getHoraEncerramentoRevenda());
+                                modalidadeDC.getHoraEncerramentoRevenda(), FORMATO_DATA_HORA);
 
-                //long tempoAtualMillis = System.currentTimeMillis();
                 long tempoAtualMillis = DataHoraServidorSingleton.getInstance().getDataHoraServidorMillis();
 
-                if (tempoAtualMillis > dataHoraErramentoFinal.getTime()) {
+                if (tempoAtualMillis > dataHoraErramentoFinal.getMillis()) {
                     continue;
                 }
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 continue;
             }
