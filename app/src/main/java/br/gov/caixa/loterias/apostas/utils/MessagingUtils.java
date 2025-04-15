@@ -61,7 +61,20 @@ public class MessagingUtils {
         //notificationManager.notify(NOTIFICATION_VARIAVEL, builder.build());
         notificationManager.notify((int) System.currentTimeMillis(), builder.build());
     }
+    public static void criaNotificacaoNovaExpansivel(Context context, String titulo,
+                                                     String texto, String textoExpansivel) {
+        String channelId = context.getString(R.string.default_notification_channel_id);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.trevo)
+                .setContentTitle(titulo)
+                .setContentText(texto)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(textoExpansivel))
+                .setPriority(PRIORITY);
 
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        //notificationManager.notify(NOTIFICATION_VARIAVEL, builder.build());
+        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+    }
     public static void limpaNotificacoesDoApp(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();

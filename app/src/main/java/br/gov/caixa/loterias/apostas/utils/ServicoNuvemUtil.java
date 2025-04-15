@@ -13,6 +13,9 @@ public class ServicoNuvemUtil {
 	//public static final String APIKEY_CHAVE = "8f9c0e5ec9604864acd357706e7b6522"; //DES
 	public static final String APIKEY_CHAVE = "ca5af87c9f7647de88eb7dcb93c7b021"; //TQS
 
+	public static final String AZURE_API = "azure-api.net";
+	//public static final String AZURE_API = ":8080";
+
 	private static final String PUBLICO = "/publico";
 	private static final String LOGADO = "/logado";
 	private static final List<String> listPublico = Arrays.asList(
@@ -126,8 +129,10 @@ public class ServicoNuvemUtil {
 	private static void apresentaCaminhoTQS(String baseUrlCarrinho, String pubLog, String path) {
 		if (BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")){
 			//ToastUtil.toastShort(novoCaminho + fillParamToString(queryParams));
-			MessagingUtils.criaNotificacaoNova(Aplicacao.application.getApplicationContext(),
-					DateUtils.getDateTime(), baseUrlCarrinho + "\n" + pubLog + path);
+			MessagingUtils.criaNotificacaoNovaExpansivel(Aplicacao.application.getApplicationContext(),
+					DateUtils.getDateTime(),
+					baseUrlCarrinho,
+					baseUrlCarrinho + "\n" + pubLog + path);
 		}
 	}
 
