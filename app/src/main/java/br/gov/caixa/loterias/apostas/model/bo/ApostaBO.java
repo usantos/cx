@@ -391,12 +391,11 @@ public class ApostaBO extends SilceBO {
 
     public void baixarComprovanteAposta(Long id, final RequestListener<String> listener) {
         String endPoint = ServerMethods.APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH.replace("{id}", id.toString());
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE") + endPoint, response -> {
-            listener.onResponse(response);
-        }, error -> {
-            listener.onErrorResponse(error);
-        }) {
+        if (endPoint.startsWith("/")){
+            endPoint = endPoint.substring(1);
+        }
+        String url = BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE") + endPoint;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> listener.onResponse(response), error -> listener.onErrorResponse(error)) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> header = (Map<String, String>) getHeaderToken().clone();
