@@ -119,8 +119,8 @@ public class FragmentUtils {
 		return fragment;
 	}
 
-	public static CopiaColaPixFragment startCopiaColaPix(GerarPixDTO pixDTO, FragmentManager fm, int id) {
-		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance(pixDTO);
+	public static CopiaColaPixFragment startCopiaColaPix(GerarPixDTO pixDTO, String dataHoraServidor, FragmentManager fm, int id) {
+		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance(pixDTO, dataHoraServidor);
 		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}

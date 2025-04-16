@@ -28,7 +28,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTORespo
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConsultaDadosChavePixResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
@@ -1052,35 +1051,6 @@ public class ApostaBO extends SilceBO {
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeaderToken());
-        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
-        getServiceConnection().request(request, listener);
-    }
-
-    public void consultaDadosChave(String id, InformacaoPagamentoDTO informacao,
-                                 final RequestListener<ConsultaDadosChavePixResponse> listener) {
-        String url = ServerMethods.CONSULTA_DADOS_CHAVE.replace("{id}", id);
-
-        final GsonRequest request = getServiceConnection().buildPostRequest(url,
-                new LinkedHashMap<>(), informacao,
-                ConsultaDadosChavePixResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                getHeaderToken());
-
-        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
-        getServiceConnection().request(request, listener);
-    }
-
-    public void cancelarPix(String idAposta, final RequestListener<ConsultaDadosChavePixResponse> listener) {
-        String url = ServerMethods.CANCELA_RESGATE_PIX.replace("{id}", idAposta);
-
-        final GsonRequest request = getServiceConnection().buildGetRequest(url,
-                new LinkedHashMap<>(),
-                ConsultaDadosChavePixResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                getHeaderToken());
-
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }

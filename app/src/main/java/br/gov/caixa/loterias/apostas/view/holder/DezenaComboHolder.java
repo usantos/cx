@@ -23,9 +23,11 @@ public class DezenaComboHolder extends LoteriasHolder<String> {
 		if (isTrevo){
 			txtTrevo.setVisibility(View.VISIBLE);
 			txtNumero.setVisibility(View.GONE);
+			txtTrevo.setText(item);
 		} else {
 			txtTrevo.setVisibility(View.GONE);
 			txtNumero.setVisibility(View.VISIBLE);
+			txtNumero.setText(item);
 		}
 	}
 
