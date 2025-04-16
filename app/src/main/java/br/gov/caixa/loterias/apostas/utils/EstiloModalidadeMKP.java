@@ -75,7 +75,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_lotomania;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
-                corLetraLista = R.color.lotomaniaclaro;
+                corLetraLista = R.color.lotomania_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_lotomania_fundo_branco;
@@ -155,6 +155,21 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_dia_de_sorte_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_dia_de_sorte_fundo_escuro;
+                break;
+            case INSTANTANEA:
+                corClara = R.color.instantanea_claro;
+                corEscura = R.color.instantanea_escuro;
+                trapezio = R.drawable.background_trapeze_instantanea;
+                shapeBtnDetalhes = -1;
+                imagemTriangulo = -1;
+                imagemTrianguloOutline= -1;
+                imagemEspecialCarrossel = -1;
+                imagemEspecialDetalhes = -1;
+                corLetraLista = R.color.instantanea_claro;
+                corFonteFundoClaro = R.color.branco;
+                corFonteFundoEscuro = R.color.branco;
+                trevoFundoClaro = R.drawable.trevos_instantanea_fundo_branco;
+                trevoFundoEscuro = R.drawable.trevos_instantanea_fundo_escuro;
                 break;
             default:
                 //MEGASENA

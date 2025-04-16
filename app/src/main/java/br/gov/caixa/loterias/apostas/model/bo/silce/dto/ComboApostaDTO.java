@@ -15,16 +15,19 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
  * ComboApostaDTO
  */
-public class ComboApostaDTO {
+@ApiModel(description = "")
+public class ComboApostaDTO implements Serializable {
   @SerializedName("id")
   private Long id = null;
 
@@ -32,20 +35,9 @@ public class ComboApostaDTO {
   private TipoComboDTO tipoCombo = null;
 
   @SerializedName("apostas")
-  private List<ApostaDTO> apostas = null;
+  private List<IdentificaoDeUmaApostaDas8Modalidades> apostas = null;
+  //private List<ApostaDTO> apostas = null;
 
-  @SerializedName("dataInclusao")
-  private String dataInclusao = null;
-
-  public ComboApostaDTO id(Long id) {
-    this.id = id;
-    return this;
-  }
-
-   /**
-   * Identificador do combo
-   * @return id
-  **/
   @ApiModelProperty(value = "Identificador do combo")
   public Long getId() {
     return id;
@@ -55,15 +47,7 @@ public class ComboApostaDTO {
     this.id = id;
   }
 
-  public ComboApostaDTO tipoCombo(TipoComboDTO tipoCombo) {
-    this.tipoCombo = tipoCombo;
-    return this;
-  }
 
-   /**
-   * Tipo do combo
-   * @return tipoCombo
-  **/
   @ApiModelProperty(value = "Tipo do combo")
   public TipoComboDTO getTipoCombo() {
     return tipoCombo;
@@ -73,48 +57,13 @@ public class ComboApostaDTO {
     this.tipoCombo = tipoCombo;
   }
 
-  public ComboApostaDTO apostas(List<ApostaDTO> apostas) {
-    this.apostas = apostas;
-    return this;
-  }
-
-  public ComboApostaDTO addApostasItem(ApostaDTO apostasItem) {
-    if (this.apostas == null) {
-      this.apostas = new ArrayList<ApostaDTO>();
-    }
-    this.apostas.add(apostasItem);
-    return this;
-  }
-
-   /**
-   * Lista apostas do combo
-   * @return apostas
-  **/
   @ApiModelProperty(value = "Lista apostas do combo")
-  public List<ApostaDTO> getApostas() {
+  public List<IdentificaoDeUmaApostaDas8Modalidades> getApostas() {
     return apostas;
   }
 
-  public void setApostas(List<ApostaDTO> apostas) {
+  public void setApostas(List<IdentificaoDeUmaApostaDas8Modalidades> apostas) {
     this.apostas = apostas;
-  }
-
-  public ComboApostaDTO dataInclusao(String dataInclusao) {
-    this.dataInclusao = dataInclusao;
-    return this;
-  }
-
-   /**
-   * Momento da inclusao da aposta
-   * @return dataInclusao
-  **/
-  @ApiModelProperty(value = "Momento da inclusao da aposta")
-  public String getDataInclusao() {
-    return dataInclusao;
-  }
-
-  public void setDataInclusao(String dataInclusao) {
-    this.dataInclusao = dataInclusao;
   }
 
 
@@ -128,14 +77,12 @@ public class ComboApostaDTO {
     }
     ComboApostaDTO comboApostaDTO = (ComboApostaDTO) o;
     return Objects.equals(this.id, comboApostaDTO.id) &&
-        Objects.equals(this.tipoCombo, comboApostaDTO.tipoCombo) &&
-        Objects.equals(this.apostas, comboApostaDTO.apostas) &&
-        Objects.equals(this.dataInclusao, comboApostaDTO.dataInclusao);
+        Objects.equals(this.tipoCombo, comboApostaDTO.tipoCombo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, tipoCombo, apostas, dataInclusao);
+    return Objects.hash(id, tipoCombo, apostas);
   }
 
 
@@ -143,11 +90,9 @@ public class ComboApostaDTO {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ComboApostaDTO {\n");
-    
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    tipoCombo: ").append(toIndentedString(tipoCombo)).append("\n");
     sb.append("    apostas: ").append(toIndentedString(apostas)).append("\n");
-    sb.append("    dataInclusao: ").append(toIndentedString(dataInclusao)).append("\n");
     sb.append("}");
     return sb.toString();
   }

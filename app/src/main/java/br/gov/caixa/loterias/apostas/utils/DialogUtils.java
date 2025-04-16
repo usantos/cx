@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogUmBotaoListener;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 public class DialogUtils {
@@ -225,9 +226,9 @@ public class DialogUtils {
         tituloView.setText(titulo);
         descricaoView.setText(descricao);
 
-        buttonLeft.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao1));
-        buttonCenter.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao2));
-        buttonRigth.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao3));
+        buttonLeft.setText(ViewUtils.textCaixaSTDBoldTitle(context, botao1));
+        buttonCenter.setText(ViewUtils.textCaixaSTDBoldTitle(context, botao2));
+        buttonRigth.setText(ViewUtils.textCaixaSTDBoldTitle(context, botao3));
 
         close.setOnClickListener(v -> dialog.dismiss());
         buttonLeft.setOnClickListener(v -> listener.leftButtom());
@@ -266,9 +267,10 @@ public class DialogUtils {
 
     public static Dialog showDialogCustom(Context context, String titulo, String descricao,
                                           String textBotao1, String textBotao2, String textBotao3,
-                                          OnDialog3ButtonsListener listener) {
+                                          OnDialog3ButtonsListener listener, boolean cancelable) {
 
         final Dialog dialog = new Dialog(context);
+        dialog.setCancelable(cancelable);
         dialog.setContentView(R.layout.custom_dialog_show);
 
         TextView tvTitulo    = dialog.findViewById(R.id.tituloCustom);
@@ -282,15 +284,21 @@ public class DialogUtils {
             button1.setVisibility(View.GONE);
         } else {
             button1.setText(textBotao1);
-            button1.setOnClickListener(v -> listener.leftButtom());
+            button1.setOnClickListener(v -> {
+                dialog.dismiss();
+                listener.leftButtom();
+            });
         }
 
         Button button2       = dialog.findViewById(R.id.btnCustom2);
         if (textBotao2 == null) {
-            button1.setVisibility(View.GONE);
+            button2.setVisibility(View.GONE);
         } else {
             button2.setText(textBotao2);
-            button2.setOnClickListener(v -> listener.centerButtom());
+            button2.setOnClickListener(v -> {
+                dialog.dismiss();
+                listener.centerButtom();
+            });
         }
 
         Button button3 = dialog.findViewById(R.id.btnCustom3);
@@ -298,7 +306,10 @@ public class DialogUtils {
             button3.setVisibility(View.GONE);
         } else {
             button3.setText(textBotao3);
-            button3.setOnClickListener(v -> listener.rightButtom());
+            button3.setOnClickListener(v -> {
+                dialog.dismiss();
+                listener.rightButtom();
+            });
         }
 
         dialog.show();
@@ -325,8 +336,8 @@ public class DialogUtils {
         tituloView.setText(titulo);
         descricaoView.setText(descricao);
 
-        buttonLeft.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao1));
-        buttonRigth.setText(ViewUtils.textFuturaAndFuturaBoldTitle(context, botao2));
+        buttonLeft.setText(ViewUtils.textCaixaSTDBoldTitle(context, botao1));
+        buttonRigth.setText(ViewUtils.textCaixaSTDBoldTitle(context, botao2));
 
         buttonLeft.setOnClickListener(v -> {
             dialog.dismiss();
@@ -341,4 +352,59 @@ public class DialogUtils {
     }
 
 
+    public static void showDialog1Botao(Context contexto, String titulo, String descricao, String botao, OnDialogUmBotaoListener listener) {
+        showDialogCustom(contexto,  titulo, descricao, null, null, botao, onDialogListener1Botao(listener), false);
+    }
+
+    private static OnDialog3ButtonsListener onDialogListener1Botao(OnDialogUmBotaoListener listener) {
+        return new OnDialog3ButtonsListener() {
+            @Override
+            public void leftButtom() {
+            }
+
+            @Override
+            public void centerButtom() {
+            }
+
+            @Override
+            public void rightButtom() {
+
+                listener.ok();
+            }
+        };
+    }
+
+    public static void modalNaoSeiCep(Activity ctx) {
+        // custom dialog
+        final Dialog dialog = new Dialog(ctx);
+        dialog.setContentView(R.layout.custom_dialog_padrao);
+
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
+        tituloDialog.setText(ctx.getResources().getString(R.string.nao_sei_cep));
+        TextView descricaoView= dialog.findViewById(R.id.descricaoDialog);
+
+        descricaoView.setText(R.string.voce_sera_redirecionado_para_o_site_dos_correios);
+
+        Button dialogButtonConfirmar = dialog.findViewById(R.id.rightButton);
+        dialogButtonConfirmar.setBackground(ctx.getDrawable(R.drawable.button_rounded_verdeazul));
+        dialogButtonConfirmar.setTextColor(ctx.getResources().getColor(R.color.branco));
+        dialogButtonConfirmar.setText(R.string.confirmar);
+
+        Button dialogButtonCancelar = dialog.findViewById(R.id.leftButton);
+        dialogButtonCancelar.setBackground(ctx.getDrawable(R.drawable.background_border_verde));
+        dialogButtonCancelar.setTextColor(ctx.getResources().getColor(R.color.verdeazul));
+        dialogButtonCancelar.setText(R.string.cancelar);
+
+
+        dialogButtonConfirmar.setOnClickListener(v -> {
+            Utils.abreUrl(ctx, R.string.Url_Correios);
+            dialog.dismiss();
+        });
+
+        dialogButtonCancelar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
 }

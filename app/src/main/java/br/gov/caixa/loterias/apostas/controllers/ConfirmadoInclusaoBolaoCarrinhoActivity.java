@@ -1,13 +1,12 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
@@ -60,6 +59,9 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     }
 
     private void aplicaEstilo() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+        }
         configBackgroundColorMenu(estilo.getCorEscura());
         configColorTextMenu(estilo.getCorFonteFundoEscuro());
 
@@ -132,5 +134,11 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         setResult(RESULT_OK);
         finish();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        finish();
     }
 }

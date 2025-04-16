@@ -9,8 +9,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 public class FiltroAplicadoMarketplace implements Serializable {
     private String valorMinimoAposta;
     private String valorMaximoAposta;
-    private Float qtdMinCotas;
-    private Float qtdMaxCotas;
+    private Integer qtdMinCotas;
+    private Integer qtdMaxCotas;
+    private Integer qtdDezenas;
+    private String numerosQuero;
+    private String numerosNaoQuero;
     private LotericaDTO lotericaDTO;
     private ModalidadeEnum modalidade;
     private TipoConcursoEnum tipoConcurso;
@@ -18,11 +21,14 @@ public class FiltroAplicadoMarketplace implements Serializable {
     public FiltroAplicadoMarketplace(){
     }
 
-    public FiltroAplicadoMarketplace(String valorMinimoAposta, String valorMaximoAposta, Float qtdMinCotas, Float qtdMaxCotas, LotericaDTO lotericaDTO, ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
+    public FiltroAplicadoMarketplace(LotericaDTO lotericaDTO, String valorMinimoAposta, String valorMaximoAposta, Integer qtdMinCotas, Integer qtdMaxCotas, Integer qtdDezenas, String numerosQuero, String numerosNaoQuero, ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
         this.valorMinimoAposta = valorMinimoAposta;
         this.valorMaximoAposta = valorMaximoAposta;
         this.qtdMinCotas = qtdMinCotas;
         this.qtdMaxCotas = qtdMaxCotas;
+        this.qtdDezenas = qtdDezenas;
+        this.numerosQuero = numerosQuero;
+        this.numerosNaoQuero = numerosNaoQuero;
         this.lotericaDTO = lotericaDTO;
         this.modalidade = modalidade;
         this.tipoConcurso = tipoConcurso;
@@ -44,28 +50,52 @@ public class FiltroAplicadoMarketplace implements Serializable {
         this.valorMaximoAposta = valorMaximoAposta;
     }
 
-    public Float getQtdMinCotas() {
-        return qtdMinCotas;
-    }
-
-    public void setQtdMinCotas(Float qtdMinCotas) {
-        this.qtdMinCotas = qtdMinCotas;
-    }
-
-    public Float getQtdMaxCotas() {
-        return qtdMaxCotas;
-    }
-
-    public void setQtdMaxCotas(Float qtdMaxCotas) {
-        this.qtdMaxCotas = qtdMaxCotas;
-    }
-
     public LotericaDTO getLotericaDTO() {
         return lotericaDTO;
     }
 
     public void setLotericaDTO(LotericaDTO lotericaDTO) {
         this.lotericaDTO = lotericaDTO;
+    }
+
+    public Integer getQtdMinCotas() {
+        return qtdMinCotas;
+    }
+
+    public void setQtdMinCotas(Integer qtdMinCotas) {
+        this.qtdMinCotas = qtdMinCotas;
+    }
+
+    public Integer getQtdMaxCotas() {
+        return qtdMaxCotas;
+    }
+
+    public void setQtdMaxCotas(Integer qtdMaxCotas) {
+        this.qtdMaxCotas = qtdMaxCotas;
+    }
+
+    public Integer getQtdDezenas() {
+        return qtdDezenas;
+    }
+
+    public String getNumerosQuero() {
+        return numerosQuero;
+    }
+
+    public void setNumerosQuero(String numerosQuero) {
+        this.numerosQuero = numerosQuero;
+    }
+
+    public String getNumerosNaoQuero() {
+        return numerosNaoQuero;
+    }
+
+    public void setNumerosNaoQuero(String numerosNaoQuero) {
+        this.numerosNaoQuero = numerosNaoQuero;
+    }
+
+    public void setQtdDezenas(Integer qtdDezenas) {
+        this.qtdDezenas = qtdDezenas;
     }
 
     public ModalidadeEnum getModalidade() {

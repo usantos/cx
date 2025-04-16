@@ -62,7 +62,7 @@ public class ExpandableListDataSideMenu {
         expandableListDetail.put("Conferir bilhetes", bilhetes);
         expandableListDetail.put("Jogo responsável", jogoResponsavel);
         expandableListDetail.put("Repasses sociais", sociais);
-        expandableListDetail.put("Termo de aceite", termo);
+        expandableListDetail.put("Termo de uso", termo);
         expandableListDetail.put("Dúvidas", duvidas);
         //expandableListDetail.put("Notificações", notificacoes);
         return expandableListDetail;

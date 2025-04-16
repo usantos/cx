@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/arialmt"
+            android:fontFamily="@font/caixa_std_regular"
             android:text="@string/label_mes_sorte"
             android:textSize="12sp" />
 
@@ -55,9 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/arialmt"
+            android:fontFamily="@font/caixa_std_bold"
             android:textSize="12sp"
-            android:textStyle="bold"
             tools:text="Fevereiro" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -53,6 +53,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     private ExpandableHeightRecyclerView recyclerViewDuvidas;
     private List<ListSecaoDTO> secaoDuvidas;
     private Boolean openAjuda = false;
+    private boolean primeiroCarregamento = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,12 @@ public class TermosUsoActivity extends AppCompatActivity {
             scrollViewTermoAceite.setPadding(0, 0, 0, 0);
             getSupportActionBar().setDisplayHomeAsUpEnabled(isTermoAceito);
             footerAceiteTermo.setVisibility(View.GONE);
-            termosUsoButton.performClick();
+            if(primeiroCarregamento){
+                duvidasButton.performClick();
+                primeiroCarregamento = false;
+            }else{
+                termosUsoButton.performClick();
+            }
         }
     }
 
@@ -159,7 +165,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_toolbar)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_toolbar)));
 
         termosUsoButton = findViewById(R.id.buttonTermos);
         duvidasButton = findViewById(R.id.buttonDuvidas);
@@ -175,7 +181,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         buttonTermoAceite = findViewById(R.id.buttonTermoAceite);
         layoutClickAceiteTermo = findViewById(R.id.layoutClickAceiteTermo);
 
-        termosUsoButton.setChecked(Boolean.TRUE);
+        duvidasButton.setChecked(Boolean.TRUE);
     }
 
     @Override
@@ -286,7 +292,12 @@ public class TermosUsoActivity extends AppCompatActivity {
                 if (openAjuda == true) {
                     duvidasButton.performClick();
                 }else{
-                    termosUsoButton.performClick();
+                    if (primeiroCarregamento){
+                        duvidasButton.performClick();
+                        primeiroCarregamento = false;
+                    }else{
+                        termosUsoButton.performClick();
+                    }
                 }
             }
 

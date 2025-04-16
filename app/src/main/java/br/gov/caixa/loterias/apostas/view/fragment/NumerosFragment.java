@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -119,7 +121,8 @@ public class NumerosFragment extends Fragment {
 		} else {
 			titulo.setText(tituloTexto);
 		}
-		titulo.setTextColor(getActivity().getResources().getColor(R.color.branco));
+
+		titulo.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
 
 		listViewNumeros = view.findViewById(R.id.ehgv_numeros);
 
@@ -145,7 +148,8 @@ public class NumerosFragment extends Fragment {
 			shapeConfig = new ShapeConfig(R.color.branco, configuracao.getCorTextoCirculoSelecionado());
 		}
 
-		return new DezenaConfig(false, R.color.branco,
+		//return new DezenaConfig(false, R.color.branco,
+		return new DezenaConfig(false, configuracao.getCorTextoCirculo(),
 								R.layout.item_dezena_detalhe,
 								shapeConfig,false);
 	}
@@ -153,6 +157,7 @@ public class NumerosFragment extends Fragment {
 	@NotNull
 	private List<Dezena> getDezenas() {
 		List<Dezena> dezenas = new ArrayList<>();
+		Collections.sort(listaInteiros);
 		for (int i = 0; i < listaInteiros.size(); i++) {
 			if (listaInteiros.get(i) == 100 || listaInteiros.get(i) == 0){
 				dezenas.add(new Dezena("" + listaInteiros.get(i), Boolean.FALSE, "00"));

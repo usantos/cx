@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
@@ -36,7 +37,6 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;
 	private ConstraintLayout containerPix;
-
 	private MeioPagamentoModel model;
 	private boolean carregouConteudo = false;
 
@@ -48,7 +48,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_Forma de pagamento_"));
+		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_Forma de pagamento_"));
 
 		containerPix = findViewById(R.id.container_pix);
 		findViewById(R.id.btn_gerar_codigo).setOnClickListener(onGerarCodigoPixClick());
@@ -167,21 +167,43 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentRecargaPay,
 									new MeioPagamentoConfig(R.drawable.recargapay, getRecargaPay(),
-											R.drawable.ic_bandeira_elo, R.drawable.ic_bandeira_master,
-											R.drawable.ic_bandeira_visa, 0,0, 0,
+											getBandeirasRecargaPay(),
 											R.color.laranja_recarga_pay));
 	}
 									//new MeioPagamentoConfig(R.color.laranja_recarga_pay, R.drawable.recargapay, getRecargaPay()));
+
+	private List<Integer> getBandeirasRecargaPay(){
+
+		List<Integer> bandeirasRecargaPay = new ArrayList<>();
+
+		//Lista de bandeiras de cartão de crédito que são aceitas pelo Recarga Pay
+		bandeirasRecargaPay.add(R.drawable.ic_bandeira_elo);
+		bandeirasRecargaPay.add(R.drawable.ic_bandeira_master);
+		bandeirasRecargaPay.add(R.drawable.ic_bandeira_visa);
+		return bandeirasRecargaPay;
+	}
 
 	private void startFragmentMercadoPago(boolean primeiroMeioPagamentoCartao) {
 		frameMercadoPago = FragmentUtils
 				.startMeioPagamento(getSupportFragmentManager(),
 									R.id.fragmentMercadoPago,
 									new MeioPagamentoConfig(R.drawable.ic_mercado_pago, getMercadoPago(),
-										R.drawable.ic_bandeira_amex2, R.drawable.ic_bandeira_diners3,
-										R.drawable.ic_bandeira_elo, R.drawable.ic_hipercard,
-										R.drawable.ic_bandeira_master, R.drawable.ic_bandeira_visa,
+										getBandeirasMercadoPago(),
 										R.color.azul_mercado_pago));
+	}
+
+	private List<Integer> getBandeirasMercadoPago(){
+
+		List<Integer> bandeirasMercadoPago = new ArrayList<>();
+
+		bandeirasMercadoPago.add(R.drawable.ic_bandeira_amex2);
+		//listaBrandeirasMercadoPago.add(R.drawable.ic_bandeira_diners); -> Bandeira excluida.
+		bandeirasMercadoPago.add(R.drawable.ic_bandeira_elo);
+		bandeirasMercadoPago.add(R.drawable.ic_hipercard);
+		bandeirasMercadoPago.add(R.drawable.ic_bandeira_master);
+		bandeirasMercadoPago.add(R.drawable.ic_bandeira_visa);
+		return bandeirasMercadoPago;
+
 	}
 
 	private DTOEnumLong getRecargaPay() {

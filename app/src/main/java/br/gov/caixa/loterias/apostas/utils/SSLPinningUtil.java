@@ -18,6 +18,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoMicroServicoSingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoNovaAPISingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSilceSingleton;
 
 public class SSLPinningUtil {
@@ -46,11 +47,13 @@ public class SSLPinningUtil {
     }
 
     public static RequestQueue pinagemPRD(Context ctx, ServicoEnum servico) {
-        InputStream inputStream;
+        InputStream inputStream = null;
         if (servico == ServicoEnum.SILCE){
             inputStream = ctx.getResources().openRawResource(CertificadoSilceSingleton.getInstance().getCertificadoAtual());
-        } else {
+        } else if (servico == ServicoEnum.MICROSERVICO){
             inputStream = ctx.getResources().openRawResource(CertificadoMicroServicoSingleton.getInstance().getCertificadoAtual());
+        } else {
+            inputStream = ctx.getResources().openRawResource(CertificadoNovaAPISingleton.getInstance().getCertificadoAtual());
         }
 
         RequestQueue requestQueue = null;

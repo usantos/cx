@@ -30,7 +30,10 @@ public class StringUtils {
     }
 
     public static String firstWord(String texto) {
-        return texto.substring(0, texto.indexOf(" "));
+        if (texto != null && !texto.isEmpty() && texto.contains(" ")){
+            return texto.substring(0, texto.indexOf(" "));
+        }
+        return texto;
     }
 
     public static String padZeroLeft(int valor, int tamanho) {

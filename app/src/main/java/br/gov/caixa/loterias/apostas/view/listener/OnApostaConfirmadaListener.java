@@ -8,4 +8,5 @@ public interface OnApostaConfirmadaListener {
 	void onItemClick(int position, ApostaConfirmadaHolder holder);
 
 	void onEmptyCellClick();
+	void onItemReload(int position, ApostaConfirmadaHolder holder);
 }

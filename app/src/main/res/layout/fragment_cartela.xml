@@ -24,12 +24,12 @@
                 android:id="@+id/tv_colunas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/superseteclaro"
-                android:fontFamily="@font/futura_std_bold"
+                android:background="@color/super_sete_claro_mkp"
+                android:fontFamily="@font/caixa_std_bold"
                 android:padding="10dp"
                 android:text="@string/colunas"
                 android:textAlignment="center"
-                android:textColor="@color/branco"
+                android:textColor="@color/super_sete_letra_mkp"
                 android:textSize="16sp"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +49,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_1"
                     android:textColor="@color/branco" />
@@ -60,9 +60,8 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
-
                     android:text="@string/_2"
                     android:textColor="@color/branco" />
 
@@ -72,8 +71,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
-
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_3"
                     android:textColor="@color/branco" />
@@ -84,7 +82,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_4"
                     android:textColor="@color/branco" />
@@ -95,7 +93,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_5"
                     android:textColor="@color/branco" />
@@ -106,7 +104,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_6"
                     android:textColor="@color/branco" />
@@ -117,11 +115,13 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_text_view_colunas"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:gravity="center"
                     android:text="@string/_7"
                     android:textColor="@color/branco" />
+
             </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </RelativeLayout>
@@ -151,8 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintTop_toTopOf="parent">
-                </LinearLayout>
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listaDezenas"
@@ -301,6 +300,7 @@
                             android:verticalSpacing="10dp" />
                     </LinearLayout>
                 </ScrollView>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -314,25 +314,25 @@
                 tools:visibility="visible">
 
                 <TextView
-                    style="@style/ArialMT"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="45dp"
                     android:layout_marginRight="45dp"
                     android:text="@string/label_nome_do_seu_time"
                     android:textColor="@color/azulFormNovoTipoPagamento"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:fontFamily="@font/caixa_std_regular"/>
 
                 <EditText
                     android:id="@+id/informe_nome_time"
-                    style="@style/ArialMT"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="45dp"
                     android:layout_marginRight="45dp"
                     android:maxLines="1"
                     android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:fontFamily="@font/caixa_std_regular"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/gridTimes"
@@ -376,24 +376,24 @@
 
                         <TextView
                             android:id="@+id/titleInformeBold"
-                            style="@style/ArialMT"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/label_informe"
                             android:textColor="@color/verdeazul"
                             android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:fontFamily="@font/caixa_std_bold"/>
 
                         <TextView
                             android:id="@+id/titleContinue"
-                            style="@style/ArialMT"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
                             android:layout_marginBottom="20dp"
                             android:text="@string/label_resultado_das_partidas"
                             android:textColor="@color/verdeazul"
-                            android:textSize="14sp" />
+                            android:textSize="14sp"
+                            android:fontFamily="@font/caixa_std_regular"/>
+
                     </LinearLayout>
 
                     <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
@@ -405,7 +405,9 @@
                         android:nestedScrollingEnabled="false"
                         android:orientation="vertical"
                         android:paddingBottom="119dp" />
+
                 </LinearLayout>
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -435,7 +437,6 @@
 
         <TextView
             android:id="@+id/infoSelecioneOutrosNumeros"
-            style="@style/ArialMT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -443,7 +444,8 @@
             android:layout_marginRight="16dp"
             android:layout_toRightOf="@+id/selcioneOutrosNumeros"
             android:textColor="@color/branco"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"/>
     </RelativeLayout>
 
 </RelativeLayout>

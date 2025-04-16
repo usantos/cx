@@ -99,7 +99,7 @@ public class DetalheDuvidaActivity extends AppCompatActivity {
     }
 
     private void createToolBar() {
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, secaoDTO.getNome())));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.texto_caixaStd_bold, secaoDTO.getNome())));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setElevation(0);

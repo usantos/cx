@@ -22,6 +22,12 @@ public class FiltroMarketPlace implements Serializable {
     private int qtdMinimaCota;
     @SerializedName("qtdMaximaCota")
     private int qtdMaximaCota;
+    @SerializedName("quantidadeDezena")
+    private int qtdDezenas;
+    @SerializedName("numerosEscolhidos")
+    private String numerosQuero;
+    @SerializedName("numerosNaoEscolhidos")
+    private String numerosNaoQuero;
     @SerializedName("valorMinimoCota")
     private BigDecimal valorMinimoCota;
     @SerializedName("valorMaximoCota")
@@ -41,6 +47,7 @@ public class FiltroMarketPlace implements Serializable {
         this.qtdPorPagina = qtdPorPagina;
         this.qtdMinimaCota = 0;
         this.qtdMaximaCota = 0;
+        this.qtdDezenas = 0;
         this.valorMinimoCota = null;
         this.valorMaximoCota = null;
         this.numeroLoterico = null;
@@ -102,6 +109,26 @@ public class FiltroMarketPlace implements Serializable {
 
     public void setQtdMaximaCota(int qtdMaximaCota) {
         this.qtdMaximaCota = qtdMaximaCota;
+    }
+
+    public int getQtdDezenas() {return qtdDezenas;}
+
+    public void setQtdDezenas(int qtdDezenas) {this.qtdDezenas = qtdDezenas;}
+
+    public String getNumerosQuero() {
+        return numerosQuero;
+    }
+
+    public void setNumerosQuero(String numerosQuero) {
+        this.numerosQuero = numerosQuero;
+    }
+
+    public String getNumerosNaoQuero() {
+        return numerosNaoQuero;
+    }
+
+    public void setNumerosNaoQuero(String numerosNaoQuero) {
+        this.numerosNaoQuero = numerosNaoQuero;
     }
 
     public BigDecimal getValorMinimoCota() {

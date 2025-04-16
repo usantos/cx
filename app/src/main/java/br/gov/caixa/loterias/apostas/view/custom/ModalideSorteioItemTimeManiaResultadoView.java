@@ -9,13 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultadosAdapter;
 
 
@@ -62,17 +63,21 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
 
     public void setLayout(Modalidade modalidade) {
 
-        EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+        //EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
         if (modalidade.getTipoModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
             timeCoracaoImage.setVisibility(View.GONE);
+            labelTimeCoracaoText.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
             labelTimeCoracaoText.setText(R.string.label_mes_desejado);
             if (modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte() != null
                     && modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte() != null) {
+                this.textTimeCoracao.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
                 this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome());
             }else{
                 this.textTimeCoracao.setText(R.string.label_tres_interrogacoes);
             }
         } else {
+            this.textTimeCoracao.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
             this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome() + "/" +
                     modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getUf());
         }

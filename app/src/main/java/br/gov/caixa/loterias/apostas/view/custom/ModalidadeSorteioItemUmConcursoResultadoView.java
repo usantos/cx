@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultadosAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TrevosResultadosAdapter;
 
@@ -59,7 +59,7 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
 
     public void setLayout(Modalidade modalidade) {
 
-        EstiloModalidade estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
         tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
 
         NumerosResultadosAdapter numerosResultadosAdapter;

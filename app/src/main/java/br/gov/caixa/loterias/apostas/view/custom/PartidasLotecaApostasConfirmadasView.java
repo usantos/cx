@@ -19,7 +19,9 @@ import javax.annotation.Nullable;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -109,17 +111,19 @@ public class PartidasLotecaApostasConfirmadasView extends LinearLayout {
         imageView.setSelected(equipeDTO.getVitoria());
         apostaEquipeLotecaView.setText(equipeNome);
         if (equipeDTO.getVitoria()) {
-            apostaEquipeLotecaView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+            //apostaEquipeLotecaView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+            apostaEquipeLotecaView.setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
         }
     }
     private void preencheAcerto(ImageView imageView, TextView apostaEquipeLotecaView){
-        int corLoteca = ContextCompat.getColor(getContext(),R.color.lotecaclaro);
+        int corLoteca = ContextCompat.getColor(getContext(),R.color.loteca_claro_mkp);
         Drawable unwrappedDrawable = AppCompatResources.getDrawable(getContext(), R.drawable.navegacao_branco);
         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
         DrawableCompat.setTint(wrappedDrawable,ContextCompat.getColor(getContext(),R.color.branco));
         imageView.setBackground(wrappedDrawable);
         apostaEquipeLotecaView.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.branco));
         apostaEquipeLotecaView.setTextColor(corLoteca);
-        apostaEquipeLotecaView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+        //apostaEquipeLotecaView.setTypeface(ViewUtils.getFontArialMT(getContext()), Typeface.BOLD);
+        apostaEquipeLotecaView.setTypeface(FonteUtils.getFonte(FontCaixaEnum.BOLD));
     }
 }

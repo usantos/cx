@@ -24,7 +24,7 @@
                 android:layout_marginHorizontal="17dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
-                android:fontFamily="@font/futura_std_bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:text="@string/acompanhe_todas_as_compras_que_voc_j_realizou_em_nosso_aplicativo"
                 android:textColor="@color/colorAccent"
                 android:textSize="15.5sp" />
@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/selecione_o_m_s"
                     android:textColor="@color/azulFormNovoTipoPagamento"
                     android:textSize="12sp" />

@@ -21,7 +21,7 @@
             android:text="@string/conf_rapd_valor_max_aposta"
             android:textColor="@color/verde_card"
             android:textSize="20sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,6 +34,7 @@
             android:gravity="center"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
+            android:fontFamily="@font/caixa_std_regular"
             tools:text="@string/conf_rapd_escolha_max_aposta"
             android:textSize="15sp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -57,7 +58,7 @@
                 android:background="@drawable/btn_estilo_valores_rapidao"
                 tools:text="130"
                 android:textColor="@drawable/btn_text_color"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold" />
 
             <Button
                 android:id="@+id/btn_vl_max_2"
@@ -67,7 +68,7 @@
                 android:background="@drawable/btn_estilo_valores_rapidao"
                 tools:text="160"
                 android:textColor="@drawable/btn_text_color"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold"/>
 
             <Button
                 android:id="@+id/btn_vl_max_3"
@@ -77,7 +78,7 @@
                 android:background="@drawable/btn_estilo_valores_rapidao"
                 tools:text="180"
                 android:textColor="@drawable/btn_text_color"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold" />
 
             <Button
                 android:id="@+id/btn_vl_max_4"
@@ -87,7 +88,7 @@
                 android:background="@drawable/btn_estilo_valores_rapidao"
                 android:text="@string/tres_pontos"
                 android:textColor="@drawable/btn_text_color"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold" />
 
         </LinearLayout>
 
@@ -99,6 +100,7 @@
             android:gravity="center"
             android:text="@string/valor_selecionado"
             android:textSize="15sp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cl_val_max_btns" />
@@ -112,7 +114,7 @@
             android:text="@string/r_130_00"
             android:textColor="@color/amareloQueimado"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_val_selec_desc_max" />
@@ -135,7 +137,7 @@
             android:text="@string/conf_rapd_valor_min_aposta"
             android:textColor="@color/verde_card"
             android:textSize="20sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/v_div_1" />
@@ -150,6 +152,7 @@
             android:paddingRight="50dp"
             tools:text="@string/conf_rapd_escolha_max_aposta"
             android:textSize="15sp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_pm_titulo_min" />
@@ -171,7 +174,7 @@
                 android:background="@drawable/btn_estilo_valores_rapidao"
                 tools:text="130"
                 android:textColor="@drawable/btn_text_color"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold" />
 
             <Button
                 android:id="@+id/btn_vl_min_2"
@@ -181,7 +184,7 @@
                 android:background="@drawable/btn_estilo_valores_rapidao"
                 tools:text="160"
                 android:textColor="@drawable/btn_text_color"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold" />
 
             <Button
                 android:id="@+id/btn_vl_min_3"
@@ -191,7 +194,7 @@
                 android:background="@drawable/btn_estilo_valores_rapidao"
                 tools:text="180"
                 android:textColor="@drawable/btn_text_color"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold" />
 
             <Button
                 android:id="@+id/btn_vl_min_4"
@@ -201,7 +204,7 @@
                 android:background="@drawable/btn_estilo_valores_rapidao"
                 android:text="@string/tres_pontos"
                 android:textColor="@drawable/btn_text_color"
-                android:textStyle="bold" />
+                android:fontFamily="@font/caixa_std_bold" />
 
         </LinearLayout>
 
@@ -213,6 +216,7 @@
             android:gravity="center"
             android:text="@string/valor_selecionado"
             android:textSize="15sp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cl_val_min_btns" />
@@ -226,7 +230,7 @@
             android:text="@string/r_130_00"
             android:textColor="@color/amareloQueimado"
             android:textSize="15sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_val_selec_desc_min" />

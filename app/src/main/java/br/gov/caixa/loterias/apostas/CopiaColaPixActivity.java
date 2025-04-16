@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,9 +15,9 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -25,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.model.model.PixModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
@@ -33,13 +35,15 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 
 public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopiaColaListener {
 	public static Boolean isRunning = false;
+	private boolean tempoExpirado = false, gerouCodigoPix = false;
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private PixModel model;
 	private CardPixFragment pixFragment;
-
+	private Dialog confirmaSairTelaPix;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -93,7 +97,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 
 			RateUtils.setQtdCompras(RateUtils.getQtdCompras() + 1);
 
-			CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
+			CarrinhoSingleton.getInstance().zerarCarrinho();
 			CarrinhoFavoritoCRUD crud = new CarrinhoFavoritoCRUD(CopiaColaPixActivity.this);
 			crud.deletaTodos();
 
@@ -131,6 +135,8 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 				AlertDialogUtils.dismiss();
 				startFragment(payload);
 				swipeRefreshLayout.setEnabled(true);
+				CarrinhoSingleton.getInstance().zerarCarrinho();
+				gerouCodigoPix=true;
 			}
 
 			@Override
@@ -145,7 +151,9 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	}
 
 	@Override
-	public void onFinish() {
+	public void onFinish()
+	{
+		tempoExpirado = true;
 		swipeRefreshLayout.setEnabled(false);
 	}
 
@@ -158,6 +166,7 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	public void irParaCompras() {
 		Intent intent = IntentUtil.getIntentOrigemDestino(CopiaColaPixActivity.this, ListaComprasActivity.class);
 		startActivity(intent);
+		finish();
 	}
 
 	private void restart() {
@@ -171,5 +180,50 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		super.onActivityResult(requestCode, resultCode, data);
 		finish();
 	}
+
+	@Override
+	public boolean onSupportNavigateUp() {
+		if(!tempoExpirado && gerouCodigoPix){
+			confirmaSairTelaPix = DialogUtils.showDialogCustom(this,
+					getString(R.string.label_atencao),
+					getString(R.string.mensagem_pop_up_aguardando_confirmacao_pix_pergunta),
+					getString(R.string.label_voltar_ao_inicio), getString(R.string.label_sim),
+					null, onDialogListener(), true);
+		}else{
+			voltarParaCarrossel();
+		}
+		return false;
+	}
+
+
+
+	private OnDialog3ButtonsListener onDialogListener() {
+		return new OnDialog3ButtonsListener() {
+			@Override
+			public void leftButtom() {
+				//ocultado
+				voltarParaCarrossel();
+
+			}
+
+			@Override
+			public void centerButtom() {
+				confirmaSairTelaPix.dismiss();
+			}
+
+			@Override
+			public void rightButtom() {
+
+			}
+		};
+	}
+
+	private void voltarParaCarrossel(){
+		Intent intent = IntentUtil.getIntentLimpandoPilhaActivities(CopiaColaPixActivity.this, PrincipalActivity.class);
+		startActivity(intent);
+		finish();
+	}
+
+
 
 }

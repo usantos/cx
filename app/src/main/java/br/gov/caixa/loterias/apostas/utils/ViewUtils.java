@@ -68,25 +68,15 @@ import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 
 public class ViewUtils {
 
-    private static Typeface fontFutura = null;
     private static Typeface fontFuturaBold = null;
-    private static Typeface fontAriallMT = null;
     private static Typeface fontCaixaStdBold = null;
+    private static Typeface fontCaixaStdRegular = null;
 
-
-    public static Typeface getFontFutura(Context context) {
-        if (fontFutura == null) {
-            fontFutura = Typeface.createFromAsset(context.getAssets(), "fonts/futura_std_book.otf");
-        }
-
-        return fontFutura;
-    }
 
     public static Typeface getFontFuturaBold(Context context) {
         if (fontFuturaBold == null) {
             fontFuturaBold = Typeface.createFromAsset(context.getAssets(), "fonts/futura_std_bold.otf");
         }
-
         return fontFuturaBold;
     }
 
@@ -97,12 +87,11 @@ public class ViewUtils {
         return fontCaixaStdBold;
     }
 
-    public static Typeface getFontArialMT(Context context) {
-        if (fontAriallMT == null) {
-            fontAriallMT = Typeface.createFromAsset(context.getAssets(), "fonts/arialmt.ttf");
+    public static Typeface getFontCaixaStdRegular(Context context) {
+        if (fontCaixaStdRegular == null) {
+            fontCaixaStdRegular = Typeface.createFromAsset(context.getAssets(), "fonts/caixa_std_regular.ttf");
         }
-
-        return fontAriallMT;
+        return fontCaixaStdRegular;
     }
 
     public static void configuraStatusBarGradientLayout(Context context, Window window) {
@@ -144,20 +133,42 @@ public class ViewUtils {
 
 
     public static AlertDialog.Builder dialogo(Context context, String mensagem) {
+
+        TextView messageView = new TextView(context);
+        messageView.setText(mensagem);
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+        messageView.setPadding(50,50,50,50);
+
         return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
-                .setMessage(mensagem);
+                //.setMessage(mensagem);
+                .setView(messageView);
+
     }
 
     public static AlertDialog.Builder dialogo(Context context, int titulo, String mensagem) {
+
+        TextView messageView = new TextView(context);
+        messageView.setText(mensagem);
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+        messageView.setPadding(50,50,50,50);
+
         return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
                 .setTitle(titulo)
-                .setMessage(mensagem);
+                //.setMessage(mensagem);
+                .setView(messageView);
     }
 
     public static AlertDialog.Builder dialogo(Context context, String titulo, String mensagem) {
+
+        TextView messageView = new TextView(context);
+        messageView.setText(mensagem);
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+        messageView.setPadding(50,50,50,50);
+
         return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
                 .setTitle(titulo)
-                .setMessage(mensagem);
+                //.setMessage(mensagem);
+                .setView(messageView);
     }
 
     public static Dialog alert(Context context, String mensagem) {
@@ -178,7 +189,7 @@ public class ViewUtils {
                 .setOnDismissListener(listener)
                 .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
         TextView textView = dialog.findViewById(android.R.id.message);
-        textView.setTypeface(getFontFutura(context));
+        textView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -190,8 +201,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -204,8 +215,8 @@ public class ViewUtils {
 
             DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
             TextView textMessageView = dialog.findViewById(android.R.id.message);
-            textTitleView.setTypeface(getFontFuturaBold(context));
-            textMessageView.setTypeface(getFontFutura(context));
+            textTitleView.setTypeface(getFontCaixaStdBold(context));
+            textMessageView.setTypeface(getFontCaixaStdRegular(context));
         }catch (Exception e){
             Log.d("", e.getLocalizedMessage());
         }
@@ -219,8 +230,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -233,8 +244,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -250,8 +261,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -266,8 +277,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -279,8 +290,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -292,8 +303,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -306,8 +317,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -320,8 +331,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -342,8 +353,8 @@ public class ViewUtils {
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);
-        textTitleView.setTypeface(getFontFuturaBold(context));
-        textMessageView.setTypeface(getFontFutura(context));
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
 
@@ -367,6 +378,19 @@ public class ViewUtils {
 
         String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
+    }
+
+    public static void setMoedaFormatHtmlCombo(BigDecimal valor, TextView valorTextView) {
+        String valorFormatoMoeda = getMoedaFormat(valor);
+
+        if (Build.VERSION.SDK_INT < 28) {
+            if (!valorFormatoMoeda.contains(" ")) {
+                valorFormatoMoeda = new StringBuffer(valorFormatoMoeda).insert(2, " ").toString();
+            }
+        }
+
+        String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
+        valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + valorFormatoMoedaArray[1]));
     }
 
     public static void setMoedaFormatHtml(BigDecimal valor, TextView valorTextView, String complemento) {
@@ -483,13 +507,20 @@ public class ViewUtils {
 
     public static SpannableStringBuilder textCaixaSTDBold(Context context, String texto) {
         try{
-            Typeface font = FonteUtils.getFonte(FontCaixaEnum.BOLD);
-            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+            Typeface fontRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface fontBold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
 
-            //PositionStringBold positionStringBold = positionString(texto);
-            List<PositionStringBold> listpositionStringBold = listPositionString(texto);
-            for (PositionStringBold positionStringBold : listpositionStringBold) {
-                spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            boolean isBold = false;
+            String[] parts = texto.split("_");
+            for (String part: parts) {
+                int start = spannableStringBuilder.length();
+                spannableStringBuilder.append(part);
+                Typeface fontToApply = isBold ? fontBold : fontRegular;
+                spannableStringBuilder.setSpan(new CustomTypefaceSpan("", fontToApply),
+                        start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+                isBold = !isBold;
             }
             return spannableStringBuilder;
         }catch (Exception e){
@@ -498,12 +529,26 @@ public class ViewUtils {
     }
 
     public static SpannableStringBuilder textColor(Context context, String texto, int idCor) {
-
         return textColor(context,texto,idCor,true);
     }
 
     public static SpannableStringBuilder textColor(Context context, String texto, int idCor, Boolean colorBold) {
-        Typeface font = ViewUtils.getFontFuturaBold(context);
+        Typeface font = ViewUtils.getFontCaixaStdBold(context);
+
+        PositionStringBold positionStringBold = positionString(texto);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
+        spannableStringBuilder.setSpan(new ForegroundColorSpan(context.getResources().getColor(idCor)) , positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        if(colorBold){
+            spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), positionStringBold.getStart(), positionStringBold.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        }
+        return spannableStringBuilder;
+    }
+
+    public static SpannableStringBuilder textColorCaixa(Context context, String texto, int idCor) {
+        return textColorCaixa(context,texto,idCor,true);
+    }
+    public static SpannableStringBuilder textColorCaixa(Context context, String texto, int idCor, Boolean colorBold) {
+        Typeface font = ViewUtils.getFontCaixaStdBold(context);
 
         PositionStringBold positionStringBold = positionString(texto);
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto.replace("_", ""));
@@ -524,15 +569,6 @@ public class ViewUtils {
     public static SpannableStringBuilder textCaixaSTDBoldTitle(Context context, String texto) {
         SpannableStringBuilder spannableStringBuilder = textCaixaSTDBold(context, texto);
         spannableStringBuilder.setSpan(new AbsoluteSizeSpan(16, true), 0, texto.replace("_", "").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        return spannableStringBuilder;
-    }
-
-    public static SpannableStringBuilder textFuturaAndSizeTitle(Context context, String texto) {
-        Typeface font = ViewUtils.getFontFutura(context);
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder(texto);
-        spannableStringBuilder.setSpan(new CustomTypefaceSpan("", font), 0, texto.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        spannableStringBuilder.setSpan(new AbsoluteSizeSpan(16, true), 0, texto.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return spannableStringBuilder;
     }
@@ -761,12 +797,13 @@ public class ViewUtils {
     }
 
     public static String getNomeModalidadePorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        Context context = Aplicacao.application.getBaseContext();
         ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
         if(param != null){
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
 
             if (modalidadeDetalhada.getValor() == 9){
-                return "+Milionária";
+                return context.getString(R.string.label_mais_milionaria);
             } else {
                 return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
                         modalidadeDetalhada.getDescricaoEspecial():
@@ -784,7 +821,7 @@ public class ViewUtils {
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
 
             if (modalidadeDetalhada.getValor() == 9){
-                return "+Milionária";
+                return Aplicacao.application.getBaseContext().getString(R.string.label_mais_milionaria);
             } else {
                 return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
                         ModalidadeEnum.getDescricaoEspecialDuasLinhas(aposta.getModalidade()):

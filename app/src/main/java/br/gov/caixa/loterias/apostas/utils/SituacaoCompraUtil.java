@@ -71,6 +71,10 @@ public class SituacaoCompraUtil {
 				situacao.getValor() == VALOR_AGUARDANDO_DEVOLUCAO_PIX;
 	}
 
+	public static boolean isSituacaoAguardandoPagamento(DTOEnumLong situacao) {
+		return 	situacao.getValor() == VALOR_AGUARDANDO_PAGAMENTO_PIX;
+	}
+
 	public static boolean isCanceladaPix(DTOEnumLong situacao) {
 		return situacao.getValor() == VALOR_CANCELADA_PAGAMENTO_NAO_IDENTIFICADO_TEMPO_LIMITE;
 	}

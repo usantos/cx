@@ -11,8 +11,9 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="32dp"
         android:text="@string/voce_escolheu_x_numeros"
-        android:textColor="@color/mais_milionaria_escura"
+        android:textColor="@color/milionaria_escuro_mkp"
         android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -25,7 +26,8 @@
         app:layout_constraintBaseline_toBaselineOf="@id/subtituloPaginacao"
         android:textStyle="bold"
         android:textSize="22sp"
-        android:textColor="@color/mais_milionaria_escura"
+        android:textColor="@color/milionaria_escuro_mkp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintTop_toTopOf="@id/subtituloPaginacao"
         app:layout_constraintEnd_toStartOf="@id/divisorPaginacao"/>
 
@@ -37,7 +39,8 @@
         android:text="|"
         android:textSize="16sp"
         android:layout_marginEnd="1dp"
-        android:textColor="@color/mais_milionaria_escura"
+        android:textColor="@color/milionaria_escuro_mkp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintTop_toTopOf="@id/numeroPagina"
         app:layout_constraintBottom_toBottomOf="@id/numeroPagina"
         app:layout_constraintEnd_toStartOf="@id/qtdPagina"
@@ -52,8 +55,9 @@
         android:text="2"
         android:gravity="center"
         android:textSize="14sp"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintBaseline_toBaselineOf="@id/numeroPagina"
-        android:textColor="@color/mais_milionaria_escura"
+        android:textColor="@color/milionaria_escuro_mkp"
         app:layout_constraintTop_toTopOf="@id/divisorPaginacao"
         app:layout_constraintBottom_toBottomOf="@id/divisorPaginacao"
         app:layout_constraintEnd_toEndOf="parent"

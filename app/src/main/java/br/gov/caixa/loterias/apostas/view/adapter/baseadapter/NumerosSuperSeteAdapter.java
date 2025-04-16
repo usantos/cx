@@ -21,8 +21,10 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumerosSuperSete;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SuperSeteEnum;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.AutomacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class NumerosSuperSeteAdapter extends BaseAdapter {
@@ -43,13 +45,6 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		this.context = parentActivity;
 		this.corSuperSete = typeGameColorDark;
 		this.configuracao = null;
-		preencheNumeros();
-	}
-
-	public NumerosSuperSeteAdapter(ConfiguracaoNumerosSuperSete configuracao, Activity parentActivity, List<Integer> dezenasSelecionadas) {
-		this.dezenasSelecionadas = dezenasSelecionadas;
-		this.context = parentActivity;
-		this.configuracao = configuracao;
 		preencheNumeros();
 	}
 
@@ -104,7 +99,8 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		if (configuracao == null) {
 			shape.setColor(Color.WHITE);
 			shape.setStroke(3, context.getResources().getColor(corSuperSete));
-			textView.setTextColor(ContextCompat.getColor(context, R.color.black));
+			//textView.setTextColor(ContextCompat.getColor(context, R.color.black));
+			textView.setTextColor(ContextCompat.getColor(context, R.color.super_sete_letra_mkp));
 		} else {
 			if (dezenas.get(i).isSelected()) {
 				shape.setColor(ContextCompat.getColor(context,configuracao.getCorInteriorSelecionado()));
@@ -119,7 +115,8 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		shape.setCornerRadius(sizeItens / 2);
 		textView.setBackground(shape);
 		textView.setText(dezenas.get(i).getValue());
-		textView.setTypeface(ViewUtils.getFontFutura(context));
+		//textView.setTypeface(ViewUtils.getFontFutura(context));
+		textView.setTypeface(FonteUtils.getFonte(FontCaixaEnum.REGULAR));
 		textView.setGravity(Gravity.CENTER);
 
 		// logica apenas para o automatizado

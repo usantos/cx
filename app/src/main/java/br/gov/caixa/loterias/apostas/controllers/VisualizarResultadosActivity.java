@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.annotation.SuppressLint;
@@ -22,10 +21,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
@@ -42,6 +42,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PremiacaoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.custom.PartidaViewDetalhesResultado;
@@ -83,10 +84,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private TextView tituloModalidade;
     private TextView dataSorteio;
-    //private TextView txtPremiados;
     private TextView tvNumeroSorteio;
-
-    private RecyclerView rvNumerosResultado;
     private ScrollView scrollResultado;
 
     private LinearLayout layoutPremiados;
@@ -98,7 +96,6 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     private Button btnVoltar;
     private Button btnConcursoAnterior;
     private Button btnProximoConcurso;
-    private Button btnVoltarInterno;
 
     private PartidaViewDetalhesResultado partidaViewDetalhesResultado;
     private Modalidade modalidade;
@@ -108,8 +105,9 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private TextView tvTrevos;
     private LinearLayout containerFragmentTrevos;
+    private ImageView iv_trevo;
 
-    private ImageView iv_header;
+    private EstiloModalidadeMKP estilo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +142,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         etPesquisar = findViewById(R.id.et_pesquisar);
 
         //txtPremiados.setText(getString(R.string.label_premiados));
+        tvNumeroSorteio.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
         tvNumeroSorteio.setText(getString(R.string.resultados_numeros_sorteados));
         //btnVoltarInterno.setVisibility(View.GONE);
         ibPesquisar.setVisibility(View.VISIBLE);
@@ -155,9 +154,9 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         containerFragmentTrevos = findViewById(R.id.v_container_trevos_fragment);
         tvTrevos = findViewById(R.id.tv_trevos);
 
-        iv_header = findViewById(R.id.iv_header);
-
+        iv_trevo  = findViewById(R.id.iv_trevo);
     }
+
     private void setaMetodos(){
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -177,9 +176,9 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         }
         String anterior = String.valueOf(concursoAlvo-1);
         String proximo = String.valueOf(concursoAlvo +1);
-        btnProximoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,proximo)));
-        btnConcursoAnterior.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_botao,anterior)));
-        btnVoltar.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.label_voltar_bold)));
+        btnProximoConcurso.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.resultados_botao,proximo)));
+        btnConcursoAnterior.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.resultados_botao,anterior)));
+        btnVoltar.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.label_voltar_bold)));
         if(concursoAlvo >= concursoAtual){
             btnProximoConcurso.setEnabled(false);
             btnProximoConcurso.setAlpha(.5f);
@@ -258,65 +257,42 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         divisoria.setVisibility(View.VISIBLE);
         tvNumeroSorteio.setVisibility(View.VISIBLE);
         layoutListaPremiacao.setVisibility(View.VISIBLE);
-        dataSorteio.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_data_sorteio, ("_"+response.getConcurso().getDataSorteio()+"_"))));
+
+        dataSorteio.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+        dataSorteio.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.resultados_data_sorteio, ("_"+response.getConcurso().getDataSorteio()+"_"))));
+
+        setBackground(estilo.getCorClara(), estilo.getCorEscura(), estilo.getTrapezio());
 
         switch (ModalidadeEnum.toString(txtModalidade)) {
-            case MEGA_SENA:
-                setBackground(R.color.megasenaclaro, R.color.megasenaescuro, R.drawable.background_trapeze_megasena);
-                configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
-                break;
-            case LOTOFACIL:
-                setBackground(R.color.lotofacilclaro, R.color.lotofacilescuro, R.drawable.background_trapeze_lotofacil);
-                configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
-                break;
-            case LOTOMANIA:
-                setBackground(R.color.lotomaniaclaro, R.color.lotomaniaescuro, R.drawable.background_trapeze_lotomania);
-                configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
-                break;
-            case QUINA:
-                setBackground(R.color.quinaclaro, R.color.quinaescuro, R.drawable.background_trapeze_quina);
-                configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
-                break;
             case DUPLA_SENA:
-                setBackground(R.color.duplasenaclaro, R.color.duplasenaescuro, R.drawable.background_trapeze_duplasena);
                 configuraResultadoSuperior(response,ResultadoDuplaSenaFragment.newInstance(response));
-                //txtPremiados.setVisibility(View.GONE);
                 break;
             case TIMEMANIA:
-                setBackground(R.color.timemaniaclaro, R.color.timemaniamediaescuro, R.drawable.background_trapeze_timemania);
-                configuraResultadoSuperior(response, ResultadoTimemaniaDiaDeSorteFragment.newInstance(response));
-                break;
             case DIA_DE_SORTE:
-                setBackground(R.color.diasorteclaro, R.color.diasorteescuro, R.drawable.background_trapeze_dia_sorte);
                 configuraResultadoSuperior(response, ResultadoTimemaniaDiaDeSorteFragment.newInstance(response));
                 break;
             case LOTECA:
-                setBackground(R.color.lotecaclaro, R.color.lotecaescuro, R.drawable.background_trapeze_loteca);
                 configuraResultadoSuperior(response, ResultadoLotecaFragment.newInstance(response));
                 tvNumeroSorteio.setVisibility(View.GONE);
-                dataSorteio.setText(ViewUtils.textFuturaAndFuturaBold(this,getString(R.string.resultados_data_resultado, ("_"+response.getConcurso().getDataSorteio()+"_"))));
+                dataSorteio.setText(ViewUtils.textCaixaSTDBold(this,getString(R.string.resultados_data_resultado, ("_"+response.getConcurso().getDataSorteio()+"_"))));
                 break;
             case LOTOGOL:
-                setBackground(R.color.lotogolclaro, R.color.lotogolescuro, R.drawable.background_trapeze_lotogol);
                 configuraResultadoSuperior(response, ResultadoLotogolFragment.newInstance(response));
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
             case SUPER_7:
-                setBackground(R.color.superseteclaro, R.color.supersetemedio, R.drawable.background_trapeze_super_sete);
                 SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout.build(this);
                 view7.setLayout(response.getMatrizNumerosSorteadosPrimeiroSorteio());
                 containerFragment.addView(view7);
                 tvNumeroSorteio.setVisibility(View.GONE);
                 break;
             case MAIS_MILIONARIA:
-                setBackground(R.color.mais_milionaria_clara, R.color.mais_milionaria_escura, R.drawable.mais_milionaria);
                 configuraResultadoSuperior(response, ResultadoMaisMilionariaFragment.newInstance(response));
                 containerFragmentTrevos.setVisibility(View.VISIBLE);
                 tvTrevos.setVisibility(View.VISIBLE);
                 configuraResultadoTrevos(response);
                 break;
             default:
-                setBackground(R.color.megasenaclaro, R.color.megasenaescuro, R.drawable.background_trapeze_megasena);
                 configuraResultadoSuperior(response,ResultadoGenericoFragment.newInstance(response));
                 break;
         }
@@ -367,7 +343,6 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 concursoAlvo = null;
                 if(!concurso.isEmpty()){
                     getResultadoModalidade(ApostaDTO.lowerCaseFromString(ModalidadeEnum.toString(txtModalidade)),getResources().getString(R.string.string_vazia));
-
                 }
             }
         });
@@ -397,23 +372,24 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
                 concurso.getAberto(),
                 response.getPayload());
 
+        partidaViewDetalhesResultado.setIsFundoClaro(true);
         partidaViewDetalhesResultado.setLayout(modalidade);
 
-        if(modalidade.getTipoModalidade().equals(ModalidadeEnum.MAIS_MILIONARIA)){
-            tituloModalidade.setVisibility(View.GONE);
-            iv_header.setVisibility(View.VISIBLE);
-            layoutTrevo.setVisibility(View.GONE);
-        } else {
-            tituloModalidade.setVisibility(View.VISIBLE);
-            iv_header.setVisibility(View.GONE);
-            layoutTrevo.setVisibility(View.VISIBLE);
-            if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
-                tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
-            }else {
-                tituloModalidade.setText(txtModalidade);
+        tituloModalidade.setVisibility(View.VISIBLE);
+        layoutTrevo.setVisibility(View.VISIBLE);
+        iv_trevo.setImageResource(estilo.getTrevoFundoEscuro());
+        tituloModalidade.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+        if(response.getPayload().getConcurso().getTipoConcurso().toString().equalsIgnoreCase(getResources().getString(R.string.especial_maiusculo))){
+            tituloModalidade.setText(response.getPayload().getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase());
+            if(modalidade.getTipoModalidade().equals(ModalidadeEnum.LOTOFACIL)){//Ajuste da posição do texto da lotofacil da indepencia, estava cortando o início da palavra.
+                ConstraintSet tituloHorizontalBias = new ConstraintSet();
+                tituloHorizontalBias.clone(layoutHeader);
+                tituloHorizontalBias.setHorizontalBias(R.id.tv_titulo_modalidade, 0.70f);
+                tituloHorizontalBias.applyTo(layoutHeader);
             }
+        }else {
+            tituloModalidade.setText(txtModalidade);
         }
-
 
         setButtons();
         setTitlePorConcurso(concursoAlvo);
@@ -467,7 +443,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, List<PremiacaoConcursoDTO> listaPremiadosSegundoConcurso){
         TextView premiadosTextview1 = new TextView(VisualizarResultadosActivity.this);
-        premiadosTextview1.setText(ViewUtils.textFuturaAndFuturaBold(VisualizarResultadosActivity.this, getResources().getString(R.string.label_premiados_primeiro_sorteio_bold)));
+        premiadosTextview1.setText(ViewUtils.textCaixaSTDBold(VisualizarResultadosActivity.this, getResources().getString(R.string.label_premiados_primeiro_sorteio_bold)));
         LinearLayout.LayoutParams layoutParamsPremiadosTextview1 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParamsPremiadosTextview1.setMargins(0, 35, 0, 0);
@@ -479,7 +455,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
         adicionarPremiados(listaPremiados);
 
         TextView premiadosTextview2= new TextView(VisualizarResultadosActivity.this);
-        premiadosTextview2.setText(ViewUtils.textFuturaAndFuturaBold(VisualizarResultadosActivity.this, getResources().getString(R.string.label_premiados_segundo_sorteio_bold)));
+        premiadosTextview2.setText(ViewUtils.textCaixaSTDBold(VisualizarResultadosActivity.this, getResources().getString(R.string.label_premiados_segundo_sorteio_bold)));
         LinearLayout.LayoutParams layoutParamspremiadosTextview2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParamspremiadosTextview2.setMargins(0, 20, 0, 0);
@@ -493,13 +469,14 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
     }
 
     private void setTitlePorConcurso(int concurso) {
-        setTitle(getString(R.string.resultados_titulo, String.valueOf(concurso)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(VisualizarResultadosActivity.this, getString(R.string.resultados_titulo, String.valueOf(concurso))));
     }
 
     private void pegaExtras() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             txtModalidade = bundle.getString(MODALIDADE);
+            estilo = new EstiloModalidadeMKP(ModalidadeEnum.toString(txtModalidade));
             if(bundle.getString(CONCURSO_ALVO) != null){
                 concursoAlvo = Integer.valueOf(bundle.getString(CONCURSO_ALVO));
                 concursoAtual = bundle.getInt(CONCURSO_ATUAL);

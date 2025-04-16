@@ -20,7 +20,7 @@
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@color/megasenaescuro">
+            android:background="@color/mega_verde_escuro_mkp">
 
             <RelativeLayout
                 android:id="@+id/setaEsquerdaAcaoRelativeLayout"
@@ -48,12 +48,11 @@
 
                 <Button
                     android:id="@+id/buttonActionResultadosModalidade"
-                    style="@style/editTextArialMTTheme"
+                    style="@style/editTextCaixaRegularTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:background="@null"
                     android:gravity="center"
-                    android:fontFamily="@font/caixa_std_regular"
                     android:text="@string/label_ultimo_resultado"
                     android:textAllCaps="false"
                     android:textColor="@color/branco" />
@@ -89,7 +88,7 @@
             android:layout_width="240dp"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
-            android:background="@color/megasenaescuro"
+            android:background="@color/mega_verde_escuro_mkp"
             android:orientation="vertical">
 
             <TextView
@@ -138,7 +137,7 @@
                         android:autoSizeTextType="uniform"
                         android:textColor="@color/branco"
                         android:textSize="18.0sp"
-                        android:fontFamily="@font/caixa_std_bold"
+                        android:fontFamily="@font/futura_std_bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -150,7 +149,7 @@
                     android:id="@+id/linearLayoutTopModalidades"
                     android:layout_width="match_parent"
                     android:layout_height="71dp"
-                    android:background="@color/megasenaclaro"
+                    android:background="@color/mega_verde_claro_mkp"
                     android:gravity="left"
                     android:orientation="horizontal">
 
@@ -183,7 +182,7 @@
                         android:textColor="@color/branco"
                         android:textSize="18.0sp"
                         tools:text="@string/mega_sena"
-                        android:fontFamily="@font/caixa_std_bold"/>
+                        android:fontFamily="@font/futura_std_bold"/>
                 </LinearLayout>
 
                 <RelativeLayout
@@ -203,7 +202,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="40dp"
                             android:textAlignment="center"
-                            android:textColor="@color/megasenaclaro"
+                            android:textColor="@color/mega_verde_claro_mkp"
                             android:textSize="25sp"
                             android:fontFamily="@font/caixa_std_bold"
                             tools:text="R$ 0,00" />
@@ -231,6 +230,7 @@
                         android:orientation="vertical">
 
                         <View
+                            android:id="@+id/viewSeparador"
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
                             android:layout_marginLeft="18dp"
@@ -238,6 +238,7 @@
                             android:background="@color/cinza2" />
 
                         <LinearLayout
+                            android:id="@+id/linearCalendar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="19dp"
@@ -286,6 +287,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/linearRelogio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="19dp"
@@ -332,6 +334,27 @@
                             </LinearLayout>
 
                         </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/imageInstantanea"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/branco"
+                            android:src="@drawable/imagem_instantanea"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textPortalInstantanea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/cinzaescuro"
+                            android:textSize="13.8sp"
+                            tools:text="@string/portal_instantanea"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 

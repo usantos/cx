@@ -1,7 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
-
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,7 +17,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnDetalheCarrinhoFavoritoClickListener;
@@ -51,23 +49,23 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 
 	@Override
 	public void bind(ApostaCarrinhoFavoritoDTO apostaAtual, int position) {
-		EstiloModalidade estilo      = new EstiloModalidade(ModalidadeEnum.fromModalidadeDTO(apostaAtual.getModalidade()));
+		//EstiloModalidade estilo      = new EstiloModalidade(ModalidadeEnum.fromModalidadeDTO(apostaAtual.getModalidade()));
+		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromModalidadeDTO(apostaAtual.getModalidade()));
 
 		if (apostaAtual.getModalidade().getValor() == 9){
-			tvModalidade.setText(ctx.getResources().getString(R.string.label_mais_milionaria_acentuado));
+			tvModalidade.setText(ctx.getResources().getString(R.string.label_mais_milionaria).toLowerCase());
 		} else {
 			//Timemania
 			if (apostaAtual.getModalidade().getValor() == 20) {
-				tvModalidade.setText(apostaAtual.getModalidade().getDescricao() + "\n\n" +
-						apostaAtual.getTimeDoCoracao().getNome()  + "/" + apostaAtual.getTimeDoCoracao().getUf());
-			} else
 				tvModalidade.setText(apostaAtual.getModalidade().getDescricao());
+				tvMesDaSorte.setVisibility(View.VISIBLE);
+				tvMesDaSorte.setText(apostaAtual.getTimeDoCoracao().getNome()  + "/" + apostaAtual.getTimeDoCoracao().getUf());
+				tvMesDaSorte.setTextColor(ContextCompat.getColor(ctx, estilo.getCorLetraLista()));
+			} else
+				tvModalidade.setText(apostaAtual.getModalidade().getDescricao().toLowerCase());
 		}
-		if (apostaAtual.getModalidade().getValor() == 7) {
-			tvModalidade.setTextColor(ContextCompat.getColor(ctx, estilo.getCorEscura()));
-		} else {
-			tvModalidade.setTextColor(ContextCompat.getColor(ctx, estilo.getCorClara()));
-		}
+
+		tvModalidade.setTextColor(ContextCompat.getColor(ctx, estilo.getCorLetraLista()));
 		tvNumeros.setText(configuraNumeros(apostaAtual));
 
 		if (apostaAtual.getQuantidadeTeimosinhas() > 0) {
@@ -93,7 +91,7 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 		if (apostaAtual.getModalidade().getDescricao().equalsIgnoreCase("dia de sorte")) {
 			tvMesDaSorte.setText(apostaAtual.getMesDeSorte().getNome());
 			tvMesDaSorte.setVisibility(View.VISIBLE);
-			tvMesDaSorte.setTextColor(ContextCompat.getColor(ctx, estilo.getCorClara()));
+			tvMesDaSorte.setTextColor(ContextCompat.getColor(ctx, estilo.getCorLetraLista()));
 		}
 	}
 
@@ -154,7 +152,6 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 				break;
 			default:
 				break;
-
 		}
 	}
 }

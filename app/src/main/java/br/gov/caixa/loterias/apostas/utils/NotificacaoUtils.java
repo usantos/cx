@@ -38,6 +38,11 @@ public class NotificacaoUtils {
 				&& UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink() != null
 				&& !UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao().getLink().isEmpty()) {
 			btnAbrirLink.setVisibility(View.VISIBLE);
+			ConstraintLayout constraintLayout = viewNotification.findViewById(R.id.constraintConteudo);
+			ConstraintSet constraintSet = new ConstraintSet();
+			constraintSet.clone(constraintLayout);
+			constraintSet.clear(R.id.fechar_notificacao, ConstraintSet.END);
+			constraintSet.applyTo(constraintLayout);
 		} else {
 			ConstraintLayout constraintLayout = viewNotification.findViewById(R.id.constraintConteudo);
 			ConstraintSet    constraintSet = new ConstraintSet();

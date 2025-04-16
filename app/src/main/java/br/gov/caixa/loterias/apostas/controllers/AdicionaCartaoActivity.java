@@ -59,7 +59,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
         pegaExtras();
         configAparencia();
 
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_forma_pagamento)));
 
         configBandeiras();
 
@@ -121,9 +121,9 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private void configBandeiras() {
         if (!adicionaCartaoModel.isMercadoPago(config.getMeioPagamento().getValor())){
             findViewById(R.id.imgBandeira1).setVisibility(View.GONE);
-            findViewById(R.id.imgBandeira2).setVisibility(View.GONE);
             findViewById(R.id.imgBandeira4).setVisibility(View.GONE);
         }
+            findViewById(R.id.imgBandeira2).setVisibility(View.GONE);
     }
 
     private void startFragment() {
@@ -159,7 +159,7 @@ public class AdicionaCartaoActivity extends SettingToolbarActivity{
     private void configuraSpin(int idSprin, ArrayList<String> lista, AdapterView.OnItemSelectedListener listener){
         Spinner spinner = findViewById(idSprin);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_item, lista);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
         spinner.setOnItemSelectedListener(listener);
     }

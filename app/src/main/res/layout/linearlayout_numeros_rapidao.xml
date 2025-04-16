@@ -21,7 +21,7 @@
             android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="14.1sp"
-            android:textStyle="bold"/>
+            android:fontFamily="@font/caixa_std_bold"/>
     </LinearLayout>
 
 </LinearLayout>

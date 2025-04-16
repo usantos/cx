@@ -22,13 +22,13 @@ import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoSimulacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
-import br.gov.caixa.loterias.apostas.view.fragment.ChavePixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
@@ -116,8 +116,8 @@ public class FragmentUtils {
 		return fragment;
 	}
 
-	public static CopiaColaPixFragment startCopiaColaPix(GerarPixDTO pixDTO, FragmentManager fm, int id) {
-		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance(pixDTO);
+	public static CopiaColaPixFragment startCopiaColaPix(GerarPixDTO pixDTO, String dataHoraServidor, FragmentManager fm, int id) {
+		CopiaColaPixFragment fragment = CopiaColaPixFragment.newInstance(pixDTO, dataHoraServidor);
 		FragmentUtils.startFragmentAllowingStateLoss(fm, id, fragment);
 		return fragment;
 	}
@@ -125,6 +125,13 @@ public class FragmentUtils {
 	public static SubBarraModalidadeFragment startFragmentSubBarraModalidade(FragmentManager fm, int id, ModalidadeEnum modalidade,
 																			 String concurso, String sorteio, boolean especial) {
 		SubBarraModalidadeFragment frag = SubBarraModalidadeFragment.newInstance(modalidade, concurso, sorteio, especial);
+		startFragmentAllowingStateLoss(fm, id, frag);
+		return frag;
+	}
+
+	public static BarraTitutoSimulacaoFragment startFragmentBarraTituloSimulacao(FragmentManager fm, int id, ModalidadeEnum modalidade,
+																				 String concurso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
+		BarraTitutoSimulacaoFragment frag = BarraTitutoSimulacaoFragment.newInstance(modalidade, concurso, sorteio, especial, corBackground, showBGEspecial);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}

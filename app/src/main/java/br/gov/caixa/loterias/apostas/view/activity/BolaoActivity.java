@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -60,6 +61,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private CarrosselBolaoAdapter carrosselAdapter;
 
 	private RecyclerView listView;
+	private ProgressBar loading;
 	private ListaBolaoAdapter listAdapter;
 
 	private BolaoModel model;
@@ -114,6 +116,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		scrollView = findViewById(R.id.id_scrollview);
 		frameEstadoVazio = findViewById(R.id.id_fraf_estado_vazio);
 		txtFimLista = findViewById(R.id.id_fim_lista);
+		loading = findViewById(R.id.progress_loading);
 
 		scrollView.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
 			View view = v.getChildAt(v.getChildCount() - 1);
@@ -135,6 +138,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	}
 
 	private void buscaBoloes() {
+		AlertDialogUtils.show(BolaoActivity.this);
 		model.buscaBoloes(onBoloesListener());
 	}
 
@@ -193,6 +197,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				setCotasDisponiveis(payload);
 
 				if (naoTemOndeBuscar()){
+					loading.setVisibility(View.GONE);
 					if (!payload.getCotas().isEmpty() || acumulouBoloesParaApresentar){
 						preencheListas(cotasDisponiveis);
 					}
@@ -210,6 +215,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				} else {
 					preencheListas(cotasDisponiveis);
 					AlertDialogUtils.dismiss();
+					loading.setVisibility(View.GONE);
 				}
 
 				verificaApresentaFimLista();
@@ -255,6 +261,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 								}
 							}
 						}
+						loading.setVisibility(View.GONE);
 						AlertDialogUtils.dismiss();
 					} else {
 						acumulouBoloesParaApresentar = true;
@@ -270,12 +277,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 								txtFimLista.setVisibility(View.VISIBLE);
 							}
 						}
+						loading.setVisibility(View.GONE);
 						AlertDialogUtils.dismiss();
 					} else  if (payload.getCotas().size() < PaginacaoFiltro.QTD_POR_PAGINA){
 						acumulouBoloesParaApresentar = true;
 						buscarMaisBoloes();
 					} else {
 						preencheListas(cotasFiltradas);
+						loading.setVisibility(View.GONE);
 						AlertDialogUtils.dismiss();
 					}
 				}
@@ -307,10 +316,17 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				.setMinScale(0.8f)
 				.build());
 
-
-		bolaoList = model.getBolaoList(cotas);
-		listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
-		listView.setAdapter(listAdapter);
+		if (listAdapter == null){
+			bolaoList = model.getBolaoList(cotas);
+			listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
+			listView.setAdapter(listAdapter);
+		} else {
+			int inicioRange = bolaoList.size();
+			bolaoList = model.getBolaoList(cotas);
+			if (inicioRange < bolaoList.size()){
+				listAdapter.atualizaLista(inicioRange, bolaoList.subList(inicioRange, bolaoList.size()));
+			}
+		}
 
 		acumulouBoloesParaApresentar = false;
 	}
@@ -338,6 +354,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	}
 
 	private void buscarMaisBoloes() {
+		loading.setVisibility(View.VISIBLE);
 		if (filtro != null){
 			buscaBoloesFiltro();
 		} else {
@@ -363,6 +380,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				cotasFiltradas = null;
 
 				buscaBoloesFiltro();
+				listAdapter = null;
+				txtFimLista.setVisibility(View.GONE);
+				scrollView.scrollTo(0,0);
 			}
 		};
 	}
@@ -372,6 +392,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 			if (result.getResultCode() == Activity.RESULT_OK) {
 				AlertDialogUtils.show(BolaoActivity.this);
 				model.zeraPaginacao();
+				listAdapter = null;
 				if (filtro != null){
 					cotasFiltradas = null;
 					buscaBoloesFiltro();

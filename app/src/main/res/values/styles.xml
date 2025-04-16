@@ -117,9 +117,14 @@
         <item name="android:fontFamily">@font/caixa_std_regular</item>
     </style>
 
+    <style name="CaixaStdBold" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
+    </style>
+
     <style name="FuturaStdBold" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/futura_std_bold</item>
     </style>
+
     <style name="ExplicativoArialMT" parent="ArialMT">
         <item name="android:textSize">12dp</item>
         <item name="android:textColor">@color/cinza</item>
@@ -145,6 +150,22 @@
         <item name="android:textColor">@color/cinza</item>
     </style>
 
+    <style name="editTextFuturaBoldTheme" parent="FuturaStdBold">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextCaixaRegularTheme" parent="CaixaStdRegular">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextCaixaBoldTheme" parent="CaixaStdBold">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
+    <style name="editTextCaixaStdTheme" parent="CaixaStdRegular">
+        <item name="android:textColor">@color/cinza</item>
+    </style>
+
     <style name="ButtonNotShadow" parent="Base.Widget.AppCompat.Button">
         <item name="android:outlineProvider">none</item>
     </style>
@@ -165,21 +186,21 @@
     </style>
 
     <style name="AppTheme.Modalidade.Quina">
-        <item name="colorPrimaryDark">@color/quinaescuro</item>
-        <item name="colorPrimary">@color/quinaclaro</item>
-        <item name="android:windowBackground">@color/quinaescuro</item>
+        <item name="colorPrimaryDark">@color/quina_escuro_mkp</item>
+        <item name="colorPrimary">@color/quina_claro_mkp</item>
+        <item name="android:windowBackground">@color/quina_escuro_mkp</item>
     </style>
 
     <style name="AppTheme.Modalidade.Loteca">
-        <item name="colorPrimaryDark">@color/lotecaescuro</item>
-        <item name="colorPrimary">@color/lotecaclaro</item>
-        <item name="android:windowBackground">@color/lotecaescuro</item>
+        <item name="colorPrimaryDark">@color/loteca_escuro_mkp</item>
+        <item name="colorPrimary">@color/loteca_claro_mkp</item>
+        <item name="android:windowBackground">@color/loteca_escuro_mkp</item>
     </style>
 
     <style name="AppTheme.Modalidade.MegaSena">
-        <item name="colorPrimaryDark">@color/megasenaescuro</item>
-        <item name="colorPrimary">@color/megasenaclaro</item>
-        <item name="android:windowBackground">@color/megasenaescuro</item>
+        <item name="colorPrimaryDark">@color/mega_verde_escuro_mkp</item>
+        <item name="colorPrimary">@color/mega_verde_claro_mkp</item>
+        <item name="android:windowBackground">@color/mega_verde_escuro_mkp</item>
     </style>
 
     <style name="AppTheme.Modalidade.DetalheApostaMegaSena">
@@ -189,33 +210,33 @@
     </style>
 
     <style name="AppTheme.Modalidade.MaisMilionaria">
-        <item name="colorPrimaryDark">@color/mais_milionaria_escura</item>
-        <item name="colorPrimary">@color/mais_milionaria_clara</item>
-        <item name="android:windowBackground">@color/mais_milionaria_escura</item>
+        <item name="colorPrimaryDark">@color/milionaria_escuro_mkp</item>
+        <item name="colorPrimary">@color/milionaria_claro_mkp</item>
+        <item name="android:windowBackground">@color/milionaria_escuro_mkp</item>
     </style>
 
     <style name="AppTheme.Modalidade.DuplaSena">
-        <item name="colorPrimaryDark">@color/duplasenaescuro</item>
-        <item name="colorPrimary">@color/duplasenaclaro</item>
-        <item name="android:windowBackground">@color/duplasenaescuro</item>
+        <item name="colorPrimaryDark">@color/dupla_sena_escuro_mkp</item>
+        <item name="colorPrimary">@color/dupla_sena_claro_mkp</item>
+        <item name="android:windowBackground">@color/dupla_sena_escuro_mkp</item>
     </style>
 
     <style name="AppTheme.Modalidade.Lotofacil">
-        <item name="colorPrimaryDark">@color/lotofacilescuro</item>
-        <item name="colorPrimary">@color/lotofacilclaro</item>
-        <item name="android:windowBackground">@color/lotofacilescuro</item>
+        <item name="colorPrimaryDark">@color/lotofacil_escuro_mkp</item>
+        <item name="colorPrimary">@color/lotofacil_claro_mkp</item>
+        <item name="android:windowBackground">@color/lotofacil_escuro_mkp</item>
     </style>
 
     <style name="AppTheme.Modalidade.Lotomania">
-        <item name="colorPrimaryDark">@color/lotomaniaescuro</item>
-        <item name="colorPrimary">@color/lotomaniaclaro</item>
-        <item name="android:windowBackground">@color/lotomaniaescuro</item>
+        <item name="colorPrimaryDark">@color/lotomania_escuro_mkp</item>
+        <item name="colorPrimary">@color/lotofacil_claro_mkp</item>
+        <item name="android:windowBackground">@color/lotomania_escuro_mkp</item>
     </style>
 
     <style name="AppTheme.Modalidade.Timemania">
-        <item name="colorPrimaryDark">@color/timemaniaescuro</item>
-        <item name="colorPrimary">@color/timemaniaclaro</item>
-        <item name="android:windowBackground">@color/timemaniaescuro</item>
+        <item name="colorPrimaryDark">@color/timemania_escuro_mkp</item>
+        <item name="colorPrimary">@color/timemania_claro_mkp</item>
+        <item name="android:windowBackground">@color/timemania_escuro_mkp</item>
         <item name="android:textColor">@color/megasenamedio</item>
         <item name="android:textColorSecondary">@color/megasenamedio_transparente</item>
     </style>
@@ -227,24 +248,18 @@
     </style>
 
     <style name="AppTheme.Modalidade.DiaDeSorte">
-        <item name="colorPrimaryDark">@color/diasorteescuro</item>
-        <item name="colorPrimary">@color/diasorteclaro</item>
-        <item name="android:windowBackground">@color/diasorteescuro</item>
+        <item name="colorPrimaryDark">@color/dia_sorte_escuro_mkp</item>
+        <item name="colorPrimary">@color/dia_sorte_claro_mkp</item>
+        <item name="android:windowBackground">@color/dia_sorte_escuro_mkp</item>
     </style>
 
     <style name="AppTheme.Modalidade.SuperSete">
         <item name="colorPrimaryDark">@color/supersetemedio</item>
-        <item name="colorPrimary">@color/superseteclaro</item>
+        <item name="colorPrimary">@color/super_sete_claro_mkp</item>
         <item name="android:windowBackground">@color/supersetemedio</item>
-        <item name="android:textColor">@color/superseteescuro</item>
-        <item name="android:textColorSecondary">@color/superseteescuro</item>
+        <item name="android:textColor">@color/super_sete_escuro_mkp</item>
+        <item name="android:textColorSecondary">@color/super_sete_escuro_mkp</item>
         <item name="android:theme">@style/SuperSeteToolbar</item>
-    </style>
-
-    <style name="AppTheme.Modalidade.Federal">
-        <item name="colorPrimaryDark">@color/federalescuro</item>
-        <item name="colorPrimary">@color/federalclaro</item>
-        <item name="android:windowBackground">@color/federalescuro</item>
     </style>
 
     <style name="TimeManiaToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -255,10 +270,10 @@
     </style>
 
     <style name="SuperSeteToolbar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:textColorPrimary">@color/superseteescuro</item>
-        <item name="colorControlNormal">@color/superseteescuro</item>
-        <item name="android:textColorSecondary">@color/superseteescuro</item>
-        <item name="actionMenuTextColor">@color/superseteescuro</item>
+        <item name="android:textColorPrimary">@color/super_sete_escuro_mkp</item>
+        <item name="colorControlNormal">@color/super_sete_escuro_mkp</item>
+        <item name="android:textColorSecondary">@color/super_sete_escuro_mkp</item>
+        <item name="actionMenuTextColor">@color/super_sete_escuro_mkp</item>
     </style>
 
     <style name="fontForTitle1Premiados">
@@ -310,6 +325,7 @@
         <!-- Used for the background -->
         <item name="android:background">@color/branco</item>
         <item name="android:textColor">@color/verdeagua</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
     </style>
 
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
@@ -318,12 +334,34 @@
         <item name="android:fontFamily">@font/futura_std_bold</item>
         <item name="colorControlNormal">@color/transparente</item>
     </style>
+    <style name="AppTheme.PickerCaixa" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/verde_card</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/caixa_std_bold</item>
+        <item name="colorControlNormal">@color/transparente</item>
+    </style>
 
     <style name="AppTheme.PickerDark">
         <item name="android:textColorPrimary">@color/cinza_total</item>
         <item name="android:textColor">@color/cinza_total</item>
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">@font/font_family_futura</item>
+        <item name="colorControlNormal">@color/cinza_total</item>
+    </style>
+
+    <style name="AppTheme.PickerDarkCaixa">
+        <item name="android:textColorPrimary">@color/cinza_total</item>
+        <item name="android:textColor">@color/cinza_total</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+        <item name="colorControlNormal">@color/cinza_total</item>
+    </style>
+
+    <style name="AppTheme.PickerDarkCaixaFiltroCompras">
+        <item name="android:textColorPrimary">@color/cinza_total</item>
+        <item name="android:textColor">@color/cinza_total</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
         <item name="colorControlNormal">@color/cinza_total</item>
     </style>
 

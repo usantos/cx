@@ -75,8 +75,8 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 		tvValorMaximoDesc = view.findViewById(R.id.tv_pm_desc_max);
 		tvValorMinimoDesc = view.findViewById(R.id.tv_pm_desc_min);
 
-		tvValorMaximoDesc.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),getResources().getString(R.string.conf_rapd_escolha_max_aposta)));
-		tvValorMinimoDesc.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(),getResources().getString(R.string.conf_rapd_escolha_min_aposta)));
+		tvValorMaximoDesc.setText(ViewUtils.textCaixaSTDBold(getActivity(),getResources().getString(R.string.conf_rapd_escolha_max_aposta)));
+		tvValorMinimoDesc.setText(ViewUtils.textCaixaSTDBoldTitle(getActivity(),getResources().getString(R.string.conf_rapd_escolha_min_aposta)));
 	}
 
 	private void configuraClicks(){
@@ -353,7 +353,7 @@ public class ConfiguracaoRapidaoFragment3 extends Fragment implements View.OnCli
 	}
 
 	private Spannable pegaMinMaxTexto(Double valMin, Double valMax){
-		Typeface font = ViewUtils.getFontFuturaBold(getActivity());
+		Typeface font = ViewUtils.getFontCaixaStdBold(getActivity());
 		String   normal1 = "Mínimo de ";
 		String   cor1 = "R$ " + StringUtils.formatDouble(valMin);
 		String   normal2 = " e máximo de ";

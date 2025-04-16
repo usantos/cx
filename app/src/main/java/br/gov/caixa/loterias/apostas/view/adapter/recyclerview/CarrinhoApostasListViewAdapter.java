@@ -23,7 +23,6 @@ import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -73,7 +72,7 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaC
 	@Override
 	public void onBindViewHolder(ApostaCarrinhoHolder holder, final int position) {
 		final IdentificaoDeUmaApostaDas8Modalidades aposta = apostas.get(position);
-		EstiloModalidade                            estilo = new EstiloModalidade(aposta.getModalidade());
+		//EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
 
 		holder.bind(aposta, position);
 	}

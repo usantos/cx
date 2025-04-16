@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnAnimacaoViewListener;
 import br.gov.caixa.loterias.apostas.utils.AnimacaoUtils;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 
 /**
  * Created by igorvilar on 09/11/17.
@@ -36,8 +36,9 @@ public class AnimacoesAcessoRapido {
     private Button buttonHomeBet;
     private Activity activity;
     private View trevoToolbar;
-    private EstiloModalidade estilo;
     private OnAnimacaoViewListener listener;
+
+    private EstiloModalidadeMKP estilo;
 
     //init
     public AnimacoesAcessoRapido(View v, RelativeLayout relativePrincipal,
@@ -50,7 +51,7 @@ public class AnimacoesAcessoRapido {
                                  LinearLayout linearAtalhoRapidoLoterias,
                                  Button buttonHomeBet,
                                  View trevoToolbar,
-                                 Activity activity, EstiloModalidade estilo, OnAnimacaoViewListener listener) {
+                                 Activity activity, EstiloModalidadeMKP estilo, OnAnimacaoViewListener listener) {
         this.v = v;
         this.relativePrincipal = relativePrincipal;
         this.relativeLayoutContentRapidao = relativeLayoutContentRapidao;

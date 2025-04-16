@@ -165,8 +165,7 @@ public class AdicionarApostaCarrinhoHelper {
                         CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
                 } else {
                     if (CarrinhoSingleton.getInstance().getCarrinho() == null) {
-                        CarrinhoSingleton.getInstance().setCarrinho(new CarrinhoDTO());
-                        CarrinhoSingleton.getInstance().getCarrinho().setValorTotal(new BigDecimal(0));
+                        CarrinhoSingleton.getInstance().zerarCarrinho();
                     }
                     if (CarrinhoSingleton.getInstance().getCarrinho().getApostas() == null) {
                         CarrinhoSingleton.getInstance().getCarrinho().setApostas(new ArrayList<>());
@@ -341,13 +340,15 @@ public class AdicionarApostaCarrinhoHelper {
         } else {
             if(incluirSurpresinhaDTO != null){
                 telaConfirmacao.putExtra("modalidade", (new Gson()).toJson(ViewUtils.getParametroSimulacao(SessaoUsuario.getInstance(), modalidadeEnum, incluirSurpresinhaDTO).getParametroJogo()));
-
             }
         }
 
         if(AdicionarApostaCarrinhoHelper.activity instanceof SimularApostaActivity){
             AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
             ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).zerarApostas();
+            if (modalidadeEnum == ModalidadeEnum.LOTECA){
+                ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).finish();
+            }
         } else {
             if(AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
                 if (telaConfirmacao != null){

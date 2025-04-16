@@ -44,4 +44,11 @@ public class ListaBolaoAdapter extends RecyclerView.Adapter<BolaoHolder>{
 	public int getItemCount() {
 		return bolaoList.size();
 	}
+
+	public void atualizaLista(int inicioRange, List<CotasBolaoDTO> novosBoloes) {
+		if (bolaoList != null){
+			bolaoList.addAll(novosBoloes);
+			notifyItemRangeInserted(inicioRange, bolaoList.size());
+		}
+	}
 }

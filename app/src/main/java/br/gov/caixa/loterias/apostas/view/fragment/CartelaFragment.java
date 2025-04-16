@@ -127,6 +127,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private boolean isAvisou = false;
 	public BigDecimal valorTotalAposta;
 	public int typeGameColorLight, typeGameColorDark;
+	public int corFonteFundoBranco, corFonteFundoClaro, corFonteFundoEscuro;
 	public Button botaoFinalizar, botaoLimparAposta;
 	public TextView valorAposta, valorTotalJogos, valorTotalSimples, valorTotalDuplas, valorTotalTriplas;
 	public ListaDezenaRecyclerView simularDezenasAdapter;
@@ -270,9 +271,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		if (dataBundle != null) {
 			dataSorteioAtual = dataBundle.getString("dataSorteioAtual");
 
-
 			typeGameColorLight = (int) dataBundle.get("typeGameColorLight");
 			typeGameColorDark = (int) dataBundle.get("typeGameColorDark");
+			corFonteFundoBranco = (int) dataBundle.get(SimularApostaActivity.COR_FONTE_FUNDO_BRANCO);
+			corFonteFundoClaro = (int) dataBundle.get(SimularApostaActivity.COR_FONTE_FUNDO_CLARO);
+			corFonteFundoEscuro = (int) dataBundle.get(SimularApostaActivity.COR_FONTE_FUNDO_ESCURO);
 		}
 	}
 
@@ -804,7 +807,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else {
 				textoBotao = getString(R.string.label_complete_placar_aleatoriamente);
 			}
-			botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(getActivity(), textoBotao));
+			botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(getActivity(), textoBotao));
 		} else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 			if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 				mGridTimeCoracao = null;
@@ -814,7 +817,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 				atualizarBotaoFinalizar(R.string.label_escolha_trevos);
 			}else {
-				botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(fragmentView.getContext(), getString(R.string.adicionarAoCarrinho)));
+				botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(fragmentView.getContext(), getString(R.string.adicionarAoCarrinho)));
+				botaoFinalizar.setTextColor(ContextCompat.getColor(parentActivity, corFonteFundoEscuro));
 				verificaSeMostraBotaoLimparAposta();
 			}
 		} else {
@@ -968,19 +972,22 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				botaoFinalizar.setVisibility(View.INVISIBLE);
 				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
 				botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_complete_placar_aleatoriamente)));
+				botaoFinalizar.setTextColor(getResources().getColor(R.color.branco));
 			} else {
 				botaoFinalizar.setVisibility(View.VISIBLE);
 				atualizarBotaoFinalizarAdicionarCarrinho();
 			}
 		} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 			if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado && isEcolhaTimeBtnAtivado) {
-				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
+				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
 				if (mGridTimeCoracao != null) {
-					botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_time_aleatoriamente)));
+					botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.label_selecionar_time_aleatoriamente)));
+					botaoFinalizar.setTextColor(getResources().getColor(R.color.branco));
 					botaoFinalizar.setBackgroundColor(getContext().getResources().getColor(R.color.cinza));
 				} else {
-					botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_escolha_time_coracao)));
-					botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
+					botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.label_escolha_time_coracao)));
+					botaoFinalizar.setTextColor(getResources().getColor(corFonteFundoEscuro));
+					botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
 				}
 			} else {
 				atualizarAdicionarCarinhoCompletarCartela(isPickerPrognosticos);
@@ -1023,6 +1030,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				botaoFinalizar.setVisibility(View.INVISIBLE);
 				botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
 				botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.label_selecionar_times_aleatoriamente)));
+				botaoFinalizar.setTextColor(getResources().getColor(R.color.branco));
 			}
 		}
 	}
@@ -1038,7 +1046,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 					if (equipeSelecionada != null && equipeSelecionada.isSelecionado()) {
 						botaoFinalizar.setClickable(true);
-						botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.timemaniaescuro));
+						botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
 					} else {
 						botaoFinalizar.setClickable(false);
 						botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.azulclaro));
@@ -1062,20 +1070,23 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void atualizarBotaoFinalizar(int stringId) {
-		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-		botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(stringId)));
+		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
+		botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(stringId)));
+		botaoFinalizar.setTextColor(getResources().getColor(corFonteFundoEscuro));
 		verificaSeMostraSalvarApostaView();
 	}
 
 	private void atualizarBotaoFinalizarCompletarCartela() {
 		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, R.color.cinza));
-		botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.completarCartela)));
+		botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.completarCartela)));
+		botaoFinalizar.setTextColor(getResources().getColor(R.color.branco));
 		parentActivity.getSalvarApostaLayout().setVisibility(View.GONE);
 	}
 
 	private void atualizarBotaoFinalizarAdicionarCarrinho() {
-		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorLight));
-		botaoFinalizar.setText(ViewUtils.textFuturaAndFuturaBold(parentActivity, getString(R.string.adicionarAoCarrinho)));
+		botaoFinalizar.setBackgroundColor(ContextCompat.getColor(parentActivity, typeGameColorDark));
+		botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(parentActivity, getString(R.string.adicionarAoCarrinho)));
+		botaoFinalizar.setTextColor(ContextCompat.getColor(parentActivity, corFonteFundoEscuro));
 		if ((!parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) && !parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) && !parametroJogo.isTipoJogo(ModalidadeEnum.DIA_DE_SORTE)) {
 			parentActivity.getSalvarApostaLayout().setVisibility(View.VISIBLE);
 		}
@@ -1086,8 +1097,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		recyclerViewPartida = fragmentView.findViewById(R.id.recyclerViewPartida);
 
 		if (dezenas != null && dezenas.size() > 0 && !parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
+			//simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, dezenasSelecionadas,
+			//													typeGameColorDark, onItemClickListener());
 			simularDezenasAdapter = new ListaDezenaRecyclerView(dezenas, dezenasSelecionadas,
-																typeGameColorDark, onItemClickListener());
+																corFonteFundoBranco, onItemClickListener());
 			listaDezenas.setAdapter(simularDezenasAdapter);
 
 			RecyclerView.LayoutManager layot = new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA);
@@ -1213,7 +1226,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private void configuraSuperSete(View viewLayout) {
 		listaGridsSuperSete = cartelaModel.getListGridSuperSete(viewLayout);
 
-		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorDark, parentActivity);
+		listaAdaptersSuperSete = cartelaModel.getListAdaptersSuperSete(typeGameColorLight, parentActivity);
 
 		cartelaModel.preencheGridComListaSuperSete(listaGridsSuperSete, listaAdaptersSuperSete);
 
@@ -1379,12 +1392,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			valorTotalJogos.setTextColor(getResources().getColor(R.color.verdeazul));
 			valorTotalSimples.setTextColor(getResources().getColor(R.color.verdeazul));
 		} else {
-			valorTotalJogos.setTextColor(getResources().getColor(R.color.lotecaclaro));
-			valorTotalSimples.setTextColor(getResources().getColor(R.color.lotecaclaro));
+			valorTotalJogos.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
+			valorTotalSimples.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
 		}
 		if (valueDuplas  == 0 && valueTriplas == 0) {
-			valorTotalDuplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
-			valorTotalTriplas.setTextColor(getResources().getColor(R.color.lotecaclaro));
+			valorTotalDuplas.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
+			valorTotalTriplas.setTextColor(getResources().getColor(R.color.loteca_claro_mkp));
 		} else {
 			valorTotalDuplas.setTextColor(getResources().getColor(R.color.verdeazul));
 			valorTotalTriplas.setTextColor(getResources().getColor(R.color.verdeazul));

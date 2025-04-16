@@ -16,6 +16,7 @@
         android:elevation="15dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
         android:textColor="@color/branco"
+        android:fontFamily="@font/caixa_std_regular"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/cl_tab_bar"
         app:layout_constraintRight_toLeftOf="@+id/cl_tab_bar"
@@ -69,7 +70,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:text="Trevos sorteados: "
                     android:textColor="@color/branco"
                     android:textSize="14.2sp"
@@ -84,7 +85,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textColor="@color/branco"
                     android:textSize="14.2sp"
                     android:visibility="invisible"
@@ -99,7 +100,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="@font/arialmt"
+                    android:fontFamily="@font/caixa_std_regular"
                     android:textColor="@color/branco"
                     android:textSize="14.2sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -128,18 +129,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
-                        android:id="@+id/iv_header"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitCenter"
-                        android:scaleY="1.2"
-                        android:src="@drawable/header_interno__milionaria"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
                     <TextView
                         android:id="@+id/tv_titulo_modalidade"
                         android:layout_width="wrap_content"
@@ -149,8 +138,7 @@
                         android:gravity="center_vertical"
                         android:textColor="@color/branco"
                         android:textSize="18.0sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"
+                        android:fontFamily="@font/futura_std_bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/cl_trevo"
                         tools:text="mega-sena" />
@@ -175,7 +163,9 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -209,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/futura_std_bold"
+                    android:fontFamily="@font/caixa_std_bold"
                     android:textColor="@color/branco"
                     android:textSize="15.8sp"
                     android:visibility="gone"
@@ -225,8 +215,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ll_premiados" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </RelativeLayout>
+
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -239,7 +232,7 @@
 
         <Button
             android:id="@+id/btn_concurso_anterior"
-            style="@style/ArialMT"
+            style="@style/CaixaStdRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -250,6 +243,7 @@
             android:textAllCaps="false"
             android:textColor="@color/azulescuro"
             android:textSize="12sp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -257,7 +251,7 @@
 
         <Button
             android:id="@+id/btn_proximo_concurso"
-            style="@style/ArialMT"
+            style="@style/CaixaStdRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -268,6 +262,7 @@
             android:textAllCaps="false"
             android:textColor="@color/azulescuro"
             android:textSize="12sp"
+            android:fontFamily="@font/caixa_std_regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -283,6 +278,5 @@
         app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
     <include layout="@layout/app_bar_degrade_pesquisa" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

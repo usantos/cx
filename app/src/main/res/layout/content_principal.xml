@@ -415,7 +415,7 @@
         android:layout_marginStart="88dp"
         android:layout_marginEnd="88dp"
         android:layout_marginBottom="68dp"
-        android:background="@color/verdesenaclaro"
+        android:background="@color/mega_verde_claro_mkp"
         android:textAllCaps="false"
         android:textColor="@color/branco"
         android:textSize="16sp"

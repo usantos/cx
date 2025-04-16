@@ -3,32 +3,33 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.VolleyError;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -37,12 +38,19 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeiosPagamentosResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOCompraDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
@@ -50,18 +58,26 @@ import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
 public class ListaComprasActivity extends AppCompatActivity {
 
     private static final int PAGE_SIZE = 10;
-
     private List<MesAnoDTO> listaMesAnoDTO;
     private List<CompraDTO> listaComprasDto;
     private List<ApostaDTO> listaAposta = new ArrayList<>();
+    private List<MeioPagamentoDTO> listaMeioPagamentoDTO = new ArrayList<>();
+    private List<SituacoesCompraDTO> listaSituacoesCompraDTO = new ArrayList<>();
     private CompraDTO compraSelecionada;
     private Boolean isMaisCompras = true, bloquearRequestScroll = false, mantemSurpresinhas = true;
     int offsetItem = 0, mes, ano;
+    Long  idMeioPagamento = null;
+    Long  idSituacao = null;
     private Dialog dialogFavoritar;
-
+    private Dialog dialogFiltrar;
+    private ExpandableListView listViewFiltro;
+    private Toolbar toolbar;
+    private FiltroComprasAdapter filtroAdapter;
+    private ImageButton btnDuvidas;
+    private ImageButton btnFiltro;
+    private TextView tvBadge;
     private ListaComprasRecyclerViewAdapter listaComprasRecyclerViewAdapter;
     private OnFavoritarClickListener listenerFavoritar;
-
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerViewCompras;
     private ProgressBar progressLoadingMore;
@@ -73,6 +89,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_compras);
         setaViews();
+        setaMetodos();
     }
 
     @Override
@@ -90,7 +107,6 @@ public class ListaComprasActivity extends AppCompatActivity {
             public void onResponse(MesAnoDTOResponse response) {
                 loadViewProgress.dismiss();
                 listaMesAnoDTO = response.getPayload();
-
                 addSpinner();
             }
 
@@ -108,38 +124,256 @@ public class ListaComprasActivity extends AppCompatActivity {
         isMaisCompras = true;
         bloquearRequestScroll = false;
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getCompras(mes, ano, offsetItem, PAGE_SIZE ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
-            @Override
-            public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
-                loadViewProgress.dismiss();
-                listaComprasDto = response.getPayload().getLista();
-                offsetItem = PAGE_SIZE;
-                initRecyclerView();
-                if (response.getRedirect() != null){
-                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaComprasActivity.this);
-                }
-            }
+        try{
+            ApostaBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+                @Override
+                public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
+                    loadViewProgress.dismiss();
+                    if(response.getPayload() != null){
+                        listaComprasDto = response.getPayload().getLista();
+                        offsetItem = PAGE_SIZE;
+                        initRecyclerView(response.getDataHoraServidor());
+                    }else{
+                        Log.e("ListaComprasActivity", "O payload da resposta do servico que busca as compras é nulo");
+                    }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
-                RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
-            }
-        });
+                    if (response.getRedirect() != null){
+                        RedirectNetwork.checkRedirectSucesso( response.getRedirect(), ListaComprasActivity.this);
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
+                    Log.e("listaComprasActivity", "Erro ao recuperar as compras", error);
+                    RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+                }
+            });
+        }catch (Exception e){
+            loadViewProgress.dismiss();
+            Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de compras", e);
+        }
+
     }
 
+    private void callWebServiceMeioPagamento(boolean chamaServicoSituacoesCompra){
+
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        try{
+            DadosCorporativosBO.getInstance().buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
+                @Override
+                public void onResponse(MeiosPagamentosResponse response) {
+                    loadViewProgress.dismiss();
+                    if (response.getPayload() != null) {
+                        listaMeioPagamentoDTO = response.getPayload();
+                        if(chamaServicoSituacoesCompra) {
+                            callWebServiceSituacoesCompra(idMeioPagamento, true);//se idMeioPagamento for nulo ele chama todas as situacoes de compra
+                        }
+                    } else {
+                        Log.e("ListaComprasActivity", "O payload da resposta do servico que busca os meios de pagamento é nulo");
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
+                    Log.e("ListaComprasActivity", "Erro ao recuperar os meios de pagamento", error);
+                    RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+
+                }
+            });
+        } catch (Exception e){
+            loadViewProgress.dismiss();
+            Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de meios de pagamento", e);
+        }
+    }
+
+    public void callWebServiceSituacoesCompra(Long idMeioPagamento, boolean abreModalFiltro){
+
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        try{
+            ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
+                @Override
+                public void onResponse(SituacoesCompraResponse response) {
+                    loadViewProgress.dismiss();
+                    if(response.getPayload() != null){
+                        listaSituacoesCompraDTO = response.getPayload();
+                        if(abreModalFiltro){
+                            setaDialogFiltrar();//Somente após a recuperação dos meios de pagamento e situacoes de compra que abre a modal
+                            dialogFiltrar.show();
+                        }
+                    }else{
+                        Log.e("ListaComprasActivity", "O payload da resposta do servico que busca as situações de compra é nulo");
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
+                    Log.e("ListaComprasActivity", "Erro ao recuperar as siturações de compra", error);
+                    RedirectNetwork.checkRedirect( error, ListaComprasActivity.this );
+
+                }
+            });
+        } catch (Exception e){
+            loadViewProgress.dismiss();
+            Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de situações de compra", e);
+        }
+    }
+
+
     private void setaViews(){
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        btnDuvidas = findViewById(R.id.ib_duvidas);
+        btnFiltro = findViewById(R.id.ib_filtrar);
+        tvBadge = findViewById(R.id.tv_badge);
+        btnFiltro.setVisibility(View.VISIBLE);
+        btnDuvidas.setVisibility(View.VISIBLE);
+
         setSupportActionBar(toolbar);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_lista_compras))));
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setElevation(0);
+        }
+
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_lista_compras))));
+
         scrollViewContentViewCompras = findViewById(R.id.scrollViewContentViewCompras);
 
         progressLoadingMore = findViewById(R.id.compras_loading_more);
         recyclerViewCompras = findViewById(R.id.recyclerCompras);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_compras));
         setaDialogFavoritar();
+        setFiltroAdapterDialogFiltrar();
+    }
+
+    private void setaMetodos(){
+        btnFiltro.setOnClickListener(view -> {
+            if(listaMeioPagamentoDTO.isEmpty())//só chama a o serviço para recuperar os meios de pagamento na primeira vez que clica no botao
+            {
+                callWebServiceMeioPagamento(true);
+            }else{
+                if(listaSituacoesCompraDTO.isEmpty()){
+                    callWebServiceSituacoesCompra(idMeioPagamento, true);
+                }else{
+                    setaDialogFiltrar();
+                    dialogFiltrar.show();
+                }
+            }
+
+        });
+        btnDuvidas.setOnClickListener(view -> {
+            abrirTermosUso();
+        });
+
+    }
+
+
+    private void setFiltroAdapterDialogFiltrar(){
+        final List<String>                  expandableListTitle;
+        final HashMap<String, List<String>> expandableListDetail;
+        expandableListDetail = ExpandableListDataFiltro.getDataFiltroCompras();
+        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+
+        LinkedHashMap<Long, String> mapSituacoesCompra = new LinkedHashMap<>(montaMapSituacoesCompra(listaSituacoesCompraDTO));
+        LinkedHashMap<Long, String> mapMeiosDePagamento = new LinkedHashMap<>(montaMapMeiosPagamento(listaMeioPagamentoDTO));
+
+        filtroAdapter = new FiltroComprasAdapter(this,
+                expandableListTitle,
+                expandableListDetail,
+                ListaComprasActivity.this,
+                mapSituacoesCompra,
+                mapMeiosDePagamento);
+    }
+    private void setaDialogFiltrar() {
+        dialogFiltrar = new Dialog(this);
+        dialogFiltrar.setContentView(R.layout.dialog_filtro_compras);
+        listViewFiltro = dialogFiltrar.findViewById(R.id.elv_filtros);
+        Button      btnOk       = dialogFiltrar.findViewById(R.id.btn_ok);
+        Button      btnCancelar = dialogFiltrar.findViewById(R.id.btn_cancelar);
+        ImageButton btnLimpar   = dialogFiltrar.findViewById(R.id.ib_filtro_limpar);
+
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialogFiltrar.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        dialogFiltrar.getWindow().setAttributes(lp);
+        listViewFiltro.setGroupIndicator(null);
+
+        setFiltroAdapterDialogFiltrar();
+
+        listViewFiltro.setAdapter(filtroAdapter);
+        btnLimpar.setOnClickListener(v -> {
+              filtroAdapter.limpaFiltros();
+              if(isMeioPagamentoOuSituacaoAlterado()){
+                  callWebServiceCompras();
+              }
+              dialogFiltrar.dismiss();
+              tvBadge.setText(String.valueOf(0));
+              tvBadge.setVisibility(View.GONE);
+        });
+        btnOk.setOnClickListener(v -> {
+            if (filtroAdapter.isAddBadge()) {
+                tvBadge.setVisibility(View.VISIBLE);
+            } else {
+                tvBadge.setVisibility(View.GONE);
+            }
+            if (isMeioPagamentoOuSituacaoAlterado()){
+                callWebServiceCompras();
+            }
+            dialogFiltrar.dismiss();
+
+        });
+        btnCancelar.setOnClickListener(v -> dialogFiltrar.dismiss());
+    }
+
+    private boolean isMeioPagamentoAlterado(){
+        Long idMeioPagamentoTemp = idMeioPagamento;
+        idMeioPagamento = filtroAdapter.getIdMeioPagamentoSelecionado();
+
+        return !Objects.equals(idMeioPagamentoTemp, idMeioPagamento);
+    }
+     private boolean isMeioPagamentoOuSituacaoAlterado(){
+         Long idSituacaoTemp = idSituacao;
+         idSituacao = filtroAdapter.getIdSituacaoSelecionada();
+         return isMeioPagamentoAlterado() || !Objects.equals(idSituacaoTemp, idSituacao);
+     }
+
+
+    private LinkedHashMap<Long, String> montaMapMeiosPagamento(List<MeioPagamentoDTO> listaMeiosPagamento){
+        LinkedHashMap<Long, String> map = new LinkedHashMap<>();
+        if(listaMeiosPagamento != null){
+            map.put(0L, "Todos");
+            for(MeioPagamentoDTO meioPagamento: listaMeiosPagamento){
+                map.put(meioPagamento.getId(), StringUtils.capitalizer(
+                        meioPagamento.getNomePagamentoPremio()));
+            }
+        }
+        return map;
+    }
+
+    private LinkedHashMap<Long, String> montaMapSituacoesCompra(List<SituacoesCompraDTO> listaSituacoes){
+        String descricao;
+        LinkedHashMap<Long, String> map = new LinkedHashMap<>();
+        if(listaSituacoes != null){
+            map.put(0L, "Todas");
+            for(SituacoesCompraDTO situacaoCompra: listaSituacoes){
+                switch (situacaoCompra.getId().intValue()){
+                    case 9:
+                        descricao = situacaoCompra.getDescricao().replace(" - ", "-");
+                        map.put(9L, descricao);
+                        break;
+                    case 12:
+                        descricao = situacaoCompra.getDescricao().replace(" - ", "-");
+                        map.put(12L, descricao);
+                        break;
+                    default:
+                        map.put(situacaoCompra.getId(), situacaoCompra.getDescricao());
+                }
+            }
+        }
+        return map;
     }
 
     private void setaDialogFavoritar() {
@@ -236,37 +470,6 @@ public class ListaComprasActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.settings, menu);
-
-        return true;
-    }
-
-    // Mudando o texto dos MenuItem de acordo com os dados
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            abrirTermosUso();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private void abrirTermosUso(){
         Intent activity = new Intent(this, TermosUsoActivity.class);
@@ -282,7 +485,9 @@ public class ListaComprasActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
 
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+
         selecaoMesSpinner.setAdapter(dataAdapter);
         selecaoMesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -290,7 +495,6 @@ public class ListaComprasActivity extends AppCompatActivity {
                 mes = listaMesAnoDTO.get(i).getMes().getValor().intValue();
                 ano = listaMesAnoDTO.get(i).getAno().intValue();
                 callWebServiceCompras();
-
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -299,14 +503,14 @@ public class ListaComprasActivity extends AppCompatActivity {
         });
     }
 
-    private void initRecyclerView() {
+    private void initRecyclerView(String dataHoraServidor) {
         layoutManager = new LinearLayoutManager(this);
         recyclerViewCompras.setHasFixedSize(true);
         OnFavoritarClickListener listener = item -> {
             compraSelecionada = item;
             pegaApostasDaCompra();
         };
-        listaComprasRecyclerViewAdapter = new ListaComprasRecyclerViewAdapter(this, listaComprasDto,listener);
+        listaComprasRecyclerViewAdapter = new ListaComprasRecyclerViewAdapter(this, listaComprasDto, dataHoraServidor,listener);
         recyclerViewCompras.setAdapter(listaComprasRecyclerViewAdapter);
         recyclerViewCompras.setLayoutManager(layoutManager);
 
@@ -366,7 +570,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         }
         progressLoadingMore.setVisibility(View.VISIBLE);
 
-        ApostaBO.getInstance().getCompras(mes, ano, offsetItem, PAGE_SIZE, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        ApostaBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE,idMeioPagamento, idSituacao, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);

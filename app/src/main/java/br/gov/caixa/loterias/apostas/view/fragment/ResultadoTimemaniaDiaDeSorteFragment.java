@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultadosAdapter;
 
 import static br.gov.caixa.loterias.apostas.view.fragment.ResultadoGenericoFragment.RESULTADO_DTO;
@@ -31,6 +32,7 @@ public class ResultadoTimemaniaDiaDeSorteFragment extends Fragment {
     ImageView ivTimeCoracao;
     TextView tvTitulo;
     TextView tvDescricao;
+    private EstiloModalidadeMKP estilo;
 
     public ResultadoTimemaniaDiaDeSorteFragment() {
     }
@@ -60,6 +62,7 @@ public class ResultadoTimemaniaDiaDeSorteFragment extends Fragment {
         if (getArguments() != null) {
             resultado = (ResultadoConcursoDTO) getArguments().getSerializable(RESULTADO_DTO);
             if(resultado != null){
+                estilo = new EstiloModalidadeMKP(resultado.getConcurso().getModalidade());
                 configuraResultadoTimeMania(resultado);
             }
         }
@@ -69,7 +72,9 @@ public class ResultadoTimemaniaDiaDeSorteFragment extends Fragment {
 
         if (resultado.getConcurso().getModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
             ivTimeCoracao.setVisibility(View.GONE);
+            tvTitulo.setTextColor(getResources().getColor(estilo.getCorFonteFundoEscuro()));
             tvTitulo.setText(R.string.label_mes_desejado);
+            tvDescricao.setTextColor(getResources().getColor(estilo.getCorFonteFundoEscuro()));
             if (resultado.getPremiacaoMesDeSorte() != null
                     && resultado.getPremiacaoMesDeSorte().getMesDeSorte() != null) {
                 tvDescricao.setText(resultado.getPremiacaoMesDeSorte().getMesDeSorte().getNome());
@@ -90,8 +95,6 @@ public class ResultadoTimemaniaDiaDeSorteFragment extends Fragment {
         this.rvNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
         numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), resultado.getListaSorteadosPrimeiroSorteio(),resultado.getConcurso().getModalidade());
         this.rvNumerosResultado.setAdapter(numerosResultadosAdapter);
-
-
 
     }
 

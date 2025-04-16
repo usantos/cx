@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,11 +50,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -70,7 +70,6 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
@@ -128,8 +127,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private EditText nomeApostaEditTxt;
     private View id_view_divisao, linhaSeparadora;
-
-    private EstiloModalidade estilo;
     private EstiloModalidadeMKP estiloMKP;
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
     private IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaMatriz;
@@ -137,14 +134,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private boolean premioPago;
     private ApostaFavoritaDTO apostaFavoritaDTO;
     private ParametroSimulacao parametroSimulacao, parametroSimulacaoTrocado;
-    private ComprovanteApostaDTO comprovanteParaPdf;
-    private boolean isHistorico;
+    private boolean apresentouTeimosinha = false, chamouResultado = false;
     private int RESGATOU_MP = 2000;
 
     private BigDecimal valorPremio;
-    private ComprovanteApostaDTOResponse comprovanteApostaDTOResponse;
-    private DetalhesPremioDTOResponse detalhesPremioDTOResponse;
-    private DetalhesHistoricoPremioDTOResponse detalhesHistoricoPremioDTOResponse;
     private ApostaConfirmadaPartidaDetalhesFragment partidaFragment;
     private ApostaConfirmadaNumeroDetalhesFragment numerosFragment;
     private ApostaConfirmadaBolaoDetalhesFragment numerosBolaoFragment;
@@ -153,7 +146,8 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private boolean criouFragmentDetalhe = false;
 
     private SessaoUsuario sessaoUsuario;
-
+    private Uri fileApostaUri;
+    private Uri filePremioUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -187,6 +181,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             validadePremioText.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
             validadePremioImg.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
             linhaSeparadora.setBackgroundColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
+        } if (!isApostaBolao(aposta)) {
+            validadePremioLabel.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            validadePremioText.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            validadePremioImg.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            linhaSeparadora.setBackgroundColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         }
     }
 
@@ -219,7 +218,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
         if (comprovanteApostaDTO != null) {
             premioPago = false;
-            isHistorico = false;
             aposta = comprovanteApostaDTO.getAposta();
             if (comprovanteApostaDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)){
                 apostaMatriz = comprovanteApostaDTO.getAposta();
@@ -235,7 +233,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                     apostaMatriz.setNumerosSelecionados(detalhesPremioDTO.getAposta().getMatrizNumerosSelecionados());
                 }
                 valorPremio = detalhesPremioDTO.getPremio().getValorLiquido();
-                isHistorico = false;
             } else {
                 aposta = detalhesHistoricoPremioDTO.getAposta();
                 if (detalhesHistoricoPremioDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)){
@@ -243,7 +240,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                     apostaMatriz.setNumerosSelecionados(detalhesHistoricoPremioDTO.getAposta().getMatrizNumerosSelecionados());
                 }
                 valorPremio = detalhesHistoricoPremioDTO.getPremioDTO().getValorLiquido();
-                isHistorico = true;
             }
         }
 
@@ -256,18 +252,10 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         } else {
             inibirTeim();
         }
-
-        chamadasParaComprovante();
     }
 
     private void setaViews(){
-        //estilo = new EstiloModalidade(aposta.getModalidade());
-        estilo = new EstiloModalidade(aposta); //Colocar EstiloModalidadeMKP
-        estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade()); //Colocar EstiloModalidadeMKP
-        if(!aposta.getIndicadorCotaBolao()){
-            setTheme(estilo.getThemeId());
-        }
-
+        estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
         fragmentContainer       = findViewById(R.id.fragmentContainer);
         linearLayoutBottom      = findViewById(R.id.linearLayoutBottom);
         toolbar                 = findViewById(R.id.toolbar);
@@ -299,7 +287,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         layoutTextoSalveAposta.setOnClickListener(v -> layoutTextoSalveAposta());
         editarApostaBtn.setOnClickListener(v -> editarApostaBtn());
         adicionarCarrinhoBtn.setOnClickListener(v -> adicionarCarrinhoBtn());
-        comprovanteLayout.setOnClickListener(v -> comprovanteLayout());
+        comprovanteLayout.setOnClickListener(v -> getComprovantePdf());
         salvarApostaImg.setOnClickListener(v -> salvarApostaImg());
     }
 
@@ -332,13 +320,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             criouFragmentDetalhe = true;
         }
 
-        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
+        linearLayoutBottom.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
         informacaoApostaLayout.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-        if (aposta.getIndicadorCotaBolao()){
-            containerConteudo.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
-        } else {
-            fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
-        }
+        fragmentContainer.setBackgroundColor(ContextCompat.getColor(this, getCorEscura()));
     }
 
     private int getCorEscura() {
@@ -349,11 +333,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
             return estiloMKP.getCorEscura();
         } else {
-            if (estilo != null) {
-                return estilo.getCorEscura();
-            }
-            estilo = new EstiloModalidade(aposta);
-            return estilo.getCorEscura();
+            return estiloMKP.getCorEscura();
         }
     }
 
@@ -365,11 +345,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
             return estiloMKP.getCorClara();
         } else {
-            if (estilo != null) {
-                return estilo.getCorClara();
-            }
-            estilo = new EstiloModalidade(aposta);
-            return estilo.getCorClara();
+            return estiloMKP.getCorClara();
         }
     }
 
@@ -443,7 +419,6 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void adicionarCarrinhoBtn() {
         if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(ApostaConfirmadaDetalhesActivity.this, 1)) {
-
             AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false));
         }
     }
@@ -598,101 +573,61 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         });
     }
 
-    private void comprovanteLayout() {
-        if (premioPago && isHistorico) {
-            if (detalhesHistoricoPremioDTOResponse != null && detalhesHistoricoPremioDTOResponse.getPayload() != null){
-                PdfUtils.createComprovanteHistoricoPremioPdf(detalhesHistoricoPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
+    private void getComprovantePdf() {
+        if(!premioPago){
+            if(fileApostaUri != null){
+                PdfUtils.abrirPdf(fileApostaUri, ApostaConfirmadaDetalhesActivity.this);
             } else {
-                buscaDetalheComprovanteHistoricoAposta(true);
-            }
-        } else if (premioPago) {
-            if(detalhesPremioDTOResponse != null && detalhesPremioDTOResponse.getPayload() != null){
-                PdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
-            } else if (detalhesPremioDTO != null){
-                PdfUtils.createComprovantePremioPagoPdf(detalhesPremioDTO, ApostaConfirmadaDetalhesActivity.this);
-            } else {
-                buscarDetalheComprovantePremioAposta(true);
-            }
-        } else {
-            if (comprovanteParaPdf != null){
-                PdfUtils.createComprovanteApostaPdf(comprovanteParaPdf, ApostaConfirmadaDetalhesActivity.this);
-            } else if (comprovanteApostaDTOResponse != null && comprovanteApostaDTOResponse.getPayload() != null){
-                PdfUtils.createComprovanteApostaPdf(comprovanteApostaDTOResponse.getPayload(), ApostaConfirmadaDetalhesActivity.this);
-            } else if (comprovanteApostaDTO != null){
-                PdfUtils.createComprovanteApostaPdf(comprovanteApostaDTO, ApostaConfirmadaDetalhesActivity.this);
-            } else {
-                buscaDetalhesComprovanteAposta(true);
-            }
-        }
-    }
+                AlertDialogUtils.show(this);
+                try {
+                    apostaBO.baixarComprovanteAposta(aposta.getId(), new RequestListener<String>() {
+                        @Override
+                        public void onResponse(String  response) {
+                            AlertDialogUtils.dismiss();
+                            fileApostaUri = PdfUtils.baixarPdfAposta(response, ApostaConfirmadaDetalhesActivity.this);
+                            PdfUtils.abrirPdf(fileApostaUri, ApostaConfirmadaDetalhesActivity.this);
+                        }
 
-    private void chamadasParaComprovante(){
-        if(!AlertDialogUtils.isShow()) {
-            AlertDialogUtils.show(this);
-        }
-        if (premioPago && isHistorico) {
-            buscaDetalheComprovanteHistoricoAposta(false);
-        } else if (premioPago) {
-            buscarDetalheComprovantePremioAposta(false);
-        } else {
-            buscaDetalhesComprovanteAposta(false);
-        }
-    }
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                            RedirectNetwork.checkRedirect(error,ApostaConfirmadaDetalhesActivity.this);
+                            error.getLocalizedMessage();
+                        }
+                    });
 
-    private void buscaDetalheComprovanteHistoricoAposta(boolean geraPDF) {
-        apostaBO.getApostaHistoricoComprovante(aposta.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
-            @Override
-            public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
-                AlertDialogUtils.dismiss();
-                detalhesHistoricoPremioDTOResponse = result;
-                if (geraPDF){
-                    comprovanteLayout();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.d("ApostaConfirmadaDetAct", "Não foi possível acessar o serviço para baixar comprovante de aposta");
                 }
             }
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                onError(error);
-            }
-        });
-    }
+        }else{
+            if(filePremioUri != null){
+                PdfUtils.abrirPdf(filePremioUri, ApostaConfirmadaDetalhesActivity.this);
+            } else {
+                AlertDialogUtils.show(this);
+                try{
+                    apostaBO.baixarComprovantePremio(aposta.getId(), new RequestListener<String>() {
+                        @Override
+                        public void onResponse(String  response) {
+                            AlertDialogUtils.dismiss();
+                            filePremioUri = PdfUtils.baixarPdfPremio(response, ApostaConfirmadaDetalhesActivity.this);
+                            PdfUtils.abrirPdf(filePremioUri, ApostaConfirmadaDetalhesActivity.this);
+                        }
 
-    private void buscarDetalheComprovantePremioAposta(boolean geraPDF) {
-        apostaBO.getApostaComprovantePremio(aposta.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
-            @Override
-            public void onResponse(DetalhesPremioDTOResponse result) {
-                AlertDialogUtils.dismiss();
-                detalhesPremioDTOResponse = result;
-                detalhesPremioDTO = result.getPayload();
-                if (geraPDF){
-                    comprovanteLayout();
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                            RedirectNetwork.checkRedirect(error,ApostaConfirmadaDetalhesActivity.this);
+                            error.getLocalizedMessage();
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.d("ApostaConfirmadaDetAct", "Não foi possível acessar o serviço para baixar comprovante de prêmio");
                 }
             }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                onError(error);
-            }
-        });
-    }
-
-    private void buscaDetalhesComprovanteAposta(boolean geraPDF) {
-        apostaBO.getApostaDetalheComprovante(aposta.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
-            @Override
-            public void onResponse(ComprovanteApostaDTOResponse result) {
-                AlertDialogUtils.dismiss();
-                comprovanteApostaDTOResponse = result;
-                comprovanteParaPdf = result.getPayload();
-                comprovanteApostaDTO = result.getPayload();
-                if (geraPDF){
-                    comprovanteLayout();
-                }
-            }
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                onError(error);
-            }
-        });
+        }
     }
 
     @Override
@@ -705,7 +640,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             if (aposta != null && aposta.getIndicadorCotaBolao()){
                 ViewUtils.setColorDrawable(this, drawable, estiloMKP.getCorFonteFundoClaro());
             } else {
-                ViewUtils.setColorDrawable(this, drawable, estilo.getMenuItemColor());
+                ViewUtils.setColorDrawable(this, drawable, estiloMKP.getCorFonteFundoClaro());
             }
         }
 
@@ -729,11 +664,11 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void getResultadoModalidade(String txtmodalidade, String concurso) {
-        final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+        AlertDialogUtils.show(this);
         apostaBO.getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), ApostaConfirmadaDetalhesActivity.this);
                 }
@@ -745,7 +680,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                loadViewProgress.dismiss();
+                AlertDialogUtils.dismiss();
                 apresentaBySituacao(aposta.getSituacao());
             }
         });
@@ -763,11 +698,14 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void inibirTeim() {
-        if (aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
-            ViewUtils.alertTitleButton(this,
-                                       R.string.label_atencao ,
-                                       getResources().getString(R.string.inibir_teimosinha),
-                                       getResources().getString(R.string.title_entendi));
+        if(!apresentouTeimosinha){
+            if (aposta.getQuantidadeTeimosinhas() != null && aposta.getQuantidadeTeimosinhas() > 0 && !aposta.getSituacao().getDescricao().contains("não apurado")) {
+                ViewUtils.alertTitleButton(this,
+                        R.string.label_atencao ,
+                        getResources().getString(R.string.inibir_teimosinha),
+                        getResources().getString(R.string.title_entendi));
+                apresentouTeimosinha = true;
+            }
         }
     }
 
@@ -776,28 +714,26 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setupToolbar() {
-        if (isApostaBolao(aposta)) {
-            if (isEspecial(aposta.getTipoConcurso().getValor())) {
-                toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
-            } else {
-                toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
-            }
-            toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
+        if (isEspecial(aposta.getTipoConcurso().getValor())) {
+            toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
         } else {
             toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         }
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
             supportActionBar.setDisplayHomeAsUpEnabled(true);
             supportActionBar.setElevation(0);
-            if (isApostaBolao(aposta)){
+            //if (isApostaBolao(aposta)){
                 Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.seta_esquerda);
                 upArrow.mutate().setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()), PorterDuff.Mode.SRC_ATOP);
                 getSupportActionBar().setHomeAsUpIndicator(upArrow);
-            }
+            //}
         }
-        setTitle(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
+        //setTitle(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
+        //setTitle(ViewUtils.textFuturaAndFuturaBold(this, ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase()));
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase()+"_"));
     }
 
     private void getApostaDetalhePremio(Long apostaId, final Context contextParam, ComprovanteApostaDTO comprovante) {
@@ -816,11 +752,13 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
                 if (numerosFragment != null){
                     numerosFragment.setDetalhesPremio(result.getPayload());
                 }
-                //ResultadoApostaConfirmadaActivity_.intent(contextParam).detalhesPremioDTO(result.getPayload()).comprovante(comprovante).startForResult(RESGATOU_MP);
-                Intent intent = IntentUtil.getIntentOrigemDestino((Activity) contextParam, ResultadoApostaConfirmadaActivity.class);
-                intent.putExtra(ResultadoApostaConfirmadaActivity.DETALHES_PREMIO_DTO_EXTRA, ((Serializable) result.getPayload()));
-                intent.putExtra(ResultadoApostaConfirmadaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovante));
-                ((Activity) contextParam).startActivityForResult(intent, RESGATOU_MP);
+                if(!chamouResultado) {
+                    chamouResultado = true;
+                    Intent intent = IntentUtil.getIntentOrigemDestino((Activity) contextParam, ResultadoApostaConfirmadaActivity.class);
+                    intent.putExtra(ResultadoApostaConfirmadaActivity.DETALHES_PREMIO_DTO_EXTRA, ((Serializable) result.getPayload()));
+                    intent.putExtra(ResultadoApostaConfirmadaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovante));
+                    ((Activity) contextParam).startActivityForResult(intent, RESGATOU_MP);
+                }
             }
 
             @Override
@@ -837,9 +775,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void apresentaBySituacao(DTOEnumLong situacao) {
         aposta.setSituacao(situacao);
-
         chooseFragmentToPresent();
-
         if (Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA.getValor(), situacao.getValor())||
                 Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor(), situacao.getValor())) {
             getApostaDetalhePremio(aposta.getId(), this, comprovanteApostaDTO);

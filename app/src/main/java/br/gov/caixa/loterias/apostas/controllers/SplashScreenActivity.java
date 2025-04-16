@@ -47,13 +47,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        if (BuildVersionUtil.isPRD() || BuildVersionUtil.isTQS()){
+        if (BuildVersionUtil.isPRD()) {
             RootBeer rootBeer = new RootBeer(this);
             if (rootBeer.isRooted() || isRootAvailable()) {
                 ViewUtils.alertTitleButton(this, R.string.label_atencao, "Aplicativo incompatível com as configurações atuais do dispositivo. Código AR001.",
                                            getString(R.string.ok), (DialogInterface.OnDismissListener) dialog -> {
-                            finish();
-                        });
+                    finish();
+                });
                 return;
             }
         }
@@ -124,9 +124,9 @@ public class SplashScreenActivity extends AppCompatActivity {
             callConfiguracoesApp();
             new Handler().postDelayed(() -> {
                 LoginSP.limpar();
-                if (!redirectDeepLink()) {
+                //if (!redirectDeepLink()) {
                     startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
-                }
+                //}
                 finish();
             }, SPLASH_TIME);
         }
@@ -196,17 +196,18 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     }
 
-    private boolean redirectDeepLink() {
-        Intent appLinkIntent = getIntent();
-        String appLinkAction = appLinkIntent.getAction();
-        Uri appLinkData = appLinkIntent.getData();
-        if (appLinkData != null && appLinkData.toString().length() >0) {
-            Intent intent = IntentUtil.getIntentDeepLink(this, appLinkData.toString());
-            if (intent != null) {
-                startActivity(intent);
-                return true;
-            }
-        }
-        return false;
-    }
+    //Enviado para PrincipalActivity
+//    private boolean redirectDeepLink() {
+//        Intent appLinkIntent = getIntent();
+//        String appLinkAction = appLinkIntent.getAction();
+//        Uri appLinkData = appLinkIntent.getData();
+//        if (appLinkData != null && appLinkData.toString().length() >0) {
+//            Intent intent = IntentUtil.getIntentDeepLink(this, appLinkData.toString());
+//            if (intent != null) {
+//                startActivity(intent);
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 }

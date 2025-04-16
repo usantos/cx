@@ -26,24 +26,30 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
 public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
-    public static final int ORDENAR_POR = 0;
+	public static final int TIPO_APOSTAS = 0;
 	public static final int MODALIDADES = 1;
 	public static final int SITUACAO = 2;
-	public static final int CONCURSO = 3;
+	public static final int ORDENAR_POR = 3;
+	public static final int CONCURSO = 4;
 
 
 	private Context context;
 	private List<String> expandableListTitle;
 	private LinkedHashMap<Integer,String> situacoes;
 	private String[] opcoesDeOrdenacao = new String[]{"Padrão", "Data Crescente", "Data Decrescente"};
+	private String[] opcoesDeTipoApostas = new String[]{"Todos", "Individual", "Bolão"};
 	private HashMap<String, List<String>> expandableListDetail;
 	private NumberPicker npSituacao;
     private NumberPicker npOrdenarPor;
+    private NumberPicker npTipoAposta;
     private ExpandableHeightGridView gridModalidades;
 	private EditText etNumConcurso;
 	private List<TipoAposta> tiposAposta = new ArrayList<>();
@@ -55,9 +61,11 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	private View viewSituacao;
 	private View viewConcurso;
     private View viewOrdenarPor;
+    private View viewTipoAposta;
 
     private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
     private int numeroOrdenarPorSelecionada = 1;
+    private int numeroTipoApostaSelecionada = 1;
 
     private Boolean isUnicaSelecao = false;
 
@@ -84,9 +92,10 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = layoutInflater.inflate(R.layout.list_group_filtro, null);
 		}
-		TextView listTitleTextView = convertView
-				.findViewById(R.id.titleItemGroupSideMenu);
-		listTitleTextView.setTypeface(null, Typeface.BOLD);
+		TextView listTitleTextView = convertView.findViewById(R.id.titleItemGroupSideMenu);
+		Typeface fontCaixaBold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+		//listTitleTextView.setTypeface(null, Typeface.BOLD);
+		listTitleTextView.setTypeface(fontCaixaBold);
 		listTitleTextView.setText(listTitle);
 
 		ImageView imagemMaisOpcoes = convertView.findViewById(R.id.imagemMaisOpcoes);
@@ -104,9 +113,26 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 							 boolean isLastChild, View convertView, ViewGroup parent) {
 		if (!isUnicaSelecao) {
 			listPosition += 1;
+			if(listPosition == 3){//OrdenarPor não consta nos filtros em DetalhesComprasActivity. Em vez disso, renderiza Concurso.
+				listPosition = 4;
+			}
 		}
 		LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			switch (listPosition) {
+				case TIPO_APOSTAS:
+					if (viewTipoAposta == null) {
+						viewTipoAposta = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
+						if (npTipoAposta == null && viewTipoAposta.findViewById(R.id.np_ordenar_por) != null) {
+							setNpTipoAposta(viewTipoAposta.findViewById(R.id.np_ordenar_por));
+							npTipoAposta.setMinValue(1);
+							npTipoAposta.setMaxValue(opcoesDeTipoApostas.length);
+							npTipoAposta.setValue(1);
+							npTipoAposta.setDisplayedValues(opcoesDeTipoApostas);
+							npTipoAposta.setOnValueChangedListener(new ListenerTipoAposta());
+						}
+					}
+					convertView = viewTipoAposta;
+					break;
                 case ORDENAR_POR:
                     if (viewOrdenarPor == null) {
                         viewOrdenarPor = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
@@ -174,6 +200,13 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
         }
     }
 
+	private class ListenerTipoAposta implements NumberPicker.OnValueChangeListener {
+		@Override
+		public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+			numeroTipoApostaSelecionada = newVal;
+		}
+	}
+
 	private void configuraAdapter() {
 		populaArraysTipoAposta(getTiposAposta(), getModalidades());
 		if (getTiposAposta() != null || getTiposAposta().size() > 0) {
@@ -208,6 +241,11 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		}
 		if (getNpOrdenarPor() != null) {
 			if(getNpOrdenarPor().getValue() != 0) {
+				return true;
+			}
+		}
+		if (getNpTipoAposta() != null) {
+			if(getNpTipoAposta().getValue() != 0) {
 				return true;
 			}
 		}
@@ -289,48 +327,31 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			numeroOrdenarPorSelecionada = 0;
 			getNpOrdenarPor().setValue(0);
 		}
+		if(getNpTipoAposta() != null) {
+			numeroTipoApostaSelecionada = 0;
+			getNpTipoAposta().setValue(0);
+		}
 	}
 
 	private void populaArraysTipoAposta(List<TipoAposta> array, List<ModalidadeDTO> modalidades) {
 		for (ModalidadeDTO item : modalidades) {
 			TipoAposta tipoAposta = null;
-			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao())) {
-				case QUINA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_5, R.color.quinaclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case LOTOFACIL:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_6, R.color.lotofacilclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case LOTOMANIA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_4, R.color.lotomaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case MEGA_SENA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_megasena, R.color.megasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
+			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromModalidadeDTO(item));
+			switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
+				case MAIS_MILIONALIA:
+					tipoAposta = new TipoAposta("+Milionária", estilo.getTrevoFundoClaro(),  estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
 					break;
 				case TIMEMANIA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.timemaniaclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case DUPLA_SENA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_9, R.color.duplasenaclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
 				case DIA_DE_SORTE:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_2, R.color.diasorteclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
 				case SUPER_SETE:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_8, R.color.superseteclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case LOTOGOL:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_lotogol, R.color.lotogolclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case LOTECA:
-					tipoAposta = new TipoAposta(item.getDescricao(), R.drawable.trevo_loteca, R.color.lotecaclaro, false, item.getValor(), item.getDescricaoEspecial());
-					break;
-				case MAIS_MILIONALIA:
-					tipoAposta = new TipoAposta("+Milionária", R.drawable.trevo_mais_milionaria_nao_selecionado, R.color.mais_milionaria_clara, false, item.getValor(), item.getDescricaoEspecial());
+					tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+					tipoAposta.setTextSelectColor(estilo.getCorLetraLista());
 					break;
 				default:
+					tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
 					break;
 			}
+
 			if (tipoAposta != null) {
 				tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale("pt", "BR")));
 				array.add(tipoAposta);
@@ -348,6 +369,14 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
     public NumberPicker getNpSituacao() {
 		return npSituacao;
+	}
+
+	public NumberPicker getNpTipoAposta() {
+		return npTipoAposta;
+	}
+
+	public void setNpTipoAposta(NumberPicker npTipoAposta) {
+		this.npTipoAposta = npTipoAposta;
 	}
 
 	public void setNpSituacao(NumberPicker npSituacao) {

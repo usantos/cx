@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.os.CountDownTimer;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -35,7 +36,8 @@ import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacoesResultados;
 import br.gov.caixa.loterias.apostas.view.listener.OnHomeListener;
@@ -61,8 +63,14 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private RelativeLayout setaDireitaAcaoRelativeLayout;
 	private RelativeLayout setaEsquerdaAcaoRelativeLayout;
 	private ImageView imgSetaResultado;
+	private View viewSeparador;
+	private LinearLayout linearCalendar;
+	private LinearLayout linearRelogio;
+	private ImageView imageInstantanea;
+	private TextView textPortal;
 
-	private EstiloModalidade estilo;
+	//private EstiloModalidade estilo;
+	private EstiloModalidadeMKP estilo;
 	private OnHomeListener listener;
 	private Modalidade modalidade;
 	private int position;
@@ -79,6 +87,11 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		relogio = itemView.findViewById(R.id.imageWatch);
 		titulo = itemView.findViewById(R.id.linearLayoutTopModalidades);
 		valorAcumulado = itemView.findViewById(R.id.textVieCardAcumulatedValue);
+		viewSeparador = itemView.findViewById(R.id.viewSeparador);
+		linearCalendar = itemView.findViewById(R.id.linearCalendar);
+		linearRelogio = itemView.findViewById(R.id.linearRelogio);
+		imageInstantanea = itemView.findViewById(R.id.imageInstantanea);
+		textPortal = itemView.findViewById(R.id.textPortalInstantanea);
 		premioEstimadoConcurso = itemView.findViewById(R.id.textPremioEstimadoConcurso);
 		dataSorteio = itemView.findViewById(R.id.textVieCardDrawDate);
 		textViewSorteioOuEncerramento = itemView.findViewById(R.id.textViewSorteioOuEncerramento);
@@ -91,7 +104,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		clEspeciais = itemView.findViewById(R.id.cl_especiais);
 		imgSetaResultado = itemView.findViewById(R.id.imgSetaResultado);
 
-
 		setaEsquerdaAcaoRelativeLayout = itemView.findViewById(R.id.setaEsquerdaAcaoRelativeLayout);
 		setaDireitaAcaoRelativeLayout = itemView.findViewById(R.id.setaDireitaAcaoRelativeLayout);
 
@@ -103,24 +115,55 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.modalidade = modalidade;
 		this.position = position;
 		setIsRecyclable(false);
-		estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+		//estilo = new EstiloModalidade(modalidade.getTipoModalidade());
+		estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+
+		this.game.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorFonteFundoClaro()));
+
+		if (modalidade.getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA)) {
+			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
+			this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
+			this.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
+			//TODO: Altera a cor do título do carrosel
+			this.trevo.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+			this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrapezio()));
+			this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
+			this.valorAcumulado.setVisibility(View.INVISIBLE);
+			this.premioEstimadoConcurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.instantanea_texto_card)));
+			this.viewSeparador.setVisibility(View.GONE);
+			this.linearCalendar.setVisibility(View.GONE);
+			this.linearRelogio.setVisibility(View.GONE);
+			this.imageInstantanea.setVisibility(View.VISIBLE);
+			this.textPortal.setVisibility(View.VISIBLE);
+			this.textPortal.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.portal_instantanea)));
+			this.buttonActionResultadosModalidade.setVisibility(View.GONE);
+			this.imgSetaResultado.setVisibility(View.GONE);
+
+			return;
+		}
+
 		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo))) {
 			this.game.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
 			this.tvNomeEspeciais.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
 		} else {
 			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
 			if (BuildVersionUtil.isAutomacao() && modalidade.getTipoModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-				this.tvNomeEspeciais.setText("+Milionária");
+				this.tvNomeEspeciais.setText(R.string.label_mais_milionaria);
 			}
 		}
+
+		this.buttonActionResultadosModalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorFonteFundoEscuro()));
+		this.imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo_resultado, estilo.getCorFonteFundoEscuro()));
 
 		this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
 		this.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
 		//TODO: Altera a cor do título do carrosel
-		this.trevo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoBackground()));
-		this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoBackground()));
+		//this.trevo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+		this.trevo.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+		this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrapezio()));
 		this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
-		this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
+		this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
 
 		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo)) || modalidade.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA) {
 			this.titulo.setVisibility(View.GONE);
@@ -138,9 +181,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				case QUINA:
 					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.cabecalho_sao_joao));
 					break;
-				case MAIS_MILIONARIA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mais_milionaria));
-					break;
 				default:
 					this.titulo.setVisibility(View.VISIBLE);
 					this.clEspeciais.setVisibility(View.GONE);
@@ -151,12 +191,13 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			String estimativaFormatado = ViewUtils.getMoedaFormat(modalidade.getConcurso().getEstimativa());
 			this.valorAcumulado.setText(estimativaFormatado);
 			this.valorAcumulado.setTextSize(20);
-			this.premioEstimadoConcurso.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(), itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold,
+			this.premioEstimadoConcurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold,
 																											   modalidade.getConcurso().getNumero())));
-
 			this.premioEstimadoConcurso.setVisibility(View.VISIBLE);
 		} else {
-			this.valorAcumulado.setText(retornaStringConcursoSemEstimativa(modalidade.getConcurso().getNumero().toString(), estilo.getCorClara()));
+			//this.valorAcumulado.setText(retornaStringConcursoSemEstimativa(modalidade.getConcurso().getNumero().toString(), estilo.getCorClara()));
+			this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
+			this.valorAcumulado.setText(retornaStringConcursoSemEstimativa(modalidade.getConcurso().getNumero().toString(), estilo.getCorLetraLista()));
 			this.valorAcumulado.setTextSize(14);
 
 			this.premioEstimadoConcurso.setVisibility(View.INVISIBLE);
@@ -200,13 +241,10 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 										   itemView.getContext().getResources().getString(R.string.as_espacado) +
 										   horaMinSeg);
 
-		Map mapComDiferencaDeDatas = computeDiff(new Date(), dataFechamentoSorteio);
-
-		this.tempoRestanteParaAposta.setText(retornaStringDias((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS))
-													   + retornaStringHoras((Long) mapComDiferencaDeDatas.get(TimeUnit.DAYS), (Long) mapComDiferencaDeDatas.get(TimeUnit.HOURS), parentActivity));
-
-		this.calendario.setImageResource(estilo.getImagemCalendario());
-		this.relogio.setImageResource(estilo.getImagemRelogio());
+//		this.calendario.setImageResource(estilo.getImagemCalendario());
+//		this.relogio.setImageResource(estilo.getImagemRelogio());
+		this.calendario.setImageDrawable(VectorUtils.getShape(R.drawable.ic_calendario, estilo.getCorLetraLista()));
+		this.relogio.setImageDrawable(VectorUtils.getShape(R.drawable.icon_horario_megasena, estilo.getCorLetraLista()));
 
 		this.buttonActionResultadosModalidade.setOnClickListener(this);
 		this.imgSetaResultado.setOnClickListener(this);
@@ -233,9 +271,58 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 		this.setaEsquerdaAcaoRelativeLayout.setOnClickListener(this);
 		this.setaDireitaAcaoRelativeLayout.setOnClickListener(this);
+
+		try {
+			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		if (dataFechamentoSorteio != null) {
+			long tempoRestanteMillis = dataFechamentoSorteio.getTime() - System.currentTimeMillis();
+
+			if (tempoRestanteMillis > 0) {
+				new CountDownTimer(tempoRestanteMillis, 1000) {
+
+					public void onTick(long millisUntilFinished) {
+						long days = TimeUnit.MILLISECONDS.toDays(millisUntilFinished);
+						millisUntilFinished -= TimeUnit.DAYS.toMillis(days);
+
+						long hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished);
+						millisUntilFinished -= TimeUnit.HOURS.toMillis(hours);
+
+						long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
+						millisUntilFinished -= TimeUnit.MINUTES.toMillis(minutes);
+
+						long seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished);
+
+						String tempoRestante;
+						if (days > 0) {
+							tempoRestante = days + (days == 1 ? " dia" : " dias");
+						} else if (hours > 0) {
+							tempoRestante = hours + (hours == 1 ? " hora" : " horas") + " e " + minutes + (minutes == 1 ? " minuto" : " minutos");
+						} else if (minutes > 0) {
+							tempoRestante = minutes + (minutes == 1 ? " minuto" : " minutos");
+						} else {
+							tempoRestante = seconds + (seconds == 1 ? " segundo" : " segundos");
+						}
+
+						tempoRestanteParaAposta.setText(tempoRestante);
+					}
+
+					public void onFinish() {
+						tempoRestanteParaAposta.setText(itemView.getContext().getResources().getString(R.string.aposta_encerrada));
+					}
+
+				}.start();
+			} else {
+				tempoRestanteParaAposta.setText(itemView.getContext().getResources().getString(R.string.aposta_encerrada));
+			}
+		}
+
 	}
 
-	public void setOverlayColor(EstiloModalidade estilo, Button aposta) {
+	public void setOverlayColor(EstiloModalidadeMKP estilo, Button aposta) {
 		aposta.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 	}
 
@@ -247,9 +334,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		final ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), corModalidadeInt));
 		final ForegroundColorSpan corTexto      = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), R.color.cinzaescuro));
 
-		sb.setSpan(corModalidade, 0, 7, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-		sb.setSpan(corTexto, 10, 11 + numConcurso.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-		sb.setSpan(corModalidade, 11 + numConcurso.length(), sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		sb.setSpan(corModalidade, 0, 8, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		sb.setSpan(corTexto, 10, 10 + numConcurso.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		sb.setSpan(corModalidade, 12 + numConcurso.length(), sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
 		return sb;
 	}
@@ -366,7 +453,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 														this.setaEsquerdaAcaoRelativeLayout,
 														this.setaDireitaAcaoRelativeLayout,
 														true, this);
-						imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_cima_resultado));
+						//imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_cima_resultado));
+						imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_cima_resultado, estilo.getCorFonteFundoEscuro()));
+
 					} else {
 						animacaoAbrirResultados(itemView.getContext(),
 												this.relativeLayoutTopResultados,
@@ -374,7 +463,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 												position,
 												this.setaEsquerdaAcaoRelativeLayout,
 												this.setaDireitaAcaoRelativeLayout);
-						imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_cima_resultado));
+						//imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_cima_resultado));
+						imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_cima_resultado, estilo.getCorFonteFundoEscuro()));
+
 					}
 				} else {
 					modalidade.setResultadosAberto(false);
@@ -383,7 +474,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 											 this.linearLayoutResultadosApostas,
 											 this.setaEsquerdaAcaoRelativeLayout,
 											 this.setaDireitaAcaoRelativeLayout);
-					imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_baixo_resultado));
+					//imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_baixo_resultado));
+					imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo_resultado, estilo.getCorFonteFundoEscuro()));
+
 				}
 				break;
 		}

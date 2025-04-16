@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +25,6 @@ import com.google.gson.Gson;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
@@ -34,7 +32,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
 import br.gov.caixa.loterias.apostas.model.model.PixModel;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
@@ -43,15 +40,15 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 
 public class CopiaColaPixFragment extends Fragment {
-
 	private static final String ARG_PIX_COPIA_COLA = "ARG_MILLIS_FIM";
+	private static final String ARG_DATA_HORA_SERVIDOR = "ARG_DATA_HORA_SERVIDOR";
 
 	private View view;
-	private Button btnCopia, btnMinhasCompras;
+	private Button btnCopia, btnMinhasCompras, iconAtualizar;
 	private EditText edtNumeroPix;
 	private TextView timerView;
 	private TextView tvAtencao, tvAtencaoDescricao;
-	private ImageView iconTimer, iconAtualizar;
+	private ImageView iconTimer;
 	private ProgressBar progressBar;
 
 	private String numeroPix;
@@ -61,13 +58,15 @@ public class CopiaColaPixFragment extends Fragment {
 
 	private PixModel model;
 	private boolean jaCopiou = false;
+	private String dataHoraServidor;
 
 	public CopiaColaPixFragment() {}
 
-	public static CopiaColaPixFragment newInstance(GerarPixDTO pixDTO) {
+	public static CopiaColaPixFragment newInstance(GerarPixDTO pixDTO, String dataHoraServidor) {
 		CopiaColaPixFragment fragment = new CopiaColaPixFragment();
 		Bundle               args     = new Bundle();
 		args.putSerializable(ARG_PIX_COPIA_COLA, new Gson().toJson(pixDTO));
+		args.putString(ARG_DATA_HORA_SERVIDOR, dataHoraServidor);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -90,6 +89,7 @@ public class CopiaColaPixFragment extends Fragment {
 			if (stringJson != null && !stringJson.isEmpty()){
 				pixDTO = new Gson().fromJson(stringJson, GerarPixDTO.class);
 			}
+			dataHoraServidor = getArguments().getString(ARG_DATA_HORA_SERVIDOR);
 		}
 
 		model = new PixModel(getActivity());
@@ -105,13 +105,13 @@ public class CopiaColaPixFragment extends Fragment {
 		timerView = view.findViewById(R.id.txt_contador);
 		iconTimer = view.findViewById(R.id.img_timer);
 		iconAtualizar = view.findViewById(R.id.icon_atualizar);
+		iconAtualizar.setText(ViewUtils.textCaixaSTDBoldTitle(getContext(), getString(R.string.verificar_pagamento)));
 		progressBar = view.findViewById(R.id.pb_loading);
 		btnMinhasCompras = view.findViewById(R.id.btn_minhas_compras);
-		btnMinhasCompras.setText(ViewUtils.textFuturaAndFuturaBoldTitle(getContext(), getString(R.string.ir_para_minhas_compras)));
-
+		btnMinhasCompras.setText(ViewUtils.textCaixaSTDBoldTitle(getContext(), getString(R.string.ir_para_minhas_compras)));
+		tvAtencao = view.findViewById(R.id.id_atencao);
+		tvAtencaoDescricao = view.findViewById(R.id.atencao_descricao);
 		if (pixDTO.isDetalhesCompras()) {
-			tvAtencao = view.findViewById(R.id.id_atencao);
-			tvAtencaoDescricao = view.findViewById(R.id.atencao_descricao);
 			tvAtencao.setVisibility(View.GONE);
 			tvAtencaoDescricao.setVisibility(View.GONE);
 		}
@@ -129,7 +129,7 @@ public class CopiaColaPixFragment extends Fragment {
 	}
 
 	private void startTimer() {
-		ContagemRegressiva contDown = new ContagemRegressiva(timerView, pixDTO.getTimerZoneMilleSeconds(), 1000) {
+		ContagemRegressiva contDown = new ContagemRegressiva(timerView, pixDTO.getTimerZoneMilleSeconds(dataHoraServidor), 1000) {
 			@Override
 			public void onFinish() {
 				try {
@@ -148,6 +148,7 @@ public class CopiaColaPixFragment extends Fragment {
 					iconAtualizar.setVisibility(View.INVISIBLE);
 					iconAtualizar.setEnabled(false);
 					progressBar.setVisibility(View.GONE);
+					tvAtencaoDescricao.setText(R.string.orientacoes_pix_expirado_tela_pagamento);
 					if (!pixDTO.isDetalhesCompras()) {
 						btnMinhasCompras.setVisibility(View.VISIBLE);
 					}
@@ -186,7 +187,9 @@ public class CopiaColaPixFragment extends Fragment {
 				btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_pix_copiado, null));
 				btnCopia.setEnabled(false);
 				Utils.delay(2, () -> {
-					btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_button_copia, null));
+					try {
+						btnCopia.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_button_copia, null));
+					} catch (Exception e){}
 					btnCopia.setEnabled(true);
 				});
 				Utils.delay(10,() -> model.verificaStatusPixPeriodicamente(pixDTO,onCheckPixPagoListener()));
@@ -236,12 +239,6 @@ public class CopiaColaPixFragment extends Fragment {
 
 			@Override
 			public void errorCompra(VolleyError volleyError) {
-				try {
-					RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
-				} catch (Exception e){
-					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
-				}
-
 				if (pixDTO.estaNoPrazo()){
 					iconAtualizar.setEnabled(true);
 					iconAtualizar.setVisibility(View.VISIBLE);

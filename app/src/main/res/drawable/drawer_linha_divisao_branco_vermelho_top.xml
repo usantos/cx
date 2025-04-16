@@ -12,8 +12,8 @@
     <item android:top="1dp">
         <shape
             android:shape="rectangle">
-            <stroke android:width="4dp" android:color="@color/lotecaclaro" />
-            <solid android:color="@color/lotecaclaro" />
+            <stroke android:width="4dp" android:color="@color/loteca_escuro_mkp" />
+            <solid android:color="@color/loteca_escuro_mkp" />
         </shape>
     </item>
 

@@ -14,12 +14,14 @@
             android:id="@+id/tituloCustom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="17dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="18dp"
             android:text="@string/label_atencao"
+            android:textAlignment="center"
             android:textColor="@color/branco"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/caixa_std_bold" />
     </RelativeLayout>
 
     <LinearLayout
@@ -33,7 +35,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/popup_pix_cpf_vinculado"
+            android:justificationMode="inter_word"
             android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_regular"
             android:layout_gravity="center"
             android:padding="14dp"
             />
@@ -52,7 +56,11 @@
             android:layout_height="65dp"
             android:layout_below="@+id/linhaDivisaoBotoes"
             android:orientation="horizontal"
-            android:paddingBottom="15dp"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:layout_marginBottom="16dp"
             >
 
             <Button
@@ -60,15 +68,14 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:background="@drawable/button_border_vermelho"
+                android:background="@drawable/btn_rounded_vermelho_dialog"
                 android:text="@string/trocar_tipo_chave"
                 android:textAllCaps="false"
                 android:textColor="@color/vermelho_dialog"
                 android:textSize="12sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:gravity="center"
                 />
 
@@ -77,15 +84,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:background="@color/verdeazul"
+                android:backgroundTint="@color/verdeazul"
+                android:background="@drawable/btn_rounded_green_outlined"
                 android:text="@string/trocar_forma_resgate"
                 android:textAllCaps="false"
                 android:textColor="@color/branco"
                 android:textSize="12sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:gravity="center"/>
 
             <Button
@@ -93,16 +100,19 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:background="@color/verdeazul"
+                android:backgroundTint="@color/verdeazul"
+                android:background="@drawable/btn_rounded_green_outlined"
                 android:text="@string/pix_continuar"
                 android:textAllCaps="false"
                 android:textColor="@color/branco"
                 android:textSize="12sp"
-                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
                 android:gravity="center"/>
+
         </LinearLayout>
+
     </LinearLayout>
+
 </RelativeLayout>

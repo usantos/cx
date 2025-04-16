@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -62,11 +63,12 @@ import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroApostasAdapt
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasDetalhesAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 
-public class DetalhesComprasActivity extends AppCompatActivity {
+public class DetalhesComprasActivity extends AppCompatActivity implements OnCopiaColaListener {
 
     public static final String DETALHES_COMPRA_ACTIVITY = "DETALHES_COMPRA_ACTIVITY";
 
@@ -74,6 +76,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     public static final int NORMAL = 1;
     public static final int ESPECIAL = 2;
 
+    public static Boolean isRunning = false;
     private CompraDTO compraDTO;
     private ArrayList<ApostaDTO> listaAposta = new ArrayList<>();
     private ArrayList<ApostaDTO> listaFiltrada = new ArrayList<>();;
@@ -93,6 +96,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     long tempo_acabar_pix;
     private Dialog dialogDevolucaoPix;
     private ImageButton ibFavoritar;
+    private String dataHoraServidor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +120,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_detalhes_compras))));
+        //setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_detalhes_compras))));
+        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.texto_futura_bold, getString(R.string.title_activity_detalhes_compras))));
     }
 
     private void setaMetodos(){
@@ -143,6 +148,18 @@ public class DetalhesComprasActivity extends AppCompatActivity {
             compraDTO = new Gson().fromJson(compraDTOJson, CompraDTO.class);
             tempo_acabar_pix = bundle.getLong("tempoPix", 0l);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isRunning = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isRunning = false;
     }
 
     private void verificaStatusPopUp() {
@@ -234,7 +251,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                 null,
                 getString(R.string.title_voltar),
                 getString(R.string.tenta_novamente_dialog),
-                onDialogListenerDevolucaoPix());
+                onDialogListenerDevolucaoPix(), true);
     }
 
     private void showDialogDebitoNaoAutorizado() {
@@ -412,13 +429,13 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         }
 
         TextView textTotal = findViewById(R.id.txtTotal);
-        textTotal.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_valor)));
+        textTotal.setText(ViewUtils.textCaixaSTDBold(this, this.getString(R.string.label_compra_lista_valor)));
 
         TextView valorCompra = findViewById(R.id.valorCompra);
         valorCompra.setText(ViewUtils.getMoedaFormat(compraDTO.getValorTotal()));
 
         TextView situacaoCompraTextView = findViewById(R.id.situacaoCompraTextView);
-        situacaoCompraTextView.setText(ViewUtils.textFuturaAndFuturaBold(this, this.getString(R.string.label_compra_lista_situacao_descricao,
+        situacaoCompraTextView.setText(ViewUtils.textCaixaSTDBold(this, this.getString(R.string.label_compra_lista_situacao_descricao,
                 SituacaoCompraUtil.getDescricao(compraDTO))));
 
         if (SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
@@ -431,8 +448,8 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
         if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) &&
                 SituacaoCompraUtil.isSituacaoPositiva(compraDTO.getSituacao())) {
-            TextView processadaPor = findViewById(R.id.processadaPor);
-            processadaPor.setText(getString(R.string.id_pagamento)+"\n"+compraDTO.getE2eId());
+            TextView meioDePagamento = findViewById(R.id.meioDePagamento);
+            meioDePagamento.setText(getString(R.string.id_pagamento)+"\n"+compraDTO.getE2eId());
         }
 
         ibFavoritar = listViewCompras.findViewById(R.id.ib_favoritar);
@@ -444,7 +461,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 
     private void verificaPixCopiaCola() {
         if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento()) &&
-            SituacaoCompraUtil.isSituacaoProcessamento(compraDTO.getSituacao())) {
+            SituacaoCompraUtil.isSituacaoAguardandoPagamento(compraDTO.getSituacao())) {
 
             startFragment();
         }
@@ -455,7 +472,7 @@ public class DetalhesComprasActivity extends AppCompatActivity {
         gerarPixDTO.setPixCopiaECola(compraDTO.getPixCopiaECola());
         gerarPixDTO.setDataHoraExpiracao(compraDTO.getDataHoraExpiracaoPagamento());
         gerarPixDTO.setDetalhesCompras(true);
-        fragCopiaCola = FragmentUtils.startCopiaColaPix(gerarPixDTO, getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe);
+        fragCopiaCola = FragmentUtils.startCopiaColaPix(gerarPixDTO, dataHoraServidor, getSupportFragmentManager(), R.id.fragmentCopCalaPixDetalhe);
     }
 
     private void verificaCompraProcessada() {
@@ -473,9 +490,9 @@ public class DetalhesComprasActivity extends AppCompatActivity {
 //            if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())) {
 //                imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_pix));
 //            }
-            TextView txtProcessadaPor = findViewById(R.id.compraPossesada);
-            txtProcessadaPor.setText(ViewUtils.textFuturaAndFuturaBold(this,
-                    getString(R.string.label_compra_lista_processada_por,
+            TextView txtMeioDePagamento = findViewById(R.id.compraPossesada);
+            txtMeioDePagamento.setText(ViewUtils.textCaixaSTDBold(this,
+                    getString(R.string.label_compra_lista_meio_de_pagamento,
                             MeioPagamentoUtil.getDescricao(compraDTO.getMeioPagamento()))));
         }
     }
@@ -486,11 +503,11 @@ public class DetalhesComprasActivity extends AppCompatActivity {
     }
 
     private void buscaDetalhesCompras() {
-
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         ApostaBO.getInstance().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
+                dataHoraServidor = response.getDataHoraServidor();
                 loadViewProgress.dismiss();
                 AppCenterManager.registraEvento("ENTROU_COMPRAS_DETALHE");
 
@@ -723,5 +740,18 @@ public class DetalhesComprasActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    @Override
+    public void onFinish() {
+    }
+
+    @Override
+    public void onSuccess() {
+    }
+
+    @Override
+    public void irParaCompras() {
+        Log.d("", "");
     }
 }

@@ -79,7 +79,7 @@ public class PartidaViewLotecaResultado extends LinearLayout {
         lotecaTimeDois.getItemTitle().setText(parametroPartida.getEquipe2().getNome());
         lotecaTimeDois.getItemDescription().setText(Utils.getUfTime(parametroPartida.getEquipe2())+" "+parametroPartida.getLegendaAbreviada());
 
-        diaSemanaDataPartidaText.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), getResources().getString(R.string.texto_futura_bold, getResources().getString(R.string.label_domingo))));
+        diaSemanaDataPartidaText.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.texto_futura_bold, getResources().getString(R.string.label_domingo))));
 
     }
     private void setaCorFundo(ItemEquipeViewResultado item, int cor){

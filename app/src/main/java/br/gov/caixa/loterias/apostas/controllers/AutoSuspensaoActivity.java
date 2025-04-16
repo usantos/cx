@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class AutoSuspensaoActivity extends AppCompatActivity {
-
     private TextView tvSuspensao1,tvSuspensao2,tvSuspensao3,tvSuspensao4;
     private TextView tvPergunta;
     private RadioGroup rgAutosuspensao1,rgAutosuspensao2;
@@ -51,7 +50,7 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autosuspensao_suspensao))));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.texto_futura_bold, getString(R.string.autosuspensao_suspensao))));
 
         configurar();
         desabilitaConfirmar();
@@ -108,23 +107,20 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
 
         AtomicBoolean isClearingCheck = new AtomicBoolean(false);
         //Controla RadioGroups
-        RadioGroup.OnCheckedChangeListener listener = new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
+        RadioGroup.OnCheckedChangeListener listener = (group, checkedId) -> {
 
-                if (isClearingCheck.get()) return;
+            if (isClearingCheck.get()) return;
 
-                isClearingCheck.set(true);
-                if (group == rgAutosuspensao1 && checkedId != -1) {
-                    rgAutosuspensao2.clearCheck();
-                } else if (group == rgAutosuspensao2 && checkedId != -1) {
-                    rgAutosuspensao1.clearCheck();
-                }
-                isClearingCheck.set(false);
+            isClearingCheck.set(true);
+            if (group == rgAutosuspensao1 && checkedId != -1) {
+                rgAutosuspensao2.clearCheck();
+            } else if (group == rgAutosuspensao2 && checkedId != -1) {
+                rgAutosuspensao1.clearCheck();
+            }
+            isClearingCheck.set(false);
 
-                if (checkedId != -1) {
-                    habilitaConfirmar();
-                }
+            if (checkedId != -1) {
+                habilitaConfirmar();
             }
         };
         rgAutosuspensao1.setOnCheckedChangeListener(listener);
@@ -147,7 +143,7 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         String texto = getString(R.string.tv_confirma_suspensao);
         texto = texto.replace("XX", textoSelecionadoRB());
         tvSuspensao2.setText(texto);
-        diminuiCardView();
+        //diminuiCardView();
     }
 
     private void desabilitaConfirmar() {

@@ -28,7 +28,7 @@
         android:text="@string/jr_apostador_caracteristicas"
         android:padding="10dp"
         android:gravity="center"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         android:textColor="@color/jr_azul_text_title" />
 
     <TextView
@@ -40,7 +40,7 @@
         android:layout_marginTop="20dp"
         android:textColor="@color/jr_laranja"
         android:textSize="15sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_caracteristicas" />
 
     <TextView
@@ -49,6 +49,7 @@
         android:layout_height="wrap_content"
         android:text="@string/jr_apostador_carac_1"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +64,7 @@
         android:text="@string/jr_apostador_2"
         android:textColor="@color/jr_laranja"
         android:textSize="15sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_1" />
 
     <TextView
@@ -72,6 +73,7 @@
         android:layout_height="wrap_content"
         android:text="@string/jr_apostador_carac_2"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +88,7 @@
         android:text="@string/jr_apostador_3"
         android:textColor="@color/jr_laranja"
         android:textSize="15sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_2" />
 
     <TextView
@@ -95,6 +97,7 @@
         android:layout_height="wrap_content"
         android:text="@string/jr_apostador_carac_3"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +112,7 @@
         android:text="@string/jr_apostador_4"
         android:textColor="@color/jr_laranja"
         android:textSize="15sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_3" />
 
     <TextView
@@ -118,6 +121,7 @@
         android:layout_height="wrap_content"
         android:text="@string/jr_apostador_carac_4"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -132,7 +136,7 @@
         android:text="@string/jr_apostador_5"
         android:textColor="@color/jr_laranja"
         android:textSize="15sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_4" />
 
     <TextView
@@ -141,6 +145,7 @@
         android:layout_height="wrap_content"
         android:text="@string/jr_apostador_carac_5"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -155,7 +160,7 @@
         android:text="@string/jr_apostador_6"
         android:textColor="@color/jr_laranja"
         android:textSize="15sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_5" />
 
     <TextView
@@ -164,6 +169,7 @@
         android:layout_height="wrap_content"
         android:text="@string/jr_apostador_carac_6"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -178,7 +184,7 @@
         android:text="@string/jr_apostador_7"
         android:textColor="@color/jr_laranja"
         android:textSize="15sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_6" />
 
     <TextView
@@ -187,6 +193,7 @@
         android:layout_height="wrap_content"
         android:text="@string/jr_apostador_carac_7"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         android:paddingBottom="20dp"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -201,7 +208,7 @@
         android:text="@string/jr_apostador_8"
         android:textColor="@color/jr_laranja"
         android:textSize="15sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/caixa_std_bold"
         app:layout_constraintTop_toBottomOf="@+id/tv_caracteristica_7" />
 
     <TextView
@@ -210,6 +217,7 @@
         android:layout_height="wrap_content"
         android:text="@string/jr_apostador_carac_8"
         android:textSize="15sp"
+        android:fontFamily="@font/caixa_std_regular"
         android:paddingBottom="40dp"
         android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"

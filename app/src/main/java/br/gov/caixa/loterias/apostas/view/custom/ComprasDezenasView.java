@@ -98,11 +98,13 @@ public class ComprasDezenasView extends LinearLayout {
             case TIMEMANIA:
                 if(!aposta.getIndicadorCotaBolao()) {
                     labelDetalheTxt.setText(R.string.label_time_coracao_dois_pontos);
-                    detalheTxt.setText(ViewUtils.textFuturaAndFuturaBold(getContext(),
+                    detalheTxt.setText(ViewUtils.textCaixaSTDBold(getContext(),
                             getContext().getString(R.string.texto_futura_bold,
                                     aposta.getTimeDoCoracao().getNome() + "/" +
                                             aposta.getTimeDoCoracao().getUf()
                             )));
+                    labelDetalheTxt.setTextColor(getContext().getResources().getColor(corFonte));
+                    detalheTxt.setTextColor(getContext().getResources().getColor(corFonte));
                     detalheLayout.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -110,7 +112,7 @@ public class ComprasDezenasView extends LinearLayout {
             case DIA_DE_SORTE:
                 if(!aposta.getIndicadorCotaBolao()) {
                     labelDetalheTxt.setText(R.string.label_mes_sorte_dois_pontos);
-                    detalheTxt.setText(aposta.getMesDeSorte() == null ? "" : ViewUtils.textFuturaAndFuturaBold(getContext(), getContext().getString(R.string.texto_futura_bold, aposta.getMesDeSorte().getNome())));
+                    detalheTxt.setText(aposta.getMesDeSorte() == null ? "" : ViewUtils.textCaixaSTDBold(getContext(), getContext().getString(R.string.texto_futura_bold, aposta.getMesDeSorte().getNome())));
                     detalheLayout.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -205,7 +207,7 @@ public class ComprasDezenasView extends LinearLayout {
     private DezenaConfig getTrevoConfig() {
         ShapeConfig shapeConfig = new ShapeConfig(R.drawable.ic_item_trevo,
                 R.drawable.ic_item_trevo_selecionado,
-                R.color.branco, R.color.mais_milionaria_escura);
+                R.color.branco, R.color.milionaria_escuro_mkp);
 
         return new DezenaConfig(false, corFonte,
                 R.layout.item_dezena_detalhe,
@@ -213,7 +215,7 @@ public class ComprasDezenasView extends LinearLayout {
     }
 
     private ConfiguracaoNumeros configuraEstiloNumerosTrevos() {
-        return new ConfiguracaoNumeros(0, 0);
+        return new ConfiguracaoNumeros(R.color.branco, R.color.branco);
     }
 
     private void configuraSuperSeteFragment(ApostaDTO aposta) {

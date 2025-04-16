@@ -85,7 +85,8 @@ import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidade;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -113,6 +114,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
+    public static final String ENDERECO_INSTANTANEA = "https://instantanea.loterias.gov.br";
 
     public AppBarLayout navigationBarListaModalidade;
     public DiscreteScrollView homeCarousel;
@@ -296,9 +298,10 @@ public class PrincipalActivity extends AppCompatActivity
         if(!" ".equals(nomeUsuario)) {
             String texto = getResources().getString(R.string.ola_usuario);
             texto = texto.replace(getResources().getString(R.string.percent), nomeUsuario);
-            nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
+            //nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
+            nav_user.setText(ViewUtils.textCaixaSTDBold(this, texto));
         }else {
-            nav_user.setText(getResources().getString(R.string.bem_vindo_ao_app));
+            nav_user.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.bem_vindo_ao_app)));
         }
 
         callWebservice();
@@ -403,10 +406,20 @@ public class PrincipalActivity extends AppCompatActivity
         montarCarrossel();
 
         trataPopupDeNotificacaoHandler();
+
+        redirectDeepLink();
+        //***APAGAR
+        //redirectDeepLinkMock();
     }
 
     private void trataPopupDeNotificacaoHandler() {
-        if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
+        if (UltimaNotificacaoSingleton.getInstance().isPagamentoNaoIdentificado()){
+            DialogUtils.showDialog1Botao(this, getString(R.string.label_atencao),
+                    getString(R.string.alerta_descricao_pagamento_nao_identificado),
+                    getString(R.string.acompanhe_suas_compras),
+                    () -> startActivity(IntentUtil.getIntentOrigemDestino(PrincipalActivity.this, ListaComprasActivity.class))
+                    );
+        } else if (UltimaNotificacaoSingleton.getInstance().getUltimaNoficacao() != null) {
             if(getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){
                 trataPopupDeNotificacao();
             } else {
@@ -489,23 +502,15 @@ public class PrincipalActivity extends AppCompatActivity
 
     private List<Modalidade> montaListaModalidades() {
         List<Modalidade> listaModalidades = new ArrayList<>();
-
-//        if (!BuildConfig.FLAVOR.equalsIgnoreCase("prd") && !conteMaisMilionaria()){
-//            ParametroSimulacao parametro = MaisMilionariaMock.getParametroMaisMilionaria();
-//            listaModalidades.add(new Modalidade(parametro.getParametroJogo().getConcurso().getModalidadeDetalhada().getDescricao(),
-//                                                parametro.getParametroJogo().getConcurso().getValorApostaMinima(), getResources().getString(R.string.string_vazia), getResources().getString(R.string.string_vazia), parametro.getParametroJogo().getConcurso().getModalidade(),
-//                                                parametro.getParametroJogo().getConcurso(), false, null));
-//            Toast.makeText(PrincipalActivity.this, "+Milionaria de forma mockada", Toast.LENGTH_LONG).show();
-//        }
-
         for (ParametroSimulacao parametro : modalidadesParaListar) {
+
             if (parametro.getParametroJogo().getConcurso().getModalidade() != null) {
                 String descricao = getDescricaoModalidade(parametro);
                 listaModalidades.add(new Modalidade(descricao, parametro.getParametroJogo().getConcurso().getValorApostaMinima(),
-                                                    getResources().getString(R.string.string_vazia),
-                                                    getResources().getString(R.string.string_vazia),
-                                                    parametro.getParametroJogo().getConcurso().getModalidade(),
-                                                    parametro.getParametroJogo().getConcurso(), false, null));
+                        getResources().getString(R.string.string_vazia),
+                        getResources().getString(R.string.string_vazia),
+                        parametro.getParametroJogo().getConcurso().getModalidade(),
+                        parametro.getParametroJogo().getConcurso(), false, null));
             }
         }
 
@@ -537,7 +542,8 @@ public class PrincipalActivity extends AppCompatActivity
     private void layoutTrevoAcessoRapido() {
         valorRepassesPrincipal.setText(getResources().getString(R.string.zero));
 
-        tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
+        //tituloLerBilhetes.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.label_ler_bilhestes_bold)));
+        tituloLerBilhetes.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.label_ler_bilhestes_bold)));
         Date data = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = null;
@@ -550,7 +556,8 @@ public class PrincipalActivity extends AppCompatActivity
         calendar.setTime(date);
         ano = calendar.get(Calendar.YEAR);
 
-        textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this,
+        //textoRepassados.setText(ViewUtils.textFuturaAndFuturaBold(this,
+        textoRepassados.setText(ViewUtils.textCaixaSTDBold(this,
                 String.format(getString(R.string.label_repassados_boas_causas_bold).replace("{ano_repassometro}", String.valueOf(ano)))));
         AnimacaoCalculoRepassesSociais.start(valorRepassesPrincipal, 0, repassesSociais);
     }
@@ -587,7 +594,7 @@ public class PrincipalActivity extends AppCompatActivity
         relativeContentPrincipal.setEnabled(false);
         actionApresentarTrevo.setEnabled(false);
         atalhoRapidoLoterias.setVisibility(View.VISIBLE);
-        EstiloModalidade estilo = new EstiloModalidade(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,
@@ -623,7 +630,7 @@ public class PrincipalActivity extends AppCompatActivity
     private void AnimacaoFecharMenuRapido(View v) {
         relativeContentPrincipal.setEnabled(true);
         actionApresentarTrevo.setEnabled(false);
-        EstiloModalidade estilo = new EstiloModalidade(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,
@@ -697,22 +704,35 @@ public class PrincipalActivity extends AppCompatActivity
     public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
-            EstiloModalidade estilo = new EstiloModalidade(data.get(adapterPosition).getTipoModalidade());
-            buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
-            buttonHomeBet.setTag(adapterPosition);
-            buttonHomeBet.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.aposte_por) +
-                    getResources().getString(R.string.espaco_em_branco) +
-                    ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
-
-            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
-                temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
-
-                buttonHomeBolao.setText(ViewUtils.textFuturaAndFuturaBold(this,
-                                                                          getResources()
-                                                                                  .getString(R.string.apostas_boloes)));
-                buttonHomeBolao.setVisibility(View.VISIBLE);
-            } else {
+            if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA)) {
+                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
+                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                buttonHomeBet.setTag(adapterPosition);
+                buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
+                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
                 buttonHomeBolao.setVisibility(View.GONE);
+            } else {
+                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
+                if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
+                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
+                } else {
+                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, R.color.branco));
+                }
+                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+                buttonHomeBet.setTag(adapterPosition);
+                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
+                        getResources().getString(R.string.espaco_em_branco) +
+                        ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+
+                if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+                        temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
+
+                    buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
+                                    .getString(R.string.apostas_boloes)));
+                    buttonHomeBolao.setVisibility(View.VISIBLE);
+                } else {
+                    buttonHomeBolao.setVisibility(View.GONE);
+                }
             }
         }
     }
@@ -758,7 +778,12 @@ public class PrincipalActivity extends AppCompatActivity
         int              selecionada   = Integer.parseInt(buttonHomeBet.getTag().toString());
         ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
-        if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
+        if (modalidade == ModalidadeEnum.INSTANTANEA) {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_instantanea));
+            Uri uri = Uri.parse(ENDERECO_INSTANTANEA);
+            Intent activity = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(activity);
+        } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
             Intent activity = new Intent(PrincipalActivity.this, clazz);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
@@ -1063,6 +1088,27 @@ public class PrincipalActivity extends AppCompatActivity
         super.onDestroy();
     }
 
+    private boolean redirectDeepLink() {
+        Intent appLinkIntent = getIntent();
+        String appLinkAction = appLinkIntent.getAction();
+        Uri appLinkData = appLinkIntent.getData();
+        if (appLinkData != null && appLinkData.toString().length() >0) {
+            Intent intent = IntentUtil.getIntentDeepLink(this, appLinkData.toString());
+            if (intent != null) {
+                startActivity(intent);
+                return true;
+            }
+        }
+        return false;
+    }
 
-
+    //*** APAGAR ***
+    private boolean redirectDeepLinkMock() {
+        Intent intent = IntentUtil.getIntentDeepLink(this, this.getResources().getString(R.string.depplink_path_mega_sena));
+        if (intent != null) {
+            startActivity(intent);
+            return true;
+        }
+        return false;
+    }
 }

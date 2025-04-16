@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mais_milionaria_escura"
+    android:background="@color/milionaria_escuro_mkp"
     tools:context=".IntroducaoTutorialActivity">
 
     <TextView
         android:id="@+id/titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Chegou a +Milionária"
+        android:text="@string/chegou_a_milionaria"
         android:textColor="@color/branco"
         android:fontFamily="@font/futura_std_bold"
         android:textAlignment="center"
@@ -25,7 +25,7 @@
         android:id="@+id/descricao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Conheça o novo jogo +Milionária. \nVamos explicar como funciona \n nessa nova modalidade."
+        android:text="@string/conheca_mais_milionaria"
         android:textColor="@color/branco"
         android:textAlignment="center"
         android:fontFamily="@font/futura_std_book"

@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.view.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -94,7 +95,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		getExtras();
 		estilo = new EstiloModalidadeMKP(modalidade);
 
-		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_bolões_"));
+		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_bolões_"));
 
 		setViews();
 		setMetodos();
@@ -124,6 +125,9 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void aplicaEstilo() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
+		}
 		configBackgroundColorMenu(estilo.getCorEscura());
 		configColorTextMenu(estilo.getCorFonteFundoEscuro());
 
@@ -256,10 +260,10 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		btnAdd.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.adicionarAoCarrinho)));
 		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
 
-		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(this,
+		textQtdDezenas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
 				getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
 
-		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(this,
+		textQtdCotas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
 				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
 
 		atualizaQuantidadeTextView();
@@ -369,4 +373,11 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		return true;
 	}
 
+	@Override
+	public void onBackPressed() {
+		if (precisaAtualizarLista){
+			setResult(RESULT_OK);
+		}
+		finish();
+	}
 }

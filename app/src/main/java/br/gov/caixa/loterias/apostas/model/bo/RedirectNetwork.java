@@ -267,7 +267,7 @@ public class  RedirectNetwork {
         Gson gsonResponse = new Gson();
         ErrorResponse errorResponse = new ErrorResponse();
         String body = null;
-        if (error.networkResponse.data != null) {
+        if (error != null && error.networkResponse != null && error.networkResponse.data != null) {
             try {
                 body = new String(error.networkResponse.data, "UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);

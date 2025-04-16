@@ -50,14 +50,14 @@ public class FiltroMarketplaceModel extends AppModel{
 
 	}
 
-	public FiltroAplicadoMarketplace getFiltroAplicado(String valorMin, String valorMax,
-													   Float qtdMin, Float qtdMax,
-													   LotericaDTO selectLotericaDTO,
-													   ModalidadeEnum selectModalidade,
+	public FiltroAplicadoMarketplace getFiltroAplicado(LotericaDTO selectLotericaDTO, String valorMin, String valorMax,
+													   Integer qtdMin, Integer qtdMax, Integer qtdDezenas, String numerosQuero,
+													   String numerosNaoQuero, ModalidadeEnum selectModalidade,
 													   TipoConcursoEnum selectTipoConcurso) {
 		return new FiltroAplicadoMarketplace(
+				selectLotericaDTO,
 				valorMin.replace(".","").replace(",","."),
 				valorMax.replace(".","").replace(",","."),
-				qtdMin, qtdMax, selectLotericaDTO, selectModalidade, selectTipoConcurso);
+				qtdMin, qtdMax, qtdDezenas, numerosQuero, numerosNaoQuero, selectModalidade, selectTipoConcurso);
 	}
 }

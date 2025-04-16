@@ -11,6 +11,7 @@ class ServerMethods {
      static final String INCLUIR_APOSTA_CARRINHO_PATH = "/carrinhos/incluir-aposta";
      static final String INCLUIR_SURPRESINHA_CARRINHO_PATH = "/carrinhos/incluir-surpresinha";
      static final String BUSCA_CARRINHO_PATH = "/carrinhos";
+     static final String DELETE_APOSTA_COMBO_CARRINHO_PATH = "carrinhos/combos/";
      static final String DELETE_APOSTA_CARRINHO_PATH = "carrinhos/apostas/";
      static final String LIMPAR_CARRINHO_PATH = "/carrinhos/limpar";
      static final String VALIDAR_CARRINHO = "carrinhos/validar";
@@ -62,9 +63,14 @@ class ServerMethods {
      static final String APOSTAS_FAVORITAS_LISTA_UNICA_PATH = "/apostas-favoritas/lista-unica";
 
      static final String APOSTAS_MES_ANO_PATH = "/apostas/meses";
-     static final String APOSTAS_CONFIRMADAS_PATH = "apostas";
+     static final String APOSTAS_CONFIRMADAS_NOVA_API_PATH = "/consultar";
+     static final String APOSTAS_CONFIG_CONSULTA = "/apostas/config-consulta";
+     static final String APOSTAS_RECUPERAR_NOVA_API_PATH = "/{id}/recuperar";
+     static final String APOSTAS_CONFIRMADAS_PATH = "/apostas";
      static final String APOSTAS_CONFIRMADAS_DETALHES_PATH = "/apostas/{id}/detalhes-premio";
      static final String APOSTAS_CONFIRMADAS_COMPROVANTE_PATH = "/apostas/{id}/comprovante";
+     static final String APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH = "/apostas/{id}/comprovante-aposta-app-pdf";
+     static final String APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PREMIO_PATH = "/apostas/{id}/comprovante-premio-app-pdf";
      static final String APOSTAS_COMPROVANTE_PREMIO_PATH = "/apostas/{id}/comprovante-premio";
      static final String APOSTAS_CONFERIR_PATH = "/apostas/{id}/conferir";
      static final String APOSTAS_GERAR_CODIGO_RESGATE_PATH = "/apostas/{id}/app/gerar-codigo-resgate-loterica";
@@ -79,6 +85,7 @@ class ServerMethods {
      static final String COMPRAS_PATH = "/compras";
      static final String COMPRAS_MESES_PATH = "/compras/meses";
      static final String DETALHES_COMPRAS_PATH = "/compras/{id}/apostas";
+     static final String SITUACOES_COMPRA_PATH = "/compras/situacoes-compra";
 
      static final String DUVIDAS_SECOES_PATH = "/duvidas/secoes";
      static final String DUVIDAS_PATH = "/duvidas";
