@@ -68,6 +68,7 @@ class ServerMethods {
 
      static final String APOSTAS_MES_ANO_PATH = "/apostas/meses";
      static final String APOSTAS_CONFIRMADAS_NOVA_API_PATH = "/consultar";
+     static final String APOSTAS_CONFIG_CONSULTA = "/apostas/config-consulta";
      static final String APOSTAS_RECUPERAR_NOVA_API_PATH = "/{id}/recuperar";
      static final String APOSTAS_CONFIRMADAS_PATH = "/apostas";
      static final String APOSTAS_CONFIRMADAS_DETALHES_PATH = "/apostas/{id}/detalhes-premio";
@@ -133,6 +134,9 @@ class ServerMethods {
      static final String AUTOAVALIACAO_RESPOSTAS = "/autoavaliacoes/grava-resposta";
 
      static final String AUTOSUSPENSAO_APOSTADOR = "/usuarios/suspender-conta-apostador";
+
+     static final String VALIDA_REPRESA = "/parametros/valida-represa";
+
 
      private ServerMethods(){}
 }

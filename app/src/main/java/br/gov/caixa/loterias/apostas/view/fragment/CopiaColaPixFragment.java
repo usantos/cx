@@ -41,6 +41,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 
 public class CopiaColaPixFragment extends Fragment {
 	private static final String ARG_PIX_COPIA_COLA = "ARG_MILLIS_FIM";
+	private static final String ARG_DATA_HORA_SERVIDOR = "ARG_DATA_HORA_SERVIDOR";
 
 	private View view;
 	private Button btnCopia, btnMinhasCompras, iconAtualizar;
@@ -57,13 +58,15 @@ public class CopiaColaPixFragment extends Fragment {
 
 	private PixModel model;
 	private boolean jaCopiou = false;
+	private String dataHoraServidor;
 
 	public CopiaColaPixFragment() {}
 
-	public static CopiaColaPixFragment newInstance(GerarPixDTO pixDTO) {
+	public static CopiaColaPixFragment newInstance(GerarPixDTO pixDTO, String dataHoraServidor) {
 		CopiaColaPixFragment fragment = new CopiaColaPixFragment();
 		Bundle               args     = new Bundle();
 		args.putSerializable(ARG_PIX_COPIA_COLA, new Gson().toJson(pixDTO));
+		args.putString(ARG_DATA_HORA_SERVIDOR, dataHoraServidor);
 		fragment.setArguments(args);
 		return fragment;
 	}
@@ -86,6 +89,7 @@ public class CopiaColaPixFragment extends Fragment {
 			if (stringJson != null && !stringJson.isEmpty()){
 				pixDTO = new Gson().fromJson(stringJson, GerarPixDTO.class);
 			}
+			dataHoraServidor = getArguments().getString(ARG_DATA_HORA_SERVIDOR);
 		}
 
 		model = new PixModel(getActivity());
@@ -125,7 +129,7 @@ public class CopiaColaPixFragment extends Fragment {
 	}
 
 	private void startTimer() {
-		ContagemRegressiva contDown = new ContagemRegressiva(timerView, pixDTO.getTimerZoneMilleSeconds(), 1000) {
+		ContagemRegressiva contDown = new ContagemRegressiva(timerView, pixDTO.getTimerZoneMilleSeconds(dataHoraServidor), 1000) {
 			@Override
 			public void onFinish() {
 				try {

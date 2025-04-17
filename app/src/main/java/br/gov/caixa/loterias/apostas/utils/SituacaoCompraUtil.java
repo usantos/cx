@@ -89,4 +89,8 @@ public class SituacaoCompraUtil {
 		return descricao;
 	}
 
+	public static  boolean isRepresada(DTOEnumLong situacao){
+		return situacao.getValor() == VALOR_EM_PROCESSAMENTO_REPRESADA;
+	}
+
 }
