@@ -44,7 +44,7 @@ public enum ModalidadeEnum implements Serializable {
             case TIMEMANIA:
                 return "timemania";
             case DUPLA_SENA:
-                return "dupla-sena";
+                return "dupla sena";
             case DIA_DE_SORTE:
                 return "dia de sorte";
             case SUPER_7:
