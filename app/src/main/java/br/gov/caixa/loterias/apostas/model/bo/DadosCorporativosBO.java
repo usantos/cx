@@ -1,23 +1,12 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.NetworkResponse;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeiosPagamentosResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TermoDeUsoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UnidadeFederacaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 
 /**
@@ -236,6 +225,19 @@ public class DadosCorporativosBO extends SilceBO{
                                                                     listener.getSilceListener(),
                                                                     listener.getErrorListener(),
                                                                     getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void validaRepresa(final RequestListener<RepresaResponse> listener){
+        String url = ServerMethods.VALIDA_REPRESA;
+        final GsonRequest request = getServiceConnection().buildGetRequest(url,
+                new HashMap<>(),
+                RepresaResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
 
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);

@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.view.adapter.baseadapter;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +19,24 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
+import androidx.appcompat.app.AlertDialog;
 import br.gov.caixa.loterias.apostas.R;
+
+import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import com.android.volley.VolleyError;
 
 public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 
     public static final int MEIO_PAGAMENTO = 0;
     public static final int SITUACAO = 1;
-
+    private boolean isMeioPagamentoAlterado = false;
     private Context context;
     private List<String> expandableListTitle;
     private LinkedHashMap<Long, String> situacoesCompra;
@@ -157,6 +167,8 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             numeroMeioPagamentoSelecionado = newVal;
+            atualizaSituacoesPorMeioDePagamento(getIdMeioPagamentoSelecionado());
+
         }
     }
 
@@ -237,6 +249,12 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             numeroSituacaoCompraSelecionada = newVal;
+            if(isMeioPagamentoAlterado){
+                npSituacao.setMinValue(1);
+                npSituacao.setMaxValue(situacoesCompra.size());
+                npSituacao.setDisplayedValues(listaSituacoesCompra());
+                isMeioPagamentoAlterado = false;
+            }
         }
     }
 
@@ -261,6 +279,58 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
         this.activity = activity;
     }
 
+    public void atualizaSituacoesPorMeioDePagamento(Long idMeioPagamento){
 
+        final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
+        try{
+            ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
+                @Override
+                public void onResponse(SituacoesCompraResponse response) {
+                    loadViewProgress.dismiss();
+                    if(response.getPayload() != null){
+                        situacoesCompra = montaMapSituacoesCompra(response.getPayload());
+                        isMeioPagamentoAlterado = true;
+                        Log.e("FiltroComprasAdapter", "O payload da resposta do servico que busca as situações de compra é nulo");
+                    }
+
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    loadViewProgress.dismiss();
+                    Log.e("FiltroComprasAdapter", "Erro ao recuperar as siturações de compra", error);
+                    ViewUtils.alertTitulo(activity, R.string.label_atencao, "Erro ao recuperar as situações de compra para o meio de pagamento selecionado");
+
+                }
+            });
+        } catch (Exception e){
+            loadViewProgress.dismiss();
+            Log.e("ListaComprasActivity", "Erro ao tentar acessar o serviço de situações de compra", e);
+        }
+    }
+
+
+    private LinkedHashMap<Long, String> montaMapSituacoesCompra(List<SituacoesCompraDTO> listaSituacoes){
+        String descricao;
+        LinkedHashMap<Long, String> map = new LinkedHashMap<>();
+        if(listaSituacoes != null){
+            map.put(0L, "Todas");
+            for(SituacoesCompraDTO situacaoCompra: listaSituacoes){
+                switch (situacaoCompra.getId().intValue()){
+                    case 9:
+                        descricao = situacaoCompra.getDescricao().replace(" - ", "-");
+                        map.put(9L, descricao);
+                        break;
+                    case 12:
+                        descricao = situacaoCompra.getDescricao().replace(" - ", "-");
+                        map.put(12L, descricao);
+                        break;
+                    default:
+                        map.put(situacaoCompra.getId(), situacaoCompra.getDescricao());
+                }
+            }
+        }
+        return map;
+    }
 }
 
