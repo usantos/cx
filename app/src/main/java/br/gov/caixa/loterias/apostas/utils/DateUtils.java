@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSingleton;
+
 /**
  * Created by ramluz on 15/12/2017.
  */
@@ -111,10 +113,14 @@ public class DateUtils {
 
     public static long diffMillisSecondsTimerZone(String dataHoraExpiracao) {
         DateTimeZone timeZone = DateTimeZone.forID("America/Sao_Paulo");
-        DateTime agora = DateTime.now(timeZone);
+        //DateTime agora = DateTime.now().withZone(timeZone);
+        DateTime agora = DataHoraServidorSingleton.getInstance().getCurrentDateTime();
 
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ");
-        DateTime expiracao = formatter.parseDateTime(dataHoraExpiracao);
+        //Alterado o formato para atender o Servico Nuvem
+        //DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ");
+        //DateTime expiracao = formatter.parseDateTime(dataHoraExpiracao);
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss").withZone(timeZone);
+        DateTime expiracao = formatter.parseDateTime(dataHoraExpiracao.substring(0,19));
 
         Duration duration = new Duration(agora, expiracao);
         long diffInSeconds = duration.getStandardSeconds();
