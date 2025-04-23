@@ -81,7 +81,7 @@ public class ServicoNuvemUtil {
 
 		if (listLogadoExato.contains(path)) {
 			if (finalCPFAcessaNuvem()) {
-				apresentaCaminhoTQS(baseUrlCarrinho, PUBLICO, path);
+				apresentaCaminhoTQS(baseUrlCarrinho, LOGADO, path);
 				return baseUrlCarrinho + LOGADO + path;
 			}
 			return null;
@@ -90,7 +90,7 @@ public class ServicoNuvemUtil {
 		for(String parcial : listLogadoParcial) {
 			if (path.startsWith(parcial)) {
 				if (finalCPFAcessaNuvem()) {
-					apresentaCaminhoTQS(baseUrlCarrinho, PUBLICO, path);
+					apresentaCaminhoTQS(baseUrlCarrinho, LOGADO, path);
 					return baseUrlCarrinho + LOGADO + path;
 				}
 				return null;
