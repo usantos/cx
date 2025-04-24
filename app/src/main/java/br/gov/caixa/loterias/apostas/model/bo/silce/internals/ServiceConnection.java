@@ -142,7 +142,6 @@ public class ServiceConnection {
         String url = fillUrlWithQueryParams(path, queryParams);
         //Servico Nuvem
         GsonRequest request;
-        //if (url.contains(AZURE_API)) {
         if (url.contains(ServicoNuvemUtil.AZURE_API)) {
             request = new GsonRequest<>(PUT, url, body, responseDataClass, headers, listener, errorListener);
         } else {
@@ -179,7 +178,6 @@ public class ServiceConnection {
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
 
-        //String novoCaminho = alteraCaminhoCarrinho(path);
         String novoCaminho = ServicoNuvemUtil.alteraCaminhoNuvem(path);
         if (novoCaminho != null) {
             return novoCaminho + fillParamToString(queryParams);

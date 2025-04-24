@@ -11,8 +11,10 @@ class ServerMethods {
      static final String INCLUIR_APOSTA_CARRINHO_PATH = "/carrinhos/incluir-aposta";
      static final String INCLUIR_SURPRESINHA_CARRINHO_PATH = "/carrinhos/incluir-surpresinha";
      static final String BUSCA_CARRINHO_PATH = "/carrinhos";
-     static final String DELETE_APOSTA_COMBO_CARRINHO_PATH = "carrinhos/combos/";
+
+     //static final String DELETE_APOSTA_COMBO_CARRINHO_PATH = "carrinhos/combos/";
      //static final String DELETE_APOSTA_CARRINHO_PATH = "carrinhos/apostas/";
+     static final String DELETE_APOSTA_COMBO_CARRINHO_PATH = "/carrinhos/combos/";
      static final String DELETE_APOSTA_CARRINHO_PATH = "/carrinhos/apostas/";
      static final String LIMPAR_CARRINHO_PATH = "/carrinhos/limpar";
      static final String VALIDAR_CARRINHO = "/carrinhos/validar";
