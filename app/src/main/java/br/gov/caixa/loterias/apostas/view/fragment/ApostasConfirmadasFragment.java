@@ -362,6 +362,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     public void filtraDados(){
+        if (page == null){
+            page = new ApostaPageRequest(getPageSize());
+        }
         page.setModalidade(0);
         page.setSituacao(1);
         page.setOrdenarPor(ordenacaoDefault);

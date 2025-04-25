@@ -72,7 +72,6 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaC
 	@Override
 	public void onBindViewHolder(ApostaCarrinhoHolder holder, final int position) {
 		final IdentificaoDeUmaApostaDas8Modalidades aposta = apostas.get(position);
-		//EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
 
 		holder.bind(aposta, position);
 	}

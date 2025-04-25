@@ -98,7 +98,6 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 	@Override
 	public void bind(IdentificaoDeUmaApostaDas8Modalidades aposta, int position) {
-		//EstiloModalidade estilo = new EstiloModalidade(aposta.getModalidade());
 		EstiloModalidadeMKP estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
 		if (position >= 4) {

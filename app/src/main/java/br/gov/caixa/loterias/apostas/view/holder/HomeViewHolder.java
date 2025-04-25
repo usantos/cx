@@ -69,7 +69,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private ImageView imageInstantanea;
 	private TextView textPortal;
 
-	//private EstiloModalidade estilo;
 	private EstiloModalidadeMKP estilo;
 	private OnHomeListener listener;
 	private Modalidade modalidade;
@@ -115,7 +114,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.modalidade = modalidade;
 		this.position = position;
 		setIsRecyclable(false);
-		//estilo = new EstiloModalidade(modalidade.getTipoModalidade());
 		estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
 
 		this.game.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorFonteFundoClaro()));
