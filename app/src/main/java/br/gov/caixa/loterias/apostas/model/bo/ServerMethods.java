@@ -73,8 +73,8 @@ class ServerMethods {
      static final String APOSTAS_CONFIRMADAS_PATH = "/apostas";
      static final String APOSTAS_CONFIRMADAS_DETALHES_PATH = "/apostas/{id}/detalhes-premio";
      static final String APOSTAS_CONFIRMADAS_COMPROVANTE_PATH = "/apostas/{id}/comprovante";
-     static final String APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH = "/apostas/{id}/comprovante-aposta-app-pdf";
-     static final String APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PREMIO_PATH = "/apostas/{id}/comprovante-premio-app-pdf";
+     static final String APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH = "apostas/{id}/comprovante-aposta-app-pdf";
+     static final String APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PREMIO_PATH = "apostas/{id}/comprovante-premio-app-pdf";
      static final String APOSTAS_COMPROVANTE_PREMIO_PATH = "/apostas/{id}/comprovante-premio";
      static final String APOSTAS_CONFERIR_PATH = "/apostas/{id}/conferir";
      static final String APOSTAS_GERAR_CODIGO_RESGATE_PATH = "/apostas/{id}/app/gerar-codigo-resgate-loterica";

@@ -29,7 +29,6 @@ public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAd
 
     @Override
     public FaixaPremiacaoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         ItemListaFaixaPremiacao view = ItemListaFaixaPremiacao.build(parent.getContext());
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         view.setLayoutParams(lp);
@@ -39,11 +38,6 @@ public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAd
 
     @Override
     public void onBindViewHolder(FaixaPremiacaoHolder holder, int position) {
-//        if (position % 2 == 0){
-//            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), colorFonte);
-//        } else {
-//            holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), colorFundo);
-//        }
         holder.itemListaFaixaPremiacao.setLayout(itemListaFaixaPremiacaoList.get(position), colorFundo, colorFonte);
     }
 
@@ -53,7 +47,6 @@ public class FaixaPremiacaoAdapter extends RecyclerView.Adapter<FaixaPremiacaoAd
     }
 
     class FaixaPremiacaoHolder extends RecyclerView.ViewHolder {
-
         private ItemListaFaixaPremiacao itemListaFaixaPremiacao;
 
         public FaixaPremiacaoHolder(View itemView) {

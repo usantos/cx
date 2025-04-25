@@ -61,7 +61,6 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private ModalidadeEnum modalidadeEnum;
 
     private ConferirBilheteModel model;
-    //private EstiloModalidade estiloModalidade;
     private EstiloModalidadeMKP estiloModalidade;
 
     @Override
@@ -394,7 +393,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }
     }
 
-    private void createListPremiacao(List<FaixaPremiadaDTO>       faixa) {
+    private void createListPremiacao(List<FaixaPremiadaDTO> faixa) {
+        contentResultadoPremiado.aplicaCorColunasTabela(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoClaro()));
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
         initEstiloModalidade();
         FaixaPremiacaoAdapter adapter = new FaixaPremiacaoAdapter(faixa, ContextCompat.getColor(this, estiloModalidade.getCorEscura()),

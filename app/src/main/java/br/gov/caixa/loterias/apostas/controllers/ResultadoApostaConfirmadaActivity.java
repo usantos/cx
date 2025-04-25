@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -50,7 +49,6 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
-
     public final static String DETALHES_PREMIO_DTO_EXTRA = "detalhesPremioDTO";
     public final static String COMPROVANTE_EXTRA = "comprovante";
 
@@ -84,7 +82,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     protected void init() {
         getExtras();
         setViews();
-
         createToolBar();
 
         modalidadeEnum = detalhesPremioDTO.getAposta().getModalidade();
@@ -114,9 +111,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         //contentResultadoPremiado.getPremioInfoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
         contentResultadoPremiado.getPremioInfoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorEscura()));
-
         contentResultadoPremiado.getTituloModalidadeTextView().setText(ViewUtils.getNomeModalidadePorAposta(detalhesPremioDTO.getAposta()).toLowerCase());
-
         contentResultadoPremiado.getButtonVerDetalheAposta().setOnClickListener(v -> finish());
 
         if (detalhesPremioDTO.getPremio().getValorLiquido() != null && !(BigDecimal.ZERO.compareTo(detalhesPremioDTO.getPremio().getValorLiquido()) == 0)) {
@@ -129,22 +124,16 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         contentResultadoPremiado.getBotaoAposteAgora().setText(ViewUtils.textFuturaAndFuturaBold(this ,getString(R.string.botao_aposte_agora)));
 
         if (parametroSimulacao != null) {
-
             for (ParametroSimulacao parametro : sessaoUsuario.getParametrosSimulacao().getParametros()) {
-
                 if (parametro.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum && parametro.getProximoConcurso() != null) {
-
                     parametroSimulacao.setProximoConcurso(parametro.getProximoConcurso());
                 }
             }
 
             if (parametroSimulacao.getProximoConcurso() != null) {
-
                 contentResultadoPremiado.getProximoSorteioTextView().setText(ViewUtils.getDateAndHour(parametroSimulacao.getParametroJogo().getConcurso().getDataFechamento()));
-
                 contentResultadoPremiado.getValorEstimativaConcursoAtualTextView().setText(ViewUtils.getMoedaFormat(parametroSimulacao.getParametroJogo().getConcurso().getEstimativa() ));
             }
-
         }
 
         if (isBolao(detalhesPremioDTO.getAposta())){
@@ -177,7 +166,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         this.contentResultadoPremiado = findViewById(R.id.contentResultadoPremiado);
         this.constraintAvisoResgate = findViewById(R.id.constraintAvisoResgate);
         this.botaoAposteAgora = findViewById(R.id.botaoAposteAgora);
-
         this.concursoTextView = findViewById(R.id.concursoTextView);
         this.situacaoTextView = findViewById(R.id.situacaoTextView);
         this.faixaPremiacaoTextView = findViewById(R.id.faixaPremiacaoTextView);
@@ -202,7 +190,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                     it.putExtra(CODIGO_RESGATE, result.getPayload());
                     startActivity(new Intent(it));
                 }else {
-                    //ResgatePremioLotericaAgenciaActivity_.intent(getContext()).codigoResgateDTO(result.getPayload()).isLoterica(isLoterica).detalhesPremioDTO(detalhesPremioDTO).comprovante(comprovante).start();
                     Intent intent = IntentUtil.getIntentOrigemDestino((Activity) getContext(), ResgatePremioLotericaAgenciaActivity.class);
                     intent.putExtra(ResgatePremioLotericaAgenciaActivity.CODIGO_RESGATE_DTO_EXTRA, ((Serializable) result.getPayload()));
                     intent.putExtra(ResgatePremioLotericaAgenciaActivity.IS_LOTERICA_EXTRA, ((Serializable) isLoterica));
@@ -210,7 +197,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
                     intent.putExtra(ResgatePremioLotericaAgenciaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovante));
                     ((Activity) getContext()).startActivity(intent);
                 }
-
             }
 
             @Override
@@ -227,7 +213,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     }
 
     protected void clickBotaoAposteAgora() {
-
         Intent it = new Intent(ResultadoApostaConfirmadaActivity.this, PrincipalActivity.class);
         it.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         it.putExtra(getResources().getString(R.string.extra_modalidade_apostar_agora), modalidadeEnum);
@@ -290,7 +275,6 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         if (isBolao(detalhesPremioDTO.getAposta())){
             listaFaixaPremiacaoExpandableHeightRecyclerView.setAdapter(new FaixaPremiacaoBolaoAdapter(ViewUtils.getFaixaPremiacaoDTO(detalhesPremioDTO.getPremio()), ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()), ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro()), detalhesPremioDTO.getPremio().getValorLiquido()));
         } else {
-
             concursoTextView.setTextColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro()));
             situacaoTextView.setTextColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro()));
             faixaPremiacaoTextView.setTextColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorFonteFundoClaro()));

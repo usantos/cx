@@ -27,7 +27,8 @@ public class ContentResultadoPremiado extends LinearLayout {
             cabecalhoListaFaixaPremiacaoLinearLayout, cabecalhoListaFaixaPremiacaoBolao;
     private TextView valorEstimativaConcursoAtualTextView,valorPremioTituloTextView,
             tituloModalidadeTextView, proximoSorteioTextView, nsbBilhete, idPodeComemorar,
-            tvFaixaPremiacao, tvValorPremioCota, tvValorPremioLiquido;
+            tvFaixaPremiacao, tvValorPremioCota, tvValorPremioLiquido, tvColunaConcurso,
+            tvColunaSituacao, tvColunaFaixa, tvColunaQtd, tvColunaSorteio, tvColunaValor;
     private ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
     private ConstraintLayout clVerDetalheAposta;
     private Button botaoAposteAgora ;
@@ -83,6 +84,12 @@ public class ContentResultadoPremiado extends LinearLayout {
         this.botaoAposteAgora = findViewById(R.id.botaoAposteAgora);
         this.imgTrevoResultado = findViewById(R.id.imgTrevoResultado);
         this.imgTagBolao = findViewById(R.id.imgTagBolao);
+        this.tvColunaConcurso = findViewById(R.id.concursoTextView);
+        this.tvColunaSituacao = findViewById(R.id.situacaoTextView);
+        this.tvColunaFaixa = findViewById(R.id.faixaPremiacaoTextView);
+        this.tvColunaQtd = findViewById(R.id.quantidadePremiacaoTextView);
+        this.tvColunaSorteio = findViewById(R.id.sorteioTextView);
+        this.tvColunaValor = findViewById(R.id.premiacaoTextView);
     }
 
     public LinearLayout getTopoModalidadeResultadoLinearLayout() {
@@ -154,5 +161,14 @@ public class ContentResultadoPremiado extends LinearLayout {
 
     public TextView getTvValorPremioLiquido() {
         return tvValorPremioLiquido;
+    }
+
+    public void aplicaCorColunasTabela(int corFonte) {
+        this.tvColunaConcurso.setTextColor(corFonte);
+        this.tvColunaSituacao.setTextColor(corFonte);
+        this.tvColunaFaixa.setTextColor(corFonte);
+        this.tvColunaQtd.setTextColor(corFonte);
+        this.tvColunaSorteio.setTextColor(corFonte);
+        this.tvColunaValor.setTextColor(corFonte);
     }
 }

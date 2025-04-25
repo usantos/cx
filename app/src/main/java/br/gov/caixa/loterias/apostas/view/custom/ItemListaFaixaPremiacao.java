@@ -18,7 +18,6 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
  * Class ItemListaFaixaPremiacao
  */
 
-//@EViewGroup(R.layout.item_lista_faixa_premiacao)
 public class ItemListaFaixaPremiacao extends LinearLayout {
 
     private boolean alreadyInflated = false;
