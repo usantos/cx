@@ -544,7 +544,7 @@ public class ApostaBO extends SilceBO {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.LIMPAR_CARRINHO_PATH,
                     new LinkedHashMap<>(),
-                    null,
+                    "",                    //null-Não funcionava no Servico Nuvem, ""-funciona nos 2
                     CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(),
