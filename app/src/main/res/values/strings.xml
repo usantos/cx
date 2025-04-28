@@ -1493,6 +1493,6 @@
     <string name="acesse_minhas_apostas">Acesse \n_Minhas apostas_</string>
     <string name="arg_goto_minhas_apostas">GO_TO_MINHAS_APOSTAS</string>
     <string name="para_comprar_seu_bolao">para comprar o seu bolão</string>
-    <string name="ainda_da_tempo">O registro de apostas individuais para o concurso %d foi encerrado. Mas ainda dá tempo de comprar seu bolão e concorrer a esse sorteio.\nAcesse \'Compre seu bolão\' e participe!</string>
+    <string name="ainda_da_tempo">O registro de apostas individuais para o concurso _%d_ foi encerrado. Mas ainda dá tempo de comprar seu bolão e concorrer a esse sorteio.\nAcesse _\'Compre seu bolão\'_ e participe!</string>
 
 </resources>

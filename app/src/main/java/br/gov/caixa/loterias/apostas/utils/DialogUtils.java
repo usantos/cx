@@ -277,7 +277,7 @@ public class DialogUtils {
         tvTitulo.setText(titulo);
 
         TextView tvDescricao = dialog.findViewById(R.id.textCustom);
-        tvDescricao.setText(descricao);
+        tvDescricao.setText(ViewUtils.textCaixaSTDBold(context, descricao));
 
         Button button1       = dialog.findViewById(R.id.btnCustom1);
         if (textBotao1 == null) {

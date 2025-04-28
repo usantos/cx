@@ -802,16 +802,10 @@ public class PrincipalActivity extends AppCompatActivity
                         modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso(),
                         modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero());
         if (tempoExtraRestanteAposEncerrmento != null) {
-            //ViewUtils.alertTitleButton(this, R.string.label_atencao,
-            //    ViewUtils.textCaixaSTDBold(this, getString(R.string.ainda_da_tempo,
-            //        modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero())).toString(),
-            //    getString(R.string.title_entendi),
-            //    (DialogInterface.OnDismissListener) dialog -> {});
-
              DialogUtils.showDialogCustom(this,
                     getString(R.string.label_atencao),
-                    getString(R.string.ainda_da_tempo,
-                    modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero()),
+                     getString(R.string.ainda_da_tempo,
+                             modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero()),
                     null, getString(R.string.title_entendi),
                     null, null, false);
             return;
