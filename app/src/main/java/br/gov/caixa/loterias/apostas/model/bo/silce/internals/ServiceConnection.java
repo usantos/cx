@@ -123,7 +123,7 @@ public class ServiceConnection {
         String url = fillUrlWithQueryParams(path, queryParams);
         //Servico Nuvem
         GsonRequest request;
-        if (url.contains(ServicoNuvemUtil.AZURE_API)) {
+        if (ServicoNuvemUtil.isUrlServicoNuvem(url)) {
             request = new GsonRequest<>(POST, url, body, responseDataClass, headers, listener, errorListener);
         } else {
             request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
@@ -142,7 +142,7 @@ public class ServiceConnection {
         String url = fillUrlWithQueryParams(path, queryParams);
         //Servico Nuvem
         GsonRequest request;
-        if (url.contains(ServicoNuvemUtil.AZURE_API)) {
+        if (ServicoNuvemUtil.isUrlServicoNuvem(url)) {
             request = new GsonRequest<>(PUT, url, body, responseDataClass, headers, listener, errorListener);
         } else {
             request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);

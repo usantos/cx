@@ -136,5 +136,8 @@ public class ServicoNuvemUtil {
 		}
 	}
 
+	public static boolean isUrlServicoNuvem(String url) {
+		return url.contains(ServicoNuvemUtil.AZURE_API);
+	}
 
 }
