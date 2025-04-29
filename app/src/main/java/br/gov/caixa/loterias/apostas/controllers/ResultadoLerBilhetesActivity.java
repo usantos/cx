@@ -253,7 +253,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             String label = getResources().getString(R.string.label_voce_foi_premiado_exclamacao);
             contentResultadoPremiado.getValorPremioTituloTextView().setText(label);
         }
-        contentResultadoPremiado.getValorPremioTituloTextView().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoEscuro()));
+        contentResultadoPremiado.getValorPremioTituloTextView().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoClaro()));
 
         checkNsb();
 
@@ -286,7 +286,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             contentResultadoPremiado.getTituloModalidadeTextView().setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
         }
         contentResultadoPremiado.getTituloModalidadeTextView().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoClaro()));
-        contentResultadoPremiado.getPodeComemorar().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoEscuro()));
+        contentResultadoPremiado.getPodeComemorar().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoClaro()));
     }
 
     private void initEstiloModalidade() {
