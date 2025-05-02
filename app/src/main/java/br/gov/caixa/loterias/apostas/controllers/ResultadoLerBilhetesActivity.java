@@ -184,6 +184,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                 if (isPremiado(payload)) {
                     List<FaixaPremiadaDTO> faixas = ViewUtils.getFaixaPremiadoNaoPremiado(resultadoConsultaBilheteDTO.getPremioDTO());
                     atualizarLayoutPremiado(faixas);
+                    RateUtils.avaliarAplicativo(ResultadoLerBilhetesActivity.this, true);
                 } else if (isPreescrito(payload)){
                     atualizarLayoutApenasMensagem(R.string.label_concurso_prescrito);
                 } else if (isPremioPago(payload)){
