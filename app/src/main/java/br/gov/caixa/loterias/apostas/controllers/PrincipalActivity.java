@@ -72,6 +72,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PushRegistrarDispositivoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
@@ -86,11 +87,13 @@ import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MessagingToken;
 import br.gov.caixa.loterias.apostas.utils.NotificacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
@@ -116,6 +119,7 @@ public class PrincipalActivity extends AppCompatActivity
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
     public static final String ENDERECO_INSTANTANEA = "https://instantanea.loterias.gov.br";
+    private static final String TOKEN_DISPOSITIVO = "TOKEN_DISPOSITIVO";
 
     public AppBarLayout navigationBarListaModalidade;
     public DiscreteScrollView homeCarousel;
@@ -174,6 +178,8 @@ public class PrincipalActivity extends AppCompatActivity
     public void init() {
         //getExtras();
         setViews();
+
+        registrarDispositivo();
 
         setSupportActionBar(toolbar);
 
@@ -420,8 +426,6 @@ public class PrincipalActivity extends AppCompatActivity
         trataPopupDeNotificacaoHandler();
 
         redirectDeepLink();
-        //***APAGAR
-        //redirectDeepLinkMock();
     }
 
     private void trataPopupDeNotificacaoHandler() {
@@ -1137,13 +1141,39 @@ public class PrincipalActivity extends AppCompatActivity
         return false;
     }
 
-    //*** APAGAR ***
-    private boolean redirectDeepLinkMock() {
-        Intent intent = IntentUtil.getIntentDeepLink(this, this.getResources().getString(R.string.depplink_path_mega_sena));
-        if (intent != null) {
-            startActivity(intent);
-            return true;
-        }
-        return false;
+    private void registrarDispositivo() {
+        String cpf = DadosUsuarioBO.obterCpf();
+        MessagingToken messagingToken = new MessagingToken();
+        messagingToken.tokenFirebase(new MessagingToken.OnTokenListener() {
+            @Override
+            public void onSucesso(String tokenFirebase) {
+
+                if ((cpf != null && cpf.length() > 0) &&
+                     !messagingToken.isTokenEnviado(cpf, tokenFirebase)) {
+                    DadosUsuarioBO.getInstance().postPushRegistrarDispositivo(cpf, tokenFirebase, new RequestListener<PushRegistrarDispositivoResponse>() {
+                        @Override
+                        public void onResponse(PushRegistrarDispositivoResponse response) {
+                            if (response.getPayload().getCodigo().equals("200")) {
+                                if (!BuildVersionUtil.isPRD()) {
+                                    ViewUtils.alert(PrincipalActivity.this, "GRAVOU O TOKEN DO DISPOSITIVO COM SUCESSO\n" + tokenFirebase);
+                                }
+                                messagingToken.setTokenEnviado(cpf, tokenFirebase);
+                            }
+                        }
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (!BuildVersionUtil.isPRD()) {
+                                ViewUtils.alert(PrincipalActivity.this, "ERRO GRAVANDO TOKEN DO DISPOSITIVO:\n" + tokenFirebase);
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onErro(Exception e) {
+            }
+        });
     }
+
 }

@@ -117,6 +117,7 @@ android {
                 buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
                 buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasprd\""
                 buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutLoterias\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                         hostName             : "br.gov.caixa.caixaloterias",
@@ -193,6 +194,10 @@ android {
                 buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME_INTERNO", "\"customLayoutCaixaTem\""
                 buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME_HML", "\"customLayoutCaixaTem\""
                 buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME_PILOTO", "\"customLayoutCaixaTem\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES_EXTERNO", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES_INTERNO", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES_HML", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES_PILOTO", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                         hostName             : "br.gov.caixa.caixaloterias",
@@ -223,6 +228,7 @@ android {
                 buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
                 buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasdes\""
                 buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                         hostName             : "br.gov.caixa.caixaloterias",
@@ -323,7 +329,6 @@ repositories {
         //Apache commons
         implementation 'org.apache.commons:commons-collections4:4.1'
 
-
         //Segmented Control
         implementation 'info.hoang8f:android-segmented:1.0.6'
 
@@ -343,9 +348,9 @@ repositories {
         implementation 'net.danlew:android.joda:2.10.9.1'
 
         // Import the Firebase BoM - Utiliado em conjunto com FMC
-        //implementation platform('com.google.firebase:firebase-bom:32.0.0')
+        implementation platform('com.google.firebase:firebase-bom:32.0.0')
         // Firebase Cloud Messaging (Java)
-        //implementation 'com.google.firebase:firebase-messaging'
+        implementation 'com.google.firebase:firebase-messaging'
 
         // testImplementation deps
         testImplementation 'junit:junit:4.13.2'
