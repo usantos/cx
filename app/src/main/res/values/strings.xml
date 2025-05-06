@@ -1094,7 +1094,8 @@
     <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
     <string name="percent_d_minutos">%d minutos </string>
     <string name="percent_d_segundos">%d segundos</string>
-    <string name="aposta_encerrada">Aposta encerrada</string>
+    <string name="aposta_encerrada">Encerradas</string>
+    <string name="apostas">Apostas</string>
 
     <!-- App Center -->
     <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
@@ -1493,6 +1494,6 @@
     <string name="acesse_minhas_apostas">Acesse \n_Minhas apostas_</string>
     <string name="arg_goto_minhas_apostas">GO_TO_MINHAS_APOSTAS</string>
     <string name="para_comprar_seu_bolao">para comprar o seu bolão</string>
-    <string name="ainda_da_tempo">O registro de apostas individuais para o concurso _%d_ foi encerrado. Mas ainda dá tempo de comprar seu bolão e concorrer a esse sorteio.\nAcesse _\'Compre seu bolão\'_ e participe!</string>
+    <string name="ainda_da_tempo">O registro de apostas individuais para o _concurso %d_ foi encerrado. Mas ainda dá tempo de comprar seu bolão e concorrer a esse sorteio.\nAcesse _\"Compre seu bolão\"_ e participe!</string>
 
 </resources>

@@ -39,6 +39,7 @@ import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
@@ -301,10 +302,10 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			dataFechamentoSorteio = DateUtils.criaDataHora(modalidade.getConcurso().getDataFechamento(), formatoData);
 
 //			EncerramentoUtil.mockSetDataHoraEncerramento(
-//					"14/04/2025",
-//					"16:00:00",
-//					"17:30:00",
-//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.NORMAL, 5652);
+//					"06/05/2025",
+//					"10:30:00",
+//					"11:45:00",
+//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.NORMAL, 5663);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -343,12 +344,14 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 					}
 
 					public void onFinish() {
+						textViewApostasEncerramEm.setText(itemView.getContext().getResources().getString(R.string.apostas));
 						tempoRestanteParaAposta.setText(itemView.getContext().getResources().getString(R.string.aposta_encerrada));
 						verificaTempoExtraAposEncerramento();
 					}
 
 				}.start();
 			} else {
+				textViewApostasEncerramEm.setText(itemView.getContext().getResources().getString(R.string.apostas));
 				tempoRestanteParaAposta.setText(itemView.getContext().getResources().getString(R.string.aposta_encerrada));
 				verificaTempoExtraAposEncerramento();
 			}

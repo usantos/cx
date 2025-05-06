@@ -361,7 +361,7 @@
                             android:id="@+id/cl_timer30Min"
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
-                            android:layout_marginTop="32dp"
+                            android:layout_marginTop="130dp"
                             android:visibility="gone">
 
                             <TextView
@@ -370,7 +370,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/caixa_std_semi_bold"
                                 android:text="@string/pix_voce_tem"
-                                android:textColor="@color/cinzaescuro"
+                                android:textColor="@color/azul_alterar"
                                 android:textSize="12sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
