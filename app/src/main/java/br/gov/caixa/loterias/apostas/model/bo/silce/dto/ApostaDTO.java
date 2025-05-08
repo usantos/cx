@@ -577,7 +577,7 @@ public class ApostaDTO<T> implements Serializable {
             case TIMEMANIA:
                 return "Timemania";
             case DUPLA_SENA:
-                return "Dupla-Sena";
+                return "Dupla Sena";
             case DIA_DE_SORTE:
                 return "Dia de sorte";
             case SUPER_7:
