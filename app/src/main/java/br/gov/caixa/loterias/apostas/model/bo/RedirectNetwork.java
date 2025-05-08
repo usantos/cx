@@ -7,10 +7,6 @@ import android.os.Build;
 import android.text.Html;
 import android.widget.Toast;
 
-import br.gov.caixa.loterias.apostas.controllers.*;
-import br.gov.caixa.loterias.apostas.utils.*;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -19,12 +15,28 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
+import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
+import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
+import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
+import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
+import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+
 
 
 /**
@@ -98,38 +110,7 @@ public class  RedirectNetwork {
                 }
                 switch (response.statusCode){
                     case 401:
-                        DialogUtils.showDialogCustom(activity,
-                                activity.getString(R.string.label_atencao),
-                                activity.getString(R.string.confirmacao_continuar_experimente),
-                                activity.getString(R.string.continuar_experimente),
-                                activity.getString(R.string.efetuar_login),
-                                null, new OnDialog3ButtonsListener() {
-                                    @Override
-                                    public void leftButtom() {
-                                        if(activity instanceof MinhasApostasActivity
-                                            || activity instanceof ListaComprasActivity
-                                            || activity instanceof ConfiguracaoRapidaoActivity
-                                            || activity instanceof ListaRapidaoActivity
-                                            || activity instanceof FavoritasActivity
-                                            || activity instanceof CarrinhosFavoritosActivity
-                                            || activity instanceof MeusCartoesActivity
-                                            || activity instanceof DadosPessoaisActivity
-                                            || activity instanceof AutoavaliacaoFormActivity
-                                            || activity instanceof AutoSuspensaoActivity){
-                                            activity.finish();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void centerButtom() {
-                                        connectKeycloak(activity);
-                                    }
-
-                                    @Override
-                                    public void rightButtom() {
-
-                                    }
-                                }, true);
+                        connectKeycloak(activity);
                         return;
                     case 400:
                         treatNegotialErros(errorResponse, error, activity);
@@ -150,8 +131,6 @@ public class  RedirectNetwork {
             AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
         }
     }
-
-
 
     public static void checkRedirectCompraAsync(VolleyError error, final Activity activity){
         boolean lancouEvento = false;

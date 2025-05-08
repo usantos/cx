@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.net.Uri;
 import android.util.Base64;
 
+import android.util.Log;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
@@ -18,7 +20,6 @@ import org.json.JSONObject;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
@@ -86,40 +87,60 @@ public class BiometriaLogin {
                 AcessoBO.PRIMEIRO_LOGIN = false;
             }
 
-            DBLoteriasCrud crud = new DBLoteriasCrud(activity);
-            List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
-            DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
 
+            DadosUsuarioBO.getInstance().getVerificaUsuarioBloqueado(new RequestListener<RetornoPadraoResponse>() {
                 @Override
-                public void onResponse(UsuarioLogadoResponse response) {
-                    if (response.getRedirect() != null) {
-                        listener.errorRefresh(setErrorUnauthorized());
-                        return;
-                    }
-                    SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
-                    if (response != null && response.getPayload() != null && response.getPayload().getLimiteDiario() != null) {
-                        SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
-                    }
-                    //SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
-                    SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
-                    SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
-                    SessaoUsuario.getInstance().setSituacaoApostador(response.getPayload().getSituacaoApostador());
-
-                    CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
-                    UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
-                    UltimaNotificacaoSingleton.getInstance().setPagamentoNaoIdentificado(response.getPayload().getPagamentoNaoIdentificado());
-
-                    crud.deleteAll();
-
-                    AlertDialogUtils.dismiss();
-                    listener.successRefresh();
+                public void onResponse(RetornoPadraoResponse response) {
+                    verificarCadastro(activity, listener);
                 }
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    listener.errorRefresh(setErrorUnauthorized());
+                    boolean usuarioBloqueado = RedirectNetwork.trataBloqueioTotal(error, activity);
+                    if (!usuarioBloqueado) {
+                        Log.d("BiometriaLogin", "Falha na resposta do serviço");
+                        verificarCadastro(activity, listener);
+                    }
                 }
             });
+
+        });
+    }
+
+    private void verificarCadastro(Activity activity, OnRefreshTokenListener listener) {
+        DBLoteriasCrud crud = new DBLoteriasCrud(activity);
+        List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
+        DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+
+            @Override
+            public void onResponse(UsuarioLogadoResponse response) {
+                if (response.getRedirect() != null) {
+                    listener.errorRefresh(setErrorUnauthorized());
+                    return;
+                }
+                SessaoUsuario.getInstance().setValorMaximoAposta(response.getPayload().getLimiteDiario());
+                if (response != null && response.getPayload() != null && response.getPayload().getLimiteDiario() != null) {
+                    SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
+                }
+                //SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(response.getPayload().getLimiteDiario());
+                SessaoUsuario.getInstance().setResponderAutoavaliacao(response.getPayload().getResponderAutoavaliacao());
+                SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(response.getPayload().getSuspensaoTemporariaApostador());
+                SessaoUsuario.getInstance().setSituacaoApostador(response.getPayload().getSituacaoApostador());
+
+                CarrinhoSingleton.getInstance().setCarrinho(response.getPayload().getCarrinho());
+                UltimaNotificacaoSingleton.getInstance().setUltimaNoficacao(response.getPayload().getUltimaNotificacao());
+                UltimaNotificacaoSingleton.getInstance().setPagamentoNaoIdentificado(response.getPayload().getPagamentoNaoIdentificado());
+
+                crud.deleteAll();
+
+                AlertDialogUtils.dismiss();
+                listener.successRefresh();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.errorRefresh(setErrorUnauthorized());
+            }
         });
     }
 

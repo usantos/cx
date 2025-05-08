@@ -140,5 +140,6 @@ class ServerMethods {
      static final String VALIDA_REPRESA = "/parametros/valida-represa";
 
 
+     static final String VERIFICA_USUARIO_BLOQUEADO = "/usuarios/verificar-apostador-bloqueado";
      private ServerMethods(){}
 }

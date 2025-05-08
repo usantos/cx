@@ -10,7 +10,6 @@ import com.android.volley.NetworkResponse;
 
 import org.apache.commons.codec.binary.Base64;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -24,8 +23,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCartaoDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PushRegistrarDispositivoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PushRegistrarDispositivoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
@@ -305,24 +302,4 @@ public class DadosUsuarioBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
-    public void postPushRegistrarDispositivo(final String cpf, final String token, final RequestListener<PushRegistrarDispositivoResponse> listener) {
-        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
-        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
-
-        List<Long> listCpf = new ArrayList<>();
-        listCpf.add(Long.valueOf(cpf));
-        PushRegistrarDispositivoDTO pushRegistrarTokenDTO = new PushRegistrarDispositivoDTO();
-        pushRegistrarTokenDTO.setPlataforma("android");
-        pushRegistrarTokenDTO.setCanal("loterias");
-        pushRegistrarTokenDTO.setIdentificadores(listCpf);
-        pushRegistrarTokenDTO.setToken(token);
-
-        final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.PUSH_NOTIFICACAO_REGISTRAR_DISPOSITIVO_PATH, new LinkedHashMap<>(),
-                pushRegistrarTokenDTO, PushRegistrarDispositivoResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(), headers);
-
-        request.setErrorListener(interceptError(request, headers, listener));
-        getServiceConnection().request(request, listener);
-    }
 }
