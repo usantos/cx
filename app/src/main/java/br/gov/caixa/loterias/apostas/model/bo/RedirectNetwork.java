@@ -268,7 +268,7 @@ public class  RedirectNetwork {
         }
     }
 
-    public static void trataBloqueioTotal(VolleyError error, final Activity activity) {
+    public static Boolean trataBloqueioTotal(VolleyError error, final Activity activity) {
         Gson gsonResponse = new Gson();
         ErrorResponse errorResponse = new ErrorResponse();
         String body = null;
@@ -280,23 +280,24 @@ public class  RedirectNetwork {
                     if (errorResponse.getRedirect() != null) {
                         if (errorResponse.getCodigo() != null && errorResponse.getCodigo().equals("002020")) {
                             ViewUtils.alertTitleButton(activity, R.string.label_atencao, errorResponse.getMensagem(),
-                                "Ok", dialogInterface -> {
-                                    AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_logout_sucesso));
-                                    new LoginSSOModel(activity).sair(() -> {});
-                                    DadosUsuarioBO.updateUsuarioLogado(activity, false);
-                                    activity.finish();
-                                    dialogInterface.dismiss();
-                                    return;
-                                }
+                                    "Ok", dialogInterface -> {
+                                        AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_logout_sucesso));
+                                        new LoginSSOModel(activity).sair(() -> {});
+                                        DadosUsuarioBO.updateUsuarioLogado(activity, false);
+                                        activity.finish();
+                                        dialogInterface.dismiss();
+                                        //return;
+                                    }
                             );
-                            return;
+                            return true;
                         }
                     }
                 }
             } catch (Exception e) {
             }
         }
-        activity.finish();
+        //activity.finish();
+        return false;
     }
 
     public static void trataBloqueioParcial(final Activity activity) {
