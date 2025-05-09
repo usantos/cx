@@ -60,6 +60,7 @@ public class ServiceConnection {
                 req.getHeaders().put("Subcanal", "3");
                 //Servico Nuvem
                 req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.APIKEY_CHAVE);
+                req.getHeaders().put("content-type", "application/json");
             }
 
         } catch (Exception e) {
@@ -82,6 +83,7 @@ public class ServiceConnection {
                     req.getHeaders().put("Subcanal", "3");
                     //Servico Nuvem
                     req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.APIKEY_CHAVE);
+                    req.getHeaders().put("content-type", "application/json");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
