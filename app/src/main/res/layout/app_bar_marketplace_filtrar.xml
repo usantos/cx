@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/branco"
-            android:text="Voltar Apostas Individuais"
+            android:text="Bolão CAIXA"
             android:textStyle="bold"
             android:ellipsize="end"
             android:singleLine="true"

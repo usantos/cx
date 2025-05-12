@@ -1401,10 +1401,10 @@
     <string name="extra_especial_reserva">isEspecialReserva</string>
     <string name="label_cota_concurso_bold">Cota: </string>
     <string name="label_voltar_apostas_individuais">_Voltar Apostas Individuais_</string>
+    <string name="label_bolao_bar_marketplace">_Bolão CAIXA_</string>
     <string name="alterar_pesquisa">_Alterar_\na pesquisa com novos filtros</string>
     <string name="pesquisar_novamente">_Pesquisar Novamente_\ncom os mesmos parâmetros</string>
     <string name="descritivo_loterica">Insira o nome da lotérica ou o código somente com os \nnúmeros do segundo campo, com 6 dígitos. Exemplo: \nE.Lotérico 10.000004-01, digite 000004.</string>
-
     <string name="atencao_descricao_gerar_pix">Caso precise recuperar este código ou consultar o status da compra acesse o menu \"Minhas Compras\".</string>
     <string name="ir_para_minhas_compras">Ir para as\n_Minhas Compras_</string>
     <string name="descricao_filtro_vazio">Não encontramos nenhum bolão que corresponda à sua pesquisa!</string>
