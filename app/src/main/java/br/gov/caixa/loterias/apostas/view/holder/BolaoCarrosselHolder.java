@@ -3,9 +3,6 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -50,7 +47,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private RelativeLayout trapezio;
 	private ConstraintLayout cabecalho;
 	private View linhaNumero;
-	private ImageView icMoneyBolao;
+	private ImageView icTrevoBolao;
 
 	private EstiloModalidadeMKP estilo;
 
@@ -72,8 +69,8 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		btnAumenta 		= itemView.findViewById(R.id.aumenta_cota);
 		qtdCotas 		= itemView.findViewById(R.id.quantidade_cotas);
 		btnAddCarrinho 	= itemView.findViewById(R.id.btn_add_carrinho);
-		trapezio		= itemView.findViewById(R.id.layout_money);
-		icMoneyBolao	= itemView.findViewById(R.id.trevoImagem);
+		trapezio		= itemView.findViewById(R.id.layout_trevo);
+		icTrevoBolao	= itemView.findViewById(R.id.trevoImagem);
 		cabecalho		= itemView.findViewById(R.id.cabecalho_bolao);
 		linhaNumero		= itemView.findViewById(R.id.linha_numero);
 
@@ -101,7 +98,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		int corFonteFundoClaro = ContextCompat.getColor(activity, estilo.getCorFonteFundoClaro());
 		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
 		trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
-		icMoneyBolao.setImageDrawable(VectorUtils.getShape(R.drawable.ic_money_bolao, estilo.getCorFonteFundoEscuro()));
+		icTrevoBolao.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
 		cabecalho.setBackgroundColor(corClara);
 		modalidade.setTextColor(corFonteFundoClaro);
 		valorPremio.setTextColor(corLetraLista);
