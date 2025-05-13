@@ -27,6 +27,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
+import br.gov.caixa.loterias.apostas.utils.*;
+import br.gov.caixa.loterias.apostas.view.listener.*;
 import com.android.volley.VolleyError;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -57,15 +60,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
 import br.gov.caixa.loterias.apostas.model.model.CartelaModel;
 import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
-import br.gov.caixa.loterias.apostas.utils.Constantes;
-import br.gov.caixa.loterias.apostas.utils.InputUtils;
-import br.gov.caixa.loterias.apostas.utils.ListaUtils;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
-import br.gov.caixa.loterias.apostas.utils.Utils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.utils.VolanteUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
@@ -75,12 +69,6 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.NomeTimemaniaTextWatcher;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
-import br.gov.caixa.loterias.apostas.view.listener.CartelaFragmentListener;
-import br.gov.caixa.loterias.apostas.view.listener.LocateAdapterListener;
-import br.gov.caixa.loterias.apostas.view.listener.LotogolListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
-import br.gov.caixa.loterias.apostas.view.listener.NomeTimeTextWatcherListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.custom.LoteriasSensorEventListener;
 
 public class CartelaFragment extends Fragment implements OnClickListener, LocateAdapterListener, LotogolListener {
@@ -458,7 +446,28 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				}
 
 				if (!DadosUsuarioBO.checarUsuarioLogado(parentActivity)) {
-					RedirectNetwork.connectKeycloak(parentActivity);
+					DialogUtils.showDialogCustom(parentActivity,
+							getString(R.string.label_atencao),
+							getString(R.string.confirmacao_continuar_experimente),
+							getString(R.string.continuar_experimente),
+							getString(R.string.efetuar_login),
+							null, new OnDialog3ButtonsListener() {
+								@Override
+								public void leftButtom() {
+
+								}
+
+								@Override
+								public void centerButtom() {
+									RedirectNetwork.connectKeycloak(parentActivity);
+								}
+
+								@Override
+								public void rightButtom() {
+
+								}
+							}, true);
+
 				}
 			}
 			break;

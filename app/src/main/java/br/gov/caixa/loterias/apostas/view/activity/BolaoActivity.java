@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -19,6 +20,7 @@ import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -27,9 +29,6 @@ import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.enums.FiltroBolaoResultadoEnum;
 import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
@@ -57,6 +56,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 	public static final String ARG_TIPO_CONCURSO = "ARG_TIPO_CONCURSO";
 
+	public static final String ARG_FILTRO_MARKETPLACE = "ARG_FILTRO_MARKETPLACE";
+
 	private DiscreteScrollView carrosselView;
 	private CarrosselBolaoAdapter carrosselAdapter;
 
@@ -83,12 +84,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private NestedScrollView scrollView;
 	private FrameLayout frameEstadoVazio;
 	private FiltroVazioFragment filtroVazioFragment;
-	private FiltroAplicadoMarketplace filtro;
+	private FiltroAplicadoMarketplace filtro = new FiltroAplicadoMarketplace();
 	private List<CotasBolaoDTO> cotasDisponiveis;
 	private List<CotasBolaoDTO> cotasFiltradas;
 
-	private Integer idModalidade;
-	private Integer tipoConcurso;
+	private Integer idModalidade, idModalidadeInicial;
+	private Integer tipoConcurso, tipoConcursoInicial;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +99,16 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		if (getIntent() != null && getIntent().getExtras() != null) {
 			idModalidade = getIntent().getExtras().getInt(ARG_IDMODALIDADE);
 			tipoConcurso = getIntent().getExtras().getInt(ARG_TIPO_CONCURSO);
+			idModalidadeInicial = idModalidade;
+			tipoConcursoInicial = tipoConcurso;
 		}
 		launcherFiltro = IntentUtil.registerLauncherActivityForResult(this, OnActivityForResult());
 		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
 		launcherCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
 		launcherDetalhes = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
-		configFiltrar(launcherFiltro);
+		filtro.setModalidade(ModalidadeEnum.fromInteger(idModalidadeInicial));
+		filtro.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcursoInicial));
+		configFiltrar(launcherFiltro,filtro);
 		setTitle("");
 		toolBarTxt = findViewById(R.id.toolbar_title);
 		toolBarTxt.setText(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.label_voltar_apostas_individuais)));
@@ -373,8 +378,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 			if (result.getResultCode() == Activity.RESULT_OK) {
 				Intent data = result.getData();
-				filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
-
+				if (data != null) {
+					filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
+					if (filtro != null) {
+						configFiltrar(launcherFiltro, filtro);
+					}
+				}
 				AlertDialogUtils.show(BolaoActivity.this);
 				model.zeraPaginacao();
 				cotasFiltradas = null;
@@ -499,9 +508,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	public void alterar(FiltroBolaoResultadoEnum tipoFiltro) {
 		switch (tipoFiltro){
 			case VAZIO:
-				IntentUtil.startActivityForResult(launcherFiltro, BolaoActivity.this,
-						FiltraMarketplaceActivity.class);
+				Bundle args = new Bundle();
+				args.putSerializable(ARG_FILTRO_MARKETPLACE, filtro);
+				Intent intent = IntentUtil.getIntentOrigemDestino(BolaoActivity.this, FiltraMarketplaceActivity.class);
+				intent.putExtras(args);
+				IntentUtil.startActivityForResult(launcherFiltro, intent);
 				break;
+
 			case ERRO:
 				buscaBoloesFiltro();
 				break;
@@ -514,8 +527,19 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 			case VAZIO:
 				frameEstadoVazio.setVisibility(View.GONE);
 				scrollView.setVisibility(View.VISIBLE);
+				if(!Objects.equals(ModalidadeEnum.fromStringToIdModalidade(filtro.getModalidade()), idModalidadeInicial)
+						|| !Objects.equals(TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso()), tipoConcursoInicial)){
+					model.setIdModalidade(idModalidadeInicial);
+					model.setIdTipoConcurso(tipoConcursoInicial);
+					buscaBoloes();
+				}
 				break;
 			case ERRO:
+				if(!Objects.equals(ModalidadeEnum.fromStringToIdModalidade(filtro.getModalidade()), idModalidadeInicial)
+						|| !Objects.equals(TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso()), tipoConcursoInicial)){
+					model.setIdModalidade(idModalidadeInicial);
+					model.setIdTipoConcurso(tipoConcursoInicial);
+				}
 				buscaBoloes();
 				break;
 		}

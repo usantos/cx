@@ -123,7 +123,7 @@
     <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo é </string>
     <string name="numeros_sorteados">Números sorteados</string>
     <string name="inibir_teimosinha">Para Teimosinhas são exibidos os números apostados e os números sorteados apenas do primeiro concurso apostado. A conferência das apostas, no entanto, é realizada para todos os concursos. Em breve a funcionalidade será aprimorada para exibir os números apostados e os números sorteados de todos os concursos da Teimosinha.</string>
-
+    <string name="inibir_teimosinha_V2">A conferência dos jogos da Teimosinha é realizada para todos os concursos apostados, no entanto, é exibida apenas a do primeiro concurso.</string>
 
     <!-- email-->
     <string name="email_padrao">CEDESBR456@caixa.gov.br</string>
@@ -245,7 +245,7 @@
     <string name="title_activity_ler_bilhetes">LerBilhetesActivity</string>
     <string name="title_activity_ler_bilhetes_escolha_jogo">Resultado</string>
     <string name="label_x_minusculo">x</string>
-    <string name="title_activity_resultado_ler_bilhetes">_Resultado_</string>
+    <string name="title_activity_resultado_ler_bilhetes">_Resultado da aposta_</string>
     <string name="title_activity_detalhes_compras">Apostas da Compra</string>
     <string name="label_empty_list_compras">Você ainda não possui compras neste mês.</string>
     <string name="label_declaracao_termo_uso">Declaro ter lido e concordado com os\ntermos de uso</string>
@@ -311,6 +311,7 @@
     <string name="label_time_coracao">Time do coração&#160;</string>
     <string name="label_time_coracao_dois_pontos">Time do coração:&#160;</string>
     <string name="label_dia_sorte_dois_pontos">Mês da sorte:&#160;</string>
+    <string name="label_trevos_dois_pontos">Trevos: </string>
     <string name="label_empty"> </string>
     <string name="label_rapidao">Rapidão</string>
     <string name="label_apostas_fav_rapidao_empty">Você ainda não possui apostas favoritas. É muito fácil! Simule uma aposta e adicione como favorita.</string>
@@ -1126,7 +1127,7 @@
     <string name="bundle_key_url">url</string>
     <string name="url_ajuda_mercado_pago">https://www.mercadopago.com.br/ajuda#from-section=menu</string>
     <string name="url_ajuda_recarga_pay"><![CDATA[https://recargapay.com.br/ajuda_caixa_form?reason=loterias-caixa&sub_reason=Problemas-com-meu-pagamento&subject=Ajuda%20com%20meu%20pagamento]]></string>
-    <string name="compra_existente_24_horas">Há uma compra efetivada ou em processamento com o mesmo valor do carrinho atual nas últimas 24 horas. Deseja rever o carrinho atual?</string>
+    <string name="compra_existente_24_horas">Existe compra efetivada, em processamento ou aguardando efetivação da aposta com o mesmo valor do carrinho atual nas últimas 24 horas. Você gostaria de revisar o carrinho atual?</string>
     <string name="verificamos_compra_demorando_ou_processando">Verificamos que sua compra está em processamento e está demorando mais que o esperado. Aguarde alguns instantes e verifique na área  "Minhas compras" se a compra foi processada antes de tentar novamente.</string>
 
     <string name="nao_foi_possivel_realizar_leitura">Não foi possível realizar a leitura. O que deseja fazer?</string>
@@ -1195,7 +1196,8 @@
     <string name="popup_pix_nao_realizado_descricao">Não foi possível concluir sua compra e a aposta não foi efetivada. Deseja realizar uma nova tentativa de compra com o mesmo carrinho?</string>
 
     <!-- Popup Pix Pagamento Não Realizado -->
-    <string name="title_activity_resgate_pix">_Resgate de prêmio_</string>
+    <string name="title_activity_resgate_pix">_Resgate de Prêmio via Pix_</string>
+    <string name="title_activity_resgate">_Resgate de Prêmio_</string>
     <string name="popup_pix_cpf_vinculado">Somente será realizado resgate em Chave Pix vinculada ao CPF do apostador.</string>
 
     <!-- Pix Resgate Prêmio -->
@@ -1368,8 +1370,8 @@
     <string name="filtrar">_Filtrar_</string>
     <string name="filtrar_modalidades">Filtrar</string>
     <string name="modalidades">Modalidades</string>
-    <string name="valor_minimo_aposta">Valor Mínimo Aposta</string>
-    <string name="valor_maximo_aposta">Valor Máximo Aposta</string>
+    <string name="valor_minimo_cota">Valor Mínimo Cota</string>
+    <string name="valor_maximo_cota">Valor Máximo Cota</string>
     <string name="quantidade_cotas">Quantidade de Cotas</string>
     <string name="quantidade_min_cotas">Quant. de Cotas Mínima</string>
     <string name="quantidade_max_cotas">Quant. de Cotas Máxima</string>
@@ -1477,5 +1479,21 @@
     <string name="time_do_coracao_interrogacoes">\nTime do coração: ???</string>
     <string name="apostas_inclu_das_no_combo">Apostas incluídas no combo</string>
     <string name="cep_invalido">O CEP informado não foi localizado. Por favor, informe um CEP válido.</string>
+    <string name="valor_do_credito">Valor do Crédito</string>
+    <string name="resgate_processado_via">Resgate processado via</string>
+    <string name="escolha_chave_pix_restae_premio">Escolha a chave Pix que deseja receber o resgate do prêmio.</string>
+    <string name="outra_chave">Outra Chave</string>
+    <string name="label_chave">Chave</string>
+    <string name="hint_outra_chave">Celular / e-mail / Chave aleatória</string>
+    <string name="ciente_resgate_pix">Estou ciente que o resgate de prêmio só poderá ser realizado para uma conta de titularidade do apostador.</string>
+    <string name="confirmar_chave_pix_resgate">Confirmar a chave Pix para o resgate.</string>
+    <string name="dados_titular_chave">Dados do titular da chave:</string>
+    <string name="seu_resgate_foi_solicitado_com_sucesso">Seu resgate foi solicitado com sucesso!</string>
+    <string name="voce_pode_acompanhar_situacao">Você pode acompanhar a situação do resgate pelo menu Minhas apostas enquanto ele é processado.</string>
+    <string name="acesse_minhas_apostas">Acesse \n_Minhas apostas_</string>
+    <string name="arg_goto_minhas_apostas">GO_TO_MINHAS_APOSTAS</string>
+    <string name="confirmacao_continuar_experimente">Para continuar utilizando a funcionalidade, você precisa efetuar o login no app Loterias Caixa.</string>
+    <string name="continuar_experimente">Continuar no Experimente</string>
+    <string name="efetuar_login">Efetuar o login</string>
 
 </resources>

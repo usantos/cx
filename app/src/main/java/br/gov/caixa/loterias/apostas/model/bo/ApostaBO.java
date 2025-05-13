@@ -28,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTORespo
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConsultaDadosChavePixResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumIntegerResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoResponse;
@@ -379,11 +380,12 @@ public class ApostaBO extends SilceBO {
 
     public void baixarComprovanteAposta(Long id, final RequestListener<String> listener) {
         String endPoint = ServerMethods.APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH.replace("{id}", id.toString());
-        if (endPoint.startsWith("/")){
-            endPoint = endPoint.substring(1);
-        }
-        String url = BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE") + endPoint;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> listener.onResponse(response), error -> listener.onErrorResponse(error)) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE") + endPoint, response -> {
+            listener.onResponse(response);
+        }, error -> {
+            listener.onErrorResponse(error);
+        }) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> header = (Map<String, String>) getHeaderToken().clone();
@@ -396,11 +398,12 @@ public class ApostaBO extends SilceBO {
 
     public void baixarComprovantePremio(Long id, final RequestListener<String> listener) {
         String endPoint = ServerMethods.APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PREMIO_PATH.replace("{id}", id.toString());
-        if (endPoint.startsWith("/")){
-            endPoint = endPoint.substring(1);
-        }
-        String url = BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE") + endPoint;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, response -> listener.onResponse(response), error -> listener.onErrorResponse(error)) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE") + endPoint, response -> {
+            listener.onResponse(response);
+        }, error -> {
+            listener.onErrorResponse(error);
+        }) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> header = (Map<String, String>) getHeaderToken().clone();
@@ -1038,6 +1041,35 @@ public class ApostaBO extends SilceBO {
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void consultaDadosChave(String id, InformacaoPagamentoDTO informacao,
+                                 final RequestListener<ConsultaDadosChavePixResponse> listener) {
+        String url = ServerMethods.CONSULTA_DADOS_CHAVE.replace("{id}", id);
+
+        final GsonRequest request = getServiceConnection().buildPostRequest(url,
+                new LinkedHashMap<>(), informacao,
+                ConsultaDadosChavePixResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void cancelarPix(String idAposta, final RequestListener<ConsultaDadosChavePixResponse> listener) {
+        String url = ServerMethods.CANCELA_RESGATE_PIX.replace("{id}", idAposta);
+
+        final GsonRequest request = getServiceConnection().buildGetRequest(url,
+                new LinkedHashMap<>(),
+                ConsultaDadosChavePixResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }

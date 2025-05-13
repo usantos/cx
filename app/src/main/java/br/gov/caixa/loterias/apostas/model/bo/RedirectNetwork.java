@@ -7,6 +7,10 @@ import android.os.Build;
 import android.text.Html;
 import android.widget.Toast;
 
+import br.gov.caixa.loterias.apostas.controllers.*;
+import br.gov.caixa.loterias.apostas.utils.*;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -15,28 +19,12 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
-import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
-import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
-import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
-import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
-import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.AppUtils;
-import br.gov.caixa.loterias.apostas.utils.DateUtils;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-
 
 
 /**
@@ -110,7 +98,38 @@ public class  RedirectNetwork {
                 }
                 switch (response.statusCode){
                     case 401:
-                        connectKeycloak(activity);
+                        DialogUtils.showDialogCustom(activity,
+                                activity.getString(R.string.label_atencao),
+                                activity.getString(R.string.confirmacao_continuar_experimente),
+                                activity.getString(R.string.continuar_experimente),
+                                activity.getString(R.string.efetuar_login),
+                                null, new OnDialog3ButtonsListener() {
+                                    @Override
+                                    public void leftButtom() {
+                                        if(activity instanceof MinhasApostasActivity
+                                            || activity instanceof ListaComprasActivity
+                                            || activity instanceof ConfiguracaoRapidaoActivity
+                                            || activity instanceof ListaRapidaoActivity
+                                            || activity instanceof FavoritasActivity
+                                            || activity instanceof CarrinhosFavoritosActivity
+                                            || activity instanceof MeusCartoesActivity
+                                            || activity instanceof DadosPessoaisActivity
+                                            || activity instanceof AutoavaliacaoFormActivity
+                                            || activity instanceof AutoSuspensaoActivity){
+                                            activity.finish();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void centerButtom() {
+                                        connectKeycloak(activity);
+                                    }
+
+                                    @Override
+                                    public void rightButtom() {
+
+                                    }
+                                }, true);
                         return;
                     case 400:
                         treatNegotialErros(errorResponse, error, activity);
@@ -131,6 +150,8 @@ public class  RedirectNetwork {
             AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
         }
     }
+
+
 
     public static void checkRedirectCompraAsync(VolleyError error, final Activity activity){
         boolean lancouEvento = false;
@@ -230,36 +251,41 @@ public class  RedirectNetwork {
     }
 
     private static void trataRedict(Activity activity, ErrorResponse errorResponse) {
-        RedirectEnum redirectEnum = RedirectEnum.fromString(errorResponse.getRedirect());
-        switch (redirectEnum) {
-            case ACEITAR_TERMO_DE_USO:
-                verificaRedirectTermo(activity);
-                return;
-            case LOGIN:
-                connectKeycloak(activity);
-                return;
-            case CADASTRAR_APOSTADOR:
-                if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
-                    activity.startActivity(new Intent(activity, CadastrarActivity.class));
-                }
-                return;
-            case INDISPONIVEL:
-                if (activity.getClass() != AppIndisponivelActivity.class) {
-                    activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
-                } else {
-                    ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> {});
-                }
-                return;
-            case CARRINHO:
-                activity.startActivity(new Intent(activity, CarrinhoActivity.class));
-                return;
-            case CARRINHOS_FAVORITOS:
-                activity.startActivity(new Intent(activity, CarrinhosFavoritosActivity.class));
-                return;
-            case VERIFICA_COMPRA_PROCESSAMENTO:
-                return;
-            default:
-                break;
+        try{
+            RedirectEnum redirectEnum = RedirectEnum.fromString(errorResponse.getRedirect());
+            switch (redirectEnum) {
+                case ACEITAR_TERMO_DE_USO:
+                    verificaRedirectTermo(activity);
+                    return;
+                case LOGIN:
+                    connectKeycloak(activity);
+                    return;
+                case CADASTRAR_APOSTADOR:
+                    if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
+                        activity.startActivity(new Intent(activity, CadastrarActivity.class));
+                    }
+                    return;
+                case INDISPONIVEL:
+                    if (activity.getClass() != AppIndisponivelActivity.class) {
+                        activity.startActivityForResult(new Intent(activity, AppIndisponivelActivity.class), 1);
+                    } else {
+                        ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> {});
+                    }
+                    return;
+                case CARRINHO:
+                    activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+                    return;
+                case CARRINHOS_FAVORITOS:
+                    activity.startActivity(new Intent(activity, CarrinhosFavoritosActivity.class));
+                    return;
+                case VERIFICA_COMPRA_PROCESSAMENTO:
+                    return;
+                default:
+                    break;
+            }
+        } catch (Exception e){
+            AppCenterManager.registraEventoErro(AppCenterManager.ERRO_RESPONSE, errorResponse);
+            ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getResources().getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> {});
         }
     }
 

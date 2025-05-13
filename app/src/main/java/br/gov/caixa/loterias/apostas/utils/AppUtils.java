@@ -17,9 +17,13 @@ import java.util.List;
 public class AppUtils {
 
     public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
-                && cm.getActiveNetworkInfo().isConnected();
+        try{
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isAvailable()
+                    && cm.getActiveNetworkInfo().isConnected();
+        }catch (Exception e){
+            return false;
+        }
     }
 
     public static boolean isNetworkConnected(Context context) {

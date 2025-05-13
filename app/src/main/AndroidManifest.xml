@@ -51,6 +51,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false"
         tools:replace="android:allowBackup">
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/trevo" />
         <activity
             android:name=".controllers.QueroNaoQueroActivity"
             android:exported="false"
@@ -89,16 +92,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ResgatePixActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.DigitaChaveActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".view.activity.ConfirmaDadosPixActivity"
-            android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -422,7 +415,7 @@
             android:name=".controllers.ConfirmacaoResgatePixActivity"
             android:label="@string/title_activity_resultado_ler_bilhetes"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.DegradeActionBar"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".controllers.RestritoDezoitoAnosActivity"
@@ -500,6 +493,17 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/images_path" />
         </provider>
+
+        <!-- [START firebase_service] -->
+        <service
+            android:name=".utils.MessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- [END firebase_service] -->
+
     </application>
 
 </manifest>

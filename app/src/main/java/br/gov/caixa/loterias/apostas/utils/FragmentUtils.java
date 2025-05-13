@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DadosChavePixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -23,6 +24,7 @@ import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoSimulacaoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.ConfirmacaoChavePixResgateFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
@@ -44,10 +46,11 @@ import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
 
 public class FragmentUtils {
 
-	public static void startFragmentAllowingStateLoss(FragmentManager fm, int id, Fragment fragment){
+	public static Fragment startFragmentAllowingStateLoss(FragmentManager fm, int id, Fragment fragment){
 		FragmentTransaction fragmentTransaction = fm.beginTransaction();
 		fragmentTransaction.replace(id, fragment);
 		fragmentTransaction.commitAllowingStateLoss();
+		return fragment;
 	}
 
 	public static SomadorCarrinhoFragment startSomadorCarrinhoFragment(FragmentManager fm,SomadorCarrinhoFragment fragment, int id, String TAG) {
@@ -217,5 +220,9 @@ public class FragmentUtils {
     public static ApostasConfirmadasFragment getApostasConfirmadasFragment(boolean isHistorico) {
 		ApostasConfirmadasFragment fragment = ApostasConfirmadasFragment.newInstance(isHistorico);
 		return fragment;
+	}
+
+	public static void startConfirmacaoChavePixResgate(FragmentManager fm, int id, DadosChavePixDTO dadosChavePix) {
+		startFragmentAllowingStateLoss(fm, id, ConfirmacaoChavePixResgateFragment.newInstance(dadosChavePix));
 	}
 }

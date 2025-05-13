@@ -61,7 +61,6 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
     private ModalidadeEnum modalidadeEnum;
 
     private ConferirBilheteModel model;
-    //private EstiloModalidade estiloModalidade;
     private EstiloModalidadeMKP estiloModalidade;
 
     @Override
@@ -185,6 +184,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                 if (isPremiado(payload)) {
                     List<FaixaPremiadaDTO> faixas = ViewUtils.getFaixaPremiadoNaoPremiado(resultadoConsultaBilheteDTO.getPremioDTO());
                     atualizarLayoutPremiado(faixas);
+                    RateUtils.avaliarAplicativo(ResultadoLerBilhetesActivity.this, true);
                 } else if (isPreescrito(payload)){
                     atualizarLayoutApenasMensagem(R.string.label_concurso_prescrito);
                 } else if (isPremioPago(payload)){
@@ -254,7 +254,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             String label = getResources().getString(R.string.label_voce_foi_premiado_exclamacao);
             contentResultadoPremiado.getValorPremioTituloTextView().setText(label);
         }
-        contentResultadoPremiado.getValorPremioTituloTextView().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoEscuro()));
+        contentResultadoPremiado.getValorPremioTituloTextView().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoClaro()));
 
         checkNsb();
 
@@ -287,7 +287,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             contentResultadoPremiado.getTituloModalidadeTextView().setText(resultadoConsultaBilheteDTO.getModalidadeDTO().getDescricao().toLowerCase());
         }
         contentResultadoPremiado.getTituloModalidadeTextView().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoClaro()));
-        contentResultadoPremiado.getPodeComemorar().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoEscuro()));
+        contentResultadoPremiado.getPodeComemorar().setTextColor(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoClaro()));
     }
 
     private void initEstiloModalidade() {
@@ -394,7 +394,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
         }
     }
 
-    private void createListPremiacao(List<FaixaPremiadaDTO>       faixa) {
+    private void createListPremiacao(List<FaixaPremiadaDTO> faixa) {
+        contentResultadoPremiado.aplicaCorColunasTabela(ContextCompat.getColor(this, estiloModalidade.getCorFonteFundoClaro()));
         ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView = contentResultadoPremiado.getListaFaixaPremiacaoExpandableHeightRecyclerView();
         initEstiloModalidade();
         FaixaPremiacaoAdapter adapter = new FaixaPremiacaoAdapter(faixa, ContextCompat.getColor(this, estiloModalidade.getCorEscura()),

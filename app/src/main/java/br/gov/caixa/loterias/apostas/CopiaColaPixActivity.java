@@ -4,11 +4,11 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import java.util.Date;
 import java.util.Objects;
@@ -17,14 +17,12 @@ import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.model.model.CompraModel;
 import br.gov.caixa.loterias.apostas.model.model.PixModel;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -38,9 +36,12 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 
 public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopiaColaListener {
+	public static final String ARG_GEROU_CODIGO = "ARG_GEROU_CODIGO";
+	public static final String ARG_PIX = "ARG_PIX";
 	public static Boolean isRunning = false;
 	private boolean tempoExpirado = false, gerouCodigoPix = false;
 	private SwipeRefreshLayout swipeRefreshLayout;
+	private GerarPixDTO codigoPix;
 	private PixModel model;
 	private CardPixFragment pixFragment;
 	private Dialog confirmaSairTelaPix;
@@ -50,21 +51,24 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		setContentView(R.layout.activity_copia_cola_pix);
 		configToolbar(R.id.toolbar);
 		setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "Forma de _pagamento_"));
-
-		Button btnGerar = findViewById(R.id.botaoGerarPix);
 		swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
 		swipeRefreshLayout.setOnRefreshListener(() -> {
-
 			if (pixFragment != null){
 				pixFragment.checkStatusPix(onCheckStatusPix());
 			}
 		});
 		swipeRefreshLayout.setEnabled(false);
 
-		btnGerar.setOnClickListener(v -> restart());
-
 		model = new PixModel(this);
+		getExtras();
 		gerarCodigoPix();
+	}
+
+	private void getExtras() {
+		gerouCodigoPix = getIntent().getExtras().getBoolean(ARG_GEROU_CODIGO);
+		String json = getIntent().getExtras().getString(ARG_PIX);
+		codigoPix = new Gson().fromJson(json, GerarPixDTO.class);
+		codigoPix.getPixCopiaECola();
 	}
 
 	private OnCompraAsync onCheckStatusPix() {
@@ -112,8 +116,8 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 	}
 
 	private void gerarCodigoPix() {
-		AlertDialogUtils.show(this);
-		model.gerarCodigoPix(onGerarPixListener());
+		startFragment(codigoPix);
+		swipeRefreshLayout.setEnabled(true);
 	}
 
 	@Override
@@ -128,31 +132,12 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		isRunning = false;
 	}
 
-	private OnSilceListener<GerarPixDTO> onGerarPixListener() {
-		return new OnSilceListener<GerarPixDTO>() {
-			@Override
-			public void success(GerarPixDTO payload) {
-				AlertDialogUtils.dismiss();
-				startFragment(payload);
-				swipeRefreshLayout.setEnabled(true);
-				CarrinhoSingleton.getInstance().zerarCarrinho();
-				gerouCodigoPix=true;
-			}
-
-			@Override
-			public void error(VolleyError error) {
-				AlertDialogUtils.dismiss();
-			}
-		};
-	}
-
 	private void startFragment(GerarPixDTO payload) {
 		pixFragment = FragmentUtils.startCardCopiaColaPix(payload, getSupportFragmentManager(), R.id.fragmentCopiaColaPix);
 	}
 
 	@Override
-	public void onFinish()
-	{
+	public void onFinish() {
 		tempoExpirado = true;
 		swipeRefreshLayout.setEnabled(false);
 	}
@@ -169,12 +154,6 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		finish();
 	}
 
-	private void restart() {
-		Intent intent = IntentUtil.getIntentOrigemDestino(this, CopiaColaPixActivity.class);
-		startActivity(intent);
-		finish();
-	}
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -183,6 +162,11 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 
 	@Override
 	public boolean onSupportNavigateUp() {
+		voltarTela();
+		return false;
+	}
+
+	private void voltarTela() {
 		if(!tempoExpirado && gerouCodigoPix){
 			confirmaSairTelaPix = DialogUtils.showDialogCustom(this,
 					getString(R.string.label_atencao),
@@ -192,10 +176,12 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		}else{
 			voltarParaCarrossel();
 		}
-		return false;
 	}
 
-
+	@Override
+	public void onBackPressed() {
+		voltarTela();
+	}
 
 	private OnDialog3ButtonsListener onDialogListener() {
 		return new OnDialog3ButtonsListener() {
@@ -223,7 +209,5 @@ public class CopiaColaPixActivity extends LoteriasAppActivity implements OnCopia
 		startActivity(intent);
 		finish();
 	}
-
-
 
 }

@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpites;
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
 public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
@@ -109,7 +110,9 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		valor.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrCotaComTarifa().doubleValue()));
 
 		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
-				getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
+						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
+						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
 
 		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
 				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));

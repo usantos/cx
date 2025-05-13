@@ -124,7 +124,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private int ordenacaoDefault = 3;
     private ConfigConsultaDTO configConsulta;
 
-    private ApostasConfirmadasFragment(){}
+    public ApostasConfirmadasFragment(){}
 
     public static ApostasConfirmadasFragment newInstance(boolean isHistorico){
         Bundle args = new Bundle();
@@ -362,6 +362,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     public void filtraDados(){
+        if (page == null){
+            page = new ApostaPageRequest(getPageSize());
+        }
         page.setModalidade(0);
         page.setSituacao(1);
         page.setOrdenarPor(ordenacaoDefault);

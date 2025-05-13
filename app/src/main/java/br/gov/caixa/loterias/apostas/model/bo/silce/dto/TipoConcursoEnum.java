@@ -39,4 +39,15 @@ public enum TipoConcursoEnum {
         return null;
     }
 
+    public static TipoConcursoEnum fromInteger( Integer valor) {
+        switch (valor) {
+            case 1:
+                return TipoConcursoEnum.NORMAL;
+            case 2:
+                return TipoConcursoEnum.ESPECIAL;
+
+            default:
+                return null;
+        }
+    }
 }

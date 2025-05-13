@@ -58,7 +58,6 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
-
 /**
  * Created by joafilho on 10/04/2018.
  * Class helper AdicionarApostaCarrinhoHelper

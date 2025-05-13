@@ -21,13 +21,14 @@ import org.joda.time.Seconds;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "")
-public class GerarPixDTO {
+public class GerarPixDTO implements Serializable {
 
     @SerializedName("pixCopiaECola")
     private String pixCopiaECola = null;

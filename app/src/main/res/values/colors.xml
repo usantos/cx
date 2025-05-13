@@ -216,6 +216,10 @@
     <color name="instantanea_claro">#00BBE6</color>
     <color name="instantanea_escuro">#009CB5</color>
 
+    <!-- Resgate pix -->
+    <color name="fonte_resgate">#2E484D</color>
+    <color name="fonte_verde_resgate">#45C0AE</color>
+
     <!--  Novas cores -->
     <color name="blue_caixa">#0066B3</color>
     <color name="verdeazul_inativo">#DDF1EE</color>

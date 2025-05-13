@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
+import br.gov.caixa.loterias.apostas.utils.*;
+import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
@@ -19,15 +24,8 @@ import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 
@@ -75,16 +73,22 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 	}
 
 	private void apresentaAlertaPreCompra() {
-		String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
-		ViewUtils.alertTitleCustomPositiveListener(FormaPagamentoActivity.this,
-												   "Cancelar",
-												   "Confirmar",
-												   FormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valor), (dialog, which) -> {
+		try {
+			String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
+			ViewUtils.alertTitleCustomPositiveNegativeListener(FormaPagamentoActivity.this,
+					"Cancelar",
+					"Confirmar",
+					FormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valor), (dialog, which) -> {
+						AlertDialogUtils.dismiss();
+						dialog.dismiss();
+						verificaHorarioRepresa();
+					}, (dialog, which) -> {
+						finish();
+					} );
+
+		} catch (Exception e){
 			AlertDialogUtils.dismiss();
-			dialog.dismiss();
-		}, (dialog, which) -> {
-			finish();
-		} );
+		}
 	}
 
 	private void buscaMeiosPagamentos() {
@@ -123,6 +127,23 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 				AlertDialogUtils.dismiss();
 			}
 		};
+	}
+	private void verificaHorarioRepresa(){
+		final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
+		DadosCorporativosBO.getInstance().validaRepresa(new RequestListener<RepresaResponse>() {
+			@Override
+			public void onResponse(RepresaResponse response) {
+				loadViewProgress.dismiss();
+				if(response.getPayload().getPayload()){
+					ViewUtils.alertTitulo(FormaPagamentoActivity.this, R.string.label_atencao, response.getPayload().getMensagem());
+				}
+			}
+
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				loadViewProgress.dismiss();
+			}
+		});
 	}
 
 	private void showPix() {

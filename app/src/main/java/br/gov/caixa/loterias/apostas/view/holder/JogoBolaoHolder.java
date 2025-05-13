@@ -102,7 +102,7 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 					mes = aposta.getMesSorte().getNome();
 				}
 				apresentaDiaSorteTimeMania(context.getString(R.string.label_mes_sorte_dois_pontos), mes,
-						estilo.getCorFonteFundoEscuro());
+						estilo.getCorFonteFundoClaro());
 				break;
 			case MAIS_MILIONARIA:
 				txtIndividualidade.setVisibility(View.VISIBLE);

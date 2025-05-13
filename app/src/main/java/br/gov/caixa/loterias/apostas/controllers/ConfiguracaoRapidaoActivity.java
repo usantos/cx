@@ -61,6 +61,8 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_configuracao_rapidao);
+		setViews();
+		setupToolbar();
 		apostaBO  = ApostaBO.getInstance();
 	}
 
@@ -84,7 +86,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	}
 
 	private void setMethods(){
-		setupToolbar();
+
 		adapterViewPager = new ConfiguracaoRapidaoActivity.RapidaoPagerAdapter(getSupportFragmentManager());
 		viewPager.setAdapter(adapterViewPager);
 		circleIndicator.setViewPager(viewPager);
@@ -138,7 +140,6 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 			public void onResponse(final RapidaoDTOResponse response) {
 				loadViewProgress.dismiss();
 				processarRegistro(response);
-				setViews();
 				setMethods();
 			}
 

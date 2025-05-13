@@ -59,7 +59,6 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        //EstiloModalidade estilo = new EstiloModalidade(modalidade);
         EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
         int numeroResultado = numeroslista.get(position);
         String numero = numeroResultado < 10 ? context.getResources().getString(R.string.zero) + numeroResultado : context.getResources().getString(R.string.string_vazia) + numeroResultado;

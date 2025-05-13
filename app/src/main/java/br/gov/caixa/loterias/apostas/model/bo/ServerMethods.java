@@ -30,6 +30,10 @@ class ServerMethods {
      // PIX
      static final String GERAR_CODIGO_PIX = "/carrinhos/gerar-cobranca-pix";
 
+     // RESGATE PIX
+     static final String CONSULTA_DADOS_CHAVE = "/apostas/{id}/consulta-dados-chave";
+     static final String CANCELA_RESGATE_PIX = "/apostas/{id}/cancelar-resgate-pix";
+
      //MEIO PAGAMENTO
      static final String MEIOS_PAGAMENTOS_ID = "/meios-pagamento/{id}";
      static final String MEIOS_PAGAMENTOS = "/meios-pagamento";
@@ -69,8 +73,8 @@ class ServerMethods {
      static final String APOSTAS_CONFIRMADAS_PATH = "/apostas";
      static final String APOSTAS_CONFIRMADAS_DETALHES_PATH = "/apostas/{id}/detalhes-premio";
      static final String APOSTAS_CONFIRMADAS_COMPROVANTE_PATH = "/apostas/{id}/comprovante";
-     static final String APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH = "/apostas/{id}/comprovante-aposta-app-pdf";
-     static final String APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PREMIO_PATH = "/apostas/{id}/comprovante-premio-app-pdf";
+     static final String APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PATH = "apostas/{id}/comprovante-aposta-app-pdf";
+     static final String APOSTAS_CONFIRMADAS_GERAR_COMPROVANTE_PREMIO_PATH = "apostas/{id}/comprovante-premio-app-pdf";
      static final String APOSTAS_COMPROVANTE_PREMIO_PATH = "/apostas/{id}/comprovante-premio";
      static final String APOSTAS_CONFERIR_PATH = "/apostas/{id}/conferir";
      static final String APOSTAS_GERAR_CODIGO_RESGATE_PATH = "/apostas/{id}/app/gerar-codigo-resgate-loterica";
@@ -130,6 +134,11 @@ class ServerMethods {
      static final String AUTOAVALIACAO_RESPOSTAS = "/autoavaliacoes/grava-resposta";
 
      static final String AUTOSUSPENSAO_APOSTADOR = "/usuarios/suspender-conta-apostador";
+     static final String NOTIFICACAO_REGISTRAR_DISPOSITIVO_PATH = "/push/v3/registros";
+     static final String PUSH_NOTIFICACAO_REGISTRAR_DISPOSITIVO_PATH = "/push/registros";
+
+     static final String VALIDA_REPRESA = "/parametros/valida-represa";
+
 
      private ServerMethods(){}
 }

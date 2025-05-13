@@ -49,7 +49,6 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 
 	@Override
 	public void bind(ApostaCarrinhoFavoritoDTO apostaAtual, int position) {
-		//EstiloModalidade estilo      = new EstiloModalidade(ModalidadeEnum.fromModalidadeDTO(apostaAtual.getModalidade()));
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromModalidadeDTO(apostaAtual.getModalidade()));
 
 		if (apostaAtual.getModalidade().getValor() == 9){

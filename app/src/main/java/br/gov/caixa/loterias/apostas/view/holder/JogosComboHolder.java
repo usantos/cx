@@ -20,11 +20,11 @@ import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaComboRecyclerView;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaSuperSeteComboRecyclerView;
 
 public class JogosComboHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8Modalidades> {
 	private TextView modalidade, concurso, valor, mesSorte, timeCoracao;
 	private RecyclerView listView, trevosListView;
-	private ImageView calendarioDiaSorte;
 	private ConstraintLayout containerDiaSorte, containerTimemania, containerMaisMilionaria;
 
 	public JogosComboHolder(View itemView) {
@@ -65,11 +65,43 @@ public class JogosComboHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8M
 
 		if (aposta.getModalidade() == ModalidadeEnum.SUPER_7){
 			listView.setLayoutManager(new GridLayoutManager(itemView.getContext(), 7));
+			listView.setAdapter(new ListaSuperSeteComboRecyclerView(getListaSuperSete(aposta)));
 		} else {
 			listView.setLayoutManager(new GridLayoutManager(itemView.getContext(), 6));
+			listView.setAdapter(new ListaDezenaComboRecyclerView(getListaApresentacao(aposta), false));
 		}
-		listView.setAdapter(new ListaDezenaComboRecyclerView(getListaApresentacao(aposta), false));
 		apresentaDetalhesPorModalidade(aposta);
+	}
+
+	private List<List<String>> getListaSuperSete(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+		List<List<String>> matriz = new ArrayList<>();
+		if (aposta.getNumerosSelecionados() != null && !((ArrayList)aposta.getNumerosSelecionados()).isEmpty() && !isSupresinha(aposta)){
+			for (int i = 0; i < ((ArrayList<?>) aposta.getNumerosSelecionados()).size(); i++){
+				matriz.add(getListNumeros((List) ((ArrayList<?>) aposta.getNumerosSelecionados()).get(i), true));
+			}
+		} else {
+			initMatriz(aposta, matriz);
+			preencheMatrizXX(aposta, matriz);
+		}
+		return matriz;
+	}
+
+	private static void preencheMatrizXX(IdentificaoDeUmaApostaDas8Modalidades aposta, List<List<String>> matriz) {
+		for(int i = 0; i < aposta.getQuantidadeNumeros(); i++){
+			if (i < 7){
+				matriz.get(i).add("XX");
+			} else if (i < 14){
+				matriz.get(i - 7).add("XX");
+			} else {
+				matriz.get(i - 14).add("XX");
+			}
+		}
+	}
+
+	private static void initMatriz(IdentificaoDeUmaApostaDas8Modalidades aposta, List<List<String>> matriz) {
+		for(int i = 0; i < aposta.getQuantidadeNumeros(); i++){
+			matriz.add(new ArrayList<>());
+		}
 	}
 
 	private List<String> getListaApresentacao(IdentificaoDeUmaApostaDas8Modalidades aposta){

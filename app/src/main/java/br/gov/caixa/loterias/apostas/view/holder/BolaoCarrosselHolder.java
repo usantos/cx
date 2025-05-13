@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpites;
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
 public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
@@ -122,7 +123,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		loterica.setText(bolao.getNomeFantasia()+ "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
 
 		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
-								getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
+						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
+						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
 
 		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
 								getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
