@@ -27,7 +27,7 @@ public class ParametrosConfiguraveisDTO {
     @SerializedName("hostMicroServicoCarrinhoProducao")
     private String urlBaseCarrinhoProducao;
     @SerializedName("grupoDeCpfsQueAcessamOServicoDaAzure")
-    private Integer grupoDeCpfsQueAcessamOServicoDaAzure;
+    private String grupoDeCpfsQueAcessamOServicoDaAzure;
 
 
     @SerializedName("hostNovoMicroServicoConferenciaApostaProducao")
@@ -94,11 +94,11 @@ public class ParametrosConfiguraveisDTO {
         this.urlBaseCarrinhoProducao = urlBaseCarrinhoProducao;
     }
 
-    public Integer getGrupoDeCpfsQueAcessamOServicoDaAzure() {
+    public String getGrupoDeCpfsQueAcessamOServicoDaAzure() {
         return grupoDeCpfsQueAcessamOServicoDaAzure;
     }
 
-    public void setGrupoDeCpfsQueAcessamOServicoDaAzure(Integer grupoDeCpfsQueAcessamOServicoDaAzure) {
+    public void setGrupoDeCpfsQueAcessamOServicoDaAzure(String grupoDeCpfsQueAcessamOServicoDaAzure) {
         this.grupoDeCpfsQueAcessamOServicoDaAzure = grupoDeCpfsQueAcessamOServicoDaAzure;
     }
 

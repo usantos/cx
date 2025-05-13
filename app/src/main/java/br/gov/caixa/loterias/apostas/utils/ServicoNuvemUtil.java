@@ -72,7 +72,7 @@ public class ServicoNuvemUtil {
 		}
 
 		if (listPublico.contains(path)) {
-			if (finalCPFAcessaNuvem()) {
+			if (cpfAcessamNuvem()) {
 				apresentaCaminhoTQS(baseUrlCarrinho, PUBLICO, path);
 				return baseUrlCarrinho + PUBLICO + path;
 			}
@@ -80,7 +80,7 @@ public class ServicoNuvemUtil {
 		}
 
 		if (listLogadoExato.contains(path)) {
-			if (finalCPFAcessaNuvem()) {
+			if (cpfAcessamNuvem()) {
 				apresentaCaminhoTQS(baseUrlCarrinho, LOGADO, path);
 				return baseUrlCarrinho + LOGADO + path;
 			}
@@ -89,7 +89,7 @@ public class ServicoNuvemUtil {
 
 		for(String parcial : listLogadoParcial) {
 			if (path.startsWith(parcial)) {
-				if (finalCPFAcessaNuvem()) {
+				if (cpfAcessamNuvem()) {
 					apresentaCaminhoTQS(baseUrlCarrinho, LOGADO, path);
 					return baseUrlCarrinho + LOGADO + path;
 				}
@@ -100,23 +100,33 @@ public class ServicoNuvemUtil {
 		return null;
 	}
 
-	private static boolean finalCPFAcessaNuvem() {
+	private static boolean cpfAcessamNuvem() {
 
-		int finalCpfAcessamNuvem = ConfiguracaoAppSingleton.getInstance().getGrupoDeCpfsQueAcessamOServicoDaAzure();
+		String cpfAcessam[] = ConfiguracaoAppSingleton.getInstance().getGrupoDeCpfsQueAcessamOServicoDaAzure().split(";");
+
+		int finalCpfAcessamNuvem = new Integer(cpfAcessam[0]);
 
 		//Apenas para teste
 		finalCpfAcessamNuvem = 100;
 
-		if (finalCpfAcessamNuvem == 0) {
-			return false;
-		}
-
 		String cpf = DadosUsuarioBO.obterCpf();
 		if (cpf != null && !cpf.isEmpty() && cpf.length() >= 2) {
+
+			//Verifica lista branca
+			for (int i = 1; i < cpfAcessam.length; i++) {
+				if (cpf.equals(cpfAcessam[i])) {
+					return true;
+				}
+			}
+
 			//Verifica se o final do CPF < finalCpfAcessamNuvem
 			if (Integer.parseInt(cpf.substring(cpf.length() -2)) < finalCpfAcessamNuvem) {
 				return true;
 			}
+		}
+
+		if (finalCpfAcessamNuvem == 0) {
+			return false;
 		}
 
 		if (finalCpfAcessamNuvem == 100) {

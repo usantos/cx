@@ -16,7 +16,7 @@ public class ConfiguracaoAppSingleton {
 
     private String urlBaseCarrinhoPiloto;
     private String urlBaseCarrinhoProducao;
-    private Integer grupoDeCpfsQueAcessamOServicoDaAzure;
+    private String grupoDeCpfsQueAcessamOServicoDaAzure;
 
     private static ConfiguracaoAppSingleton configuracaoAppSingleton;
 
@@ -35,7 +35,7 @@ public class ConfiguracaoAppSingleton {
 
             configuracaoAppSingleton.urlBaseCarrinhoPiloto="-";
             configuracaoAppSingleton.urlBaseCarrinhoProducao="-";
-            configuracaoAppSingleton.grupoDeCpfsQueAcessamOServicoDaAzure = 0;
+            configuracaoAppSingleton.grupoDeCpfsQueAcessamOServicoDaAzure = "";
         }
         return configuracaoAppSingleton;
     }
@@ -112,12 +112,11 @@ public class ConfiguracaoAppSingleton {
         this.urlBaseCarrinhoProducao = urlBaseCarrinhoProducao;
     }
 
-    public Integer getGrupoDeCpfsQueAcessamOServicoDaAzure() {
+    public String getGrupoDeCpfsQueAcessamOServicoDaAzure() {
         return grupoDeCpfsQueAcessamOServicoDaAzure;
     }
 
-    public void setGrupoDeCpfsQueAcessamOServicoDaAzure(Integer grupoDeCpfsQueAcessamOServicoDaAzure) {
+    public void setGrupoDeCpfsQueAcessamOServicoDaAzure(String grupoDeCpfsQueAcessamOServicoDaAzure) {
         this.grupoDeCpfsQueAcessamOServicoDaAzure = grupoDeCpfsQueAcessamOServicoDaAzure;
-
     }
 }
