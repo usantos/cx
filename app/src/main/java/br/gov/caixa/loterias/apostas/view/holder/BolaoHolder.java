@@ -105,7 +105,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 			cidade.setText(cidadeUf);
 		}
 		if (bolao.getVrPremioEstimado() != null) {
-			valorPremio.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrPremioEstimado().doubleValue()));
+			valorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
 		}
 		valor.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrCotaComTarifa().doubleValue()));
 

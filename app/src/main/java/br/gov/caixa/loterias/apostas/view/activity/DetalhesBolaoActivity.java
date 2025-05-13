@@ -251,7 +251,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void preencheDados() {
-		ViewUtils.setMoedaFormatHtml(bolao.getVrPremioEstimado(), tvValorPremio);
+		tvValorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
 		tvDescricaoPremioConcurso.setText(ViewUtils.textColor(this, getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso()), estilo.getCorLetraLista(), false));
 		tvMunicipio.setText(getString(R.string.nome_loteria) +" "+ bolao.getNomeFantasia() + "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getMunicipio().getUf().getSigla() );
 		//tvDescLoterica.setText(getString(R.string.nome_loteria) +" "+ bolao.getNomeFantasia());
