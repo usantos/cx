@@ -182,6 +182,7 @@ public class ServiceConnection {
 
         String novoCaminho = ServicoNuvemUtil.alteraCaminhoNuvem(path);
         if (novoCaminho != null) {
+            ServicoNuvemUtil.apresentaCaminhoTQS(novoCaminho + fillParamToString(queryParams));
             return novoCaminho + fillParamToString(queryParams);
         }
 
@@ -246,10 +247,12 @@ public class ServiceConnection {
         StringBuilder singleParam = new StringBuilder();
         for (Map.Entry<String, String> param : queryParams.entrySet()) {
             if (param.getValue() != null) {
-                singleParam.append(param.getKey()).append("==").append(param.getValue()).append("&&");
+                //singleParam.append(param.getKey()).append("==").append(param.getValue()).append("&&");
+                singleParam.append(param.getKey()).append("=").append(param.getValue()).append("&");
             }
         }
-        return "/?q=" + singleParam.toString();
+        //return "/?q=" + singleParam.toString();
+        return "/?" + singleParam.toString().substring(0, singleParam.toString().length()-1);
     }
 
 }

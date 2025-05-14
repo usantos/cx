@@ -73,7 +73,7 @@ public class ServicoNuvemUtil {
 
 		if (listPublico.contains(path)) {
 			if (cpfAcessamNuvem()) {
-				apresentaCaminhoTQS(baseUrlCarrinho, PUBLICO, path);
+				//apresentaCaminhoTQS(baseUrlCarrinho, PUBLICO, path);
 				return baseUrlCarrinho + PUBLICO + path;
 			}
 			return null;
@@ -81,7 +81,7 @@ public class ServicoNuvemUtil {
 
 		if (listLogadoExato.contains(path)) {
 			if (cpfAcessamNuvem()) {
-				apresentaCaminhoTQS(baseUrlCarrinho, LOGADO, path);
+				//apresentaCaminhoTQS(baseUrlCarrinho, LOGADO, path);
 				return baseUrlCarrinho + LOGADO + path;
 			}
 			return null;
@@ -90,7 +90,7 @@ public class ServicoNuvemUtil {
 		for(String parcial : listLogadoParcial) {
 			if (path.startsWith(parcial)) {
 				if (cpfAcessamNuvem()) {
-					apresentaCaminhoTQS(baseUrlCarrinho, LOGADO, path);
+					//apresentaCaminhoTQS(baseUrlCarrinho, LOGADO, path);
 					return baseUrlCarrinho + LOGADO + path;
 				}
 				return null;
@@ -134,6 +134,16 @@ public class ServicoNuvemUtil {
 		}
 
 		return false;
+	}
+
+	public static void apresentaCaminhoTQS(String caminhoCompeto) {
+		if (BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")){
+			//ToastUtil.toastShort(novoCaminho + fillParamToString(queryParams));
+			MessagingUtils.criaNotificacaoNovaExpansivel(Aplicacao.application.getApplicationContext(),
+					DateUtils.getDateTime(),
+					caminhoCompeto,
+					caminhoCompeto);
+		}
 	}
 
 	private static void apresentaCaminhoTQS(String baseUrlCarrinho, String pubLog, String path) {
