@@ -79,7 +79,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private TextView txtFimLista;
 	private int idMunicipio = -1;
 	private int idUf = -1;
-	private boolean acumulouBoloesParaApresentar;
+	private boolean acumulouBoloesParaApresentar, isFiltrando = false;
 
 	private NestedScrollView scrollView;
 	private FrameLayout frameEstadoVazio;
@@ -360,7 +360,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 	private void buscarMaisBoloes() {
 		loading.setVisibility(View.VISIBLE);
-		if (filtro != null){
+		if (isFiltrando){
 			buscaBoloesFiltro();
 		} else {
 			buscaBoloes();
@@ -381,6 +381,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				if (data != null) {
 					filtro = (FiltroAplicadoMarketplace) data.getSerializableExtra(FiltraMarketplaceActivity.FILTRO_MARKETPLACE_RETORNO);
 					if (filtro != null) {
+						isFiltrando = true;
 						configFiltrar(launcherFiltro, filtro);
 					}
 				}
@@ -402,7 +403,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				AlertDialogUtils.show(BolaoActivity.this);
 				model.zeraPaginacao();
 				listAdapter = null;
-				if (filtro != null){
+				if (isFiltrando){
 					cotasFiltradas = null;
 					buscaBoloesFiltro();
 				} else {
