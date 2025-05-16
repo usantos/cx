@@ -228,7 +228,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		return new OnSilceListener<DetalheBolaoDTO>() {
 			@Override
 			public void success(DetalheBolaoDTO payload) {
-				if (payload.getApostas() != null && !payload.getApostas().isEmpty() && payload.getApostas().get(0).getTrevos() == null && controleChamadaServico <= 3){
+				if (modalidade != null && modalidade == ModalidadeEnum.MAIS_MILIONARIA && payload.getApostas() != null && !payload.getApostas().isEmpty() && payload.getApostas().get(0).getTrevos() == null && controleChamadaServico <= 3){
 					controleChamadaServico++;
 					model.buscaDetalhesBolao(codigoBolao, onBuscaDetalheBolaoListener());
 				} else {
