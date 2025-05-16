@@ -85,6 +85,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private boolean precisaAtualizarLista = false;
 	private ActivityResultLauncher<Intent> launcherAddCarrinho;
 
+	private int controleChamadaServico = 1;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -226,20 +228,24 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		return new OnSilceListener<DetalheBolaoDTO>() {
 			@Override
 			public void success(DetalheBolaoDTO payload) {
-				bolao = payload;
-				fragmentSubBarraModalidade();
-				fragmentRodape();
-				preencheDados();
-				AlertDialogUtils.dismiss();
-				if (bolao.getQtdCotaDisponivel() == 0 && modoVisualizacao != null && modoVisualizacao == ModoVisualizacaoBolaoEnum.SIMULACAO) {
-					ViewUtils.alertTitleButton(DetalhesBolaoActivity.this, R.string.label_atencao, getString(R.string.cota_zerou),
-							"Ok", dialogInterface -> {
-								dialogInterface.dismiss();
-								setResult(Activity.RESULT_OK);
-								finish();
-								return;
-							}
-					);
+				if (payload.getApostas() != null && !payload.getApostas().isEmpty() && payload.getApostas().get(0).getTrevos() == null && controleChamadaServico <= 3){
+					controleChamadaServico++;
+					model.buscaDetalhesBolao(codigoBolao, onBuscaDetalheBolaoListener());
+				} else {
+					bolao = payload;
+					fragmentSubBarraModalidade();
+					fragmentRodape();
+					preencheDados();
+					AlertDialogUtils.dismiss();
+					if (bolao.getQtdCotaDisponivel() == 0 && modoVisualizacao != null && modoVisualizacao == ModoVisualizacaoBolaoEnum.SIMULACAO) {
+						ViewUtils.alertTitleButton(DetalhesBolaoActivity.this, R.string.label_atencao, getString(R.string.cota_zerou),
+								"Ok", dialogInterface -> {
+									dialogInterface.dismiss();
+									setResult(Activity.RESULT_OK);
+									finish();
+								}
+						);
+					}
 				}
 			}
 
@@ -256,16 +262,22 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		tvMunicipio.setText(getString(R.string.nome_loteria) +" "+ bolao.getNomeFantasia() + "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getMunicipio().getUf().getSigla() );
 		//tvDescLoterica.setText(getString(R.string.nome_loteria) +" "+ bolao.getNomeFantasia());
 		tvValorCota.setText("Valor da Cota: " + ViewUtils.getMoedaFormat(bolao.getVrCotaSemTarifa()));
-		tvValorTarifa.setText("Tarifa de Serviço: " + ViewUtils.getMoedaFormat(bolao.getValorTarifaServico()));
-		tvValorTotal.setText("Total: " + ViewUtils.getMoedaFormat(bolao.getVrCotaComTarifa()));
+		tvValorTarifa.setText("Tarifa de Serviço: " + ViewUtils.getMoedaFormat(bolao.getVrTarifaServicoUltimaCota()));
+		tvValorTotal.setText("Total: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaComTarifa()));
 		btnAdd.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.adicionarAoCarrinho)));
 		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
 
-		textQtdDezenas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
-				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
-						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
-						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
-
+		if (bolao.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && bolao.getApostas() != null
+				&& !bolao.getApostas().isEmpty() && bolao.getApostas().get(0).getDezenas() != null &&
+				!bolao.getApostas().get(0).getDezenas().isEmpty()){
+			textQtdDezenas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
+							getApostasDeDezenas(bolao.getQtdApostas(), bolao.getApostas().get(0).getDezenas().size())));
+		} else {
+			textQtdDezenas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
+					bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
+							getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
+							getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+		}
 
 		textQtdCotas.setText(ViewUtils.textCaixaSTDBoldTitle(this,
 				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
@@ -334,7 +346,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private BigDecimal getValorApostaBolao() {
-		return bolao.getVrCotaComTarifa();
+		return bolao.getVrUltimaCotaComTarifa();
 	}
 
 	private void fragmentSubBarraModalidade() {

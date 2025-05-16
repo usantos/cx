@@ -105,22 +105,24 @@ public class JogoBolaoHolder extends LoteriasHolder<ApostaBolaoDTO> {
 						estilo.getCorFonteFundoClaro());
 				break;
 			case MAIS_MILIONARIA:
-				txtIndividualidade.setVisibility(View.VISIBLE);
-				txtIndividualidade.setTypeface(FonteUtils.getFonte(FontCaixaEnum.REGULAR));
-				txtIndividualidade.setText(context.getString(R.string.trevosTitulo));
+				if (aposta.getTrevos() != null && !aposta.getTrevos().isEmpty()){
+					txtIndividualidade.setVisibility(View.VISIBLE);
+					txtIndividualidade.setTypeface(FonteUtils.getFonte(FontCaixaEnum.REGULAR));
+					txtIndividualidade.setText(context.getString(R.string.trevosTitulo));
 
-				List<Dezena> trevos = new ArrayList<>();
-				for (int i = 0; i < aposta.getTrevos().size(); i++) {
-					trevos.add(new Dezena("" + aposta.getTrevos().get(i), Boolean.FALSE, "" + aposta.getTrevos().get(i)));
+					List<Dezena> trevos = new ArrayList<>();
+					for (int i = 0; i < aposta.getTrevos().size(); i++) {
+						trevos.add(new Dezena("" + aposta.getTrevos().get(i), Boolean.FALSE, "" + aposta.getTrevos().get(i)));
+					}
+
+					listTrevos.setVisibility(View.VISIBLE);
+					trevosAdapter = new ListaDezenaRecyclerView(trevos, new ArrayList<>(),
+							getTrevoConfig(), onItemClickListener());
+					listTrevos.setAdapter(trevosAdapter);
+
+					RecyclerView.LayoutManager layuot = new GridLayoutManager(context, 6);
+					listTrevos.setLayoutManager(layuot);
 				}
-
-				listTrevos.setVisibility(View.VISIBLE);
-				trevosAdapter = new ListaDezenaRecyclerView(trevos, new ArrayList<>(),
-						getTrevoConfig(), onItemClickListener());
-				listTrevos.setAdapter(trevosAdapter);
-
-				RecyclerView.LayoutManager layuot = new GridLayoutManager(context, 6);
-				listTrevos.setLayoutManager(layuot);
 				break;
 		}
 	}

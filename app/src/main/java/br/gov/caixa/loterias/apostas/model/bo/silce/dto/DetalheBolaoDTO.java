@@ -77,6 +77,8 @@ public class DetalheBolaoDTO {
     private BigDecimal vrTotalBolaoComTarifa = null;
     @SerializedName("vrTotalBolaoSemTarifa")
     private BigDecimal vrTotalBolaoSemTarifa = null;
+    @SerializedName("vrTarifaServicoUltimaCota")
+    private BigDecimal vrTarifaServicoUltimaCota;
     @SerializedName("apostas")
     private List<ApostaBolaoDTO> apostas;
 
@@ -440,6 +442,10 @@ public class DetalheBolaoDTO {
 
     public void setQtdNumeros(Integer qtdNumeros) {
         this.qtdNumeros = qtdNumeros;
+    }
+
+    public BigDecimal getVrTarifaServicoUltimaCota() {
+        return vrTarifaServicoUltimaCota;
     }
 
     @Override

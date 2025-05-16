@@ -86,7 +86,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private FiltroVazioFragment filtroVazioFragment;
 	private FiltroAplicadoMarketplace filtro = new FiltroAplicadoMarketplace();
 	private List<CotasBolaoDTO> cotasDisponiveis;
-	private List<CotasBolaoDTO> cotasFiltradas;
 
 	private Integer idModalidade, idModalidadeInicial;
 	private Integer tipoConcurso, tipoConcursoInicial;
@@ -256,12 +255,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 				if (payload.getCotas().isEmpty()){
 					if (naoTemOndeBuscar()){
-						if (cotasFiltradas == null || cotasFiltradas.isEmpty()){
+						if (cotasDisponiveis == null || cotasDisponiveis.isEmpty()){
 							apresentanEstadoVazio();
 						} else {
-							preencheListas(cotasFiltradas);
-							if (!cotasFiltradas.isEmpty()){
-								if (cotasFiltradas.size() > 4) {
+							preencheListas(cotasDisponiveis);
+							if (!cotasDisponiveis.isEmpty()){
+								if (cotasDisponiveis.size() > 4) {
 									txtFimLista.setVisibility(View.VISIBLE);
 								}
 							}
@@ -273,12 +272,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 						buscarMaisBoloes();
 					}
 				} else {
-					setCotasFiltradas(payload);
+					setCotasDisponiveis(payload);
 
 					if (naoTemOndeBuscar()){
-						preencheListas(cotasFiltradas);
-						if (!cotasFiltradas.isEmpty()){
-							if (cotasFiltradas.size() > 4) {
+						preencheListas(cotasDisponiveis);
+						if (!cotasDisponiveis.isEmpty()){
+							if (cotasDisponiveis.size() > 4) {
 								txtFimLista.setVisibility(View.VISIBLE);
 							}
 						}
@@ -288,7 +287,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 						acumulouBoloesParaApresentar = true;
 						buscarMaisBoloes();
 					} else {
-						preencheListas(cotasFiltradas);
+						preencheListas(cotasDisponiveis);
 						loading.setVisibility(View.GONE);
 						AlertDialogUtils.dismiss();
 					}
@@ -344,18 +343,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				cotasDisponiveis.add(cota);
 			}
 		}
-		cotasFiltradas = null;
-	}
-
-	private void setCotasFiltradas(ListaBolaoDTO payload) {
-		if (cotasFiltradas == null){
-			cotasFiltradas = payload.getCotas();
-		} else {
-			for (CotasBolaoDTO cota : payload.getCotas()){
-				cotasFiltradas.add(cota);
-			}
-		}
-		cotasDisponiveis = null;
 	}
 
 	private void buscarMaisBoloes() {
@@ -387,7 +374,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				}
 				AlertDialogUtils.show(BolaoActivity.this);
 				model.zeraPaginacao();
-				cotasFiltradas = null;
+				cotasDisponiveis = null;
 
 				buscaBoloesFiltro();
 				listAdapter = null;
@@ -403,11 +390,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				AlertDialogUtils.show(BolaoActivity.this);
 				model.zeraPaginacao();
 				listAdapter = null;
+				cotasDisponiveis = null;
 				if (isFiltrando){
-					cotasFiltradas = null;
 					buscaBoloesFiltro();
 				} else {
-					cotasDisponiveis = null;
 					buscaBoloes();
 				}
 			}
