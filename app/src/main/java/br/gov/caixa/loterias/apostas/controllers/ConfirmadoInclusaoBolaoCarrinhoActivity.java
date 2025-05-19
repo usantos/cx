@@ -47,8 +47,6 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmado_inclusao_bolao_carrinho);
 
-        configToolbar(R.id.toolbar);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_apostas bolão_"));
 
         getExtras();
         estilo = new EstiloModalidadeMKP(modalidade);
@@ -62,8 +60,6 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
         }
-        configBackgroundColorMenu(estilo.getCorEscura());
-        configColorTextMenu(estilo.getCorFonteFundoEscuro());
 
         background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
         if (modalidade.name().toUpperCase().equals("DIA_DE_SORTE") ||
@@ -107,7 +103,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         tvConclusaoPagamento = findViewById(R.id.textObservacaoConfirmacao);
         imageSetaApontandoCarrinho = findViewById(R.id.imageSetaApontandoCarrinho);
 
-        tvVoltarInicio.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
+        tvVoltarInicio.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.btn_title_voltarAoInicio)));
     }
 
     private void setMetodos() {

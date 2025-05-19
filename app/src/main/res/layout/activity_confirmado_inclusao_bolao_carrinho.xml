@@ -6,29 +6,22 @@
     android:layout_height="match_parent"
     tools:context="br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoBolaoCarrinhoActivity">
 
-    <include layout="@layout/app_bar_marketplace" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_toolbar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="?attr/actionBarSize" />
 
     <FrameLayout
         android:id="@+id/id_fragment_sub_barra"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/gl_toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_corpo"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_corpo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/mega_verde_escuro_mkp"
-        app:layout_constraintTop_toBottomOf="@id/id_fragment_sub_barra"
+        app:layout_constraintTop_toBottomOf="@+id/id_fragment_sub_barra"
         app:layout_constraintBottom_toTopOf="@+id/id_fragment_rodape"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
