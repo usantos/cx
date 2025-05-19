@@ -89,21 +89,18 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detalhes_bolao);
-		configToolbar(R.id.toolbar);
 
 		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(DetalhesBolaoActivity.this, onAtualizaLista());
 
 		getExtras();
 		estilo = new EstiloModalidadeMKP(modalidade);
 
-		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_bolões_"));
-
 		setViews();
+		aplicaEstilo();
 		setMetodos();
 
 		fragmentSomadorCarrinho();
 		model = new DetalhesBolaoModel(this);
-		aplicaEstilo();
 		aplicaModoVisualizacao();
 	}
 
@@ -129,8 +126,6 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
 		}
-		configBackgroundColorMenu(estilo.getCorEscura());
-		configColorTextMenu(estilo.getCorFonteFundoEscuro());
 
 		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		tvMunicipio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
