@@ -70,7 +70,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private JogosBolaoRecyclerView listaAdapter;
 	private PartidasLotecaRecyclerViewAdapter partidasAdapter;
 	private SuperSeteRecyclerViewAdapter superSeteAdpter;
-	private ConstraintLayout layoutQtdCotas;
+	private ConstraintLayout layoutQtdCotas, layoutDetalhes;
 	private FrameLayout frameSomador, frameRodape;
 	private AppCompatImageView tagBolao;
 
@@ -162,6 +162,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void setViews() {
+		layoutDetalhes = findViewById(R.id.layout_detalhes_bolao);
 		tagBolao = findViewById(R.id.tag_bolao_detalhes);
 		tvValorPremio = findViewById(R.id.id_valor_premio);
 		tvDescricaoPremioConcurso = findViewById(R.id.id_descricao_valor_premio);
@@ -230,6 +231,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 				fragmentRodape();
 				preencheDados();
 				AlertDialogUtils.dismiss();
+				layoutDetalhes.setVisibility(View.VISIBLE);
 				if (bolao.getQtdCotaDisponivel() == 0 && modoVisualizacao != null && modoVisualizacao == ModoVisualizacaoBolaoEnum.SIMULACAO) {
 					ViewUtils.alertTitleButton(DetalhesBolaoActivity.this, R.string.label_atencao, getString(R.string.cota_zerou),
 							"Ok", dialogInterface -> {
