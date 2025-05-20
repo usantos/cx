@@ -21,7 +21,8 @@ public class ServicoNuvemUtil {
 	private static final List<String> listPublico = Arrays.asList(
 			"/equipes-esportivas/listaEquipes",
 			"/parametros-simulacao",
-			"/combos");
+			"/combos",
+			"/modalidades");
 	private static final List<String> listLogadoExato = Arrays.asList(
 			"/carrinhos",
 			"/carrinhos/atualiza-teimosinha-aposta",
@@ -40,7 +41,8 @@ public class ServicoNuvemUtil {
 			"/carrinhos/validar",
 			"/carrinhos/validar-aposta-identica",
 			"/carrinhos/verifica-compra-processamento",
-			"/usuarios/verificar-cadastro");
+			"/usuarios/verificar-cadastro",
+			"/carrinhos/gerar-cobranca-pix");
 	private static final List<String> listLogadoParcial = Arrays.asList(
 			"/apostas-favoritas",
 			"/carrinhos-favoritos",
@@ -48,6 +50,9 @@ public class ServicoNuvemUtil {
 			"/carrinhos/combos",
 			"/carrinhos/incluir-aposta-favorita",
 			"/carrinhos/incluir-carrinho-favorito");
+
+	private static final List<String> listLogadoEspecial = Arrays.asList(
+			"/salvar-carrinho-favorito"); 	//compras/{idCompra}/salvar-carrinho-favorito
 
 
 	public static String alteraCaminhoNuvem(String path) {
@@ -73,7 +78,6 @@ public class ServicoNuvemUtil {
 
 		if (listPublico.contains(path)) {
 			if (cpfAcessamNuvem()) {
-				//apresentaCaminhoTQS(baseUrlCarrinho, PUBLICO, path);
 				return baseUrlCarrinho + PUBLICO + path;
 			}
 			return null;
@@ -81,8 +85,7 @@ public class ServicoNuvemUtil {
 
 		if (listLogadoExato.contains(path)) {
 			if (cpfAcessamNuvem()) {
-				//apresentaCaminhoTQS(baseUrlCarrinho, LOGADO, path);
-				return baseUrlCarrinho + LOGADO + path;
+					return baseUrlCarrinho + LOGADO + path;
 			}
 			return null;
 		}
@@ -90,7 +93,15 @@ public class ServicoNuvemUtil {
 		for(String parcial : listLogadoParcial) {
 			if (path.startsWith(parcial)) {
 				if (cpfAcessamNuvem()) {
-					//apresentaCaminhoTQS(baseUrlCarrinho, LOGADO, path);
+					return baseUrlCarrinho + LOGADO + path;
+				}
+				return null;
+			}
+		}
+
+		for(String parcial : listLogadoEspecial) {
+			if (path.contains(parcial)) {
+				if (cpfAcessamNuvem()) {
 					return baseUrlCarrinho + LOGADO + path;
 				}
 				return null;
