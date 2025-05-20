@@ -119,6 +119,7 @@
     <string name="termo_de_uso_underline"><u>termo de uso</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
+    <string name="cod_loterica">Cod. Lotérica: </string>
     <string name="enviando_email">Enviar e-mail usando:"</string>
     <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo é </string>
     <string name="numeros_sorteados">Números sorteados</string>
