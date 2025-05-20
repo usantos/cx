@@ -53,7 +53,6 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	private OnItemBolaoListener listener;
 
-
 	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener) {
 		super(itemView);
 		this.activity = activity;
@@ -107,7 +106,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		if (bolao.getVrPremioEstimado() != null) {
 			valorPremio.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrPremioEstimado().doubleValue()));
 		}
-		valor.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrCotaComTarifa().doubleValue()));
+		valor.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrUltimaCotaComTarifa().doubleValue()));
 
 		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
 				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?

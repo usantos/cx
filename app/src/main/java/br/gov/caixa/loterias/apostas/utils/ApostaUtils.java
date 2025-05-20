@@ -450,7 +450,7 @@ public class ApostaUtils {
 		tipoConcurso.setValor(bolao.getTipoConcurso().toString());
 		aposta.setTipoConcurso(tipoConcurso);
 
-		aposta.setValor(bolao.getVrCotaComTarifa());
+		aposta.setValor(bolao.getVrUltimaCotaComTarifa());
 		aposta.setDataSorteio(bolao.getDataSorteio());
 
 		return aposta;

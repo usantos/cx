@@ -24,7 +24,6 @@ public class CertificadoNovaAPISingleton {
     private static void initCertificados() {
         certificados = new ArrayList<>();
         //precisa do certificado da nova api
-        //certificados.add(R.raw.certificado_loterias_antigo);
         position = 0;
     }
 
