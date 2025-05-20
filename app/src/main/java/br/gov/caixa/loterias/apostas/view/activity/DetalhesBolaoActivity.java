@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -71,6 +72,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private SuperSeteRecyclerViewAdapter superSeteAdpter;
 	private ConstraintLayout layoutQtdCotas;
 	private FrameLayout frameSomador, frameRodape;
+	private AppCompatImageView tagBolao;
 
 	private String codigoBolao;
 	private ModalidadeEnum modalidade;
@@ -126,6 +128,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
 		}
+		tagBolao.setImageResource(estilo.getImagemTriangulo());
 
 		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		tvMunicipio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
@@ -159,6 +162,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void setViews() {
+		tagBolao = findViewById(R.id.tag_bolao_detalhes);
 		tvValorPremio = findViewById(R.id.id_valor_premio);
 		tvDescricaoPremioConcurso = findViewById(R.id.id_descricao_valor_premio);
 		tvMunicipio = findViewById(R.id.id_municipio);
