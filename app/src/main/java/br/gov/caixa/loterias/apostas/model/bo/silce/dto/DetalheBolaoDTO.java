@@ -71,6 +71,8 @@ public class DetalheBolaoDTO {
     private BigDecimal vrCotaComTarifa = null;
     @SerializedName("vrUltimaCotaComTarifa")
     private BigDecimal vrUltimaCotaComTarifa = null;
+    @SerializedName("vrUltimaCotaSemTarifa")
+    private BigDecimal vrUltimaCotaSemTarifa;
     @SerializedName("vrTarifaBolao")
     private BigDecimal vrTarifaBolao = null;
     @SerializedName("vrTotalBolaoComTarifa")
@@ -547,6 +549,10 @@ public class DetalheBolaoDTO {
 
     public BigDecimal getVrUltimaCotaComTarifa() {
         return vrUltimaCotaComTarifa;
+    }
+
+    public BigDecimal getVrUltimaCotaSemTarifa() {
+        return vrUltimaCotaSemTarifa;
     }
 }
 
