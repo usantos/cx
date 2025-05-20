@@ -26,6 +26,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tag_bolao_carrinho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_tag_bolao"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="@+id/layout_corpo"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
         <ImageView
             android:id="@+id/imageSetaApontandoCarrinho"
             android:layout_width="wrap_content"
