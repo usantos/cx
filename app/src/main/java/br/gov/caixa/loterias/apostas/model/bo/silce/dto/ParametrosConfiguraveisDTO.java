@@ -22,6 +22,13 @@ public class ParametrosConfiguraveisDTO {
     private Boolean atualizaPublicKey;
     @SerializedName("habilitaRevendaBolaoApp")
     private Boolean bolaoHabilitado;
+    @SerializedName("hostMicroServicoCarrinhoPiloto")
+    private String urlBaseCarrinhoPiloto;
+    @SerializedName("hostMicroServicoCarrinhoProducao")
+    private String urlBaseCarrinhoProducao;
+    @SerializedName("grupoDeCpfsQueAcessamOServicoDaAzure")
+    private String grupoDeCpfsQueAcessamOServicoDaAzure;
+
 
     @SerializedName("hostNovoMicroServicoConferenciaApostaProducao")
     private String urlBaseNovaApiPRD;
@@ -69,6 +76,30 @@ public class ParametrosConfiguraveisDTO {
 
     public void setAtualizaPublicKey(Boolean atualizaPublicKey) {
         this.atualizaPublicKey = atualizaPublicKey;
+    }
+
+    public String getUrlBaseCarrinhoPiloto() {
+        return urlBaseCarrinhoPiloto;
+    }
+
+    public void setUrlBaseCarrinhoPiloto(String urlBaseCarrinhoPiloto) {
+        this.urlBaseCarrinhoPiloto = urlBaseCarrinhoPiloto;
+    }
+
+    public String getUrlBaseCarrinhoProducao() {
+        return urlBaseCarrinhoProducao;
+    }
+
+    public void setUrlBaseCarrinhoProducao(String urlBaseCarrinhoProducao) {
+        this.urlBaseCarrinhoProducao = urlBaseCarrinhoProducao;
+    }
+
+    public String getGrupoDeCpfsQueAcessamOServicoDaAzure() {
+        return grupoDeCpfsQueAcessamOServicoDaAzure;
+    }
+
+    public void setGrupoDeCpfsQueAcessamOServicoDaAzure(String grupoDeCpfsQueAcessamOServicoDaAzure) {
+        this.grupoDeCpfsQueAcessamOServicoDaAzure = grupoDeCpfsQueAcessamOServicoDaAzure;
     }
 
     @Override

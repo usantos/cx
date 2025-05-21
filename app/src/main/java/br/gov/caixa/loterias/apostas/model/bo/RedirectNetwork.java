@@ -302,6 +302,7 @@ public class  RedirectNetwork {
 
     public static void trataBloqueioParcial(final Activity activity) {
         if (SessaoUsuario.getInstance().getSituacaoApostador() != null &&
+            SessaoUsuario.getInstance().getSituacaoApostador().getEnum() != null && //Servico Nuvem (Erro)
             SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
             ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getString(R.string.usuario_bloqueio_parcial),
                     "Ok", dialogInterface -> {

@@ -111,10 +111,14 @@ public class DateUtils {
 
     public static long diffMillisSecondsTimerZone(String dataHoraExpiracao) {
         DateTimeZone timeZone = DateTimeZone.forID("America/Sao_Paulo");
-        DateTime agora = DateTime.now(timeZone);
+        //DateTime agora = DateTime.now(timeZone);
+        DateTime agora = DateTime.now().withZone(timeZone);
 
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ");
-        DateTime expiracao = formatter.parseDateTime(dataHoraExpiracao);
+        //Servico Nuvem
+        //DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ");
+        //DateTime expiracao = formatter.parseDateTime(dataHoraExpiracao);
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss").withZone(timeZone);
+        DateTime expiracao = formatter.parseDateTime(dataHoraExpiracao.substring(0,19));
 
         Duration duration = new Duration(agora, expiracao);
         long diffInSeconds = duration.getStandardSeconds();

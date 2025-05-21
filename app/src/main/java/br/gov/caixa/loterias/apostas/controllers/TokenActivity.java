@@ -71,7 +71,6 @@ public class TokenActivity extends AppCompatActivity {
                                 }
                             }
 
-
                             DadosUsuarioBO.getInstance().getVerificaUsuarioBloqueado(new RequestListener<RetornoPadraoResponse>() {
                                 @Override
                                 public void onResponse(RetornoPadraoResponse response) {
@@ -103,8 +102,16 @@ public class TokenActivity extends AppCompatActivity {
         DBLoteriasCrud crud = new DBLoteriasCrud(TokenActivity.this);
         List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
 
-        DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+        //Incluido por causa do carrinho na NUVEM
+        if (listApostas != null && !listApostas.isEmpty()) {
+            for (int i = 0; i < listApostas.size(); i++) {
+                if (listApostas.get(i).getId() != null && listApostas.get(i).getId() == 0) {
+                    listApostas.get(i).setId(null);
+                }
+            }
+        }
 
+        DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
                 if (response.getRedirect() == null) {

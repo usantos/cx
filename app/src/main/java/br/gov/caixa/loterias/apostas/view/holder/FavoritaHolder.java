@@ -149,10 +149,12 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 			tituloApostaFavorita.setText(R.string.label_mais_milionaria);
 
 			String trevos = " ";
-			for (Object i:  aposta.getParametroTrevo().getTrevosSelecionados()) {
-				trevos += i.toString() + " - ";
+			if (aposta.getParametroTrevo() !=null) {
+				for (Object i : aposta.getParametroTrevo().getTrevosSelecionados()) {
+					trevos += i.toString() + " - ";
+				}
+				informacaoTextMaisMilionaria.setText(trevos.substring(0, trevos.length() - 2));
 			}
-			informacaoTextMaisMilionaria.setText(trevos.substring(0, trevos.length() - 2));
 		}else{
 			maisInformacoesMaisMilionaria.setVisibility(View.GONE);
 		}

@@ -65,10 +65,21 @@ public class MessagingUtils {
         }
         notificationManager.notify(NOTIFICATION_VARIAVEL, builder.build());
     }
+    public static void criaNotificacaoNovaExpansivel(Context context, String titulo,
+                                                     String texto, String textoExpansivel) {
+        String channelId = context.getString(R.string.default_notification_channel_id);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
+                .setSmallIcon(R.drawable.trevo)
+                .setContentTitle(titulo)
+                .setContentText(texto)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(textoExpansivel))
+                .setPriority(PRIORITY);
+
+        enviaNotificacao(context, builder);
+    }
 
     //Notificacao com Banner
     public static void sendNotificationHeadsUp(Context context, String titulo, String mensagem) {
-        //Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         // Cria uma intent que será disparada quando o usuário clica na notificação
         Intent intent = new Intent(context, PrincipalActivity.class);
@@ -87,6 +98,10 @@ public class MessagingUtils {
                 .setContentIntent(pendingIntent);           // Redireciona após o clic
 
         //Utilizar NotificationManagerCompat para compatibilizar versoes mais antigas
+        enviaNotificacao(context, notificationBuilder);
+    }
+
+    private static void enviaNotificacao(Context context, NotificationCompat.Builder notificationBuilder) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             return;
