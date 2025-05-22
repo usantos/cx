@@ -29,7 +29,7 @@ public class ServiceConnection {
     private static final int TIMEOUT = 30000;
     private static final String TAG_REQUEST = "TAG_REQUEST";
 
-    private final RequestQueue requestQueue;
+    private RequestQueue requestQueue;
     private final SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
 
     private String baseUrl;
@@ -183,9 +183,11 @@ public class ServiceConnection {
         String novoCaminho = ServicoNuvemUtil.alteraCaminhoNuvem(path);
         if (novoCaminho != null) {
             ServicoNuvemUtil.apresentaCaminhoTQS(novoCaminho + fillParamToString(queryParams));
+            this.requestQueue = NuvemSingleton.getInstance().getRequestQueue();
             return novoCaminho + fillParamToString(queryParams);
         }
 
+        this.requestQueue = SilceSingleton.getInstance().getRequestQueue();
         return fillUrl(path) + fillParamStr(queryParams);
     }
 

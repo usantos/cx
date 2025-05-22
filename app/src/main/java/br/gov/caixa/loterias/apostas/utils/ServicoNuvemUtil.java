@@ -14,7 +14,6 @@ public class ServicoNuvemUtil {
 	public static final String APIKEY_CHAVE = "ca5af87c9f7647de88eb7dcb93c7b021"; //TQS
 
 	public static final String AZURE_API = "azure-api.net";
-	//public static final String AZURE_API = ":8080";
 
 	private static final String PUBLICO = "/publico";
 	private static final String LOGADO = "/logado";

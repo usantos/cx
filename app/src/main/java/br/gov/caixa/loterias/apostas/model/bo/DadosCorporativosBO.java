@@ -17,7 +17,7 @@ public class DadosCorporativosBO extends SilceBO{
     private static DadosCorporativosBO instance;
 
     private DadosCorporativosBO(){
-        super();
+        super(servicoEnum, servicoEnum1);
     }
 
     public static DadosCorporativosBO getInstance(){

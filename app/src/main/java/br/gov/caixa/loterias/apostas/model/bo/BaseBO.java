@@ -53,6 +53,10 @@ public abstract class BaseBO {
         return this.connection;
     }
 
+    public void setServiceConnection(ServiceConnection connection){
+        this.connection = connection;
+    }
+
     public Context getContext(){
         return this.context;
     }
@@ -63,7 +67,7 @@ public abstract class BaseBO {
                 registraErro(error, request);
 
                 if (MensagensNetwork.isCertificadoInvalido(error)){
-                    RequestQueue requestQueue = certificadoListener.isPrecisouTrocar();
+                    RequestQueue requestQueue = certificadoListener.isPrecisouTrocar(baseURL);
                     if (requestQueue != null){
                         connection = new ServiceConnection(requestQueue, baseURL, isEncoding);
                         connection.request(request, listener);

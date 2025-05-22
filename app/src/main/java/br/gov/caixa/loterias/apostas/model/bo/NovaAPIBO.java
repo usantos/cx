@@ -31,7 +31,7 @@ public class NovaAPIBO extends BaseBO {
     }
 
     private static OnCertificadoListener onCertificadoListener() {
-        return () -> {
+        return (String urlBase) -> {
             if (CertificadoNovaAPISingleton.getInstance().trocaCertificado()){
                 NovaAPISingleton.getInstance().initQueue();
                 return NovaAPISingleton.getInstance().getRequestQueue();

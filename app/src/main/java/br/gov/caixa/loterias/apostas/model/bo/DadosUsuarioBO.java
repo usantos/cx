@@ -49,7 +49,7 @@ public class DadosUsuarioBO extends SilceBO {
     private static DadosUsuarioBO instance;
 
     private DadosUsuarioBO(){
-        super();
+        super(servicoEnum, servicoEnum1);
     }
 
     public static DadosUsuarioBO getInstance(){
