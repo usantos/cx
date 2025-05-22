@@ -58,20 +58,14 @@ public class ServicoNuvemUtil {
 
 		String baseUrlCarrinho;
 
-		if(BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")) {
+		if(isAmbienteTQS()) {
 			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
-
-			//Apenas para teste
-			//baseUrlCarrinho = "https://apim-lce-des.azure-api.net/loterias-web/carrinho/v1";
-			//baseUrlCarrinho = "http://apim-silce-des.azure-api.net/loterias-web/carrinho/v1/";
-			//baseUrlCarrinho = "https://apim-silce-des.azure-api.net/loterias-web/carrinho/v1"; //DES
-			baseUrlCarrinho = "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1"; //TQS
-			//baseUrlCarrinho = "http://localhost:8080/v1";
+			//baseUrlCarrinho = "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1"; //TQS
 		} else {
 			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
 		}
 
-		if (baseUrlCarrinho.equals("-")) {
+		if (baseUrlCarrinho == null || baseUrlCarrinho.isEmpty() || baseUrlCarrinho.equals("-")) {
 			return null;
 		}
 
@@ -110,14 +104,16 @@ public class ServicoNuvemUtil {
 		return null;
 	}
 
+	private static boolean isAmbienteTQS() {
+		return !BuildConfig.FLAVOR.equalsIgnoreCase("prd");
+	}
+
 	private static boolean cpfAcessamNuvem() {
-
 		String cpfAcessam[] = ConfiguracaoAppSingleton.getInstance().getGrupoDeCpfsQueAcessamOServicoDaAzure().split(";");
-
 		int finalCpfAcessamNuvem = new Integer(cpfAcessam[0]);
 
 		//Apenas para teste
-		finalCpfAcessamNuvem = 100;
+		//finalCpfAcessamNuvem = 100;
 
 		String cpf = DadosUsuarioBO.obterCpf();
 		if (cpf != null && !cpf.isEmpty() && cpf.length() >= 2) {
@@ -147,22 +143,12 @@ public class ServicoNuvemUtil {
 	}
 
 	public static void apresentaCaminhoTQS(String caminhoCompeto) {
-		if (BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")){
+		if (isAmbienteTQS()){
 			//ToastUtil.toastShort(novoCaminho + fillParamToString(queryParams));
 			MessagingUtils.criaNotificacaoNovaExpansivel(Aplicacao.application.getApplicationContext(),
 					DateUtils.getDateTime(),
 					caminhoCompeto,
 					caminhoCompeto);
-		}
-	}
-
-	private static void apresentaCaminhoTQS(String baseUrlCarrinho, String pubLog, String path) {
-		if (BuildConfig.DEBUG && !BuildConfig.FLAVOR.equalsIgnoreCase("prd")){
-			//ToastUtil.toastShort(novoCaminho + fillParamToString(queryParams));
-			MessagingUtils.criaNotificacaoNovaExpansivel(Aplicacao.application.getApplicationContext(),
-					DateUtils.getDateTime(),
-					baseUrlCarrinho,
-					baseUrlCarrinho + "\n" + pubLog + path);
 		}
 	}
 

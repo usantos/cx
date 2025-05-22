@@ -11,7 +11,7 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 public class DadosBiometriaBO extends SilceBO {
 
     public DadosBiometriaBO() {
-        super(servicoEnum, servicoEnum1);
+        super();
     }
 
     public static void salvarBiometria(String refresh, String nome, String cpf) {
