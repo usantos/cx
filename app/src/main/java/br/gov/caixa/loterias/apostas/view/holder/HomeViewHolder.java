@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -12,10 +13,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.os.CountDownTimer;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+
+import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -43,6 +45,7 @@ import br.gov.caixa.loterias.apostas.view.animation.AnimacoesResultados;
 import br.gov.caixa.loterias.apostas.view.listener.OnHomeListener;
 
 public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.OnClickListener {
+
 	private View titulo;
 	private TextView game;
 	private ImageView relogio;
@@ -56,7 +59,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private TextView premioEstimadoConcurso;
 	private TextView dataSorteio;
 	private TextView textViewSorteioOuEncerramento;
-	private TextView tempoRestanteParaAposta;
+	private TextView textViewApostasEncerramEm, tempoRestanteParaAposta;
 	private Button buttonActionResultadosModalidade;
 	private RelativeLayout relativeLayoutTopResultados;
 	private LinearLayout linearLayoutResultadosApostas;
@@ -75,6 +78,11 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private int position;
 	private Activity parentActivity;
 
+	private ImageView imgRelogioCard;
+	private TextView tvContadorCard;
+	private ConstraintLayout clTimer30Min;
+	private TextView tvVoceTem;
+
 	public HomeViewHolder(View itemView, OnHomeListener listener, Activity parentActivity) {
 		super(itemView);
 		this.parentActivity = parentActivity;
@@ -84,6 +92,10 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		trevoFundo = itemView.findViewById(R.id.RelativeLayoutTrevo);
 		calendario = itemView.findViewById(R.id.imageCalendar);
 		relogio = itemView.findViewById(R.id.imageWatch);
+		imgRelogioCard = itemView.findViewById(R.id.img_relogio_card);
+		tvContadorCard = itemView.findViewById(R.id.tv_contador_card);
+		clTimer30Min = itemView.findViewById(R.id.cl_timer30Min);
+		tvVoceTem = itemView.findViewById(R.id.tv_voce_tem);
 		titulo = itemView.findViewById(R.id.linearLayoutTopModalidades);
 		valorAcumulado = itemView.findViewById(R.id.textVieCardAcumulatedValue);
 		viewSeparador = itemView.findViewById(R.id.viewSeparador);
@@ -94,6 +106,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		premioEstimadoConcurso = itemView.findViewById(R.id.textPremioEstimadoConcurso);
 		dataSorteio = itemView.findViewById(R.id.textVieCardDrawDate);
 		textViewSorteioOuEncerramento = itemView.findViewById(R.id.textViewSorteioOuEncerramento);
+		textViewApostasEncerramEm = itemView.findViewById(R.id.textVieCardApostasEncerramEm);
 		tempoRestanteParaAposta = itemView.findViewById(R.id.textVieCardClosingOfBets);
 		buttonActionResultadosModalidade = itemView.findViewById(R.id.buttonActionResultadosModalidade);
 		relativeLayoutTopResultados = itemView.findViewById(R.id.relativeLayoutTopResultados);
@@ -193,7 +206,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 																											   modalidade.getConcurso().getNumero())));
 			this.premioEstimadoConcurso.setVisibility(View.VISIBLE);
 		} else {
-			//this.valorAcumulado.setText(retornaStringConcursoSemEstimativa(modalidade.getConcurso().getNumero().toString(), estilo.getCorClara()));
 			this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
 			this.valorAcumulado.setText(retornaStringConcursoSemEstimativa(modalidade.getConcurso().getNumero().toString(), estilo.getCorLetraLista()));
 			this.valorAcumulado.setTextSize(14);
@@ -205,18 +217,21 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		DateFormat formatterDia;
 		DateFormat formatterTime;
 
-		DateFormat formatterDate = new SimpleDateFormat(itemView.getContext().getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
+		String formatoData = itemView.getContext().getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss);
+		DateFormat formatterDate = new SimpleDateFormat(formatoData);
 		Locale BRAZIL = new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br));
 		formatterDataBr = SimpleDateFormat.getDateInstance(DateFormat.SHORT, BRAZIL);
 		formatterTime = new SimpleDateFormat(itemView.getContext().getResources().getString(R.string.hh_mm_ss));
 		formatterDia = new SimpleDateFormat(itemView.getContext().getResources().getString(R.string.eeee));
 		formatterDia =  formatterDia.getDateInstance(DateFormat.FULL ,BRAZIL);
 		Date dataSorteioFormatada  = null;
-		Date dataFechamentoSorteio = null;
+		DateTime dataFechamentoSorteio = null;
 
 		try {
-			dataSorteioFormatada = formatterDate.parse(modalidade.getConcurso().getDataHoraSorteio());
-			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
+			if (modalidade.getConcurso().getDataHoraSorteio() != null) {
+				dataSorteioFormatada = formatterDate.parse(modalidade.getConcurso().getDataHoraSorteio());
+			}
+			dataFechamentoSorteio = DateUtils.criaDataHora(modalidade.getConcurso().getDataFechamento(), formatoData);
 			if (modalidade.getTipoModalidade() == ModalidadeEnum.LOTECA){
 				dataSorteioFormatada = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
 			}
@@ -231,13 +246,17 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.textViewSorteioOuEncerramento.setText(R.string.label_sorteio_case);
 
 		}
-		String dmy = formatterDataBr.format(dataSorteioFormatada);
-		String dataDia[] = formatterDia.format(dataSorteioFormatada).split( itemView.getContext().getResources().getString(R.string.virgula));
-		String dia_dmy = dataDia[0] + ",\n" + dmy;
-		String horaMinSeg = formatterTime.format(dataSorteioFormatada);
-		this.dataSorteio.setText(ViewUtils.capitalized(dia_dmy) +
-										   itemView.getContext().getResources().getString(R.string.as_espacado) +
-										   horaMinSeg);
+		if (dataSorteioFormatada != null) {
+			String dmy = formatterDataBr.format(dataSorteioFormatada);
+			String dataDia[] = formatterDia.format(dataSorteioFormatada).split(itemView.getContext().getResources().getString(R.string.virgula));
+			String dia_dmy = dataDia[0] + ",\n" + dmy;
+			String horaMinSeg = formatterTime.format(dataSorteioFormatada);
+			this.dataSorteio.setText(ViewUtils.capitalized(dia_dmy) +
+					itemView.getContext().getResources().getString(R.string.as_espacado) +
+					horaMinSeg);
+		} else {
+			this.linearCalendar.setVisibility(View.GONE);
+		}
 
 //		this.calendario.setImageResource(estilo.getImagemCalendario());
 //		this.relogio.setImageResource(estilo.getImagemRelogio());
@@ -271,13 +290,20 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.setaDireitaAcaoRelativeLayout.setOnClickListener(this);
 
 		try {
-			dataFechamentoSorteio = formatterDate.parse(modalidade.getConcurso().getDataFechamento());
-		} catch (ParseException e) {
+			dataFechamentoSorteio = DateUtils.criaDataHora(modalidade.getConcurso().getDataFechamento(), formatoData);
+
+//			EncerramentoUtil.mockSetDataHoraEncerramento(
+//					"06/05/2025",
+//					"10:30:00",
+//					"11:45:00",
+//					ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.NORMAL, 5663);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		if (dataFechamentoSorteio != null) {
-			long tempoRestanteMillis = dataFechamentoSorteio.getTime() - System.currentTimeMillis();
+			long tempoRestanteMillis = dataFechamentoSorteio.getMillis() - DataHoraServidorSingleton.getInstance().getDataHoraServidorMillis();
 
 			if (tempoRestanteMillis > 0) {
 				new CountDownTimer(tempoRestanteMillis, 1000) {
@@ -309,12 +335,16 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 					}
 
 					public void onFinish() {
+						textViewApostasEncerramEm.setText(itemView.getContext().getResources().getString(R.string.apostas));
 						tempoRestanteParaAposta.setText(itemView.getContext().getResources().getString(R.string.aposta_encerrada));
+						verificaTempoExtraAposEncerramento();
 					}
 
 				}.start();
 			} else {
+				textViewApostasEncerramEm.setText(itemView.getContext().getResources().getString(R.string.apostas));
 				tempoRestanteParaAposta.setText(itemView.getContext().getResources().getString(R.string.aposta_encerrada));
+				verificaTempoExtraAposEncerramento();
 			}
 		}
 
@@ -325,16 +355,20 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	}
 
 	private SpannableStringBuilder retornaStringConcursoSemEstimativa(String numConcurso, int corModalidadeInt) {
-		final SpannableStringBuilder sb = new SpannableStringBuilder(itemView.getContext().getResources().getString(R.string.concurso_barra_n_barra_n) +
-																			 numConcurso +
-																			 itemView.getContext().getResources().getString(R.string.barra_n_barra_n_ainda_sem_estimativa_de_premio));
+		final SpannableStringBuilder sb = new SpannableStringBuilder(itemView.getContext().getResources().getString(R.string.proximo_concurso_barra_n_barra_n) +
+																		  numConcurso +
+																		  itemView.getContext().getResources().getString(R.string.barra_n_barra_n_aguardando_estimativa_de_premio));
+
+		int tamT1 = itemView.getContext().getResources().getString(R.string.proximo_concurso_barra_n_barra_n).length();
+		int tamT2 = numConcurso.length();
+		int tamT3 = itemView.getContext().getResources().getString(R.string.barra_n_barra_n_aguardando_estimativa_de_premio).length();
 
 		final ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), corModalidadeInt));
 		final ForegroundColorSpan corTexto      = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), R.color.cinzaescuro));
 
-		sb.setSpan(corModalidade, 0, 8, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-		sb.setSpan(corTexto, 10, 10 + numConcurso.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-		sb.setSpan(corModalidade, 12 + numConcurso.length(), sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		sb.setSpan(corModalidade, 0, tamT1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		sb.setSpan(corTexto, tamT1, tamT1+tamT2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		sb.setSpan(corModalidade, tamT1+tamT2, sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
 
 		return sb;
 	}
@@ -478,5 +512,73 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				}
 				break;
 		}
+	}
+
+	private void verificaTempoExtraAposEncerramento() {
+
+		Long tempoExtraRestanteAposEncerrmento = EncerramentoUtil.
+												 tempoExtraRestanteAposEncerramento(modalidade.getTipoModalidade(),
+														 modalidade.getConcurso().getTipoConcurso(),
+														 modalidade.getConcurso().getNumero());
+		if (tempoExtraRestanteAposEncerrmento != null) {
+			startTimerPosEncerramento(tempoExtraRestanteAposEncerrmento);
+		}
+	}
+
+	private void startTimerPosEncerramento(Long tempoRestanteMillis) {
+
+		linearRelogio.setVisibility(View.GONE);
+		clTimer30Min.setVisibility(View.VISIBLE);
+		if (!BuildConfig.FLAVOR.equals("prd")) {
+			ModalidadeDisponivelCota modalidadeDisponivelCota = EncerramentoUtil.
+					getModalidadeDisponivelCota(modalidade.getTipoModalidade(),
+							modalidade.getConcurso().getTipoConcurso(),
+							modalidade.getConcurso().getNumero());
+			tvVoceTem.setText(modalidadeDisponivelCota.getDataEncerramentoRevenda().substring(0,5) + " " +
+					modalidadeDisponivelCota.getHoraEncerramentoRevenda().substring(0,5) + "\nVocê tem");
+		}
+		new CountDownTimer(tempoRestanteMillis, 1000) {
+
+			@Override
+			public void onTick(long millisUntilFinished) {
+
+				Long hours = TimeUnit.MILLISECONDS.toHours(millisUntilFinished);
+				millisUntilFinished -= TimeUnit.HOURS.toMillis(hours);
+				Long minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished);
+				millisUntilFinished -= TimeUnit.MINUTES.toMillis(minutes);
+				Long seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished);
+
+				String tempoRestante;
+				if (hours > 0) {
+					tempoRestante = "HH:MM:SS";
+					tempoRestante = tempoRestante.replace("HH", StringUtils.padZeroLeft(hours.intValue(), 2));
+				} else {
+					tempoRestante = "MM:SS";
+				}
+				tempoRestante = tempoRestante.replace("MM", StringUtils.padZeroLeft(minutes.intValue(), 2));
+				tempoRestante = tempoRestante.replace("SS", StringUtils.padZeroLeft(seconds.intValue(), 2));
+
+				tvContadorCard.setText(tempoRestante);
+
+				if (hours <= 0) {
+					if (minutes <= 5) {
+						imgRelogioCard.setImageDrawable(VectorUtils.getShape(R.drawable.icon_horario_megasena, R.color.vermelho_dialog));
+						tvContadorCard.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.vermelho_dialog));
+					} else if (minutes <= 10){
+						imgRelogioCard.setImageDrawable(VectorUtils.getShape(R.drawable.icon_horario_megasena, R.color.jr_amarelo));
+						tvContadorCard.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.jr_amarelo));
+					}
+				}
+			}
+
+			@Override
+			public void onFinish() {
+				refazCarrossel();
+			}
+		}.start();
+	}
+
+	private void refazCarrossel() {
+		parentActivity.recreate();
 	}
 }
