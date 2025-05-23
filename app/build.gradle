@@ -211,7 +211,7 @@ android {
                 applicationIdSuffix ".hmp"
                 resValue "string", "app_name", "Loterias_automacao"
                 buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
-                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://simlo.tqs.caixa.gov.br/silce-servico-rest/rest/v1/\""
+                buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"http://simlo.tqs.caixa/silce-servico-rest/rest/v1/\""
                 buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
                 buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
                 buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
@@ -228,7 +228,6 @@ android {
                 buildConfigField "String", "QUEUE_IT_CUSTOMER_ID", "\"caixa\""
                 buildConfigField "String", "QUEUE_IT_EVENT_ALIAS_ID", "\"loteriasdes\""
                 buildConfigField "String", "QUEUE_IT_CUSTOM_LAYOUT_NAME", "\"customLayoutCaixaTem\""
-                buildConfigField "String", "URL_BASE_API_NOTIFICACOES", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 manifestPlaceholders = [
                         appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
                         hostName             : "br.gov.caixa.caixaloterias",
@@ -328,6 +327,7 @@ repositories {
 
         //Apache commons
         implementation 'org.apache.commons:commons-collections4:4.1'
+
 
         //Segmented Control
         implementation 'info.hoang8f:android-segmented:1.0.6'

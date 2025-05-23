@@ -35,6 +35,13 @@ public class ModalidadeDisponivelCota implements Serializable {
     @SerializedName("estimativa")
     private BigDecimal estimativa = null;
 
+    @SerializedName("dataEncerramentoRevenda")
+    private String dataEncerramentoRevenda = null;
+    @SerializedName("horaEncerramentoRevenda")
+    private String horaEncerramentoRevenda = null;
+    @SerializedName("dataHoraSorteio")
+    private String dataHoraSorteio = null;
+
     public Integer getConcurso() {
         return concurso;
     }
@@ -73,6 +80,30 @@ public class ModalidadeDisponivelCota implements Serializable {
 
     public void setEstimativa(BigDecimal estimativa) {
         this.estimativa = estimativa;
+    }
+
+    public String getDataEncerramentoRevenda() {
+        return dataEncerramentoRevenda;
+    }
+
+    public void setDataEncerramentoRevenda(String dataEncerramentoRevenda) {
+        this.dataEncerramentoRevenda = dataEncerramentoRevenda;
+    }
+
+    public String getHoraEncerramentoRevenda() {
+        return horaEncerramentoRevenda;
+    }
+
+    public void setHoraEncerramentoRevenda(String horaEncerramentoRevenda) {
+        this.horaEncerramentoRevenda = horaEncerramentoRevenda;
+    }
+
+    public String getDataHoraSorteio() {
+        return dataHoraSorteio;
+    }
+
+    public void setDataHoraSorteio(String dataHoraSorteio) {
+        this.dataHoraSorteio = dataHoraSorteio;
     }
 
     @Override

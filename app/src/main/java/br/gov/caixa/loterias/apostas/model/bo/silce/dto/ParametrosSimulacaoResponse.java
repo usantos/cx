@@ -32,6 +32,8 @@ public class ParametrosSimulacaoResponse {
     private RedirectEnum redirect = null;
     @SerializedName("errosValidacao")
     private List<ErroValidacao> errosValidacao = null;
+    @SerializedName("dataHoraServidor")
+    private String dataHoraServidor = null;
     @SerializedName("payload")
     private ParametrosSimulacao payload = null;
 
@@ -93,6 +95,14 @@ public class ParametrosSimulacaoResponse {
 
     public void setErrosValidacao(List<ErroValidacao> errosValidacao) {
         this.errosValidacao = errosValidacao;
+    }
+
+    public String getDataHoraServidor() {
+        return dataHoraServidor;
+    }
+
+    public void setDataHoraServidor(String dataHoraServidor) {
+        this.dataHoraServidor = dataHoraServidor;
     }
 
     /**

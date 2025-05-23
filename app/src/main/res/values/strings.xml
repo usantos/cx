@@ -1033,6 +1033,8 @@
     <string name="espaco_de_espaco">&#160;de&#160;</string>
     <string name="concurso_barra_n_barra_n">Concurso\n\n</string>
     <string name="barra_n_barra_n_ainda_sem_estimativa_de_premio">\n\nainda sem estimativa de prêmio.</string>
+    <string name="proximo_concurso_barra_n_barra_n">Próximo Concurso\n\n</string>
+    <string name="barra_n_barra_n_aguardando_estimativa_de_premio">\n\nAguardando estimativa de prêmio</string>
     <string name="percent_d_dia">%d dia</string>
     <string name="percent_d_dias">%d dias</string>
     <string name="espaco_e_espaco">&#160;e&#160;</string>
@@ -1093,7 +1095,8 @@
     <string name="app_center_mp_sem_cartao">DEVICE_MP</string>
     <string name="percent_d_minutos">%d minutos </string>
     <string name="percent_d_segundos">%d segundos</string>
-    <string name="aposta_encerrada">Aposta encerrada</string>
+    <string name="aposta_encerrada">Encerradas</string>
+    <string name="apostas">Apostas</string>
 
     <!-- App Center -->
     <string name="app_center_mp_cartao_salvo">DEVICE_MP_SAVE</string>
@@ -1197,7 +1200,7 @@
 
     <!-- Popup Pix Pagamento Não Realizado -->
     <string name="title_activity_resgate_pix">_Resgate de Prêmio via Pix_</string>
-    <string name="title_activity_resgate">_Resgate de Prêmio_</string>
+    <string name="title_activity_resgate_mercado_pago">_Resgate de Prêmio via Mercado Pago_</string>
     <string name="popup_pix_cpf_vinculado">Somente será realizado resgate em Chave Pix vinculada ao CPF do apostador.</string>
 
     <!-- Pix Resgate Prêmio -->
@@ -1492,6 +1495,8 @@
     <string name="voce_pode_acompanhar_situacao">Você pode acompanhar a situação do resgate pelo menu Minhas apostas enquanto ele é processado.</string>
     <string name="acesse_minhas_apostas">Acesse \n_Minhas apostas_</string>
     <string name="arg_goto_minhas_apostas">GO_TO_MINHAS_APOSTAS</string>
+    <string name="para_comprar_seu_bolao">para comprar o seu bolão</string>
+    <string name="ainda_da_tempo">O registro de apostas individuais para o _concurso %d_ foi encerrado. Mas ainda dá tempo de comprar seu bolão e concorrer a esse sorteio.\nAcesse _\"Compre seu bolão\"_ e participe!</string>
     <string name="confirmacao_continuar_experimente">Para continuar utilizando a funcionalidade, você precisa efetuar o login no app Loterias Caixa.</string>
     <string name="continuar_experimente">Continuar no Experimente</string>
     <string name="efetuar_login">Efetuar o login</string>
