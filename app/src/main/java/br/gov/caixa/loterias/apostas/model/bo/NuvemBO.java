@@ -9,7 +9,8 @@ public abstract class NuvemBO extends BaseBO {
 
     public NuvemBO() {
         super(NuvemSingleton.getInstance().getRequestQueue(),
-                BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"),
+                //BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"),
+                "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1",
                 true,
                 onCertificadoListener());
     }

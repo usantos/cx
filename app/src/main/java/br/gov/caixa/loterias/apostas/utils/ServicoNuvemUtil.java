@@ -156,4 +156,8 @@ public class ServicoNuvemUtil {
 		return url.contains(ServicoNuvemUtil.AZURE_API);
 	}
 
+	public static boolean isServicoNuvem() {
+		//TODO verificar cpf e se carrinho ligado
+		return true;
+	}
 }

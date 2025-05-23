@@ -105,6 +105,18 @@ public class ServiceConnection {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
     }
 
+    public <T> GsonRequest buildGetRequestNuvem(String path, Map<String, String> queryParams,
+                                           Class<T> responseDataClass,
+                                           Response.Listener<T> listener,
+                                           Response.ErrorListener errorListener, Map<String, String> headers) {
+
+        String url = fillUrlWithQueryParamsNuvem(path, queryParams);
+        GsonRequest request = new GsonRequest<String, T>(GET, url, responseDataClass, headers, listener, errorListener);
+        request.setRetryPolicy(createRetryPolicy());
+        Log.i(TAG_REQUEST, getPath(path, queryParams));
+        return request;
+    }
+
     public <T> GsonRequest buildGetRequest(String path, Map<String, String> queryParams,
                                            Class<T> responseDataClass,
                                            Response.Listener<T> listener,
@@ -178,16 +190,25 @@ public class ServiceConnection {
             return baseUrl + path;
     }
 
+    private String fillUrlWithQueryParamsNuvem(String path, Map<String, String> queryParams) {
+        String baseSemBarra = baseUrl;
+        if (baseUrl.endsWith("/")) {
+            baseSemBarra = baseUrl.substring(0,baseUrl.length() -1);
+        }
+        ServicoNuvemUtil.apresentaCaminhoTQS(baseSemBarra + path + fillParamToString(queryParams));
+        return baseSemBarra + path + fillParamToString(queryParams);
+    }
+
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
 
-        String novoCaminho = ServicoNuvemUtil.alteraCaminhoNuvem(path);
-        if (novoCaminho != null) {
-            ServicoNuvemUtil.apresentaCaminhoTQS(novoCaminho + fillParamToString(queryParams));
-            this.requestQueue = NuvemSingleton.getInstance().getRequestQueue();
-            return novoCaminho + fillParamToString(queryParams);
-        }
-
-        this.requestQueue = SilceSingleton.getInstance().getRequestQueue();
+//        String novoCaminho = ServicoNuvemUtil.alteraCaminhoNuvem(path);
+//        if (novoCaminho != null) {
+//            ServicoNuvemUtil.apresentaCaminhoTQS(novoCaminho + fillParamToString(queryParams));
+////            this.requestQueue = NuvemSingleton.getInstance().getRequestQueue();
+//            return novoCaminho + fillParamToString(queryParams);
+//        }
+//
+////        this.requestQueue = SilceSingleton.getInstance().getRequestQueue();
         return fillUrl(path) + fillParamStr(queryParams);
     }
 

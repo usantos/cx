@@ -13,7 +13,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
  * Created by igorvilar on 10/11/17.
  */
 
-public class DadosCorporativosBO extends SilceBO{
+public class DadosCorporativosBO extends SilceBO implements DadosCorporativos {
     private static DadosCorporativosBO instance;
 
     private DadosCorporativosBO(){
@@ -106,6 +106,7 @@ public class DadosCorporativosBO extends SilceBO{
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void parametrosSimulacao(final RequestListener<ParametrosSimulacaoResponse> listener) {
         LinkedHashMap<String, String> header = getHeader();
         GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.PARAM_SIMULACAO_PATH,
