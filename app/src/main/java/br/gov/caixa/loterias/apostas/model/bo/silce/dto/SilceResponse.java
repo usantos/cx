@@ -52,10 +52,6 @@ public class SilceResponse<T> implements Serializable {
         this.codigo = codigo;
     }
 
-    public String getDataHoraServidor() {
-        return dataHoraServidor;
-    }
-
     /**
      * Mensagem de erro de negócio ou de erro de sistema que deve ser exibido para o usuário
      **/

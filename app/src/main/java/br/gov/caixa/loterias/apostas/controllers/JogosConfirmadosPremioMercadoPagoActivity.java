@@ -77,7 +77,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     }
 
     private void setaViews() {
-        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.title_activity_resgate)));
+        setTitle(ViewUtils.textCaixaSTDBold(this, getString(R.string.title_activity_resgate_mercado_pago)));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
