@@ -394,13 +394,13 @@ public class ViewUtils {
 
         if (valor.compareTo(bilhao) >= 0) {
             BigDecimal valorBilhoes = valor.divide(bilhao);
-            return formatarValorPorExtenso(valorBilhoes, prefixo, "bilhão", "bilhões", ptBrLocale);
+            return formatarValorPorExtenso(valorBilhoes, prefixo, "Bilhão", "Bilhões", ptBrLocale);
         } else if (valor.compareTo(milhao) >= 0) {
             BigDecimal valorMilhoes = valor.divide(milhao);
-            return formatarValorPorExtenso(valorMilhoes, prefixo, "milhão", "milhões", ptBrLocale);
+            return formatarValorPorExtenso(valorMilhoes, prefixo, "Milhão", "Milhões", ptBrLocale);
         } else if (valor.compareTo(mil) >= 0) {
             BigDecimal valorMil = valor.divide(mil);
-            return formatarValorPorExtenso(valorMil, prefixo, "mil", "mil", ptBrLocale);
+            return formatarValorPorExtenso(valorMil, prefixo, "Mil", "Mil", ptBrLocale);
         } else {
             NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
             return nf.format(valor).replace("R$", prefixo);
