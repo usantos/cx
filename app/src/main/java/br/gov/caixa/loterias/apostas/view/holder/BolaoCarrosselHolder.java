@@ -47,7 +47,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private RelativeLayout trapezio;
 	private ConstraintLayout cabecalho;
 	private View linhaNumero;
-	private ImageView icTrevoBolao;
+	private ImageView icTrevoBolao, headerEspeciais;
 
 	private EstiloModalidadeMKP estilo;
 
@@ -70,6 +70,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		qtdCotas 		= itemView.findViewById(R.id.quantidade_cotas);
 		btnAddCarrinho 	= itemView.findViewById(R.id.btn_add_carrinho);
 		trapezio		= itemView.findViewById(R.id.layout_trevo);
+		headerEspeciais = itemView.findViewById(R.id.header_especiais_bolao);
 		icTrevoBolao	= itemView.findViewById(R.id.trevoImagem);
 		cabecalho		= itemView.findViewById(R.id.cabecalho_bolao);
 		linhaNumero		= itemView.findViewById(R.id.linha_numero);
@@ -140,9 +141,22 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	private void preencheCabecalho(CotasBolaoDTO bolao) {
 		if (isEspecial(bolao.getTipoConcurso())){
-			if (estilo.getImagemEspecialCarrossel() != -1){
-				trapezio.setVisibility(View.INVISIBLE);
-				cabecalho.setBackground(ContextCompat.getDrawable(activity, estilo.getImagemEspecialCarrossel()));
+			headerEspeciais.setVisibility(View.VISIBLE);
+			trapezio.setVisibility(View.INVISIBLE);
+			icTrevoBolao.setVisibility(View.GONE);
+			switch (bolao.getModalidade()){
+				case MEGA_SENA:
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.mega_virada));
+					break;
+				case DUPLA_SENA:
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.cabecalho_superior_dupla_de_pascoa));
+					break;
+				case LOTOFACIL:
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.cabecalho_lotofacil_da_independencia));
+					break;
+				case QUINA:
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.cabecalho_sao_joao));
+					break;
 			}
 			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
 				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
@@ -151,6 +165,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			}
 		} else {
 			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
+			headerEspeciais.setVisibility(View.GONE);
+			trapezio.setVisibility(View.VISIBLE);
+			icTrevoBolao.setVisibility(View.VISIBLE);
 		}
 	}
 
