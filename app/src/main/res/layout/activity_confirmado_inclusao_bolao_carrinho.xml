@@ -102,7 +102,7 @@
 
         <TextView
             android:id="@+id/textObservacaoConfirmacao"
-            style="@style/editTextArialMTTheme"
+            style="@style/editTextCaixaStdTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/infoConcluaPagamentoBolao"
@@ -114,6 +114,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/timer"
             />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_arrendondamento"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:padding="4dp"
+                android:background="@drawable/button_white_with_rouded_black_border"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textObservacaoConfirmacao"
+        >
+            <TextView
+                android:id="@+id/text_arrendondamento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/orientacoes_arrendondamento_bolao"
+                android:textAlignment="center"
+                android:textColor="@color/branco"
+                android:fontFamily="@font/caixa_std_bold"
+                android:textSize="12sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

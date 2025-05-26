@@ -1496,5 +1496,8 @@
     <string name="confirmacao_continuar_experimente">Para continuar utilizando a funcionalidade, você precisa efetuar o login no app Loterias Caixa.</string>
     <string name="continuar_experimente">Continuar no Experimente</string>
     <string name="efetuar_login">Efetuar o login</string>
+    <string name="orientacoes_arrendondamento_bolao">Devido a regras de arredondamento, o valor cobrado pela Cota deste
+        bolão poderá ser menor que o exibido.
+    </string>
 
 </resources>

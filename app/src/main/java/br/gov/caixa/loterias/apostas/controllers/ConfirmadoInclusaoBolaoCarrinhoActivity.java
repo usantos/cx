@@ -38,7 +38,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
 
     private LinearLayout btnVoltarInicio;
     private TextView tvVoltarInicio, tvContador, tvDescricaoInclusao, tvConclusaoPagamento;
-    private ConstraintLayout background, timer;
+    private ConstraintLayout background, timer, arrendondamento;
     private EstiloModalidadeMKP estilo;
     private Boolean isEspecial;
     private ImageView imageSetaApontandoCarrinho;
@@ -67,9 +67,11 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         if (modalidade.name().toUpperCase().equals("DIA_DE_SORTE") ||
             modalidade.name().toUpperCase().equals("TIMEMANIA")) {
             timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorFonteFundoClaro()));
+            arrendondamento.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorFonteFundoClaro()));
             imageSetaApontandoCarrinho.setImageDrawable(VectorUtils.getShape(R.drawable.rectangle_5_copy, estilo.getCorFonteFundoClaro()));
         } else {
             timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorEscura()));
+            arrendondamento.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorEscura()));
         }
         aplicaEstiloFonte();
     }
@@ -103,6 +105,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         tvContador = findViewById(R.id.txt_contador);
         background = findViewById(R.id.layout_corpo);
         timer = findViewById(R.id.timer);
+        arrendondamento = findViewById(R.id.layout_arrendondamento);
         tvDescricaoInclusao = findViewById(R.id.textTituloTela);
         tvConclusaoPagamento = findViewById(R.id.textObservacaoConfirmacao);
         imageSetaApontandoCarrinho = findViewById(R.id.imageSetaApontandoCarrinho);
