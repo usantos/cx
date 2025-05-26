@@ -157,7 +157,25 @@ public class ServicoNuvemUtil {
 	}
 
 	public static boolean isServicoNuvem() {
-		//TODO verificar cpf e se carrinho ligado
+
+//		String baseUrlCarrinho;
+//
+//		if(isAmbienteTQS()) {
+//			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
+//			//baseUrlCarrinho = "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1"; //TQS
+//		} else {
+//			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
+//		}
+//
+//		if (baseUrlCarrinho == null || baseUrlCarrinho.isEmpty() || baseUrlCarrinho.equals("-")) {
+//			return false;
+//		}
+//
+//		if (cpfAcessamNuvem()) {
+//			return true;
+//		}
+//		return false;
+
 		return true;
 	}
 }

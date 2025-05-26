@@ -13,7 +13,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
  * Created by igorvilar on 10/11/17.
  */
 
-public class DadosCorporativosBO extends SilceBO implements DadosCorporativos {
+public class DadosCorporativosBO extends SilceBO implements DadosCorporativoService {
     private static DadosCorporativosBO instance;
 
     private DadosCorporativosBO(){

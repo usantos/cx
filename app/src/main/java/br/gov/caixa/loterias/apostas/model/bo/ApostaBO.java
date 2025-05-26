@@ -61,7 +61,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
-public class ApostaBO extends SilceBO {
+public class ApostaBO extends SilceBO implements ApostaService {
     private static ApostaBO instance;
 
     private ApostaBO(){
@@ -826,6 +826,7 @@ public class ApostaBO extends SilceBO {
         getResultadoModalidade( modalidade, "", listener);
     }
 
+    @Override
     public void getModalidades(final RequestListener<ModalidadeDTOResponse> listener) {
         final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.MODALIDADES_PATH,
                 new LinkedHashMap<>(),
@@ -889,6 +890,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void getEscudosEquipes(final RequestListener<EscudoEquipeEsportivaDTOResponse> listener) {
         final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.EQUIPES_ESPORTIVAS_LISTA_EQUIPES_PATH,
                 new LinkedHashMap<>(),

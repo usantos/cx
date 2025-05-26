@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.android.volley.VolleyError;
 
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativos;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativoService;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosNuvemBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -23,7 +23,7 @@ public class ParametrosSimulacaoModel {
 	}
 
 	public void buscaParametroSiumulacao(OnSilceListener<ParametrosSimulacao> listener) {
-		DadosCorporativos dadosCorporativos;
+		DadosCorporativoService dadosCorporativos;
 		if (ServicoNuvemUtil.isServicoNuvem()) {
 			dadosCorporativos = DadosCorporativosNuvemBO.getInstance();
 		} else {
