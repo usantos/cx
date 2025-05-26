@@ -129,20 +129,25 @@ public class ServiceConnection {
         return request;
     }
 
+    public <REQ, RSP> GsonRequest buildPostRequestNuvem(String path, Map<String, String> queryParams,
+                                                   REQ body, Class<RSP> responseDataClass,
+                                                   Response.Listener<RSP> listener,
+                                                   Response.ErrorListener errorListener, Map<String, String> headers) {
+
+        String url = fillUrlWithQueryParamsNuvem(path, queryParams);
+        GsonRequest request = new GsonRequest<>(POST, url, body, responseDataClass, headers, listener, errorListener);
+        request.setRetryPolicy(createRetryPolicy());
+        Log.i(TAG_REQUEST, getPath(path, queryParams));
+        return request;
+    }
+
     public <REQ, RSP> GsonRequest buildPostRequest(String path, Map<String, String> queryParams,
                                                    REQ body, Class<RSP> responseDataClass,
                                                    Response.Listener<RSP> listener,
                                                    Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        //Servico Nuvem
-        GsonRequest request;
-        if (ServicoNuvemUtil.isUrlServicoNuvem(url)) {
-            request = new GsonRequest<>(POST, url, body, responseDataClass, headers, listener, errorListener);
-        } else {
-            request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
-        }
-
+        GsonRequest request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
         return request;

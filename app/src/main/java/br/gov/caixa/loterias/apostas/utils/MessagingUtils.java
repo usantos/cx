@@ -23,7 +23,7 @@ public class MessagingUtils {
     private static final String CHANNEL_NAME = "Loterias";
     private static final String TAG = "MessagingUtils";
     private static final int NOTIFICATION_ID = 0; //Mesmo ID sobrepoe se existir a mensagem
-    private static final int NOTIFICATION_VARIAVEL = (int) System.currentTimeMillis();
+    //private static final int NOTIFICATION_VARIAVEL = (int) System.currentTimeMillis();
     private static final int IMPORTANCE = NotificationManager.IMPORTANCE_HIGH; //IMPORTANCE_DEFAULT;
     private static final int PRIORITY = NotificationCompat.PRIORITY_HIGH; //PRIORITY_DEFAULT;
 
@@ -63,7 +63,7 @@ public class MessagingUtils {
             // TODO: Consider calling ActivityCompat#requestPermissions
             return;
         }
-        notificationManager.notify(NOTIFICATION_VARIAVEL, builder.build());
+        notificationManager.notify(getNotificacaoVariavelId(), builder.build());
     }
     public static void criaNotificacaoNovaExpansivel(Context context, String titulo,
                                                      String texto, String textoExpansivel) {
@@ -75,7 +75,7 @@ public class MessagingUtils {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(textoExpansivel))
                 .setPriority(PRIORITY);
 
-        enviaNotificacao(context, builder);
+        enviaNotificacao(context, builder, false);
     }
 
     //Notificacao com Banner
@@ -98,15 +98,23 @@ public class MessagingUtils {
                 .setContentIntent(pendingIntent);           // Redireciona após o clic
 
         //Utilizar NotificationManagerCompat para compatibilizar versoes mais antigas
-        enviaNotificacao(context, notificationBuilder);
+        enviaNotificacao(context, notificationBuilder, true);
     }
 
-    private static void enviaNotificacao(Context context, NotificationCompat.Builder notificationBuilder) {
+    private static void enviaNotificacao(Context context, NotificationCompat.Builder notificationBuilder,
+                                         boolean sobrepoeNotificacao) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        if (sobrepoeNotificacao)
+            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        else
+            notificationManager.notify(getNotificacaoVariavelId(), notificationBuilder.build());
+    }
+
+    private static int getNotificacaoVariavelId() {
+        return (int) System.currentTimeMillis();
     }
 
     private static int imagemPadrao() {

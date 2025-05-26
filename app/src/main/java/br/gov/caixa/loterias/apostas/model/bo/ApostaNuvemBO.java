@@ -99,4 +99,20 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
+
+    public void getApostasFavoritas(final int offset, final RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("offset", String.valueOf(offset));
+        queryParams.put("size", String.valueOf("8"));
+
+        final GsonRequest request = getServiceConnection().buildGetRequestNuvem(ServerMethodsNuvem.APOSTAS_FAVORITAS_LISTA_UNICA_NUVEM_PATH,
+                queryParams,
+                ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
 }

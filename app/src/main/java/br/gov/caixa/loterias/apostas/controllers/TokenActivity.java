@@ -7,6 +7,8 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioNuvemBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioService;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
 
@@ -37,6 +39,7 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class TokenActivity extends AppCompatActivity {
     private AuthorizationService authorizationService;
@@ -111,7 +114,13 @@ public class TokenActivity extends AppCompatActivity {
             }
         }
 
-        DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+        DadosUsuarioService dadosUsuarioService;
+        if (ServicoNuvemUtil.isServicoNuvem()) {
+            dadosUsuarioService = DadosUsuarioNuvemBO.getInstance();
+        } else {
+            dadosUsuarioService = DadosUsuarioBO.getInstance();
+        }
+        dadosUsuarioService.postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
                 if (response.getRedirect() == null) {
