@@ -567,10 +567,10 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				tvContadorCard.setText(tempoRestante);
 
 				if (hours <= 0) {
-					if (minutes <= 5) {
+					if (minutes < 5) {
 						imgRelogioCard.setImageDrawable(VectorUtils.getShape(R.drawable.icon_horario_megasena, R.color.vermelho_dialog));
 						tvContadorCard.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.vermelho_dialog));
-					} else if (minutes <= 10){
+					} else if (minutes < 10){
 						imgRelogioCard.setImageDrawable(VectorUtils.getShape(R.drawable.icon_horario_megasena, R.color.jr_amarelo));
 						tvContadorCard.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.jr_amarelo));
 					}
