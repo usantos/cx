@@ -16,19 +16,22 @@ public class ConcursoUtils {
 		}
 		boolean precisaBuscar = false;
 
-		ConcursoDTO concursoAtual         = parametroJogo.getParametroJogo().getConcurso();
+		if (parametroJogo != null && parametroJogo.getParametroJogo() != null){
+			ConcursoDTO concursoAtual         = parametroJogo.getParametroJogo().getConcurso();
 
-		if (numeroConcursoAposta < concursoAtual.getNumero()){
-			if(numeroConcursoAposta + 1 == concursoAtual.getNumero()){
-				if (concursoAtual.getAberto()){
+			if (concursoAtual != null && numeroConcursoAposta < concursoAtual.getNumero()){
+				if(numeroConcursoAposta + 1 == concursoAtual.getNumero()){
+					if (concursoAtual.getAberto() != null && concursoAtual.getAberto()){
+						precisaBuscar = true;
+					} else {
+						precisaBuscar = false;
+					}
+				}else {
 					precisaBuscar = true;
-				} else {
-					precisaBuscar = false;
 				}
-			}else {
-				precisaBuscar = true;
 			}
 		}
+
 		return precisaBuscar;
 	}
 
