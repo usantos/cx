@@ -714,7 +714,9 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void setupToolbar() {
-        if (isEspecial(aposta.getTipoConcurso().getValor())) {
+        if (isEspecial(aposta.getTipoConcurso().getValor()) && aposta.getModalidade() == ModalidadeEnum.MEGA_SENA) {
+            toolbar.setBackgroundResource(R.drawable.cabecalho_mega_virada_detalhes_aposta);
+        } else if (isEspecial(aposta.getTipoConcurso().getValor())) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
         } else {
             toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
