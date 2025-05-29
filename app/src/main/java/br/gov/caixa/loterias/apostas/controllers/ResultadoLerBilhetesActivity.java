@@ -51,8 +51,8 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
             informacoesPremioZeradoLayout, informacoesPremioLayout, backgroundTopoNaoPremiadoLayout, aposteAgoraNaoPremiadoLinearLayout;
     private TextView mensagemNaoPremiadoTextView, statusResultadoNaoPremiadTextView;
     private ContentResultadoPremiado contentResultadoPremiado;
-    private Button botaoAposteAgora2 ;
-    private Button botaoAposteAgora ;
+    private Button botaoAposteAgora2;
+    private Button botaoAposteAgora;
     private String codBarras;
     private LeituraBilheteEnum tipoLeitura;
     private String nsb;
@@ -189,6 +189,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                     atualizarLayoutApenasMensagem(R.string.label_concurso_prescrito);
                 } else if (isPremioPago(payload)){
                     atualizarLayoutApenasMensagem(R.string.label_premio_pago);
+                    botaoAposteAgora2.setText(ViewUtils.textCaixaSTDBold(ResultadoLerBilhetesActivity.this, getString(R.string.botao_aposte_agora)));
                 } else {
                     atualizarLayoutNaoPremiado();
                 }
@@ -373,6 +374,7 @@ public class ResultadoLerBilhetesActivity extends AppCompatActivity {
                     break;
                 case StatusBilhete.PREMIO_PAGO:
                     statusResultadoNaoPremiadTextView.setText(R.string.label_premio_pago);
+                    botaoAposteAgora2.setText(ViewUtils.textCaixaSTDBold(this ,getString(R.string.botao_aposte_agora)));
                     break;
                 case StatusBilhete.NAO_PREMIADO:
                 case StatusBilhete.NAO_APURADO:
