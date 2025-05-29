@@ -159,9 +159,10 @@ public class EncerramentoUtil {
             for (int i = 0; i < parametrosSimulacao.getParametros().size(); i++){
                 ParametroSimulacao parametro = parametrosSimulacao.getParametros().get(i);
                 if (modalidade == parametro.getParametroJogo().getConcurso().getModalidade() &&
-                parametro.getParametroJogo().getConcurso().getTipoConcurso() == tipoConcurso){
+                    parametro.getParametroJogo().getConcurso().getTipoConcurso() == tipoConcurso){
                     //update
                     parametrosSimulacao.getParametros().get(i).setParametroJogo(parametroSimulacaoUpIns.getParametroJogo());
+                    return;
                 }
             }
         }
