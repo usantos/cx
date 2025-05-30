@@ -111,7 +111,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		configFiltrar(launcherFiltro,filtro);
 		setTitle("");
 		toolBarTxt = findViewById(R.id.toolbar_title);
-		toolBarTxt.setText(ViewUtils.textFuturaAndFuturaBoldTitle(this, getString(R.string.label_voltar_apostas_individuais)));
+		toolBarTxt.setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.label_bolao_bar_marketplace)));
 		toolBarTxt.setVisibility(View.VISIBLE);
 		
 		todosBoloesTxt = findViewById(R.id.txt_todos_boloes);

@@ -71,8 +71,8 @@
         android:id="@+id/valor_bolao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/caixa_std_bold"
         android:text="R$ 000,00"
-        android:textColor="@color/mega_verde_claro_mkp"
         app:layout_constraintTop_toBottomOf="@id/valor_cota"
         app:layout_constraintEnd_toEndOf="@id/valor_cota"
         />

@@ -4,20 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import com.google.gson.Gson;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
-import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 
 
 public class SubBarraModalidadeFragment extends Fragment {
@@ -26,11 +25,11 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private static final String ARG_SORTEIO = "ARG_SORTEIO";
 	private static final String ARG_ESPECIAL = "AR_ESPECIAL";
 
+	private ConstraintLayout btnVoltar;
+	private AppCompatImageView setaVoltar;
 	private  View view;
 	private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio;
 	private ConstraintLayout background;
-	private ImageView trapezio;
-	private ImageView icMoneyBolao;
 
 	private String concurso;
 	private String sorteio;
@@ -70,13 +69,12 @@ public class SubBarraModalidadeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.fragment_sub_barra_modalidade, container, false);
-
-		tvModalidade = view.findViewById(R.id.id_modalidade);
+		btnVoltar = view.findViewById(R.id.btn_voltar_sub_barra);
+		setaVoltar = view.findViewById(R.id.seta_voltar_sub_barra);
+		tvModalidade = view.findViewById(R.id.tv_modalidade);
 		tvConcurso = view.findViewById(R.id.id_concurso);
 		tvSorteio = view.findViewById(R.id.id_sorteio);
 		background = view.findViewById(R.id.layout_fragmento);
-		trapezio = view.findViewById(R.id.back_money);
-		icMoneyBolao = view.findViewById(R.id.trevoImagem);
 		labelConcurso = view.findViewById(R.id.label_concurso);
 		labelSorteio = view.findViewById(R.id.label_sorteio);
 		if (ModalidadeEnum.LOTECA.equals(modalidade)) {
@@ -85,6 +83,8 @@ public class SubBarraModalidadeFragment extends Fragment {
 		preencheDados();
 		aplicaEstilo();
 		aplicaEstiloFonte();
+
+		btnVoltar.setOnClickListener(v -> getActivity().onBackPressed());
 
 		return view;
 	}
@@ -99,8 +99,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 
 	private void aplicaEstilo() {
 		background.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorClara()));
-		trapezio.setBackground(VectorUtils.getShape(R.drawable.ic_trapezio_mkp, estilo.getCorEscura()));
-		icMoneyBolao.setImageDrawable(VectorUtils.getShape(R.drawable.ic_money_bolao, estilo.getCorFonteFundoEscuro()));
+		setaVoltar.setImageDrawable(VectorUtils.getShape(R.drawable.seta_esquerda, estilo.getCorFonteFundoClaro()));
 		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1){
 			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
 		}

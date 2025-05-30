@@ -186,7 +186,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		}
 
 		if (modalidade.getConcurso().getEstimativa().compareTo(BigDecimal.ZERO) != 0) {
-			String estimativaFormatado = ViewUtils.getMoedaFormat(modalidade.getConcurso().getEstimativa());
+			String estimativaFormatado = ViewUtils.getMoedaFormatPorExtenso(modalidade.getConcurso().getEstimativa());
 			this.valorAcumulado.setText(estimativaFormatado);
 			this.valorAcumulado.setTextSize(20);
 			this.premioEstimadoConcurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold,
