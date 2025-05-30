@@ -31,7 +31,7 @@ public class CertificadoSilceSingleton {
         return certificados.get(position);
     }
 
-    public boolean trocaCertificado() {
+    public boolean atualizaNovoCertificado() {
         if (certificados != null && !certificados.isEmpty() && position < (certificados.size() -1)){
             position++;
             return true;

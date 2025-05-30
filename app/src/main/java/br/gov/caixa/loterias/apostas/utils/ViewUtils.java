@@ -171,8 +171,8 @@ public class ViewUtils {
                 .setView(messageView);
     }
 
-    public static Dialog alert(Context context, String mensagem) {
-        return alert(context, mensagem, null);
+    public static void alert(Context context, String mensagem) {
+        alert(context, mensagem, null);
     }
 
     public static Dialog alertTitulo(Context context, int titulo, String mensagem) {
@@ -183,14 +183,17 @@ public class ViewUtils {
         alertTitleButton(context, title, message, buttonName, null);
     }
 
-    public static Dialog alert(Context context, String mensagem, DialogInterface.OnDismissListener listener) {
-        Dialog dialog = ViewUtils.dialogo(context, mensagem)
-                .setCancelable(false)
-                .setOnDismissListener(listener)
-                .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
-        TextView textView = dialog.findViewById(android.R.id.message);
-        textView.setTypeface(getFontCaixaStdRegular(context));
-        return dialog;
+    public static void alert(Context context, String mensagem, DialogInterface.OnDismissListener listener) {
+        try {
+            Dialog dialog = ViewUtils.dialogo(context, mensagem)
+                    .setCancelable(false)
+                    .setOnDismissListener(listener)
+                    .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
+            TextView textView = dialog.findViewById(android.R.id.message);
+            textView.setTypeface(getFontCaixaStdRegular(context));
+        } catch (Exception e){
+            Log.d("", e.getLocalizedMessage());
+        }
     }
 
     public static Dialog alertTitulo(Context context, int titulo, String mensagem, DialogInterface.OnDismissListener listener) {

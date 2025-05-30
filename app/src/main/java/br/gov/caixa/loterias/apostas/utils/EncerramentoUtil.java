@@ -140,7 +140,7 @@ public class EncerramentoUtil {
         concursoDTO.setModalidadeDetalhada(modalidadeDC.getModalidadeDetalhada());
         concursoDTO.setTipoConcurso(modalidadeDC.getTipoConcurso());
         concursoDTO.setEstimativa(modalidadeDC.getEstimativa());
-        concursoDTO.setDataFechamento(DATE_TIME_FORMATE.format(new Date()));
+        concursoDTO.setDataFechamento("01/01/2025 12:00:00");
         concursoDTO.setDataHoraSorteio(modalidadeDC.getDataHoraSorteio());
 
         ParametroJogoDTO parametroJogoDTO = new ParametroJogoDTO();
@@ -149,7 +149,25 @@ public class EncerramentoUtil {
         ParametroSimulacao parametroSimulacao = new ParametroSimulacao();
         parametroSimulacao.setParametroJogo(parametroJogoDTO);
 
-        SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().add(parametroSimulacao);
+        upInsParametroJogo(modalidadeDC.getModalidade(), modalidadeDC.getTipoConcurso(), parametroSimulacao);
+    }
+
+    private static void upInsParametroJogo(ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso,
+                                           ParametroSimulacao parametroSimulacaoUpIns) {
+        ParametrosSimulacao parametrosSimulacao = SessaoUsuario.getInstance().getParametrosSimulacao();
+        if (parametrosSimulacao != null && parametrosSimulacao.getParametros() != null){
+            for (int i = 0; i < parametrosSimulacao.getParametros().size(); i++){
+                ParametroSimulacao parametro = parametrosSimulacao.getParametros().get(i);
+                if (modalidade == parametro.getParametroJogo().getConcurso().getModalidade() &&
+                    parametro.getParametroJogo().getConcurso().getTipoConcurso() == tipoConcurso){
+                    //update
+                    parametrosSimulacao.getParametros().get(i).setParametroJogo(parametroSimulacaoUpIns.getParametroJogo());
+                    return;
+                }
+            }
+        }
+        //insert
+        SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().add(parametroSimulacaoUpIns);
     }
 
     public static void mockApagaModalidadeNosParametroJogo(ModalidadeEnum modalidade,

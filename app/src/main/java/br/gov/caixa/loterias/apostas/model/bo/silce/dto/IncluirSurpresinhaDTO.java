@@ -29,6 +29,8 @@ public class IncluirSurpresinhaDTO {
     private DTOEnumCharacter tipoConcurso = null;
     @SerializedName("indicadorSurpresinha")
     private DTOEnumInteger indicadorSurpresinha = null;
+    @SerializedName("surpresinha")
+    private Boolean surpresinha = null;
     @SerializedName("concursoAlvo")
     private Integer concursoAlvo = null;
     @SerializedName("quantidadeNumeros")
@@ -82,6 +84,14 @@ public class IncluirSurpresinhaDTO {
 
     public void setIndicadorSurpresinha(DTOEnumInteger indicadorSurpresinha) {
         this.indicadorSurpresinha = indicadorSurpresinha;
+    }
+
+    public Boolean getSurpresinha() {
+        return surpresinha;
+    }
+
+    public void setSurpresinha(Boolean surpresinha) {
+        this.surpresinha = surpresinha;
     }
 
     /**

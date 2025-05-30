@@ -11,10 +11,13 @@ class ServerMethods {
      static final String INCLUIR_APOSTA_CARRINHO_PATH = "/carrinhos/incluir-aposta";
      static final String INCLUIR_SURPRESINHA_CARRINHO_PATH = "/carrinhos/incluir-surpresinha";
      static final String BUSCA_CARRINHO_PATH = "/carrinhos";
-     static final String DELETE_APOSTA_COMBO_CARRINHO_PATH = "carrinhos/combos/";
-     static final String DELETE_APOSTA_CARRINHO_PATH = "carrinhos/apostas/";
+
+     //static final String DELETE_APOSTA_COMBO_CARRINHO_PATH = "carrinhos/combos/";
+     //static final String DELETE_APOSTA_CARRINHO_PATH = "carrinhos/apostas/";
+     static final String DELETE_APOSTA_COMBO_CARRINHO_PATH = "/carrinhos/combos/";
+     static final String DELETE_APOSTA_CARRINHO_PATH = "/carrinhos/apostas/";
      static final String LIMPAR_CARRINHO_PATH = "/carrinhos/limpar";
-     static final String VALIDAR_CARRINHO = "carrinhos/validar";
+     static final String VALIDAR_CARRINHO = "/carrinhos/validar";
      static final String INCLUIR_APOSTAS_CARRINHO_PATH = "/carrinhos/incluir-apostas";
 
      static final String CARRINHO_FAVORITO_VALIDAR_NOME = "/carrinhos-favoritos/validar";
@@ -102,8 +105,8 @@ class ServerMethods {
      static final String RESULTADOS_MODALIDADE_CONCURSO_PATH = "resultados/{modalidade}/{concurso}";
      static final String RESULTADOS_MODALIDADE_UTLIMO = "resultados/{modalidade}";
 
-     static final String CARRINHOS_REGISTRAR_APOSTAS_PATH = "carrinhos/registrar-apostas";
-     static final String CARRINHOS_REGISTRAR_APOSTAS_ASYNC_PATH = "carrinhos/registrar-apostas-async";
+     static final String CARRINHOS_REGISTRAR_APOSTAS_PATH = "/carrinhos/registrar-apostas";
+     static final String CARRINHOS_REGISTRAR_APOSTAS_ASYNC_PATH = "/carrinhos/registrar-apostas-async";
 
      static final String USUARIOS_RECUPERAR_DADOS_PATH = "/usuarios/recuperar-dados";
 
@@ -121,7 +124,7 @@ class ServerMethods {
 
      static final String APOSTAS_RESGATAR_PATH = "apostas/{idAposta}/resgatar-premio";
 
-     static final String APP_VERSAO_ATUALIZACAO_PATH = "app/valida-versao/{versao-app}";
+     static final String APP_VERSAO_ATUALIZACAO_PATH = "/app/valida-versao/{versao-app}";
 
      static final String TOKEN_CADASTRO_MP_PATH = "/usuarios/gerar-token-cadastro-mercado-pago";
 

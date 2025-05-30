@@ -752,9 +752,6 @@ public class PrincipalActivity extends AppCompatActivity
                             getResources().getString(R.string.espaco_em_branco) +
                             ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
                 }
-                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
-                        getResources().getString(R.string.espaco_em_branco) +
-                        ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
 
                 if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
                         temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {

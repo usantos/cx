@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.*;
 import br.gov.caixa.loterias.apostas.view.listener.*;
 import com.android.volley.VolleyError;
@@ -332,23 +332,21 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void adicionarApostaNoCarrinho() {
-		if (isEscolhaTimeCoracaoSurpresinha) {
-			cartelaFragmentListener.adicionarTimeSurpresa(equipeSelecionada);
-			return;
-		}
-
-		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
-
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
-			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = ApostaUtils
-					.getApostaSuperSete(parametroJogo, dezenasSelecionadas,
-										valorTotalAposta,parentActivity.qtdConcursoSelecionado,
-										ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
-			model.adidionaApostaNoCarrinho(parentActivity, aposta);
+		if(checaLimiteDiario()){
+			ViewUtils.alertTitleButtonYesOrNotListener(getContext(), getString(R.string.MA014),
+					(dialog, which) -> executaAddCarrinho());
 		} else {
-			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = getApostaPreenchida();
-			model.adidionaApostaNoCarrinho(parentActivity, aposta);
+			executaAddCarrinho();
 		}
+	}
+
+	private boolean checaLimiteDiario() {
+		BigDecimal valorTotal = CarrinhoSingleton.getInstance().getCarrinho().getValorTotal();
+		return CarrinhoSingleton.getInstance().getCarrinho() != null &&
+				CarrinhoSingleton.getInstance().getCarrinho().getValorTotal() != null &&
+				SessaoUsuario.getInstance().getParametrosSimulacao() != null &&
+				SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() != null &&
+				((valorTotal.add(valorTotalAposta)).compareTo(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()) > 0);
 	}
 
 	private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
@@ -498,6 +496,26 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				}
 			}
 
+		}
+	}
+
+	private void executaAddCarrinho() {
+		if (isEscolhaTimeCoracaoSurpresinha) {
+			cartelaFragmentListener.adicionarTimeSurpresa(equipeSelecionada);
+			return;
+		}
+
+		dezenasSelecionadas = ListaUtils.orderAscDezenas(dezenasSelecionadas);
+
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
+			IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> aposta = ApostaUtils
+					.getApostaSuperSete(parametroJogo, dezenasSelecionadas,
+							valorTotalAposta,parentActivity.qtdConcursoSelecionado,
+							ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
+			model.adidionaApostaNoCarrinho(parentActivity, aposta);
+		} else {
+			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = getApostaPreenchida();
+			model.adidionaApostaNoCarrinho(parentActivity, aposta);
 		}
 	}
 

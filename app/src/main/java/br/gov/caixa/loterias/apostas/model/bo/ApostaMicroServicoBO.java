@@ -30,7 +30,7 @@ public class ApostaMicroServicoBO extends BaseBO {
     }
 
     private static OnCertificadoListener onCertificadoListener() {
-        return () -> {
+        return (String urlBase) -> {
             if (CertificadoMicroServicoSingleton.getInstance().trocaCertificado()){
                 MicroServicoSingleton.getInstance().initQueue();
                 return MicroServicoSingleton.getInstance().getRequestQueue();
