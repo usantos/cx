@@ -59,7 +59,7 @@ public class ServiceConnection {
                 req.getHeaders().put("cookie", "security=false");
                 req.getHeaders().put("Subcanal", "3");
                 //Servico Nuvem
-                req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.APIKEY_CHAVE);
+                req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.apiKeyChave());
                 req.getHeaders().put("content-type", "application/json");
             }
 
@@ -82,7 +82,7 @@ public class ServiceConnection {
                     req.getHeaders().put("cookie", "security=false");
                     req.getHeaders().put("Subcanal", "3");
                     //Servico Nuvem
-                    req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.APIKEY_CHAVE);
+                    req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.apiKeyChave());
                     req.getHeaders().put("content-type", "application/json");
                 } catch (Exception e) {
                     e.printStackTrace();
