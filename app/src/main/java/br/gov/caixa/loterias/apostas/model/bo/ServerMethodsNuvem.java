@@ -8,6 +8,7 @@ class ServerMethodsNuvem {
      static final String USUARIOS_VERIFICAR_CADASTRO_NUVEM_PATH = "/logado/usuarios/verificar-cadastro";
 
      static final String APOSTAS_FAVORITAS_LISTA_UNICA_NUVEM_PATH = "/logado/apostas-favoritas/lista-unica";
+     static final String VALIDAR_FAVORITA_NUVEM_PATH = "/logado/apostas-favoritas/validar";
 
      private ServerMethodsNuvem(){}
 }

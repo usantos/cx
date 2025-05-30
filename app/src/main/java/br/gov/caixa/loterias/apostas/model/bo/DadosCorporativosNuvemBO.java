@@ -1,7 +1,10 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
+import com.android.volley.NetworkResponse;
+
 import java.util.LinkedHashMap;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 
@@ -36,4 +39,16 @@ public class DadosCorporativosNuvemBO extends NuvemBO implements DadosCorporativ
         getServiceConnection().request(request, listener);
     }
 
+    @Override
+    public void validarApostaFavorita(final ApostaFavoritaDTO aposta,
+                                      final RequestListener<NetworkResponse> listener) {
+        GsonRequest request = getServiceConnection().buildPostRequestNuvem(ServerMethodsNuvem.VALIDAR_FAVORITA_NUVEM_PATH,
+                new LinkedHashMap<>(),
+                aposta, NetworkResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
 }

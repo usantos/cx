@@ -23,13 +23,13 @@ public class ParametrosSimulacaoModel {
 	}
 
 	public void buscaParametroSiumulacao(OnSilceListener<ParametrosSimulacao> listener) {
-		DadosCorporativoService dadosCorporativos;
+		DadosCorporativoService dadosCorporativoSevice;
 		if (ServicoNuvemUtil.isServicoNuvem()) {
-			dadosCorporativos = DadosCorporativosNuvemBO.getInstance();
+			dadosCorporativoSevice = DadosCorporativosNuvemBO.getInstance();
 		} else {
-			dadosCorporativos = DadosCorporativosBO.getInstance();
+			dadosCorporativoSevice = DadosCorporativosBO.getInstance();
 		}
-		dadosCorporativos.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
+		dadosCorporativoSevice.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
 			@Override
 			public void onResponse(ParametrosSimulacaoResponse response) {
 				listener.success(response.getPayload());

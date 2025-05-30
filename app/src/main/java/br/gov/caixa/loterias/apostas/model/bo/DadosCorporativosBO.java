@@ -119,6 +119,7 @@ public class DadosCorporativosBO extends SilceBO implements DadosCorporativoServ
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void validarApostaFavorita(final ApostaFavoritaDTO aposta,
                                       final RequestListener<NetworkResponse> listener) {
         GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.VALIDAR_FAVORITA_PATH,

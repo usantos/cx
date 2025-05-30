@@ -39,7 +39,9 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativoService;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosNuvemBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -61,6 +63,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
@@ -479,7 +482,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
         apostaFavorita.setId(Constantes.ZERO_LONG);
 
-        dadosCorporativosBO.validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
+        DadosCorporativoService dadosCorporativoService;
+        if (ServicoNuvemUtil.isServicoNuvem()) {
+            dadosCorporativoService = DadosCorporativosNuvemBO.getInstance();
+        } else {
+            dadosCorporativoService = DadosCorporativosBO.getInstance();
+        }
+        dadosCorporativoService.validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 salvarAposta(apostaFavorita);

@@ -6,6 +6,8 @@ import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaService;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -17,6 +19,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginad
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class ApostaFavoritaRepository extends AppRepository {
     //region Variables
@@ -32,7 +35,13 @@ public class ApostaFavoritaRepository extends AppRepository {
 
     //region Methodes
     public void buscaApostas(int offsetItem, OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO> listener) {
-        apostaBO.getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+        ApostaService apostaService;
+        if (ServicoNuvemUtil.isServicoNuvem()) {
+            apostaService = ApostaNuvemBO.getInstance();
+        } else {
+            apostaService = ApostaBO.getInstance();
+        }
+        apostaService.getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
                 checkRedirect(response);

@@ -27,7 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativoService;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosNuvemBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -47,6 +49,7 @@ import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
@@ -199,7 +202,13 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     }
 
     private void validarApostaFav(ApostaFavoritaDTO apostaFavorita) {
-        DadosCorporativosBO.getInstance().validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
+        DadosCorporativoService dadosCorporativoService;
+        if (ServicoNuvemUtil.isServicoNuvem()) {
+            dadosCorporativoService = DadosCorporativosNuvemBO.getInstance();
+        } else {
+            dadosCorporativoService = DadosCorporativosBO.getInstance();
+        }
+        dadosCorporativoService.validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 salvarAposta(apostaFavorita);

@@ -316,6 +316,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void getApostasFavoritas(final int offset, final RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("offset", String.valueOf(offset));
