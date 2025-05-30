@@ -83,6 +83,8 @@ public class DetalheBolaoDTO {
     private BigDecimal vrTarifaServicoUltimaCota;
     @SerializedName("apostas")
     private List<ApostaBolaoDTO> apostas;
+    @SerializedName("lotericaFormatada")
+    private LotericaDTO lotericaFormatada = null;
 
     public void aumentaQuantidade() {
         if (qtdCotaDesejada < qtdCotaDisponivel){
@@ -102,6 +104,18 @@ public class DetalheBolaoDTO {
 
     public void setApostas(List<ApostaBolaoDTO> apostas) {
         this.apostas = apostas;
+    }
+
+    /**
+     * Get lotericaFormatada
+     * @return lotericaFormatada
+     **/
+    public LotericaDTO getLotericaFormatada() {
+        return lotericaFormatada;
+    }
+
+    public void setLotericaFormatada(LotericaDTO lotericaFormatada) {
+        this.lotericaFormatada = lotericaFormatada;
     }
 
     /**
@@ -485,7 +499,8 @@ public class DetalheBolaoDTO {
                 Objects.equals(this.vrTotalBolaoSemTarifa, dadosCotaBolao.vrTotalBolaoSemTarifa) &&
                 Objects.equals(this.qtdApostas, dadosCotaBolao.qtdApostas) &&
                 Objects.equals(this.qtdNumeros, dadosCotaBolao.qtdNumeros)&&
-                Objects.equals(this.apostas, dadosCotaBolao.apostas);
+                Objects.equals(this.apostas, dadosCotaBolao.apostas) &&
+                Objects.equals(this.lotericaFormatada, dadosCotaBolao.lotericaFormatada);
     }
 
     @Override
@@ -497,7 +512,7 @@ public class DetalheBolaoDTO {
                             concurso, tipoConcurso, modalidade, dataSorteio,
                             horaSorteio, diaSorteio, vrPremioEstimado, vrCotaSemTarifa,
                             vrCotaComTarifa, valorTarifaServico, vrTarifaBolao,
-                            vrTotalBolaoComTarifa, vrTotalBolaoSemTarifa, qtdApostas, apostas);
+                            vrTotalBolaoComTarifa, vrTotalBolaoSemTarifa, qtdApostas, apostas, lotericaFormatada);
     }
 
 
@@ -532,6 +547,7 @@ public class DetalheBolaoDTO {
         sb.append("    qtdApostas: ").append(toIndentedString(qtdApostas)).append("\n");
         sb.append("    qtdNumeros: ").append(toIndentedString(qtdNumeros)).append("\n");
         sb.append("    apostas: ").append(toIndentedString(apostas)).append("\n");
+        sb.append("    lotericaFormatada: ").append(toIndentedString(lotericaFormatada)).append("\n");
         sb.append("}");
         return sb.toString();
     }
