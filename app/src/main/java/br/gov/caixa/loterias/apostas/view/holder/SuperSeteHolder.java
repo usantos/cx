@@ -74,13 +74,15 @@ public class SuperSeteHolder extends LoteriasHolder<ApostaBolaoDTO> {
 		numeroJogo.setText("Jogo " + (position + 1));
 		aplicaEstiloColunas();
 
-		preencheColuna(listaColuna1, (List<Integer>) aposta.getDezenas().get(0), 0);
-		preencheColuna(listaColuna2, (List<Integer>) aposta.getDezenas().get(1), 1);
-		preencheColuna(listaColuna3, (List<Integer>) aposta.getDezenas().get(2), 2);
-		preencheColuna(listaColuna4, (List<Integer>) aposta.getDezenas().get(3), 3);
-		preencheColuna(listaColuna5, (List<Integer>) aposta.getDezenas().get(4), 4);
-		preencheColuna(listaColuna6, (List<Integer>) aposta.getDezenas().get(5), 5);
-		preencheColuna(listaColuna7, (List<Integer>) aposta.getDezenas().get(6), 6);
+		if (aposta.getDezenas() != null && !aposta.getDezenas().isEmpty()){
+			preencheColuna(listaColuna1, (List<Integer>) aposta.getDezenas().get(0), 0);
+			preencheColuna(listaColuna2, (List<Integer>) aposta.getDezenas().get(1), 1);
+			preencheColuna(listaColuna3, (List<Integer>) aposta.getDezenas().get(2), 2);
+			preencheColuna(listaColuna4, (List<Integer>) aposta.getDezenas().get(3), 3);
+			preencheColuna(listaColuna5, (List<Integer>) aposta.getDezenas().get(4), 4);
+			preencheColuna(listaColuna6, (List<Integer>) aposta.getDezenas().get(5), 5);
+			preencheColuna(listaColuna7, (List<Integer>) aposta.getDezenas().get(6), 6);
+		}
 	}
 
 	private void aplicaEstiloColunas() {

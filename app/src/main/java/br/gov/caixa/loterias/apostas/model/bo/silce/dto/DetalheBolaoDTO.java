@@ -71,12 +71,16 @@ public class DetalheBolaoDTO {
     private BigDecimal vrCotaComTarifa = null;
     @SerializedName("vrUltimaCotaComTarifa")
     private BigDecimal vrUltimaCotaComTarifa = null;
+    @SerializedName("vrUltimaCotaSemTarifa")
+    private BigDecimal vrUltimaCotaSemTarifa;
     @SerializedName("vrTarifaBolao")
     private BigDecimal vrTarifaBolao = null;
     @SerializedName("vrTotalBolaoComTarifa")
     private BigDecimal vrTotalBolaoComTarifa = null;
     @SerializedName("vrTotalBolaoSemTarifa")
     private BigDecimal vrTotalBolaoSemTarifa = null;
+    @SerializedName("vrTarifaServicoUltimaCota")
+    private BigDecimal vrTarifaServicoUltimaCota;
     @SerializedName("apostas")
     private List<ApostaBolaoDTO> apostas;
 
@@ -442,6 +446,10 @@ public class DetalheBolaoDTO {
         this.qtdNumeros = qtdNumeros;
     }
 
+    public BigDecimal getVrTarifaServicoUltimaCota() {
+        return vrTarifaServicoUltimaCota;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -541,6 +549,10 @@ public class DetalheBolaoDTO {
 
     public BigDecimal getVrUltimaCotaComTarifa() {
         return vrUltimaCotaComTarifa;
+    }
+
+    public BigDecimal getVrUltimaCotaSemTarifa() {
+        return vrUltimaCotaSemTarifa;
     }
 }
 
