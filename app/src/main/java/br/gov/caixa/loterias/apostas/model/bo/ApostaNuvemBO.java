@@ -116,4 +116,19 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
+
+    @Override
+    public void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        //queryParams.put("id", idAposta); //Ja passa na linha abaixo
+        final GsonRequest request = getServiceConnection().buildDeleteRequestNuvem(ServerMethodsNuvem.APOSTAS_FAVORITAS_NUVEM_PATH + idAposta,
+                queryParams,
+                RetornoPadraoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
 }

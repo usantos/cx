@@ -472,8 +472,8 @@ public class ApostaBO extends SilceBO implements ApostaService {
         getServiceConnection().request(request, listener);
     }
 
-
     //APOSTAS FAVORITAS
+    @Override
     public void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("id", idAposta);

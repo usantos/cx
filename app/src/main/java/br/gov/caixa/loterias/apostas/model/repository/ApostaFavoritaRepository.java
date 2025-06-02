@@ -92,7 +92,13 @@ public class ApostaFavoritaRepository extends AppRepository {
     }
 
     public void deletaAposta(Long id, OnSilceListener listener) {
-        apostaBO.deleteApostasFavoritas(id.toString(), new RequestListener<RetornoPadraoResponse>() {
+        ApostaService apostaService;
+        if (ServicoNuvemUtil.isServicoNuvem()) {
+            apostaService = ApostaNuvemBO.getInstance();
+        } else {
+            apostaService = ApostaBO.getInstance();
+        }
+        apostaService.deleteApostasFavoritas(id.toString(), new RequestListener<RetornoPadraoResponse>() {
             @Override
             public void onResponse(RetornoPadraoResponse response) {
                 AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_efetuou_exclusao_favorito));

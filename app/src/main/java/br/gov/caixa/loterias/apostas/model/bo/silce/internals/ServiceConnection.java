@@ -59,7 +59,7 @@ public class ServiceConnection {
                 req.getHeaders().put("cookie", "security=false");
                 req.getHeaders().put("Subcanal", "3");
                 //Servico Nuvem
-                req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.APIKEY_CHAVE);
+                req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.apiKeyChave());
                 req.getHeaders().put("content-type", "application/json");
             }
 
@@ -82,7 +82,7 @@ public class ServiceConnection {
                     req.getHeaders().put("cookie", "security=false");
                     req.getHeaders().put("Subcanal", "3");
                     //Servico Nuvem
-                    req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.APIKEY_CHAVE);
+                    req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.apiKeyChave());
                     req.getHeaders().put("content-type", "application/json");
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -172,6 +172,17 @@ public class ServiceConnection {
         return request;
     }
 
+    public <T> GsonRequest buildDeleteRequestNuvem(String path, Map<String, String> queryParams,
+                                              Class<T> responseDataClass,
+                                              Response.Listener<T> listener,
+                                              Response.ErrorListener errorListener, Map<String, String> headers) {
+
+        String url = fillUrlWithQueryParamsNuvem(path, queryParams);
+        GsonRequest request = new GsonRequest<String, T>(DELETE, url, responseDataClass, headers, listener, errorListener);
+        request.setRetryPolicy(createRetryPolicy());
+        Log.i(TAG_REQUEST, url);
+        return request;
+    }
     public <T> GsonRequest buildDeleteRequest(String path, Map<String, String> queryParams,
                                               Class<T> responseDataClass,
                                               Response.Listener<T> listener,
