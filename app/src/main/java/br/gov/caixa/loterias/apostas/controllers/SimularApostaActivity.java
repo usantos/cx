@@ -517,7 +517,13 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if(!AlertDialogUtils.isShow()){
             AlertDialogUtils.show(this);
         }
-        dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
+        DadosCorporativoService dadosCorporativoSevice;
+        if (ServicoNuvemUtil.isServicoNuvem()) {
+            dadosCorporativoSevice = DadosCorporativosNuvemBO.getInstance();
+        } else {
+            dadosCorporativoSevice = DadosCorporativosBO.getInstance();
+        }
+        dadosCorporativoSevice.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));

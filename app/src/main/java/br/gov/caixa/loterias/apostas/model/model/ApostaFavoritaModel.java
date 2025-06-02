@@ -43,7 +43,13 @@ public class ApostaFavoritaModel {
 	}
 
 	public void salvaAposta(ApostaFavoritaDTO apostaFavoritaDTO, OnSilceListener<NetworkResponse> listener){
-		DadosCorporativosBO.getInstance().salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
+		DadosCorporativoService dadosCorporativoSevice;
+		if (ServicoNuvemUtil.isServicoNuvem()) {
+			dadosCorporativoSevice = DadosCorporativosNuvemBO.getInstance();
+		} else {
+			dadosCorporativoSevice = DadosCorporativosBO.getInstance();
+		}
+		dadosCorporativoSevice.salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
 			@Override
 			public void onResponse(NetworkResponse result) {
 				listener.success(result);

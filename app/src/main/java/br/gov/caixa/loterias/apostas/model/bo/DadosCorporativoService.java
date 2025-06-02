@@ -8,4 +8,5 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoRespo
 public interface DadosCorporativoService {
     void parametrosSimulacao(final RequestListener<ParametrosSimulacaoResponse> listener);
     void validarApostaFavorita(final ApostaFavoritaDTO aposta,final RequestListener<NetworkResponse> listener);
+    void salvarApostaFavorita(final ApostaFavoritaDTO aposta,final RequestListener<NetworkResponse> listener);
 }

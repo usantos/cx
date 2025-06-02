@@ -51,4 +51,17 @@ public class DadosCorporativosNuvemBO extends NuvemBO implements DadosCorporativ
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
+
+    @Override
+    public void salvarApostaFavorita(final ApostaFavoritaDTO aposta,
+                                     final RequestListener<NetworkResponse> listener) {
+        GsonRequest request = getServiceConnection().buildPostRequestNuvem(ServerMethodsNuvem.INCLUIR_FAVORITA_NUVEM_PATH,
+                new LinkedHashMap<>(),
+                aposta, NetworkResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
 }

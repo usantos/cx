@@ -10,6 +10,7 @@ class ServerMethodsNuvem {
      static final String APOSTAS_FAVORITAS_LISTA_UNICA_NUVEM_PATH = "/logado/apostas-favoritas/lista-unica";
      static final String VALIDAR_FAVORITA_NUVEM_PATH = "/logado/apostas-favoritas/validar";
      static final String APOSTAS_FAVORITAS_NUVEM_PATH = "/logado/apostas-favoritas/";
+     static final String INCLUIR_FAVORITA_NUVEM_PATH = "/logado/apostas-favoritas";
 
      private ServerMethodsNuvem(){}
 }
