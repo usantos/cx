@@ -76,6 +76,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
     }
 
     //Carrinho Favorito
+    @Override
     public void validarCarrinhoFavorito(String nomeCarrinho, RequestListener<CarrinhoFavoritoDTOResponse> listener){
         LinkedHashMap<String, String> params = new LinkedHashMap<>();
         params.put("nome", nomeCarrinho);
@@ -106,8 +107,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         getServiceConnection().request(request, listener);
     }
 
-
-
+    @Override
     public void deletaApostaCarrinhoFavorito(final String idCarrinho,
                                              final String idAposta,
                                              final RequestListener<ListApostaCarrinhoFavoritoResponse> listener) {
@@ -124,6 +124,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void deletaCarrinhoFavorito(final String idCarrinho,
                                        final RequestListener<ListCarrinhoFavoritoResponse> listener) {
         String url = ServerMethods.CARRINHO_FAVORITO_DELETAR_CARRINHO.replace("{id}", idCarrinho);
@@ -172,6 +173,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoResponse> listener){
         final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.CARRINHO_FAVORITO_BUSCAR_CARRINHOS,
 
@@ -184,6 +186,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void buscaApostasCarrinhoFavorito(Long idCarrinho,RequestListener<ListApostaCarrinhoFavoritoResponse> listener){
         String url = ServerMethods.CARRINHO_FAVORITO_BUSCA_APOSTAS.replace("{idCarrinho}", idCarrinho.toString());
         final GsonRequest request = getServiceConnection().buildGetRequest(url,

@@ -88,9 +88,11 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 		}
 
 		if (apostaAtual.getModalidade().getDescricao().equalsIgnoreCase("dia de sorte")) {
-			tvMesDaSorte.setText(apostaAtual.getMesDeSorte().getNome());
-			tvMesDaSorte.setVisibility(View.VISIBLE);
-			tvMesDaSorte.setTextColor(ContextCompat.getColor(ctx, estilo.getCorLetraLista()));
+			if (apostaAtual.getMesDeSorte() != null && apostaAtual.getMesDeSorte().getNome() != null) {
+				tvMesDaSorte.setText(apostaAtual.getMesDeSorte().getNome());
+				tvMesDaSorte.setVisibility(View.VISIBLE);
+				tvMesDaSorte.setTextColor(ContextCompat.getColor(ctx, estilo.getCorLetraLista()));
+			}
 		}
 	}
 

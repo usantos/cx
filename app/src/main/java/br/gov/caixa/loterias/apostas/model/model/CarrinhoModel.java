@@ -12,6 +12,8 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaService;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -31,6 +33,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
@@ -96,7 +99,13 @@ public class CarrinhoModel {
 	}
 
 	public void validarCarrinhoFavorito(String nome, OnSilceListener listener) {
-		apostaBO.validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+		ApostaService apostaService;
+		if (ServicoNuvemUtil.isServicoNuvem()) {
+			apostaService = ApostaNuvemBO.getInstance();
+		} else {
+			apostaService = ApostaBO.getInstance();
+		}
+		apostaService.validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoFavoritoDTOResponse result) {
 				if (result.getRedirect() != null) {
