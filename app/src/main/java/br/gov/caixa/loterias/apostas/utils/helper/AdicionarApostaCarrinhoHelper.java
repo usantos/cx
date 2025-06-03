@@ -27,6 +27,8 @@ import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaService;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -54,6 +56,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
@@ -156,7 +159,13 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void postAdicionarApostaCarrinho(ApostaBO apostaBO) {
-        apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
+        ApostaService apostaService;
+        if (ServicoNuvemUtil.isServicoNuvem()) {
+            apostaService = ApostaNuvemBO.getInstance();
+        } else {
+            apostaService = ApostaBO.getInstance();
+        }
+        apostaService.adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -195,7 +204,7 @@ public class AdicionarApostaCarrinhoHelper {
             indicadorSurpresinha.setDescricao("");
             aposta.setIndicadorSurpresinha(indicadorSurpresinha);
         }
-
+??????
         apostaBO.adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse result) {

@@ -17,8 +17,14 @@ class ServerMethodsNuvem {
      static final String CARRINHO_FAVORITO_DELETAR_CARRINHO_NUVEM = "/logado/carrinhos-favoritos/{id}";
      static final String CARRINHO_FAVORITO_BUSCA_APOSTAS_NUVEM = "/logado/carrinhos-favoritos/{idCarrinho}/apostas";
      static final String CARRINHO_FAVORITO_DELETAR_APOSTA_NUVEM = "/logado/carrinhos-favoritos/{id}/apostas/{idAposta}";
+     static final String CARRINHO_FAVORITO_SALVAR_NUVEM = "/logado/carrinhos/salvar-carrinho-favorito";
+     static final String CARRINHO_FAVORITO_SALVAR_COMPRA_NUVEM = "/logado/compras/{idCompra}/salvar-carrinho-favorito";
 
-     //static final String CARRINHO_FAVORITO_TRANSFORMAR = "/carrinhos/incluir-carrinho-favorito/{idCarrinhoFavorito}";
-     //     static final String CARRINHO_FAVORITO_SALVAR_NUVEM = "/logado/carrinhos/salvar-carrinho-favorito";
+     //static final String CARRINHO_FAVORITO_TRANSFORMAR_NUVEM = "/logado/carrinhos/incluir-carrinho-favorito/{idCarrinhoFavorito}";
+
+     static final String INCLUIR_APOSTA_CARRINHO_NUVEM_PATH = "/logado/carrinhos/incluir-aposta";
+//     static final String INCLUIR_SURPRESINHA_CARRINHO_NUVEM_PATH = "/logado/carrinhos/incluir-surpresinha";
+//     static final String BUSCA_CARRINHO_NUVEM_PATH = "/logado/carrinhos";
+
      private ServerMethodsNuvem(){}
 }

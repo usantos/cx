@@ -145,6 +145,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         salvarCarrinhoFavorito(nomeCarrinho,null,true, listener);
     }
 
+    @Override
     public void salvarCarrinhoFavorito(final String nomeCarrinho,
                                        final String idCompra,
                                        final Boolean mantemSurpresinhas,
@@ -524,6 +525,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
     }
 
     //CARRINHO
+    @Override
     public void adicionarApostaNoCarrinho(final IdentificaoDeUmaApostaDas8Modalidades aposta,
                                           final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {

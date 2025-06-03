@@ -204,4 +204,61 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
+
+    @Override
+    public void salvarCarrinhoFavorito(final String nomeCarrinho,
+                                       final String idCompra,
+                                       final Boolean mantemSurpresinhas,
+                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
+
+        Map<String, String> params = new HashMap<>();
+        params.put("nome", nomeCarrinho);
+        params.put("manterSurpresinhas", mantemSurpresinhas.toString());
+
+        String url;
+        if(idCompra != null){
+            url = ServerMethodsNuvem.CARRINHO_FAVORITO_SALVAR_COMPRA_NUVEM.replace("{idCompra}", idCompra);
+        } else {
+            url = ServerMethodsNuvem.CARRINHO_FAVORITO_SALVAR_NUVEM;
+        }
+
+        final GsonRequest request = getServiceConnection().buildPostRequestNuvem(url,
+                new LinkedHashMap<>(),
+                params,
+                CarrinhoFavoritoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    @Override
+    public void adicionarApostaNoCarrinho(final IdentificaoDeUmaApostaDas8Modalidades aposta,
+                                          final RequestListener<CarrinhoDTOResponse> listener) {
+        if (verificaAcessToken(listener)) {
+            //Incluido por causa do carrinho na NUVEM
+            if (aposta != null) {
+                aposta.setId(null);
+            }
+            final GsonRequest request = getServiceConnection().buildPostRequestNuvem(ServerMethodsNuvem.INCLUIR_APOSTA_CARRINHO_NUVEM_PATH,
+                    new LinkedHashMap<>(),
+                    aposta,
+                    CarrinhoDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeaderToken());
+
+            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+            getServiceConnection().request(request, listener);
+        }
+    }
+
+    private <T> boolean verificaAcessToken(final RequestListener<T> listener) {
+        if (KeycloakBO.getInstance().getAccessToken() != null) {
+            return true;
+        }
+        listener.onErrorResponse(new VolleyError(new NetworkResponse(401, null, false, 0L, null)));
+        return false;
+    }
 }

@@ -713,7 +713,13 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void favoritarCarrinho(String nome, Long idFavorito) {
         AlertDialogUtils.show(DetalhesComprasActivity.this);
-        ApostaBO.getInstance().salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ApostaService apostaService;
+        if (ServicoNuvemUtil.isServicoNuvem()) {
+            apostaService = ApostaNuvemBO.getInstance();
+        } else {
+            apostaService = ApostaBO.getInstance();
+        }
+        apostaService.salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
