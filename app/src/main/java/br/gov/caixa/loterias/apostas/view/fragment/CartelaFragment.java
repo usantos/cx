@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.*;
 import br.gov.caixa.loterias.apostas.view.listener.*;
 import com.android.volley.VolleyError;
@@ -332,7 +333,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void adicionarApostaNoCarrinho() {
-		if(checaLimiteDiario()){
+		if(LoginSP.isLoginRealizado() && checaLimiteDiario()){
 			ViewUtils.alertTitleButtonYesOrNotListener(getContext(), getString(R.string.MA014),
 					(dialog, which) -> executaAddCarrinho());
 		} else {
@@ -341,12 +342,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private boolean checaLimiteDiario() {
-		BigDecimal valorTotal = CarrinhoSingleton.getInstance().getCarrinho().getValorTotal();
 		return CarrinhoSingleton.getInstance().getCarrinho() != null &&
 				CarrinhoSingleton.getInstance().getCarrinho().getValorTotal() != null &&
 				SessaoUsuario.getInstance().getParametrosSimulacao() != null &&
 				SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() != null &&
-				((valorTotal.add(valorTotalAposta)).compareTo(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()) > 0);
+				valorTotalAposta != null &&
+				((CarrinhoSingleton.getInstance().getCarrinho().getValorTotal()
+						.add(valorTotalAposta))
+						.compareTo(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()) > 0);
 	}
 
 	private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
