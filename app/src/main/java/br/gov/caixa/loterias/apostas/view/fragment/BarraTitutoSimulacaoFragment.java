@@ -40,7 +40,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 	private ModalidadeEnum modalidade;
 	private EstiloModalidadeMKP estilo;
 
-	private BarraTitutoSimulacaoFragment() {}
+	public BarraTitutoSimulacaoFragment() {}
 
 	public static BarraTitutoSimulacaoFragment newInstance(ModalidadeEnum modalidade, String concuso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
 		BarraTitutoSimulacaoFragment fragment = new BarraTitutoSimulacaoFragment();

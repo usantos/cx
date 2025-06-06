@@ -305,6 +305,19 @@ public class DadosUsuarioBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    public void getVerificaUsuarioBloqueado(final RequestListener<RetornoPadraoResponse> listener) {
+
+        LinkedHashMap<String, String> headers = new LinkedHashMap<>();
+        headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
+
+        GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.VERIFICA_USUARIO_BLOQUEADO, new LinkedHashMap<>(), RetornoPadraoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(), headers);
+
+        request.setErrorListener(interceptError(request, headers, listener));
+        getServiceConnection().request(request, listener);
+    }
+
     public void postPushRegistrarDispositivo(final String cpf, final String token, final RequestListener<PushRegistrarDispositivoResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());
@@ -325,4 +338,5 @@ public class DadosUsuarioBO extends SilceBO {
         request.setErrorListener(interceptError(request, headers, listener));
         getServiceConnection().request(request, listener);
     }
+
 }

@@ -10,6 +10,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
@@ -261,7 +263,6 @@ public class CartoesModel extends AppModel {
 			}
 		} );
 	}
-
 	public String getBrand(String numeroCartao) {
 		numeroCartao = numeroCartao.replace(" ", "");
 		if (isELO(numeroCartao)){
@@ -305,21 +306,29 @@ public class CartoesModel extends AppModel {
 	}
 
 	private static boolean isELO(String numeroCartao) {
-		return numeroCartao.startsWith("4011") || numeroCartao.startsWith("4576") ||
-				numeroCartao.startsWith("431274") || numeroCartao.startsWith("438935") ||
-				numeroCartao.startsWith("451416") || numeroCartao.startsWith("457393") ||
-				numeroCartao.startsWith("504175") || numeroCartao.startsWith("506699") ||
-				numeroCartao.startsWith("506700") || numeroCartao.startsWith("506779") ||
-				numeroCartao.startsWith("506788") || numeroCartao.startsWith("509876") ||
-				numeroCartao.startsWith("509998") || numeroCartao.startsWith("509999") ||
-				numeroCartao.startsWith("627780") || numeroCartao.startsWith("636297") ||
-				numeroCartao.startsWith("636368") || numeroCartao.startsWith("636369") ||
-				numeroCartao.startsWith("65003") || numeroCartao.startsWith("650049") ||
-				numeroCartao.startsWith("650411") || numeroCartao.startsWith("6509") ||
-				numeroCartao.startsWith("651770") || numeroCartao.startsWith("6550") ||
-				numeroCartao.startsWith("5016") || numeroCartao.startsWith("50672") ||
-				numeroCartao.startsWith("509") || numeroCartao.startsWith("6505")
-				|| numeroCartao.startsWith("6507");
+		String regex509 =
+				"509(508|509|518|519|918|921|926|929|932|935|938|940|946|948|951|952|957|961|963|971|975|978|979|980|983|986|996|999|" +
+						"900|920|924|925|927|930|937|939|943|947|949|950|955|956|958|959|960|972|973|974|977|982|984|998|919|922|923|928|931|" +
+						"933|934|936|941|942|944|945|953|954|962|964|976|981|985|995|997)";
+		String regex650 =
+				"650(948|949|953|955|956|957|960|968|971|946|952|961|962|966|973|977|947|950|951|954|958|959|963|964|965|967|970|972|" +
+						"974|975|976|978|058|059|048)";
+		String regexOutros =
+				"(4011(78|79)|431274|438935|451416|45(7393|7631|7632)|5067(00|01|02|04|05|06|08|10|11|12|14|15|16|17|18|19|20|24|25|26|27|28|" +
+						"29|30|31|32|33|37|39|40|41|42|43|44|45|46|47|48|49|50|51|52|53|60|61|62|63|64|65|70|71|72|73|74|75|77|78)|5090(00|01|" +
+						"02|04|05|06|07|09|10|11|12|13|14|15|16|17|18|19|20|21|22|24|25|26|27|28|29)|509(0[3-9][0-9]|[1-4][0-9]{2}|5[0-2][0-7]|" +
+						"5[2-9][0-9]|6[0-9][0-9]|7[0-9][0-9]|8[0-7][0-9]|88[0-7]|8[8-9][0-9]|9[0-9]{3})|636(297|368)|650(4[0-9]{2}|5[0-9]{2}|" +
+						"6[0-9]{2}|7[0-9]{2}|8[0-9]{2}|9[0-3][0-9]|9[4-9]|580|581|582|583)|651(6[5-9][0-9]|[7-9][0-9]{2})|655(0[0-9]{2}|1[0-9]{2}|" +
+						"2[0-9]{2}|3[0-9]{2}|4[0-9]{2}|5[0-9]{2}|6[0-9]{2}|7[0-9]{2}|8[0-9]{2}|9[0-9]{2})|6500580[1-3])";
+
+
+		String regex = "^((" + regex509 + ")|(" + regex650 + ")|(" + regexOutros + "))$";
+
+		Pattern ELO_PATTERN = Pattern.compile(regex);
+		String bin = numeroCartao.replace(" ", "").substring(0, 6);
+		Matcher matcher = ELO_PATTERN.matcher(bin);
+
+		return matcher.matches();
 	}
 
 	public CardHolderRecargaPay getCardHolderRecargaPay(ApostadorDTO dadosPessoais) {
@@ -390,4 +399,6 @@ public class CartoesModel extends AppModel {
 		cartao.setShouldSave(shouldSave);
 		return cartao;
 	}
+
+
 }

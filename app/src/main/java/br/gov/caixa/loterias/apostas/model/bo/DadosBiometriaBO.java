@@ -10,6 +10,10 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 
 public class DadosBiometriaBO extends SilceBO {
 
+    public DadosBiometriaBO() {
+        super();
+    }
+
     public static void salvarBiometria(String refresh, String nome, String cpf) {
         Context context = Aplicacao.application.getApplicationContext();
         if (context != null) {

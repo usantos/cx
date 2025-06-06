@@ -1,10 +1,5 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.internals;
 
-import static com.android.volley.Request.Method.DELETE;
-import static com.android.volley.Request.Method.GET;
-import static com.android.volley.Request.Method.POST;
-import static com.android.volley.Request.Method.PUT;
-
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -21,6 +16,12 @@ import java.util.Map;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
+import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
+
+import static com.android.volley.Request.Method.DELETE;
+import static com.android.volley.Request.Method.GET;
+import static com.android.volley.Request.Method.POST;
+import static com.android.volley.Request.Method.PUT;
 
 public class ServiceConnection {
     private static final Bin KEY = Bin.fromBase64("QEm06ZAThg1E314zziahsg");
@@ -28,8 +29,9 @@ public class ServiceConnection {
     private static final int TIMEOUT = 30000;
     private static final String TAG_REQUEST = "TAG_REQUEST";
 
-    private final RequestQueue requestQueue;
+    private RequestQueue requestQueue;
     private final SilceCrypto silceCrypto = SilceCrypto.create(KEY, IV);
+
     private String baseUrl;
     private Boolean isEncoding = false;
 
@@ -56,6 +58,9 @@ public class ServiceConnection {
             if (!precisaRefreshToken) {
                 req.getHeaders().put("cookie", "security=false");
                 req.getHeaders().put("Subcanal", "3");
+                //Servico Nuvem
+                req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.apiKeyChave());
+                req.getHeaders().put("content-type", "application/json");
             }
 
         } catch (Exception e) {
@@ -76,6 +81,9 @@ public class ServiceConnection {
                     req.getHeaders().put("Authorization", "Bearer " + keycloakBO.getAccessToken());
                     req.getHeaders().put("cookie", "security=false");
                     req.getHeaders().put("Subcanal", "3");
+                    //Servico Nuvem
+                    req.getHeaders().put(ServicoNuvemUtil.APIKEY_DESCRICAO, ServicoNuvemUtil.apiKeyChave());
+                    req.getHeaders().put("content-type", "application/json");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -115,7 +123,13 @@ public class ServiceConnection {
                                                    Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        //Servico Nuvem
+        GsonRequest request;
+        if (ServicoNuvemUtil.isUrlServicoNuvem(url)) {
+            request = new GsonRequest<>(POST, url, body, responseDataClass, headers, listener, errorListener);
+        } else {
+            request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        }
 
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
@@ -128,7 +142,13 @@ public class ServiceConnection {
                                                   Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        //Servico Nuvem
+        GsonRequest request;
+        if (ServicoNuvemUtil.isUrlServicoNuvem(url)) {
+            request = new GsonRequest<>(PUT, url, body, responseDataClass, headers, listener, errorListener);
+        } else {
+            request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        }
 
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
@@ -159,6 +179,15 @@ public class ServiceConnection {
     }
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
+
+        String novoCaminho = ServicoNuvemUtil.alteraCaminhoNuvem(path);
+        if (novoCaminho != null) {
+            ServicoNuvemUtil.apresentaCaminhoTQS(novoCaminho + fillParamToString(queryParams));
+            this.requestQueue = NuvemSingleton.getInstance().getRequestQueue();
+            return novoCaminho + fillParamToString(queryParams);
+        }
+
+        this.requestQueue = SilceSingleton.getInstance().getRequestQueue();
         return fillUrl(path) + fillParamStr(queryParams);
     }
 
@@ -211,6 +240,21 @@ public class ServiceConnection {
             }
         }
         return sb.toString();
+    }
+
+    private String fillParamToString(Map<String, String> queryParams) {
+        if ((queryParams == null) || (queryParams.isEmpty())) {
+            return "";
+        }
+        StringBuilder singleParam = new StringBuilder();
+        for (Map.Entry<String, String> param : queryParams.entrySet()) {
+            if (param.getValue() != null) {
+                //singleParam.append(param.getKey()).append("==").append(param.getValue()).append("&&");
+                singleParam.append(param.getKey()).append("=").append(param.getValue()).append("&");
+            }
+        }
+        //return "/?q=" + singleParam.toString();
+        return "/?" + singleParam.toString().substring(0, singleParam.toString().length()-1);
     }
 
 }

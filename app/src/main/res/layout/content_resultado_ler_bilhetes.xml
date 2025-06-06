@@ -338,7 +338,7 @@
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="14.2sp"
-                    android:fontFamily="@font/caixa_std_regular"
+                    android:fontFamily="@font/caixa_std_bold"
                     tools:text="@string/label_aposte_agora" />
             </LinearLayout>
 

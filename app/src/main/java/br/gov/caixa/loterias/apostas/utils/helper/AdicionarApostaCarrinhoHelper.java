@@ -129,6 +129,8 @@ public class AdicionarApostaCarrinhoHelper {
         activity = actv;
         ApostaBO apostaBO = ApostaBO.getInstance();
         AlertDialogUtils.show(activity);
+        //Servico Nuvem (obrigatorio)
+        apostaSurpresinha.setSurpresinha(true);
         apostaBO.adicionarSurpresinhaNoCarrinho(apostaSurpresinha, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {

@@ -7,10 +7,6 @@ import android.os.Build;
 import android.text.Html;
 import android.widget.Toast;
 
-import br.gov.caixa.loterias.apostas.controllers.*;
-import br.gov.caixa.loterias.apostas.utils.*;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -19,12 +15,28 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.AppIndisponivelActivity;
+import br.gov.caixa.loterias.apostas.controllers.CadastrarActivity;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
+import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
+import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
+import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
+import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+
 
 
 /**
@@ -98,38 +110,7 @@ public class  RedirectNetwork {
                 }
                 switch (response.statusCode){
                     case 401:
-                        DialogUtils.showDialogCustom(activity,
-                                activity.getString(R.string.label_atencao),
-                                activity.getString(R.string.confirmacao_continuar_experimente),
-                                activity.getString(R.string.continuar_experimente),
-                                activity.getString(R.string.efetuar_login),
-                                null, new OnDialog3ButtonsListener() {
-                                    @Override
-                                    public void leftButtom() {
-                                        if(activity instanceof MinhasApostasActivity
-                                            || activity instanceof ListaComprasActivity
-                                            || activity instanceof ConfiguracaoRapidaoActivity
-                                            || activity instanceof ListaRapidaoActivity
-                                            || activity instanceof FavoritasActivity
-                                            || activity instanceof CarrinhosFavoritosActivity
-                                            || activity instanceof MeusCartoesActivity
-                                            || activity instanceof DadosPessoaisActivity
-                                            || activity instanceof AutoavaliacaoFormActivity
-                                            || activity instanceof AutoSuspensaoActivity){
-                                            activity.finish();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void centerButtom() {
-                                        connectKeycloak(activity);
-                                    }
-
-                                    @Override
-                                    public void rightButtom() {
-
-                                    }
-                                }, true);
+                        connectKeycloak(activity);
                         return;
                     case 400:
                         treatNegotialErros(errorResponse, error, activity);
@@ -150,8 +131,6 @@ public class  RedirectNetwork {
             AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
         }
     }
-
-
 
     public static void checkRedirectCompraAsync(VolleyError error, final Activity activity){
         boolean lancouEvento = false;
@@ -289,7 +268,7 @@ public class  RedirectNetwork {
         }
     }
 
-    public static void trataBloqueioTotal(VolleyError error, final Activity activity) {
+    public static Boolean trataBloqueioTotal(VolleyError error, final Activity activity) {
         Gson gsonResponse = new Gson();
         ErrorResponse errorResponse = new ErrorResponse();
         String body = null;
@@ -301,27 +280,29 @@ public class  RedirectNetwork {
                     if (errorResponse.getRedirect() != null) {
                         if (errorResponse.getCodigo() != null && errorResponse.getCodigo().equals("002020")) {
                             ViewUtils.alertTitleButton(activity, R.string.label_atencao, errorResponse.getMensagem(),
-                                "Ok", dialogInterface -> {
-                                    AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_logout_sucesso));
-                                    new LoginSSOModel(activity).sair(() -> {});
-                                    DadosUsuarioBO.updateUsuarioLogado(activity, false);
-                                    activity.finish();
-                                    dialogInterface.dismiss();
-                                    return;
-                                }
+                                    "Ok", dialogInterface -> {
+                                        AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_logout_sucesso));
+                                        new LoginSSOModel(activity).sair(() -> {});
+                                        DadosUsuarioBO.updateUsuarioLogado(activity, false);
+                                        activity.finish();
+                                        dialogInterface.dismiss();
+                                        //return;
+                                    }
                             );
-                            return;
+                            return true;
                         }
                     }
                 }
             } catch (Exception e) {
             }
         }
-        activity.finish();
+        //activity.finish();
+        return false;
     }
 
     public static void trataBloqueioParcial(final Activity activity) {
         if (SessaoUsuario.getInstance().getSituacaoApostador() != null &&
+            SessaoUsuario.getInstance().getSituacaoApostador().getEnum() != null && //Servico Nuvem (Erro)
             SessaoUsuario.getInstance().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)) {
             ViewUtils.alertTitleButton(activity, R.string.label_atencao, activity.getString(R.string.usuario_bloqueio_parcial),
                     "Ok", dialogInterface -> {

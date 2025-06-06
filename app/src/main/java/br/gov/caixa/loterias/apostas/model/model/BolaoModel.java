@@ -134,6 +134,6 @@ public class BolaoModel extends AppModel{
 	}
 
 	public boolean isAcabouRegistros() {
-		return paginacaoFiltro.acabouRegistros();
+		return paginacaoFiltro != null && paginacaoFiltro.acabouRegistros();
 	}
 }

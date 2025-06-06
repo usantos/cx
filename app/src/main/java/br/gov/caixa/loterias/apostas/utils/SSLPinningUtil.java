@@ -3,7 +3,9 @@ package br.gov.caixa.loterias.apostas.utils;
 import android.content.Context;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.NoCache;
 import com.android.volley.toolbox.Volley;
 
 import java.io.InputStream;
@@ -19,6 +21,7 @@ import javax.net.ssl.X509TrustManager;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoMicroServicoSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoNovaAPISingleton;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoNuvemSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CertificadoSilceSingleton;
 
 public class SSLPinningUtil {
@@ -48,13 +51,18 @@ public class SSLPinningUtil {
 
     public static RequestQueue pinagemPRD(Context ctx, ServicoEnum servico) {
         InputStream inputStream = null;
-        if (servico == ServicoEnum.SILCE){
+        if (servico == ServicoEnum.NUVEM){
+            inputStream = ctx.getResources().openRawResource(CertificadoNuvemSingleton.getInstance().getCertificadoAtual());
+
+            return new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
+        } else if (servico == ServicoEnum.SILCE){
             inputStream = ctx.getResources().openRawResource(CertificadoSilceSingleton.getInstance().getCertificadoAtual());
         } else if (servico == ServicoEnum.MICROSERVICO){
             inputStream = ctx.getResources().openRawResource(CertificadoMicroServicoSingleton.getInstance().getCertificadoAtual());
-        } else {
-            inputStream = ctx.getResources().openRawResource(CertificadoNovaAPISingleton.getInstance().getCertificadoAtual());
         }
+//        else {
+//            inputStream = ctx.getResources().openRawResource(CertificadoNovaAPISingleton.getInstance().getCertificadoAtual());
+//        }
 
         RequestQueue requestQueue = null;
         try {

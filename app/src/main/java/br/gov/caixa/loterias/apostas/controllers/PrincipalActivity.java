@@ -89,6 +89,7 @@ import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -421,6 +422,11 @@ public class PrincipalActivity extends AppCompatActivity
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
+        //*** APAGAR ***
+        //EncerramentoUtil.mockApagaModalidadeNosParametroJogo(
+        //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
+        EncerramentoUtil.verificaSeCriaCardTemporario();
+
         montarCarrossel();
 
         trataPopupDeNotificacaoHandler();
@@ -738,9 +744,14 @@ public class PrincipalActivity extends AppCompatActivity
                 }
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 buttonHomeBet.setTag(adapterPosition);
-                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
-                        getResources().getString(R.string.espaco_em_branco) +
-                        ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+                if (modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima() == null ||
+                    modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima().compareTo(BigDecimal.ZERO) == 0) {
+                    buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
+                } else {
+                    buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
+                            getResources().getString(R.string.espaco_em_branco) +
+                            ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+                }
 
                 if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
                         temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
@@ -814,9 +825,26 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void nextActivity(Class clazz) {
+
         int              selecionada   = Integer.parseInt(buttonHomeBet.getTag().toString());
         ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
+
+        //
+        Long tempoExtraRestanteAposEncerrmento = EncerramentoUtil.
+                tempoExtraRestanteAposEncerramento(modalidade,
+                        modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso(),
+                        modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero());
+        if (tempoExtraRestanteAposEncerrmento != null) {
+             DialogUtils.showDialogCustom(this,
+                    getString(R.string.label_atencao),
+                     getString(R.string.ainda_da_tempo,
+                             modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getNumero()),
+                    null, getString(R.string.title_entendi),
+                    null, null, false);
+            return;
+       }
+
         if (modalidade == ModalidadeEnum.INSTANTANEA) {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_instantanea));
             Uri uri = Uri.parse(ENDERECO_INSTANTANEA);
