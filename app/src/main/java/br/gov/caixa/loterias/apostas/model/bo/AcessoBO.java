@@ -88,7 +88,7 @@ public class AcessoBO extends SilceBO {
         return pendingIntent;
     }
 
-    public void iniciarLogoutSSO(Activity activity){
+    public void iniciarLogoutSSO(Class classDestino, Activity activity){
         AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
                 Uri.parse(BuildConfigManager.getVariavel("URL_SSO_LOGOUT")),
                 Uri.parse(BuildConfigManager.getVariavel("URL_SSO_TOKEN"))
@@ -97,7 +97,7 @@ public class AcessoBO extends SilceBO {
         AuthorizationRequest.Builder builder = getAuthorizationRequestBuilder(activity, authorizationServiceConfiguration);
 
         AuthorizationRequest authorizationRequest = builder.build();
-        Intent intent = new Intent(activity, LoginActivity.class);
+        Intent intent = new Intent(activity, classDestino);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         PendingIntent pendingIntent = getPendingIntent(intent);

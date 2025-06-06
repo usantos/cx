@@ -116,6 +116,17 @@ public class DadosUsuarioBO extends SilceBO {
         }
     }
 
+    public static boolean temUsuarioBD() {
+        Context context = Aplicacao.application.getApplicationContext();
+        if (context != null) {
+            UsuarioCRUD crud = new UsuarioCRUD(context);
+            if (crud.lerUsuario() != null){
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static String getEncoded(String dado) {
         return Bin.fromUtf8(dado).toBase64();
     }

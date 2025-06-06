@@ -22,6 +22,7 @@ import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 
+import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
@@ -282,7 +283,7 @@ public class  RedirectNetwork {
                             ViewUtils.alertTitleButton(activity, R.string.label_atencao, errorResponse.getMensagem(),
                                     "Ok", dialogInterface -> {
                                         AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_logout_sucesso));
-                                        new LoginSSOModel(activity).sair(() -> {});
+                                        new LoginSSOModel(activity).sair(LoginActivity.class, () -> {});
                                         DadosUsuarioBO.updateUsuarioLogado(activity, false);
                                         activity.finish();
                                         dialogInterface.dismiss();

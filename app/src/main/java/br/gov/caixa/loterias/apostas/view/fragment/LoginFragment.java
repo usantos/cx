@@ -30,6 +30,7 @@ import java.util.concurrent.Executor;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
@@ -143,10 +144,16 @@ public class LoginFragment extends Fragment {
         buttonAposte.setOnClickListener(v1 -> {
             AppCenterManager.registraEvento("ENTROU_OPCAO_DEGUSTAR");
             KeycloakBO.getInstance().limparSessao(getActivity());
-
             DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
-            startActivity(new Intent(getContext(), PrincipalActivity.class));
-            getActivity().finish();
+            if(DadosUsuarioBO.temUsuarioBD() &&
+                    (!DadosUsuarioBO.obterNome().isEmpty() ||
+                     !DadosUsuarioBO.obterCpf().isEmpty())){
+                new LoginSSOModel(getActivity()).sair(PrincipalActivity.class, () -> {});
+            } else {
+                startActivity(new Intent(getContext(), PrincipalActivity.class));
+                getActivity().finish();
+            }
+
         });
 
         buttonLogin  = v.findViewById(R.id.buttonFacaLogin);
@@ -167,7 +174,7 @@ public class LoginFragment extends Fragment {
             AppCenterManager.registraEvento("ENTROU_LOGIN");
             AlertDialogUtils.show(getContext());
             BiometriaBO.getInstance().setIsTrocandoUsuario(true);
-            new LoginSSOModel(getActivity()).sair(() -> {});
+            new LoginSSOModel(getActivity()).sair(LoginActivity.class, () -> {});
         });
 
         buttonLogin.setOnClickListener(v12 -> {
