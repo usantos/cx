@@ -447,28 +447,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				}
 
 				if (!DadosUsuarioBO.checarUsuarioLogado(parentActivity)) {
-					DialogUtils.showDialogCustom(parentActivity,
-							getString(R.string.label_atencao),
-							getString(R.string.confirmacao_continuar_experimente),
-							getString(R.string.continuar_experimente),
-							getString(R.string.efetuar_login),
-							null, new OnDialog3ButtonsListener() {
-								@Override
-								public void leftButtom() {
-
-								}
-
-								@Override
-								public void centerButtom() {
-									RedirectNetwork.connectKeycloak(parentActivity);
-								}
-
-								@Override
-								public void rightButtom() {
-
-								}
-							}, true);
-
+					AlertDialogExperimenteLogarSingleton.show(getActivity(), false);
 				}
 			}
 			break;
@@ -484,8 +463,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 					if(parametroJogo.isTipoJogo(ModalidadeEnum.MAIS_MILIONARIA)){
 						aposta.setParametroTrevo(new ParametroTrevo());
-
-
 					}
 
 					if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {

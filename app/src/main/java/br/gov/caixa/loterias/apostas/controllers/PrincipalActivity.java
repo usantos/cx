@@ -34,7 +34,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
-import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.android.material.appbar.AppBarLayout;
@@ -799,28 +799,7 @@ public class PrincipalActivity extends AppCompatActivity
                 //startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
             }
         } else {
-            DialogUtils.showDialogCustom(PrincipalActivity.this,
-                    getString(R.string.label_atencao),
-                    getString(R.string.confirmacao_continuar_experimente),
-                    getString(R.string.continuar_experimente),
-                    getString(R.string.efetuar_login),
-                    null, new OnDialog3ButtonsListener() {
-                        @Override
-                        public void leftButtom() {
-
-                        }
-
-                        @Override
-                        public void centerButtom() {
-                            RedirectNetwork.connectKeycloak(PrincipalActivity.this);
-                        }
-
-                        @Override
-                        public void rightButtom() {
-
-                        }
-                    }, true);
-
+            AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false);
         }
     }
 
