@@ -89,6 +89,9 @@ public class NovaAPIBO extends BaseBO {
         if(page.getOrdenarPor() != 0) {
             queryParams.put("ordenacao", String.valueOf(page.getOrdenarPor()));
         }
+        if(page.getTipoAposta() != 0) {
+            queryParams.put("tipoAposta", String.valueOf(page.getTipoAposta()));
+        }
         //queryParams.put("situacao", String.valueOf(page.getSituacao()));
 
         //        queryParams.put("idsApostas", idsApostas);
