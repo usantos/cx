@@ -23,7 +23,7 @@ class ServerMethodsNuvem {
      //static final String CARRINHO_FAVORITO_TRANSFORMAR_NUVEM = "/logado/carrinhos/incluir-carrinho-favorito/{idCarrinhoFavorito}";
 
      static final String INCLUIR_APOSTA_CARRINHO_NUVEM_PATH = "/logado/carrinhos/incluir-aposta";
-//     static final String INCLUIR_SURPRESINHA_CARRINHO_NUVEM_PATH = "/logado/carrinhos/incluir-surpresinha";
+     static final String INCLUIR_SURPRESINHA_CARRINHO_NUVEM_PATH = "/logado/carrinhos/incluir-surpresinha";
 //     static final String BUSCA_CARRINHO_NUVEM_PATH = "/logado/carrinhos";
 
      private ServerMethodsNuvem(){}

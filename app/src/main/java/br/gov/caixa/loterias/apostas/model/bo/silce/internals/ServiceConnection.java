@@ -105,18 +105,6 @@ public class ServiceConnection {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
     }
 
-    public <T> GsonRequest buildGetRequestNuvem(String path, Map<String, String> queryParams,
-                                           Class<T> responseDataClass,
-                                           Response.Listener<T> listener,
-                                           Response.ErrorListener errorListener, Map<String, String> headers) {
-
-        String url = fillUrlWithQueryParamsNuvem(path, queryParams);
-        GsonRequest request = new GsonRequest<String, T>(GET, url, responseDataClass, headers, listener, errorListener);
-        request.setRetryPolicy(createRetryPolicy());
-        Log.i(TAG_REQUEST, getPath(path, queryParams));
-        return request;
-    }
-
     public <T> GsonRequest buildGetRequest(String path, Map<String, String> queryParams,
                                            Class<T> responseDataClass,
                                            Response.Listener<T> listener,
@@ -124,18 +112,6 @@ public class ServiceConnection {
 
         String url = fillUrlWithQueryParams(path, queryParams);
         GsonRequest request = new GsonRequest<String, T>(GET, url, responseDataClass, headers, listener, errorListener);
-        request.setRetryPolicy(createRetryPolicy());
-        Log.i(TAG_REQUEST, getPath(path, queryParams));
-        return request;
-    }
-
-    public <REQ, RSP> GsonRequest buildPostRequestNuvem(String path, Map<String, String> queryParams,
-                                                   REQ body, Class<RSP> responseDataClass,
-                                                   Response.Listener<RSP> listener,
-                                                   Response.ErrorListener errorListener, Map<String, String> headers) {
-
-        String url = fillUrlWithQueryParamsNuvem(path, queryParams);
-        GsonRequest request = new GsonRequest<>(POST, url, body, responseDataClass, headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
         return request;
@@ -159,30 +135,12 @@ public class ServiceConnection {
                                                   Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        //Servico Nuvem
-        GsonRequest request;
-        if (ServicoNuvemUtil.isUrlServicoNuvem(url)) {
-            request = new GsonRequest<>(PUT, url, body, responseDataClass, headers, listener, errorListener);
-        } else {
-            request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
-        }
-
+        GsonRequest request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
         return request;
     }
 
-    public <T> GsonRequest buildDeleteRequestNuvem(String path, Map<String, String> queryParams,
-                                              Class<T> responseDataClass,
-                                              Response.Listener<T> listener,
-                                              Response.ErrorListener errorListener, Map<String, String> headers) {
-
-        String url = fillUrlWithQueryParamsNuvem(path, queryParams);
-        GsonRequest request = new GsonRequest<String, T>(DELETE, url, responseDataClass, headers, listener, errorListener);
-        request.setRetryPolicy(createRetryPolicy());
-        Log.i(TAG_REQUEST, url);
-        return request;
-    }
     public <T> GsonRequest buildDeleteRequest(String path, Map<String, String> queryParams,
                                               Class<T> responseDataClass,
                                               Response.Listener<T> listener,
@@ -216,34 +174,33 @@ public class ServiceConnection {
     }
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
-
-//        String novoCaminho = ServicoNuvemUtil.alteraCaminhoNuvem(path);
-//        if (novoCaminho != null) {
-//            ServicoNuvemUtil.apresentaCaminhoTQS(novoCaminho + fillParamToString(queryParams));
-////            this.requestQueue = NuvemSingleton.getInstance().getRequestQueue();
-//            return novoCaminho + fillParamToString(queryParams);
-//        }
-//
-////        this.requestQueue = SilceSingleton.getInstance().getRequestQueue();
-        return fillUrl(path) + fillParamStr(queryParams);
+        if (ServicoNuvemUtil.isServicoNuvem()) {
+            return  fillUrlWithQueryParamsNuvem(path, queryParams);
+        } else {
+            return fillUrl(path) + fillParamStr(queryParams);
+        }
     }
 
     private <T> String prepareBody(T body) {
-        try {
-            String bodyString;
-            if (body == null) {
-                bodyString = "{}";
-            } else {
-                bodyString = (new Gson()).toJson(body);
-            }
+        if (ServicoNuvemUtil.isServicoNuvem()) {
+            return (String) body;
+        } else {
+            try {
+                String bodyString;
+                if (body == null) {
+                    bodyString = "{}";
+                } else {
+                    bodyString = (new Gson()).toJson(body);
+                }
 
-            Bin encryptedBody = silceCrypto.encryptBody(bodyString);
-            String bodyStr = encryptedBody.toIso8859_1()
-                    + "!#!#!" + KEY.toIso8859_1()
-                    + "!#!#!" + IV.toIso8859_1();
-            return Bin.fromIso8859_1(bodyStr).toBase64();
-        } catch (Exception e) {
-            throw new RuntimeException("Exceção ao preparar o body da requisição ao SILCE", e);
+                Bin encryptedBody = silceCrypto.encryptBody(bodyString);
+                String bodyStr = encryptedBody.toIso8859_1()
+                        + "!#!#!" + KEY.toIso8859_1()
+                        + "!#!#!" + IV.toIso8859_1();
+                return Bin.fromIso8859_1(bodyStr).toBase64();
+            } catch (Exception e) {
+                throw new RuntimeException("Exceção ao preparar o body da requisição ao SILCE", e);
+            }
         }
     }
 

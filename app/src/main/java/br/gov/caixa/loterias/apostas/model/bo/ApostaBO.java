@@ -587,6 +587,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void adicionarSurpresinhaNoCarrinho(final IncluirSurpresinhaDTO aposta,
                                                final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
