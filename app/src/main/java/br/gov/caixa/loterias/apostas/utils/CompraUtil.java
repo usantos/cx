@@ -37,7 +37,7 @@ public class CompraUtil {
         MeioPagamento meioPagamento = new MeioPagamento(meioPag, parametroPagamento);
 
         Context context = Aplicacao.application.getApplicationContext();
-        ApostaBO.getInstance().postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
+        ServicoFactoryUtil.getApostaService().postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
             @Override
             public void onResponse(CompraAsyncResponse response) {
                 if (verificaRedirect(response)) {

@@ -644,19 +644,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         }
     }
 
-    public void postRegistrarApostaCarrinho(final MeioPagamento meioPagamento, final RequestListener<RetornoPadraoResponse> listener) {
-        final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_PATH,
-
-                new LinkedHashMap<>(),
-                meioPagamento, RetornoPadraoResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                getHeaderToken());
-
-        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
-        getServiceConnection().request(request, listener);
-    }
-
+    @Override
     public void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<CompraAsyncResponse> listener) {
         final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_ASYNC_PATH,
                 new LinkedHashMap<>(),

@@ -26,15 +26,11 @@ import br.gov.caixa.loterias.apostas.controllers.ConfirmadoInclusaoCarrinhoActiv
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaService;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
@@ -56,7 +52,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
@@ -110,7 +106,7 @@ public class AdicionarApostaCarrinhoHelper {
         AlertDialogUtils.show(activity);
         //Servico Nuvem (obrigatorio)
         apostaSurpresinha.setSurpresinha(true);
-        getApostaService().adicionarSurpresinhaNoCarrinho(apostaSurpresinha, new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().adicionarSurpresinhaNoCarrinho(apostaSurpresinha, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 AlertDialogUtils.dismiss();
@@ -134,18 +130,10 @@ public class AdicionarApostaCarrinhoHelper {
         });
     }
 
-    private static ApostaService getApostaService() {
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        return apostaService;
-    }
+
 
     private static void postAdicionarApostaCarrinho() {
-        getApostaService().adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -184,7 +172,7 @@ public class AdicionarApostaCarrinhoHelper {
             indicadorSurpresinha.setDescricao("");
             aposta.setIndicadorSurpresinha(indicadorSurpresinha);
         }
-        getApostaService().adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse result) {
                 try {

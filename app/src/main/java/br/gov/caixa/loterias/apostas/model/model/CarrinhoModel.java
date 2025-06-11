@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
@@ -160,7 +161,7 @@ public class CarrinhoModel {
 	}
 
 	public void limparCarrinho(OnSilceListener listener) {
-		apostaBO.limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().limparCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse result) {
 				AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_limpou_carrinho_online));

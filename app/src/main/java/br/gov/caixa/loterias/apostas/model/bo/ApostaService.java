@@ -1,7 +1,9 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
+import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
@@ -31,4 +33,6 @@ public interface ApostaService {
                                                final RequestListener<CarrinhoDTOResponse> listener);
 
     void limparCarrinho(RequestListener<CarrinhoDTOResponse> listener);
+
+    void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<CompraAsyncResponse> listener);
 }
