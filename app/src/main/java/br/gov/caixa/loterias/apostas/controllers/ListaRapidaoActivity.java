@@ -32,6 +32,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewRapidaoAdapter;
@@ -127,7 +128,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
         }
 
         AlertDialogUtils.show(ListaRapidaoActivity.this);
-        ApostaBO.getInstance().validarCarrinho(new RequestListener<ResourceResponse>() {
+        ServicoFactoryUtil.getApostaService().validarCarrinho(new RequestListener<ResourceResponse>() {
             @Override
             public void onResponse(ResourceResponse result) {
                 AlertDialogUtils.dismiss();
@@ -159,7 +160,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
 
     private void callWebserviceRemoveItem(IdentificaoDeUmaApostaDas8Modalidades identificaoDeUmaApostaDas8Modalidades){
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().deleteApostaCarrinho(identificaoDeUmaApostaDas8Modalidades.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().deleteApostaCarrinho(identificaoDeUmaApostaDas8Modalidades.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();

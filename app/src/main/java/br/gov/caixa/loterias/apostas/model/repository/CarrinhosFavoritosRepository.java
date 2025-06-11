@@ -19,24 +19,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class CarrinhosFavoritosRepository extends AppRepository {
-    private ApostaBO apostaBO;
 
     public CarrinhosFavoritosRepository(Activity activity) {
         super(activity);
-        apostaBO = ApostaBO.getInstance();
     }
 
     public void buscaCarrinhosFavoritos(OnSilceListener<List<CarrinhoFavoritoDTO>> listener) {
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.buscaCarrinhosFavoritos(new RequestListener<ListCarrinhoFavoritoResponse>() {
+        ServicoFactoryUtil.getApostaService().buscaCarrinhosFavoritos(new RequestListener<ListCarrinhoFavoritoResponse>() {
             @Override
             public void onResponse(ListCarrinhoFavoritoResponse response) {
                 checkRedirect(response);
@@ -52,13 +45,7 @@ public class CarrinhosFavoritosRepository extends AppRepository {
     }
 
     public void excluiCarrinho(Long id, OnSilceListener<List<CarrinhoFavoritoDTO>> listener) {
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.deletaCarrinhoFavorito(id.toString(), new RequestListener<ListCarrinhoFavoritoResponse>() {
+        ServicoFactoryUtil.getApostaService().deletaCarrinhoFavorito(id.toString(), new RequestListener<ListCarrinhoFavoritoResponse>() {
             @Override
             public void onResponse(ListCarrinhoFavoritoResponse response) {
                 checkRedirect(response);
@@ -74,13 +61,7 @@ public class CarrinhosFavoritosRepository extends AppRepository {
     }
 
     public void buscaApostas(Long idCarrinho, OnSilceListener<List<ApostaCarrinhoFavoritoDTO>> listener) {
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.buscaApostasCarrinhoFavorito(idCarrinho, new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
+        ServicoFactoryUtil.getApostaService().buscaApostasCarrinhoFavorito(idCarrinho, new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
             @Override
             public void onResponse(ListApostaCarrinhoFavoritoResponse response) {
                 checkRedirect(response);
@@ -96,7 +77,7 @@ public class CarrinhosFavoritosRepository extends AppRepository {
     }
 
     public void transformaCarrinho(Long idCarrinho, int opcaoSelecionada, OnSilceListener<CarrinhoDTO> listener) {
-        apostaBO.transformarCarrinho(idCarrinho, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().transformarCarrinho(idCarrinho, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 checkRedirect(response);
@@ -117,13 +98,7 @@ public class CarrinhosFavoritosRepository extends AppRepository {
     }
 
     public void deletaApostaCarrinho(String idCarrinho, String idAposta, OnSilceListener<List<ApostaCarrinhoFavoritoDTO>> listener) {
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.deletaApostaCarrinhoFavorito(idCarrinho.toString(), idAposta.toString(), new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
+        ServicoFactoryUtil.getApostaService().deletaApostaCarrinhoFavorito(idCarrinho.toString(), idAposta.toString(), new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
             @Override
             public void onResponse(ListApostaCarrinhoFavoritoResponse response) {
                 checkRedirect(response);

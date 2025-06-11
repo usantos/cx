@@ -30,7 +30,7 @@ public class CompraPixUtil {
     private static void checkagemPix(Context context, GerarPixDTO pix, Long idCompraCarrinho, OnCompraAsync listener, OnVerificaPagamentoPix checagem) {
         if (isActivityRunning() && pix.estaNoPrazo()) {
             Utils.delay(SECONDS, () -> {
-                ApostaBO.getInstance().verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
+                ServicoFactoryUtil.getApostaService().verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
                     @Override
                     public void onResponse(CompraAsyncResponse result) {
                         listener.successCompra();

@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRapidaoRecyclerAdapter;
@@ -92,13 +93,7 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
         bloquearRequestScroll = false;
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -183,13 +178,7 @@ public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
             return;
         }
         progressLoadingMore.setVisibility(View.VISIBLE);
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.getApostasFavoritas(offsetItem ,new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().getApostasFavoritas(offsetItem ,new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);

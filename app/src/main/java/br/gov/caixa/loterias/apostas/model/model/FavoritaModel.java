@@ -30,6 +30,7 @@ import br.gov.caixa.loterias.apostas.model.repository.ApostaFavoritaRepository;
 import br.gov.caixa.loterias.apostas.model.repository.CarrinhoRepository;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.AdicionarCarrinhoFavoritasView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
@@ -209,7 +210,7 @@ public class FavoritaModel extends AppModel {
 			final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
 			final ApostaBO apostaBO = ApostaBO.getInstance();
 
-			apostaBO.postIncluirApostaFavoritaCarrinho(idApostaFavorita, tipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
+			ServicoFactoryUtil.getApostaService().postIncluirApostaFavoritaCarrinho(idApostaFavorita, tipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
 				@Override
 				public void onResponse(CarrinhoDTOResponse response) {
 					loadViewProgress.dismiss();

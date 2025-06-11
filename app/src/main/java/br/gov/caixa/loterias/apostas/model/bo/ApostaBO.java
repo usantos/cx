@@ -91,6 +91,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void transformarCarrinho(Long idCarrinhoFavorito, Integer opcaoSelecionada, RequestListener<CarrinhoDTOResponse> listener){
         String url = ServerMethods.CARRINHO_FAVORITO_TRANSFORMAR.replace("{idCarrinhoFavorito}", idCarrinhoFavorito.toString());
         LinkedHashMap<String, String> params = new LinkedHashMap<>();
@@ -137,12 +138,6 @@ public class ApostaBO extends SilceBO implements ApostaService {
                 getHeaderToken());
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
-    }
-
-
-    public void salvarCarrinhoFavorito(final String nomeCarrinho,
-                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
-        salvarCarrinhoFavorito(nomeCarrinho,null,true, listener);
     }
 
     @Override
@@ -504,6 +499,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita,
                                                   final Integer valorTipoConcurso,
                                                   final Integer qtdTeimosinhas,
@@ -562,6 +558,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         }
     }
 
+    @Override
     public void validarCarrinho(final RequestListener<ResourceResponse> listener) {
         final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.VALIDAR_CARRINHO,
                 new LinkedHashMap<>(),
@@ -573,7 +570,6 @@ public class ApostaBO extends SilceBO implements ApostaService {
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
-
 
     public void adicionarApostasNoCarrinho(final List<IdentificaoDeUmaApostaDas8Modalidades> apostas,
                                            final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
@@ -605,6 +601,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         }
     }
 
+    @Override
     public void buscaCarrinho(final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.BUSCA_CARRINHO_PATH,
@@ -619,6 +616,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         }
     }
 
+    @Override
     public void deleteComboCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = getServiceConnection().buildDeleteRequest(ServerMethods.DELETE_APOSTA_COMBO_CARRINHO_PATH + id,
@@ -631,6 +629,8 @@ public class ApostaBO extends SilceBO implements ApostaService {
             getServiceConnection().request(request, listener);
         }
     }
+
+    @Override
     public void  deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = getServiceConnection().buildDeleteRequest(ServerMethods.DELETE_APOSTA_CARRINHO_PATH + id,
@@ -657,6 +657,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void verificaCompraProcessamento(final Long idCompraCarrinho, final RequestListener<CompraAsyncResponse> listener) {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("idCompraCarrinho", String.valueOf(idCompraCarrinho));

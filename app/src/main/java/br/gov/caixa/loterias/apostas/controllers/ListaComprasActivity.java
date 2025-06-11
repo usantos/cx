@@ -50,6 +50,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -410,13 +411,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
         AlertDialogUtils.show(ListaComprasActivity.this);
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -441,13 +436,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
     private void favoritarCarrinho(String nome, Long idFavorito) {
         AlertDialogUtils.show(ListaComprasActivity.this);
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.salvarCarrinhoFavorito(nome, idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().salvarCarrinhoFavorito(nome, idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();

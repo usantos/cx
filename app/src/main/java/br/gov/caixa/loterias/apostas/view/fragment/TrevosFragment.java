@@ -49,6 +49,7 @@ import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
@@ -202,13 +203,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     }
 
     private void validarApostaFav(ApostaFavoritaDTO apostaFavorita) {
-        DadosCorporativoService dadosCorporativoService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            dadosCorporativoService = DadosCorporativosNuvemBO.getInstance();
-        } else {
-            dadosCorporativoService = DadosCorporativosBO.getInstance();
-        }
-        dadosCorporativoService.validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
+        ServicoFactoryUtil.getDadosCorporativoService().validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 salvarAposta(apostaFavorita);
@@ -236,13 +231,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         if(!AlertDialogUtils.isShow()){
             AlertDialogUtils.show(getContext());
         }
-        DadosCorporativoService dadosCorporativoSevice;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            dadosCorporativoSevice = DadosCorporativosNuvemBO.getInstance();
-        } else {
-            dadosCorporativoSevice = DadosCorporativosBO.getInstance();
-        }
-        dadosCorporativoSevice.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
+        ServicoFactoryUtil.getDadosCorporativoService().salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));

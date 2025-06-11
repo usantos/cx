@@ -75,6 +75,7 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
@@ -352,7 +353,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private void carrinhoApostasBtn() {
         AlertDialogUtils.show(this);
 
-        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 AlertDialogUtils.dismiss();

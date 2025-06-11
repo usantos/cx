@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
@@ -259,6 +260,116 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
 
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
+    }
+
+    @Override
+    public void validarCarrinho(final RequestListener<ResourceResponse> listener) {
+        final GsonRequest request = getServiceConnection().buildGetRequest(LOGADO + ServerMethods.VALIDAR_CARRINHO,
+                new LinkedHashMap<>(),
+                ResourceResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    @Override
+    public void verificaCompraProcessamento(final Long idCompraCarrinho, final RequestListener<CompraAsyncResponse> listener) {
+        Map<String, String> queryParams = new HashMap<>();
+        queryParams.put("idCompraCarrinho", String.valueOf(idCompraCarrinho));
+        final GsonRequest request = getServiceConnection().buildGetRequest(
+                LOGADO + ServerMethods.CARRINHO_VERIFICA_COMPRA_PROCESSAMENTO,
+                queryParams,
+                CompraAsyncResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    @Override
+    public void  deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
+        if (verificaAcessToken(listener)) {
+            final GsonRequest request = getServiceConnection().buildDeleteRequest(LOGADO + ServerMethods.DELETE_APOSTA_CARRINHO_PATH + id,
+                    new LinkedHashMap<>(),
+                    CarrinhoDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeaderToken());
+            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+            getServiceConnection().request(request, listener);
+        }
+    }
+
+    @Override
+    public void deleteComboCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
+        if (verificaAcessToken(listener)) {
+            final GsonRequest request = getServiceConnection().buildDeleteRequest(LOGADO + ServerMethods.DELETE_APOSTA_COMBO_CARRINHO_PATH + id,
+                    new LinkedHashMap<>(),
+                    CarrinhoDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeaderToken());
+            request.setErrorListener(interceptError(request, getHeader(), listener));
+            getServiceConnection().request(request, listener);
+        }
+    }
+
+    @Override
+    public void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita,
+                                                  final Integer valorTipoConcurso,
+                                                  final Integer qtdTeimosinhas,
+                                                  final RequestListener<CarrinhoDTOResponse> listener) {
+        String url = ServerMethods.CARRINHOS_INCLUIR_APOSTA_FAVORITA_PATH.replace("{idApostaFavorita}", String.valueOf( idApostaFavorita ));
+        url = url.replace("{valorTipoConcurso}", String.valueOf(valorTipoConcurso));
+        url = url.replace("{qtdTeimosinhas}", String.valueOf(qtdTeimosinhas));
+
+        final GsonRequest request = getServiceConnection().buildPostRequest( LOGADO + url,
+                new LinkedHashMap<>(),
+                "",
+                CarrinhoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    @Override
+    public void transformarCarrinho(Long idCarrinhoFavorito, Integer opcaoSelecionada, RequestListener<CarrinhoDTOResponse> listener){
+        String url = ServerMethods.CARRINHO_FAVORITO_TRANSFORMAR.replace("{idCarrinhoFavorito}", idCarrinhoFavorito.toString());
+        LinkedHashMap<String, String> params = new LinkedHashMap<>();
+        params.put("incluirEspecial", opcaoSelecionada.toString());
+
+        final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + url,
+                new LinkedHashMap<>(),
+                params,
+                CarrinhoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    @Override
+    public void buscaCarrinho(final RequestListener<CarrinhoDTOResponse> listener) {
+        if (verificaAcessToken(listener)) {
+            final GsonRequest request = getServiceConnection().buildGetRequest(LOGADO + ServerMethods.BUSCA_CARRINHO_PATH,
+                    new LinkedHashMap<>(),
+                    CarrinhoDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeaderToken());
+
+            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+            getServiceConnection().request(request, listener);
+        }
     }
 
     private <T> boolean verificaAcessToken(final RequestListener<T> listener) {

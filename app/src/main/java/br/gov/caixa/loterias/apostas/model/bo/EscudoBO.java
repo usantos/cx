@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTO
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoImagem;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
@@ -37,13 +38,7 @@ public class EscudoBO {
     public void carregaEscudos(Context context, OnEscudoListener escudoListener) {
         if (listEscudoImagem == null) {
             AlertDialogUtils.show(context);
-            ApostaService apostaService;
-            if (ServicoNuvemUtil.isServicoNuvem()) {
-                apostaService = ApostaNuvemBO.getInstance();
-            } else {
-                apostaService = ApostaBO.getInstance();
-            }
-            apostaService.getEscudosEquipes(new RequestListener<EscudoEquipeEsportivaDTOResponse>() {
+            ServicoFactoryUtil.getApostaService().getEscudosEquipes(new RequestListener<EscudoEquipeEsportivaDTOResponse>() {
                 @Override
                 public void onResponse(EscudoEquipeEsportivaDTOResponse response) {
                     if (response != null && response.getPayload() != null) {

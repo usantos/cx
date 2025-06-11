@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class ParametrosSimulacaoModel {
@@ -23,13 +24,7 @@ public class ParametrosSimulacaoModel {
 	}
 
 	public void buscaParametroSiumulacao(OnSilceListener<ParametrosSimulacao> listener) {
-		DadosCorporativoService dadosCorporativoSevice;
-		if (ServicoNuvemUtil.isServicoNuvem()) {
-			dadosCorporativoSevice = DadosCorporativosNuvemBO.getInstance();
-		} else {
-			dadosCorporativoSevice = DadosCorporativosBO.getInstance();
-		}
-		dadosCorporativoSevice.parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
+		ServicoFactoryUtil.getDadosCorporativoService().parametrosSimulacao(new RequestListener<ParametrosSimulacaoResponse>() {
 			@Override
 			public void onResponse(ParametrosSimulacaoResponse response) {
 				listener.success(response.getPayload());

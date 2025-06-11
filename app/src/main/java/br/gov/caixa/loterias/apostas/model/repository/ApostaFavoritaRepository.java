@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginad
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class ApostaFavoritaRepository extends AppRepository {
@@ -35,13 +36,7 @@ public class ApostaFavoritaRepository extends AppRepository {
 
     //region Methodes
     public void buscaApostas(int offsetItem, OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO> listener) {
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
                 checkRedirect(response);
@@ -57,7 +52,7 @@ public class ApostaFavoritaRepository extends AppRepository {
     }
 
     public void incluirApostaFavorita(Long idApostaFavorita, int valorTipoConcurso, int qtdTeimosinhas, OnSilceListener<CarrinhoDTO> listener) {
-        apostaBO.postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_efetuou_inclusao_favorito_no_carrinho));
@@ -92,13 +87,7 @@ public class ApostaFavoritaRepository extends AppRepository {
     }
 
     public void deletaAposta(Long id, OnSilceListener listener) {
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.deleteApostasFavoritas(id.toString(), new RequestListener<RetornoPadraoResponse>() {
+        ServicoFactoryUtil.getApostaService().deleteApostasFavoritas(id.toString(), new RequestListener<RetornoPadraoResponse>() {
             @Override
             public void onResponse(RetornoPadraoResponse response) {
                 AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_efetuou_exclusao_favorito));

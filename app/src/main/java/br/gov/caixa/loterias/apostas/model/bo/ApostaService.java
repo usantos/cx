@@ -10,6 +10,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 
@@ -35,4 +36,20 @@ public interface ApostaService {
     void limparCarrinho(RequestListener<CarrinhoDTOResponse> listener);
 
     void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<CompraAsyncResponse> listener);
+
+    void validarCarrinho(final RequestListener<ResourceResponse> listener);
+
+    void verificaCompraProcessamento(final Long idCompraCarrinho, final RequestListener<CompraAsyncResponse> listener);
+
+    void deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener);
+
+    void deleteComboCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener);
+
+    void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita, final Integer valorTipoConcurso,
+                                           final Integer qtdTeimosinhas, final RequestListener<CarrinhoDTOResponse> listener);
+
+    void transformarCarrinho(Long idCarrinhoFavorito, Integer opcaoSelecionada, RequestListener<CarrinhoDTOResponse> listener);
+
+    void buscaCarrinho(final RequestListener<CarrinhoDTOResponse> listener);
+
 }

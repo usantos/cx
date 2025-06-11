@@ -19,7 +19,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 public class CompraUtil {
 
     private static void verificaCompraProcessamento(final Context context, Long idCompraCarrinho, int posicao, final OnCompraAsync listener) {
-        ApostaBO.getInstance().verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
+        ServicoFactoryUtil.getApostaService().verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
             @Override
             public void onResponse(CompraAsyncResponse result) {
                 listener.successCompra();

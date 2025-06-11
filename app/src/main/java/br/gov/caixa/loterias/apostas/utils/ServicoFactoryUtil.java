@@ -3,17 +3,26 @@ package br.gov.caixa.loterias.apostas.utils;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaService;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativoService;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosNuvemBO;
 
 public class ServicoFactoryUtil {
 
 	public static ApostaService getApostaService() {
-		ApostaService apostaService;
 		if (ServicoNuvemUtil.isServicoNuvem()) {
-			apostaService = ApostaNuvemBO.getInstance();
+			return ApostaNuvemBO.getInstance();
 		} else {
-			apostaService = ApostaBO.getInstance();
+			return ApostaBO.getInstance();
 		}
-		return apostaService;
+	}
+
+	public static DadosCorporativoService getDadosCorporativoService() {
+		if (ServicoNuvemUtil.isServicoNuvem()) {
+			return DadosCorporativosNuvemBO.getInstance();
+		} else {
+			return DadosCorporativosBO.getInstance();
+		}
 	}
 
 }

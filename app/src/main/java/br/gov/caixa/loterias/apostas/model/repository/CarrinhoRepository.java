@@ -10,6 +10,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class CarrinhoRepository extends AppRepository {
     //region Constructors
@@ -20,7 +21,7 @@ public class CarrinhoRepository extends AppRepository {
 
     //region Methodes
     public void buscaCarrinho(OnSilceListener<CarrinhoDTO> listener) {
-        ApostaBO.getInstance().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 checkRedirect(response);

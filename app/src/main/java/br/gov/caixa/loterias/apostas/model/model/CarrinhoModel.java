@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
+import android.content.Intent;
 
 import com.android.volley.VolleyError;
 
@@ -11,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
+import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaService;
@@ -35,6 +38,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
@@ -43,16 +47,14 @@ public class CarrinhoModel {
 	private ParametrosSimulacaoModel model;
 
 	private Activity activity;
-	private ApostaBO apostaBO;
 
 	public CarrinhoModel(Activity activity) {
 		this.activity = activity;
 		this.model = new ParametrosSimulacaoModel(activity);
-		this.apostaBO = ApostaBO.getInstance();
 	}
 
 	public void buscaCarrinhoSilce(OnSilceListener listener) {
-		apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
 				AppCenterManager.registraEvento(Aplicacao.application.getApplicationContext().getResources()
@@ -85,7 +87,7 @@ public class CarrinhoModel {
 	}
 
 	public void validarCarrinho(OnSilceListener listener) {
-		apostaBO.validarCarrinho(new RequestListener<ResourceResponse>() {
+		ServicoFactoryUtil.getApostaService().validarCarrinho(new RequestListener<ResourceResponse>() {
 			@Override
 			public void onResponse(ResourceResponse result) {
 				listener.success(result.getPayload());
@@ -100,13 +102,7 @@ public class CarrinhoModel {
 	}
 
 	public void validarCarrinhoFavorito(String nome, OnSilceListener listener) {
-		ApostaService apostaService;
-		if (ServicoNuvemUtil.isServicoNuvem()) {
-			apostaService = ApostaNuvemBO.getInstance();
-		} else {
-			apostaService = ApostaBO.getInstance();
-		}
-		apostaService.validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoFavoritoDTOResponse result) {
 				if (result.getRedirect() != null) {
@@ -127,7 +123,7 @@ public class CarrinhoModel {
 	}
 
 	public void favoritarCarrinho(String nome, OnSilceListener listener) {
-		apostaBO.salvarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().salvarCarrinhoFavorito(nome, null, true, new RequestListener<CarrinhoFavoritoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoFavoritoDTOResponse result) {
 				if (result.getRedirect() != null) {
@@ -183,7 +179,7 @@ public class CarrinhoModel {
 	}
 
 	public void deletaComboCarrinho(ComboApostaDTO comboApostaDTO, OnSilceListener listener) {
-		apostaBO.deleteComboCarrinho(comboApostaDTO.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().deleteComboCarrinho(comboApostaDTO.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
 				AlertDialogUtils.dismiss();
@@ -204,7 +200,7 @@ public class CarrinhoModel {
 		});
 	}
 	public void deletaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades aposta, OnSilceListener listener) {
-		apostaBO.deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().deleteApostaCarrinho(aposta.getId().toString(), new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
 				AlertDialogUtils.dismiss();

@@ -44,6 +44,7 @@ import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
@@ -683,13 +684,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
         AlertDialogUtils.show(DetalhesComprasActivity.this);
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -713,13 +708,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void favoritarCarrinho(String nome, Long idFavorito) {
         AlertDialogUtils.show(DetalhesComprasActivity.this);
-        ApostaService apostaService;
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            apostaService = ApostaNuvemBO.getInstance();
-        } else {
-            apostaService = ApostaBO.getInstance();
-        }
-        apostaService.salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -745,7 +734,6 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void buscaModalidades() {
         AlertDialogUtils.show(DetalhesComprasActivity.this);
-
         new ModalidadeModel(DetalhesComprasActivity.this)
                 .buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
                     @Override

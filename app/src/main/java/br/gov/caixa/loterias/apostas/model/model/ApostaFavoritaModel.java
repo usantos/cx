@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class ApostaFavoritaModel {
@@ -24,13 +25,7 @@ public class ApostaFavoritaModel {
 	}
 
 	public void validaAposta(ApostaFavoritaDTO apostaFavoritaDTO, OnSilceListener<NetworkResponse> listener){
-		DadosCorporativoService dadosCorporativoService;
-		if (ServicoNuvemUtil.isServicoNuvem()) {
-			dadosCorporativoService = DadosCorporativosNuvemBO.getInstance();
-		} else {
-			dadosCorporativoService = DadosCorporativosBO.getInstance();
-		}
-		dadosCorporativoService.validarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
+		ServicoFactoryUtil.getDadosCorporativoService().validarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
 			@Override
 			public void onResponse(NetworkResponse result) {
 				listener.success(result);
@@ -43,13 +38,7 @@ public class ApostaFavoritaModel {
 	}
 
 	public void salvaAposta(ApostaFavoritaDTO apostaFavoritaDTO, OnSilceListener<NetworkResponse> listener){
-		DadosCorporativoService dadosCorporativoSevice;
-		if (ServicoNuvemUtil.isServicoNuvem()) {
-			dadosCorporativoSevice = DadosCorporativosNuvemBO.getInstance();
-		} else {
-			dadosCorporativoSevice = DadosCorporativosBO.getInstance();
-		}
-		dadosCorporativoSevice.salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
+		ServicoFactoryUtil.getDadosCorporativoService().salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
 			@Override
 			public void onResponse(NetworkResponse result) {
 				listener.success(result);
