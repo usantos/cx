@@ -60,7 +60,7 @@ public class DadosUsuarioNuvemBO extends NuvemBO implements DadosUsuarioService 
 
         AutenticacaoDTO autenticacaoDTO = new AutenticacaoDTO();
         autenticacaoDTO.setApostas(listaApostas);
-        final GsonRequest request = getServiceConnection().buildPostRequestNuvem(ServerMethodsNuvem.USUARIOS_VERIFICAR_CADASTRO_NUVEM_PATH, new LinkedHashMap<>(),
+        final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.USUARIOS_VERIFICAR_CADASTRO_PATH, new LinkedHashMap<>(),
                 autenticacaoDTO, UsuarioLogadoResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(), headers);

@@ -546,6 +546,7 @@ public class ApostaBO extends SilceBO implements ApostaService {
         }
     }
 
+    @Override
     public void limparCarrinho(RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.LIMPAR_CARRINHO_PATH,

@@ -6,6 +6,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.NuvemSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
 public abstract class NuvemBO extends BaseBO {
+    protected static final String PUBLICO = "/publico";
+    protected static final String LOGADO = "/logado";
 
     public NuvemBO() {
         super(NuvemSingleton.getInstance().getRequestQueue(),

@@ -29,4 +29,6 @@ public interface ApostaService {
 
     void adicionarSurpresinhaNoCarrinho(final IncluirSurpresinhaDTO aposta,
                                                final RequestListener<CarrinhoDTOResponse> listener);
+
+    void limparCarrinho(RequestListener<CarrinhoDTOResponse> listener);
 }

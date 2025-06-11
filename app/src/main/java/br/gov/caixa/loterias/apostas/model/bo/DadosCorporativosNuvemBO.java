@@ -29,7 +29,7 @@ public class DadosCorporativosNuvemBO extends NuvemBO implements DadosCorporativ
     @Override
     public void parametrosSimulacao(final RequestListener<ParametrosSimulacaoResponse> listener) {
         LinkedHashMap<String, String> header = getHeader();
-        GsonRequest request = getServiceConnection().buildGetRequestNuvem(ServerMethodsNuvem.PARAM_SIMULACAO_NUVEM_PATH,
+        GsonRequest request = getServiceConnection().buildGetRequest(PUBLICO + ServerMethods.PARAM_SIMULACAO_PATH,
                 new LinkedHashMap<>(),
                 ParametrosSimulacaoResponse.class,
                 listener.getSilceListener(),
@@ -42,7 +42,7 @@ public class DadosCorporativosNuvemBO extends NuvemBO implements DadosCorporativ
     @Override
     public void validarApostaFavorita(final ApostaFavoritaDTO aposta,
                                       final RequestListener<NetworkResponse> listener) {
-        GsonRequest request = getServiceConnection().buildPostRequestNuvem(ServerMethodsNuvem.VALIDAR_FAVORITA_NUVEM_PATH,
+        GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.VALIDAR_FAVORITA_PATH,
                 new LinkedHashMap<>(),
                 aposta, NetworkResponse.class,
                 listener.getSilceListener(),
@@ -55,7 +55,7 @@ public class DadosCorporativosNuvemBO extends NuvemBO implements DadosCorporativ
     @Override
     public void salvarApostaFavorita(final ApostaFavoritaDTO aposta,
                                      final RequestListener<NetworkResponse> listener) {
-        GsonRequest request = getServiceConnection().buildPostRequestNuvem(ServerMethodsNuvem.INCLUIR_FAVORITA_NUVEM_PATH,
+        GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.INCLUIR_FAVORITA_PATH,
                 new LinkedHashMap<>(),
                 aposta, NetworkResponse.class,
                 listener.getSilceListener(),

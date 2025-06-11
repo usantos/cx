@@ -36,7 +36,7 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
 
     @Override
     public void getEscudosEquipes(final RequestListener<EscudoEquipeEsportivaDTOResponse> listener) {
-        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethodsNuvem.EQUIPES_ESPORTIVAS_LISTA_EQUIPES_NUVEM_PATH,
+        final GsonRequest request = getServiceConnection().buildGetRequest(PUBLICO + ServerMethods.EQUIPES_ESPORTIVAS_LISTA_EQUIPES_PATH,
                 new LinkedHashMap<>(),
                 EscudoEquipeEsportivaDTOResponse.class,
                 listener.getSilceListener(),
@@ -48,7 +48,7 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
     }
     @Override
     public void getModalidades(final RequestListener<ModalidadeDTOResponse> listener) {
-        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethodsNuvem.MODALIDADES_NUVEM_PATH,
+        final GsonRequest request = getServiceConnection().buildGetRequest(PUBLICO + ServerMethods.MODALIDADES_PATH,
                 new LinkedHashMap<>(),
                 ModalidadeDTOResponse.class,
                 listener.getSilceListener(),
@@ -65,7 +65,7 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
         queryParams.put("offset", String.valueOf(offset));
         queryParams.put("size", String.valueOf("8"));
 
-        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethodsNuvem.APOSTAS_FAVORITAS_LISTA_UNICA_NUVEM_PATH,
+        final GsonRequest request = getServiceConnection().buildGetRequest(LOGADO + ServerMethods.APOSTAS_FAVORITAS_LISTA_UNICA_PATH,
                 queryParams,
                 ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse.class,
                 listener.getSilceListener(),
@@ -80,7 +80,7 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
     public void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         //queryParams.put("id", idAposta); //Ja passa na linha abaixo
-        final GsonRequest request = getServiceConnection().buildDeleteRequest(ServerMethodsNuvem.APOSTAS_FAVORITAS_NUVEM_PATH + idAposta,
+        final GsonRequest request = getServiceConnection().buildDeleteRequest(LOGADO + ServerMethods.APOSTAS_FAVORITAS_PATH + idAposta,
                 queryParams,
                 RetornoPadraoResponse.class,
                 listener.getSilceListener(),
@@ -93,7 +93,7 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
 
     @Override
     public void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoResponse> listener){
-        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethodsNuvem.CARRINHO_FAVORITO_BUSCAR_CARRINHOS_NUVEM,
+        final GsonRequest request = getServiceConnection().buildGetRequest(LOGADO + ServerMethods.CARRINHO_FAVORITO_BUSCAR_CARRINHOS,
 
                 new LinkedHashMap<>(),
                 ListCarrinhoFavoritoResponse.class,
@@ -109,7 +109,7 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
         LinkedHashMap<String, String> params = new LinkedHashMap<>();
         params.put("nome", nomeCarrinho);
 
-        final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethodsNuvem.CARRINHO_FAVORITO_VALIDAR_NOME_NUVEM,
+        final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.CARRINHO_FAVORITO_VALIDAR_NOME,
                 new LinkedHashMap<>(),
                 params, CarrinhoFavoritoDTOResponse.class,
                 listener.getSilceListener(),
@@ -122,7 +122,7 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
     @Override
     public void deletaCarrinhoFavorito(final String idCarrinho,
                                        final RequestListener<ListCarrinhoFavoritoResponse> listener) {
-        String url = ServerMethodsNuvem.CARRINHO_FAVORITO_DELETAR_CARRINHO_NUVEM.replace("{id}", idCarrinho);
+        String url = LOGADO + ServerMethods.CARRINHO_FAVORITO_DELETAR_CARRINHO.replace("{id}", idCarrinho);
 
         final GsonRequest request = getServiceConnection().buildDeleteRequest(url ,
                 new LinkedHashMap<>(),
@@ -136,7 +136,7 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
 
     @Override
     public void buscaApostasCarrinhoFavorito(Long idCarrinho,RequestListener<ListApostaCarrinhoFavoritoResponse> listener){
-        String url = ServerMethodsNuvem.CARRINHO_FAVORITO_BUSCA_APOSTAS_NUVEM.replace("{idCarrinho}", idCarrinho.toString());
+        String url = LOGADO + ServerMethods.CARRINHO_FAVORITO_BUSCA_APOSTAS.replace("{idCarrinho}", idCarrinho.toString());
         final GsonRequest request = getServiceConnection().buildGetRequest(url,
                 new LinkedHashMap<>(),
                 ListApostaCarrinhoFavoritoResponse.class,
@@ -151,7 +151,7 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
     public void deletaApostaCarrinhoFavorito(final String idCarrinho,
                                              final String idAposta,
                                              final RequestListener<ListApostaCarrinhoFavoritoResponse> listener) {
-        String url = ServerMethodsNuvem.CARRINHO_FAVORITO_DELETAR_APOSTA_NUVEM.replace("{id}", idCarrinho);
+        String url = LOGADO + ServerMethods.CARRINHO_FAVORITO_DELETAR_APOSTA.replace("{id}", idCarrinho);
         url = url.replace("{idAposta}",idAposta);
 
         final GsonRequest request = getServiceConnection().buildDeleteRequest(url ,
@@ -176,9 +176,9 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
 
         String url;
         if(idCompra != null){
-            url = ServerMethodsNuvem.CARRINHO_FAVORITO_SALVAR_COMPRA_NUVEM.replace("{idCompra}", idCompra);
+            url = LOGADO + ServerMethods.CARRINHO_FAVORITO_SALVAR_COMPRA.replace("{idCompra}", idCompra);
         } else {
-            url = ServerMethodsNuvem.CARRINHO_FAVORITO_SALVAR_NUVEM;
+            url = LOGADO + ServerMethods.CARRINHO_FAVORITO_SALVAR;
         }
 
         final GsonRequest request = getServiceConnection().buildPostRequest(url,
@@ -200,7 +200,7 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
             if (aposta != null) {
                 aposta.setId(null);
             }
-            final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethodsNuvem.INCLUIR_APOSTA_CARRINHO_NUVEM_PATH,
+            final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.INCLUIR_APOSTA_CARRINHO_PATH,
                     new LinkedHashMap<>(),
                     aposta,
                     CarrinhoDTOResponse.class,
@@ -217,9 +217,25 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaService {
     public void adicionarSurpresinhaNoCarrinho(final IncluirSurpresinhaDTO aposta,
                                                final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
-            final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethodsNuvem.INCLUIR_SURPRESINHA_CARRINHO_NUVEM_PATH,
+            final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.INCLUIR_SURPRESINHA_CARRINHO_PATH,
                     new LinkedHashMap<>(),
                     aposta,
+                    CarrinhoDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeaderToken());
+
+            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+            getServiceConnection().request(request, listener);
+        }
+    }
+
+    @Override
+    public void limparCarrinho(RequestListener<CarrinhoDTOResponse> listener) {
+        if (verificaAcessToken(listener)) {
+            final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.LIMPAR_CARRINHO_PATH,
+                    new LinkedHashMap<>(),
+                    "",                    //null-Não funcionava no Servico Nuvem, ""-funciona nos 2
                     CarrinhoDTOResponse.class,
                     listener.getSilceListener(),
                     listener.getErrorListener(),
