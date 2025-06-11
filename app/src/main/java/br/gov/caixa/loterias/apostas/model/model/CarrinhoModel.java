@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
-import android.content.Intent;
 
 import com.android.volley.VolleyError;
 
@@ -12,11 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
-import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaService;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -37,8 +31,6 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 

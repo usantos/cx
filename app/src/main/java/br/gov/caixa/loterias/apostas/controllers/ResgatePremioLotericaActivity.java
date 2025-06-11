@@ -9,9 +9,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import com.android.volley.VolleyError;
 import com.google.zxing.WriterException;
 
@@ -21,7 +18,7 @@ import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import br.gov.caixa.loterias.apostas.LoteriasAppActivity;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTO;
@@ -155,7 +152,7 @@ public class ResgatePremioLotericaActivity extends LoteriasAppActivity {
 
     protected void atualizaCodigoResgate() {
         AlertDialogUtils.show(this);
-        ApostaBO.getInstance().getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
+        ApostaSilceBO.getInstance().getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
             @Override
             public void onResponse(CodigoResgateDTOResponse response) {
                 AlertDialogUtils.dismiss();

@@ -5,16 +5,11 @@ import android.app.Activity;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativoService;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosNuvemBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class ApostaFavoritaModel {
 

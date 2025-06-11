@@ -5,7 +5,7 @@ import android.app.Activity;
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -19,15 +19,15 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 
 public class ApostaConfirmadaDetalheModel extends AppModel {
-	private ApostaBO apostaBO;
+	private ApostaSilceBO apostaSilceBO;
 
 	public ApostaConfirmadaDetalheModel(Activity activity) {
 		super(activity);
-		this.apostaBO = ApostaBO.getInstance();
+		this.apostaSilceBO = ApostaSilceBO.getInstance();
 	}
 
 	public  void buscaDetalhePremio(Long id, OnSilceListener<DetalhesPremioDTO> listener){
-		apostaBO.getApostaDetalhePremio(id, new RequestListener<DetalhesPremioDTOResponse>() {
+		apostaSilceBO.getApostaDetalhePremio(id, new RequestListener<DetalhesPremioDTOResponse>() {
 			@Override
 			public void onResponse(DetalhesPremioDTOResponse result) {
 				listener.success(result.getPayload());

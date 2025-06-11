@@ -20,7 +20,6 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;

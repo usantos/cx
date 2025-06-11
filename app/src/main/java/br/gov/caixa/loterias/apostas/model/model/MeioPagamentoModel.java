@@ -7,7 +7,7 @@ import com.android.volley.VolleyError;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -23,7 +23,7 @@ public class MeioPagamentoModel extends AppModel{
 	}
 
 	public void buscaMeiosPagamentos(OnSilceListener<List<MeioPagamentoDTO>> listener) {
-		DadosCorporativosBO service = DadosCorporativosBO.getInstance();
+		DadosCorporativosSilceBO service = DadosCorporativosSilceBO.getInstance();
 		service.buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
 			@Override
 			public void onResponse(MeiosPagamentosResponse result) {
@@ -44,7 +44,7 @@ public class MeioPagamentoModel extends AppModel{
 	}
 
 	public void buscaMeioPagamento(Long id, OnSilceListener<MeioPagamentoDTO> listener) {
-		DadosCorporativosBO service = DadosCorporativosBO.getInstance();
+		DadosCorporativosSilceBO service = DadosCorporativosSilceBO.getInstance();
 		service.buscaKeyMercadoPago(id, new RequestListener<MeioPagamentoResponse>() {
 			@Override
 			public void onResponse(MeioPagamentoResponse result) {

@@ -27,9 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativoService;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosNuvemBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -50,7 +47,6 @@ import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;

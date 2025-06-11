@@ -39,9 +39,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativoService;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosNuvemBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -64,7 +62,6 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
@@ -126,7 +123,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
     private Boolean isEspecial = false;
-    private DadosCorporativosBO dadosCorporativosBO;
+    private DadosCorporativosSilceBO dadosCorporativosSilceBO;
     private boolean isAvisou = false;
 
     //mocks
@@ -146,7 +143,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
     
     protected void init() {
-        dadosCorporativosBO = DadosCorporativosBO.getInstance();
+        dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
         preencheBarraTitulo();
         setViews();

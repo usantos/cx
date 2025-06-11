@@ -21,7 +21,6 @@ import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;

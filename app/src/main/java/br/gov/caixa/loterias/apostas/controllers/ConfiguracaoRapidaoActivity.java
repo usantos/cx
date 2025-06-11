@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -55,7 +55,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 							 FRAG_NUM_OBRG = 4,  FRAG_NUM_PROIB = 5,  FRAG_CONFIG = 6;//FRAG_APOSTAS_FAV = 6,   FRAG_CONFIG = 7;
 	private Button btnSalvar;
 	private AlertDialog loadViewProgress;
-	private ApostaBO apostaBO;
+	private ApostaSilceBO apostaSilceBO;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_configuracao_rapidao);
 		setViews();
 		setupToolbar();
-		apostaBO  = ApostaBO.getInstance();
+		apostaSilceBO = ApostaSilceBO.getInstance();
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	private void callWebservice() {
 		 loadViewProgress = LoadingViewLoterias.show(this);
 
-		apostaBO.getRapidoes(new RequestListener<RapidaoDTOResponse>() {
+		apostaSilceBO.getRapidoes(new RequestListener<RapidaoDTOResponse>() {
 			@Override
 			public void onResponse(final RapidaoDTOResponse response) {
 				loadViewProgress.dismiss();
@@ -228,7 +228,7 @@ public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
 	private void salvarConfiguracao(){
 		 loadViewProgress = LoadingViewLoterias.show(this);
 
-		 apostaBO.postRapidoes(RapidaoConfigSingleton.getInstance().getRapidaoConfig(), new RequestListener<RapidaoDTOResponse>() {
+		 apostaSilceBO.postRapidoes(RapidaoConfigSingleton.getInstance().getRapidaoConfig(), new RequestListener<RapidaoDTOResponse>() {
 			 @Override
 			 public void onResponse(RapidaoDTOResponse result) {
 				 loadViewProgress.dismiss();

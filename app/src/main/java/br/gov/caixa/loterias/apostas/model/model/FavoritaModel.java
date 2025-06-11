@@ -13,7 +13,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.custom.AdicionarCarrinhoFavoritasView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.holder.FavoritaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnEscolheModalidadeDialogListener;
@@ -208,7 +207,7 @@ public class FavoritaModel extends AppModel {
 		return (Integer tipoConcurso, int qtdTeimosinhas) -> {
 			Activity activity = ((FavoritasActivity) getActivity());
 			final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
-			final ApostaBO apostaBO = ApostaBO.getInstance();
+			final ApostaSilceBO apostaSilceBO = ApostaSilceBO.getInstance();
 
 			ServicoFactoryUtil.getApostaService().postIncluirApostaFavoritaCarrinho(idApostaFavorita, tipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
 				@Override

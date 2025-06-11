@@ -6,9 +6,6 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaService;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -20,7 +17,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavori
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class CarrinhosFavoritosRepository extends AppRepository {
 

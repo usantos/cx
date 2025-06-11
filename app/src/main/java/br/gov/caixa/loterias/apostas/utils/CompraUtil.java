@@ -10,7 +10,6 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bean.ParametrosPagamento;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;

@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -185,7 +185,7 @@ public class ListaRapidaoActivity extends AppCompatActivity {
     private void callWebservice(int quantidade) {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().gerarApostas(quantidade, new RequestListener<CarrinhoDTOResponse>() {
+        ApostaSilceBO.getInstance().gerarApostas(quantidade, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 loadViewProgress.dismiss();

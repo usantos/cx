@@ -45,7 +45,6 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -210,7 +209,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void verificaHorarioRepresa(){
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO.getInstance().validaRepresa(new RequestListener<RepresaResponse>() {
+        DadosCorporativosSilceBO.getInstance().validaRepresa(new RequestListener<RepresaResponse>() {
             @Override
             public void onResponse(RepresaResponse response) {
                 loadViewProgress.dismiss();
@@ -516,7 +515,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void buscaDetalhesCompras() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        ApostaSilceBO.getInstance().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 dataHoraServidor = response.getDataHoraServidor();

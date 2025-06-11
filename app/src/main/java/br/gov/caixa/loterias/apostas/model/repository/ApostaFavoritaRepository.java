@@ -5,9 +5,7 @@ import android.app.Activity;
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaService;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -20,17 +18,16 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 
 public class ApostaFavoritaRepository extends AppRepository {
     //region Variables
-    private ApostaBO apostaBO;
+    private ApostaSilceBO apostaSilceBO;
     //endregion
 
     //region Constructors
     public ApostaFavoritaRepository(Activity activity) {
         super(activity);
-        apostaBO = ApostaBO.getInstance();
+        apostaSilceBO = ApostaSilceBO.getInstance();
     }
     //endregion
 
@@ -71,7 +68,7 @@ public class ApostaFavoritaRepository extends AppRepository {
     }
 
     public void alteraAposta(ApostaFavoritaDTO aposta, OnSilceListener listener) {
-        apostaBO.postApostasFavoritas(aposta, new RequestListener<RetornoPadraoResponse>() {
+        apostaSilceBO.postApostasFavoritas(aposta, new RequestListener<RetornoPadraoResponse>() {
             @Override
             public void onResponse(RetornoPadraoResponse response) {
                 AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_efetuou_troca_do_nome_da_aposta_favorita));

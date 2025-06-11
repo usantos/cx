@@ -22,7 +22,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoavaliacaoPerguntaDTO;
@@ -220,7 +220,7 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
     private void buscaPerguntas() {
         AlertDialogUtils.show(this);
-        ApostaBO.getInstance().getAutoavaliacaoPerguntas(new RequestListener<AutoavaliacaoResponse>() {
+        ApostaSilceBO.getInstance().getAutoavaliacaoPerguntas(new RequestListener<AutoavaliacaoResponse>() {
             @Override
             public void onResponse(AutoavaliacaoResponse result) {
                 AlertDialogUtils.dismiss();
@@ -239,7 +239,7 @@ public class AutoavaliacaoFormActivity extends AppCompatActivity {
 
     private void salvarRespostas() {
         AlertDialogUtils.show(this);
-        ApostaBO.getInstance().postAutoavaliacaoRespostas(listResposta, new RequestListener<AutoavaliacaoResponse>() {
+        ApostaSilceBO.getInstance().postAutoavaliacaoRespostas(listResposta, new RequestListener<AutoavaliacaoResponse>() {
             @Override
             public void onResponse(AutoavaliacaoResponse result) {
                 AlertDialogUtils.dismiss();

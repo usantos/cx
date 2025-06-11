@@ -39,7 +39,7 @@ import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivit
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.NovaAPIBO;
@@ -94,7 +94,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private static final int PAGE_SIZE = 30;
     private static final String ARG_IS_HISTORICO = "ARG_IS_HISTORICO";
 
-    private ApostaBO apostaBO;
+    private ApostaSilceBO apostaSilceBO;
     private TextView dateResultTxt;
     private RecyclerView apostasConfirmadasRecyclerView;
     private View view;
@@ -139,7 +139,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         super.onCreate(savedInstanceState);
         model = new ApostaConfirmadaModel(getActivity());
         isOnCreate = true;
-        apostaBO = ApostaBO.getInstance();
+        apostaSilceBO = ApostaSilceBO.getInstance();
     }
 
     @Nullable
@@ -285,7 +285,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         apostasLoading.setVisibility(View.VISIBLE);
 
         if (isHistorico) {
-            apostaBO.getApostasHistorico(page, new RequestListener<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse>() {
+            apostaSilceBO.getApostasHistorico(page, new RequestListener<ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse>() {
                 @Override
                 public void onResponse(ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse result) {
                     onApostasConfirmadasResult(result.getPayload().getLista());
@@ -347,7 +347,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private void requesteApostasSilce() {
-        apostaBO.getApostasConfirmadasSilce(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
+        apostaSilceBO.getApostasConfirmadasSilce(page, new RequestListener<ResultadoPesquisaPaginadaDTOApostaDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaDTOResponse result) {
                 chamarApostaNovamente = false;
@@ -581,7 +581,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }else {
             if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA.getValor())) {
 
-                apostaBO.getApostaComprovantePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
+                apostaSilceBO.getApostaComprovantePremio(apostaDTO.getId(), new RequestListener<DetalhesPremioDTOResponse>() {
                     @Override
                     public void onResponse(DetalhesPremioDTOResponse result) {
                         AlertDialogUtils.dismiss();
@@ -596,7 +596,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     }
                 });
             } else {
-                apostaBO.getApostaDetalheComprovante(apostaDTO.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
+                apostaSilceBO.getApostaDetalheComprovante(apostaDTO.getId(), new RequestListener<ComprovanteApostaDTOResponse>() {
                     @Override
                     public void onResponse(ComprovanteApostaDTOResponse result) {
                         AlertDialogUtils.dismiss();
@@ -624,7 +624,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     private void handleOnItemClickHistorico(ApostaDTO apostaDTO) {
         if (Objects.equals(apostaDTO.getSituacao().getValor(), SituacaoResultadoBilheteEnum.PAGA_HISTORICO.getValor())) {
-            apostaBO.getApostaHistoricoComprovante(apostaDTO.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
+            apostaSilceBO.getApostaHistoricoComprovante(apostaDTO.getId(), new RequestListener<DetalhesHistoricoPremioDTOResponse>() {
                 @Override
                 public void onResponse(DetalhesHistoricoPremioDTOResponse result) {
                     Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,

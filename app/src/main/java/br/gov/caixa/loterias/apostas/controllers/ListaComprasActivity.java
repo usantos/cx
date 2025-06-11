@@ -28,10 +28,8 @@ import com.android.volley.VolleyError;
 import java.util.*;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaService;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -51,7 +49,6 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoNuvemUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroComprasAdapter;
@@ -106,7 +103,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void callWebServiceMesCompras(){
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
+        ApostaSilceBO.getInstance().getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
             @Override
             public void onResponse(MesAnoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -129,7 +126,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         bloquearRequestScroll = false;
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         try{
-            ApostaBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+            ApostaSilceBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
                 @Override
                 public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                     loadViewProgress.dismiss();
@@ -164,7 +161,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         try{
-            DadosCorporativosBO.getInstance().buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
+            DadosCorporativosSilceBO.getInstance().buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
                 @Override
                 public void onResponse(MeiosPagamentosResponse response) {
                     loadViewProgress.dismiss();
@@ -196,7 +193,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         try{
-            ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
+            ApostaSilceBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
                 @Override
                 public void onResponse(SituacoesCompraResponse response) {
                     loadViewProgress.dismiss();
@@ -548,7 +545,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void pegaApostasDaCompra() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        ApostaSilceBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -574,7 +571,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         }
         progressLoadingMore.setVisibility(View.VISIBLE);
 
-        ApostaBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE,idMeioPagamento, idSituacao, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        ApostaSilceBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE,idMeioPagamento, idSituacao, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);

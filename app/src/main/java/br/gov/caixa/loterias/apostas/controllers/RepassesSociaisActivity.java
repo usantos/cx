@@ -15,7 +15,7 @@ import java.math.BigInteger;
 import java.util.Calendar;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
@@ -59,7 +59,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
     private void callWebservice () {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
 
-        DadosCorporativosBO.getInstance().repasses(new RequestListener<RepassometroDTOResponse>() {
+        DadosCorporativosSilceBO.getInstance().repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 loadViewProgress.dismiss();

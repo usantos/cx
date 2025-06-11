@@ -61,7 +61,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -493,7 +493,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void callRepassesSociais() {
         AlertDialogUtils.show(PrincipalActivity.this);
-        DadosCorporativosBO.getInstance().repasses(new RequestListener<RepassometroDTOResponse>() {
+        DadosCorporativosSilceBO.getInstance().repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 repassesSociais = response.getPayload();

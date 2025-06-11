@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -84,7 +84,7 @@ public class BolaoRepository extends AppRepository {
     }
 
     public void buscaDetalhesBolao(String codigoBolao, OnSilceListener<DetalheBolaoDTO> listener){
-        ApostaBO.getInstance().getDetalhesBolao(codigoBolao, new RequestListener<DetalheBolaoResponse>() {
+        ApostaSilceBO.getInstance().getDetalhesBolao(codigoBolao, new RequestListener<DetalheBolaoResponse>() {
             @Override
             public void onResponse(DetalheBolaoResponse response) {
                 AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_carregou_detalhe_bolao));
@@ -103,7 +103,7 @@ public class BolaoRepository extends AppRepository {
     }
 
     private void buscaBoloes(FiltroMarketPlace filtro, OnSilceListener<ListaBolaoDTO> listener) {
-        ApostaBO.getInstance().getBoloesDisponiveis(filtro,
+        ApostaSilceBO.getInstance().getBoloesDisponiveis(filtro,
                 new RequestListener<BoloesDisponiveisResponse>() {
                     @Override
                     public void onResponse(BoloesDisponiveisResponse response) {

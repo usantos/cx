@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -25,12 +24,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
@@ -141,7 +139,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         loadViewProgress = LoadingViewLoterias.show(this);
 
 
-        ApostaBO.getInstance().postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoResponse>() {
+        ApostaSilceBO.getInstance().postResgatarAposta(idAposta, informacaoPagamentoDTO, new RequestListener<RetornoPadraoResponse>() {
             @Override
             public void onResponse(RetornoPadraoResponse response) {
                 loadViewProgress.dismiss();
@@ -181,7 +179,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
         } else {
             AlertDialogUtils.show(this);
             try {
-                ApostaBO.getInstance().baixarComprovantePremio(idAposta, new RequestListener<String>() {
+                ApostaSilceBO.getInstance().baixarComprovantePremio(idAposta, new RequestListener<String>() {
                     @Override
                     public void onResponse(String response) {
                         AlertDialogUtils.dismiss();
@@ -206,7 +204,7 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity
     public void redirectMp() {
 
         loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getMercadoPagoToken(emailPremioMercadoPagoEditText.getText().toString(), new RequestListener<StringResponse>() {
+        ApostaSilceBO.getInstance().getMercadoPagoToken(emailPremioMercadoPagoEditText.getText().toString(), new RequestListener<StringResponse>() {
             @Override
             public void onResponse(StringResponse result) {
                 loadViewProgress.dismiss();

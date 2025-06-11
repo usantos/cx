@@ -6,7 +6,6 @@ import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.CopiaColaPixActivity;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;

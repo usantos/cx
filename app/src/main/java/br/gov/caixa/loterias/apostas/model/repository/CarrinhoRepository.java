@@ -4,7 +4,6 @@ import android.app.Activity;
 
 import com.android.volley.VolleyError;
 
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
