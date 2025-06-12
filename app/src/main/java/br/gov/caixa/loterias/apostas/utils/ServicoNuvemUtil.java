@@ -115,8 +115,9 @@ public class ServicoNuvemUtil {
 		String cpfAcessam[] = ConfiguracaoAppSingleton.getInstance().getGrupoDeCpfsQueAcessamOServicoDaAzure().split(";");
 		int finalCpfAcessamNuvem = new Integer(cpfAcessam[0]);
 
-		//Apenas para teste
-		//finalCpfAcessamNuvem = 100;
+		if (finalCpfAcessamNuvem == 100) {
+			return true;
+		}
 
 		String cpf = DadosUsuarioBO.obterCpf();
 		if (cpf != null && !cpf.isEmpty() && cpf.length() >= 2) {
@@ -132,14 +133,6 @@ public class ServicoNuvemUtil {
 			if (Integer.parseInt(cpf.substring(cpf.length() -2)) < finalCpfAcessamNuvem) {
 				return true;
 			}
-		}
-
-		if (finalCpfAcessamNuvem == 0) {
-			return false;
-		}
-
-		if (finalCpfAcessamNuvem == 100) {
-			return true;
 		}
 
 		return false;
