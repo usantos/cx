@@ -38,7 +38,7 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 /**
  * Created by cedesbr450 on 07/12/17.
  */
-public class DadosUsuarioBO extends SilceBO implements DadosUsuarioService {
+public class DadosUsuarioBO extends SilceBO implements DadosUsuarioRepository {
     private static final String USUARIO_KEY = "USUARIO_KEY";
     private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
     private final static String LOGIN_SUCESSO = "LOGIN_SUCESSO";

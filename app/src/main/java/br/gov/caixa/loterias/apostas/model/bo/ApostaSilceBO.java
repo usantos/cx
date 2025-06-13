@@ -61,7 +61,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
-public class ApostaSilceBO extends SilceBO implements ApostaService {
+public class ApostaSilceBO extends SilceBO implements ApostaRepository {
     private static ApostaSilceBO instance;
 
     private ApostaSilceBO(){

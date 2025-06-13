@@ -23,7 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginad
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 
-public class ApostaNuvemBO extends NuvemBO implements ApostaService {
+public class ApostaNuvemBO extends NuvemBO implements ApostaRepository {
     private static ApostaNuvemBO instance;
 
     private ApostaNuvemBO(){

@@ -12,7 +12,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
  * Created by igorvilar on 10/11/17.
  */
 
-public class DadosCorporativosNuvemBO extends NuvemBO implements DadosCorporativoService {
+public class DadosCorporativosNuvemBO extends NuvemBO implements DadosCorporativoRepository {
     private static DadosCorporativosNuvemBO instance;
 
     private DadosCorporativosNuvemBO(){
