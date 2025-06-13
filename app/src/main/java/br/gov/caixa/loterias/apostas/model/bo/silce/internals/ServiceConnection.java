@@ -123,7 +123,7 @@ public class ServiceConnection {
                                                    Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        GsonRequest request = new GsonRequest<>(POST, url, prepareBody(body, path), responseDataClass, headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
         return request;
@@ -135,7 +135,7 @@ public class ServiceConnection {
                                                   Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        GsonRequest request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
+        GsonRequest request = new GsonRequest<>(PUT, url, prepareBody(body, path), responseDataClass, headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
         return request;
@@ -174,23 +174,23 @@ public class ServiceConnection {
     }
 
     private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
-        if (ServicoNuvemUtil.isServicoNuvem()) {
+        if (ServicoNuvemUtil.isEndpointNuvem(path)) {
             return  fillUrlWithQueryParamsNuvem(path, queryParams);
         } else {
             return fillUrl(path) + fillParamStr(queryParams);
         }
     }
 
-    private <T> String prepareBody(T body) {
-        if (ServicoNuvemUtil.isServicoNuvem()) {
-            return (String) body;
+    private <T> String prepareBody(T body, String endPoint) {
+        if (ServicoNuvemUtil.isEndpointNuvem(endPoint)) {
+            return new Gson().toJson(body);
         } else {
             try {
                 String bodyString;
                 if (body == null) {
                     bodyString = "{}";
                 } else {
-                    bodyString = (new Gson()).toJson(body);
+                    bodyString = new Gson().toJson(body);
                 }
 
                 Bin encryptedBody = silceCrypto.encryptBody(bodyString);

@@ -64,6 +64,7 @@ public class ServicoNuvemUtil {
 		if(isAmbienteTQS()) {
 			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
 			//baseUrlCarrinho = "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1"; //TQS
+							  //"https://silce.carrinho.tqs.caixa.gov.br/loterias-web/carrinho/v1"
 		} else {
 			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
 		}
@@ -107,6 +108,14 @@ public class ServicoNuvemUtil {
 		return null;
 	}
 
+	public static boolean isEndpointNuvem(String endpoint) {
+		if (endpoint.startsWith(PUBLICO) || endpoint.startsWith(LOGADO)) {
+			return true;
+		}
+		return false;
+	}
+
+
 	private static boolean isAmbienteTQS() {
 		return !BuildConfig.FLAVOR.equalsIgnoreCase("prd");
 	}
@@ -115,8 +124,9 @@ public class ServicoNuvemUtil {
 		String cpfAcessam[] = ConfiguracaoAppSingleton.getInstance().getGrupoDeCpfsQueAcessamOServicoDaAzure().split(";");
 		int finalCpfAcessamNuvem = new Integer(cpfAcessam[0]);
 
-		//Apenas para teste
-		//finalCpfAcessamNuvem = 100;
+		if (finalCpfAcessamNuvem == 100) {
+			return true;
+		}
 
 		String cpf = DadosUsuarioBO.obterCpf();
 		if (cpf != null && !cpf.isEmpty() && cpf.length() >= 2) {
@@ -132,14 +142,6 @@ public class ServicoNuvemUtil {
 			if (Integer.parseInt(cpf.substring(cpf.length() -2)) < finalCpfAcessamNuvem) {
 				return true;
 			}
-		}
-
-		if (finalCpfAcessamNuvem == 0) {
-			return false;
-		}
-
-		if (finalCpfAcessamNuvem == 100) {
-			return true;
 		}
 
 		return false;
@@ -173,26 +175,33 @@ public class ServicoNuvemUtil {
 		}
 	}
 
-	public static boolean isServicoNuvem() {
+	public static boolean isServicoNuvemAtivo() {
+		String baseUrlCarrinho;
 
-//		String baseUrlCarrinho;
-//
-//		if(isAmbienteTQS()) {
-//			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
-//			//baseUrlCarrinho = "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1"; //TQS
-//		} else {
-//			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
-//		}
-//
-//		if (baseUrlCarrinho == null || baseUrlCarrinho.isEmpty() || baseUrlCarrinho.equals("-")) {
-//			return false;
-//		}
-//
-//		if (cpfAcessamNuvem()) {
-//			return true;
-//		}
-//		return false;
+		if(isAmbienteTQS()) {
+			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
+			//baseUrlCarrinho = "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1"; //TQS
+		} else {
+			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
+		}
+
+		if (baseUrlCarrinho == null || baseUrlCarrinho.isEmpty() || baseUrlCarrinho.equals("-")) {
+			return false;
+		}
 
 		return true;
+	}
+
+	public static boolean isServicoNuvem() {
+
+		if (!isServicoNuvemAtivo()) {
+			return false;
+		}
+
+		if (cpfAcessamNuvem()) {
+			return true;
+		}
+
+		return false;
 	}
 }
