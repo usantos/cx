@@ -15,8 +15,8 @@ public class LoginSSOModel extends AppModel {
 		super(activity);
 	}
 
-	public void sair(SairListener listener) {
-		AcessoBO.getInstance().iniciarLogoutSSO(getActivity());
+	public void sair(Class classDestino, SairListener listener) {
+		AcessoBO.getInstance().iniciarLogoutSSO(classDestino, getActivity());
 		LoginSP.loginRealizado(false);
 
 		listener.onSaiu();

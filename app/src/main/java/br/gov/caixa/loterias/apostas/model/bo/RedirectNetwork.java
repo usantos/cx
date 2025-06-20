@@ -22,6 +22,7 @@ import br.gov.caixa.loterias.apostas.controllers.CarrinhosFavoritosActivity;
 import br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity;
 import br.gov.caixa.loterias.apostas.controllers.ListaComprasActivity;
 
+import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.controllers.SplashScreenActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
@@ -30,13 +31,14 @@ import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
+import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MercadoPagoUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-
 
 
 /**
@@ -110,7 +112,7 @@ public class  RedirectNetwork {
                 }
                 switch (response.statusCode){
                     case 401:
-                        connectKeycloak(activity);
+                        AlertDialogExperimenteLogarSingleton.show(activity, true);
                         return;
                     case 400:
                         treatNegotialErros(errorResponse, error, activity);
@@ -282,7 +284,7 @@ public class  RedirectNetwork {
                             ViewUtils.alertTitleButton(activity, R.string.label_atencao, errorResponse.getMensagem(),
                                     "Ok", dialogInterface -> {
                                         AppCenterManager.registraEvento(activity.getResources().getString(R.string.evento_logout_sucesso));
-                                        new LoginSSOModel(activity).sair(() -> {});
+                                        new LoginSSOModel(activity).sair(LoginActivity.class, () -> {});
                                         DadosUsuarioBO.updateUsuarioLogado(activity, false);
                                         activity.finish();
                                         dialogInterface.dismiss();
@@ -370,8 +372,14 @@ public class  RedirectNetwork {
     public static void connectKeycloak(final Activity activity) {
         if(AppUtils.isNetworkAvailable(activity)){
             AcessoBO.getInstance().iniciarLoginSSO(activity);
-        }else{
-            ViewUtils.alert(activity, activity.getString(R.string.seminternet));
+        } else {
+            try {
+                if (activity != null) {
+                    ViewUtils.alert(activity, activity.getString(R.string.seminternet));
+                } else if (Aplicacao.application.getBaseContext() != null){
+                    ViewUtils.alert(Aplicacao.application.getBaseContext(), Aplicacao.application.getBaseContext().getString(R.string.seminternet));
+                }
+            } catch (Exception e){}
         }
     }
 

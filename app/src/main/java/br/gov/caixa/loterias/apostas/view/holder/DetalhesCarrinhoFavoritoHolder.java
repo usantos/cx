@@ -58,7 +58,16 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 			if (apostaAtual.getModalidade().getValor() == 20) {
 				tvModalidade.setText(apostaAtual.getModalidade().getDescricao());
 				tvMesDaSorte.setVisibility(View.VISIBLE);
-				tvMesDaSorte.setText(apostaAtual.getTimeDoCoracao().getNome()  + "/" + apostaAtual.getTimeDoCoracao().getUf());
+				String timeDoCoracao = "";
+				if (apostaAtual.getTimeDoCoracao() != null) {
+					if (apostaAtual.getTimeDoCoracao().getNome() != null){
+						timeDoCoracao = apostaAtual.getTimeDoCoracao().getNome();
+					}
+					if (apostaAtual.getTimeDoCoracao().getUf() != null){
+						timeDoCoracao = timeDoCoracao + "/" + apostaAtual.getTimeDoCoracao().getUf();
+					}
+				}
+				tvMesDaSorte.setText(timeDoCoracao);
 				tvMesDaSorte.setTextColor(ContextCompat.getColor(ctx, estilo.getCorLetraLista()));
 			} else
 				tvModalidade.setText(apostaAtual.getModalidade().getDescricao().toLowerCase());
