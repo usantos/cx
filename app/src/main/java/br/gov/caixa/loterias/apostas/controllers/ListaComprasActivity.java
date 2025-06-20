@@ -68,6 +68,8 @@ public class ListaComprasActivity extends AppCompatActivity {
     int offsetItem = 0, mes, ano;
     Long  idMeioPagamento = null;
     Long  idSituacao = null;
+    private int situacaoPosicao = -1;
+    private int meioPagamentoPosicao = -1;
     private Dialog dialogFavoritar;
     private Dialog dialogFiltrar;
     private ExpandableListView listViewFiltro;
@@ -280,12 +282,21 @@ public class ListaComprasActivity extends AppCompatActivity {
         LinkedHashMap<Long, String> mapSituacoesCompra = new LinkedHashMap<>(montaMapSituacoesCompra(listaSituacoesCompraDTO));
         LinkedHashMap<Long, String> mapMeiosDePagamento = new LinkedHashMap<>(montaMapMeiosPagamento(listaMeioPagamentoDTO));
 
+        if(idSituacao != null && idSituacao > 0){
+            situacaoPosicao = new ArrayList<>(mapSituacoesCompra.keySet()).indexOf(idSituacao) + 1;
+        }
+        if(idMeioPagamento != null && idMeioPagamento > 0){
+            meioPagamentoPosicao = new ArrayList<>(mapMeiosDePagamento.keySet()).indexOf(idMeioPagamento) + 1;
+        }
+
         filtroAdapter = new FiltroComprasAdapter(this,
                 expandableListTitle,
                 expandableListDetail,
                 ListaComprasActivity.this,
                 mapSituacoesCompra,
-                mapMeiosDePagamento);
+                mapMeiosDePagamento,
+                idMeioPagamento,
+                idSituacao);
     }
     private void setaDialogFiltrar() {
         dialogFiltrar = new Dialog(this);
@@ -304,11 +315,26 @@ public class ListaComprasActivity extends AppCompatActivity {
         setFiltroAdapterDialogFiltrar();
 
         listViewFiltro.setAdapter(filtroAdapter);
+
+        if (idMeioPagamento != null && idMeioPagamento > 0) {
+            listViewFiltro.expandGroup(FiltroComprasAdapter.MEIO_PAGAMENTO);
+        }
+        if (idSituacao != null && idSituacao > 0) {
+            listViewFiltro.expandGroup(FiltroComprasAdapter.SITUACAO);
+
+            // Dar foco na opção selecionada de idSituacao, caso haja meio de pagamento selecionado
+            if (situacaoPosicao > 0 && meioPagamentoPosicao > 0) {
+                listViewFiltro.setSelectedChild(FiltroComprasAdapter.SITUACAO, situacaoPosicao, true);
+            }
+        }
+
         btnLimpar.setOnClickListener(v -> {
               filtroAdapter.limpaFiltros();
               if(isMeioPagamentoOuSituacaoAlterado()){
                   callWebServiceCompras();
               }
+              idMeioPagamento = filtroAdapter.getIdMeioPagamentoSelecionado();
+              idSituacao = filtroAdapter.getIdSituacaoSelecionada();
               dialogFiltrar.dismiss();
               tvBadge.setText(String.valueOf(0));
               tvBadge.setVisibility(View.GONE);
@@ -480,8 +506,15 @@ public class ListaComprasActivity extends AppCompatActivity {
         Spinner selecaoMesSpinner;
         selecaoMesSpinner = findViewById(R.id.SelecaoMesSpinner);
         List<String> list = new ArrayList<>();
-        for(MesAnoDTO item : listaMesAnoDTO){
+        int indicePadrao = 0;
+
+        for (int i = 0; i < listaMesAnoDTO.size(); i++) {
+            MesAnoDTO item = listaMesAnoDTO.get(i);
             list.add(item.getMes().getDescricao() + getResources().getString(R.string.de_espacado) + item.getAno());
+
+            if (item.getMes().getValor().intValue() == mes && item.getAno().intValue() == ano) {
+                indicePadrao = i;
+            }
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
 
@@ -489,6 +522,8 @@ public class ListaComprasActivity extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
         selecaoMesSpinner.setAdapter(dataAdapter);
+        selecaoMesSpinner.setSelection(indicePadrao);
+
         selecaoMesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // Your code here
