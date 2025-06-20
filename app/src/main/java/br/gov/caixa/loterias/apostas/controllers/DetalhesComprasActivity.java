@@ -434,8 +434,10 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
         setaIndicador.setVisibility(View.INVISIBLE);
 
         TextView dataCompra = findViewById(R.id.dataCompraTextView);
+        TextView horacompra = findViewById(R.id.horaCompraTextView);
         if(compraDTO.getDataFinalizacaoCompra() != null){
             dataCompra.setText("Data: " + compraDTO.getDataFinalizacaoCompra());
+            horacompra.setText(getString(R.string.hora_dois_pontos) + compraDTO.getHoraFinalizacaoCompra());
         }
 
         TextView textTotal = findViewById(R.id.txtTotal);

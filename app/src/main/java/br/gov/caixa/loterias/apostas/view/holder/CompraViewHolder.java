@@ -20,7 +20,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
 
 public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
-	protected TextView dataCompra;
+	protected TextView dataCompra, horaCompra;
 	protected TextView valorCompra;
 	protected TextView itemCompraOrdemTextView;
 	protected TextView textTotal;
@@ -39,6 +39,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 		itemCompraOrdemTextView = itemView.findViewById(R.id.situacaoCompraTextView);
 		textTotal = itemView.findViewById(R.id.txtTotal);
 		dataCompra = itemView.findViewById(R.id.dataCompraTextView);
+		horaCompra = itemView.findViewById(R.id.horaCompraTextView);
 		meioDePagamento = itemView.findViewById(R.id.meioDePagamento);
 		textContadorDown = itemView.findViewById(R.id.contadorDown);
 		valorCompra = itemView.findViewById(R.id.valorCompra);
@@ -73,6 +74,7 @@ public class CompraViewHolder extends LoteriasHolder<CompraDTO> {
 
 		if (item.getDataFinalizacaoCompra() != null) {
 			this.dataCompra.setText(context.getResources().getString(R.string.data_dois_pontos_espaco) + item.getDataFinalizacaoCompra());
+			this.horaCompra.setText(context.getString(R.string.hora_dois_pontos) + item.getHoraFinalizacaoCompra());
 		}
 
 		this.valorCompra.setText(ViewUtils.getMoedaFormat(item.getValorTotal()));

@@ -61,7 +61,7 @@
     <string name="verCarrinhoVazio">OK</string>
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="infoConcluaPagamentoBolao">Conclua o pagamento de suas \napostas dentro do prazo</string>
-    <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
+    <string name="tituloApostaFeita">Aposta inserida no \ncarrinho com sucesso.</string>
     <string name="tituloBolaoFeito">Bolão inserido no \ncarrinho com sucesso.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
@@ -1504,5 +1504,6 @@
     <string name="orientacoes_arrendondamento_bolao">Devido a regras de arredondamento, o valor cobrado pela Cota deste
         bolão poderá ser menor que o exibido.
     </string>
+    <string name="hora_dois_pontos">"Hora: "</string>
 
 </resources>
