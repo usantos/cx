@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
 import android.app.Activity;
 import android.graphics.drawable.GradientDrawable;
-import android.util.SparseArray;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,27 +10,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
-import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidadesAdapter.ModalidadeViewHolder> {
 
 	private List<ModalidadeDisponivelCota> listModalidadeDisponivel;
+	private List<ModalidadeDisponivelCota> listModalidadeComSemTodas;
+	private boolean todasModalidadesAtiva = false;
 	private OnItemClickListener listener;
 	private Activity activity;
 	private SparseBooleanArray itemClicked;
@@ -58,10 +56,12 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 
 	public ListaModalidadesAdapter(Activity activity,List<ModalidadeDisponivelCota> listModalidadeDisponivel, OnItemClickListener listener, int posicaoModalidadeSelecionada) {
 		this.listModalidadeDisponivel = listModalidadeDisponivel;
+		this.listModalidadeComSemTodas = new ArrayList<>(listModalidadeDisponivel);
 		this.listener = listener;
 		this.activity = activity;
 		this.posicaoModalidadeSelecionada = posicaoModalidadeSelecionada;
 		this.itemClicked = new SparseBooleanArray();
+		montaListComTodaModalidades(false);
 	}
 
 	@NonNull
@@ -73,7 +73,8 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 
 	@Override
 	public void onBindViewHolder(@NonNull ModalidadeViewHolder holder, int position) {
-		ModalidadeDisponivelCota itemModalidade = listModalidadeDisponivel.get(position);
+		//ModalidadeDisponivelCota itemModalidade = listModalidadeDisponivel.get(position);
+		ModalidadeDisponivelCota itemModalidade = listModalidadeComSemTodas.get(position);
 		ModalidadeEnum modalidade = itemModalidade.getModalidade();
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
 		boolean isEspecial;
@@ -90,43 +91,49 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 
 		if (itemClicked.get(position,false)) {
 			//Selecionado
-			if (isEspecial) {
-				holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(modalidade)));
-				holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
+			if (todasModalidadesAtiva && position == 0) {
+				mostraTodaModalidades(holder, true);
 			} else {
-				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, estilo.getCorClara()));
-				holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
+				if (isEspecial) {
+					holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(modalidade)));
+					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
+				} else {
+					holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, estilo.getCorClara()));
+					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
+				}
+				holder.imgTrevoMkp.setVisibility(View.VISIBLE);
+				holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
+				holder.textCenterFiltroModalidade.setVisibility(View.GONE);
+				holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(activity, estilo.getTrevoFundoEscuro()));
+				holder.textBottomFiltroModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro()));
+				GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(activity, R.drawable.custom_bottom_rouded);
+				backgroud.setColor(ContextCompat.getColor(activity, estilo.getCorEscura()));
+				holder.textBottomFiltroModalidade.setBackground(backgroud);
+				holder.imgCheckMkp.setImageDrawable(VectorUtils.getShape(R.drawable.check_mkp, estilo.getCorFonteFundoClaro()));
+				holder.imgCheckMkp.setVisibility(View.VISIBLE);
 			}
-			holder.imgTrevoMkp.setVisibility(View.VISIBLE);
-			holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
-			holder.textCenterFiltroModalidade.setVisibility(View.GONE);
-			holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(activity, estilo.getTrevoFundoEscuro()));
-			holder.textBottomFiltroModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro()));
-			GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(activity, R.drawable.custom_bottom_rouded);
-			backgroud.setColor(ContextCompat.getColor(activity, estilo.getCorEscura()));
-			holder.textBottomFiltroModalidade.setBackground(backgroud);
-			holder.imgCheckMkp.setImageDrawable(VectorUtils.getShape(R.drawable.check_mkp, estilo.getCorFonteFundoClaro()));
-			holder.imgCheckMkp.setVisibility(View.VISIBLE);
-
 		//Desselecionado
 		} else {
-
-			if (isEspecial) {
-				holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
+			if (todasModalidadesAtiva && position == 0) {
+				mostraTodaModalidades(holder, false);
 			} else {
-				holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
+				if (isEspecial) {
+					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
+				} else {
+					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
+				}
+				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, R.color.branco));
+				holder.imgCheckMkp.setVisibility(View.GONE);
+				holder.imgTrevoMkp.setVisibility(View.GONE);
+				holder.imgTrevoMkp.setVisibility(View.VISIBLE);
+				holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
+				holder.textCenterFiltroModalidade.setVisibility(View.GONE);
+				holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(activity, estilo.getTrevoFundoClaro()));
+				holder.textBottomFiltroModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro()));
+				GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(activity, R.drawable.custom_bottom_rouded);
+				backgroud.setColor(ContextCompat.getColor(activity, estilo.getCorEscura()));
+				holder.textBottomFiltroModalidade.setBackground(backgroud);
 			}
-			holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, R.color.branco));
-			holder.imgCheckMkp.setVisibility(View.GONE);
-			holder.imgTrevoMkp.setVisibility(View.GONE);
-			holder.imgTrevoMkp.setVisibility(View.VISIBLE);
-			holder.textBottomFiltroModalidade.setVisibility(View.VISIBLE);
-			holder.textCenterFiltroModalidade.setVisibility(View.GONE);
-			holder.imgTrevoMkp.setImageDrawable(ContextCompat.getDrawable(activity, estilo.getTrevoFundoClaro()));
-			holder.textBottomFiltroModalidade.setTextColor(ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro()));
-			GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(activity, R.drawable.custom_bottom_rouded);
-			backgroud.setColor(ContextCompat.getColor(activity, estilo.getCorEscura()));
-			holder.textBottomFiltroModalidade.setBackground(backgroud);
 		}
 
 		holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +156,8 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 
 	@Override
 	public int getItemCount() {
-		return listModalidadeDisponivel.size();
+		//return listModalidadeDisponivel.size();
+		return listModalidadeComSemTodas.size();
 	}
 
 	public void limpaItemClicked() {
@@ -173,6 +181,44 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 			return R.drawable.fundo_especial_mega_da_virada;
 		}
 		return R.color.branco;
+	}
+
+	private void mostraTodaModalidades(ModalidadeViewHolder holder, boolean selecionado) {
+		holder.textCenterFiltroModalidade.setVisibility(View.VISIBLE);
+		holder.textCenterFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, activity.getString(R.string.todas_modalidades)));
+
+		holder.imgTrevoMkp.setVisibility(View.GONE);
+		holder.textBottomFiltroModalidade.setVisibility(View.GONE);
+
+//		GradientDrawable backgroud = (GradientDrawable) ContextCompat.getDrawable(activity, R.drawable.custom_bottom_rouded);
+//		//backgroud.setColor(ContextCompat.getColor(activity, estilo.getCorEscura()));
+//		holder.textBottomFiltroModalidade.setBackground(backgroud);
+
+		if (selecionado) {
+			//posicaoModalidadeSelecionada = 0;
+
+			holder.imgCheckMkp.setImageDrawable(VectorUtils.getShape(R.drawable.check_mkp, R.color.blue_caixa));
+			holder.imgCheckMkp.setVisibility(View.VISIBLE);
+		} else {
+			holder.imgCheckMkp.setVisibility(View.GONE);
+		}
+	}
+	public void montaListComTodaModalidades(boolean todasModalidades) {
+		listModalidadeComSemTodas.clear();
+		listModalidadeComSemTodas.addAll(listModalidadeDisponivel);
+
+		todasModalidadesAtiva = false;
+
+		if (todasModalidades) {
+			todasModalidadesAtiva = true;
+			//Insere "Todas as Modalidades"
+			ModalidadeDisponivelCota modalidadeDisponivelTodas = new ModalidadeDisponivelCota();
+			ModalidadeEnum modalidadeTodas = ModalidadeEnum.BOLAO;
+			modalidadeDisponivelTodas.setModalidade(modalidadeTodas);
+			listModalidadeComSemTodas.add(0, modalidadeDisponivelTodas);
+		}
+
+		notifyDataSetChanged();
 	}
 
 }

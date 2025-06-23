@@ -362,6 +362,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
             editLoterica.setText(String.format("%s - %s", mioloCodigoLoterica(lotericaDTO.getCodigo()), lotericaDTO.getNomeFantasia().trim()));
             recyclerViewLoterica.setVisibility(View.GONE);
             selectLotericaDTO = lotericaDTO;
+            listaModalidadesAdapter.montaListComTodaModalidades(true);
         };
     }
 
@@ -543,6 +544,9 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
             excluirNumerosNaoQuero();
         }
         mostraOcultaNumerosQueroNaoQuero();
+        if(listaModalidadesAdapter != null) {
+            listaModalidadesAdapter.montaListComTodaModalidades(false);
+        }
     }
 
     private void filtraLoterica(String text) {
