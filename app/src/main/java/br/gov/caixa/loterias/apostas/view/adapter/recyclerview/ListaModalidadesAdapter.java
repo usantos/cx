@@ -30,6 +30,8 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 	private List<ModalidadeDisponivelCota> listModalidadeDisponivel;
 	private List<ModalidadeDisponivelCota> listModalidadeComSemTodas;
 	private boolean todasModalidadesAtiva = false;
+
+	private RecyclerView recyclerView;
 	private OnItemClickListener listener;
 	private Activity activity;
 	private SparseBooleanArray itemClicked;
@@ -54,14 +56,15 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 
 	}
 
-	public ListaModalidadesAdapter(Activity activity,List<ModalidadeDisponivelCota> listModalidadeDisponivel, OnItemClickListener listener, int posicaoModalidadeSelecionada) {
+	public ListaModalidadesAdapter(Activity activity,List<ModalidadeDisponivelCota> listModalidadeDisponivel, OnItemClickListener listener, int posicaoModalidadeSelecionada, boolean todasModalidadesAtiva) {
 		this.listModalidadeDisponivel = listModalidadeDisponivel;
 		this.listModalidadeComSemTodas = new ArrayList<>(listModalidadeDisponivel);
 		this.listener = listener;
 		this.activity = activity;
 		this.posicaoModalidadeSelecionada = posicaoModalidadeSelecionada;
+		this.todasModalidadesAtiva = todasModalidadesAtiva;
 		this.itemClicked = new SparseBooleanArray();
-		montaListComTodaModalidades(false);
+		montaListComTodaModalidades(todasModalidadesAtiva);
 	}
 
 	@NonNull
@@ -69,6 +72,12 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 	public ModalidadeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filtra_modalidade, parent, false);
 		return new ModalidadeViewHolder(view);
+	}
+
+	@Override
+	public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+		super.onAttachedToRecyclerView(recyclerView);
+		this.recyclerView = recyclerView;
 	}
 
 	@Override
@@ -140,14 +149,18 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 			@Override
 			public void onClick(View v) {
 				int adapterPosition = holder.getAbsoluteAdapterPosition();
-				if (adapterPosition == RecyclerView.NO_POSITION) return;;
+				if (adapterPosition == RecyclerView.NO_POSITION) return;
 				posicaoModalidadeSelecionada = adapterPosition;
 				itemClicked.clear();
 				itemClicked.put(posicaoModalidadeSelecionada, true);
 
 				notifyDataSetChanged();
 
-				listener.itemClick(holder, posicaoModalidadeSelecionada);
+				if (todasModalidadesAtiva) {
+					listener.itemClick(holder, posicaoModalidadeSelecionada-1);
+				} else {
+					listener.itemClick(holder, posicaoModalidadeSelecionada);
+				}
 			}
 		});
 
@@ -184,6 +197,8 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 	}
 
 	private void mostraTodaModalidades(ModalidadeViewHolder holder, boolean selecionado) {
+		holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, R.color.branco));
+
 		holder.textCenterFiltroModalidade.setVisibility(View.VISIBLE);
 		holder.textCenterFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, activity.getString(R.string.todas_modalidades)));
 
@@ -195,14 +210,13 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 //		holder.textBottomFiltroModalidade.setBackground(backgroud);
 
 		if (selecionado) {
-			//posicaoModalidadeSelecionada = 0;
-
 			holder.imgCheckMkp.setImageDrawable(VectorUtils.getShape(R.drawable.check_mkp, R.color.blue_caixa));
 			holder.imgCheckMkp.setVisibility(View.VISIBLE);
 		} else {
 			holder.imgCheckMkp.setVisibility(View.GONE);
 		}
 	}
+
 	public void montaListComTodaModalidades(boolean todasModalidades) {
 		listModalidadeComSemTodas.clear();
 		listModalidadeComSemTodas.addAll(listModalidadeDisponivel);
@@ -216,6 +230,21 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 			ModalidadeEnum modalidadeTodas = ModalidadeEnum.BOLAO;
 			modalidadeDisponivelTodas.setModalidade(modalidadeTodas);
 			listModalidadeComSemTodas.add(0, modalidadeDisponivelTodas);
+
+			notifyDataSetChanged();
+
+			//força o foco no item 0 Todas modalidades
+			posicaoModalidadeSelecionada = 0;
+			itemClicked.clear();
+			itemClicked.put(0, true);
+			if (recyclerView !=null && getItemCount()>0) {
+				recyclerView.post(() -> recyclerView.scrollToPosition(0));
+			}
+			if (todasModalidadesAtiva) {
+				listener.itemClick(recyclerView, posicaoModalidadeSelecionada-1);
+			} else {
+				listener.itemClick(recyclerView, posicaoModalidadeSelecionada);
+			}
 		}
 
 		notifyDataSetChanged();
