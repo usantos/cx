@@ -36,6 +36,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 	private Activity activity;
 	private SparseBooleanArray itemClicked;
 	private int posicaoModalidadeSelecionada;
+	private int posicaoModalidadeOriginal;
 
 	public static class ModalidadeViewHolder extends RecyclerView.ViewHolder {
 
@@ -62,6 +63,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		this.listener = listener;
 		this.activity = activity;
 		this.posicaoModalidadeSelecionada = posicaoModalidadeSelecionada;
+		this.posicaoModalidadeOriginal = posicaoModalidadeSelecionada;
 		this.todasModalidadesAtiva = todasModalidadesAtiva;
 		this.itemClicked = new SparseBooleanArray();
 		montaListComTodaModalidades(todasModalidadesAtiva);
@@ -151,6 +153,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 				int adapterPosition = holder.getAbsoluteAdapterPosition();
 				if (adapterPosition == RecyclerView.NO_POSITION) return;
 				posicaoModalidadeSelecionada = adapterPosition;
+				posicaoModalidadeOriginal = adapterPosition;
 				itemClicked.clear();
 				itemClicked.put(posicaoModalidadeSelecionada, true);
 
@@ -217,13 +220,17 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		}
 	}
 
-	public void montaListComTodaModalidades(boolean todasModalidades) {
+	public void montaListComTodaModalidades(boolean montaTodasModalidades) {
 		listModalidadeComSemTodas.clear();
 		listModalidadeComSemTodas.addAll(listModalidadeDisponivel);
 
 		todasModalidadesAtiva = false;
+		if (posicaoModalidadeOriginal == -1) {
+			posicaoModalidadeOriginal = 0;
+		}
+		posicaoModalidadeSelecionada = posicaoModalidadeOriginal;
 
-		if (todasModalidades) {
+		if (montaTodasModalidades) {
 			todasModalidadesAtiva = true;
 			//Insere "Todas as Modalidades"
 			ModalidadeDisponivelCota modalidadeDisponivelTodas = new ModalidadeDisponivelCota();
@@ -231,23 +238,21 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 			modalidadeDisponivelTodas.setModalidade(modalidadeTodas);
 			listModalidadeComSemTodas.add(0, modalidadeDisponivelTodas);
 
-			notifyDataSetChanged();
-
-			//força o foco no item 0 Todas modalidades
 			posicaoModalidadeSelecionada = 0;
-			itemClicked.clear();
-			itemClicked.put(0, true);
-			if (recyclerView !=null && getItemCount()>0) {
-				recyclerView.post(() -> recyclerView.scrollToPosition(0));
-			}
-			if (todasModalidadesAtiva) {
-				listener.itemClick(recyclerView, posicaoModalidadeSelecionada-1);
-			} else {
-				listener.itemClick(recyclerView, posicaoModalidadeSelecionada);
-			}
+		}
+
+		//força o foco no item 0 Todas modalidades
+		itemClicked.clear();
+		itemClicked.put(posicaoModalidadeSelecionada, true);
+		if (recyclerView !=null && getItemCount()>0) {
+			recyclerView.post(() -> recyclerView.scrollToPosition(posicaoModalidadeSelecionada));
+		}
+		if (todasModalidadesAtiva) {
+			listener.itemClick(recyclerView, posicaoModalidadeSelecionada-1);
+		} else {
+			listener.itemClick(recyclerView, posicaoModalidadeSelecionada);
 		}
 
 		notifyDataSetChanged();
 	}
-
 }
