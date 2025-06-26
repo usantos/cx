@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.apostas.view.holder;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
@@ -17,7 +17,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClickListener {
 
-	private TextView txtNumero;
+	private Button txtNumero;
 
 	private Context context;
 	private DezenaConfig config;
@@ -49,6 +49,10 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 
 		if (config.isClickable()){
 			txtNumero.setOnClickListener(this);
+			txtNumero.setClickable(true); //Acessibilidade
+		}else {
+			txtNumero.setOnClickListener(null);
+			txtNumero.setClickable(false); //Acessibilidade
 		}
 
 	}
