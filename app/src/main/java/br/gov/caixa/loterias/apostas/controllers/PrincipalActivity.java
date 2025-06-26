@@ -1000,7 +1000,8 @@ public class PrincipalActivity extends AppCompatActivity
     private void trataMenuJogoResponsavel(int itemPosition) {
         switch (itemPosition) {
             case 0:
-                startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                //startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                DialogUtils.modalJogoresponsavel(PrincipalActivity.this);
                 break;
             case 1:
                 startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));

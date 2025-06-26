@@ -410,4 +410,38 @@ public class DialogUtils {
 
         dialog.show();
     }
+
+    public static void modalJogoresponsavel(Activity ctx) {
+        // custom dialog
+        final Dialog dialog = new Dialog(ctx);
+        dialog.setContentView(R.layout.custom_dialog_padrao);
+
+        TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
+        tituloDialog.setText(ctx.getResources().getString(R.string.nao_sei_cep));
+        TextView descricaoView= dialog.findViewById(R.id.descricaoDialog);
+
+        descricaoView.setText(R.string.voce_sera_redirecionado_para_o_site_jogo_responsavel);
+
+        Button dialogButtonConfirmar = dialog.findViewById(R.id.rightButton);
+        dialogButtonConfirmar.setBackground(ctx.getDrawable(R.drawable.button_rounded_verdeazul));
+        dialogButtonConfirmar.setTextColor(ctx.getResources().getColor(R.color.branco));
+        dialogButtonConfirmar.setText(R.string.confirmar);
+
+        Button dialogButtonCancelar = dialog.findViewById(R.id.leftButton);
+        dialogButtonCancelar.setBackground(ctx.getDrawable(R.drawable.background_border_verde));
+        dialogButtonCancelar.setTextColor(ctx.getResources().getColor(R.color.verdeazul));
+        dialogButtonCancelar.setText(R.string.cancelar);
+
+
+        dialogButtonConfirmar.setOnClickListener(v -> {
+            Utils.abreUrl(ctx, R.string.url_jogo_responsavel);
+            dialog.dismiss();
+        });
+
+        dialogButtonCancelar.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
+    }
 }
