@@ -417,7 +417,7 @@ public class DialogUtils {
         dialog.setContentView(R.layout.custom_dialog_padrao);
 
         TextView tituloDialog = dialog.findViewById(R.id.tituloDialogCustom);
-        tituloDialog.setText(ctx.getResources().getString(R.string.nao_sei_cep));
+        tituloDialog.setText(ctx.getResources().getString(R.string.jogo_responsavel));
         TextView descricaoView= dialog.findViewById(R.id.descricaoDialog);
 
         descricaoView.setText(R.string.voce_sera_redirecionado_para_o_site_jogo_responsavel);
