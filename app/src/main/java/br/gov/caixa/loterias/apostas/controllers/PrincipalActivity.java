@@ -1071,7 +1071,8 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void redirecionaJogoResponsavel(){
-        startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+        //startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+        DialogUtils.modalJogoresponsavel(PrincipalActivity.this);
     }
     private void redirecionaMsgDisque180(){
         boolean installed = isAppInstalled("com.whatsapp");
