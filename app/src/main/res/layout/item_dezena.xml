@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Button
+    <ToggleButton
         android:id="@+id/tv_item_numeto"
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -14,8 +14,8 @@
         android:layout_margin="8dp"
         android:fontFamily="@font/caixa_std_bold"
         android:background="@drawable/ic_item_dezena"
-        android:importantForAccessibility="yes"
         android:focusable="true"
+        android:importantForAccessibility="yes"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
