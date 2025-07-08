@@ -119,10 +119,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".controllers.JogoResponsavelActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.JogoResponsavel" />
-        <activity
             android:name=".controllers.AutoavaliacaoStartActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
