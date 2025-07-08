@@ -213,9 +213,13 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 //		holder.textBottomFiltroModalidade.setBackground(backgroud);
 
 		if (selecionado) {
-			holder.imgCheckMkp.setImageDrawable(VectorUtils.getShape(R.drawable.check_mkp, R.color.blue_caixa));
+			holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, R.color.blue_caixa));
+			holder.textCenterFiltroModalidade.setTextColor(ContextCompat.getColor(activity, R.color.branco));
+			holder.imgCheckMkp.setImageDrawable(VectorUtils.getShape(R.drawable.check_mkp, R.color.branco));
 			holder.imgCheckMkp.setVisibility(View.VISIBLE);
 		} else {
+			holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, R.color.branco));
+			holder.textCenterFiltroModalidade.setTextColor(ContextCompat.getColor(activity, R.color.blue_caixa));
 			holder.imgCheckMkp.setVisibility(View.GONE);
 		}
 	}
