@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import br.gov.caixa.loterias.apostas.utils.*;
@@ -130,7 +130,7 @@ public class FormaPagamentoActivity extends AppCompatActivity {
 	}
 	private void verificaHorarioRepresa(){
 		final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-		DadosCorporativosBO.getInstance().validaRepresa(new RequestListener<RepresaResponse>() {
+		DadosCorporativosSilceBO.getInstance().validaRepresa(new RequestListener<RepresaResponse>() {
 			@Override
 			public void onResponse(RepresaResponse response) {
 				loadViewProgress.dismiss();

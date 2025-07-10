@@ -20,7 +20,6 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -29,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnSomadorListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnVaiParaCarrinhoListener;
@@ -155,7 +155,7 @@ public class SomadorCarrinhoFragment extends Fragment {
 	}
 
 	private void carregaCarrinho() {
-		ApostaBO.getInstance().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
 				AppCenterManager.registraEvento(context.getResources().getString(R.string.evento_entrou_carrinho_online));

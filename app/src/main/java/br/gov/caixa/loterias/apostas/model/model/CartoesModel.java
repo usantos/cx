@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MercadoPagoConnection;
 import br.gov.caixa.loterias.apostas.model.bo.RecargaPayConnection;
@@ -231,7 +231,7 @@ public class CartoesModel extends AppModel {
 	}
 
 	public void recuperaTokenApostadorRecargaPay(OnSilceListener<String> listener) {
-		ApostaBO.getInstance().getRecargaPayToken(new RequestListener<StringResponse>() {
+		ApostaSilceBO.getInstance().getRecargaPayToken(new RequestListener<StringResponse>() {
 			@Override
 			public void onResponse(StringResponse result) {
 				if (result.getRedirect() != null){

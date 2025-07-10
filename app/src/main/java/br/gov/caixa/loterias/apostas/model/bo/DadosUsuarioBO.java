@@ -38,7 +38,7 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 /**
  * Created by cedesbr450 on 07/12/17.
  */
-public class DadosUsuarioBO extends SilceBO {
+public class DadosUsuarioBO extends SilceBO implements DadosUsuarioRepository {
     private static final String USUARIO_KEY = "USUARIO_KEY";
     private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
     private final static String LOGIN_SUCESSO = "LOGIN_SUCESSO";
@@ -273,6 +273,7 @@ public class DadosUsuarioBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void postVerificarCadastro(final List<IdentificaoDeUmaApostaDas8Modalidades> listaApostas, final RequestListener<UsuarioLogadoResponse> listener) {
         LinkedHashMap<String, String> headers = new LinkedHashMap<>();
         headers.put("Authorization", "Bearer " + KeycloakBO.getInstance().getAccessToken());

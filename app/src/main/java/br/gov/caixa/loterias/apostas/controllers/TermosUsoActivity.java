@@ -24,7 +24,7 @@ import com.android.volley.VolleyError;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -130,7 +130,7 @@ public class TermosUsoActivity extends AppCompatActivity {
         buttonTermoAceite.setOnClickListener(view -> {
             if (selcioneAceiteTermoUso.isChecked()){
                 AlertDialogUtils.show(TermosUsoActivity.this);
-                DadosCorporativosBO.getInstance().aceiteTermo(new RequestListener<ResourceResponse>() {
+                DadosCorporativosSilceBO.getInstance().aceiteTermo(new RequestListener<ResourceResponse>() {
                     @Override
                     public void onResponse(ResourceResponse response) {
                         AlertDialogUtils.dismiss();
@@ -214,7 +214,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void getTermo() {
         AlertDialogUtils.show(this);
-        DadosCorporativosBO.getInstance().termo(new RequestListener<TermoDeUsoDTOResponse>() {
+        DadosCorporativosSilceBO.getInstance().termo(new RequestListener<TermoDeUsoDTOResponse>() {
             @Override
             public void onResponse(TermoDeUsoDTOResponse response) {
                 AlertDialogUtils.dismiss();
@@ -280,7 +280,7 @@ public class TermosUsoActivity extends AppCompatActivity {
 
     private void verificaTermoAceito() {
         AlertDialogUtils.show(this);
-        DadosCorporativosBO.getInstance().validaTermoAceito(new RequestListener<ResourceResponse>() {
+        DadosCorporativosSilceBO.getInstance().validaTermoAceito(new RequestListener<ResourceResponse>() {
 
             @Override
             public void onResponse(ResourceResponse result) {
@@ -335,7 +335,7 @@ public class TermosUsoActivity extends AppCompatActivity {
     private void initReciclerViewDuvidas() {
         if (secaoDuvidas == null) {
             AlertDialogUtils.show(this);
-            DadosCorporativosBO.getInstance().secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
+            DadosCorporativosSilceBO.getInstance().secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
                 @Override
                 public void onResponse(ListSecaoDTOResponse response) {
                     AlertDialogUtils.dismiss();

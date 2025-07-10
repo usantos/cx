@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.ResgatePixActivity;
 import br.gov.caixa.loterias.apostas.model.bean.OpcaoResgatePremio;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
@@ -179,7 +179,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
     protected void apresentaOrientacoesResgate(Boolean isLoterica) {
         alertDialog = LoadingViewLoterias.show(getContext());
-        ApostaBO.getInstance().getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
+        ApostaSilceBO.getInstance().getApostaGerarCodigoResgate(detalhesPremioDTO.getAposta().getId(), new RequestListener<CodigoResgateDTOResponse>() {
             @Override
             public void onResponse(CodigoResgateDTOResponse result) {
                 alertDialog.dismiss();

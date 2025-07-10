@@ -21,7 +21,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -41,7 +40,7 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -75,11 +74,11 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHandler;
 import br.gov.caixa.loterias.apostas.utils.helper.ConferirResultadoHelper;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaNumeroDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaPartidaDetalhesFragment;
@@ -103,7 +102,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     public static final String ARG_SITUACAO = "ARG_SITUACAO";
 
     private ApostaFavoritaModel model;
-    private ApostaBO apostaBO;
+    private ApostaSilceBO apostaSilceBO;
 
     private ComprovanteApostaDTO comprovanteApostaDTO;
     private DetalhesPremioDTO detalhesPremioDTO;
@@ -156,7 +155,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
 
         model = new ApostaFavoritaModel(ApostaConfirmadaDetalhesActivity.this);
-        apostaBO = ApostaBO.getInstance();
+        apostaSilceBO = ApostaSilceBO.getInstance();
 
         pegaExtras();
         setaViews();
@@ -352,7 +351,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     private void carrinhoApostasBtn() {
         AlertDialogUtils.show(this);
 
-        apostaBO.buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 AlertDialogUtils.dismiss();
@@ -580,7 +579,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             } else {
                 AlertDialogUtils.show(this);
                 try {
-                    apostaBO.baixarComprovanteAposta(aposta.getId(), new RequestListener<String>() {
+                    apostaSilceBO.baixarComprovanteAposta(aposta.getId(), new RequestListener<String>() {
                         @Override
                         public void onResponse(String  response) {
                             AlertDialogUtils.dismiss();
@@ -607,7 +606,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
             } else {
                 AlertDialogUtils.show(this);
                 try{
-                    apostaBO.baixarComprovantePremio(aposta.getId(), new RequestListener<String>() {
+                    apostaSilceBO.baixarComprovantePremio(aposta.getId(), new RequestListener<String>() {
                         @Override
                         public void onResponse(String  response) {
                             AlertDialogUtils.dismiss();
@@ -665,7 +664,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
 
     private void getResultadoModalidade(String txtmodalidade, String concurso) {
         AlertDialogUtils.show(this);
-        apostaBO.getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
+        apostaSilceBO.getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 AlertDialogUtils.dismiss();
@@ -739,7 +738,7 @@ public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implemen
     }
 
     private void getApostaDetalhePremio(Long apostaId, final Context contextParam, ComprovanteApostaDTO comprovante) {
-        apostaBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
+        apostaSilceBO.getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
                 AlertDialogUtils.dismiss();

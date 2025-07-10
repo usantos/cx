@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
@@ -131,7 +131,7 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 
     private void atualizaComprovante(){
         AlertDialogUtils.show(this);
-        ApostaBO.getInstance().getApostaComprovantePremio(idAposta, new RequestListener<DetalhesPremioDTOResponse>() {
+        ApostaSilceBO.getInstance().getApostaComprovantePremio(idAposta, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
                 AlertDialogUtils.dismiss();

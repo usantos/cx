@@ -17,10 +17,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
-import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;

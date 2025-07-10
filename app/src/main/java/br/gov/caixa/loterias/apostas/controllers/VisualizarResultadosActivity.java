@@ -33,7 +33,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
@@ -325,7 +325,7 @@ public class VisualizarResultadosActivity extends AppCompatActivity {
 
     private void getResultadoModalidade(String txtmodalidade, String concurso) {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
+        ApostaSilceBO.getInstance().getResultadoModalidade(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursoDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursoDTOResponse response) {
                 loadViewProgress.dismiss();

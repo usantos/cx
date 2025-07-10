@@ -21,12 +21,12 @@ import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
@@ -120,7 +120,7 @@ public class RodapeSimulacaoApostaFragment extends Fragment {
 
 	public void abreCarrinhoApostas() {
 		AlertDialogUtils.show(getActivity());
-		ApostaBO.getInstance().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
 			@Override
 			public void onResponse(CarrinhoDTOResponse response) {
 				AlertDialogUtils.dismiss();

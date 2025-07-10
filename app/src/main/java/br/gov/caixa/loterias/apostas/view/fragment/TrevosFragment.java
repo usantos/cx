@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -47,6 +46,7 @@ import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
@@ -199,7 +199,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
     }
 
     private void validarApostaFav(ApostaFavoritaDTO apostaFavorita) {
-        DadosCorporativosBO.getInstance().validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
+        ServicoFactoryUtil.getDadosCorporativoService().validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 salvarAposta(apostaFavorita);
@@ -227,7 +227,7 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
         if(!AlertDialogUtils.isShow()){
             AlertDialogUtils.show(getContext());
         }
-        DadosCorporativosBO.getInstance().salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
+        ServicoFactoryUtil.getDadosCorporativoService().salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));

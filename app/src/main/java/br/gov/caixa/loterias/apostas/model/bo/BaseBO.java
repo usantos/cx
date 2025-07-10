@@ -61,7 +61,7 @@ public abstract class BaseBO {
         return this.context;
     }
 
-    protected <T> Response.ErrorListener interceptError(final GsonRequest request, final Map<String, String> headers, final RequestListener<T> listener){
+    public <T> Response.ErrorListener interceptError(final GsonRequest request, final Map<String, String> headers, final RequestListener<T> listener){
         return error -> {
             if(AppUtils.isNetworkAvailable(context)){
                 registraErro(error, request);
@@ -142,7 +142,7 @@ public abstract class BaseBO {
         return Bin.fromBase64(request.getUrl().replaceAll(BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"),"")).toUtf8();
     }
 
-    protected LinkedHashMap<String, String> getHeaderToken(){
+    public LinkedHashMap<String, String> getHeaderToken(){
         if(header == null){
             this.header = new LinkedHashMap<>();
         }

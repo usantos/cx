@@ -6,12 +6,12 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class ModalidadeModel {
 
@@ -22,7 +22,7 @@ public class ModalidadeModel {
 	}
 
 	public void buscaModalidades(OnSilceListener<List<ModalidadeDTO>> listener) {
-		ApostaBO.getInstance().getModalidades(new RequestListener<ModalidadeDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().getModalidades(new RequestListener<ModalidadeDTOResponse>() {
 			@Override
 			public void onResponse(ModalidadeDTOResponse response) {
 				if (response.getRedirect() != null) {

@@ -37,6 +37,7 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class TokenActivity extends AppCompatActivity {
     private AuthorizationService authorizationService;
@@ -111,7 +112,7 @@ public class TokenActivity extends AppCompatActivity {
             }
         }
 
-        DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+       ServicoFactoryUtil.getDadosUsuarioService().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
             @Override
             public void onResponse(UsuarioLogadoResponse response) {
                 if (response.getRedirect() == null) {

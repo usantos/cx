@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CanalEnum;
@@ -43,12 +43,12 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
     private ComprovanteApostaDTO comprovante;
     private DetalhesPremioDTO detalhesPremioDTO;
     private Uri fileUri;
-    private ApostaBO apostaBO;
+    private ApostaSilceBO apostaSilceBO;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resgate_premio_loterica_agencia);
-        apostaBO = ApostaBO.getInstance();
+        apostaSilceBO = ApostaSilceBO.getInstance();
         init();
     }
 
@@ -131,7 +131,7 @@ public class ResgatePremioLotericaAgenciaActivity extends SettingToolbarActivity
         } else {
             AlertDialogUtils.show(this);
             try {
-                apostaBO.baixarComprovanteAposta(detalhesPremioDTO.getAposta().getId(), new RequestListener<String>() {
+                apostaSilceBO.baixarComprovanteAposta(detalhesPremioDTO.getAposta().getId(), new RequestListener<String>() {
                     @Override
                     public void onResponse(String  response) {
                         AlertDialogUtils.dismiss();

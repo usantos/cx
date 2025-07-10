@@ -22,7 +22,7 @@ import java.util.Set;
 import androidx.appcompat.app.AlertDialog;
 import br.gov.caixa.loterias.apostas.R;
 
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
@@ -308,7 +308,7 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
         try{
-            ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
+            ApostaSilceBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
                 @Override
                 public void onResponse(SituacoesCompraResponse response) {
                     loadViewProgress.dismiss();

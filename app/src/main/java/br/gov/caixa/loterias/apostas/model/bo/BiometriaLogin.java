@@ -36,6 +36,7 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class BiometriaLogin {
 
@@ -110,7 +111,8 @@ public class BiometriaLogin {
     private void verificarCadastro(Activity activity, OnRefreshTokenListener listener) {
         DBLoteriasCrud crud = new DBLoteriasCrud(activity);
         List<IdentificaoDeUmaApostaDas8Modalidades> listApostas = crud.readAllIdentificaoDeUmaApostaDas8Modalidades();
-        DadosUsuarioBO.getInstance().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
+
+        ServicoFactoryUtil.getDadosUsuarioService().postVerificarCadastro(listApostas, new RequestListener<UsuarioLogadoResponse>() {
 
             @Override
             public void onResponse(UsuarioLogadoResponse response) {

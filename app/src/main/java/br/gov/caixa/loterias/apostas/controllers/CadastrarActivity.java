@@ -21,7 +21,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -250,7 +250,7 @@ public class CadastrarActivity extends CadastroActivity {
 
     private void buscarBairroPorCep(String cep) {
         AlertDialogUtils.show(this);
-        DadosCorporativosBO.getInstance().bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
+        DadosCorporativosSilceBO.getInstance().bairros(null, null, null, cep, new RequestListener<BairroDTOResponse>() {
             @Override
             public void onResponse(BairroDTOResponse response) {
                 AlertDialogUtils.dismiss();

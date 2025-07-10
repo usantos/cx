@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -207,7 +207,7 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         AutoSuspensaoRequest autoSuspensaoRequest = new AutoSuspensaoRequest(cpf, horasSelecionada);
 
         AlertDialogUtils.show(this);
-        ApostaBO.getInstance().postAutoSuspensaoApostador(autoSuspensaoRequest, new RequestListener<AutoSuspensaoResponse>() {
+        ApostaSilceBO.getInstance().postAutoSuspensaoApostador(autoSuspensaoRequest, new RequestListener<AutoSuspensaoResponse>() {
             @Override
             public void onResponse(AutoSuspensaoResponse result) {
                 AlertDialogUtils.dismiss();

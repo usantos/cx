@@ -13,16 +13,16 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
  * Created by igorvilar on 10/11/17.
  */
 
-public class DadosCorporativosBO extends SilceBO{
-    private static DadosCorporativosBO instance;
+public class DadosCorporativosSilceBO extends SilceBO implements DadosCorporativoRepository {
+    private static DadosCorporativosSilceBO instance;
 
-    private DadosCorporativosBO(){
+    private DadosCorporativosSilceBO(){
         super();
     }
 
-    public static DadosCorporativosBO getInstance(){
+    public static DadosCorporativosSilceBO getInstance(){
         if (instance == null){
-            instance = new DadosCorporativosBO();
+            instance = new DadosCorporativosSilceBO();
         }
         return instance;
     }
@@ -106,6 +106,7 @@ public class DadosCorporativosBO extends SilceBO{
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void parametrosSimulacao(final RequestListener<ParametrosSimulacaoResponse> listener) {
         LinkedHashMap<String, String> header = getHeader();
         GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.PARAM_SIMULACAO_PATH,
@@ -118,6 +119,7 @@ public class DadosCorporativosBO extends SilceBO{
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void validarApostaFavorita(final ApostaFavoritaDTO aposta,
                                       final RequestListener<NetworkResponse> listener) {
         GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.VALIDAR_FAVORITA_PATH,
@@ -130,6 +132,7 @@ public class DadosCorporativosBO extends SilceBO{
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void salvarApostaFavorita(final ApostaFavoritaDTO aposta,
                                      final RequestListener<NetworkResponse> listener) {
         GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.INCLUIR_FAVORITA_PATH,

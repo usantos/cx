@@ -44,6 +44,7 @@ import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -208,7 +209,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void verificaHorarioRepresa(){
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO.getInstance().validaRepresa(new RequestListener<RepresaResponse>() {
+        DadosCorporativosSilceBO.getInstance().validaRepresa(new RequestListener<RepresaResponse>() {
             @Override
             public void onResponse(RepresaResponse response) {
                 loadViewProgress.dismiss();
@@ -516,7 +517,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void buscaDetalhesCompras() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        ApostaSilceBO.getInstance().getDetalhesCompras(compraDTO.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 dataHoraServidor = response.getDataHoraServidor();
@@ -684,7 +685,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
         AlertDialogUtils.show(DetalhesComprasActivity.this);
-        ApostaBO.getInstance().validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -708,7 +709,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void favoritarCarrinho(String nome, Long idFavorito) {
         AlertDialogUtils.show(DetalhesComprasActivity.this);
-        ApostaBO.getInstance().salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().salvarCarrinhoFavorito(nome,idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -734,7 +735,6 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
 
     private void buscaModalidades() {
         AlertDialogUtils.show(DetalhesComprasActivity.this);
-
         new ModalidadeModel(DetalhesComprasActivity.this)
                 .buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
                     @Override

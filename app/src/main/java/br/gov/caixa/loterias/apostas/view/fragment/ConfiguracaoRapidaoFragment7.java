@@ -18,12 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.RapidaoConfigSingleton;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRapidaoRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
@@ -76,7 +76,7 @@ public class ConfiguracaoRapidaoFragment7 extends Fragment {
 		bloquearRequestScroll = false;
 
 		final AlertDialog loadViewProgress = LoadingViewLoterias.show(getActivity());
-		ApostaBO.getInstance().getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().getApostasFavoritas(offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
 			@Override
 			public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
 				loadViewProgress.dismiss();
@@ -162,7 +162,7 @@ public class ConfiguracaoRapidaoFragment7 extends Fragment {
 		}
 		progressLoadingMore.setVisibility(View.VISIBLE);
 
-		ApostaBO.getInstance().getApostasFavoritas(offsetItem ,new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+		ServicoFactoryUtil.getApostaService().getApostasFavoritas(offsetItem ,new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
 			@Override
 			public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
 				progressLoadingMore.setVisibility(View.GONE);

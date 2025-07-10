@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -20,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TermoDeUsoDTOResponse;
@@ -103,7 +102,7 @@ public class TermosAceiteActivity extends AppCompatActivity {
 
     private void getTermo() {
         AlertDialogUtils.show(this);
-        DadosCorporativosBO.getInstance().termo(new RequestListener<TermoDeUsoDTOResponse>() {
+        DadosCorporativosSilceBO.getInstance().termo(new RequestListener<TermoDeUsoDTOResponse>() {
             @Override
             public void onResponse(TermoDeUsoDTOResponse response) {
                 AlertDialogUtils.dismiss();

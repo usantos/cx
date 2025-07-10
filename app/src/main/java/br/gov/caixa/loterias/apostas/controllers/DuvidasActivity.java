@@ -14,7 +14,7 @@ import com.android.volley.VolleyError;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListSecaoDTO;
@@ -82,7 +82,7 @@ public class DuvidasActivity extends AppCompatActivity {
     private void initReciclerViewDuvidas() {
         if (secaoDuvidas == null) {
             AlertDialogUtils.show(this);
-            DadosCorporativosBO.getInstance().secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
+            DadosCorporativosSilceBO.getInstance().secaoDuvidas(new RequestListener<ListSecaoDTOResponse>() {
                 @Override
                 public void onResponse(ListSecaoDTOResponse response) {
                     AlertDialogUtils.dismiss();
