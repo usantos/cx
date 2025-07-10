@@ -9,9 +9,9 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class ParametrosSimulacaoModel {
-
 	private Activity activity;
 
 	public ParametrosSimulacaoModel(Activity activity) {

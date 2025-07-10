@@ -1,8 +1,5 @@
 package br.gov.caixa.loterias.apostas.utils;
 
-import java.util.Arrays;
-import java.util.List;
-
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -11,8 +8,6 @@ public class ServicoNuvemUtil {
 
 	public static final String APIKEY_DESCRICAO = "ocp-apim-subscription-key";
 	//public static final String APIKEY_CHAVE = "8f9c0e5ec9604864acd357706e7b6522"; //DES
-	public static final String APIKEY_CHAVE_TQS = "ca5af87c9f7647de88eb7dcb93c7b021";
-	public static final String APIKEY_CHAVE_PRD = "635c94f6079c4c909e88389564c7e0fb";
 	public static final String APIKEY_CHAVE_TQS = "ca5af87c9f7647de88eb7dcb93c7b021";
 	public static final String APIKEY_CHAVE_PRD = "635c94f6079c4c909e88389564c7e0fb";
 	public static final String AZURE_API = "azure-api.net";
@@ -29,7 +24,6 @@ public class ServicoNuvemUtil {
 		}
 		return false;
 	}
-
 
 	private static boolean isAmbienteTQS() {
 		return !BuildConfig.FLAVOR.equalsIgnoreCase("prd");
@@ -78,22 +72,6 @@ public class ServicoNuvemUtil {
 		} else {
 			return APIKEY_CHAVE_PRD;
 		}
-	public static boolean isUrlServicoNuvem(String url) {
-		if (url.contains(ServicoNuvemUtil.AZURE_API) ||
-				url.contains(ServicoNuvemUtil.PRD_API) ||
-				url.contains(ServicoNuvemUtil.TQS_API) ||
-				url.contains(ServicoNuvemUtil.DES_API)) {
-			return true;
-		}
-		return false;
-	}
-
-	public static String apiKeyChave() {
-		if (isAmbienteTQS()) {
-			return APIKEY_CHAVE_TQS;
-		} else {
-			return APIKEY_CHAVE_PRD;
-		}
 	}
 
 	public static String getBaseUrlNuvem() {
@@ -121,7 +99,6 @@ public class ServicoNuvemUtil {
 	}
 
 	public static boolean isServicoNuvem() {
-
 		if (!isServicoNuvemAtivo()) {
 			return false;
 		}
