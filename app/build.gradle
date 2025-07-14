@@ -41,13 +41,13 @@ android {
             println "O arquivo certificado.properties não existe."
         }
 
-    compileSdkVersion 34
+    compileSdkVersion 35
     buildToolsVersion '34.0.0'
     defaultConfig {
         resValue "string", "app_name", "Loterias"
         applicationId "br.gov.caixa.loterias.apostas"
         minSdkVersion 22
-        targetSdkVersion 34
+        targetSdkVersion 35
 
         // Sprint 104 pra tras
         //                   22                 1.17.0 = 01 017               00
