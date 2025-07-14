@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BoloesDisponiveisRespons
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConsultaDadosChavePixResponse;
@@ -614,6 +615,18 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
             request.setErrorListener(interceptError(request, getHeaderToken(), listener));
             getServiceConnection().request(request, listener);
         }
+    }
+    @Override
+    public void buscaCombo(final RequestListener<CombosDTOResponse> listener) {
+        final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.BUSCA_COMBOS_PATH,
+            new LinkedHashMap<>(),
+            CombosDTOResponse.class,
+            listener.getSilceListener(),
+            listener.getErrorListener(),
+            getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
     }
 
     @Override

@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.model.bo;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -52,4 +53,5 @@ public interface ApostaRepository {
 
     void buscaCarrinho(final RequestListener<CarrinhoDTOResponse> listener);
 
+    void buscaCombo(final RequestListener<CombosDTOResponse> listener);
 }

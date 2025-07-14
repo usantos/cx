@@ -818,6 +818,7 @@
     <string name="quebra_html"><![CDATA[<br>]]></string>
     <string name="espaco_em_branco">" "</string>
     <string name="evento_entrou_carrinho_online">ENTROU_CARRINHO_DE_APOSTAS_ONLINE</string>
+    <string name="evento_entrou_combos_online">ENTROU_COMBOS_ONLINE</string>
     <string name="confirmar">Confirmar</string>
     <string name="evento_entrou_formas_pagamento">ENTROU_FORMAS_DE_PAGAMENTO</string>
     <string name="evento_carregou_boloes_disponiveis">CARREGOU_BOLOES_DISPONIVEIS</string>
@@ -919,6 +920,7 @@
     <string name="evento_entrou_simular_aposta_modalidade">ENTROU_SIMULAR_APOSTA</string>
     <string name="evento_entrou_tutorial_mais_milionaria">ENTROU_TUTORIAL_MAIS_MILIONARIA</string>
     <string name="evento_entrou_instantanea">ENTROU_INSTANTANEA</string>
+    <string name="evento_entrou_combo">ENTROU_COMBO</string>
     <string name="extra_apostas_favoritas">apostasFavoritas</string>
     <string name="extra_apostas_salvas">apostasSalvas</string>
     <string name="extra_tipos_apostas">tiposAposta</string>
@@ -1476,6 +1478,7 @@
     <string name="aposte">_Aposte_</string>
     <string name="instantanea_texto_card">Diversão e prêmios na hora</string>
     <string name="portal_instantanea">Acesse e jogue\nno Portal da _INSTANTÂNEA_</string>
+    <string name="portal_combo">Mais que apostas: combos criados\npara aumentar suas chances\nde realizar o que você deseja.</string>
 
     <string name="_100">100</string>
     <string name="_5_a_21">5 a 21</string>

@@ -171,6 +171,21 @@ public class EstiloModalidadeMKP {
                 trevoFundoClaro = R.drawable.trevos_instantanea_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevos_instantanea_fundo_escuro;
                 break;
+            case COMBO:
+                corClara = R.color.combo_claro;
+                corEscura = R.color.combo_escuro;
+                trapezio = R.drawable.background_trapeze_combo;
+                shapeBtnDetalhes = -1;
+                imagemTriangulo = -1;
+                imagemTrianguloOutline= -1;
+                imagemEspecialCarrossel = -1;
+                imagemEspecialDetalhes = -1;
+                corLetraLista = R.color.combo_claro;
+                corFonteFundoClaro = R.color.branco;
+                corFonteFundoEscuro = R.color.branco;
+                trevoFundoClaro = R.drawable.trevos_combo_fundo_escuro;
+                trevoFundoEscuro = R.drawable.trevos_combo_fundo_escuro;
+                break;
             default:
                 //MEGASENA
                 corClara = R.color.mega_verde_claro_mkp;

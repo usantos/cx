@@ -164,4 +164,7 @@ class ServerMethods {
      static final String PARAM_SIMULACAO_PATH = "/parametros-simulacao";
      static final String BAIRROS_PATH = "/bairros";
 
+     //COMBOS
+     static final String BUSCA_COMBOS_PATH = "/combos";
+
 }

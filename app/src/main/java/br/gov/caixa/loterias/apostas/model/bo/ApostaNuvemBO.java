@@ -11,6 +11,7 @@ import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -370,6 +371,19 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaRepository {
             request.setErrorListener(interceptError(request, getHeaderToken(), listener));
             getServiceConnection().request(request, listener);
         }
+    }
+
+    @Override
+    public void buscaCombo(final RequestListener<CombosDTOResponse> listener) {
+        final GsonRequest request = getServiceConnection().buildGetRequest(LOGADO + ServerMethods.BUSCA_COMBOS_PATH,
+                    new LinkedHashMap<>(),
+                    CombosDTOResponse.class,
+                    listener.getSilceListener(),
+                    listener.getErrorListener(),
+                    getHeaderToken());
+
+            request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+            getServiceConnection().request(request, listener);
     }
 
     private <T> boolean verificaAcessToken(final RequestListener<T> listener) {

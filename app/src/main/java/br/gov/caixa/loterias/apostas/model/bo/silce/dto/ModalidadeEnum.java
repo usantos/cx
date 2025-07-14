@@ -25,6 +25,7 @@ public enum ModalidadeEnum implements Serializable {
     @SerializedName("SUPER_7") SUPER_7,
     @SerializedName("MAIS_MILIONARIA") MAIS_MILIONARIA,
     @SerializedName("INSTANTANEA") INSTANTANEA,
+    @SerializedName("COMBO") COMBO,
     @SerializedName("BOLAO") BOLAO;
 
     public static String fromString(ModalidadeEnum modalidade) {
@@ -53,6 +54,8 @@ public enum ModalidadeEnum implements Serializable {
                 return Aplicacao.application.getBaseContext().getString(R.string.label_mais_milionaria);
             case INSTANTANEA:
                 return "instantânea";
+            case COMBO:
+                return "Combo de Apostas";
             case BOLAO:
                 return "bolão";
         }
@@ -92,6 +95,8 @@ public enum ModalidadeEnum implements Serializable {
             case "instantânea":
             case "Instantânea":
                 return ModalidadeEnum.INSTANTANEA;
+            case "combo":
+                return ModalidadeEnum.COMBO;
             case "bolao":
             case "bolão":
                 return BOLAO;
@@ -190,6 +195,8 @@ public enum ModalidadeEnum implements Serializable {
                 return context.getString(R.string.label_mais_milionaria);
             case INSTANTANEA:
                 return "Instantânea";
+            case COMBO:
+                return "Combo de Apostas";
         }
         return "";
     }
@@ -248,6 +255,8 @@ public enum ModalidadeEnum implements Serializable {
                 return 20;
             case INSTANTANEA:
                 return 1502;
+            case COMBO:
+                return 0;
             case BOLAO:
                 return 0;
         }

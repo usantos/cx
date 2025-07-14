@@ -34,6 +34,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
+import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -88,6 +90,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.ComboUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -162,6 +165,8 @@ public class PrincipalActivity extends AppCompatActivity
     private static int contRegressivo = 1;
     private int anInt;
     private int ano;
+
+    private List<CombosDTO> listCombosDTO;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -422,15 +427,34 @@ public class PrincipalActivity extends AppCompatActivity
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
-        //*** APAGAR ***
         //EncerramentoUtil.mockApagaModalidadeNosParametroJogo(
         //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
         EncerramentoUtil.verificaSeCriaCardTemporario();
 
+        new ComboModel(this).buscaCombos(new OnSilceListener() {
+            @Override
+            public void success(Object payload) {
+                listCombosDTO = (List<CombosDTO>) payload;
+                if (listCombosDTO != null && listCombosDTO.size() > 0) {
+                    ComboUtil.atualizaCardCombo();
+                } else {
+                    ComboUtil.excluiCardCombo();
+                }
+                paramatroSimulacaoPosCombos();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                listCombosDTO = null;
+                ComboUtil.excluiCardCombo();
+                paramatroSimulacaoPosCombos();
+            }
+        });
+    }
+
+    private void paramatroSimulacaoPosCombos() {
         montarCarrossel();
-
         trataPopupDeNotificacaoHandler();
-
         redirectDeepLink();
     }
 
@@ -728,7 +752,8 @@ public class PrincipalActivity extends AppCompatActivity
     public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
-            if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA)) {
+            if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
+                data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
                 EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 buttonHomeBet.setTag(adapterPosition);
@@ -828,6 +853,11 @@ public class PrincipalActivity extends AppCompatActivity
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_instantanea));
             Uri uri = Uri.parse(ENDERECO_INSTANTANEA);
             Intent activity = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(activity);
+        } else if (modalidade == ModalidadeEnum.COMBO) {
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_combo));
+            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
+            activity.putExtra("listCombosDTO", (new Gson()).toJson(listCombosDTO));
             startActivity(activity);
         } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
