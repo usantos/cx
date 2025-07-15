@@ -166,8 +166,6 @@ public class PrincipalActivity extends AppCompatActivity
     private int anInt;
     private int ano;
 
-    private List<CombosDTO> listCombosDTO;
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
@@ -400,7 +398,7 @@ public class PrincipalActivity extends AppCompatActivity
                             }
 
                             SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
-                            paramatroSimulacaoSuccess();
+                            paramatroSimulacaoSuccess(true);
                         }
 
                         @Override
@@ -414,7 +412,7 @@ public class PrincipalActivity extends AppCompatActivity
                     });
         }else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
             modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
-            paramatroSimulacaoSuccess();
+            paramatroSimulacaoSuccess(false);
             AlertDialogUtils.dismiss();
         }else {
             AlertDialogUtils.dismiss();
@@ -422,7 +420,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     }
 
-    private void paramatroSimulacaoSuccess() {
+    private void paramatroSimulacaoSuccess(boolean refezParametrosSimulacao) {
 
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
@@ -431,25 +429,32 @@ public class PrincipalActivity extends AppCompatActivity
         //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
         EncerramentoUtil.verificaSeCriaCardTemporario();
 
-        new ComboModel(this).buscaCombos(new OnSilceListener() {
-            @Override
-            public void success(Object payload) {
-                listCombosDTO = (List<CombosDTO>) payload;
-                if (listCombosDTO != null && listCombosDTO.size() > 0) {
-                    ComboUtil.atualizaCardCombo();
-                } else {
-                    ComboUtil.excluiCardCombo();
+        if (SessaoUsuario.getInstance().getListCombosDTO() == null ||
+            refezParametrosSimulacao) {
+            new ComboModel(this).buscaCombos(new OnSilceListener() {
+                @Override
+                public void success(Object payload) {
+                    SessaoUsuario.getInstance().setListCombosDTO((List<CombosDTO>) payload);
+                    if (SessaoUsuario.getInstance().getListCombosDTO() != null &&
+                        SessaoUsuario.getInstance().getListCombosDTO().size() > 0) {
+                        ComboUtil.atualizaCardCombo();
+                    } else {
+                        ComboUtil.excluiCardCombo();
+                    }
+                    paramatroSimulacaoPosCombos();
                 }
-                paramatroSimulacaoPosCombos();
-            }
 
-            @Override
-            public void error(VolleyError error) {
-                listCombosDTO = null;
-                ComboUtil.excluiCardCombo();
-                paramatroSimulacaoPosCombos();
-            }
-        });
+                @Override
+                public void error(VolleyError error) {
+                    SessaoUsuario.getInstance().setListCombosDTO(new ArrayList<>());
+                    ComboUtil.excluiCardCombo();
+                    paramatroSimulacaoPosCombos();
+                }
+            });
+        } else {
+            paramatroSimulacaoPosCombos();
+        }
+
     }
 
     private void paramatroSimulacaoPosCombos() {
@@ -857,7 +862,8 @@ public class PrincipalActivity extends AppCompatActivity
         } else if (modalidade == ModalidadeEnum.COMBO) {
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_combo));
             Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
-            activity.putExtra("listCombosDTO", (new Gson()).toJson(listCombosDTO));
+            //activity.putExtra("listCombosDTO", (new Gson()).toJson(listCombosDTO));
+            //** Nao precisa de parametro, utilizar -> SessaoUsuario.getInstance().getListCombosDTO();
             startActivity(activity);
         } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));

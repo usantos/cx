@@ -2,7 +2,9 @@ package br.gov.caixa.loterias.apostas.model.bean;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostador;
 
@@ -41,6 +43,8 @@ public class SessaoUsuario {
     }
 
     public ParametrosSimulacao parametrosSimulacao;
+
+    public List<CombosDTO> listCombosDTO;
 
 
     public static SessaoUsuario getInstance() {
@@ -144,5 +148,13 @@ public class SessaoUsuario {
 
     public void setSituacaoApostador(SituacaoApostador situacaoApostador) {
         this.situacaoApostador = situacaoApostador;
+    }
+
+    public List<CombosDTO> getListCombosDTO() {
+        return listCombosDTO;
+    }
+
+    public void setListCombosDTO(List<CombosDTO> listCombosDTO) {
+        this.listCombosDTO = listCombosDTO;
     }
 }
