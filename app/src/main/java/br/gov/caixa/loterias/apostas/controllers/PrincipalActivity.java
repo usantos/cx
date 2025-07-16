@@ -863,11 +863,15 @@ public class PrincipalActivity extends AppCompatActivity
             Intent activity = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(activity);
         } else if (modalidade == ModalidadeEnum.COMBO) {
-            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_combo));
-            Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
-            //activity.putExtra("listCombosDTO", (new Gson()).toJson(listCombosDTO));
-            //** Nao precisa de parametro, utilizar -> SessaoUsuario.getInstance().getListCombosDTO();
-            startActivity(activity);
+            if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_combo));
+                Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
+                //activity.putExtra("listCombosDTO", (new Gson()).toJson(listCombosDTO));
+                //** Nao precisa de parametro, utilizar -> SessaoUsuario.getInstance().getListCombosDTO();
+                startActivity(activity);
+            } else {
+                AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false);
+            }
         } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
             Intent activity = new Intent(PrincipalActivity.this, clazz);
