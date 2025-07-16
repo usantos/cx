@@ -429,8 +429,11 @@ public class PrincipalActivity extends AppCompatActivity
         //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
         EncerramentoUtil.verificaSeCriaCardTemporario();
 
-        if (SessaoUsuario.getInstance().getListCombosDTO() == null ||
-            refezParametrosSimulacao) {
+        if (!refezParametrosSimulacao && !ComboUtil.temComboParametroSimulacao()) {
+            refezParametrosSimulacao = true;
+        }
+
+        if (refezParametrosSimulacao) {
             new ComboModel(this).buscaCombos(new OnSilceListener() {
                 @Override
                 public void success(Object payload) {
@@ -446,7 +449,7 @@ public class PrincipalActivity extends AppCompatActivity
 
                 @Override
                 public void error(VolleyError error) {
-                    SessaoUsuario.getInstance().setListCombosDTO(new ArrayList<>());
+                    SessaoUsuario.getInstance().setListCombosDTO(null);
                     ComboUtil.excluiCardCombo();
                     paramatroSimulacaoPosCombos();
                 }

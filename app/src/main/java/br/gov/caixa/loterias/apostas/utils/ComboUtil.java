@@ -67,4 +67,17 @@ public class ComboUtil {
             }
         }
     }
+
+    public static boolean temComboParametroSimulacao() {
+        ParametrosSimulacao parametrosSimulacao = SessaoUsuario.getInstance().getParametrosSimulacao();
+        if (parametrosSimulacao != null && parametrosSimulacao.getParametros() != null){
+            for (int i = 0; i < parametrosSimulacao.getParametros().size(); i++){
+                ParametroSimulacao parametro = parametrosSimulacao.getParametros().get(i);
+                if (ModalidadeEnum.COMBO == parametro.getParametroJogo().getConcurso().getModalidade()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
