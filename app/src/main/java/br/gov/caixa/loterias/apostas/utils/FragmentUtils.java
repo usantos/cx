@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoComboFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoSimulacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ConfirmacaoChavePixResgateFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment;
@@ -135,6 +136,13 @@ public class FragmentUtils {
 	public static BarraTitutoSimulacaoFragment startFragmentBarraTituloSimulacao(FragmentManager fm, int id, ModalidadeEnum modalidade,
 																				 String concurso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
 		BarraTitutoSimulacaoFragment frag = BarraTitutoSimulacaoFragment.newInstance(modalidade, concurso, sorteio, especial, corBackground, showBGEspecial);
+		startFragmentAllowingStateLoss(fm, id, frag);
+		return frag;
+	}
+
+	public static BarraTitutoComboFragment startFragmentBarraTituloCombo(FragmentManager fm, int id, ModalidadeEnum modalidade,
+																		 int corBackground) {
+		BarraTitutoComboFragment frag = BarraTitutoComboFragment.newInstance(modalidade, corBackground);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}

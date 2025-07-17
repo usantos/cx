@@ -1,19 +1,19 @@
 package br.gov.caixa.loterias.apostas.model.model;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
-import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacaoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirComboDTO;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
@@ -39,6 +39,30 @@ public class ComboModel {
 
 				listener.success(response.getPayload());
 			}
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				RedirectNetwork.checkRedirect(error, activity);
+				listener.error(error);
+			}
+		});
+	}
+
+	public void adicionaComboCarrinho(IncluirComboDTO incluirComboDTO, OnSilceListener listener) {
+		ServicoFactoryUtil.getApostaService().adicionarComboNoCarrinho(incluirComboDTO, new RequestListener<CarrinhoDTOResponse>() {
+			@Override
+			public void onResponse(CarrinhoDTOResponse result) {
+				try {
+					AlertDialogUtils.dismiss();
+					AppCenterManager.registraEvento("ENTROU_ADICAO_COMBO_CARRINHO_ONLINE");
+					//CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
+				} catch (Exception e){
+					Log.d("", e.getLocalizedMessage());
+				}
+
+				//activity.startActivity(new Intent(activity, CarrinhoActivity.class));
+				listener.success(result.getPayload());
+			}
+
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				RedirectNetwork.checkRedirect(error, activity);

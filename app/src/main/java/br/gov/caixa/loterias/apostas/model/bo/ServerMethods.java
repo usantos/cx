@@ -4,6 +4,7 @@ class ServerMethods {
 
      //CARRINHO
      static final String INCLUIR_APOSTA_CARRINHO_PATH = "/carrinhos/incluir-aposta";
+     static final String INCLUIR_COMBO_CARRINHO_PATH = "/carrinhos/incluir-combo";
      static final String INCLUIR_SURPRESINHA_CARRINHO_PATH = "/carrinhos/incluir-surpresinha";
      static final String BUSCA_CARRINHO_PATH = "/carrinhos";
      //static final String DELETE_APOSTA_COMBO_CARRINHO_PATH = "/carrinhos/combos/";

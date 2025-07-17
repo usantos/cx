@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -35,6 +36,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirComboDTO;
 import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import com.android.volley.NetworkResponse;
@@ -865,10 +867,31 @@ public class PrincipalActivity extends AppCompatActivity
         } else if (modalidade == ModalidadeEnum.COMBO) {
             if (DadosUsuarioBO.checarUsuarioLogado(this)) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_combo));
-                Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
-                //activity.putExtra("listCombosDTO", (new Gson()).toJson(listCombosDTO));
-                //** Nao precisa de parametro, utilizar -> SessaoUsuario.getInstance().getListCombosDTO();
-                startActivity(activity);
+
+                IncluirComboDTO incluirComboDTO = new IncluirComboDTO();
+                incluirComboDTO.setId(9);
+                incluirComboDTO.setQtdApostas(9); //Somar Quantidade de apostas ??
+                incluirComboDTO.setIsSurpresinha(true);
+                incluirComboDTO.setLimparCarrinho(false);
+                new ComboModel(this).adicionaComboCarrinho(incluirComboDTO, new OnSilceListener() {
+                    @Override
+                    public void success(Object payload) {
+                        //** Nao precisa de parametro, utilizar -> SessaoUsuario.getInstance().getListCombosDTO();
+                        //** Temporariamente chamando tela Confirmado Inclusao - chamar tela do Fabio
+                        Intent activity = new Intent(PrincipalActivity.this, ConfirmadoInclusaoCarrinhoActivity.class);
+                        activity.putExtra("tipoAposta", ModalidadeEnum.COMBO);
+                        activity.putExtra("valorAposta", BigDecimal.ZERO); //Pegar o valor do Combo
+                        //activity.putExtra("modalidade", "");
+                        int qtdParametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().size()-1;
+                        activity.putExtra("modalidade", (new Gson()).toJson(SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().get(qtdParametros).getParametroJogo()));
+                        startActivity(activity);
+                    }
+
+                    @Override
+                    public void error(VolleyError error) {
+                        RedirectNetwork.checkRedirect(error,PrincipalActivity.this);
+                    }
+                });
             } else {
                 AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false);
             }

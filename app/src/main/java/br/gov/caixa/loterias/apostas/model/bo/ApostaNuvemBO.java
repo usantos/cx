@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirComboDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
@@ -215,6 +216,22 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaRepository {
             request.setErrorListener(interceptError(request, getHeaderToken(), listener));
             getServiceConnection().request(request, listener);
         }
+    }
+
+    @Override
+    public void adicionarComboNoCarrinho(final IncluirComboDTO incluirComboDTO,
+                                         final RequestListener<CarrinhoDTOResponse> listener) {
+
+        final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.INCLUIR_COMBO_CARRINHO_PATH,
+                new LinkedHashMap<>(),
+                incluirComboDTO,
+                CarrinhoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
     }
 
     @Override
