@@ -867,31 +867,8 @@ public class PrincipalActivity extends AppCompatActivity
         } else if (modalidade == ModalidadeEnum.COMBO) {
             if (DadosUsuarioBO.checarUsuarioLogado(this)) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_combo));
-
-                IncluirComboDTO incluirComboDTO = new IncluirComboDTO();
-                incluirComboDTO.setId(9);
-                incluirComboDTO.setQtdApostas(9); //Somar Quantidade de apostas ??
-                incluirComboDTO.setIsSurpresinha(true);
-                incluirComboDTO.setLimparCarrinho(false);
-                new ComboModel(this).adicionaComboCarrinho(incluirComboDTO, new OnSilceListener() {
-                    @Override
-                    public void success(Object payload) {
-                        //** Nao precisa de parametro, utilizar -> SessaoUsuario.getInstance().getListCombosDTO();
-                        //** Temporariamente chamando tela Confirmado Inclusao - chamar tela do Fabio
-                        Intent activity = new Intent(PrincipalActivity.this, ConfirmadoInclusaoCarrinhoActivity.class);
-                        activity.putExtra("tipoAposta", ModalidadeEnum.COMBO);
-                        activity.putExtra("valorAposta", BigDecimal.ZERO); //Pegar o valor do Combo
-                        //activity.putExtra("modalidade", "");
-                        int qtdParametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().size()-1;
-                        activity.putExtra("modalidade", (new Gson()).toJson(SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().get(qtdParametros).getParametroJogo()));
-                        startActivity(activity);
-                    }
-
-                    @Override
-                    public void error(VolleyError error) {
-                        RedirectNetwork.checkRedirect(error,PrincipalActivity.this);
-                    }
-                });
+                Intent activity = new Intent(PrincipalActivity.this, CombosActivity.class);
+                startActivity(activity);
             } else {
                 AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false);
             }

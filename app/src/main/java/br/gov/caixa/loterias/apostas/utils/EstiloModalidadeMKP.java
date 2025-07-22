@@ -207,6 +207,8 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevos_combo_fundo_escuro;
                 trevoFundoEscuro = R.drawable.trevos_combo_fundo_escuro;
+                tarjaEspecialTrevoCombo =-1;
+                trevoFundoDetalheCombo = -1;
                 break;
             default:
                 //MEGASENA

@@ -40,6 +40,49 @@ public class CombosDTO {
     return this;
   }
 
+  public enum TipoComboEnum {
+    ESPECIAL(1),
+    SUPER_MILIONARIO(2),
+    MILIONARIO(3),
+    MUITO_DINHEIRO(4),
+    SORTE_FACIL(5),
+    CHANCE_TODO_DIA(6),
+    SORTE_ACUMULADA(7),
+    SORTE_HOJE(8),
+    FEZINHA_DO_MES(9),
+    VIP(10),
+    CAIXA_PRA_ELAS(11);
+
+    private final Integer value;
+
+    TipoComboEnum(Integer value) {
+      this.value = value;
+    }
+
+    // Método para recuperar o valor do enum
+    public Integer getValue() {
+      return value;
+    }
+
+    // Método para recuperar o tipo do combo pelo valor
+    public static TipoComboEnum fromValue(Integer value) {
+      for (TipoComboEnum tipo : TipoComboEnum.values()) {
+        if (tipo.value.equals(value)) {
+          return tipo;
+        }
+      }
+      throw new IllegalArgumentException("Valor inválido para TipoComboEnum: " + value);
+    }
+
+    // Método para recuperar o valor pelo tipo de combo
+    public static Integer fromEnum(TipoComboEnum tipoCombo) {
+      if (tipoCombo == null) {
+        throw new IllegalArgumentException("TipoComboEnum não pode ser nulo");
+      }
+      return tipoCombo.getValue();
+    }
+  }
+
    /**
    * Get tipoCombo
    * @return tipoCombo

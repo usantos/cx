@@ -12,25 +12,30 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirComboDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeComboDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheComboAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class DetalheComboActivity extends SettingToolbarActivity {
-
-    //public static final String ARG_COMBOS = "ARG_COMBOS";
     private static final int QUANTIDADE_COLUNA_LISTA_COMBOS = 2;
     private CombosDTO combo = new CombosDTO();
     private List<ModalidadeComboDTO> modalidadesCombo;
@@ -54,7 +59,6 @@ public class DetalheComboActivity extends SettingToolbarActivity {
         setViews();
         setMetodos();
         configuraDetalheComboRcv();
-
     }
 
     @Override
@@ -64,9 +68,8 @@ public class DetalheComboActivity extends SettingToolbarActivity {
     }
 
     private void getExtras(){
-        if(getIntent() != null && getIntent().hasExtra(CombosActivity.ARG_COMBO)){
-            combo = (CombosDTO) getIntent().getSerializableExtra(CombosActivity.ARG_COMBO);
-            Log.d("DetalheComboActivity", "Combo recebido: " + combo);
+        if(getIntent() !=null && getIntent().hasExtra(CombosActivity.ARG_COMBO)){
+            combo = new Gson().fromJson(getIntent().getStringExtra(CombosActivity.ARG_COMBO), CombosDTO.class);
         }else{
             Log.d("DetalheComboActivity", "Nenhum combo recebido");
         }
@@ -137,13 +140,33 @@ public class DetalheComboActivity extends SettingToolbarActivity {
 
     private void incluirComboNoCarrinho(){
 
-        Boolean isSurpresinha = checkMostrarNumeros.isChecked();
+        Boolean isSurpresinha = !checkMostrarNumeros.isChecked();
 
         IncluirComboDTO incluirComboDTO = new IncluirComboDTO();
+
         incluirComboDTO.setId(combo.getTipoCombo().getCodigo());
         incluirComboDTO.setQtdApostas(getQuantidadeApostas());
         incluirComboDTO.setIsSurpresinha(isSurpresinha);
         incluirComboDTO.setLimparCarrinho(false);
+
+        BigDecimal valorCombo = combo.getValor();
+
+        new ComboModel(this).adicionaComboCarrinho(incluirComboDTO, new OnSilceListener() {
+            @Override
+            public void success(Object payload) {
+                Intent activity = new Intent(DetalheComboActivity.this, ConfirmadoInclusaoCarrinhoActivity.class);
+                activity.putExtra("tipoAposta", ModalidadeEnum.COMBO);
+                activity.putExtra("valorAposta", valorCombo);
+                int qtdParametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().size()-1;
+                activity.putExtra("modalidade", (new Gson()).toJson(SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().get(qtdParametros).getParametroJogo()));
+                startActivity(activity);
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                RedirectNetwork.checkRedirect(error,DetalheComboActivity.this);
+            }
+        });
 
 
     }

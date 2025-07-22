@@ -50,7 +50,7 @@ public class DetalheComboHolder extends LoteriasHolder<ModalidadeComboDTO>{
 
         Typeface semiBoldTypeface = ResourcesCompat.getFont(parentActivity, R.font.caixa_std_semi_bold);
 
-        if(item.getTipoConcurso() == ModalidadeComboDTO.TipoConcursoEnum.ESPECIAL) {
+        if(item.getTipoConcurso().toString().equalsIgnoreCase("ESPECIAL")) {
             txtNomeModalidade.setTypeface(semiBoldTypeface);
             txtNomeModalidade.setText(item.getModalidade().getDescricaoEspecial().toLowerCase());
 

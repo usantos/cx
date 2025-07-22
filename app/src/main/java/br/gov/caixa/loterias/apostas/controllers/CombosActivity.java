@@ -2,30 +2,26 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.gson.Gson;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComboAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
-import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.onComboClickListener;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class CombosActivity extends SettingToolbarActivity implements onComboClickListener {
     public static final String ARG_COMBO = "ARG_COMBO";
-
     private static final int QUANTIDADE_COLUNA_LISTA_COMBOS = 2;
-    private List<CombosDTO> combos = new ArrayList<>();
 
     Toolbar toolbar;
 
@@ -39,9 +35,7 @@ public class CombosActivity extends SettingToolbarActivity implements onComboCli
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_combos);
-
         setViews();
-        getExtras();
         configuraListaCombosRcv();
     }
 
@@ -64,17 +58,9 @@ public class CombosActivity extends SettingToolbarActivity implements onComboCli
     }
 
 
-    private void getExtras(){
-        if(getIntent() != null && getIntent().hasExtra(HomeViewHolder.ARG_COMBOS)){
-            combos = (ArrayList<CombosDTO>) getIntent().getSerializableExtra(HomeViewHolder.ARG_COMBOS);
-            //combos = null -> teste da modal
-            Log.d("CombosActivity", "Combo recebido: " + combos);
-        }else{
-            Log.d("CombosActivity", "Nenhum combo recebido");
-        }
-    }
 
     private void configuraListaCombosRcv(){
+        List<CombosDTO> combos = SessaoUsuario.getInstance().getListCombosDTO();
 
         if(combos != null && !combos.isEmpty()){
             listaComboAdapter = new ListaComboAdapter(combos,CombosActivity.this,this);
@@ -93,7 +79,7 @@ public class CombosActivity extends SettingToolbarActivity implements onComboCli
     @Override
     public void onComboClick(CombosDTO combo) {
         Intent intent = new Intent(this, DetalheComboActivity.class);
-        intent.putExtra("ARG_COMBO", combo);
+        intent.putExtra(ARG_COMBO, (new Gson()).toJson(combo));
         startActivity(intent);
     }
 
