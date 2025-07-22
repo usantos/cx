@@ -65,6 +65,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+                android:name=".controllers.CombosActivity"
+                android:theme="@style/AppTheme.DegradeActionBar"
+                android:exported="false" />
+        <activity
             android:name=".controllers.FiltraMarketplaceActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"

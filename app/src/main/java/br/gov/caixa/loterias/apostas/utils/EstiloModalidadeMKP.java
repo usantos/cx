@@ -18,6 +18,7 @@ public class EstiloModalidadeMKP {
     private final int corFonteFundoEscuro;
     private final int trevoFundoClaro;
     private final int trevoFundoEscuro;
+    private final int tarjaEspecialTrevoCombo;
 
     public EstiloModalidadeMKP(ModalidadeEnum modalidade) {
         switch (modalidade) {
@@ -35,6 +36,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_quina_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_quina_fundo_escuro;
+                tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_quina_especial_combos;
                 break;
             case DUPLA_SENA:
                 corClara = R.color.dupla_sena_claro_mkp;
@@ -50,6 +52,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_dupla_sena_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_dupla_sena_fundo_escuro;
+                tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_dupla_especial_combos;
                 break;
             case LOTOFACIL:
                 corClara = R.color.lotofacil_claro_mkp;
@@ -65,6 +68,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_lotofacil_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_lotofacil_fundo_escuro;
+                tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_lotofacil_especial_combos;
                 break;
             case LOTOMANIA:
                 corClara = R.color.lotomania_claro_mkp;
@@ -80,6 +84,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_lotomania_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_lotomania_fundo_escuro;
+                tarjaEspecialTrevoCombo = -1;
                 break;
             case MAIS_MILIONARIA:
                 corClara = R.color.milionaria_claro_mkp;
@@ -95,6 +100,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_milionaria_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_milionaria_fundo_escuro;
+                tarjaEspecialTrevoCombo = -1;
                 break;
             case SUPER_7:
                 corClara = R.color.super_sete_claro_mkp;
@@ -110,6 +116,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_super_sete_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_super_sete_fundo_escuro;
+                tarjaEspecialTrevoCombo = -1;
                 break;
             case LOTECA:
                 corClara = R.color.loteca_claro_mkp;
@@ -125,6 +132,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_loteca_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_loteca_fundo_escuro;
+                tarjaEspecialTrevoCombo = -1;
                 break;
             case TIMEMANIA:
                 corClara = R.color.timemania_claro_mkp;
@@ -140,6 +148,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.timemania_letra_mkp;
                 trevoFundoClaro = R.drawable.trevo_timemania_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_timemania_fundo_escuro;
+                tarjaEspecialTrevoCombo = -1;
                 break;
             case DIA_DE_SORTE:
                 corClara = R.color.dia_sorte_claro_mkp;
@@ -155,6 +164,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_dia_de_sorte_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_dia_de_sorte_fundo_escuro;
+                tarjaEspecialTrevoCombo = -1;
                 break;
             case INSTANTANEA:
                 corClara = R.color.instantanea_claro;
@@ -170,6 +180,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevos_instantanea_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevos_instantanea_fundo_escuro;
+                tarjaEspecialTrevoCombo =-1;
                 break;
             default:
                 //MEGASENA
@@ -186,6 +197,7 @@ public class EstiloModalidadeMKP {
                 corFonteFundoEscuro = R.color.branco;
                 trevoFundoClaro = R.drawable.trevo_megasena_fundo_branco;
                 trevoFundoEscuro = R.drawable.trevo_megasena_fundo_escuro;
+                tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_mega_especial_combos;
         }
 
     }
@@ -240,4 +252,9 @@ public class EstiloModalidadeMKP {
     public int getTrevoFundoEscuro() {
         return trevoFundoEscuro;
     }
+
+    public int getTarjaEspecialTrevoCombo() {
+        return tarjaEspecialTrevoCombo;
+    }
 }
+

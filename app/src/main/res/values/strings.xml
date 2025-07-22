@@ -1508,5 +1508,10 @@
         bolão poderá ser menor que o exibido.
     </string>
     <string name="hora_dois_pontos">"Hora: "</string>
+    <string name="txt_lista_combos_top">Confira nossos combos e escolha o seu favorito!\nAproveite para aumentar suas chances de ganhar.</string>
+    <string name="titulo_combos">_Combo de Apostas_</string>
+    <string name="especial">Especial</string>
+    <string name="card_de_combo">Card de Combo</string>
+
 
 </resources>
