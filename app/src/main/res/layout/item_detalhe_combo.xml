@@ -52,7 +52,6 @@
                 android:id="@+id/txtModalidadeDetalheCombo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/caixa_std_semi_bold"
                 tools:text="lotofacil da independencia"
                 android:textSize="14sp"
                 android:textAlignment="center"

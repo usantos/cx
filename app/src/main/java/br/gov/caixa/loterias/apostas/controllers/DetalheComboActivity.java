@@ -99,7 +99,8 @@ public class DetalheComboActivity extends SettingToolbarActivity {
                 EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
                 setDrawable(txtNomeCombo, estilo.getTrevoFundoClaro(), 20, 20);
                 txtNomeCombo.setTextColor(ContextCompat.getColor(DetalheComboActivity.this, estilo.getCorLetraLista()));
-                txtNomeCombo.setText(combo.getModalidadesCombo().get(0).getModalidade().getDescricaoEspecial());
+                String nomeEspecial = combo.getTipoCombo().getNome() + " " + combo.getModalidadesCombo().get(0).getModalidade().getDescricaoEspecial();
+                txtNomeCombo.setText(nomeEspecial);
             }
 
         }else{
