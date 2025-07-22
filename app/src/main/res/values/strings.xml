@@ -1512,6 +1512,14 @@
     <string name="titulo_combos">_Combo de Apostas_</string>
     <string name="especial">Especial</string>
     <string name="card_de_combo">Card de Combo</string>
+    <string name="texto_header_detalhe_combo">Com esse pacote você garante apostas para todas as modalidades, incluindo teimosinhas para a semana inteira. Já pensou?</string>
+    <string name="texto_ver_ou_nao_numeros_escolhidos_detalhe_combo">Os números dos jogos dos combos são escolhidos aleatoriamente pelo sistema. Mas antes de efetuar o pagamento é possível visualizar os números selecionados.</string>
+    <string name="quantidade_de_apostas">Quantidade de Apostas</string>
+    <string name="ver_numeros_escolhidos_antes_de_pagar">Quero ver os números escolhidos antes de pagar.</string>
+    <string name="adicionar_apostas">Adicionar apostas</string>
+    <string name="remover_apostas">Remover apostas</string>
+    <string name="adicionar_ao_carrinho_de_compras">Adicionar ao carrinho de apostas</string>
+    <string name="card_de_aposta_contida_neste_combo">Aposta contida neste combo</string>
 
 
 </resources>

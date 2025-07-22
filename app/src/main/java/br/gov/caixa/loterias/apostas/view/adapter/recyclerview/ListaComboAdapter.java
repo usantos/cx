@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
 import br.gov.caixa.loterias.apostas.view.holder.ListaComboHolder;
+import br.gov.caixa.loterias.apostas.view.listener.onComboClickListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -18,10 +19,12 @@ public class ListaComboAdapter extends RecyclerView.Adapter<ListaComboHolder> {
 
     private final List<CombosDTO> listaCombos;
     private final Activity parentActivity;
+    private final onComboClickListener listener;
 
-    public ListaComboAdapter(List<CombosDTO> listaCombos, Activity parentActivity) {
+    public ListaComboAdapter(List<CombosDTO> listaCombos, Activity parentActivity, onComboClickListener listener) {
         this.listaCombos = new ArrayList<>(listaCombos);
         this.parentActivity = parentActivity;
+        this.listener = listener;
     }
 
     @NonNull
@@ -29,7 +32,7 @@ public class ListaComboAdapter extends RecyclerView.Adapter<ListaComboHolder> {
     public @NotNull ListaComboHolder onCreateViewHolder(@NonNull @NotNull ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_lista_combos, viewGroup, false);
 
-        return new ListaComboHolder(view, parentActivity);
+        return new ListaComboHolder(view, parentActivity, listener);
     }
 
     @Override

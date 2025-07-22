@@ -230,5 +230,7 @@
     <!-- Combos - Conforme Figma -->
     <color name="cinza_combos">#4F556B</color>
     <color name="borda_combos">#BCBCBC</color>
+    <color name="background_detalhe_combo">#FAFAFA </color>
+    <color name="azul_detalhe_combo">#3162A4</color>
 
 </resources>
