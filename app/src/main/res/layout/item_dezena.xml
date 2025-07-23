@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ToggleButton
         android:id="@+id/tv_item_numeto"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:text="1"
+        tools:textOff="1"
         android:textAlignment="center"
         android:gravity="center"
         android:layout_margin="8dp"
