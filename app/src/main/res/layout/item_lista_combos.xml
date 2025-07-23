@@ -84,7 +84,7 @@
                     android:id="@+id/txtNomeCombo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/caixa_std_regular"
+                    android:fontFamily="@font/caixa_std_semi_bold"
                     android:textSize="14sp"
                     android:textColor="@color/azul_combo"
                     tools:text="Sorte de Hoje"
