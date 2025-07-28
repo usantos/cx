@@ -54,8 +54,6 @@ android {
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
         versionCode 220101907
         versionName "1.19.1"
-        versionCode 220101904
-        versionName "1.19.1"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
