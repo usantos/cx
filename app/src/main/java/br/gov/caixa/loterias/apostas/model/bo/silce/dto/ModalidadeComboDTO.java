@@ -12,13 +12,7 @@
 
 
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
-import com.google.gson.TypeAdapter;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-
-import java.io.IOException;
 import java.util.Objects;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -30,53 +24,6 @@ public class ModalidadeComboDTO {
   @SerializedName("modalidade")
   private ModalidadeDTO modalidade = null;
 
-  /**
-   * Tipo do Concurso
-   */
-  @JsonAdapter(TipoConcursoEnum.Adapter.class)
-  public enum TipoConcursoEnum {
-    NORMAL("NORMAL"),
-    
-    ESPECIAL("ESPECIAL");
-
-    private String value;
-
-    TipoConcursoEnum(String value) {
-      this.value = value;
-    }
-
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    public static TipoConcursoEnum fromValue(String text) {
-      for (TipoConcursoEnum b : TipoConcursoEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-
-    public static class Adapter extends TypeAdapter<TipoConcursoEnum> {
-      @Override
-      public void write(final JsonWriter jsonWriter, final TipoConcursoEnum enumeration) throws IOException {
-        jsonWriter.value(enumeration.getValue());
-      }
-
-      @Override
-      public TipoConcursoEnum read(final JsonReader jsonReader) throws IOException {
-        String value = jsonReader.nextString();
-        return TipoConcursoEnum.fromValue(String.valueOf(value));
-      }
-    }
-  }
-
   @SerializedName("tipoConcurso")
   private TipoConcursoEnum tipoConcurso = null;
 
@@ -85,6 +32,11 @@ public class ModalidadeComboDTO {
 
   @SerializedName("quantidadeTeimosinhas")
   private Integer quantidadeTeimosinhas = null;
+
+  @SerializedName("quantidadeDezenas")
+  private Integer quantidadeDezenas = null;
+  @SerializedName("quantidadeDezenasTrevos")
+  private Integer quantidadeDezenasTrevos = null;
 
   @SerializedName("numero")
   private Integer numero = null;
@@ -161,6 +113,22 @@ public class ModalidadeComboDTO {
     this.quantidadeTeimosinhas = quantidadeTeimosinhas;
   }
 
+  public Integer getQuantidadeDezenas() {
+    return quantidadeDezenas;
+  }
+
+  public void setQuantidadeDezenas(Integer quantidadeDezenas) {
+    this.quantidadeDezenas = quantidadeDezenas;
+  }
+
+  public Integer getQuantidadeDezenasTrevos() {
+    return quantidadeDezenasTrevos;
+  }
+
+  public void setQuantidadeDezenasTrevos(Integer quantidadeDezenasTrevos) {
+    this.quantidadeDezenasTrevos = quantidadeDezenasTrevos;
+  }
+
   public ModalidadeComboDTO numero(Integer numero) {
     this.numero = numero;
     return this;
@@ -193,12 +161,14 @@ public class ModalidadeComboDTO {
         Objects.equals(this.tipoConcurso, modalidadeComboDTO.tipoConcurso) &&
         Objects.equals(this.quantidadeApostas, modalidadeComboDTO.quantidadeApostas) &&
         Objects.equals(this.quantidadeTeimosinhas, modalidadeComboDTO.quantidadeTeimosinhas) &&
+        Objects.equals(this.quantidadeDezenas, modalidadeComboDTO.quantidadeDezenas) &&
+        Objects.equals(this.quantidadeDezenasTrevos, modalidadeComboDTO.quantidadeDezenasTrevos) &&
         Objects.equals(this.numero, modalidadeComboDTO.numero);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(modalidade, tipoConcurso, quantidadeApostas, quantidadeTeimosinhas, numero);
+    return Objects.hash(modalidade, tipoConcurso, quantidadeApostas, quantidadeTeimosinhas,quantidadeDezenas, quantidadeDezenasTrevos, numero);
   }
 
 
@@ -206,11 +176,12 @@ public class ModalidadeComboDTO {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class ModalidadeComboDTO {\n");
-    
     sb.append("    modalidade: ").append(toIndentedString(modalidade)).append("\n");
     sb.append("    tipoConcurso: ").append(toIndentedString(tipoConcurso)).append("\n");
     sb.append("    quantidadeApostas: ").append(toIndentedString(quantidadeApostas)).append("\n");
     sb.append("    quantidadeTeimosinhas: ").append(toIndentedString(quantidadeTeimosinhas)).append("\n");
+    sb.append("    quantidadeDezenas: ").append(toIndentedString(quantidadeDezenas)).append("\n");
+    sb.append("    quantidadeDezenasTrevos: ").append(toIndentedString(quantidadeDezenasTrevos)).append("\n");
     sb.append("    numero: ").append(toIndentedString(numero)).append("\n");
     sb.append("}");
     return sb.toString();

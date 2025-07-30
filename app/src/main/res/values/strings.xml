@@ -62,6 +62,7 @@
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="infoConcluaPagamentoBolao">Conclua o pagamento de suas \napostas dentro do prazo</string>
     <string name="tituloApostaFeita">Aposta inserida no \ncarrinho com sucesso.</string>
+    <string name="tituloComboFeito">Esse combo foi para\no seu carrinho</string>
     <string name="tituloBolaoFeito">Bolão inserido no \ncarrinho com sucesso.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
@@ -818,6 +819,7 @@
     <string name="quebra_html"><![CDATA[<br>]]></string>
     <string name="espaco_em_branco">" "</string>
     <string name="evento_entrou_carrinho_online">ENTROU_CARRINHO_DE_APOSTAS_ONLINE</string>
+    <string name="evento_entrou_combos_online">ENTROU_COMBOS_ONLINE</string>
     <string name="confirmar">Confirmar</string>
     <string name="evento_entrou_formas_pagamento">ENTROU_FORMAS_DE_PAGAMENTO</string>
     <string name="evento_carregou_boloes_disponiveis">CARREGOU_BOLOES_DISPONIVEIS</string>
@@ -919,6 +921,7 @@
     <string name="evento_entrou_simular_aposta_modalidade">ENTROU_SIMULAR_APOSTA</string>
     <string name="evento_entrou_tutorial_mais_milionaria">ENTROU_TUTORIAL_MAIS_MILIONARIA</string>
     <string name="evento_entrou_instantanea">ENTROU_INSTANTANEA</string>
+    <string name="evento_entrou_combo">ENTROU_COMBO</string>
     <string name="extra_apostas_favoritas">apostasFavoritas</string>
     <string name="extra_apostas_salvas">apostasSalvas</string>
     <string name="extra_tipos_apostas">tiposAposta</string>
@@ -1476,6 +1479,7 @@
     <string name="aposte">_Aposte_</string>
     <string name="instantanea_texto_card">Diversão e prêmios na hora</string>
     <string name="portal_instantanea">Acesse e jogue\nno Portal da _INSTANTÂNEA_</string>
+    <string name="portal_combo">Mais que apostas: combos criados\npara aumentar suas chances\nde realizar o que você deseja.</string>
 
     <string name="_100">100</string>
     <string name="_5_a_21">5 a 21</string>
@@ -1508,5 +1512,18 @@
         bolão poderá ser menor que o exibido.
     </string>
     <string name="hora_dois_pontos">"Hora: "</string>
+    <string name="txt_lista_combos_top">Confira nossos combos e escolha o seu favorito!\nAproveite para aumentar suas chances de ganhar.</string>
+    <string name="titulo_combos">_Combo de Apostas_</string>
+    <string name="especial">Especial</string>
+    <string name="card_de_combo">Card de Combo</string>
+    <string name="texto_header_detalhe_combo">Com esse pacote você garante apostas para todas as modalidades, incluindo teimosinhas para a semana inteira. Já pensou?</string>
+    <string name="texto_ver_ou_nao_numeros_escolhidos_detalhe_combo">Os números dos jogos dos combos são escolhidos aleatoriamente pelo sistema. Mas antes de efetuar o pagamento é possível visualizar os números selecionados.</string>
+    <string name="quantidade_de_apostas">Quantidade de Apostas</string>
+    <string name="ver_numeros_escolhidos_antes_de_pagar">Quero ver os números escolhidos antes de pagar.</string>
+    <string name="adicionar_apostas">Adicionar apostas</string>
+    <string name="remover_apostas">Remover apostas</string>
+    <string name="adicionar_ao_carrinho_de_compras">Adicionar ao carrinho de apostas</string>
+    <string name="card_de_aposta_contida_neste_combo">Aposta contida neste combo</string>
+
 
 </resources>

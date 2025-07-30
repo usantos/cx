@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -34,6 +35,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirComboDTO;
+import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -88,6 +92,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.ComboUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -395,7 +400,7 @@ public class PrincipalActivity extends AppCompatActivity
                             }
 
                             SessaoUsuarioUtil.atualizaParametrosSingleton(payload);
-                            paramatroSimulacaoSuccess();
+                            paramatroSimulacaoSuccess(true);
                         }
 
                         @Override
@@ -409,7 +414,7 @@ public class PrincipalActivity extends AppCompatActivity
                     });
         }else if(SessaoUsuario.getInstance().isPrecisaMontarCarrossel()){
             modalidadesParaListar = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
-            paramatroSimulacaoSuccess();
+            paramatroSimulacaoSuccess(false);
             AlertDialogUtils.dismiss();
         }else {
             AlertDialogUtils.dismiss();
@@ -417,20 +422,49 @@ public class PrincipalActivity extends AppCompatActivity
 
     }
 
-    private void paramatroSimulacaoSuccess() {
+    private void paramatroSimulacaoSuccess(boolean refezParametrosSimulacao) {
 
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
-        //*** APAGAR ***
         //EncerramentoUtil.mockApagaModalidadeNosParametroJogo(
         //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
         EncerramentoUtil.verificaSeCriaCardTemporario();
 
+        if (!refezParametrosSimulacao && !ComboUtil.temComboParametroSimulacao()) {
+            refezParametrosSimulacao = true;
+        }
+
+        if (refezParametrosSimulacao) {
+            new ComboModel(this).buscaCombos(new OnSilceListener() {
+                @Override
+                public void success(Object payload) {
+                    SessaoUsuario.getInstance().setListCombosDTO((List<CombosDTO>) payload);
+                    if (SessaoUsuario.getInstance().getListCombosDTO() != null &&
+                        SessaoUsuario.getInstance().getListCombosDTO().size() > 0) {
+                        ComboUtil.atualizaCardCombo();
+                    } else {
+                        ComboUtil.excluiCardCombo();
+                    }
+                    paramatroSimulacaoPosCombos();
+                }
+
+                @Override
+                public void error(VolleyError error) {
+                    SessaoUsuario.getInstance().setListCombosDTO(null);
+                    ComboUtil.excluiCardCombo();
+                    paramatroSimulacaoPosCombos();
+                }
+            });
+        } else {
+            paramatroSimulacaoPosCombos();
+        }
+
+    }
+
+    private void paramatroSimulacaoPosCombos() {
         montarCarrossel();
-
         trataPopupDeNotificacaoHandler();
-
         redirectDeepLink();
     }
 
@@ -728,7 +762,8 @@ public class PrincipalActivity extends AppCompatActivity
     public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
-            if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA)) {
+            if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
+                data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
                 EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 buttonHomeBet.setTag(adapterPosition);
@@ -829,6 +864,14 @@ public class PrincipalActivity extends AppCompatActivity
             Uri uri = Uri.parse(ENDERECO_INSTANTANEA);
             Intent activity = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(activity);
+        } else if (modalidade == ModalidadeEnum.COMBO) {
+            if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_combo));
+                Intent activity = new Intent(PrincipalActivity.this, CombosActivity.class);
+                startActivity(activity);
+            } else {
+                AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false);
+            }
         } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
             Intent activity = new Intent(PrincipalActivity.this, clazz);

@@ -3,9 +3,11 @@ package br.gov.caixa.loterias.apostas.model.bo;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirComboDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
@@ -51,5 +53,10 @@ public interface ApostaRepository {
     void transformarCarrinho(Long idCarrinhoFavorito, Integer opcaoSelecionada, RequestListener<CarrinhoDTOResponse> listener);
 
     void buscaCarrinho(final RequestListener<CarrinhoDTOResponse> listener);
+
+    void buscaCombo(final RequestListener<CombosDTOResponse> listener);
+
+    void adicionarComboNoCarrinho(final IncluirComboDTO incluirComboDTO,
+                                  final RequestListener<CarrinhoDTOResponse> listener);
 
 }

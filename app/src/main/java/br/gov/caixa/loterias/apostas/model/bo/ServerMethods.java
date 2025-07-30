@@ -4,6 +4,7 @@ class ServerMethods {
 
      //CARRINHO
      static final String INCLUIR_APOSTA_CARRINHO_PATH = "/carrinhos/incluir-aposta";
+     static final String INCLUIR_COMBO_CARRINHO_PATH = "/carrinhos/incluir-combo";
      static final String INCLUIR_SURPRESINHA_CARRINHO_PATH = "/carrinhos/incluir-surpresinha";
      static final String BUSCA_CARRINHO_PATH = "/carrinhos";
      //static final String DELETE_APOSTA_COMBO_CARRINHO_PATH = "/carrinhos/combos/";
@@ -163,5 +164,8 @@ class ServerMethods {
      static final String REPASSOMETRO_PATH = "/repassometro";
      static final String PARAM_SIMULACAO_PATH = "/parametros-simulacao";
      static final String BAIRROS_PATH = "/bairros";
+
+     //COMBOS
+     static final String BUSCA_COMBOS_PATH = "/combos";
 
 }

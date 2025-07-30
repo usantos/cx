@@ -197,6 +197,27 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/textPortalCombo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/cinzaescuro"
+                            android:textSize="13.8sp"
+                            tools:text="@string/portal_combo"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/imageCombo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/branco"
+                            android:src="@drawable/imagem_combo"
+                            android:visibility="gone" />
+
+                        <TextView
                             android:id="@+id/textVieCardAcumulatedValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

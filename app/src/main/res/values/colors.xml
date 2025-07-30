@@ -216,6 +216,11 @@
     <color name="instantanea_claro">#00BBE6</color>
     <color name="instantanea_escuro">#009CB5</color>
 
+    <!-- Combo -->
+    <color name="combo_claro">#1577C1</color>
+    <color name="combo_escuro">#0066B3</color>
+    <color name="combo_trevo_laranja">#F07D1B</color>
+
     <!-- Resgate pix -->
     <color name="fonte_resgate">#2E484D</color>
     <color name="fonte_verde_resgate">#45C0AE</color>
@@ -227,5 +232,10 @@
     <color name="cinza_desativado_mkp">#E5E5E5</color>
     <color name="azul_combo">#007BBC</color>
 
+    <!-- Combos - Conforme Figma -->
+    <color name="cinza_combos">#4F556B</color>
+    <color name="borda_combos">#BCBCBC</color>
+    <color name="background_detalhe_combo">#FAFAFA </color>
+    <color name="azul_detalhe_combo">#3162A4</color>
 
 </resources>

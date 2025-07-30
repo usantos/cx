@@ -49,6 +49,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
     private EstiloModalidadeMKP estilo;
 
+    private ModalidadeEnum modalidade;
+
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
@@ -60,20 +62,31 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.modalidade)), ParametroJogoDTO.class);
         ((TextView) findViewById(R.id.txtVoltarAoInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
 
+        modalidade = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
+
         preencheBarraTitulo();
         configuraActivityIncluidoApostaCarrinho();
         fragmentSomadorCarrinho();
     }
     private void preencheBarraTitulo() {
-        FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
-                parametroSimulacao.getConcurso().getModalidade(),
-                parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(),
-                parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)),
-                getCor(), false);
+        if (modalidade.equals(ModalidadeEnum.COMBO)) {
+            FragmentUtils.startFragmentBarraTituloCombo(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                    parametroSimulacao.getConcurso().getModalidade(),
+                    getCorEscura());
+        } else {
+            FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                    parametroSimulacao.getConcurso().getModalidade(),
+                    parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(),
+                    parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)),
+                    getCorClara(), false);
+        }
     }
 
-    private int getCor() {
+    private int getCorClara() {
         return new EstiloModalidadeMKP(parametroSimulacao.getConcurso().getModalidade()).getCorClara();
+    }
+    private int getCorEscura() {
+        return new EstiloModalidadeMKP(parametroSimulacao.getConcurso().getModalidade()).getCorEscura();
     }
 
     private String getDataSorteio() {
@@ -103,10 +116,9 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     }
 
     private void configuraActivityIncluidoApostaCarrinho() {
-        ModalidadeEnum tipoJogo = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
         BigDecimal valorAposta = (BigDecimal) getIntent().getSerializableExtra(getResources().getString(R.string.valorAposta));
 
-        configuraLayoutTela(tipoJogo);
+        configuraLayoutTela(modalidade);
 
         TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
         valorApostaText.setText(ViewUtils.getMoedaFormat(valorAposta));
@@ -123,10 +135,12 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         TextView textTituloTela = findViewById(R.id.textTituloTela);
         textTituloTela.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+        if (modalidade.equals(ModalidadeEnum.COMBO)) {
+            textTituloTela.setText(getString(R.string.tituloComboFeito));
+        }
 
         ImageView imageSetaApontandoCarrinho = findViewById(R.id.imageSetaApontandoCarrinho);
         imageSetaApontandoCarrinho.setImageDrawable(VectorUtils.getShape(R.drawable.rectangle_5_copy, estilo.getCorFonteFundoEscuro()));
-
 
         findViewById(R.id.confirmarInclusaoApostaLayoutCarrinhoApostas).setOnClickListener(this);
         findViewById(R.id.botaoLinearLayoutVoltarPrincipal).setOnClickListener(this);

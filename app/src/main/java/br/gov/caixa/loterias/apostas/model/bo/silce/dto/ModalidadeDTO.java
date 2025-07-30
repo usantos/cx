@@ -31,6 +31,8 @@ public class ModalidadeDTO implements Serializable {
     protected String descricao = null;
     @SerializedName("descricaoEspecial")
     protected String descricaoEspecial = null;
+    @SerializedName("descricaoGestor")
+    protected String descricaoGestor = null;
 
     public ModalidadeDTO() {
         valor = null;
@@ -85,6 +87,18 @@ public class ModalidadeDTO implements Serializable {
         this.descricaoEspecial = descricaoEspecial;
     }
 
+    /**
+     * Descrição da modalidade, quando houver concurso especial.
+     **/
+    @ApiModelProperty(value = "Descrição da modalidade, quando houver concurso especial.")
+    public String getDescricaoGestor() {
+        return descricaoGestor;
+    }
+
+    public void setDescricaoGestor(String descricaoGestor) {
+        this.descricaoGestor = descricaoGestor;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -97,7 +111,8 @@ public class ModalidadeDTO implements Serializable {
         ModalidadeDTO modalidadeDTO = (ModalidadeDTO) o;
         return (this.valor == null ? modalidadeDTO.valor == null : this.valor.equals(modalidadeDTO.valor)) &&
                 (this.descricao == null ? modalidadeDTO.descricao == null : this.descricao.equals(modalidadeDTO.descricao)) &&
-                (this.descricaoEspecial == null ? modalidadeDTO.descricaoEspecial == null : this.descricaoEspecial.equals(modalidadeDTO.descricaoEspecial));
+                (this.descricaoEspecial == null ? modalidadeDTO.descricaoEspecial == null : this.descricaoEspecial.equals(modalidadeDTO.descricaoEspecial) &&
+                (this.descricaoGestor == null ? modalidadeDTO.descricaoGestor == null : this.descricaoGestor.equals(modalidadeDTO.descricaoGestor)));
     }
 
     @Override
@@ -106,6 +121,7 @@ public class ModalidadeDTO implements Serializable {
         result = 31 * result + (this.valor == null ? 0 : this.valor.hashCode());
         result = 31 * result + (this.descricao == null ? 0 : this.descricao.hashCode());
         result = 31 * result + (this.descricaoEspecial == null ? 0 : this.descricaoEspecial.hashCode());
+        result = 31 * result + (this.descricaoGestor == null ? 0 : this.descricaoGestor.hashCode());
         return result;
     }
 
@@ -116,6 +132,7 @@ public class ModalidadeDTO implements Serializable {
                 "  valor: " + valor + "\n" +
                 "  descricao: " + descricao + "\n" +
                 "  descricaoEspecial: " + descricaoEspecial + "\n" +
+                "  descricaoGestor: " + descricaoGestor + "\n" +
                 "}\n";
         return sb;
     }

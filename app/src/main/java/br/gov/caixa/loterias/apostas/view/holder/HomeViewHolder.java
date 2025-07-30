@@ -76,7 +76,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private LinearLayout linearCalendar;
 	private LinearLayout linearRelogio;
 	private ImageView imageInstantanea;
+	private ImageView imageCombo;
 	private TextView textPortal;
+	private TextView textPortalCombo;
 
 	private EstiloModalidadeMKP estilo;
 	private OnHomeListener listener;
@@ -108,7 +110,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		linearCalendar = itemView.findViewById(R.id.linearCalendar);
 		linearRelogio = itemView.findViewById(R.id.linearRelogio);
 		imageInstantanea = itemView.findViewById(R.id.imageInstantanea);
+		imageCombo = itemView.findViewById(R.id.imageCombo);
 		textPortal = itemView.findViewById(R.id.textPortalInstantanea);
+		textPortalCombo = itemView.findViewById(R.id.textPortalCombo);
 		premioEstimadoConcurso = itemView.findViewById(R.id.textPremioEstimadoConcurso);
 		dataSorteio = itemView.findViewById(R.id.textVieCardDrawDate);
 		textViewSorteioOuEncerramento = itemView.findViewById(R.id.textViewSorteioOuEncerramento);
@@ -154,6 +158,28 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.imageInstantanea.setVisibility(View.VISIBLE);
 			this.textPortal.setVisibility(View.VISIBLE);
 			this.textPortal.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.portal_instantanea)));
+			this.buttonActionResultadosModalidade.setVisibility(View.GONE);
+			this.imgSetaResultado.setVisibility(View.GONE);
+
+			return;
+		}
+
+		if (modalidade.getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
+			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
+			this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
+			this.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
+			this.trevo.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+			this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrapezio()));
+			this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
+			this.valorAcumulado.setVisibility(View.INVISIBLE);
+			this.premioEstimadoConcurso.setVisibility(View.GONE);
+			this.viewSeparador.setVisibility(View.GONE);
+			this.linearCalendar.setVisibility(View.GONE);
+			this.linearRelogio.setVisibility(View.GONE);
+			this.imageCombo.setVisibility(View.VISIBLE);
+			this.textPortalCombo.setVisibility(View.VISIBLE);
+			this.textPortalCombo.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.portal_combo)));
 			this.buttonActionResultadosModalidade.setVisibility(View.GONE);
 			this.imgSetaResultado.setVisibility(View.GONE);
 
