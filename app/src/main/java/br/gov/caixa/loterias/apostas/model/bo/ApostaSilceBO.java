@@ -61,21 +61,22 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.GsonRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 
-public class ApostaBO extends SilceBO {
-    private static ApostaBO instance;
+public class ApostaSilceBO extends SilceBO implements ApostaRepository {
+    private static ApostaSilceBO instance;
 
-    private ApostaBO(){
+    private ApostaSilceBO(){
         super();
     }
 
-    public static ApostaBO getInstance(){
+    public static ApostaSilceBO getInstance(){
         if (instance == null){
-            instance = new ApostaBO();
+            instance = new ApostaSilceBO();
         }
         return instance;
     }
 
     //Carrinho Favorito
+    @Override
     public void validarCarrinhoFavorito(String nomeCarrinho, RequestListener<CarrinhoFavoritoDTOResponse> listener){
         LinkedHashMap<String, String> params = new LinkedHashMap<>();
         params.put("nome", nomeCarrinho);
@@ -90,6 +91,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void transformarCarrinho(Long idCarrinhoFavorito, Integer opcaoSelecionada, RequestListener<CarrinhoDTOResponse> listener){
         String url = ServerMethods.CARRINHO_FAVORITO_TRANSFORMAR.replace("{idCarrinhoFavorito}", idCarrinhoFavorito.toString());
         LinkedHashMap<String, String> params = new LinkedHashMap<>();
@@ -106,8 +108,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
-
-
+    @Override
     public void deletaApostaCarrinhoFavorito(final String idCarrinho,
                                              final String idAposta,
                                              final RequestListener<ListApostaCarrinhoFavoritoResponse> listener) {
@@ -124,6 +125,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void deletaCarrinhoFavorito(final String idCarrinho,
                                        final RequestListener<ListCarrinhoFavoritoResponse> listener) {
         String url = ServerMethods.CARRINHO_FAVORITO_DELETAR_CARRINHO.replace("{id}", idCarrinho);
@@ -138,12 +140,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
-
-    public void salvarCarrinhoFavorito(final String nomeCarrinho,
-                                       final RequestListener<CarrinhoFavoritoDTOResponse> listener) {
-        salvarCarrinhoFavorito(nomeCarrinho,null,true, listener);
-    }
-
+    @Override
     public void salvarCarrinhoFavorito(final String nomeCarrinho,
                                        final String idCompra,
                                        final Boolean mantemSurpresinhas,
@@ -172,6 +169,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoResponse> listener){
         final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.CARRINHO_FAVORITO_BUSCAR_CARRINHOS,
 
@@ -184,6 +182,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void buscaApostasCarrinhoFavorito(Long idCarrinho,RequestListener<ListApostaCarrinhoFavoritoResponse> listener){
         String url = ServerMethods.CARRINHO_FAVORITO_BUSCA_APOSTAS.replace("{idCarrinho}", idCarrinho.toString());
         final GsonRequest request = getServiceConnection().buildGetRequest(url,
@@ -316,6 +315,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void getApostasFavoritas(final int offset, final RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("offset", String.valueOf(offset));
@@ -471,8 +471,8 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
-
     //APOSTAS FAVORITAS
+    @Override
     public void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
         queryParams.put("id", idAposta);
@@ -499,6 +499,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita,
                                                   final Integer valorTipoConcurso,
                                                   final Integer qtdTeimosinhas,
@@ -520,6 +521,7 @@ public class ApostaBO extends SilceBO {
     }
 
     //CARRINHO
+    @Override
     public void adicionarApostaNoCarrinho(final IdentificaoDeUmaApostaDas8Modalidades aposta,
                                           final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
@@ -540,6 +542,7 @@ public class ApostaBO extends SilceBO {
         }
     }
 
+    @Override
     public void limparCarrinho(RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.LIMPAR_CARRINHO_PATH,
@@ -555,6 +558,7 @@ public class ApostaBO extends SilceBO {
         }
     }
 
+    @Override
     public void validarCarrinho(final RequestListener<ResourceResponse> listener) {
         final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.VALIDAR_CARRINHO,
                 new LinkedHashMap<>(),
@@ -566,7 +570,6 @@ public class ApostaBO extends SilceBO {
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
-
 
     public void adicionarApostasNoCarrinho(final List<IdentificaoDeUmaApostaDas8Modalidades> apostas,
                                            final RequestListener<AgrupadorDTOApostaDTOResponse> listener) {
@@ -581,6 +584,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void adicionarSurpresinhaNoCarrinho(final IncluirSurpresinhaDTO aposta,
                                                final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
@@ -597,6 +601,7 @@ public class ApostaBO extends SilceBO {
         }
     }
 
+    @Override
     public void buscaCarrinho(final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.BUSCA_CARRINHO_PATH,
@@ -611,6 +616,7 @@ public class ApostaBO extends SilceBO {
         }
     }
 
+    @Override
     public void deleteComboCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = getServiceConnection().buildDeleteRequest(ServerMethods.DELETE_APOSTA_COMBO_CARRINHO_PATH + id,
@@ -623,6 +629,8 @@ public class ApostaBO extends SilceBO {
             getServiceConnection().request(request, listener);
         }
     }
+
+    @Override
     public void  deleteApostaCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener) {
         if (verificaAcessToken(listener)) {
             final GsonRequest request = getServiceConnection().buildDeleteRequest(ServerMethods.DELETE_APOSTA_CARRINHO_PATH + id,
@@ -636,19 +644,7 @@ public class ApostaBO extends SilceBO {
         }
     }
 
-    public void postRegistrarApostaCarrinho(final MeioPagamento meioPagamento, final RequestListener<RetornoPadraoResponse> listener) {
-        final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_PATH,
-
-                new LinkedHashMap<>(),
-                meioPagamento, RetornoPadraoResponse.class,
-                listener.getSilceListener(),
-                listener.getErrorListener(),
-                getHeaderToken());
-
-        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
-        getServiceConnection().request(request, listener);
-    }
-
+    @Override
     public void postRegistrarApostaCarrinhoAsync(final MeioPagamento meioPagamento, final RequestListener<CompraAsyncResponse> listener) {
         final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.CARRINHOS_REGISTRAR_APOSTAS_ASYNC_PATH,
                 new LinkedHashMap<>(),
@@ -661,6 +657,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void verificaCompraProcessamento(final Long idCompraCarrinho, final RequestListener<CompraAsyncResponse> listener) {
         Map<String, String> queryParams = new HashMap<>();
         queryParams.put("idCompraCarrinho", String.valueOf(idCompraCarrinho));
@@ -826,6 +823,7 @@ public class ApostaBO extends SilceBO {
         getResultadoModalidade( modalidade, "", listener);
     }
 
+    @Override
     public void getModalidades(final RequestListener<ModalidadeDTOResponse> listener) {
         final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.MODALIDADES_PATH,
                 new LinkedHashMap<>(),
@@ -889,6 +887,7 @@ public class ApostaBO extends SilceBO {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void getEscudosEquipes(final RequestListener<EscudoEquipeEsportivaDTOResponse> listener) {
         final GsonRequest request = getServiceConnection().buildGetRequest(ServerMethods.EQUIPES_ESPORTIVAS_LISTA_EQUIPES_PATH,
                 new LinkedHashMap<>(),

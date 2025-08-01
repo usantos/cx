@@ -22,7 +22,6 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnPublicKeyListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoResponse;
@@ -105,7 +104,7 @@ public class MercadoPagoConnection {
 	private static void silceBuscaKeyPublic(OnPublicKeyListener keyListener) {
 		Context ctx = Aplicacao.application.getApplicationContext();
 		Long                 id      = new Long(1);
-		DadosCorporativosBO.getInstance().buscaKeyMercadoPago(id, new RequestListener<MeioPagamentoResponse>() {
+		DadosCorporativosSilceBO.getInstance().buscaKeyMercadoPago(id, new RequestListener<MeioPagamentoResponse>() {
 			@Override
 			public void onResponse(MeioPagamentoResponse result) {
 				if (result != null && result.getPayload() != null) {

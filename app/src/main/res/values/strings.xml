@@ -61,8 +61,8 @@
     <string name="verCarrinhoVazio">OK</string>
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="infoConcluaPagamentoBolao">Conclua o pagamento de suas \napostas dentro do prazo</string>
-    <string name="tituloApostaFeita">Essa aposta foi para o seu carrinho.</string>
-    <string name="tituloBolaoFeito">Esse bolão foi para \no seu carrinho.</string>
+    <string name="tituloApostaFeita">Aposta inserida no \ncarrinho com sucesso.</string>
+    <string name="tituloBolaoFeito">Bolão inserido no \ncarrinho com sucesso.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>
     <string name="confirmacao">Confirmação</string>
@@ -119,6 +119,7 @@
     <string name="termo_de_uso_underline"><u>termo de uso</u>.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
+    <string name="cod_loterica">Cod. Lotérica: </string>
     <string name="enviando_email">Enviar e-mail usando:"</string>
     <string name="label_lembrar_valor_minimo">Lembre-se que o valor mínimo do total_de compras nesse aplicativo é </string>
     <string name="numeros_sorteados">Números sorteados</string>
@@ -238,7 +239,7 @@
     <string name="label_aposte_agora">Aposte agora</string>
     <string name="botao_aposte_agora">Aposte\n_agora_</string>
     <string name="label_experimente">Experimente</string>
-    <string name="label_aposte_aqui">Aposte\naqui</string>
+    <string name="label_aposte_aqui">_Aposte_ aqui</string>
     <string name="label_faca_login_cadastre">Faça login/cadastre-se</string>
     <string name="label_coluna">Coluna</string>
     <string name="label_time">Time</string>
@@ -356,7 +357,7 @@
     <string name="label_numerico_dois">2</string>
     <string name="label_numerico_tres">3</string>
     <string name="label_situacao_list_apostas_confirmadas">Situação -&#160;</string>
-    <string name="label_empty_list_apostas_confirmadas">Você ainda não possui apostas confirmadas neste mês. Deseja apostar agora?</string>
+    <string name="label_empty_list_apostas_confirmadas">Você ainda não fez apostas no período selecionado. Aproveite para apostar agora!</string>
     <string name="label_ganhador">ganhador</string>
     <string name="label_numero_ganhador">%d ganhador</string>
     <string name="label_ganhadores">ganhadores</string>
@@ -1404,10 +1405,10 @@
     <string name="extra_especial_reserva">isEspecialReserva</string>
     <string name="label_cota_concurso_bold">Cota: </string>
     <string name="label_voltar_apostas_individuais">_Voltar Apostas Individuais_</string>
+    <string name="label_bolao_bar_marketplace">_Bolão CAIXA_</string>
     <string name="alterar_pesquisa">_Alterar_\na pesquisa com novos filtros</string>
     <string name="pesquisar_novamente">_Pesquisar Novamente_\ncom os mesmos parâmetros</string>
     <string name="descritivo_loterica">Insira o nome da lotérica ou o código somente com os \nnúmeros do segundo campo, com 6 dígitos. Exemplo: \nE.Lotérico 10.000004-01, digite 000004.</string>
-
     <string name="atencao_descricao_gerar_pix">Caso precise recuperar este código ou consultar o status da compra acesse o menu \"Minhas Compras\".</string>
     <string name="ir_para_minhas_compras">Ir para as\n_Minhas Compras_</string>
     <string name="descricao_filtro_vazio">Não encontramos nenhum bolão que corresponda à sua pesquisa!</string>
@@ -1449,15 +1450,18 @@
     <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
     <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>
     <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
-    <string name="todas_modalidades">todas as\nmodalidades</string>
+    <string name="todas_modalidades">Todas as\nmodalidades</string>
     <string name="gerar_comprovante">Gerar Comprovante</string>
     <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
     <string name="usuario_bloqueio_parcial">Usuário habilitado apenas para consultas.</string>
     <string name="label_loterica_filtro">Lotéricas</string>
     <string name="nome_loteria">Nome da Lotérica:</string>
     <string name="nao_sei_cep">Não sei o meu CEP</string>
+    <string name="jogo_responsavel">Jogo Responsável</string>
     <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
     <string name="voce_sera_redirecionado_para_o_site_dos_correios">Você será redirecionado para o site dos Correios</string>
+    <string name="url_jogo_responsavel">https://www.caixa.gov.br/jogo-responsavel/Paginas/default.aspx</string>
+    <string name="voce_sera_redirecionado_para_o_site_jogo_responsavel">Você será redirecionado para o portal do Jogo Responsável</string>
 
     <string name="alerta_descricao_pagamento_nao_identificado">Você possui compra(s) cancelada(s) por falta de identificação do pagamento dentro do tempo limite para efetivação das apostas. As apostas contidas na compra não concorrem a qualquer concurso. Não se preocupe, caso tenha realizado o pagamento realizaremos o estorno do valor para a conta pagadora.</string>
     <string name="acompanhe_suas_compras">Acompanhe suas compras</string>
@@ -1500,5 +1504,9 @@
     <string name="confirmacao_continuar_experimente">Para continuar utilizando a funcionalidade, você precisa efetuar o login no app Loterias Caixa.</string>
     <string name="continuar_experimente">Continuar no Experimente</string>
     <string name="efetuar_login">Efetuar o login</string>
+    <string name="orientacoes_arrendondamento_bolao">Devido a regras de arredondamento, o valor cobrado pela Cota deste
+        bolão poderá ser menor que o exibido.
+    </string>
+    <string name="hora_dois_pontos">"Hora: "</string>
 
 </resources>

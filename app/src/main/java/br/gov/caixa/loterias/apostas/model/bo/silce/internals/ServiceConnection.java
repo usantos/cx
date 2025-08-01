@@ -123,14 +123,7 @@ public class ServiceConnection {
                                                    Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        //Servico Nuvem
-        GsonRequest request;
-        if (ServicoNuvemUtil.isUrlServicoNuvem(url)) {
-            request = new GsonRequest<>(POST, url, body, responseDataClass, headers, listener, errorListener);
-        } else {
-            request = new GsonRequest<>(POST, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
-        }
-
+        GsonRequest request = new GsonRequest<>(POST, url, prepareBody(body, path), responseDataClass, headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
         return request;
@@ -142,14 +135,7 @@ public class ServiceConnection {
                                                   Response.ErrorListener errorListener, Map<String, String> headers) {
 
         String url = fillUrlWithQueryParams(path, queryParams);
-        //Servico Nuvem
-        GsonRequest request;
-        if (ServicoNuvemUtil.isUrlServicoNuvem(url)) {
-            request = new GsonRequest<>(PUT, url, body, responseDataClass, headers, listener, errorListener);
-        } else {
-            request = new GsonRequest<>(PUT, url, prepareBody(body), responseDataClass, headers, listener, errorListener);
-        }
-
+        GsonRequest request = new GsonRequest<>(PUT, url, prepareBody(body, path), responseDataClass, headers, listener, errorListener);
         request.setRetryPolicy(createRetryPolicy());
         Log.i(TAG_REQUEST, getPath(path, queryParams));
         return request;
@@ -178,35 +164,43 @@ public class ServiceConnection {
             return baseUrl + path;
     }
 
-    private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
-
-        String novoCaminho = ServicoNuvemUtil.alteraCaminhoNuvem(path);
-        if (novoCaminho != null) {
-            ServicoNuvemUtil.apresentaCaminhoTQS(novoCaminho + fillParamToString(queryParams));
-            this.requestQueue = NuvemSingleton.getInstance().getRequestQueue();
-            return novoCaminho + fillParamToString(queryParams);
+    private String fillUrlWithQueryParamsNuvem(String path, Map<String, String> queryParams) {
+        String baseSemBarra = baseUrl;
+        if (baseUrl.endsWith("/")) {
+            baseSemBarra = baseUrl.substring(0,baseUrl.length() -1);
         }
-
-        this.requestQueue = SilceSingleton.getInstance().getRequestQueue();
-        return fillUrl(path) + fillParamStr(queryParams);
+        ServicoNuvemUtil.apresentaCaminhoTQS(baseSemBarra + path + fillParamToString(queryParams));
+        return baseSemBarra + path + fillParamToString(queryParams);
     }
 
-    private <T> String prepareBody(T body) {
-        try {
-            String bodyString;
-            if (body == null) {
-                bodyString = "{}";
-            } else {
-                bodyString = (new Gson()).toJson(body);
-            }
+    private String fillUrlWithQueryParams(String path, Map<String, String> queryParams) {
+        if (ServicoNuvemUtil.isEndpointNuvem(path)) {
+            return  fillUrlWithQueryParamsNuvem(path, queryParams);
+        } else {
+            return fillUrl(path) + fillParamStr(queryParams);
+        }
+    }
 
-            Bin encryptedBody = silceCrypto.encryptBody(bodyString);
-            String bodyStr = encryptedBody.toIso8859_1()
-                    + "!#!#!" + KEY.toIso8859_1()
-                    + "!#!#!" + IV.toIso8859_1();
-            return Bin.fromIso8859_1(bodyStr).toBase64();
-        } catch (Exception e) {
-            throw new RuntimeException("Exceção ao preparar o body da requisição ao SILCE", e);
+    private <T> String prepareBody(T body, String endPoint) {
+        if (ServicoNuvemUtil.isEndpointNuvem(endPoint)) {
+            return new Gson().toJson(body);
+        } else {
+            try {
+                String bodyString;
+                if (body == null) {
+                    bodyString = "{}";
+                } else {
+                    bodyString = new Gson().toJson(body);
+                }
+
+                Bin encryptedBody = silceCrypto.encryptBody(bodyString);
+                String bodyStr = encryptedBody.toIso8859_1()
+                        + "!#!#!" + KEY.toIso8859_1()
+                        + "!#!#!" + IV.toIso8859_1();
+                return Bin.fromIso8859_1(bodyStr).toBase64();
+            } catch (Exception e) {
+                throw new RuntimeException("Exceção ao preparar o body da requisição ao SILCE", e);
+            }
         }
     }
 

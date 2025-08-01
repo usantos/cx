@@ -91,6 +91,15 @@
 
         </LinearLayout>
 
+        <TextView
+                android:id="@+id/horaCompraTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="start"
+                tools:text="00:00:00"
+                android:fontFamily="@font/caixa_std_regular"/>
+
         <LinearLayout
             android:id="@+id/linear_linha3"
             android:layout_width="match_parent"

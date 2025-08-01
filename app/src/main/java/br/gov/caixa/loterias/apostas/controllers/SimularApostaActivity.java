@@ -39,7 +39,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -61,6 +61,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
@@ -122,7 +123,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     private ParametroMesDeSorte mesDeSorteCartela;
     private ParametroMesDeSorte mesDeSorteSurpresinha;
     private Boolean isEspecial = false;
-    private DadosCorporativosBO dadosCorporativosBO;
+    private DadosCorporativosSilceBO dadosCorporativosSilceBO;
     private boolean isAvisou = false;
 
     //mocks
@@ -142,7 +143,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
     
     protected void init() {
-        dadosCorporativosBO = DadosCorporativosBO.getInstance();
+        dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
         preencheBarraTitulo();
         setViews();
@@ -479,7 +480,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         apostaFavorita.setNumerosSelecionados(dezenasSelecionadas);
         apostaFavorita.setId(Constantes.ZERO_LONG);
 
-        dadosCorporativosBO.validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
+        ServicoFactoryUtil.getDadosCorporativoService().validarApostaFavorita(apostaFavorita, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 salvarAposta(apostaFavorita);
@@ -508,7 +509,8 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         if(!AlertDialogUtils.isShow()){
             AlertDialogUtils.show(this);
         }
-        dadosCorporativosBO.salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
+
+        ServicoFactoryUtil.getDadosCorporativoService().salvarApostaFavorita(aposta, new RequestListener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
                 AppCenterManager.registraEvento(getResources().getString(R.string.evento_efetuou_adicao_aposta_favorita_sucesso));

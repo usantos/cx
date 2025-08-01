@@ -1,8 +1,5 @@
 package br.gov.caixa.loterias.apostas.utils;
 
-import java.util.Arrays;
-import java.util.List;
-
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -20,91 +17,12 @@ public class ServicoNuvemUtil {
 
 	private static final String PUBLICO = "/publico";
 	private static final String LOGADO = "/logado";
-	private static final List<String> listPublico = Arrays.asList(
-			"/equipes-esportivas/listaEquipes",
-			"/parametros-simulacao",
-			"/combos",
-			"/modalidades");
-	private static final List<String> listLogadoExato = Arrays.asList(
-			"/carrinhos",
-			"/carrinhos/atualiza-teimosinha-aposta",
-			"/carrinhos/incluir-aposta",
-			"/carrinhos/incluir-apostas",
-			"/carrinhos/incluir-combo",
-			"/carrinhos/incluir-surpresinha",
-			"/carrinhos/incluir-surpresinhas",
-			"/carrinhos/iniciar-pagamento-externo",
-			"/carrinhos/limpar",
-			"/carrinhos/limpar-carrinho-favorito",
-			"/carrinhos/registrar-apostas",
-			"/carrinhos/registrar-apostas-async",
-			"/carrinhos/registrar-apostas-sem-carrinho",
-			"/carrinhos/salvar-carrinho-favorito",
-			"/carrinhos/validar",
-			"/carrinhos/validar-aposta-identica",
-			"/carrinhos/verifica-compra-processamento",
-			"/usuarios/verificar-cadastro",
-			"/carrinhos/gerar-cobranca-pix");
-	private static final List<String> listLogadoParcial = Arrays.asList(
-			"/apostas-favoritas",
-			"/carrinhos-favoritos",
-			"/carrinhos/apostas",
-			"/carrinhos/combos",
-			"/carrinhos/incluir-aposta-favorita",
-			"/carrinhos/incluir-carrinho-favorito");
 
-	private static final List<String> listLogadoEspecial = Arrays.asList(
-			"/salvar-carrinho-favorito"); 	//compras/{idCompra}/salvar-carrinho-favorito
-
-
-	public static String alteraCaminhoNuvem(String path) {
-
-		String baseUrlCarrinho;
-
-		if(isAmbienteTQS()) {
-			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
-			//baseUrlCarrinho = "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1"; //TQS
-		} else {
-			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
+	public static boolean isEndpointNuvem(String endpoint) {
+		if (endpoint.startsWith(PUBLICO) || endpoint.startsWith(LOGADO)) {
+			return true;
 		}
-
-		if (baseUrlCarrinho == null || baseUrlCarrinho.isEmpty() || baseUrlCarrinho.equals("-")) {
-			return null;
-		}
-
-		if (listPublico.contains(path)) {
-			if (cpfAcessamNuvem()) {
-				return baseUrlCarrinho + PUBLICO + path;
-			}
-			return null;
-		}
-
-		if (listLogadoExato.contains(path)) {
-			if (cpfAcessamNuvem()) {
-					return baseUrlCarrinho + LOGADO + path;
-			}
-			return null;
-		}
-
-		for(String parcial : listLogadoParcial) {
-			if (path.startsWith(parcial)) {
-				if (cpfAcessamNuvem()) {
-					return baseUrlCarrinho + LOGADO + path;
-				}
-				return null;
-			}
-		}
-
-		for(String parcial : listLogadoEspecial) {
-			if (path.contains(parcial)) {
-				if (cpfAcessamNuvem()) {
-					return baseUrlCarrinho + LOGADO + path;
-				}
-				return null;
-			}
-		}
-
-		return null;
+		return false;
 	}
 
 	private static boolean isAmbienteTQS() {
@@ -148,16 +66,6 @@ public class ServicoNuvemUtil {
 		}
 	}
 
-	public static boolean isUrlServicoNuvem(String url) {
-		if (url.contains(ServicoNuvemUtil.AZURE_API) ||
-				url.contains(ServicoNuvemUtil.PRD_API) ||
-				url.contains(ServicoNuvemUtil.TQS_API) ||
-				url.contains(ServicoNuvemUtil.DES_API)) {
-			return true;
-		}
-		return false;
-	}
-
 	public static String apiKeyChave() {
 		if (isAmbienteTQS()) {
 			return APIKEY_CHAVE_TQS;
@@ -166,4 +74,39 @@ public class ServicoNuvemUtil {
 		}
 	}
 
+	public static String getBaseUrlNuvem() {
+		String baseUrlCarrinho;
+
+		if(isAmbienteTQS()) {
+			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoPiloto();
+			//baseUrlCarrinho = "https://apim-silce-tqs.azure-api.net/loterias-web/carrinho/v1"; //TQS
+			//"https://silce.carrinho.tqs.caixa.gov.br/loterias-web/carrinho/v1"
+		} else {
+			baseUrlCarrinho = ConfiguracaoAppSingleton.getInstance().getUrlBaseCarrinhoProducao();
+		}
+
+		return baseUrlCarrinho;
+	}
+
+	public static boolean isServicoNuvemAtivo() {
+		String baseUrlCarrinho = getBaseUrlNuvem();
+
+		if (baseUrlCarrinho == null || baseUrlCarrinho.isEmpty() || baseUrlCarrinho.equals("-")) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public static boolean isServicoNuvem() {
+		if (!isServicoNuvemAtivo()) {
+			return false;
+		}
+
+		if (cpfAcessamNuvem()) {
+			return true;
+		}
+
+		return false;
+	}
 }

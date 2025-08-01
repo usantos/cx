@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTO;
@@ -113,7 +113,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     private void getUFS() {
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        DadosCorporativosBO.getInstance().ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
+        DadosCorporativosSilceBO.getInstance().ufs(new RequestListener<UnidadeFederacaoDTOResponse>() {
             @Override
             public void onResponse(UnidadeFederacaoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -200,7 +200,7 @@ public class CadastroActivity extends AppCompatActivity {
             final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
             listMunicipios = new ArrayList<>();
 
-            DadosCorporativosBO.getInstance().municipios(idUf, new RequestListener<MunicipioDTOResponse>() {
+            DadosCorporativosSilceBO.getInstance().municipios(idUf, new RequestListener<MunicipioDTOResponse>() {
                 @Override
                 public void onResponse(MunicipioDTOResponse response) {
                     loadViewProgress.dismiss();

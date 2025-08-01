@@ -10,7 +10,6 @@ import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bean.ParametrosPagamento;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
@@ -19,7 +18,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 public class CompraUtil {
 
     private static void verificaCompraProcessamento(final Context context, Long idCompraCarrinho, int posicao, final OnCompraAsync listener) {
-        ApostaBO.getInstance().verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
+        ServicoFactoryUtil.getApostaService().verificaCompraProcessamento(idCompraCarrinho, new RequestListener<CompraAsyncResponse>() {
             @Override
             public void onResponse(CompraAsyncResponse result) {
                 listener.successCompra();
@@ -37,7 +36,7 @@ public class CompraUtil {
         MeioPagamento meioPagamento = new MeioPagamento(meioPag, parametroPagamento);
 
         Context context = Aplicacao.application.getApplicationContext();
-        ApostaBO.getInstance().postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
+        ServicoFactoryUtil.getApostaService().postRegistrarApostaCarrinhoAsync(meioPagamento, new RequestListener<CompraAsyncResponse>() {
             @Override
             public void onResponse(CompraAsyncResponse response) {
                 if (verificaRedirect(response)) {

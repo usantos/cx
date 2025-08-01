@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -69,8 +70,9 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private JogosBolaoRecyclerView listaAdapter;
 	private PartidasLotecaRecyclerViewAdapter partidasAdapter;
 	private SuperSeteRecyclerViewAdapter superSeteAdpter;
-	private ConstraintLayout layoutQtdCotas;
+	private ConstraintLayout layoutQtdCotas, layoutDetalhes;
 	private FrameLayout frameSomador, frameRodape;
+	private AppCompatImageView tagBolao;
 
 	private String codigoBolao;
 	private ModalidadeEnum modalidade;
@@ -91,21 +93,18 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_detalhes_bolao);
-		configToolbar(R.id.toolbar);
 
 		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(DetalhesBolaoActivity.this, onAtualizaLista());
 
 		getExtras();
 		estilo = new EstiloModalidadeMKP(modalidade);
 
-		setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_bolões_"));
-
 		setViews();
+		aplicaEstilo();
 		setMetodos();
 
 		fragmentSomadorCarrinho();
 		model = new DetalhesBolaoModel(this);
-		aplicaEstilo();
 		aplicaModoVisualizacao();
 	}
 
@@ -131,8 +130,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
 		}
-		configBackgroundColorMenu(estilo.getCorEscura());
-		configColorTextMenu(estilo.getCorFonteFundoEscuro());
+		tagBolao.setImageResource(estilo.getImagemTriangulo());
 
 		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		tvMunicipio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
@@ -166,6 +164,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void setViews() {
+		layoutDetalhes = findViewById(R.id.layout_detalhes_bolao);
+		tagBolao = findViewById(R.id.tag_bolao_detalhes);
 		tvValorPremio = findViewById(R.id.id_valor_premio);
 		tvDescricaoPremioConcurso = findViewById(R.id.id_descricao_valor_premio);
 		tvMunicipio = findViewById(R.id.id_municipio);
@@ -228,7 +228,11 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		return new OnSilceListener<DetalheBolaoDTO>() {
 			@Override
 			public void success(DetalheBolaoDTO payload) {
-				if (modalidade != null && modalidade == ModalidadeEnum.MAIS_MILIONARIA && payload.getApostas() != null && !payload.getApostas().isEmpty() && payload.getApostas().get(0).getTrevos() == null && controleChamadaServico <= 3){
+				if (modalidade != null &&
+						modalidade == ModalidadeEnum.MAIS_MILIONARIA &&
+						payload.getApostas() != null && !payload.getApostas().isEmpty() &&
+						payload.getApostas().get(0).getTrevos() == null &&
+						controleChamadaServico <= 3) {
 					controleChamadaServico++;
 					model.buscaDetalhesBolao(codigoBolao, onBuscaDetalheBolaoListener());
 				} else {
@@ -237,8 +241,12 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 					fragmentRodape();
 					preencheDados();
 					AlertDialogUtils.dismiss();
-					if (bolao.getQtdCotaDisponivel() == 0 && modoVisualizacao != null && modoVisualizacao == ModoVisualizacaoBolaoEnum.SIMULACAO) {
-						ViewUtils.alertTitleButton(DetalhesBolaoActivity.this, R.string.label_atencao, getString(R.string.cota_zerou),
+					layoutDetalhes.setVisibility(View.VISIBLE);
+					if (bolao.getQtdCotaDisponivel() == 0 && modoVisualizacao != null &&
+							modoVisualizacao == ModoVisualizacaoBolaoEnum.SIMULACAO) {
+						ViewUtils.alertTitleButton(DetalhesBolaoActivity.this,
+								R.string.label_atencao,
+								getString(R.string.cota_zerou),
 								"Ok", dialogInterface -> {
 									dialogInterface.dismiss();
 									setResult(Activity.RESULT_OK);
@@ -250,16 +258,16 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 			}
 
 			@Override
-			public void error(VolleyError error) {
+			public void error (VolleyError error){
 				AlertDialogUtils.dismiss();
 			}
 		};
 	}
 
 	private void preencheDados() {
-		ViewUtils.setMoedaFormatHtml(bolao.getVrPremioEstimado(), tvValorPremio);
+		tvValorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
 		tvDescricaoPremioConcurso.setText(ViewUtils.textColor(this, getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso()), estilo.getCorLetraLista(), false));
-		tvMunicipio.setText(getString(R.string.nome_loteria) +" "+ bolao.getNomeFantasia() + "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getMunicipio().getUf().getSigla() );
+		tvMunicipio.setText(getString(R.string.nome_loteria) +" "+ bolao.getNomeFantasia() + "\n" + getString(R.string.cod_loterica) + bolao.getLotericaFormatada().getNumeroFormatado() + "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getMunicipio().getUf().getSigla());
 		//tvDescLoterica.setText(getString(R.string.nome_loteria) +" "+ bolao.getNomeFantasia());
 		tvValorCota.setText("Valor da Cota: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaSemTarifa()));
 		tvValorTarifa.setText("Tarifa de Serviço: " + ViewUtils.getMoedaFormat(bolao.getVrTarifaServicoUltimaCota()));

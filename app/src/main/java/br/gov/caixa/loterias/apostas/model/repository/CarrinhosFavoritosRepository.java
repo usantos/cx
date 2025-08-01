@@ -6,7 +6,6 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -17,17 +16,16 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class CarrinhosFavoritosRepository extends AppRepository {
-    private ApostaBO apostaBO;
 
     public CarrinhosFavoritosRepository(Activity activity) {
         super(activity);
-        apostaBO = ApostaBO.getInstance();
     }
 
     public void buscaCarrinhosFavoritos(OnSilceListener<List<CarrinhoFavoritoDTO>> listener) {
-        apostaBO.buscaCarrinhosFavoritos(new RequestListener<ListCarrinhoFavoritoResponse>() {
+        ServicoFactoryUtil.getApostaService().buscaCarrinhosFavoritos(new RequestListener<ListCarrinhoFavoritoResponse>() {
             @Override
             public void onResponse(ListCarrinhoFavoritoResponse response) {
                 checkRedirect(response);
@@ -43,7 +41,7 @@ public class CarrinhosFavoritosRepository extends AppRepository {
     }
 
     public void excluiCarrinho(Long id, OnSilceListener<List<CarrinhoFavoritoDTO>> listener) {
-        apostaBO.deletaCarrinhoFavorito(id.toString(), new RequestListener<ListCarrinhoFavoritoResponse>() {
+        ServicoFactoryUtil.getApostaService().deletaCarrinhoFavorito(id.toString(), new RequestListener<ListCarrinhoFavoritoResponse>() {
             @Override
             public void onResponse(ListCarrinhoFavoritoResponse response) {
                 checkRedirect(response);
@@ -59,7 +57,7 @@ public class CarrinhosFavoritosRepository extends AppRepository {
     }
 
     public void buscaApostas(Long idCarrinho, OnSilceListener<List<ApostaCarrinhoFavoritoDTO>> listener) {
-        apostaBO.buscaApostasCarrinhoFavorito(idCarrinho, new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
+        ServicoFactoryUtil.getApostaService().buscaApostasCarrinhoFavorito(idCarrinho, new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
             @Override
             public void onResponse(ListApostaCarrinhoFavoritoResponse response) {
                 checkRedirect(response);
@@ -75,7 +73,7 @@ public class CarrinhosFavoritosRepository extends AppRepository {
     }
 
     public void transformaCarrinho(Long idCarrinho, int opcaoSelecionada, OnSilceListener<CarrinhoDTO> listener) {
-        apostaBO.transformarCarrinho(idCarrinho, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().transformarCarrinho(idCarrinho, opcaoSelecionada, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 checkRedirect(response);
@@ -96,7 +94,7 @@ public class CarrinhosFavoritosRepository extends AppRepository {
     }
 
     public void deletaApostaCarrinho(String idCarrinho, String idAposta, OnSilceListener<List<ApostaCarrinhoFavoritoDTO>> listener) {
-        apostaBO.deletaApostaCarrinhoFavorito(idCarrinho.toString(), idAposta.toString(), new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
+        ServicoFactoryUtil.getApostaService().deletaApostaCarrinhoFavorito(idCarrinho.toString(), idAposta.toString(), new RequestListener<ListApostaCarrinhoFavoritoResponse>() {
             @Override
             public void onResponse(ListApostaCarrinhoFavoritoResponse response) {
                 checkRedirect(response);

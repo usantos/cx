@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
@@ -33,10 +34,11 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     private String concurso;
     private String dataSorteio;
     private String dataHoraExpiracao;
+    private AppCompatImageView tagBolao;
 
     private LinearLayout btnVoltarInicio;
     private TextView tvVoltarInicio, tvContador, tvDescricaoInclusao, tvConclusaoPagamento;
-    private ConstraintLayout background, timer;
+    private ConstraintLayout background, timer, arrendondamento;
     private EstiloModalidadeMKP estilo;
     private Boolean isEspecial;
     private ImageView imageSetaApontandoCarrinho;
@@ -47,8 +49,6 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmado_inclusao_bolao_carrinho);
 
-        configToolbar(R.id.toolbar);
-        setTitle(ViewUtils.textFuturaAndFuturaBoldTitle(this, "_apostas bolão_"));
 
         getExtras();
         estilo = new EstiloModalidadeMKP(modalidade);
@@ -62,21 +62,22 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
         }
-        configBackgroundColorMenu(estilo.getCorEscura());
-        configColorTextMenu(estilo.getCorFonteFundoEscuro());
 
         background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
         if (modalidade.name().toUpperCase().equals("DIA_DE_SORTE") ||
             modalidade.name().toUpperCase().equals("TIMEMANIA")) {
             timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorFonteFundoClaro()));
+            arrendondamento.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorFonteFundoClaro()));
             imageSetaApontandoCarrinho.setImageDrawable(VectorUtils.getShape(R.drawable.rectangle_5_copy, estilo.getCorFonteFundoClaro()));
         } else {
             timer.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorEscura()));
+            arrendondamento.setBackground(VectorUtils.getShape(R.drawable.button_white_with_rouded_black_border, estilo.getCorEscura()));
         }
         aplicaEstiloFonte();
     }
 
     private void aplicaEstiloFonte() {
+        tagBolao.setImageResource(estilo.getImagemTrianguloOutline());
         tvDescricaoInclusao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
         tvConclusaoPagamento.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
     }
@@ -98,16 +99,18 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     }
 
     private void setViews(){
+        tagBolao = findViewById(R.id.tag_bolao_carrinho);
         btnVoltarInicio = findViewById(R.id.botaoLinearLayoutVoltarPrincipal);
         tvVoltarInicio = findViewById(R.id.txtVoltarAoInicio);
         tvContador = findViewById(R.id.txt_contador);
         background = findViewById(R.id.layout_corpo);
         timer = findViewById(R.id.timer);
+        arrendondamento = findViewById(R.id.layout_arrendondamento);
         tvDescricaoInclusao = findViewById(R.id.textTituloTela);
         tvConclusaoPagamento = findViewById(R.id.textObservacaoConfirmacao);
         imageSetaApontandoCarrinho = findViewById(R.id.imageSetaApontandoCarrinho);
 
-        tvVoltarInicio.setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
+        tvVoltarInicio.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.btn_title_voltarAoInicio)));
     }
 
     private void setMetodos() {

@@ -3,9 +3,6 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -50,7 +47,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private RelativeLayout trapezio;
 	private ConstraintLayout cabecalho;
 	private View linhaNumero;
-	private ImageView icMoneyBolao;
+	private ImageView icTrevoBolao, headerEspeciais;
 
 	private EstiloModalidadeMKP estilo;
 
@@ -72,8 +69,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		btnAumenta 		= itemView.findViewById(R.id.aumenta_cota);
 		qtdCotas 		= itemView.findViewById(R.id.quantidade_cotas);
 		btnAddCarrinho 	= itemView.findViewById(R.id.btn_add_carrinho);
-		trapezio		= itemView.findViewById(R.id.layout_money);
-		icMoneyBolao	= itemView.findViewById(R.id.trevoImagem);
+		trapezio		= itemView.findViewById(R.id.layout_trevo);
+		headerEspeciais = itemView.findViewById(R.id.header_especiais_bolao);
+		icTrevoBolao	= itemView.findViewById(R.id.trevoImagem);
 		cabecalho		= itemView.findViewById(R.id.cabecalho_bolao);
 		linhaNumero		= itemView.findViewById(R.id.linha_numero);
 
@@ -101,7 +99,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		int corFonteFundoClaro = ContextCompat.getColor(activity, estilo.getCorFonteFundoClaro());
 		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
 		trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
-		icMoneyBolao.setImageDrawable(VectorUtils.getShape(R.drawable.ic_money_bolao, estilo.getCorFonteFundoEscuro()));
+		icTrevoBolao.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
 		cabecalho.setBackgroundColor(corClara);
 		modalidade.setTextColor(corFonteFundoClaro);
 		valorPremio.setTextColor(corLetraLista);
@@ -117,7 +115,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	}
 
 	private void preencheConteudo(CotasBolaoDTO bolao) {
-		valorPremio.setText(ViewUtils.getMoedaFormat(bolao.getVrPremioEstimado()));
+		valorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
 		concurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
 														   itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso())));
 		loterica.setText(bolao.getNomeFantasia()+ "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
@@ -143,9 +141,22 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	private void preencheCabecalho(CotasBolaoDTO bolao) {
 		if (isEspecial(bolao.getTipoConcurso())){
-			if (estilo.getImagemEspecialCarrossel() != -1){
-				trapezio.setVisibility(View.INVISIBLE);
-				cabecalho.setBackground(ContextCompat.getDrawable(activity, estilo.getImagemEspecialCarrossel()));
+			headerEspeciais.setVisibility(View.VISIBLE);
+			trapezio.setVisibility(View.INVISIBLE);
+			icTrevoBolao.setVisibility(View.GONE);
+			switch (bolao.getModalidade()){
+				case MEGA_SENA:
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.mega_virada));
+					break;
+				case DUPLA_SENA:
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.cabecalho_superior_dupla_de_pascoa));
+					break;
+				case LOTOFACIL:
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.cabecalho_lotofacil_da_independencia));
+					break;
+				case QUINA:
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.cabecalho_sao_joao));
+					break;
 			}
 			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
 				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
@@ -154,6 +165,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			}
 		} else {
 			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
+			headerEspeciais.setVisibility(View.GONE);
+			trapezio.setVisibility(View.VISIBLE);
+			icTrevoBolao.setVisibility(View.VISIBLE);
 		}
 	}
 

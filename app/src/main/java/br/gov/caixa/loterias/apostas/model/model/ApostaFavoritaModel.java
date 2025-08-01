@@ -5,12 +5,11 @@ import android.app.Activity;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
 public class ApostaFavoritaModel {
 
@@ -21,7 +20,7 @@ public class ApostaFavoritaModel {
 	}
 
 	public void validaAposta(ApostaFavoritaDTO apostaFavoritaDTO, OnSilceListener<NetworkResponse> listener){
-		DadosCorporativosBO.getInstance().validarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
+		ServicoFactoryUtil.getDadosCorporativoService().validarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
 			@Override
 			public void onResponse(NetworkResponse result) {
 				listener.success(result);
@@ -34,7 +33,7 @@ public class ApostaFavoritaModel {
 	}
 
 	public void salvaAposta(ApostaFavoritaDTO apostaFavoritaDTO, OnSilceListener<NetworkResponse> listener){
-		DadosCorporativosBO.getInstance().salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
+		ServicoFactoryUtil.getDadosCorporativoService().salvarApostaFavorita(apostaFavoritaDTO, new RequestListener<NetworkResponse>() {
 			@Override
 			public void onResponse(NetworkResponse result) {
 				listener.success(result);

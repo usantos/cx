@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.android.volley.VolleyError;
 
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -15,15 +15,15 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 
 public class ConferirBilheteModel {
 	private Activity activity;
-	private final ApostaBO apostaBO;
+	private final ApostaSilceBO apostaSilceBO;
 
 	public ConferirBilheteModel(Activity activity) {
 		this.activity = activity;
-		this.apostaBO = ApostaBO.getInstance();
+		this.apostaSilceBO = ApostaSilceBO.getInstance();
 	}
 
 	public void conferirBilhete(String codBarras, OnSilceListener<ResultadoConsultaBilheteDTO> listener){
-		this.apostaBO.postConferirBilhetes(codBarras, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
+		this.apostaSilceBO.postConferirBilhetes(codBarras, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
 			@Override
 			public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
 				checkRedirect(response.getRedirect());
@@ -38,7 +38,7 @@ public class ConferirBilheteModel {
 	}
 
 	public void conferirBilheteQrCode(String qrCode, OnSilceListener<ResultadoConsultaBilheteDTO> listener){
-		this.apostaBO.postConferirBilhetesNovo(qrCode, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
+		this.apostaSilceBO.postConferirBilhetesNovo(qrCode, new RequestListener<ResultadoConsultaBilheteDTOResponse>() {
 			@Override
 			public void onResponse(ResultadoConsultaBilheteDTOResponse response) {
 				checkRedirect(response.getRedirect());

@@ -40,6 +40,7 @@ import androidx.core.graphics.ColorUtils;
 import java.io.ByteArrayOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -381,6 +382,46 @@ public class ViewUtils {
 
         String[] valorFormatoMoedaArray = valorFormatoMoeda.split("\\s");
         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
+    }
+
+    public static String getMoedaFormatPorExtenso(BigDecimal valor) {
+        if (valor == null) {
+            valor = BigDecimal.ZERO;
+        }
+
+        Locale ptBrLocale = new Locale("pt", "BR");
+        String prefixo = "R$ ";
+        BigDecimal mil = new BigDecimal("1000");
+        BigDecimal milhao = new BigDecimal("1000000");
+        BigDecimal bilhao = new BigDecimal("1000000000");
+
+        if (valor.compareTo(bilhao) >= 0) {
+            BigDecimal valorBilhoes = valor.divide(bilhao);
+            return formatarValorPorExtenso(valorBilhoes, prefixo, "Bilhão", "Bilhões", ptBrLocale);
+        } else if (valor.compareTo(milhao) >= 0) {
+            BigDecimal valorMilhoes = valor.divide(milhao);
+            return formatarValorPorExtenso(valorMilhoes, prefixo, "Milhão", "Milhões", ptBrLocale);
+        } else if (valor.compareTo(mil) >= 0) {
+            BigDecimal valorMil = valor.divide(mil);
+            return formatarValorPorExtenso(valorMil, prefixo, "Mil", "Mil", ptBrLocale);
+        } else {
+            NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
+            return nf.format(valor).replace("R$", prefixo);
+        }
+    }
+
+    private static String formatarValorPorExtenso(BigDecimal valor, String prefixo, String singular, String plural, Locale locale) {
+        // Trunca o valor para uma casa decimal
+        BigDecimal valorTruncado = valor.setScale(1, RoundingMode.DOWN);
+        int inteiro = valorTruncado.intValue();
+        BigDecimal decimal = valorTruncado.subtract(new BigDecimal(inteiro));
+        String sufixo = inteiro == 1 ? singular : plural;
+
+        if (decimal.compareTo(BigDecimal.ZERO) > 0) {
+            return String.format(locale, "%s%.1f %s", prefixo, valorTruncado, sufixo);
+        } else {
+            return String.format(locale, "%s%d %s", prefixo, inteiro, sufixo);
+        }
     }
 
     public static void setMoedaFormatHtmlCombo(BigDecimal valor, TextView valorTextView) {

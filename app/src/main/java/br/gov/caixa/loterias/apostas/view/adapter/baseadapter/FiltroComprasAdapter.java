@@ -22,7 +22,7 @@ import java.util.Set;
 import androidx.appcompat.app.AlertDialog;
 import br.gov.caixa.loterias.apostas.R;
 
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
@@ -49,14 +49,17 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
     private View viewSituacao;
     private int numeroMeioPagamentoSelecionado = 1;//inicia na primeira opcao ("Todos")
     private int numeroSituacaoCompraSelecionada = 1;//inicia na primeira opcao ("Todas")
+    private Long idMeioPagamentoSelecionado, idSituacaoCompraSelecionada;
 
     public FiltroComprasAdapter(Context context, List<String> expandableListTitle, HashMap<String, List<String>> expandableListDetail,
-                                Activity activity, LinkedHashMap<Long, String> situacoesCompra,LinkedHashMap<Long, String> meiosPagamento){
+                                Activity activity, LinkedHashMap<Long, String> situacoesCompra,LinkedHashMap<Long, String> meiosPagamento, Long idMeioPagamento, Long idSituacaoCompra) {
         this.context = context;
         this.expandableListTitle = expandableListTitle;
         this.expandableListDetail = expandableListDetail;
         this.situacoesCompra = situacoesCompra;
         this.meiosPagamento = meiosPagamento;
+        this.idMeioPagamentoSelecionado = idMeioPagamento;
+        this.idSituacaoCompraSelecionada = idSituacaoCompra;
         this.setActivity(activity);
     }
 
@@ -80,7 +83,7 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
         listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
         convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawner_linha_divisao_cinza_escuro);
 
-        imagemMaisOpcoes.setSelected(isExpanded);
+    imagemMaisOpcoes.setSelected(isExpanded);
 
         return convertView;
     }
@@ -100,6 +103,17 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
                         npMeioPagamento.setDisplayedValues(listaMeiosPagamento());
                         npMeioPagamento.setOnValueChangedListener(new ListenerMeioPagamento());
                         npMeioPagamento.setWrapSelectorWheel(false);
+                        if(idMeioPagamentoSelecionado != null && idMeioPagamentoSelecionado > 0){
+                            int numeroMeioPagamento = 1;
+                            for(Long idMeioPagamento : meiosPagamento.keySet()){
+                                if(idMeioPagamento.equals(idMeioPagamentoSelecionado)){
+                                    numeroMeioPagamentoSelecionado = numeroMeioPagamento;
+                                    npMeioPagamento.setValue(numeroMeioPagamento);
+                                    break;
+                                }
+                                numeroMeioPagamento++;
+                            }
+                        }
                     }
                 }
                 convertView = viewMeioPagamento;
@@ -114,6 +128,17 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
                         npSituacao.setDisplayedValues(listaSituacoesCompra());
                         npSituacao.setOnValueChangedListener(new ListenerSituacao());
                         npSituacao.setWrapSelectorWheel(false);
+                        if(idSituacaoCompraSelecionada != null && idSituacaoCompraSelecionada > 0){
+                            int numeroSituacaoCompra = 1;
+                            for(Long idSituacaoCompra : situacoesCompra.keySet()){
+                                if(idSituacaoCompra.equals(idSituacaoCompraSelecionada)){
+                                    numeroSituacaoCompraSelecionada = numeroSituacaoCompra;
+                                    npSituacao.setValue(numeroSituacaoCompra);
+                                    break;
+                                }
+                                numeroSituacaoCompra++;
+                            }
+                        }
                     }
                 }
                 convertView = viewSituacao;
@@ -283,7 +308,7 @@ public class FiltroComprasAdapter extends BaseExpandableListAdapter {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
         try{
-            ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
+            ApostaSilceBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
                 @Override
                 public void onResponse(SituacoesCompraResponse response) {
                     loadViewProgress.dismiss();

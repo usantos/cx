@@ -28,8 +28,8 @@ import com.android.volley.VolleyError;
 import java.util.*;
 
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -48,6 +48,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroComprasAdapter;
@@ -68,6 +69,8 @@ public class ListaComprasActivity extends AppCompatActivity {
     int offsetItem = 0, mes, ano;
     Long  idMeioPagamento = null;
     Long  idSituacao = null;
+    private int situacaoPosicao = -1;
+    private int meioPagamentoPosicao = -1;
     private Dialog dialogFavoritar;
     private Dialog dialogFiltrar;
     private ExpandableListView listViewFiltro;
@@ -102,7 +105,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void callWebServiceMesCompras(){
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
+        ApostaSilceBO.getInstance().getMesesCompras(new RequestListener<MesAnoDTOResponse>() {
             @Override
             public void onResponse(MesAnoDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -125,7 +128,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         bloquearRequestScroll = false;
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         try{
-            ApostaBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+            ApostaSilceBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE, idMeioPagamento, idSituacao ,new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
                 @Override
                 public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                     loadViewProgress.dismiss();
@@ -160,7 +163,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         try{
-            DadosCorporativosBO.getInstance().buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
+            DadosCorporativosSilceBO.getInstance().buscaMeiosPagamentos(new RequestListener<MeiosPagamentosResponse>() {
                 @Override
                 public void onResponse(MeiosPagamentosResponse response) {
                     loadViewProgress.dismiss();
@@ -192,7 +195,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
         try{
-            ApostaBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
+            ApostaSilceBO.getInstance().getSituacoesCompra(idMeioPagamento, new RequestListener<SituacoesCompraResponse>() {
                 @Override
                 public void onResponse(SituacoesCompraResponse response) {
                     loadViewProgress.dismiss();
@@ -280,12 +283,21 @@ public class ListaComprasActivity extends AppCompatActivity {
         LinkedHashMap<Long, String> mapSituacoesCompra = new LinkedHashMap<>(montaMapSituacoesCompra(listaSituacoesCompraDTO));
         LinkedHashMap<Long, String> mapMeiosDePagamento = new LinkedHashMap<>(montaMapMeiosPagamento(listaMeioPagamentoDTO));
 
+        if(idSituacao != null && idSituacao > 0){
+            situacaoPosicao = new ArrayList<>(mapSituacoesCompra.keySet()).indexOf(idSituacao) + 1;
+        }
+        if(idMeioPagamento != null && idMeioPagamento > 0){
+            meioPagamentoPosicao = new ArrayList<>(mapMeiosDePagamento.keySet()).indexOf(idMeioPagamento) + 1;
+        }
+
         filtroAdapter = new FiltroComprasAdapter(this,
                 expandableListTitle,
                 expandableListDetail,
                 ListaComprasActivity.this,
                 mapSituacoesCompra,
-                mapMeiosDePagamento);
+                mapMeiosDePagamento,
+                idMeioPagamento,
+                idSituacao);
     }
     private void setaDialogFiltrar() {
         dialogFiltrar = new Dialog(this);
@@ -304,11 +316,26 @@ public class ListaComprasActivity extends AppCompatActivity {
         setFiltroAdapterDialogFiltrar();
 
         listViewFiltro.setAdapter(filtroAdapter);
+
+        if (idMeioPagamento != null && idMeioPagamento > 0) {
+            listViewFiltro.expandGroup(FiltroComprasAdapter.MEIO_PAGAMENTO);
+        }
+        if (idSituacao != null && idSituacao > 0) {
+            listViewFiltro.expandGroup(FiltroComprasAdapter.SITUACAO);
+
+            // Dar foco na opção selecionada de idSituacao, caso haja meio de pagamento selecionado
+            if (situacaoPosicao > 0 && meioPagamentoPosicao > 0) {
+                listViewFiltro.setSelectedChild(FiltroComprasAdapter.SITUACAO, situacaoPosicao, true);
+            }
+        }
+
         btnLimpar.setOnClickListener(v -> {
               filtroAdapter.limpaFiltros();
               if(isMeioPagamentoOuSituacaoAlterado()){
                   callWebServiceCompras();
               }
+              idMeioPagamento = filtroAdapter.getIdMeioPagamentoSelecionado();
+              idSituacao = filtroAdapter.getIdSituacaoSelecionada();
               dialogFiltrar.dismiss();
               tvBadge.setText(String.valueOf(0));
               tvBadge.setVisibility(View.GONE);
@@ -407,7 +434,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
         AlertDialogUtils.show(ListaComprasActivity.this);
-        ApostaBO.getInstance().validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().validarCarrinhoFavorito(nome, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -432,7 +459,7 @@ public class ListaComprasActivity extends AppCompatActivity {
 
     private void favoritarCarrinho(String nome, Long idFavorito) {
         AlertDialogUtils.show(ListaComprasActivity.this);
-        ApostaBO.getInstance().salvarCarrinhoFavorito(nome, idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
+        ServicoFactoryUtil.getApostaService().salvarCarrinhoFavorito(nome, idFavorito.toString(), mantemSurpresinhas, new RequestListener<CarrinhoFavoritoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoFavoritoDTOResponse result) {
                 AlertDialogUtils.dismiss();
@@ -480,8 +507,15 @@ public class ListaComprasActivity extends AppCompatActivity {
         Spinner selecaoMesSpinner;
         selecaoMesSpinner = findViewById(R.id.SelecaoMesSpinner);
         List<String> list = new ArrayList<>();
-        for(MesAnoDTO item : listaMesAnoDTO){
+        int indicePadrao = 0;
+
+        for (int i = 0; i < listaMesAnoDTO.size(); i++) {
+            MesAnoDTO item = listaMesAnoDTO.get(i);
             list.add(item.getMes().getDescricao() + getResources().getString(R.string.de_espacado) + item.getAno());
+
+            if (item.getMes().getValor().intValue() == mes && item.getAno().intValue() == ano) {
+                indicePadrao = i;
+            }
         }
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, list);
 
@@ -489,6 +523,8 @@ public class ListaComprasActivity extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
         selecaoMesSpinner.setAdapter(dataAdapter);
+        selecaoMesSpinner.setSelection(indicePadrao);
+
         selecaoMesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // Your code here
@@ -544,7 +580,7 @@ public class ListaComprasActivity extends AppCompatActivity {
     private void pegaApostasDaCompra() {
 
         final AlertDialog loadViewProgress = LoadingViewLoterias.show(this);
-        ApostaBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
+        ApostaSilceBO.getInstance().getDetalhesCompras(compraSelecionada.getId().toString(), new RequestListener<AgrupadorApostaCompraDTOResponse>() {
             @Override
             public void onResponse(AgrupadorApostaCompraDTOResponse response) {
                 loadViewProgress.dismiss();
@@ -570,7 +606,7 @@ public class ListaComprasActivity extends AppCompatActivity {
         }
         progressLoadingMore.setVisibility(View.VISIBLE);
 
-        ApostaBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE,idMeioPagamento, idSituacao, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
+        ApostaSilceBO.getInstance().getComprasFiltradaMeioPagamentoSituacao(mes, ano, offsetItem, PAGE_SIZE,idMeioPagamento, idSituacao, new RequestListener<ResultadoPesquisaPaginadaDTOCompraDTOResponse>() {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOCompraDTOResponse response) {
                 progressLoadingMore.setVisibility(View.GONE);

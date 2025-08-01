@@ -61,7 +61,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -499,7 +499,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     private void callRepassesSociais() {
         AlertDialogUtils.show(PrincipalActivity.this);
-        DadosCorporativosBO.getInstance().repasses(new RequestListener<RepassometroDTOResponse>() {
+        DadosCorporativosSilceBO.getInstance().repasses(new RequestListener<RepassometroDTOResponse>() {
             @Override
             public void onResponse(RepassometroDTOResponse response) {
                 repassesSociais = response.getPayload();
@@ -1000,7 +1000,8 @@ public class PrincipalActivity extends AppCompatActivity
     private void trataMenuJogoResponsavel(int itemPosition) {
         switch (itemPosition) {
             case 0:
-                startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                //startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                DialogUtils.modalJogoresponsavel(PrincipalActivity.this);
                 break;
             case 1:
                 startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
@@ -1070,7 +1071,8 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void redirecionaJogoResponsavel(){
-        startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+        //startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+        DialogUtils.modalJogoresponsavel(PrincipalActivity.this);
     }
     private void redirecionaMsgDisque180(){
         boolean installed = isAppInstalled("com.whatsapp");

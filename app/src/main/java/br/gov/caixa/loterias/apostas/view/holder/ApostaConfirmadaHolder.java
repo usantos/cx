@@ -74,6 +74,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			detalheAposta.setOnClickListener(this);
 		} else {
 			btnAposteAqui = view.findViewById(R.id.btnAposteAquiApostasConfirmadas);
+			btnAposteAqui.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getResources().getString(R.string.label_aposte_aqui)));
 
 			btnAposteAqui.setOnClickListener(this);
 		}
