@@ -62,7 +62,7 @@
     <string name="infoValorMinimoCarrinho">Lembre-se: o valor mínimo do total de compras nesse aplicativo é </string>
     <string name="infoConcluaPagamentoBolao">Conclua o pagamento de suas \napostas dentro do prazo</string>
     <string name="tituloApostaFeita">Aposta inserida no \ncarrinho com sucesso.</string>
-    <string name="tituloComboFeito">Esse combo foi para\no seu carrinho</string>
+    <string name="tituloComboFeito">Combo inserido no\n carrinho com sucesso</string>
     <string name="tituloBolaoFeito">Bolão inserido no \ncarrinho com sucesso.</string>
     <string name="novaAposta">Fazer nova aposta</string>
     <string name="confirmarApostas">Confirme suas apostas e pressione\nAVANÇAR para continuar.</string>

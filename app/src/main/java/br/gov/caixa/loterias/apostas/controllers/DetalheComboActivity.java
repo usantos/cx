@@ -7,21 +7,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirComboDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeComboDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -29,23 +27,31 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheComboAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DetalheComboActivity extends SettingToolbarActivity {
+public class DetalheComboActivity extends SettingToolbarActivity  {
+    private static final String ARG_TIPOAPOSTA = "tipoAposta";
+    private static final String ARG_MODALIDADE = "modalidade";
+    private static final String ARG_VALORAPOSTA = "valorAposta";
     private static final int QUANTIDADE_COLUNA_LISTA_COMBOS = 2;
     private CombosDTO combo = new CombosDTO();
     private List<ModalidadeComboDTO> modalidadesCombo;
+    private SessaoUsuario sessaoUsuario;
     private Button btnAdicionarAoCarrinho;
     private TextView txtNomeCombo, txtQtdApostas, txtValorCombo;
     private CheckBox checkMostrarNumeros;
-
+    private ImageButton btnIncrementarAposta, btnDecrementarAposta;
+    private Integer qtdInicialApostas = 0;
+    private Integer qtdTotalApostas = 0;
+    private Integer index = 0;
+    private BigDecimal valorCombo = BigDecimal.ZERO;
     RecyclerView DetalheComboRcv;
     DetalheComboAdapter detalheComboAdapter;
-
     Toolbar toolbar;
 
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
@@ -83,6 +89,8 @@ public class DetalheComboActivity extends SettingToolbarActivity {
         txtValorCombo = findViewById(R.id.txtValorCombo);
         DetalheComboRcv = findViewById(R.id.rcvDetalheCombo);
         checkMostrarNumeros = findViewById(R.id.checkBoxNumerosEscolhidos);
+        btnIncrementarAposta = findViewById(R.id.btnIncrementarApostas);
+        btnDecrementarAposta = findViewById(R.id.btnDecrementarApostas);
 
         View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
         view_id_fg_somador_carrinho.setOnClickListener(view -> vaiProCarrinho());
@@ -96,6 +104,7 @@ public class DetalheComboActivity extends SettingToolbarActivity {
     }
 
     private void setMetodos(){
+
         if(Objects.equals(combo.getTipoCombo().getCodigo(), CombosDTO.TipoComboEnum.ESPECIAL.getValue())){
             ModalidadeEnum modalidade = ModalidadeEnum.fromInteger(combo.getModalidadesCombo().get(0).getModalidade().getValor());
             if(modalidade != null){
@@ -116,22 +125,35 @@ public class DetalheComboActivity extends SettingToolbarActivity {
             modalidadesCombo = new ArrayList<>(combo.getModalidadesCombo());
         }
 
-        txtQtdApostas.setText(getQuantidadeApostas().toString());
+        sessaoUsuario = SessaoUsuario.getInstance();
+
+        qtdInicialApostas = getQtdApostas(modalidadesCombo);
+        qtdTotalApostas = qtdInicialApostas;
+
+        valorCombo = combo.getValor() != null ? combo.getValor() : BigDecimal.ZERO;
+
+        txtQtdApostas.setText(String.valueOf(getQtdApostas(modalidadesCombo) != null ? getQtdApostas(modalidadesCombo) : 0));
 
         btnAdicionarAoCarrinho.setOnClickListener(view -> incluirComboNoCarrinho());
 
+        btnIncrementarAposta.setOnClickListener(view -> incrementarApostas());
+
+        btnDecrementarAposta.setOnClickListener(view -> decrementarApostas());
     }
 
-
     private void configuraDetalheComboRcv(){
-        if(modalidadesCombo != null && !modalidadesCombo.isEmpty()){
-            detalheComboAdapter = new DetalheComboAdapter(modalidadesCombo,DetalheComboActivity.this);
 
-            DetalheComboRcv.setAdapter(detalheComboAdapter);
+        if(modalidadesCombo != null && !modalidadesCombo.isEmpty()){
+
             RecyclerView.LayoutManager layoutListacombos = new GridLayoutManager(this, QUANTIDADE_COLUNA_LISTA_COMBOS);
             DetalheComboRcv.setLayoutManager(layoutListacombos);
-
             DetalheComboRcv.setNestedScrollingEnabled(false);
+
+            detalheComboAdapter = new DetalheComboAdapter(DetalheComboActivity.this);
+
+            DetalheComboRcv.setAdapter(detalheComboAdapter);
+
+            detalheComboAdapter.submitList(modalidadesCombo);
 
         }else{
             ViewUtils.alertTitleButton(DetalheComboActivity.this, R.string.label_atencao, getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> finish());
@@ -145,20 +167,18 @@ public class DetalheComboActivity extends SettingToolbarActivity {
         IncluirComboDTO incluirComboDTO = new IncluirComboDTO();
 
         incluirComboDTO.setId(combo.getTipoCombo().getCodigo());
-        incluirComboDTO.setQtdApostas(getQuantidadeApostas());
+        incluirComboDTO.setQtdApostas(qtdTotalApostas);
         incluirComboDTO.setIsSurpresinha(isSurpresinha);
         incluirComboDTO.setLimparCarrinho(false);
-
-        BigDecimal valorCombo = combo.getValor();
 
         new ComboModel(this).adicionaComboCarrinho(incluirComboDTO, new OnSilceListener() {
             @Override
             public void success(Object payload) {
                 Intent activity = new Intent(DetalheComboActivity.this, ConfirmadoInclusaoCarrinhoActivity.class);
-                activity.putExtra("tipoAposta", ModalidadeEnum.COMBO);
-                activity.putExtra("valorAposta", valorCombo);
+                activity.putExtra(ARG_TIPOAPOSTA, ModalidadeEnum.COMBO);
+                activity.putExtra(ARG_VALORAPOSTA, valorCombo);
                 int qtdParametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().size()-1;
-                activity.putExtra("modalidade", (new Gson()).toJson(SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().get(qtdParametros).getParametroJogo()));
+                activity.putExtra(ARG_MODALIDADE, (new Gson()).toJson(SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().get(qtdParametros).getParametroJogo()));
                 startActivity(activity);
             }
 
@@ -171,10 +191,10 @@ public class DetalheComboActivity extends SettingToolbarActivity {
 
     }
 
-    private Integer getQuantidadeApostas() {
+    private Integer getQtdApostas(List<ModalidadeComboDTO> modalidadesCombo) {
         int quantidadeApostas = 0;
-        if (combo.getModalidadesCombo() != null) {
-            for (ModalidadeComboDTO modalidade : combo.getModalidadesCombo()) {
+        if (modalidadesCombo != null) {
+            for (ModalidadeComboDTO modalidade :modalidadesCombo) {
                 quantidadeApostas += modalidade.getQuantidadeApostas();
             }
         }
@@ -206,4 +226,99 @@ public class DetalheComboActivity extends SettingToolbarActivity {
             textView.setCompoundDrawablesRelative(drawable, null, null, null);
         }
     }
+
+    private void incrementarApostas() {
+
+        if(modalidadesCombo.get(index).getModalidade().getValor() == 16){
+            qtdTotalApostas++;
+            atualizarQtdJogosItem(index , true);
+        }
+        qtdTotalApostas++;
+        atualizarQtdJogosItem(index , true);
+        index = (index + 1) % modalidadesCombo.size();
+        txtQtdApostas.setText(String.valueOf(qtdTotalApostas));
+        atualizarValor();
+
+    }
+
+    private void decrementarApostas(){
+        if(qtdTotalApostas > qtdInicialApostas){
+            qtdTotalApostas--;
+            index = index == 0 ? modalidadesCombo.size() - 1 : index - 1;
+            atualizarQtdJogosItem(index  , false);
+            if(modalidadesCombo.get(index).getModalidade().getValor() == 16){
+                qtdTotalApostas--;
+                atualizarQtdJogosItem(index, false);
+            }
+        }else{
+            qtdTotalApostas = qtdInicialApostas;
+        }
+        txtQtdApostas.setText(String.valueOf(qtdTotalApostas));
+        atualizarValor();
+    }
+
+    private void atualizarQtdJogosItem(int indexItem, boolean incrementar){
+        ModalidadeComboDTO itemOriginal = modalidadesCombo.get(indexItem);
+        int novaQuantidade = incrementar ? itemOriginal.getQuantidadeApostas() + 1 : itemOriginal.getQuantidadeApostas() - 1;
+
+        ModalidadeComboDTO itemQtdApostasAlteradas = getModalidadeComboDTO(itemOriginal, novaQuantidade);
+
+        List<ModalidadeComboDTO> novaLista = new ArrayList<>(modalidadesCombo);
+        novaLista.set(indexItem, itemQtdApostasAlteradas);
+        detalheComboAdapter.submitList(novaLista);
+        modalidadesCombo = novaLista;
+    }
+
+    private static @NotNull ModalidadeComboDTO getModalidadeComboDTO(ModalidadeComboDTO itemOriginal, int novaQuantidade) {
+        ModalidadeComboDTO itemQtdApostasAlteradas = new ModalidadeComboDTO();
+        itemQtdApostasAlteradas.setModalidade(itemOriginal.getModalidade());
+        itemQtdApostasAlteradas.setTipoConcurso(itemOriginal.getTipoConcurso());
+        itemQtdApostasAlteradas.setQuantidadeApostas(novaQuantidade);
+        itemQtdApostasAlteradas.setQuantidadeTeimosinhas(itemOriginal.getQuantidadeTeimosinhas());
+        itemQtdApostasAlteradas.setNumero(itemOriginal.getNumero());
+        itemQtdApostasAlteradas.setQuantidadeDezenas(itemOriginal.getQuantidadeDezenas());
+        itemQtdApostasAlteradas.setQuantidadeDezenasTrevos(itemOriginal.getQuantidadeDezenasTrevos());
+        return itemQtdApostasAlteradas;
+    }
+
+
+    private void atualizarValor(){
+        valorCombo = BigDecimal.ZERO;
+
+        for (ModalidadeComboDTO modalidadeCombo : modalidadesCombo) {
+            ModalidadeEnum modalidade = ModalidadeEnum.fromInteger(modalidadeCombo.getModalidade().getValor());
+            ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidade);
+
+            if (parametroSimulacao != null) {
+                List<ParametroValorApostaDTO> valores = parametroSimulacao.getParametroJogo().getValoresAposta();
+                BigDecimal valorAposta = valores.get(0).getValor(); // Valor padrão
+                int qtdApostas = modalidadeCombo.getQuantidadeApostas();
+                int qtdTeimosinhas = Math.max(modalidadeCombo.getQuantidadeTeimosinhas(), 1);
+
+                for (ParametroValorApostaDTO valor : valores) {
+                    if (modalidadeCombo.getModalidade().getValor() != 9) {
+                        if (Objects.equals(modalidadeCombo.getQuantidadeDezenas(), valor.getNumeroPrognosticos())) {
+                            valorAposta = valor.getValor();
+                            break;
+                        }
+                    } else {
+                        // +milionária
+                        if (Objects.equals(modalidadeCombo.getQuantidadeDezenas(), valor.getNumeroPrognosticos()) &&
+                                Objects.equals(modalidadeCombo.getQuantidadeDezenasTrevos(), valor.getNumeroTrevos())) {
+                            valorAposta = valor.getValor();
+                            break;
+                        }
+                    }
+                }
+
+                BigDecimal soma = valorAposta
+                        .multiply(BigDecimal.valueOf(qtdApostas))
+                        .multiply(BigDecimal.valueOf(qtdTeimosinhas));
+                valorCombo = valorCombo.add(soma);
+            }
+
+            txtValorCombo.setText(ViewUtils.getMoedaFormat(valorCombo));
+        }
+    }
+
 }

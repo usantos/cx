@@ -71,7 +71,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     private void preencheBarraTitulo() {
         if (modalidade.equals(ModalidadeEnum.COMBO)) {
             FragmentUtils.startFragmentBarraTituloCombo(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
-                    parametroSimulacao.getConcurso().getModalidade(),
+                    modalidade,
                     getCorEscura());
         } else {
             FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
@@ -86,7 +86,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         return new EstiloModalidadeMKP(parametroSimulacao.getConcurso().getModalidade()).getCorClara();
     }
     private int getCorEscura() {
-        return new EstiloModalidadeMKP(parametroSimulacao.getConcurso().getModalidade()).getCorEscura();
+        return new EstiloModalidadeMKP(modalidade).getCorEscura();
     }
 
     private String getDataSorteio() {

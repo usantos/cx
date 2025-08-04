@@ -46,6 +46,10 @@ public class ModalidadeComboDTO {
     return this;
   }
 
+  public String getIdentificadorUnico(){
+    return modalidade.getValor() + "_" + tipoConcurso.getValor();
+  }
+
    /**
    * Modalidade do combo
    * @return modalidade
