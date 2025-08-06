@@ -50,9 +50,9 @@ android {
         targetSdkVersion 36
 
         // Sprint
-        //                   22                 1.19.8 = 01 019               08
+        //                   22                 1.19.9 = 01 019               09
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220101908
+        versionCode 220101909
         versionName "1.19.4"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
