@@ -41,7 +41,7 @@ public class ExpandableListDataSideMenu {
         minhaArea.add(MENU_MEUS_CARTOES);
 
         List<String> Resultados = new ArrayList<>();
-        List<String> Rapidao = new ArrayList<>();
+        //List<String> Rapidao = new ArrayList<>();
         List<String> bilhetes = new ArrayList<>();
         List<String> sociais = new ArrayList<>();
         List<String> termo = new ArrayList<>();
@@ -58,7 +58,7 @@ public class ExpandableListDataSideMenu {
 
         expandableListDetail.put("Minha área", minhaArea);
         expandableListDetail.put("Resultados", Resultados);
-        expandableListDetail.put("Rapidão", Rapidao);
+        //expandableListDetail.put("Rapidão", Rapidao);
         expandableListDetail.put("Conferir bilhetes", bilhetes);
         expandableListDetail.put("Jogo responsável", jogoResponsavel);
         expandableListDetail.put("Repasses sociais", sociais);

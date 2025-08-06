@@ -112,7 +112,6 @@ import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
-
 public class PrincipalActivity extends AppCompatActivity
         implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
         DiscreteScrollView.OnItemChangedListener<HomeViewHolder> {
@@ -246,7 +245,8 @@ public class PrincipalActivity extends AppCompatActivity
 
         relativeLayoutContentRepassados.setOnClickListener(view -> clickRelativeLayoutContentRepassados());
 
-        relativeLayoutContentRapidao.setOnClickListener(view -> clickRelativeLayoutContentRapidao());
+        //relativeLayoutContentRapidao.setOnClickListener(view -> clickRelativeLayoutContentRapidao());
+        relativeLayoutContentRapidao.setVisibility(View.GONE);
 
         rlJogoResponsavel.setOnClickListener(view -> clickrlJogoResponsavel());
 
@@ -857,7 +857,7 @@ public class PrincipalActivity extends AppCompatActivity
     protected void clickRelativeLayoutContentRapidao() {
         //AnimacaoFecharMenuRapido(relativeContentPrincipal);
         showMenu();
-        redirecionaRapidao();
+        //redirecionaRapidao();
     }
 
     protected void clickrlJogoResponsavel() {
@@ -901,29 +901,31 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition != 0 && groupPosition != 4 && groupPosition != 8) {
+        if (groupPosition != 0 && groupPosition != 3 && groupPosition != 8) {
             drawerLayout.closeDrawer(GravityCompat.START, false);
         }
         switch (groupPosition) {
             case 1: startActivity(new Intent(PrincipalActivity.this, SelecaoModalidadesResultados.class));
                 break;
-            case 2: redirecionaRapidao();
-                break;
+//            case 2:
+//                redirecionaRapidao();
+//                break;
 
-            case 3: if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
+            case 2:
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
-            } else {
-                startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
-            }
+                } else {
+                    startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
+                }
                 break;
             //case 4: startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
             //    break;
-            case 5: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+            case 4: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
                 break;
-            case 6: startActivity(new Intent(PrincipalActivity.this, TermosAceiteActivity.class));
+            case 5: startActivity(new Intent(PrincipalActivity.this, TermosAceiteActivity.class));
                 break;
-            case 7: startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
+            case 6: startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
                 break;
             default:
                 break;
@@ -933,8 +935,7 @@ public class PrincipalActivity extends AppCompatActivity
     private void AbrirMenusItens(int itemPosition) {
         if (ConfiguracaoAppSingleton.getInstance().isMostraMenuAposta()){
             tratarMenuCompleto(itemPosition);
-        } else
-        if (itemPosition == 1){
+        } else if (itemPosition == 1){
             trataMenuSemMinhasApostas(itemPosition);
         }
 
@@ -1045,7 +1046,7 @@ public class PrincipalActivity extends AppCompatActivity
         AbrirMenusGroup(groupPosition));
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            if (groupPosition == 4) {
+            if (groupPosition == 3) {
                 trataMenuJogoResponsavel(childPosition);
             } else {
             //if (groupPosition == 8) {
