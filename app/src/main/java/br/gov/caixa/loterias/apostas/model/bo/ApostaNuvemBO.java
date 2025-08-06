@@ -8,11 +8,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
+import br.gov.caixa.loterias.apostas.model.bean.MeioPagamentoPix;
 import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EscudoEquipeEsportivaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
@@ -49,6 +51,21 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaRepository {
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
+
+    @Override
+    public void gerarCodigoPix(MeioPagamentoPix meioPagamento, final RequestListener<GerarPixResponse> listener) {
+        final GsonRequest request = getServiceConnection().buildPostRequest(LOGADO + ServerMethods.GERAR_CODIGO_PIX,
+                new LinkedHashMap<>(),
+                meioPagamento,
+                GerarPixResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
     @Override
     public void getModalidades(final RequestListener<ModalidadeDTOResponse> listener) {
         final GsonRequest request = getServiceConnection().buildGetRequest(PUBLICO + ServerMethods.MODALIDADES_PATH,

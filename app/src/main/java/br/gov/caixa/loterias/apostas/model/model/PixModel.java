@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixResponse;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CompraPixUtil;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 public class PixModel extends AppModel {
@@ -25,7 +26,7 @@ public class PixModel extends AppModel {
 	public void gerarCodigoPix(OnSilceListener<GerarPixDTO> listener) {
 		MeioPagamentoPix meioPagamento = new MeioPagamentoPix(6, null, false, "");
 
-		ApostaSilceBO.getInstance().gerarCodigoPix(meioPagamento, new RequestListener<GerarPixResponse>() {
+		ServicoFactoryUtil.getApostaService().gerarCodigoPix(meioPagamento, new RequestListener<GerarPixResponse>() {
 			@Override
 			public void onResponse(GerarPixResponse response) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_entrou_formas_pagamento));
