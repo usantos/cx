@@ -34,7 +34,7 @@ public class DezenaHolder extends LoteriasHolder<Dezena> implements  View.OnClic
 		this.config = config;
 		this.listener = listener;
 
-		txtNumero = itemView.findViewById(R.id.tv_item_numeto);
+		txtNumero = itemView.findViewById(R.id.tv_item_numero);
 	}
 
 	@Override

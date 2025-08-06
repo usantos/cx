@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/tv_item_numeto"
+    <ToggleButton
+        android:id="@+id/tv_item_numero"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:text="1"
