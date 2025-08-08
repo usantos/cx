@@ -29,6 +29,7 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheComboAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class DetalheComboActivity extends SettingToolbarActivity  {
@@ -144,8 +145,8 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
 
         if(viewModel.getModalidadesComboLiveData().getValue() != null && !viewModel.getModalidadesComboLiveData().getValue().isEmpty()){
 
-            RecyclerView.LayoutManager layoutListaCombos = new GridLayoutManager(this, QUANTIDADE_COLUNA_LISTA_COMBOS);
-            DetalheComboRcv.setLayoutManager(layoutListaCombos);
+            GridLayoutManager layoutDetalheCombos = getGridLayoutManager(DetalheComboActivity.this, viewModel.getModalidadesComboLiveData().getValue().size());
+            DetalheComboRcv.setLayoutManager(layoutDetalheCombos);
             DetalheComboRcv.setNestedScrollingEnabled(false);
 
             detalheComboAdapter = new DetalheComboAdapter(DetalheComboActivity.this);
@@ -192,7 +193,6 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
                 RedirectNetwork.checkRedirect(error,DetalheComboActivity.this);
             }
         });
-
     }
 
 
@@ -202,7 +202,6 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
         }else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }
-
     }
 
     protected void vaiProCarrinho() {
@@ -221,4 +220,20 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
         }
     }
 
+    private static @NotNull GridLayoutManager getGridLayoutManager(DetalheComboActivity detalheCombosActivity, Integer qtdItens) {
+        GridLayoutManager layout = new GridLayoutManager(detalheCombosActivity, QUANTIDADE_COLUNA_LISTA_COMBOS);
+
+        layout.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+
+                if(qtdItens % 2 != 0 && position == (qtdItens -1)){
+                    return QUANTIDADE_COLUNA_LISTA_COMBOS;
+                }else{
+                    return 1;
+                }
+            }
+        });
+        return layout;
+    }
 }

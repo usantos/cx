@@ -1397,7 +1397,7 @@
     <string name="apostas_boloes">_Compre seu bolão_</string>
     <string name="descritivo_tela_bolao">Veja aqui os bolões em destaque. Você também pode personalizar sua busca no campo filtros</string>
     <string name="cotas_bolao">Cotas bolão</string>
-    <string name="combo_apostas">Combo de apostas</string>
+    <string name="combo_apostas">Combos de apostas</string>
     <string name="apostas_individuais">Apostas individuais</string>
     <string name="cota_reservada">Cota reservada</string>
     <string name="cota_expirada">Cota expirada</string>
@@ -1513,7 +1513,7 @@
     </string>
     <string name="hora_dois_pontos">"Hora: "</string>
     <string name="txt_lista_combos_top">Confira nossos combos e escolha o seu favorito!\nAproveite para aumentar suas chances de ganhar.</string>
-    <string name="titulo_combos">_Combo de Apostas_</string>
+    <string name="titulo_combos">_Combos de Apostas_</string>
     <string name="especial">Especial</string>
     <string name="card_de_combo">Card de Combo</string>
     <string name="texto_header_detalhe_combo">Com esse pacote você garante apostas para todas as modalidades, incluindo teimosinhas para a semana inteira. Já pensou?</string>

@@ -155,7 +155,7 @@
 
                     <RelativeLayout
                         android:id="@+id/RelativeLayoutTrevo"
-                        android:layout_width="90dp"
+                        android:layout_width="85dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/background_trapeze_megasena">
 
@@ -174,13 +174,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginRight="10dp"
-                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMaxTextSize="17sp"
                         android:autoSizeMinTextSize="8sp"
                         android:autoSizeStepGranularity="1sp"
                         android:autoSizeTextType="uniform"
                         android:gravity="center_vertical"
                         android:textColor="@color/branco"
-                        android:textSize="18.0sp"
+                        android:textSize="17.0sp"
                         tools:text="@string/mega_sena"
                         android:fontFamily="@font/futura_std_bold"/>
                 </LinearLayout>
@@ -210,11 +210,11 @@
 
                         <ImageView
                             android:id="@+id/imageCombo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="233dp"
+                            android:layout_height="327dp"
                             android:layout_gravity="center"
                             android:background="@color/branco"
-                            android:src="@drawable/imagem_combo"
+                            android:src="@drawable/imagem_combos"
                             android:visibility="gone" />
 
                         <TextView
