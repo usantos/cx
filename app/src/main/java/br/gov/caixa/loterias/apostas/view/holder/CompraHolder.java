@@ -74,7 +74,6 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		if (aposta.getIndicadorCotaBolao()) {
 			//tagBolao.setVisibility(View.VISIBLE);
 			//tagBolao.setImageResource(estiloMKP.getImagemTrianguloOutline());
-			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
 
 			this.dataConcursoListaComprasTextView.setText(aposta.getReservaCotaBolao().getDataRegistroBolao());
 			this.concursoListaComprasTextView.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
@@ -102,21 +101,27 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		this.bottomListItemComprasLinearLayout.setBackgroundColor(itemView.getContext().getResources().getColor(estiloMKP.getCorEscura()));
 
 		this.seusNumerosItemListaComprasTextView.setTextColor(colorText);
+
+		if (aposta.getTroca()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+		}
+		if (aposta.getIndicadorCotaBolao()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
+		}
+		if (aposta.getCombo()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
+		}
+		if (aposta.getEspelho()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+		}
+		if (aposta.getSurpresinha()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+		}
 		if(qtdTeimosinhas > 0){
 			this.tvTeimosinhas.setText(teimosinhasTxt);
 			this.tvTeimosinhas.setTextColor(colorText);
 			listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
 		}
-		if (aposta.getSurpresinha()) {
-			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
-		}
-		if (aposta.getEspelho()) {
-			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
-		}
-		if (aposta.getTroca()) {
-			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
-		}
-
 		//TipoApostaLinha
 		if (listTipoApostaLinha.size() > 0) {
 			int backgroundColorRes = estiloMKP.getCorEscura();
@@ -124,8 +129,7 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 			int iconColorRes = estiloMKP.getCorFonteFundoClaro();
 			TipoApostaLinhaView.TriangleDirection direction = TipoApostaLinhaView.TriangleDirection.UP;
 			tipoApostaLinhaView.setVisibility(View.VISIBLE);
-			List<TipoApostaLinhaEnum> listTipoApostaOrdem =  tipoApostaLinhaView.ordenarPorTexto(itemView.getContext(), listTipoApostaLinha);
-			tipoApostaLinhaView.setupView(listTipoApostaOrdem, backgroundColorRes, textcolorRes, iconColorRes, direction);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, backgroundColorRes, textcolorRes, iconColorRes, direction);
 		}
 
 		View child = null;

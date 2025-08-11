@@ -75,7 +75,6 @@ public class TipoApostaLinhaView extends LinearLayout {
 		return lista;
 	}
 
-
 	public void setupView(List<TipoApostaLinhaEnum> itemList, int backgroundColorResId, int textColorResId, int iconColorResId, TipoApostaLinhaView.TriangleDirection direction) {
 
 		flexboxContentContainer.setBackgroundColor(ContextCompat.getColor(getContext(), backgroundColorResId));

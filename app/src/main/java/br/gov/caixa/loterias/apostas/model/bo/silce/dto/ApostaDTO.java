@@ -88,7 +88,8 @@ public class ApostaDTO<T> implements Serializable {
     protected Boolean surpresinha = false;
     @SerializedName("quantidadeNumerosMaisMilionariaTrevo")
     protected Integer qtdDeTrevosMaisMilionaria = null;
-
+    @SerializedName("combo")
+    protected Boolean combo = null;
     /**
      * Identificador da Aposta
      **/
@@ -452,6 +453,14 @@ public class ApostaDTO<T> implements Serializable {
 
     public void setQtdDeTrevosMaisMilionaria(Integer qtdTevos) {
         this.qtdDeTrevosMaisMilionaria = qtdTevos;
+    }
+
+    public Boolean getCombo() {
+        return combo;
+    }
+
+    public void setCombo(Boolean combo) {
+        this.combo = combo;
     }
 
     @Override

@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -55,6 +56,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private ApostasConfirmadasFragment fragment;
 	private EstiloModalidadeMKP estiloModalidadeMKP;
 	private TipoApostaLinhaView tipoApostaLinhaView;
+	private List<TipoApostaLinhaEnum> listTipoApostaLinha;
 
 	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity, ApostasConfirmadasFragment fragment) {
 		super(view);
@@ -71,7 +73,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			detalheAposta = view.findViewById(R.id.id_detalhe_aposta);
 			tagBolao = view.findViewById(R.id.id_tag_bolao);
 			situacaoTxt = view.findViewById(R.id.situacaoTxt);
-			//tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
+			tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 			progressBarSituacao = view.findViewById(R.id.progressBarSituacao);
 			reloadImg = view.findViewById(R.id.reloadImg);
 			reloadImg.setOnClickListener(this);
@@ -91,8 +93,9 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	public void bind(ApostaDTO aposta, int position) {
 		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
-		int color;
-		color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorClara());
+		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorClara());
+
+		listTipoApostaLinha = new ArrayList<>();
 
 		this.color = color;
 		this.stripe.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
@@ -110,6 +113,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		checaBolao(aposta);
 		trataStyleSituacao(aposta);
 		preencheTeimosinha(aposta);
+		montaTipoApostaLinha(aposta, estiloModalidadeMKP.getCorLetraLista());
 
 		if (!ConfiguracaoAppSingleton.getInstance().isMicroServico() && !NovaApiUtils.isPossoBuscarNovaAPI() && ConcursoUtils.concursoApurado(aposta.getModalidade(), aposta.getConcursoInicial()) && isEfetivada(aposta)){
 			fragment.conferirResultado(position, aposta, this);
@@ -124,8 +128,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		if (isApostaBolao(aposta)){
 			addCarrinho.setVisibility(View.INVISIBLE);
 			addCarrinho.setOnClickListener(null);
-			tagBolao.setImageResource(estiloModalidadeMKP.getImagemTriangulo());
-			tagBolao.setVisibility(View.VISIBLE);
+			//tagBolao.setImageResource(estiloModalidadeMKP.getImagemTriangulo());
+			//tagBolao.setVisibility(View.VISIBLE);
 		} else {
 			if (aposta.getModalidade().equals(ModalidadeEnum.LOTECA)) {
 				addCarrinho.setVisibility(View.INVISIBLE);
@@ -133,24 +137,41 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 				addCarrinho.setVisibility(View.VISIBLE);
 				addCarrinho.setOnClickListener(this);
 			}
-			tagBolao.setVisibility(View.GONE);
+			//tagBolao.setVisibility(View.GONE);
 		}
-
-		ArrayList<TipoApostaLinhaEnum> itemList = new ArrayList<>();
-		itemList.add(TipoApostaLinhaEnum.COMBO);
-		itemList.add(TipoApostaLinhaEnum.ESPELHO);
-		itemList.add(TipoApostaLinhaEnum.SURPRESINHA);
-
-		int backgroundColorRes = R.color.green_6;
-		int textcolorRes = R.color.white60;
-		int iconColorRes = R.color.white60;
-		//TipoApostaLinhaView.TriangleDirection direction = TipoApostaLinhaView.TriangleDirection.UP;
-
-		//tipoApostaLinhaView.setVisibility(View.VISIBLE);
-		//tipoApostaLinhaView.setupView(itemList, backgroundColorRes, textcolorRes, iconColorRes, direction);
 	}
 
-	private boolean isApostaBolao(ApostaDTO aposta) {
+	private void montaTipoApostaLinha(ApostaDTO aposta, int iconColorRes) {
+		if (aposta.getTroca()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+		}
+		if (isApostaBolao(aposta)) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
+		}
+		if (aposta.getCombo()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
+		}
+		if (aposta.getEspelho()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+		}
+		if (aposta.getSurpresinha()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+		}
+		if (aposta.getQuantidadeTeimosinhas() > 0) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
+		}
+
+		if (listTipoApostaLinha.size() > 0) {
+			int backgroundColorRes = R.color.bolao_linha;
+			int textcolorRes = R.color.cinzaescuro;
+			TipoApostaLinhaView.TriangleDirection direction = TipoApostaLinhaView.TriangleDirection.UP;
+
+			tipoApostaLinhaView.setVisibility(View.VISIBLE);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, backgroundColorRes, textcolorRes, iconColorRes, direction);
+		}
+	}
+
+		private boolean isApostaBolao(ApostaDTO aposta) {
 		return aposta.getIndicadorCotaBolao() != null && aposta.getIndicadorCotaBolao();
 	}
 
