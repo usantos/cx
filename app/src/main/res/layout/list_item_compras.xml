@@ -13,13 +13,13 @@
         android:layout_height="wrap_content"
         android:background="@color/mega_verde_claro_mkp"
         android:orientation="vertical"
-        android:paddingHorizontal="13dp"
-        android:paddingVertical="15dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="13dp"
+            android:paddingVertical="15dp"
             android:orientation="horizontal">
 
             <TextView
@@ -45,6 +45,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="17dp"
+            android:paddingHorizontal="13dp"
+            android:paddingVertical="15dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -96,7 +98,16 @@
                 android:orientation="vertical"/>
 
         </LinearLayout>
+
+        <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+            android:id="@+id/tipo_aposta_linha_compras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:visibility="gone" />
+
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/bottomListItemComprasLinearLayout"

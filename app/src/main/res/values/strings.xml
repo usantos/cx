@@ -1525,5 +1525,11 @@
     <string name="adicionar_ao_carrinho_de_compras">Adicionar ao carrinho de apostas</string>
     <string name="card_de_aposta_contida_neste_combo">Aposta contida neste combo</string>
 
+    <string name="tipo_aposta_bolao">Bolão</string>
+    <string name="tipo_aposta_combo">Combo</string>
+    <string name="tipo_aposta_espelho">Espelho</string>
+    <string name="tipo_aposta_surpresinha">Surpresinha</string>
+    <string name="tipo_aposta_teimosinha">Teimosinha</string>
+    <string name="tipo_aposta_troca">Aposta de Troca</string>
 
 </resources>

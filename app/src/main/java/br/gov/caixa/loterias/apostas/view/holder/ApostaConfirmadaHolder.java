@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -25,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
+import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -32,6 +34,7 @@ import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 import br.gov.caixa.loterias.apostas.view.listener.OnApostaConfirmadaListener;
 
 public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements View.OnClickListener {
@@ -51,6 +54,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private Activity parentActivity;
 	private ApostasConfirmadasFragment fragment;
 	private EstiloModalidadeMKP estiloModalidadeMKP;
+	private TipoApostaLinhaView tipoApostaLinhaView;
 
 	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity, ApostasConfirmadasFragment fragment) {
 		super(view);
@@ -67,6 +71,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			detalheAposta = view.findViewById(R.id.id_detalhe_aposta);
 			tagBolao = view.findViewById(R.id.id_tag_bolao);
 			situacaoTxt = view.findViewById(R.id.situacaoTxt);
+			//tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 			progressBarSituacao = view.findViewById(R.id.progressBarSituacao);
 			reloadImg = view.findViewById(R.id.reloadImg);
 			reloadImg.setOnClickListener(this);
@@ -130,6 +135,19 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			}
 			tagBolao.setVisibility(View.GONE);
 		}
+
+		ArrayList<TipoApostaLinhaEnum> itemList = new ArrayList<>();
+		itemList.add(TipoApostaLinhaEnum.COMBO);
+		itemList.add(TipoApostaLinhaEnum.ESPELHO);
+		itemList.add(TipoApostaLinhaEnum.SURPRESINHA);
+
+		int backgroundColorRes = R.color.green_6;
+		int textcolorRes = R.color.white60;
+		int iconColorRes = R.color.white60;
+		//TipoApostaLinhaView.TriangleDirection direction = TipoApostaLinhaView.TriangleDirection.UP;
+
+		//tipoApostaLinhaView.setVisibility(View.VISIBLE);
+		//tipoApostaLinhaView.setupView(itemList, backgroundColorRes, textcolorRes, iconColorRes, direction);
 	}
 
 	private boolean isApostaBolao(ApostaDTO aposta) {

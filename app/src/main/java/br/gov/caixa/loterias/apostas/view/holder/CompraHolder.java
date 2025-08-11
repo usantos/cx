@@ -8,15 +8,20 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostaLotogolDetalhesComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ComprasDezenasView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
+import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 
 public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 
@@ -31,7 +36,8 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 	private LinearLayout itemComprasContentModalideLinearLayout;
 	private TextView tvTeimosinhas;
 	private DetalhesComprasActivity activity;
-	private ImageView tagBolao;
+	//private ImageView tagBolao;
+	private TipoApostaLinhaView tipoApostaLinhaView;
 
 	public CompraHolder(View itemView, DetalhesComprasActivity activity) {
 		super(itemView);
@@ -45,7 +51,8 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		seusNumerosItemListaComprasTextView = itemView.findViewById(R.id.seusNumerosItemListaComprasTextView);
 		itemComprasContentModalideLinearLayout = itemView.findViewById(R.id.itemComprasContentModalideLinearLayout);
 		tvTeimosinhas = itemView.findViewById(R.id.tv_teimosinhas);
-		tagBolao = itemView.findViewById(R.id.image_tag_bolao);
+		//tagBolao = itemView.findViewById(R.id.image_tag_bolao);
+		tipoApostaLinhaView = itemView.findViewById(R.id.tipo_aposta_linha_compras);
 		this.activity = activity;
 	}
 
@@ -53,6 +60,8 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 	public void bind(ApostaDTO aposta, int position) {
 		EstiloModalidadeMKP estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 		int colorText = itemView.getContext().getResources().getColor(estiloMKP.getCorFonteFundoClaro());
+
+		ArrayList<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
 
 		int qtdTeimosinhas = aposta.getQuantidadeTeimosinhas();
 		String teimosinhasTxt = qtdTeimosinhas + (qtdTeimosinhas > 1 ? itemView.getContext().getResources().getString(R.string.espaco_teimosinhas) : itemView.getContext().getResources().getString(R.string.espaco_teimosinha));
@@ -63,8 +72,9 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		this.tipoPremioListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(), itemView.getContext().getString(R.string.texto_futura_bold, nomeAposta)));
 
 		if (aposta.getIndicadorCotaBolao()) {
-			tagBolao.setVisibility(View.VISIBLE);
-			tagBolao.setImageResource(estiloMKP.getImagemTrianguloOutline());
+			//tagBolao.setVisibility(View.VISIBLE);
+			//tagBolao.setImageResource(estiloMKP.getImagemTrianguloOutline());
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
 
 			this.dataConcursoListaComprasTextView.setText(aposta.getReservaCotaBolao().getDataRegistroBolao());
 			this.concursoListaComprasTextView.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
@@ -95,6 +105,27 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		if(qtdTeimosinhas > 0){
 			this.tvTeimosinhas.setText(teimosinhasTxt);
 			this.tvTeimosinhas.setTextColor(colorText);
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
+		}
+		if (aposta.getSurpresinha()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+		}
+		if (aposta.getEspelho()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+		}
+		if (aposta.getTroca()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+		}
+
+		//TipoApostaLinha
+		if (listTipoApostaLinha.size() > 0) {
+			int backgroundColorRes = estiloMKP.getCorEscura();
+			int textcolorRes = estiloMKP.getCorFonteFundoClaro();
+			int iconColorRes = estiloMKP.getCorFonteFundoClaro();
+			TipoApostaLinhaView.TriangleDirection direction = TipoApostaLinhaView.TriangleDirection.UP;
+			tipoApostaLinhaView.setVisibility(View.VISIBLE);
+			List<TipoApostaLinhaEnum> listTipoApostaOrdem =  tipoApostaLinhaView.ordenarPorTexto(itemView.getContext(), listTipoApostaLinha);
+			tipoApostaLinhaView.setupView(listTipoApostaOrdem, backgroundColorRes, textcolorRes, iconColorRes, direction);
 		}
 
 		View child = null;
