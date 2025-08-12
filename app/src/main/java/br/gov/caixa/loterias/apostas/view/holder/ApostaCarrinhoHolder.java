@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.daimajia.swipe.SwipeLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
+import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -40,6 +42,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaLoto
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoSwipeList;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaCarrinhoListener;
 import br.gov.caixa.loterias.apostas.view.listener.BolaoCarrinhoListener;
 
@@ -66,6 +69,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private ApostaCarrinhoListener listener;
 	private BolaoCarrinhoListener listenerBolao;
 
+	private TipoApostaLinhaView tipoApostaLinhaView;
 
 	public ApostaCarrinhoHolder(View view, AppCompatActivity activity, boolean animacao, boolean isBolao, ApostaCarrinhoListener listener, BolaoCarrinhoListener listenerBolao) {
 		super(view);
@@ -94,6 +98,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		iconTimer = view.findViewById(R.id.imageViewRelogioBoloes);
 		textCotas = view.findViewById(R.id.textCotas);
 		textQtdCotas = view.findViewById(R.id.textQtdCotas);
+		tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 	}
 
 	@Override
@@ -346,6 +351,33 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		if (animacao) {
 			AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
+		}
+
+
+		List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
+
+		if (aposta.getTroca()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+		}
+		if (isBolao) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
+		}
+		if (aposta.getCombo()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
+		}
+		if (aposta.getEspelho()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+		}
+		if (aposta.getSurpresinha()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+		}
+		if (aposta.getQuantidadeTeimosinhas() > 0) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
+		}
+
+		if (listTipoApostaLinha.size() > 0) {
+			tipoApostaLinhaView.setVisibility(View.VISIBLE);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha, R.color.cinzaescuro, estiloMKP.getCorLetraLista(), TipoApostaLinhaView.TriangleDirection.UP);
 		}
 	}
 

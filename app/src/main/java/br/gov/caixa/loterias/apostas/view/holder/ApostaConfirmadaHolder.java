@@ -56,7 +56,6 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private ApostasConfirmadasFragment fragment;
 	private EstiloModalidadeMKP estiloModalidadeMKP;
 	private TipoApostaLinhaView tipoApostaLinhaView;
-	private List<TipoApostaLinhaEnum> listTipoApostaLinha;
 
 	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity, ApostasConfirmadasFragment fragment) {
 		super(view);
@@ -94,8 +93,6 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
 		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorClara());
-
-		listTipoApostaLinha = new ArrayList<>();
 
 		this.color = color;
 		this.stripe.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
@@ -142,6 +139,9 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	}
 
 	private void montaTipoApostaLinha(ApostaDTO aposta, int iconColorRes) {
+
+		List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
+
 		if (aposta.getTroca()) {
 			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
 		}
@@ -162,12 +162,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 
 		if (listTipoApostaLinha.size() > 0) {
-			int backgroundColorRes = R.color.bolao_linha;
-			int textcolorRes = R.color.cinzaescuro;
-			TipoApostaLinhaView.TriangleDirection direction = TipoApostaLinhaView.TriangleDirection.UP;
-
 			tipoApostaLinhaView.setVisibility(View.VISIBLE);
-			tipoApostaLinhaView.setupView(listTipoApostaLinha, backgroundColorRes, textcolorRes, iconColorRes, direction);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha, R.color.cinzaescuro, iconColorRes, TipoApostaLinhaView.TriangleDirection.UP);
 		}
 	}
 

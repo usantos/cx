@@ -8,11 +8,17 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaComboCarrinhoListener;
 import br.gov.caixa.loterias.apostas.view.listener.ComboCarrinhoListener;
 
@@ -26,6 +32,7 @@ public class ApostaCarrinhoComboHolder extends LoteriasHolder<ComboApostaDTO> {
 	private AppCompatActivity activity;
 	private ApostaComboCarrinhoListener listener;
 	private ComboCarrinhoListener listenerCombo;
+	private TipoApostaLinhaView tipoApostaLinhaView;
 
 
 	public ApostaCarrinhoComboHolder(View view, AppCompatActivity activity, ApostaComboCarrinhoListener listener, ComboCarrinhoListener listenerCombo) {
@@ -40,6 +47,7 @@ public class ApostaCarrinhoComboHolder extends LoteriasHolder<ComboApostaDTO> {
 		valorAposta = view.findViewById(R.id.valorAposta);
 		tvQtdApostasCombo = view.findViewById(R.id.tvQtdApostasCombo);
 		imageDetalheCombos = view.findViewById(R.id.imageViewDetalheCombos);
+		tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 	}
 
 	@Override
@@ -47,10 +55,12 @@ public class ApostaCarrinhoComboHolder extends LoteriasHolder<ComboApostaDTO> {
 
 		this.tvDescricaoCombo.setText(comboAposta.getTipoCombo().getNome());
 
+		boolean isSurpresinha = false;
 		if (comboAposta.getApostas() != null && comboAposta.getApostas().size() > 0) {
 			BigDecimal valAposta = BigDecimal.ZERO;
 			for (IdentificaoDeUmaApostaDas8Modalidades umaAposta : comboAposta.getApostas()) {
 				valAposta = valAposta.add(umaAposta.getValor());
+				isSurpresinha = umaAposta.getSurpresinha();
 			}
 			ViewUtils.setMoedaFormatHtmlCombo(valAposta, valorAposta);
 
@@ -64,6 +74,28 @@ public class ApostaCarrinhoComboHolder extends LoteriasHolder<ComboApostaDTO> {
 				.setOnClickListener(view -> listener.onDeletaComboAposta(comboAposta));
 
 		this.imageDetalheCombos.setOnClickListener(view -> listenerCombo.onComboClick(comboAposta));
+
+		EstiloModalidadeMKP estiloMKP = new EstiloModalidadeMKP(ModalidadeEnum.COMBO);
+		List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
+
+//		if (aposta.getTroca()) {
+//			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+//		}
+		listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
+//		if (aposta.getEspelho()) {
+//			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+//		}
+		if (isSurpresinha) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+		}
+//		if (aposta.getQuantidadeTeimosinhas() > 0) {
+//			listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
+//		}
+
+		if (listTipoApostaLinha.size() > 0) {
+			tipoApostaLinhaView.setVisibility(View.VISIBLE);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha, R.color.cinzaescuro, estiloMKP.getCorLetraLista(), TipoApostaLinhaView.TriangleDirection.UP);
+		}
 	}
 
 }

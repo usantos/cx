@@ -322,12 +322,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+                android:id="@+id/tipo_aposta_linha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
             <View
                 android:id="@+id/v_div_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/cinzaclaro"/>
-
         </RelativeLayout>
 
     </LinearLayout>

@@ -69,12 +69,22 @@
         app:layout_constraintTop_toBottomOf="@+id/imageViewDetalheCombos"
     />
 
+    <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+        android:id="@+id/tipo_aposta_linha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvQtdApostasCombo"
+        android:visibility="visible"
+        />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:paddingStart="0dp"
         android:background="@color/cinzaclaro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvQtdApostasCombo"/>
+        app:layout_constraintTop_toBottomOf="@+id/tipo_aposta_linha"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
