@@ -124,12 +124,8 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		}
 		//TipoApostaLinha
 		if (listTipoApostaLinha.size() > 0) {
-			int backgroundColorRes = estiloMKP.getCorEscura();
-			int textcolorRes = estiloMKP.getCorFonteFundoClaro();
-			int iconColorRes = estiloMKP.getCorFonteFundoClaro();
-			TipoApostaLinhaView.TriangleDirection direction = TipoApostaLinhaView.TriangleDirection.UP;
 			tipoApostaLinhaView.setVisibility(View.VISIBLE);
-			tipoApostaLinhaView.setupView(listTipoApostaLinha, backgroundColorRes, textcolorRes, iconColorRes, direction);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, estiloMKP.getCorEscura(), estiloMKP.getCorFonteFundoClaro(), estiloMKP.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.UP);
 		}
 
 		View child = null;

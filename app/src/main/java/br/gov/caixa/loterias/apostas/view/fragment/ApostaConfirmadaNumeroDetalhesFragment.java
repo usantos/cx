@@ -31,6 +31,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.Utils;
@@ -52,6 +53,8 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
 	private EstiloModalidadeMKP estilo;
+	private TipoApostaLinhaView tipoApostaLinhaView;
+
 	List<Integer> numerosSorteadosPrimeiro, numerosSorteadosSegundo;
 	List<List<Integer>> matrizSorteados;
 
@@ -121,7 +124,37 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		preencheTeimosinha();
 		preencheTimeCoracaoDiaSorte();
 
+		preencheTipoApostaLinha();
+		
 		configuraNumeros();
+	}
+
+	private void preencheTipoApostaLinha() {
+		List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
+
+		if (aposta.getTroca()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+		}
+		if (aposta.getIndicadorCotaBolao()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
+		}
+		if (aposta.getCombo()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
+		}
+		if (aposta.getEspelho()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+		}
+		if (aposta.getSurpresinha()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+		}
+		if (aposta.getQuantidadeTeimosinhas() > 0) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
+		}
+
+		if (listTipoApostaLinha.size() > 0) {
+			tipoApostaLinhaView.setVisibility(View.VISIBLE);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, estilo.getCorClara(), estilo.getCorFonteFundoClaro(), estilo.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.DOWN);
+		}
 	}
 
 	private void preencheData() {
@@ -205,6 +238,10 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
 					numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,
 					getEstiloNumeros(aposta), null);
+//			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
+//					numerosSorteadosPrimeiro, null,
+//					getEstiloNumeros(aposta), getHifenShape(estilo.getCorFonteFundoEscuro()));
+
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commitAllowingStateLoss();
 			rl_container_result_1.setVisibility(View.VISIBLE);
 
@@ -274,6 +311,12 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			}
 		}
 	}
+
+//	private ShapeConfig getHifenShape(int corFonte) {
+//		return new ShapeConfig(R.drawable.ic_item_dezena,
+//				R.drawable.ic_item_trevo_selecionado,
+//				corFonte, R.color.milionaria_escuro_mkp);
+//	}
 
 	private ShapeConfig getTrevoShape() {
 		return new ShapeConfig(R.drawable.ic_item_trevo,
@@ -417,6 +460,8 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		txtTimeDiaResultado = view.findViewById(R.id.tv_time_mes);
 
 		informacaoAdicionalLayout = view.findViewById(R.id.informacaoAdicionalLayout);
+
+		tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 		rl_fg_numeros_1 = view.findViewById(R.id.rl_fg_numeros_1);
 		rl_fg_numeros_2 = view.findViewById(R.id.rl_fg_numeros_2);
 		rl_container_result_1 = view.findViewById(R.id.rl_container_result_1);

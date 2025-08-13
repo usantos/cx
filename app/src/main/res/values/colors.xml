@@ -175,6 +175,7 @@
     <color name="bolao_laranja">#F79C31</color>
     <color name="bolao_botao_cinza">#B1AEAE</color>
     <color name="bolao_linha">#D9D9D9</color>
+    <color name="bolao_linha_clara">#EFEFEF</color>
     <color name="bolao_hint">#3A4859</color>
     <color name="bolao_gray_stroke">#E8E6E6</color>
     <color name="bolao_black_loterias">#1F2A47</color>
