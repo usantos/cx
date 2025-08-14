@@ -377,7 +377,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		if (listTipoApostaLinha.size() > 0) {
 			tipoApostaLinhaView.setVisibility(View.VISIBLE);
-			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha, R.color.cinzaescuro, estiloMKP.getCorLetraLista(), TipoApostaLinhaView.TriangleDirection.UP);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha_clara, R.color.cinzaescuro, estiloMKP.getCorLetraLista(), TipoApostaLinhaView.TriangleDirection.UP);
 		}
 	}
 

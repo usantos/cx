@@ -26,6 +26,7 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -48,6 +49,8 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			tv_premio_pago_tit;
 	private RelativeLayout informacaoAdicionalLayout, rl_fg_numeros_1, rl_fg_numeros_2 ,rl_container_result_1, rl_container_result_2,
 			rl_time_mes;
+	private RelativeLayout rl_divTopNumerosSorteados, rl_divBotNumerosSorteados;
+	private View divTopNumerosSorteados, divBotNumerosSorteados;
 	private ConstraintLayout cl_premio_pago, clResgatePremio;
 
 	private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
@@ -235,12 +238,15 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 					}
 				}
 			}
-			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
-					numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,
-					getEstiloNumeros(aposta), null);
-//			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
-//					numerosSorteadosPrimeiro, null,
-//					getEstiloNumeros(aposta), getHifenShape(estilo.getCorFonteFundoEscuro()));
+			//fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
+			//		numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,
+			//		getEstiloNumeros(aposta), null);
+			rl_divTopNumerosSorteados.setVisibility(View.VISIBLE);
+			divTopNumerosSorteados.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+			rl_divBotNumerosSorteados.setVisibility(View.VISIBLE);
+			divBotNumerosSorteados.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+			fragResultado = NumerosHifenFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
+					numerosSorteadosPrimeiro, new ConfiguracaoNumeros(estilo.getCorEscura(), estilo.getCorFonteFundoEscuro()));
 
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commitAllowingStateLoss();
 			rl_container_result_1.setVisibility(View.VISIBLE);
@@ -305,18 +311,15 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				rl_fg_numeros_2.setVisibility(View.VISIBLE);
 
 				Collections.sort(numerosSorteadosSegundo);
-				fragResultado = NumerosFragment.newInstance("", numerosSorteadosSegundo ,numerosSorteadosSegundo,getEstiloNumeros(aposta), null);
+				//fragResultado = NumerosFragment.newInstance("", numerosSorteadosSegundo ,numerosSorteadosSegundo,getEstiloNumeros(aposta), null);
+				fragResultado = NumerosHifenFragment.newInstance("",
+						numerosSorteadosSegundo, new ConfiguracaoNumeros(estilo.getCorEscura(), estilo.getCorFonteFundoEscuro()));
+
 				fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commitAllowingStateLoss();
 				rl_container_result_2.setVisibility(View.VISIBLE);
 			}
 		}
 	}
-
-//	private ShapeConfig getHifenShape(int corFonte) {
-//		return new ShapeConfig(R.drawable.ic_item_dezena,
-//				R.drawable.ic_item_trevo_selecionado,
-//				corFonte, R.color.milionaria_escuro_mkp);
-//	}
 
 	private ShapeConfig getTrevoShape() {
 		return new ShapeConfig(R.drawable.ic_item_trevo,
@@ -464,8 +467,12 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 		rl_fg_numeros_1 = view.findViewById(R.id.rl_fg_numeros_1);
 		rl_fg_numeros_2 = view.findViewById(R.id.rl_fg_numeros_2);
+		rl_divTopNumerosSorteados = view.findViewById(R.id.rl_div_top_numeros_sorteados);
+		divTopNumerosSorteados = view.findViewById(R.id.v_div_top_numeros_sorteados);
 		rl_container_result_1 = view.findViewById(R.id.rl_container_result_1);
 		rl_container_result_2 = view.findViewById(R.id.rl_container_result_2);
+		rl_divBotNumerosSorteados = view.findViewById(R.id.rl_div_bot_numeros_sorteados);
+		divBotNumerosSorteados = view.findViewById(R.id.v_div_bot_numeros_sorteados);
 		rl_time_mes = view.findViewById(R.id.rl_time_mes);
 
 		tv_val_premio = view.findViewById(R.id.tv_val_premio);
