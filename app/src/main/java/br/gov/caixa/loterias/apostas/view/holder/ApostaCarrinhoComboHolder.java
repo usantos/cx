@@ -56,11 +56,15 @@ public class ApostaCarrinhoComboHolder extends LoteriasHolder<ComboApostaDTO> {
 		this.tvDescricaoCombo.setText(comboAposta.getTipoCombo().getNome());
 
 		boolean isSurpresinha = false;
+		boolean isEspelho = false;
 		if (comboAposta.getApostas() != null && comboAposta.getApostas().size() > 0) {
 			BigDecimal valAposta = BigDecimal.ZERO;
 			for (IdentificaoDeUmaApostaDas8Modalidades umaAposta : comboAposta.getApostas()) {
 				valAposta = valAposta.add(umaAposta.getValor());
 				isSurpresinha = umaAposta.getSurpresinha();
+				if (!isEspelho) {
+					isEspelho = umaAposta.getEspelho();
+				}
 			}
 			ViewUtils.setMoedaFormatHtmlCombo(valAposta, valorAposta);
 
@@ -82,9 +86,9 @@ public class ApostaCarrinhoComboHolder extends LoteriasHolder<ComboApostaDTO> {
 //			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
 //		}
 		listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
-//		if (aposta.getEspelho()) {
-//			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
-//		}
+		if (isEspelho) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+		}
 		if (isSurpresinha) {
 			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
 		}
