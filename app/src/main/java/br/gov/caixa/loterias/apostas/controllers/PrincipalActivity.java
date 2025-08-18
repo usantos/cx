@@ -34,6 +34,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
+import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
@@ -246,7 +247,8 @@ public class PrincipalActivity extends AppCompatActivity
 
         relativeLayoutContentRepassados.setOnClickListener(view -> clickRelativeLayoutContentRepassados());
 
-        relativeLayoutContentRapidao.setOnClickListener(view -> clickRelativeLayoutContentRapidao());
+        relativeLayoutContentRapidao.setVisibility(View.GONE);
+        relativeLayoutContentRapidao.setOnClickListener(view -> {});//clickRelativeLayoutContentRapidao());
 
         rlJogoResponsavel.setOnClickListener(view -> clickrlJogoResponsavel());
 
@@ -550,19 +552,6 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private boolean conteMaisMilionaria() {
-        boolean contem = false;
-
-        for (ParametroSimulacao parametro : modalidadesParaListar){
-            if (parametro.getParametroJogo().getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
-                contem = true;
-                break;
-            }
-        }
-
-        return contem;
-    }
-
     private void layoutTrevoAcessoRapido() {
         valorRepassesPrincipal.setText(getResources().getString(R.string.zero));
 
@@ -671,7 +660,6 @@ public class PrincipalActivity extends AppCompatActivity
                 estilo,
                 onAnimacaoAcessoRapido());
         animacoesAcessoRapido.animacaoSubirContent();
-
     }
 
     @Override
@@ -921,70 +909,64 @@ public class PrincipalActivity extends AppCompatActivity
         onBackPressed();
     }
 
-    private void AbrirMenusGroup(int groupPosition) {
-        if (groupPosition != 0 && groupPosition != 4 && groupPosition != 8) {
+    private void AbrirMenusGroup(DrawerEnum item) {
+        if (item != DrawerEnum.MENU_MINHA_AREA && item != DrawerEnum.MENU_JOGO_RESPONSAVEL) {
             drawerLayout.closeDrawer(GravityCompat.START, false);
         }
-        switch (groupPosition) {
-            case 1: startActivity(new Intent(PrincipalActivity.this, SelecaoModalidadesResultados.class));
+        switch (item) {
+            case MENU_RESULTADOS:
+                startActivity(new Intent(PrincipalActivity.this, SelecaoModalidadesResultados.class));
                 break;
-            case 2: redirecionaRapidao();
+            case MENU_RAPIDAO:
+                //redirecionaRapidao();
                 break;
-
-            case 3: if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
+            case MENU_COFERIR_BILHETE:
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA}, ZXING_CAMERA_PERMISSION);
-            } else {
-                startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
-            }
+                } else {
+                    startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
+                }
                 break;
-            //case 4: startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
-            //    break;
-            case 5: startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
+            case MENU_REPASSES_SOCIAIS:
+                startActivity(new Intent(PrincipalActivity.this, RepassesSociaisActivity.class));
                 break;
-            case 6: startActivity(new Intent(PrincipalActivity.this, TermosAceiteActivity.class));
+            case MENU_TERMO_USO:
+                startActivity(new Intent(PrincipalActivity.this, TermosAceiteActivity.class));
                 break;
-            case 7: startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
+            case MENU_DUVIDAS:
+                startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
                 break;
             default:
                 break;
         }
     }
 
-    private void AbrirMenusItens(int itemPosition) {
-        if (ConfiguracaoAppSingleton.getInstance().isMostraMenuAposta()){
-            tratarMenuCompleto(itemPosition);
-        } else
-        if (itemPosition == 1){
-            trataMenuSemMinhasApostas(itemPosition);
-        }
+    private void AbrirMenusItens(DrawerEnum drawerEnum, int itemPosition) {
+        tratarMenuMinhaArea(drawerEnum);
 
         sideMenuExpandableListView.collapseGroup(itemPosition);
         drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
-    private void tratarMenuCompleto(int itemPosition) {
-        switch (itemPosition) {
-            case 0:
+    private void tratarMenuMinhaArea(DrawerEnum item) {
+        switch (item) {
+            case MENU_DADOS_PESSOAIS:
                 startActivity(new Intent(PrincipalActivity.this, DadosPessoaisActivity.class));
                 break;
-            /*case 1:
-                startActivity(new Intent(PrincipalActivity.this, AlterarDadosLoginCaixaActivity.class));
-                break;*/
-            case 1:
+            case MENU_MINHAS_APOSTAS:
                 startActivity(new Intent(PrincipalActivity.this, MinhasApostasActivity.class));
                 break;
-            case 2:
+            case MENU_COMPRAS:
                 startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
                 break;
-            case 3:
+            case MENU_FAVORITAS:
                 startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
                 break;
-            case 4:
+            case MENU_CARRINHOS_FAVORITOS:
                 startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
                 break;
-            case 5:
-//                startActivity(new Intent(PrincipalActivity.this, CartoesActivity.class).putExtra(MENU_LATERAL, true));
+            case MENU_MEUS_CARTOES:
                 startActivity(new Intent(PrincipalActivity.this, MeusCartoesActivity.class));
                 break;
             default:
@@ -992,41 +974,15 @@ public class PrincipalActivity extends AppCompatActivity
         }
     }
 
-    private void trataMenuSemMinhasApostas(int itemPosition) {
-        switch (itemPosition) {
-            case 0:
-                startActivity(new Intent(PrincipalActivity.this, DadosPessoaisActivity.class));
-                break;
-            /*case 1:
-                startActivity(new Intent(PrincipalActivity.this, AlterarDadosLoginCaixaActivity.class));
-                break;*/
-            case 1:
-                startActivity(new Intent(PrincipalActivity.this, ListaComprasActivity.class));
-                break;
-            case 2:
-                startActivity(new Intent(PrincipalActivity.this, FavoritasActivity.class));
-                break;
-            case 3:
-                startActivity(new Intent(PrincipalActivity.this, CarrinhosFavoritosActivity.class));
-                break;
-            case 4:
-//                startActivity(new Intent(PrincipalActivity.this, CartoesActivity.class).putExtra(MENU_LATERAL, true));
-                startActivity(new Intent(PrincipalActivity.this, MeusCartoesActivity.class));
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void trataMenuJogoResponsavel(int itemPosition) {
-        switch (itemPosition) {
-            case 0:
+    private void trataMenuJogoResponsavel(DrawerEnum item, int itemPosition) {
+        switch (item) {
+            case MENU_JOGO_RESPONSAVEL_POLITICA:
                 startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
                 break;
-            case 1:
+            case MENU_JOGO_RESPONSAVEL_AVALIACAO:
                 startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
                 break;
-            case 2:
+            case MENU_JOGO_RESPONSAVEL_SUSPENSAO:
                 startActivity(new Intent(PrincipalActivity.this, AutoSuspensaoActivity.class));
                 break;
             default:
@@ -1037,41 +993,23 @@ public class PrincipalActivity extends AppCompatActivity
         drawerLayout.closeDrawer(GravityCompat.START, false);
     }
 
-//    private void trataMenuNotificacoes(int itemPosition) {
-//        switch (itemPosition) {
-//            case 0:
-//                startActivity(new Intent(PrincipalActivity.this, MensagensPushActivity.class));
-//                break;
-//            case 1:
-//                startActivity(new Intent(PrincipalActivity.this, PreferenciasNotificacoesActivity.class));
-//                break;
-//            default:
-//                break;
-//        }
-//    }
-
     private void layoutSideMenu() {
-
         final ExpandableListAdapter expandableListAdapter;
-        final List<String> expandableListTitle;
-        final HashMap<String, List<String>> expandableListDetail;
+        final List<DrawerEnum> expandableListTitle;
+        final HashMap<DrawerEnum, List<DrawerEnum>> expandableListDetail;
 
         sideMenuExpandableListView.setGroupIndicator(null);
         expandableListDetail = ExpandableListDataSideMenu.getData();
         expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         expandableListAdapter = new SideMenuExpandleAdapter(this, expandableListTitle, expandableListDetail);
         sideMenuExpandableListView.setAdapter(expandableListAdapter);
-        sideMenuExpandableListView.setOnGroupExpandListener(groupPosition ->
-        AbrirMenusGroup(groupPosition));
+        sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> AbrirMenusGroup(expandableListTitle.get(groupPosition)));
 
         sideMenuExpandableListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
-            if (groupPosition == 4) {
-                trataMenuJogoResponsavel(childPosition);
-            } else {
-            //if (groupPosition == 8) {
-            //    trataMenuNotificacoes(childPosition);
-            //} else {
-                AbrirMenusItens(childPosition);
+            if (expandableListTitle.get(groupPosition) == DrawerEnum.MENU_JOGO_RESPONSAVEL) {
+                trataMenuJogoResponsavel(expandableListDetail.get(DrawerEnum.MENU_JOGO_RESPONSAVEL).get(childPosition), childPosition);
+            } else if (expandableListTitle.get(groupPosition) == DrawerEnum.MENU_MINHA_AREA){
+                AbrirMenusItens(expandableListDetail.get(DrawerEnum.MENU_MINHA_AREA).get(childPosition), childPosition);
             }
             return false;
         });
