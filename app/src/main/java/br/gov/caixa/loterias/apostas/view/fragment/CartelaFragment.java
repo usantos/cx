@@ -341,12 +341,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private boolean checaLimiteDiario() {
-		BigDecimal valorTotal = CarrinhoSingleton.getInstance().getCarrinho().getValorTotal();
 		return CarrinhoSingleton.getInstance().getCarrinho() != null &&
 				CarrinhoSingleton.getInstance().getCarrinho().getValorTotal() != null &&
 				SessaoUsuario.getInstance().getParametrosSimulacao() != null &&
 				SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() != null &&
-				((valorTotal.add(valorTotalAposta)).compareTo(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()) > 0);
+				valorTotalAposta != null &&
+				((CarrinhoSingleton.getInstance().getCarrinho().getValorTotal()
+						.add(valorTotalAposta))
+						.compareTo(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario()) > 0);
 	}
 
 	private IdentificaoDeUmaApostaDas8Modalidades getApostaPreenchida() {
