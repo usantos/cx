@@ -1,9 +1,13 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -52,52 +56,56 @@ public class NumerosHifenFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
-		LinearLayout layout = new LinearLayout(getContext());
+		Context context = getContext();
+
+		// Layout principal vertical
+		LinearLayout layout = new LinearLayout(context);
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setBackgroundColor(ContextCompat.getColor(getActivity(), configuracao.getCorInteriorCirculo()));
 		layout.setPadding(16, 16, 16, 16);
 
-		TextView tituloView = new TextView(getContext());
+		// Título
+		TextView tituloView = new TextView(context);
 		tituloView.setText(titulo);
 		tituloView.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
 		tituloView.setTextSize(12);
-		tituloView.setTypeface(ViewUtils.getFontCaixaStdBold(getContext()));
+		tituloView.setTypeface(ViewUtils.getFontCaixaStdBold(context));
 		tituloView.setPadding(0, 0, 0, 32);
 		layout.addView(tituloView);
 
-		// Monta os números com hífen e quebra de linha a cada 6
-		int count = 0;
-		StringBuilder linha = new StringBuilder();
+		// GridLayout com 6 colunas
+		GridLayout gridLayout = new GridLayout(context);
+		gridLayout.setColumnCount(6);
+		gridLayout.setOrientation(GridLayout.HORIZONTAL);
+		gridLayout.setLayoutParams(new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT
+		));
+
 		for (int i = 0; i < numerosSelecionados.size(); i++) {
 			int numero = numerosSelecionados.get(i);
 			//String formatado = numero < 10 ? " " + numero : String.valueOf(numero);
 			String formatado = String.format("%02d", numero);
 
-			if (count > 0) {
-				linha.append("   -   ");
-			}
-			linha.append(formatado);
-			count++;
+			TextView numeroView = new TextView(context);
+			numeroView.setText(formatado);
+			numeroView.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
+			numeroView.setTextSize(14);
+			numeroView.setTypeface(ViewUtils.getFontCaixaStdBold(context));
+			numeroView.setGravity(Gravity.CENTER);
+			numeroView.setPadding(8, 8, 8, 8);
 
-			// Verifica se é hora de quebrar a linha
-			boolean fimDaLinha = count == 6;
-			boolean ultimoNumero = i == numerosSelecionados.size() - 1;
-
-			if (fimDaLinha || ultimoNumero) {
-				TextView linhaView = new TextView(getContext());
-				linhaView.setText(linha.toString());
-				linhaView.setTextColor(configuracao.getCorTextoCirculo());
-				linhaView.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
-				linhaView.setBackgroundColor(ContextCompat.getColor(getActivity(), configuracao.getCorInteriorCirculo()));
-				linhaView.setTextSize(14);
-				linhaView.setTypeface(ViewUtils.getFontCaixaStdBold(getContext()));
-				linhaView.setPadding(16, 0, 0, 20);
-				layout.addView(linhaView);
-				linha.setLength(0); // limpa
-				count = 0;
+			// Adiciona hífen à direita, exceto no último da linha
+			if ((i + 1) % 6 != 0 && i != numerosSelecionados.size() - 1) {
+				numeroView.setText(formatado + " -");
 			}
+
+			gridLayout.addView(numeroView);
 		}
 
+		layout.addView(gridLayout);
 		return layout;
 	}
+
+
 }
