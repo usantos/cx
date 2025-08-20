@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <ToggleButton
-        android:id="@+id/tv_item_numeto"
+        android:id="@+id/tv_item_numero"
         android:layout_width="45dp"
         android:layout_height="45dp"
         tools:textOff="1"

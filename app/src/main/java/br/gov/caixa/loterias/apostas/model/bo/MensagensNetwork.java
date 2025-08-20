@@ -109,7 +109,7 @@ public class MensagensNetwork {
                 errorResponse.setMensagem(  context.getString(R.string.erro_500) );
                 break;
             default:
-                if(errorResponse.getMensagem().isEmpty()){
+                if(errorResponse.getMensagem() == null || errorResponse.getMensagem().isEmpty()){
                     errorResponse.setMensagem(  context.getString(R.string.nao_concluiu_operacao) );
                 }
             break;

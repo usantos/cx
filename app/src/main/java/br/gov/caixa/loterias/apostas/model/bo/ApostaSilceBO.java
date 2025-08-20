@@ -930,6 +930,7 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         getServiceConnection().request(request, listener);
     }
 
+    @Override
     public void gerarCodigoPix(MeioPagamentoPix meioPagamento, final RequestListener<GerarPixResponse> listener) {
         final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.GERAR_CODIGO_PIX,
                 new LinkedHashMap<>(),

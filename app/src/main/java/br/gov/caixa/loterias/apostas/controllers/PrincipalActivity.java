@@ -116,7 +116,6 @@ import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
-
 public class PrincipalActivity extends AppCompatActivity
         implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
         DiscreteScrollView.OnItemChangedListener<HomeViewHolder> {
@@ -878,7 +877,7 @@ public class PrincipalActivity extends AppCompatActivity
     protected void clickRelativeLayoutContentRapidao() {
         //AnimacaoFecharMenuRapido(relativeContentPrincipal);
         showMenu();
-        redirecionaRapidao();
+        //redirecionaRapidao();
     }
 
     protected void clickrlJogoResponsavel() {
