@@ -5,7 +5,12 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +20,18 @@ import java.util.List;
  */
 
 public class AppUtils {
+
+    public static void aplicaAjusteAPI35(View viewRoot){
+        ViewCompat.setOnApplyWindowInsetsListener(viewRoot, (v, insets) -> {
+            Insets systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(
+                    systemBarsInsets.left,
+                    systemBarsInsets.top,
+                    systemBarsInsets.right,
+                    systemBarsInsets.bottom);
+            return insets;
+        });
+    }
 
     public static boolean isNetworkAvailable(Context context) {
         try{

@@ -12,59 +12,35 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
  */
 
 public class ExpandableListDataSideMenu {
-    public static final String MENU_DADOS_PESSOAIS = "Dados pessoais";
-    public static final String MENU_MINHAS_APOSTAS = "Minhas apostas";
-    public static final String MENU_COMPRAS = "Minhas compras";
-    public static final String MENU_FAVORITAS = "Apostas favoritas";
-    public static final String MENU_CARRINHOS_FAVORITOS = "Carrinhos favoritos";
-    public static final String MENU_MEUS_CARTOES = "Meus cartões";
 
-    public static final String MENU_JOGO_RESPONSAVEL_POLITICA = "Política de jogo responsável";
-    public static final String MENU_JOGO_RESPONSAVEL_AVALIACAO = "Autoavaliação do apostador";
-    public static final String MENU_JOGO_RESPONSAVEL_SUSPENSAO = "Autossuspensão temporária";
+    public static HashMap<DrawerEnum, List<DrawerEnum>> getData() {
+        LinkedHashMap<DrawerEnum, List<DrawerEnum>> expandableListDetail = new LinkedHashMap<>();
 
-    //public static final String MENU_NOTIFICACOES1 = "Mensagens";
-    //public static final String MENU_NOTIFICACOES2 = "Preferências";
-
-    public static HashMap<String, List<String>> getData() {
-        LinkedHashMap<String, List<String>> expandableListDetail = new LinkedHashMap<>();
-
-        List<String> minhaArea = new ArrayList<>();
-        minhaArea.add(MENU_DADOS_PESSOAIS);
-        //minhaArea.add("Alterar dados do login Caixa");
+        List<DrawerEnum> minhaArea = new ArrayList<>();
+        minhaArea.add(DrawerEnum.MENU_DADOS_PESSOAIS);
         if (ConfiguracaoAppSingleton.getInstance().isMostraMenuAposta()) {
-            minhaArea.add(MENU_MINHAS_APOSTAS);
+            minhaArea.add(DrawerEnum.MENU_MINHAS_APOSTAS);
         }
-        minhaArea.add(MENU_COMPRAS);
-        minhaArea.add(MENU_FAVORITAS);
-        minhaArea.add(MENU_CARRINHOS_FAVORITOS);
-        minhaArea.add(MENU_MEUS_CARTOES);
+        minhaArea.add(DrawerEnum.MENU_COMPRAS);
+        minhaArea.add(DrawerEnum.MENU_FAVORITAS);
+        minhaArea.add(DrawerEnum.MENU_CARRINHOS_FAVORITOS);
+        minhaArea.add(DrawerEnum.MENU_MEUS_CARTOES);
 
-        List<String> Resultados = new ArrayList<>();
-        List<String> Rapidao = new ArrayList<>();
-        List<String> bilhetes = new ArrayList<>();
-        List<String> sociais = new ArrayList<>();
-        List<String> termo = new ArrayList<>();
-        List<String> duvidas = new ArrayList<>();
+        List<DrawerEnum> jogoResponsavel = new ArrayList<>();
+        jogoResponsavel.add(DrawerEnum.MENU_JOGO_RESPONSAVEL_POLITICA);
+        jogoResponsavel.add(DrawerEnum.MENU_JOGO_RESPONSAVEL_AVALIACAO);
+        jogoResponsavel.add(DrawerEnum.MENU_JOGO_RESPONSAVEL_SUSPENSAO);
 
-        List<String> jogoResponsavel = new ArrayList<>();
-        jogoResponsavel.add(MENU_JOGO_RESPONSAVEL_POLITICA);
-        jogoResponsavel.add(MENU_JOGO_RESPONSAVEL_AVALIACAO);
-        jogoResponsavel.add(MENU_JOGO_RESPONSAVEL_SUSPENSAO);
+        expandableListDetail.put(DrawerEnum.MENU_MINHA_AREA, minhaArea);
+        expandableListDetail.put(DrawerEnum.MENU_RESULTADOS, new ArrayList<>());
+        //expandableListDetail.put(DrawerEnum.MENU_RAPIDAO, new ArrayList<>());
+        expandableListDetail.put(DrawerEnum.MENU_COFERIR_BILHETE, new ArrayList<>());
+        expandableListDetail.put(DrawerEnum.MENU_JOGO_RESPONSAVEL, jogoResponsavel);
+        expandableListDetail.put(DrawerEnum.MENU_REPASSES_SOCIAIS, new ArrayList<>());
+        expandableListDetail.put(DrawerEnum.MENU_TERMO_USO, new ArrayList<>());
+        expandableListDetail.put(DrawerEnum.MENU_DUVIDAS, new ArrayList<>());
 
-        //List<String> Notificacoes = new ArrayList<>();
-        //notificacoes.add(MENU_NOTIFICACOES1);
-        //notificacoes.add(MENU_NOTIFICACOES2);
-
-        expandableListDetail.put("Minha área", minhaArea);
-        expandableListDetail.put("Resultados", Resultados);
-        expandableListDetail.put("Rapidão", Rapidao);
-        expandableListDetail.put("Conferir bilhetes", bilhetes);
-        expandableListDetail.put("Jogo responsável", jogoResponsavel);
-        expandableListDetail.put("Repasses sociais", sociais);
-        expandableListDetail.put("Termo de uso", termo);
-        expandableListDetail.put("Dúvidas", duvidas);
-        //expandableListDetail.put("Notificações", notificacoes);
         return expandableListDetail;
     }
+
 }
