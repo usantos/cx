@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -35,10 +34,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
+import br.gov.caixa.loterias.apostas.utils.ComboUtil;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirComboDTO;
 import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import com.android.volley.NetworkResponse;
@@ -991,7 +989,7 @@ public class PrincipalActivity extends AppCompatActivity
     private void trataMenuJogoResponsavel(DrawerEnum item, int itemPosition) {
         switch (item) {
             case MENU_JOGO_RESPONSAVEL_POLITICA:
-                startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
+                DialogUtils.modalJogoresponsavel(PrincipalActivity.this);
                 break;
             case MENU_JOGO_RESPONSAVEL_AVALIACAO:
                 startActivity(new Intent(PrincipalActivity.this, AutoavaliacaoStartActivity.class));
