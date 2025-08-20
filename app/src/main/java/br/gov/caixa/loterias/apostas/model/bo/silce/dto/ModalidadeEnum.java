@@ -55,7 +55,7 @@ public enum ModalidadeEnum implements Serializable {
             case INSTANTANEA:
                 return "instantânea";
             case COMBO:
-                return "Combo de Apostas";
+                return "Combos de Apostas";
             case BOLAO:
                 return "bolão";
         }

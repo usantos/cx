@@ -13,7 +13,6 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 

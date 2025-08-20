@@ -5,22 +5,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ListAdapter;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeComboDTO;
+import br.gov.caixa.loterias.apostas.utils.DetalheComboDiffCallback;
 import br.gov.caixa.loterias.apostas.view.holder.DetalheComboHolder;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+public class DetalheComboAdapter  extends ListAdapter<ModalidadeComboDTO, DetalheComboHolder> {
 
 
-public class DetalheComboAdapter  extends RecyclerView.Adapter<DetalheComboHolder>{
-
-    private final List<ModalidadeComboDTO> modalidades;
     private final Activity parentActivity;
 
-    public DetalheComboAdapter(List<ModalidadeComboDTO> modalidades, Activity parentActivity) {
-        this.modalidades = modalidades;
+    public DetalheComboAdapter(Activity parentActivity) {
+
+        super(new DetalheComboDiffCallback());
         this.parentActivity = parentActivity;
     }
 
@@ -35,12 +34,9 @@ public class DetalheComboAdapter  extends RecyclerView.Adapter<DetalheComboHolde
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull DetalheComboHolder detalheComboHolder, int position) {
-        detalheComboHolder.bind(modalidades.get(position), position);
+        ModalidadeComboDTO item = getItem(position);
+        detalheComboHolder.bind(item);
 
     }
 
-    @Override
-    public int getItemCount() {
-        return modalidades.size();
-    }
 }

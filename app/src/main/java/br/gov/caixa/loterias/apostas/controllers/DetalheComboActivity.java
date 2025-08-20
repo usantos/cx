@@ -7,21 +7,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
+import br.gov.caixa.loterias.apostas.viewModel.DetalheComboViewModel;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirComboDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeComboDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -29,24 +29,24 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheComboAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
-public class DetalheComboActivity extends SettingToolbarActivity {
+public class DetalheComboActivity extends SettingToolbarActivity  {
+
+    private static final String ARG_TIPOAPOSTA = "tipoAposta";
+    private static final String ARG_MODALIDADE = "modalidade";
+    private static final String ARG_VALORAPOSTA = "valorAposta";
     private static final int QUANTIDADE_COLUNA_LISTA_COMBOS = 2;
-    private CombosDTO combo = new CombosDTO();
-    private List<ModalidadeComboDTO> modalidadesCombo;
     private Button btnAdicionarAoCarrinho;
     private TextView txtNomeCombo, txtQtdApostas, txtValorCombo;
     private CheckBox checkMostrarNumeros;
-
+    private ImageButton btnIncrementarAposta, btnDecrementarAposta;
     RecyclerView DetalheComboRcv;
     DetalheComboAdapter detalheComboAdapter;
-
     Toolbar toolbar;
+
+    DetalheComboViewModel viewModel;
 
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
@@ -69,7 +69,8 @@ public class DetalheComboActivity extends SettingToolbarActivity {
 
     private void getExtras(){
         if(getIntent() !=null && getIntent().hasExtra(CombosActivity.ARG_COMBO)){
-            combo = new Gson().fromJson(getIntent().getStringExtra(CombosActivity.ARG_COMBO), CombosDTO.class);
+            viewModel = new ViewModelProvider(this).get(DetalheComboViewModel.class);
+            viewModel.carregarCombo(new Gson().fromJson(getIntent().getStringExtra(CombosActivity.ARG_COMBO), CombosDTO.class));
         }else{
             Log.d("DetalheComboActivity", "Nenhum combo recebido");
         }
@@ -83,6 +84,8 @@ public class DetalheComboActivity extends SettingToolbarActivity {
         txtValorCombo = findViewById(R.id.txtValorCombo);
         DetalheComboRcv = findViewById(R.id.rcvDetalheCombo);
         checkMostrarNumeros = findViewById(R.id.checkBoxNumerosEscolhidos);
+        btnIncrementarAposta = findViewById(R.id.btnIncrementarApostas);
+        btnDecrementarAposta = findViewById(R.id.btnDecrementarApostas);
 
         View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
         view_id_fg_somador_carrinho.setOnClickListener(view -> vaiProCarrinho());
@@ -96,42 +99,67 @@ public class DetalheComboActivity extends SettingToolbarActivity {
     }
 
     private void setMetodos(){
-        if(Objects.equals(combo.getTipoCombo().getCodigo(), CombosDTO.TipoComboEnum.ESPECIAL.getValue())){
-            ModalidadeEnum modalidade = ModalidadeEnum.fromInteger(combo.getModalidadesCombo().get(0).getModalidade().getValor());
+
+        if(Objects.equals(viewModel.getCombo().getTipoCombo().getCodigo(), CombosDTO.TipoComboEnum.ESPECIAL.getValue())){
+            ModalidadeEnum modalidade = ModalidadeEnum.fromInteger(viewModel.getCombo().getModalidadesCombo().get(0).getModalidade().getValor());
             if(modalidade != null){
                 EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
-                setDrawable(txtNomeCombo, estilo.getTrevoFundoClaro(), 20, 20);
+                setDrawable(txtNomeCombo, estilo.getTrevoFundoClaro());
                 txtNomeCombo.setTextColor(ContextCompat.getColor(DetalheComboActivity.this, estilo.getCorLetraLista()));
-                String nomeEspecial = combo.getTipoCombo().getNome() + " " + combo.getModalidadesCombo().get(0).getModalidade().getDescricaoEspecial();
+                String nomeEspecial = viewModel.getCombo().getTipoCombo().getNome() + " " + viewModel.getCombo().getModalidadesCombo().get(0).getModalidade().getDescricaoEspecial();
                 txtNomeCombo.setText(nomeEspecial);
             }
 
         }else{
-            txtNomeCombo.setText(combo.getTipoCombo().getNome());
+            txtNomeCombo.setText(viewModel.getCombo().getTipoCombo().getNome());
         }
-        txtValorCombo.setText(combo.getValor() != null ? ViewUtils.getMoedaFormat(combo.getValor())  : "R$ 0,00");
+
+        if(viewModel.getValorComboLiveData() != null){
+            viewModel.getValorComboLiveData().observe(this, bigDecimal -> {
+                if(bigDecimal != null){
+                    txtValorCombo.setText(ViewUtils.getMoedaFormat(bigDecimal));
+                }else{
+                    txtValorCombo.setText(getString(R.string.r_00_00));
+                }
+            });
+        }
+
         btnAdicionarAoCarrinho.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.adicionarAoCarrinho)));
 
-        if(combo.getModalidadesCombo() != null && !combo.getModalidadesCombo().isEmpty()){
-            modalidadesCombo = new ArrayList<>(combo.getModalidadesCombo());
+        if(viewModel.getQtdTotalApostasLiveData() != null){
+            viewModel.getQtdTotalApostasLiveData().observe(this, integer -> {
+                if(integer != null){
+                    txtQtdApostas.setText(String.valueOf(integer));
+                }
+            });
         }
-
-        txtQtdApostas.setText(getQuantidadeApostas().toString());
 
         btnAdicionarAoCarrinho.setOnClickListener(view -> incluirComboNoCarrinho());
 
+        btnIncrementarAposta.setOnClickListener(view -> viewModel.incrementarApostas());
+
+        btnDecrementarAposta.setOnClickListener(view -> viewModel.decrementarApostas());
     }
 
-
     private void configuraDetalheComboRcv(){
-        if(modalidadesCombo != null && !modalidadesCombo.isEmpty()){
-            detalheComboAdapter = new DetalheComboAdapter(modalidadesCombo,DetalheComboActivity.this);
+
+        if(viewModel.getModalidadesComboLiveData().getValue() != null && !viewModel.getModalidadesComboLiveData().getValue().isEmpty()){
+
+            GridLayoutManager layoutDetalheCombos = getGridLayoutManager(DetalheComboActivity.this, viewModel.getModalidadesComboLiveData().getValue().size());
+            DetalheComboRcv.setLayoutManager(layoutDetalheCombos);
+            DetalheComboRcv.setNestedScrollingEnabled(false);
+
+            detalheComboAdapter = new DetalheComboAdapter(DetalheComboActivity.this);
 
             DetalheComboRcv.setAdapter(detalheComboAdapter);
-            RecyclerView.LayoutManager layoutListacombos = new GridLayoutManager(this, QUANTIDADE_COLUNA_LISTA_COMBOS);
-            DetalheComboRcv.setLayoutManager(layoutListacombos);
 
-            DetalheComboRcv.setNestedScrollingEnabled(false);
+            if(viewModel.getModalidadesComboLiveData() != null){
+                viewModel.getModalidadesComboLiveData().observe(this, modalidadeCombo -> {
+                    if(modalidadeCombo != null){
+                        detalheComboAdapter.submitList(modalidadeCombo);
+                    }
+                });
+            }
 
         }else{
             ViewUtils.alertTitleButton(DetalheComboActivity.this, R.string.label_atencao, getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> finish());
@@ -144,21 +172,19 @@ public class DetalheComboActivity extends SettingToolbarActivity {
 
         IncluirComboDTO incluirComboDTO = new IncluirComboDTO();
 
-        incluirComboDTO.setId(combo.getTipoCombo().getCodigo());
-        incluirComboDTO.setQtdApostas(getQuantidadeApostas());
+        incluirComboDTO.setId(viewModel.getCombo().getTipoCombo().getCodigo());
+        incluirComboDTO.setQtdApostas(viewModel.getQtdTotalApostasLiveData().getValue());
         incluirComboDTO.setIsSurpresinha(isSurpresinha);
         incluirComboDTO.setLimparCarrinho(false);
-
-        BigDecimal valorCombo = combo.getValor();
 
         new ComboModel(this).adicionaComboCarrinho(incluirComboDTO, new OnSilceListener() {
             @Override
             public void success(Object payload) {
                 Intent activity = new Intent(DetalheComboActivity.this, ConfirmadoInclusaoCarrinhoActivity.class);
-                activity.putExtra("tipoAposta", ModalidadeEnum.COMBO);
-                activity.putExtra("valorAposta", valorCombo);
+                activity.putExtra(ARG_TIPOAPOSTA, ModalidadeEnum.COMBO);
+                activity.putExtra(ARG_VALORAPOSTA, viewModel.getValorComboLiveData().getValue());
                 int qtdParametros = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().size()-1;
-                activity.putExtra("modalidade", (new Gson()).toJson(SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().get(qtdParametros).getParametroJogo()));
+                activity.putExtra(ARG_MODALIDADE, (new Gson()).toJson(SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().get(qtdParametros).getParametroJogo()));
                 startActivity(activity);
             }
 
@@ -167,18 +193,6 @@ public class DetalheComboActivity extends SettingToolbarActivity {
                 RedirectNetwork.checkRedirect(error,DetalheComboActivity.this);
             }
         });
-
-
-    }
-
-    private Integer getQuantidadeApostas() {
-        int quantidadeApostas = 0;
-        if (combo.getModalidadesCombo() != null) {
-            for (ModalidadeComboDTO modalidade : combo.getModalidadesCombo()) {
-                quantidadeApostas += modalidade.getQuantidadeApostas();
-            }
-        }
-        return quantidadeApostas;
     }
 
 
@@ -188,7 +202,6 @@ public class DetalheComboActivity extends SettingToolbarActivity {
         }else {
             somadorCarrinhoFragment.atualizaValorTotal(CarrinhoSingleton.getInstance().getCarrinho());
         }
-
     }
 
     protected void vaiProCarrinho() {
@@ -197,13 +210,30 @@ public class DetalheComboActivity extends SettingToolbarActivity {
         }
     }
 
-    private void setDrawable(TextView textView, int drawableId, int larguraDp, int alturaDp) {
+    private void setDrawable(TextView textView, int drawableId) {
         Drawable drawable = ContextCompat.getDrawable(this, drawableId);
         if (drawable != null) {
-            int widthPx = (int) (larguraDp * getResources().getDisplayMetrics().density);
-            int heightPx = (int) (alturaDp * getResources().getDisplayMetrics().density);
+            int widthPx = (int) (20 * getResources().getDisplayMetrics().density);
+            int heightPx = (int) (20 * getResources().getDisplayMetrics().density);
             drawable.setBounds(0, 0, widthPx, heightPx);
             textView.setCompoundDrawablesRelative(drawable, null, null, null);
         }
+    }
+
+    private static @NotNull GridLayoutManager getGridLayoutManager(DetalheComboActivity detalheCombosActivity, Integer qtdItens) {
+        GridLayoutManager layout = new GridLayoutManager(detalheCombosActivity, QUANTIDADE_COLUNA_LISTA_COMBOS);
+
+        layout.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+
+                if(qtdItens % 2 != 0 && position == (qtdItens -1)){
+                    return QUANTIDADE_COLUNA_LISTA_COMBOS;
+                }else{
+                    return 1;
+                }
+            }
+        });
+        return layout;
     }
 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeComboDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -17,7 +18,7 @@ import br.gov.caixa.loterias.apostas.utils.CustomTypefaceSpan;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import org.jetbrains.annotations.NotNull;
 
-public class DetalheComboHolder extends LoteriasHolder<ModalidadeComboDTO>{
+public class DetalheComboHolder extends RecyclerView.ViewHolder {
 
     private final TextView  txtQtdJogos, txtNomeModalidade, txtNumeroConcurso;
     private final ImageView backgroundTrevo;
@@ -33,8 +34,7 @@ public class DetalheComboHolder extends LoteriasHolder<ModalidadeComboDTO>{
         backgroundTrevo = itemView.findViewById(R.id.imgBackgroundDetalheCombo);
     }
 
-    @Override
-    public void bind(ModalidadeComboDTO item, int position) {
+    public void bind(final ModalidadeComboDTO item) {
         ModalidadeEnum modalidade = ModalidadeEnum.fromInteger(item.getModalidade().getValor());
         if (modalidade == null) {
             modalidade = ModalidadeEnum.QUINA; // Coloca Quina para não dar erro se for null.

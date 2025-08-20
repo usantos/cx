@@ -71,11 +71,11 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     private void preencheBarraTitulo() {
         if (modalidade.equals(ModalidadeEnum.COMBO)) {
             FragmentUtils.startFragmentBarraTituloCombo(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
-                    parametroSimulacao.getConcurso().getModalidade(),
+                    modalidade,
                     getCorEscura());
         } else {
             FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
-                    parametroSimulacao.getConcurso().getModalidade(),
+                    modalidade,
                     parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(),
                     parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)),
                     getCorClara(), false);
@@ -83,10 +83,10 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
     }
 
     private int getCorClara() {
-        return new EstiloModalidadeMKP(parametroSimulacao.getConcurso().getModalidade()).getCorClara();
+        return new EstiloModalidadeMKP(modalidade).getCorClara();
     }
     private int getCorEscura() {
-        return new EstiloModalidadeMKP(parametroSimulacao.getConcurso().getModalidade()).getCorEscura();
+        return new EstiloModalidadeMKP(modalidade).getCorEscura();
     }
 
     private String getDataSorteio() {
