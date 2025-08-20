@@ -145,7 +145,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		TextView labelQuantidadeSorteios = this.dadosApostaCarrinho.findViewById(R.id.labelQuantidadeSorteios);
 		TextView     quantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
 		TextView     quantidadeSorteios  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
-		Button       buttonApostaEspelho = this.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
+		//Button       buttonApostaEspelho = this.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
 		LinearLayout layoutTimeCoracao   = this.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
 		TextView     labelTimeCoracao    = this.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
 		TextView     textViewTimeCoracao = this.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
@@ -176,9 +176,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		quantidadeSorteios.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
 		quantidadeSorteios.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeTeimosinhas, quantidadeSorteiosString));
 
-		if (aposta.getEspelho() != null && aposta.getEspelho()) {
-			buttonApostaEspelho.setVisibility(View.VISIBLE);
-		}
+//		if (aposta.getEspelho() != null && aposta.getEspelho()) {
+//			buttonApostaEspelho.setVisibility(View.VISIBLE);
+//		}
 
 		this.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(view -> listener.onDeletaAposta(aposta));
 		if (isBolao) {
@@ -263,12 +263,17 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 					if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
 						if (!isBolao){
 							configuraFragment(aposta, this);
-							this.tvNumeroConcursoNovo.setVisibility(View.VISIBLE);
-							this.textViewNumeroConcurso.setVisibility(View.GONE);
+							//this.tvNumeroConcursoNovo.setVisibility(View.VISIBLE);
+							//this.textViewNumeroConcurso.setVisibility(View.GONE);
+							this.tvNumeroConcursoNovo.setVisibility(View.GONE);
+							this.textViewNumeroConcurso.setVisibility(View.VISIBLE);
 						}
 
-						this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
-						this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+						//this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+						//this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+						this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+						this.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+
 						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 						this.valorAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 					} else {

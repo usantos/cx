@@ -84,18 +84,18 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonApostaEspelho"
-            android:layout_width="197dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/button_border"
-            android:text="@string/label_aposta_espelho"
-            android:textAllCaps="false"
-            android:textColor="@color/branco"
-            android:textSize="14sp"
-            android:fontFamily="@font/caixa_std_bold"
-            android:visibility="gone" />
+<!--        <Button-->
+<!--            android:id="@+id/buttonApostaEspelho"-->
+<!--            android:layout_width="197dp"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:background="@drawable/button_border"-->
+<!--            android:text="@string/label_aposta_espelho"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textColor="@color/branco"-->
+<!--            android:textSize="14sp"-->
+<!--            android:fontFamily="@font/caixa_std_bold"-->
+<!--            android:visibility="gone" />-->
 
         <LinearLayout
             android:id="@+id/layoutTimeCoracao"

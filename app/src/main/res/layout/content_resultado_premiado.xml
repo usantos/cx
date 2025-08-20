@@ -42,12 +42,12 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <ImageView
-            android:id="@+id/imgTagBolao"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:src="@drawable/ic_tag_bolao_outline"
-            android:visibility="gone" />
+<!--        <ImageView-->
+<!--            android:id="@+id/imgTagBolao"-->
+<!--            android:layout_width="56dp"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:src="@drawable/ic_tag_bolao_outline"-->
+<!--            android:visibility="gone" />-->
 
     </LinearLayout>
 
@@ -251,6 +251,13 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+            android:id="@+id/tipo_aposta_linha_compras"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:visibility="visible" />
 
     </LinearLayout>
 
