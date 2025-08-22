@@ -98,8 +98,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@id/concursoTxt"
-                android:layout_below="@id/concursoTxt"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@id/concursoLabel"
                 android:fontFamily="@font/caixa_std_regular"
                 android:textColor="@color/branco"
                 tools:textColor="@color/black"
@@ -111,9 +111,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginStart="12dp"
-                android:layout_below="@id/quantidadeApostadasTxt"
-                android:layout_alignStart="@id/quantidadeApostadasTxt"
+                android:layout_marginStart="16dp"
+                android:layout_below="@id/concursoTxt"
+                android:layout_toEndOf="@id/concursoTxt"
                 android:weightSum="1">
 
                 <TextView

@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     tools:context="br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment">
 
-    <ImageView
-        android:id="@+id/id_tag_bolao"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_tag_bolao_outline_loteca"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/id_tag_bolao"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:src="@drawable/ic_tag_bolao_outline_loteca"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_premio_pago"
