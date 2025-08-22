@@ -103,9 +103,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         if (isBolao(detalhesPremioDTO.getAposta())) {
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
             contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidadeMKP.getTrapezio()));
-            contentResultadoPremiado.getImgTrevoResultado().setImageDrawable(VectorUtils.getShape(R.drawable.ic_money_bolao, estiloModalidadeMKP.getCorFonteFundoEscuro()));
-//            contentResultadoPremiado.getImgTagBolao().setVisibility(View.VISIBLE);
-//            contentResultadoPremiado.getImgTagBolao().setImageDrawable(getDrawable(estiloModalidadeMKP.getImagemTrianguloOutline()));
+            contentResultadoPremiado.getImgTrevoResultado().setImageResource(estiloModalidadeMKP.getTrevoFundoEscuro());
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
         }
 
