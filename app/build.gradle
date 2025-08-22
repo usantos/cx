@@ -30,6 +30,8 @@ android {
                 keyAlias strKeyAlias
             }
             release {
+                enableV1Signing false
+                enableV2Signing true
                 storeFile file(System.getProperty('user.home') + '/Caixakeystore')
                 storePassword strKeyStorePassword
                 keyPassword strKeyPassword
@@ -38,6 +40,14 @@ android {
 
             }
         } else {
+
+            signingConfigs {
+                release {
+                    enableV1Signing false
+                    enableV2Signing true
+                }
+            }
+
             println "O arquivo certificado.properties não existe."
         }
 
@@ -83,6 +93,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
 //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
