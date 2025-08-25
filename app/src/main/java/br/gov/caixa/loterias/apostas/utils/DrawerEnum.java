@@ -14,7 +14,7 @@ public enum DrawerEnum {
     MENU_JOGO_RESPONSAVEL("Jogo responsável"),
     MENU_JOGO_RESPONSAVEL_POLITICA("Política de jogo responsável"),
     MENU_JOGO_RESPONSAVEL_AVALIACAO("Autoavaliação do apostador"),
-    MENU_JOGO_RESPONSAVEL_SUSPENSAO("Autossuspensão temporária"),
+    MENU_JOGO_RESPONSAVEL_SUSPENSAO("Suspensão temporária"),
     MENU_REPASSES_SOCIAIS("Repasses sociais"),
     MENU_TERMO_USO("Termo de uso"),
     MENU_DUVIDAS("Dúvidas");
