@@ -207,9 +207,9 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         AutoSuspensaoRequest autoSuspensaoRequest = new AutoSuspensaoRequest(cpf, horasSelecionada);
 
         AlertDialogUtils.show(this);
-        ApostaSilceBO.getInstance().postAutoSuspensaoApostador(autoSuspensaoRequest, new RequestListener<AutoSuspensaoResponse>() {
-            @Override
-            public void onResponse(AutoSuspensaoResponse result) {
+//        ApostaSilceBO.getInstance().postAutoSuspensaoApostador(autoSuspensaoRequest, new RequestListener<AutoSuspensaoResponse>() {
+//            @Override
+//            public void onResponse(AutoSuspensaoResponse result) {
                 AlertDialogUtils.dismiss();
                 SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(true);
                 btnDesistir.setVisibility(View.GONE);
@@ -219,14 +219,14 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
                 texto = texto.replace("XX", textoSelecionado);
                 texto = texto.replace("YY", DateUtils.calculaDataHoraFutura(horasSelecionada));
                 tvSuspensao2.setText(texto);
-            }
+//            }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, AutoSuspensaoActivity.this);
-            }
-        });
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                AlertDialogUtils.dismiss();
+//                RedirectNetwork.checkRedirect(error, AutoSuspensaoActivity.this);
+//            }
+//        });
     }
 }
 
