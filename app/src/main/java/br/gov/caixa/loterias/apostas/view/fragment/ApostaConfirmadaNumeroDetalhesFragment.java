@@ -245,8 +245,13 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			divTopNumerosSorteados.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
 			rl_divBotNumerosSorteados.setVisibility(View.VISIBLE);
 			divBotNumerosSorteados.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
-			fragResultado = NumerosHifenFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
-					numerosSorteadosPrimeiro, new ConfiguracaoNumeros(estilo.getCorEscura(), estilo.getCorFonteFundoEscuro()));
+			String textoNumerosSorteados = getContext().getResources().getString(R.string.numeros_sorteados);
+			if (aposta.getModalidade() == ModalidadeEnum.DUPLA_SENA) {
+				textoNumerosSorteados = getContext().getResources().getString(R.string.primeiro_sorteiro)+"\n"+
+										textoNumerosSorteados;
+			}
+			fragResultado = NumerosHifenFragment.newInstance(textoNumerosSorteados,
+				numerosSorteadosPrimeiro, new ConfiguracaoNumeros(estilo.getCorEscura(), estilo.getCorFonteFundoEscuro()));
 
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commitAllowingStateLoss();
 			rl_container_result_1.setVisibility(View.VISIBLE);
@@ -312,7 +317,8 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 				Collections.sort(numerosSorteadosSegundo);
 				//fragResultado = NumerosFragment.newInstance("", numerosSorteadosSegundo ,numerosSorteadosSegundo,getEstiloNumeros(aposta), null);
-				fragResultado = NumerosHifenFragment.newInstance("",
+				fragResultado = NumerosHifenFragment.newInstance(getContext().getResources().getString(R.string.segundo_sorteiro)+"\n"+
+																	   getContext().getResources().getString(R.string.numeros_sorteados),
 						numerosSorteadosSegundo, new ConfiguracaoNumeros(estilo.getCorEscura(), estilo.getCorFonteFundoEscuro()));
 
 				fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commitAllowingStateLoss();
