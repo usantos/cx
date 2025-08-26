@@ -4,6 +4,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -16,16 +17,20 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.constraintlayout.widget.Group;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
+import br.gov.caixa.loterias.apostas.utils.*;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
+import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import com.android.volley.VolleyError;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
@@ -33,22 +38,9 @@ import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.FiltroMarketplaceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
-import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
-import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
-import br.gov.caixa.loterias.apostas.utils.TestVisao;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaModalidadesAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotericaAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.QueroNaoQueroAdapter;
@@ -57,6 +49,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.QueroNaoQueroViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
+import org.jetbrains.annotations.NotNull;
 
 public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     public static final String FILTRO_MARKETPLACE_RETORNO = "FILTRO_MARKETPLACE_RETORNO";
@@ -64,17 +57,18 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     public static final String ARG_QUERO = "quero";
     public static final String ARG_NAO_QUERO = "naoQuero";
     public static final String ARG_DEZENAS_SELECIONADAS = "dezenasSelecionadas";
-    public static  final String ARG_DEZENAS_QUERO = "dezenasQuero";
-    public static  final String ARG_DEZENAS_NAO_QUERO = "dezenasNaoQuero";
+    public static final String ARG_DEZENAS_QUERO = "dezenasQuero";
+    public static final String ARG_DEZENAS_NAO_QUERO = "dezenasNaoQuero";
+    public static final String ARG_QTD_MAX_PROGNOSTICOS = "qtdMaxPrognosticos";
     public static final int ARG_QUANTIDADE_COLUNA_LISTAS = 6;
     private List<Integer> dezenasSelecionadasQuero = new ArrayList<>();
     private List<Integer> dezenasSelecionadasNaoQuero = new ArrayList<>();
     private RecyclerView listView;
     private ListaModalidadesAdapter listaModalidadesAdapter;
-    private EditText editValMin, editValMax, editQtdCotasMin, editQtdCotasMax, editQtdDezenas;
+    private EditText editValMin, editValMax, editQtdCotasMin, editQtdCotasMax;
     private EditText editLoterica;
-    private TextView validaDezenas, validaQtdCotaMin, validaQtdCotaMax;
-    private RecyclerView recyclerViewLoterica, recyclerViewQuero, recyclerViewNaoQuero;
+    private TextView validaQtdCotaMin, validaQtdCotaMax, txtQtdDezenas;
+    private RecyclerView recyclerViewLoterica, recyclerViewQuero, recyclerViewNaoQuero, recyclerQtdDezenas;
     private LotericaAdapter lotericaAdapter;
     private QueroNaoQueroAdapter queroAdapter, naoQueroAdapter;
     private LinearLayout accordionQuero, accordionNaoQuero;
@@ -90,7 +84,13 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private List<ModalidadeDisponivelCota> listModalidadeDisponivel;
     private ModalidadeEnum selectModalidade = null;
     private TipoConcursoEnum selectTipoConcurso = null;
-
+    private Group groupQueroNaoQuero;
+    private int prognosticoMaximo = 80; //valor padrão;
+    private List<Integer> qtdDezenas = new ArrayList<>();
+    private List<Dezena> listaQtdDezenas = new ArrayList<>();
+    private ListaDezenaRecyclerView qtdDezenasAdapter = null;
+    private Integer QtdDezenaSelecionada = null;
+    private boolean todasModalidadesAtiva = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,20 +104,19 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         setaViews();
         limpaFiltros();
         setaMetodos();
+        configuraQtdDezenasRcv();
         startFragmentSomadorCarrinho();
 
     }
 
     private void getExtras(){
           Intent intent = getIntent();
-            if (intent != null) {
-                Bundle args = intent.getExtras();
-                if (args != null) {
-                    filtro = (FiltroAplicadoMarketplace) args.getSerializable(BolaoActivity.ARG_FILTRO_MARKETPLACE);
-                    selectModalidade = filtro.getModalidade();
-                    selectTipoConcurso = filtro.getTipoConcurso();
-                }
+        if (intent != null) {
+            Bundle args = intent.getExtras();
+            if (args != null) {
+                filtro = (FiltroAplicadoMarketplace) args.getSerializable(BolaoActivity.ARG_FILTRO_MARKETPLACE);
             }
+        }
     }
 
     private void startFragmentSomadorCarrinho() {
@@ -143,9 +142,9 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
         editQtdCotasMin = findViewById(R.id.quant_min_cotas);
         editQtdCotasMax = findViewById(R.id.quant_max_cotas);
-        editQtdDezenas = findViewById(R.id.quant_dezenas);
 
-        validaDezenas = findViewById(R.id.txt_valida_dezenas);
+        txtQtdDezenas = findViewById(R.id.text_quantidade_dezenas);
+
         validaQtdCotaMin = findViewById(R.id.txt_valida_cota_min);
         validaQtdCotaMax = findViewById(R.id.txt_valida_cota_max);
 
@@ -158,10 +157,13 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         accordionQuero = findViewById(R.id.accordionContentQuero);
         accordionQuero.setVisibility(View.VISIBLE);
 
+        groupQueroNaoQuero = findViewById(R.id.groupQueroNaoQuero);
+
         accordionNaoQuero = findViewById(R.id.accordionContentNaoQuero);
         accordionNaoQuero.setVisibility(View.VISIBLE);
         recyclerViewQuero = findViewById(R.id.rcv_quero);
         recyclerViewNaoQuero = findViewById(R.id.rcv_nao_quero);
+        recyclerQtdDezenas = findViewById(R.id.quant_dezenas);
 
         btnExcluirQuero = findViewById(R.id.btn_excluir_num_quero);
         btnExcluirNaoQuero = findViewById(R.id.btn_excluir_num_nao_quero);
@@ -188,24 +190,22 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
         editQtdCotasMin.addTextChangedListener(textWatcher);
         editQtdCotasMax.addTextChangedListener(textWatcher);
-        editQtdDezenas.addTextChangedListener(textWatcher);
 
-        btnPlusQuero.setOnClickListener(v -> abreNumerosQuero());
-        btnPlusNaoQuero.setOnClickListener(v -> abreNumerosNaoQuero());
+        btnPlusQuero.setOnClickListener(v -> abreActivityQueroNaoQuero(ARG_QUERO));
+        btnPlusNaoQuero.setOnClickListener(v -> abreActivityQueroNaoQuero(ARG_NAO_QUERO));
 
         btnExcluirQuero.setOnClickListener(v -> excluirNumerosQuero());
         btnExcluirNaoQuero.setOnClickListener(v -> excluirNumerosNaoQuero());
 
         recuperaEstadoFiltros();
 
-        boolean todasModalidadesAtiva = selectLotericaDTO != null;
-        int posicaoModalidadeSelecionada = posicaoModalidadeSelecionada();
-
-        listaModalidadesAdapter = new ListaModalidadesAdapter(this, listModalidadeDisponivel, onItemClickListenerModalidade(),posicaoModalidadeSelecionada, todasModalidadesAtiva);
+        listaModalidadesAdapter = new ListaModalidadesAdapter(this, listModalidadeDisponivel, onItemClickListenerModalidade(),posicaoModalidadeInicial(), todasModalidadesAtiva);
         listView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         listView.setAdapter(listaModalidadesAdapter);
-        if(posicaoModalidadeSelecionada != -1){
-            listView.scrollToPosition(posicaoModalidadeSelecionada());
+        if(todasModalidadesAtiva){
+            listView.scrollToPosition(0);
+        }else{
+            listView.scrollToPosition(posicaoModalidadeInicial());
         }
 
         queroAdapter = new QueroNaoQueroAdapter(dezenasSelecionadasQuero, onItemClickQueroListener());
@@ -226,36 +226,105 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private void recuperaEstadoFiltros(){
 
-        if(filtro != null){
-            if(filtro.getValorMinimoAposta() != null && !filtro.getValorMinimoAposta().isEmpty()){
-                editValMin.setText(filtro.getValorMinimoAposta());
-            }
-            if(filtro.getValorMaximoAposta() != null && !filtro.getValorMaximoAposta().isEmpty()){
-                editValMax.setText(filtro.getValorMaximoAposta());
-            }
-            if(filtro.getQtdMinCotas() != null && filtro.getQtdMinCotas() != 0){
-                editQtdCotasMin.setText(filtro.getQtdMinCotas().toString());
-            }
-            if(filtro.getQtdMaxCotas() != null && filtro.getQtdMaxCotas() != 0){
-                editQtdCotasMax.setText(filtro.getQtdMaxCotas().toString());
-            }
-            if(filtro.getQtdDezenas() != null && filtro.getQtdDezenas() != 0){
-                editQtdDezenas.setText(filtro.getQtdDezenas().toString());
-            }
-            if(filtro.getLotericaDTO() != null){
-                editLoterica.setText(String.format("%s - %s", mioloCodigoLoterica(filtro.getLotericaDTO().getCodigo()), filtro.getLotericaDTO().getNomeFantasia().trim()));
-                selectLotericaDTO = filtro.getLotericaDTO();
-            }
-            if (filtro.getNumerosQuero() != null && !filtro.getNumerosQuero().isEmpty()) {
-                dezenasSelecionadasQuero = new ArrayList<>(converteStringParaList(filtro.getNumerosQuero()));
-                mostraOcultaNumerosQueroNaoQuero();
-            }
-            if(filtro.getNumerosNaoQuero() != null && !filtro.getNumerosNaoQuero().isEmpty()){
-                dezenasSelecionadasNaoQuero = new ArrayList<>(converteStringParaList(filtro.getNumerosNaoQuero()));
-                mostraOcultaNumerosQueroNaoQuero();
-            }
+        if (filtro == null){
+            return;
+        }
+
+        if (filtro.getValorMinimoAposta() != null && !filtro.getValorMinimoAposta().isEmpty()) {
+            editValMin.setText(filtro.getValorMinimoAposta());
+        }
+        if(filtro.getValorMaximoAposta() != null && !filtro.getValorMaximoAposta().isEmpty()){
+            editValMax.setText(filtro.getValorMaximoAposta());
+        }
+        if(filtro.getQtdMinCotas() != null && filtro.getQtdMinCotas() != 0){
+            editQtdCotasMin.setText(filtro.getQtdMinCotas().toString());
+        }
+        if(filtro.getQtdMaxCotas() != null && filtro.getQtdMaxCotas() != 0){
+            editQtdCotasMax.setText(filtro.getQtdMaxCotas().toString());
+        }
+
+        if(filtro.getLotericaDTO() != null){
+            editLoterica.setText(String.format("%s - %s", mioloCodigoLoterica(filtro.getLotericaDTO().getCodigo()), filtro.getLotericaDTO().getNomeFantasia().trim()));
+            selectLotericaDTO = filtro.getLotericaDTO();
+            todasModalidadesAtiva = true;
+        }
+        if (filtro.getNumerosQuero() != null && !filtro.getNumerosQuero().isEmpty()) {
+            dezenasSelecionadasQuero = new ArrayList<>(converteStringParaList(filtro.getNumerosQuero()));
+            expandeContraiAccordionQueroNaoQuero();
+        }
+        if(filtro.getNumerosNaoQuero() != null && !filtro.getNumerosNaoQuero().isEmpty()){
+            dezenasSelecionadasNaoQuero = new ArrayList<>(converteStringParaList(filtro.getNumerosNaoQuero()));
+            expandeContraiAccordionQueroNaoQuero();
+        }
+        if(filtro.getModalidade() != null){
+            selectModalidade = filtro.getModalidade();
+        }
+
+        if(filtro.getQtdDezenas() != null && filtro.getQtdDezenas() != 0){
+            QtdDezenaSelecionada = filtro.getQtdDezenas();
+        }
+
+        if(filtro.getTipoConcurso() != null){
+            selectTipoConcurso = filtro.getTipoConcurso();
         }
     }
+
+    private void configuraQtdDezenasRcv(){
+
+        if(todasModalidadesAtiva){
+            listaQtdDezenas = montaListDezena(model.getListaTodasModalidades());
+        }else{
+            listaQtdDezenas = montaListDezena(qtdDezenas);
+        }
+
+        DezenaConfig dezenaConfig = new DezenaConfig(true, R.color.azulFiltro, Color.WHITE, true, true);
+        qtdDezenasAdapter = new ListaDezenaRecyclerView(listaQtdDezenas, new ArrayList<>(), dezenaConfig, onItemClickListenerQtdDezenas());
+
+        recyclerQtdDezenas.setAdapter(qtdDezenasAdapter);
+        RecyclerView.LayoutManager layout = new GridLayoutManager(FiltraMarketplaceActivity.this, ARG_QUANTIDADE_COLUNA_LISTAS);
+        recyclerQtdDezenas.setLayoutManager(layout);
+        recyclerQtdDezenas.setNestedScrollingEnabled(false);
+
+        if(qtdDezenas.size()==1){
+            qtdDezenasAdapter.atualizaSelecionados(Collections.singletonList(qtdDezenas.get(0)));
+        }
+
+        if(QtdDezenaSelecionada != null){
+            qtdDezenasAdapter.atualizaSelecionados(Collections.singletonList(QtdDezenaSelecionada));
+        }
+
+    }
+
+    @NotNull
+    private OnItemClickListener<DezenaHolder> onItemClickListenerQtdDezenas() {
+        return (holder, position) -> {
+
+            if(listaQtdDezenas == null|| position >= listaQtdDezenas.size()){
+                return;
+            }
+            try {
+                Dezena dezena = listaQtdDezenas.get(position);
+                Integer valorSelecionado = Integer.valueOf(dezena.getValue());
+
+                List<Integer> novaDezenaSelecinada;
+
+                if(Objects.equals(QtdDezenaSelecionada, valorSelecionado)){
+                    novaDezenaSelecinada = new ArrayList<>();
+                    QtdDezenaSelecionada = null;
+                }else{
+                    novaDezenaSelecinada = Collections.singletonList(valorSelecionado);
+                    QtdDezenaSelecionada = valorSelecionado;
+                }
+
+                qtdDezenasAdapter.atualizaSelecionados(novaDezenaSelecinada);
+
+            } catch (Exception e){
+                Log.d("", e.getLocalizedMessage());
+            }
+        };
+    }
+
+
 
     private List<Integer> converteStringParaList(String numerosString){
         List<Integer> lista = new ArrayList<>();
@@ -267,7 +336,12 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     }
 
 
-    private int posicaoModalidadeSelecionada() {
+    private int posicaoModalidadeInicial() {
+
+        if (filtro == null || listModalidadeDisponivel == null){
+            return -1;
+        }
+
         for (int i = 0; i < listModalidadeDisponivel.size(); i++) {
             ModalidadeDisponivelCota modalidadeDisponivelCota = listModalidadeDisponivel.get(i);
             if (filtro.getModalidade() != null) {
@@ -277,7 +351,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 }
             }
         }
-        return -1; // Adiciona um valor de retorno padrão
+        return -1;
     }
 
     private OnActivityForResult onQueroNaoQueroForResult() {
@@ -289,12 +363,12 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                     if(temp !=null &&temp.equals(ARG_QUERO)){
                         dezenasSelecionadasQuero = args.getIntegerArrayList(ARG_DEZENAS_SELECIONADAS);
                         queroAdapter.atualizaSelecionados(dezenasSelecionadasQuero);
-                        mostraOcultaNumerosQueroNaoQuero();
+                        expandeContraiAccordionQueroNaoQuero();
                         Log.d("Dezenas Quero", String.valueOf(dezenasSelecionadasQuero));
                     }else if(temp !=null  && temp.equals(ARG_NAO_QUERO)){
                         dezenasSelecionadasNaoQuero = args.getIntegerArrayList(ARG_DEZENAS_SELECIONADAS);
                         naoQueroAdapter.atualizaSelecionados(dezenasSelecionadasNaoQuero);
-                        mostraOcultaNumerosQueroNaoQuero();
+                        expandeContraiAccordionQueroNaoQuero();
                         Log.d("Dezenas Não Quero", String.valueOf(dezenasSelecionadasNaoQuero));
 
                     }else{
@@ -305,27 +379,23 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         };
     }
     private void excluirNumerosQuero(){
-        dezenasSelecionadasQuero = new ArrayList<>();
-        queroAdapter.atualizaSelecionados(dezenasSelecionadasQuero);
-        mostraOcultaNumerosQueroNaoQuero();
+        if(queroAdapter != null) {
+            dezenasSelecionadasQuero = new ArrayList<>();
+            queroAdapter.atualizaSelecionados(dezenasSelecionadasQuero);
+            expandeContraiAccordionQueroNaoQuero();
+        }
     }
 
     private void excluirNumerosNaoQuero(){
-        dezenasSelecionadasNaoQuero = new ArrayList<>();
-        naoQueroAdapter.atualizaSelecionados(dezenasSelecionadasNaoQuero);
-        mostraOcultaNumerosQueroNaoQuero();
-    }
-    private void abreNumerosQuero(){
-        putExtrasQueroNaoQuero(ARG_QUERO);
-    }
-
-    private void abreNumerosNaoQuero(){
-        putExtrasQueroNaoQuero(ARG_NAO_QUERO);
+        if(naoQueroAdapter != null){
+            dezenasSelecionadasNaoQuero = new ArrayList<>();
+            naoQueroAdapter.atualizaSelecionados(dezenasSelecionadasNaoQuero);
+            expandeContraiAccordionQueroNaoQuero();
+        }
     }
 
-    private void putExtrasQueroNaoQuero(String argQueroNaoQuero){
+    private void abreActivityQueroNaoQuero(String argQueroNaoQuero){
 
-        //Casting necessário para passar o dado via putIntegerArrayList, a seguir.
         ArrayList<Integer> dezenasQuero = new ArrayList<>(dezenasSelecionadasQuero);
         ArrayList<Integer> dezenasNaoQuero = new ArrayList<>(dezenasSelecionadasNaoQuero);
 
@@ -333,6 +403,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         args.putString(ARG_TITULO_QUERO_NAO_QUERO, argQueroNaoQuero);
         args.putIntegerArrayList(ARG_DEZENAS_QUERO, dezenasQuero);
         args.putIntegerArrayList(ARG_DEZENAS_NAO_QUERO, dezenasNaoQuero);
+        args.putInt(ARG_QTD_MAX_PROGNOSTICOS, prognosticoMaximo);
         Intent intent = IntentUtil.getIntentOrigemDestino(FiltraMarketplaceActivity.this, QueroNaoQueroActivity.class);
         intent.putExtras(args);
         IntentUtil.startActivityForResult(launcher, intent);
@@ -343,21 +414,67 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
             if (position == -1) {
                 selectModalidade = null;
                 selectTipoConcurso = null;
+                todasModalidadesAtiva = true;
+                prognosticoMaximo = 80; //Cartela com todas as modalidades selecionada
             } else {
                 selectModalidade = listModalidadeDisponivel.get(position).getModalidade();
                 selectTipoConcurso = listModalidadeDisponivel.get(position).getTipoConcurso();
+                if(selectModalidade != null){
+                    todasModalidadesAtiva = false;
+                    atualizaVolantes(selectModalidade);
+                }
             }
+
+            atualizaLabelQtdDezenas();
+            ocultaMostraCamposQueroNaoQuero();
+            limpaUltimosFiltros();
+            configuraQtdDezenasRcv();
         };
     }
 
-    private void mostraOcultaNumerosQueroNaoQuero(){
-        if(dezenasSelecionadasQuero !=null && dezenasSelecionadasQuero.size() > 0){
+    private void atualizaLabelQtdDezenas(){
+
+        if(selectModalidade != null && selectModalidade.equals(ModalidadeEnum.LOTECA)){
+            txtQtdDezenas.setText(R.string.quantidade_de_palpites);
+        }else{
+            txtQtdDezenas.setText(R.string.quantidade_dezenas);
+        }
+
+    }
+
+    private void limpaUltimosFiltros(){
+        if(qtdDezenasAdapter != null){
+            QtdDezenaSelecionada = null;
+            qtdDezenasAdapter.atualizaSelecionados(new ArrayList<>());
+        }
+        if(dezenasSelecionadasNaoQuero != null && !dezenasSelecionadasNaoQuero.isEmpty()){
+            excluirNumerosNaoQuero();
+        }
+        if(dezenasSelecionadasQuero != null && !dezenasSelecionadasQuero.isEmpty()){
+            excluirNumerosQuero();
+        }
+    }
+
+    private void ocultaMostraCamposQueroNaoQuero(){
+        if(!mostraQueroNaoQuero()){
+            groupQueroNaoQuero.setVisibility(View.VISIBLE);
+            expandeContraiAccordionQueroNaoQuero();
+        }else{
+            groupQueroNaoQuero.setVisibility(View.GONE);
+            accordionNaoQuero.setVisibility(View.GONE);
+            accordionQuero.setVisibility(View.GONE);
+        }
+    }
+
+
+    private void expandeContraiAccordionQueroNaoQuero(){
+        if(dezenasSelecionadasQuero !=null && !dezenasSelecionadasQuero.isEmpty()){
             accordionQuero.setVisibility(View.VISIBLE);
         }else{
             accordionQuero.setVisibility(View.GONE);
         }
 
-        if(dezenasSelecionadasNaoQuero !=null && dezenasSelecionadasNaoQuero.size() >0){
+        if(dezenasSelecionadasNaoQuero !=null && !dezenasSelecionadasNaoQuero.isEmpty()){
             accordionNaoQuero.setVisibility(View.VISIBLE);
         }else{
             accordionNaoQuero.setVisibility(View.GONE);
@@ -380,7 +497,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 Integer dezena = dezenasSelecionadasQuero.get(position);
                 dezenasSelecionadasQuero.remove(dezena);
                 queroAdapter.atualizaSelecionados(dezenasSelecionadasQuero);
-                mostraOcultaNumerosQueroNaoQuero();
+                expandeContraiAccordionQueroNaoQuero();
 
             } catch (Exception e){
                 Log.d("", Objects.requireNonNull(e.getLocalizedMessage()));
@@ -394,7 +511,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 Integer dezena = dezenasSelecionadasNaoQuero.get(position);
                 dezenasSelecionadasNaoQuero.remove(dezena);
                 naoQueroAdapter.atualizaSelecionados(dezenasSelecionadasNaoQuero);
-                mostraOcultaNumerosQueroNaoQuero();
+                expandeContraiAccordionQueroNaoQuero();
             } catch (Exception e){
                 Log.d("", Objects.requireNonNull(e.getLocalizedMessage()));
             }
@@ -417,7 +534,6 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     }
 
     private void validaFiltros() {
-        validaFiltro(editQtdDezenas, validaDezenas, 5, 21, R.string.qtd_dezenas_menor_5, R.string.qtd_dezenas_maior_20);
         validaFiltro(editQtdCotasMin, validaQtdCotaMin, 2, 100, R.string.qtd_min_menor_2, R.string.qtd_min_maior_max);
         validaFiltro(editQtdCotasMax, validaQtdCotaMax, 2, 100, R.string.qtd_max_menor_2, R.string.qtd_max_maior_100);
         habilitaDesabilitaBtnAplicar();
@@ -425,14 +541,11 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
 
     private void validaFiltro(EditText editText, TextView validaTextView, int minValue, int maxValue, int msgMinErro, int msgMaxErro) {
-        boolean validacaoQtdMin = false;
-        if(editText == findViewById(R.id.quant_min_cotas)){
-            validacaoQtdMin = true;
-        }
+        boolean validacaoQtdMin = editText == findViewById(R.id.quant_min_cotas);
 
-        if (editText.getText() != null && !editText.getText().toString().equals("")) {
+        if (editText.getText() != null && !editText.getText().toString().isEmpty()) {
             int value;
-            if (editText.getText() == null || editText.getText().toString().equals("")) {
+            if (editText.getText() == null || editText.getText().toString().isEmpty()) {
                 validaTextView.setVisibility(View.GONE);
                 value = -1;
             } else {
@@ -460,9 +573,8 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private void habilitaDesabilitaBtnAplicar(){
 
-        if(validaDezenas.getVisibility() == View.GONE &&
-                validaQtdCotaMin.getVisibility() == View.GONE &&
-                validaQtdCotaMax.getVisibility() == View.GONE){
+        if(validaQtdCotaMin.getVisibility() == View.GONE &&
+           validaQtdCotaMax.getVisibility() == View.GONE){
             btnAplicar.setEnabled(true);
             btnAplicar.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.btn_rounded_blue));
         }else{
@@ -496,7 +608,6 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
             }
         }
 
-
         if(editQtdCotasMin.getText() == null || editQtdCotasMin.getText().toString().isEmpty()){
             qtdCotasMin = "0";
         }else{
@@ -507,21 +618,21 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         }else{
             qtdCotasMax = editQtdCotasMax.getText().toString();
         }
-        if(editQtdDezenas.getText() == null || editQtdDezenas.getText().toString().isEmpty()){
+        if(QtdDezenaSelecionada == null){
             qtdDezenas = "0";
         }else{
-            qtdDezenas = editQtdDezenas.getText().toString();
+            qtdDezenas = QtdDezenaSelecionada.toString();
         }
         if(editLoterica.getText().toString().isEmpty() || editLoterica.getText().toString().length() < 6){
             selectLotericaDTO = null;
         }
-        if(dezenasSelecionadasQuero != null && dezenasSelecionadasQuero.size() > 0){
+        if(dezenasSelecionadasQuero != null && !dezenasSelecionadasQuero.isEmpty()){
             String numeros = dezenasSelecionadasQuero.toString();
             numerosQuero = numeros.replace("[", "").replace("]", "").replace(", ", ";");
             Log.d("numerosQueroString", numerosQuero);
         }
 
-        if(dezenasSelecionadasNaoQuero != null && dezenasSelecionadasNaoQuero.size() > 0){
+        if(dezenasSelecionadasNaoQuero != null && !dezenasSelecionadasNaoQuero.isEmpty()){
             String numeros = dezenasSelecionadasNaoQuero.toString();
             numerosNaoQuero = numeros.replace("[", "").replace("]", "").replace(", ", ";");
             Log.d("numerosQueroString", numerosNaoQuero);
@@ -540,7 +651,9 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private void limpaFiltros() {
         editQtdCotasMin.setText("");
         editQtdCotasMax.setText("");
-        editQtdDezenas.setText("");
+        if(qtdDezenasAdapter != null){
+            qtdDezenasAdapter.atualizaSelecionados(new ArrayList<>());
+        }
         editValMin.setText("");
         editValMax.setText("");
         editLoterica.setText("");
@@ -551,7 +664,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         if(naoQueroAdapter != null){
             excluirNumerosNaoQuero();
         }
-        mostraOcultaNumerosQueroNaoQuero();
+        expandeContraiAccordionQueroNaoQuero();
         if(listaModalidadesAdapter != null) {
             listaModalidadesAdapter.montaListComTodaModalidades(false);
         }
@@ -634,7 +747,76 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         }else {
             AlertDialogUtils.dismiss();
         }
+    }
+
+    private void atualizaVolantes(ModalidadeEnum modalidade) {
+
+        if (modalidade == null) {
+            return;
+        }
+
+        SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
+        ParametroSimulacao params = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidade);
+
+        if (params != null && params.getParametroJogo() != null) {
+
+            ParametroJogoDTO parametroJogo = params.getParametroJogo();
+            List<ParametroValorApostaDTO> listValorAposta = parametroJogo.getValoresAposta();
+
+            Log.d("FiltraMarketplace", "Parametro Jogo carregado: " + parametroJogo);
+
+            if (!ModalidadeEnum.LOTECA.equals(modalidade)) {
+                prognosticoMaximo = parametroJogo.getPrognosticoMaximo();
+            }
+
+            if (ModalidadeEnum.TIMEMANIA.equals(modalidade)) {
+                QtdDezenaSelecionada = prognosticoMaximo;
+            }
+
+            qtdDezenas = ModalidadeEnum.LOTECA.equals(modalidade)
+                    ? model.getListaQtdDezenas(modalidade)
+                    : getQtdDezenas(listValorAposta);
+
+        } else {
+
+            if (!ModalidadeEnum.LOTECA.equals(modalidade)) {
+                prognosticoMaximo = model.getPrognosticosMaximoQueroNaoQuero(modalidade);
+            }
+
+            qtdDezenas = model.getListaQtdDezenas(modalidade);
+
+        }
 
     }
 
+    private List<Integer> getQtdDezenas(List<ParametroValorApostaDTO> listValorAposta){
+        Set<Integer> lista = new TreeSet<>();
+        if(listValorAposta != null && !listValorAposta.isEmpty()){
+            for(ParametroValorApostaDTO valorAposta : listValorAposta){
+                if(valorAposta.getNumeroPrognosticos() != null){
+                    lista.add(valorAposta.getNumeroPrognosticos());
+                }
+            }
+        }
+        return new ArrayList<>(lista);
+    }
+
+
+    public List<Dezena> montaListDezena(List<Integer> listaQtdDezenas){
+        List<Dezena> dezenas = new ArrayList<>();
+        for (Integer qtdDezena : listaQtdDezenas) {
+            dezenas.add(new Dezena("" + qtdDezena, Boolean.FALSE));
+        }
+        return dezenas;
+    }
+
+    private boolean mostraQueroNaoQuero(){
+        if(selectModalidade != null){
+            return selectModalidade.equals(ModalidadeEnum.LOTECA) ||
+                   selectModalidade.equals(ModalidadeEnum.SUPER_7);
+        }else{
+            return false;
+        }
+
+    }
 }
