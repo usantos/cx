@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -33,9 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoResponse;
 import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class AutoSuspensaoActivity extends AppCompatActivity {
@@ -214,9 +212,9 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         AutoSuspensaoRequest autoSuspensaoRequest = new AutoSuspensaoRequest(cpf, horasSelecionada);
 
         AlertDialogUtils.show(this);
-//        ApostaSilceBO.getInstance().postAutoSuspensaoApostador(autoSuspensaoRequest, new RequestListener<AutoSuspensaoResponse>() {
-//            @Override
-//            public void onResponse(AutoSuspensaoResponse result) {
+        ApostaSilceBO.getInstance().postAutoSuspensaoApostador(autoSuspensaoRequest, new RequestListener<AutoSuspensaoResponse>() {
+            @Override
+            public void onResponse(AutoSuspensaoResponse result) {
                 AlertDialogUtils.dismiss();
                 SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(true);
 
@@ -225,10 +223,9 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
                 texto = texto.replace("XX", dataHora.substring(0, 10));
                 texto = texto.replace("YY", dataHora.substring(11));
 
-                ViewUtils.alertTitleButton(this, R.string.label_atencao_exclama,
+                ViewUtils.alertTitleButton(AutoSuspensaoActivity.this, R.string.label_atencao_exclama,
                     texto, getString(R.string.btn_entendi),
                     dialogInterface -> {
-                        dialogInterface.dismiss();
                         AlertDialogUtils.show(AutoSuspensaoActivity.this);
                         new LoginSilceModel(AutoSuspensaoActivity.this).sair(new OnSilceListener<NetworkResponse>() {
                             @Override
@@ -241,12 +238,19 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
                             }
 
                             private void sairRedirecionar() {
-                                DadosUsuarioBO.updateUsuarioLogado(AutoSuspensaoActivity.this, false);
-                                Intent intent = new Intent(AutoSuspensaoActivity.this, LoginActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                finish();
                                 AlertDialogUtils.dismiss();
+                                //**Aguarda 2 segundos para redirecionar
+                                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        DadosUsuarioBO.updateUsuarioLogado(AutoSuspensaoActivity.this, false);
+                                        Intent intent = new Intent(AutoSuspensaoActivity.this, LoginActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        startActivity(intent);
+                                        finish();
+                                        dialogInterface.dismiss();
+                                    }
+                                }, 2000); //2 segundos
                             }
                         });
                     });
@@ -258,14 +262,14 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
 //                texto = texto.replace("XX", textoSelecionado);
 //                texto = texto.replace("YY", DateUtils.calculaDataHoraFutura(horasSelecionada));
 //                tvSuspensao2.setText(texto);
-//            }
+            }
 
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                AlertDialogUtils.dismiss();
-//                RedirectNetwork.checkRedirect(error, AutoSuspensaoActivity.this);
-//            }
-//        });
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                RedirectNetwork.checkRedirect(error, AutoSuspensaoActivity.this);
+            }
+        });
     }
 }
 
