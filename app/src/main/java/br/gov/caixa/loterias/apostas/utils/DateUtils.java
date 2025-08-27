@@ -129,12 +129,11 @@ public class DateUtils {
     }
 
     public static String calculaDataHoraFutura(int horas) {
-        Calendar calendario = Calendar.getInstance();
-        calendario.add(Calendar.HOUR_OF_DAY, horas);
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        return formato.format(calendario.getTime());
+        DateTime agora = DataHoraServidorSingleton.getInstance().getCurrentDateTime();
+        DateTime futura = agora.plusHours(horas);
+        DateTimeFormatter formato = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
+        return formato.print(futura);
     }
-
 
     public static DateTime criaDataHoraFuso(String dataHora, String formatoDataHora, String fusoHorario) {
 

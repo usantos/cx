@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -25,10 +28,14 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoRequest;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AutoSuspensaoResponse;
+import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class AutoSuspensaoActivity extends AppCompatActivity {
@@ -37,7 +44,7 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
     private RadioGroup rgAutosuspensao1,rgAutosuspensao2;
     private CheckBox chkSuspensaoCiente;
     private Button btnConfirmar;
-    private Button btnEntendi;
+    //private Button btnEntendi;
     private Button btnDesistir, btnSuspender;
     private CardView cardView;
 
@@ -78,10 +85,10 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
             finish();
         });
 
-        btnEntendi = findViewById(R.id.btnSuspensaoEntendi);
-        btnEntendi.setOnClickListener(v -> {
-            finish();
-        });
+//        btnEntendi = findViewById(R.id.btnSuspensaoEntendi);
+//        btnEntendi.setOnClickListener(v -> {
+//            finish();
+//        });
 
         btnSuspender = findViewById(R.id.btnSuspender);
         btnSuspender.setOnClickListener(v -> {
@@ -190,11 +197,11 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         return 0;
     }
 
-    private void diminuiCardView() {
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) cardView.getLayoutParams();
-        layoutParams.bottomMargin = 1100;
-        cardView.setLayoutParams(layoutParams);
-    }
+//    private void diminuiCardView() {
+//        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) cardView.getLayoutParams();
+//        layoutParams.bottomMargin = 1100;
+//        cardView.setLayoutParams(layoutParams);
+//    }
 
     private void salvarSuspensao() {
 
@@ -212,13 +219,45 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
 //            public void onResponse(AutoSuspensaoResponse result) {
                 AlertDialogUtils.dismiss();
                 SessaoUsuario.getInstance().setSuspensaoTemporariaApostador(true);
-                btnDesistir.setVisibility(View.GONE);
-                btnSuspender.setVisibility(View.GONE);
-                btnEntendi.setVisibility(View.VISIBLE);
-                String texto = getString(R.string.tv_suspenso_ate);
-                texto = texto.replace("XX", textoSelecionado);
-                texto = texto.replace("YY", DateUtils.calculaDataHoraFutura(horasSelecionada));
-                tvSuspensao2.setText(texto);
+
+                String texto = getString(R.string.tv_suspenso_ate_novo);
+                String dataHora = DateUtils.calculaDataHoraFutura(horasSelecionada);
+                texto = texto.replace("XX", dataHora.substring(0, 10));
+                texto = texto.replace("YY", dataHora.substring(11));
+
+                ViewUtils.alertTitleButton(this, R.string.label_atencao_exclama,
+                    texto, getString(R.string.btn_entendi),
+                    dialogInterface -> {
+                        dialogInterface.dismiss();
+                        AlertDialogUtils.show(AutoSuspensaoActivity.this);
+                        new LoginSilceModel(AutoSuspensaoActivity.this).sair(new OnSilceListener<NetworkResponse>() {
+                            @Override
+                            public void success(NetworkResponse payload) {
+                                sairRedirecionar();
+                            }
+                            @Override
+                            public void error(VolleyError error) {
+                                sairRedirecionar();
+                            }
+
+                            private void sairRedirecionar() {
+                                DadosUsuarioBO.updateUsuarioLogado(AutoSuspensaoActivity.this, false);
+                                Intent intent = new Intent(AutoSuspensaoActivity.this, LoginActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+                                AlertDialogUtils.dismiss();
+                            }
+                        });
+                    });
+
+//                btnDesistir.setVisibility(View.GONE);
+//                btnSuspender.setVisibility(View.GONE);
+//                btnEntendi.setVisibility(View.VISIBLE);
+//                String texto = getString(R.string.tv_suspenso_ate);
+//                texto = texto.replace("XX", textoSelecionado);
+//                texto = texto.replace("YY", DateUtils.calculaDataHoraFutura(horasSelecionada));
+//                tvSuspensao2.setText(texto);
 //            }
 
 //            @Override

@@ -54,6 +54,7 @@
     <string name="label_compra_lista_tentar_novamente">Tentar Novamente</string>
 
     <string name="label_atencao">Atenção</string>
+    <string name="label_atencao_exclama">Atenção!</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
     <string name="label_de_nome">Dê um nome</string>
 
@@ -1450,6 +1451,7 @@
     <string name="suspender_apostas">Confirmar Suspensão</string>
     <string name="tv_confirma_suspensao">A suspensão temporária de compras é irreversível durante o período selecionado.\n\nVocê confirma a suspensão por XX ?</string>
     <string name="tv_suspenso_ate">A suspensão realizada com o prazo de XX\n\nUsuário suspenso até o dia\nYY</string>
+    <string name="tv_suspenso_ate_novo">Você foi deslogado e a suspensão temporária efetivada pelo período escolhido. Só será possível fazer novas compras após a suspensão - XX, às YY.</string>
     <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
     <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>
     <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
