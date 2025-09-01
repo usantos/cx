@@ -52,7 +52,7 @@ android {
         // Sprint 117 pra tras
         //                   22                 1.20.0 = 01 020               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220102000
+        versionCode 220102005
         versionName "1.20.0"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -83,8 +83,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-//            shrinkResources true
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
