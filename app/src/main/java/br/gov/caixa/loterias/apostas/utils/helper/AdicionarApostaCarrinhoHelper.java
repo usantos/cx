@@ -588,7 +588,7 @@ public class AdicionarApostaCarrinhoHelper {
     public static Boolean usuarioEstaSuspenso(Activity actv, int acaoPosDismiss) {
         if (SessaoUsuario.getInstance().getSuspensaoTemporariaApostador()) {
             ViewUtils.alertTitleButton(actv, R.string.label_atencao,
-                    actv.getString(R.string.autosuspensao_alerta),
+                    actv.getString(R.string.autosuspensao_alerta_nova),
                     actv.getString(R.string.btn_entendi),
                     dialogInterface -> {
                         dialogInterface.dismiss();

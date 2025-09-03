@@ -211,9 +211,9 @@ public class FavoritasActivity extends AppCompatActivity {
 
             @Override
             public void onAdd(int position) {
-                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
+                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
                     model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
-                }
+                //}
             }
 
             @Override

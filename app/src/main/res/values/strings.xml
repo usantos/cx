@@ -1449,12 +1449,13 @@
     <string name="tv_30_dias">30 dias</string>
     <string name="tv_estou_ciente">Estou ciente e concordo com as informações acima</string>
     <string name="suspender_apostas">Confirmar Suspensão</string>
-    <string name="tv_confirma_suspensao">_A suspensão temporária de compras é irreversível durante o período selecionado.\n\nVocê confirma a suspensão por XX ?_</string>
+    <string name="tv_confirma_suspensao">A suspensão temporária de compras é irreversível durante o período selecionado.\n\nVocê confirma a suspensão por _XX ?_</string>
     <string name="tv_suspenso_ate">A suspensão realizada com o prazo de XX\n\nUsuário suspenso até o dia\nYY</string>
     <string name="tv_suspenso_ate_novo">Você foi deslogado e a suspensão temporária efetivada pelo período escolhido. Só será possível fazer novas compras após a suspensão - XX, às YY.</string>
     <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
     <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>
     <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
+    <string name="autosuspensao_alerta_nova">Há uma suspensão temporária ativa para compras. Novas apostas poderão ser realizadas no Portal Loterias Online e no Aplicativo Loterias CAIXA após o término do período selecionado.</string>
     <string name="todas_modalidades">Todas as\nmodalidades</string>
     <string name="gerar_comprovante">Gerar Comprovante</string>
     <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>

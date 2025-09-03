@@ -222,6 +222,7 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
                 String dataHora = DateUtils.calculaDataHoraFutura(horasSelecionada);
                 texto = texto.replace("XX", dataHora.substring(0, 10));
                 texto = texto.replace("YY", dataHora.substring(11));
+                //texto = ViewUtils.textCaixaSTDBold(this, texto);
 
                 ViewUtils.alertTitleButton(AutoSuspensaoActivity.this, R.string.label_atencao_exclama,
                     texto, getString(R.string.btn_entendi),

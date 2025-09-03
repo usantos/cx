@@ -849,6 +849,14 @@ public class PrincipalActivity extends AppCompatActivity
             Uri uri = Uri.parse(ENDERECO_INSTANTANEA);
             Intent activity = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(activity);
+        } else if (modalidade == ModalidadeEnum.COMBO) {
+            if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_combo));
+                Intent activity = new Intent(PrincipalActivity.this, CombosActivity.class);
+                startActivity(activity);
+            } else {
+                AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false);
+            }
         } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
             Intent activity = new Intent(PrincipalActivity.this, clazz);
@@ -1026,18 +1034,18 @@ public class PrincipalActivity extends AppCompatActivity
         });
     }
 
-    private void redirecionaRapidao() {
-        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
-            AnimacaoFecharMenuRapido(actionApresentarTrevo);
-            if (DadosUsuarioBO.checarTutorialRapidao()) {
-                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-            } else {
-                startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
-            }
-        } else {
-            AnimacaoFecharMenuRapido(actionApresentarTrevo);
-        }
-    }
+//    private void redirecionaRapidao() {
+//        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
+//            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+//            if (DadosUsuarioBO.checarTutorialRapidao()) {
+//                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+//            } else {
+//                startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
+//            }
+//        } else {
+//            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+//        }
+//    }
 
     private void redirecionaJogoResponsavel(){
         //startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));
