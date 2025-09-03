@@ -147,7 +147,7 @@ public class AutoSuspensaoActivity extends AppCompatActivity {
         tvSuspensao2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         String texto = getString(R.string.tv_confirma_suspensao);
         texto = texto.replace("XX", textoSelecionadoRB());
-        tvSuspensao2.setText(texto);
+        tvSuspensao2.setText(ViewUtils.textCaixaSTDBold(this, texto));
         //diminuiCardView();
     }
 
