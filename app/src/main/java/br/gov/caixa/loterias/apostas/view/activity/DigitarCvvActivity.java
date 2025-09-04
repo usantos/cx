@@ -10,9 +10,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
@@ -23,7 +23,7 @@ import br.gov.caixa.loterias.apostas.view.config.CartaoCreditoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 
-public class DigitarCvvActivity extends AppCompatActivity {
+public class DigitarCvvActivity extends LoteriasBaseAppActivity {
 
 	public static final String CARTAO_SALVO = "CARTAO_SALVO";
 	public static final String CARTAO_NOVO = "CARTAO_NOVO";

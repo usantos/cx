@@ -3,15 +3,15 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 import br.gov.caixa.loterias.apostas.view.fragment.LoginFragment;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends LoteriasBaseAppActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

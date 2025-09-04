@@ -6,15 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity;
 
-public class AutoavaliacaoStartActivity extends AppCompatActivity {
+public class AutoavaliacaoStartActivity extends LoteriasBaseAppActivity {
 
     private TextView tvIniciar;
     private Button btnIniciar;

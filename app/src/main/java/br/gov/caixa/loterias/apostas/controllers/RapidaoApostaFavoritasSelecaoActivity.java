@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +20,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -31,7 +31,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRapidaoRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-public class RapidaoApostaFavoritasSelecaoActivity extends AppCompatActivity {
+public class RapidaoApostaFavoritasSelecaoActivity extends LoteriasBaseAppActivity {
 
     protected RecyclerView recycleApostasFavoritasRapidao;
     protected Button btnSalvar;

@@ -31,6 +31,7 @@ import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
+import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -114,6 +115,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 		this.valorAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 		this.textViewTipoAposta.setText(ViewUtils.getNomeModalidadePorApostaDuasLinas(aposta).toLowerCase());
+		if (aposta.getModalidade() == ModalidadeEnum.LOTOFACIL && aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
+			TextViewUtils.mudarTamanhoPorPorcentagem(this.textViewTipoAposta, -10f);
+		}
 		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 		this.dadosApostaCarrinho.setBackgroundResource(estiloMKP.getCorEscura());
 
@@ -230,6 +234,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			labelTimeCoracao.setText(R.string.label_mes_sorte);
 			textViewTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
 			textViewTimeCoracao.setText(aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNome() != null ? aposta.getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
+			if (aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
+				textViewTimeCoracao.setText(context.getResources().getString(R.string.tres_interrogacoes));
+			}
 		} else if(ModalidadeEnum.MAIS_MILIONARIA == aposta.getModalidade()){
 			layoutTimeCoracao.setVisibility(View.VISIBLE);
 

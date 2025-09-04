@@ -5,8 +5,8 @@ import android.util.Base64;
 
 import android.util.Log;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
 
@@ -39,7 +39,7 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 
-public class TokenActivity extends AppCompatActivity {
+public class TokenActivity extends LoteriasBaseAppActivity {
     private AuthorizationService authorizationService;
 
     @Override

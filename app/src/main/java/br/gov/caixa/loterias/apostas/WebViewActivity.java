@@ -6,11 +6,9 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.net.URISyntaxException;
 
-public class WebViewActivity extends AppCompatActivity {
+public class WebViewActivity extends LoteriasBaseAppActivity {
 
     private WebView myWebView;
 

@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import com.google.gson.Gson;
 
@@ -109,6 +110,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 		if (isEspecial){
 			if (modalidade == ModalidadeEnum.LOTOFACIL){
 				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+				TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -20f);
 			} else {
 				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
 			}

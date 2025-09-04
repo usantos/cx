@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -13,6 +12,7 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ItemDuvidaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
-public class DuvidasActivity extends AppCompatActivity {
+public class DuvidasActivity extends LoteriasBaseAppActivity {
 
     private LinearLayout layoutDuvidas;
     private ExpandableHeightRecyclerView recyclerViewDuvidas;

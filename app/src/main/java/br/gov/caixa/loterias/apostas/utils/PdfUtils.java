@@ -25,7 +25,6 @@ public class PdfUtils{
     public static final String ARQUIVO_COMPROV_PREMIO = "Premio";
     public static final String ARQUIVO_COMPROV_APOSTA = "Aposta";
 
-
     public static void abrirPdf(Uri fileUri, AppCompatActivity context) {
         if (fileUri != null){
             Intent myIntent = new Intent(Intent.ACTION_VIEW)
@@ -104,7 +103,6 @@ public class PdfUtils{
         public static void createComprovanteApostaPdf(ComprovanteApostaDTO comprovanteApostaDTO, AppCompatActivity activity) {
         try {
             String html = HtmlUtils.getComprovanteCabecalhoRodapeAposta(comprovanteApostaDTO, activity);
-
             createAndOpenPDF(activity, html, getFilePath(activity, DIRETORIO_COMPROVANTE));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -116,7 +114,6 @@ public class PdfUtils{
     public static void createComprovantePremioPdf(DetalhesPremioDTO detalhesPremioDTO, AppCompatActivity activity) {
         try {
             String html = HtmlUtils.getComprovanteCabecalhoRodapePremio(detalhesPremioDTO, activity);
-
             createAndOpenPDF(activity, html, getFilePath(activity, ARQUIVO_COMPROV_PREMIO));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -127,7 +124,6 @@ public class PdfUtils{
     public static void createComprovantePremioPagoPdf(DetalhesPremioDTO detalhesPremioDTO, AppCompatActivity activity) {
         try {
             String html = HtmlUtils.getComprovanteCabecalhoRodapePremioPago(detalhesPremioDTO, activity);
-
             createAndOpenPDF(activity, html, getFilePath(activity, ARQUIVO_COMPROV_PREMIO));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -139,7 +135,6 @@ public class PdfUtils{
         try {
             final File filePDF = new File(filePath);
             gerarPDF(html, filePDF, appC, () -> FileUtils.openFile(filePDF, "application/pdf", appC));
-
         } catch (Exception ex) {
             throw new Exception("Falha ao invocar PdfUtils.sharePDF(). Detalhes: " + ex);
         }
@@ -150,10 +145,8 @@ public class PdfUtils{
 
             PdfConverter converter = PdfConverter.getInstance();
             converter.convert(context, html, filePDF, callBack);
-
         } catch (Exception exception) {
             exception.printStackTrace();
-
             throw new Exception(exception);
         }
     }

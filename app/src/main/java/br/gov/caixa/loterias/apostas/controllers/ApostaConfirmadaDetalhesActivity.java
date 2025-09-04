@@ -21,7 +21,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
@@ -38,6 +37,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
@@ -94,7 +94,7 @@ import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
  * Class ApostaConfirmadaDetalhesActivity
  */
 
-public class ApostaConfirmadaDetalhesActivity extends AppCompatActivity implements ConferirResultadoHandler {
+public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity implements ConferirResultadoHandler {
     public static final String ARG_COMPROVANTE = "ARG_COMPROVANTE";
     public static final String ARG_DETALHES_PREMIO = "ARG_DETALHES_PREMIO";
     public static final String ARG_RESULTADO_CONCURSO = "ARG_RESULTADO_CONCURSO";

@@ -18,7 +18,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -31,6 +30,7 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
@@ -57,7 +57,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.ResultadoTrevosFragment;
 
 import static br.gov.caixa.loterias.apostas.controllers.SelecaoModalidadesResultados.MODALIDADE;
 
-public class VisualizarResultadosActivity extends AppCompatActivity {
+public class VisualizarResultadosActivity extends LoteriasBaseAppActivity {
 
     private static final String CONCURSO_ALVO = "CONCURSO_ALVO";
     private static final String CONCURSO_ATUAL = "CONCURSO_ATUAL";

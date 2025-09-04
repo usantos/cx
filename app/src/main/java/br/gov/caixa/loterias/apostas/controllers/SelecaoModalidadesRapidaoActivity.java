@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ScrollView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.VolleyError;
@@ -18,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -28,7 +28,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
-public class SelecaoModalidadesRapidaoActivity extends AppCompatActivity {
+public class SelecaoModalidadesRapidaoActivity extends LoteriasBaseAppActivity {
 
     Button salvarButtonRapidaoSelecionados;
 

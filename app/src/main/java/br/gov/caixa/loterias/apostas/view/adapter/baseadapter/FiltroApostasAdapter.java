@@ -12,6 +12,10 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,6 +35,8 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
+import br.gov.caixa.loterias.apostas.view.holder.ModalidadeHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
@@ -50,13 +56,13 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	private NumberPicker npSituacao;
     private NumberPicker npOrdenarPor;
     private NumberPicker npTipoAposta;
-    private ExpandableHeightGridView gridModalidades;
+    private RecyclerView gridModalidades;
 	private EditText etNumConcurso;
 	private List<TipoAposta> tiposAposta = new ArrayList<>();
 	private List<ModalidadeDTO> modalidades = new ArrayList<>();
 	private List<TipoAposta> tiposApostasSalvas = new ArrayList<>();
 	private Activity activity;
-	private SelecaoModalidadesAdapter adapterModalidades;
+	private SelecaoModalidadesRecyclerAdapter adapterModalidades;
 	private View viewModalidades;
 	private View viewSituacao;
 	private View viewConcurso;
@@ -152,8 +158,8 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 						viewModalidades = layoutInflater.inflate(R.layout.list_item_modalidades, null);
 						if (gridModalidades == null && viewModalidades.findViewById(R.id.ehgv_grid_modalidades) != null) {
 							setGridModalidades(viewModalidades.findViewById(R.id.ehgv_grid_modalidades));
+							gridModalidades.setLayoutManager(new GridLayoutManager(context, 2));
 							gridModalidades.setAdapter(getAdapterModalidades());
-							gridModalidades.setExpanded(true);
 						}
 					}
 					convertView = viewModalidades;
@@ -217,8 +223,24 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 					}
 				}
 			}
-			setAdapterModalidades(new SelecaoModalidadesAdapter(getActivity(), getTiposAposta(),isUnicaSelecao));
+			setAdapterModalidades(new SelecaoModalidadesRecyclerAdapter(getTiposAposta(), isUnicaSelecao, onItemClickListener()));
 		}
+	}
+
+	private OnItemClickListener<ModalidadeHolder> onItemClickListener() {
+		return (holder, position) -> {
+			if (tiposAposta.get(position).getSelect()) {
+				tiposAposta.get(position).setSelect(false);
+				holder.atualizaNaoSelecionado(tiposAposta.get(position));
+			} else {
+				if (isUnicaSelecao) {
+					adapterModalidades.limpaSelecaoModalidades();
+				}
+				tiposAposta.get(position).setSelect(true);
+				holder.atualizaSelecionado(tiposAposta.get(position));
+
+			}
+		};
 	}
 
 	public Boolean isAddBadge(){
@@ -390,11 +412,11 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		return keyArray[numeroSituacaoSelecionada - 1];
 	}
 
-	public ExpandableHeightGridView getGridModalidades() {
+	public RecyclerView getGridModalidades() {
 		return gridModalidades;
 	}
 
-	public void setGridModalidades(ExpandableHeightGridView gridModalidades) {
+	public void setGridModalidades(RecyclerView gridModalidades) {
 		this.gridModalidades = gridModalidades;
 	}
 
@@ -438,11 +460,11 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		this.activity = activity;
 	}
 
-	public SelecaoModalidadesAdapter getAdapterModalidades() {
+	public SelecaoModalidadesRecyclerAdapter getAdapterModalidades() {
 		return adapterModalidades;
 	}
 
-	public void setAdapterModalidades(SelecaoModalidadesAdapter adapterModalidades) {
+	public void setAdapterModalidades(SelecaoModalidadesRecyclerAdapter adapterModalidades) {
 		this.adapterModalidades = adapterModalidades;
 	}
 

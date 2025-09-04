@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
@@ -32,7 +32,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.BottomSheetFragment;
 
-public class AutoavaliacaoFormActivity extends AppCompatActivity {
+public class AutoavaliacaoFormActivity extends LoteriasBaseAppActivity {
     private List<AutoavaliacaoPerguntaDTO> listPergunta;
     private List<AutoavaliacaoRespostaDTO> listResposta;
     private int indiceTelaAtual = 0;

@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 
 public class BarraTitutoSimulacaoFragment extends Fragment {
@@ -141,7 +142,12 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 
 	private void preencheDados() {
 		if (isEspecial){
-			tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+			if (modalidade == ModalidadeEnum.LOTOFACIL){
+				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+				TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -20f);
+			} else {
+				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+			}
 		} else {
 			tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
 		}

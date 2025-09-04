@@ -16,12 +16,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.model.bo.*;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
@@ -58,7 +58,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
 
-public class DetalhesComprasActivity extends AppCompatActivity implements OnCopiaColaListener {
+public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements OnCopiaColaListener {
 
     public static final String DETALHES_COMPRA_ACTIVITY = "DETALHES_COMPRA_ACTIVITY";
 

@@ -11,7 +11,6 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -20,6 +19,7 @@ import com.android.volley.VolleyError;
 import java.math.BigDecimal;
 import java.util.*;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
@@ -50,7 +50,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 
 
-public class CarrinhoActivity extends AppCompatActivity {
+public class CarrinhoActivity extends LoteriasBaseAppActivity {
 
     public static final String ORIGEM = "ORIGEM";
     public static String CARRINHO = "CARRINHO";

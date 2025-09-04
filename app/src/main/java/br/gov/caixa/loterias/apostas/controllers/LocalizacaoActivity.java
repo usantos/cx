@@ -12,16 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
-import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-public class LocalizacaoActivity extends AppCompatActivity {
+public class LocalizacaoActivity extends LoteriasBaseAppActivity {
 
     private TextView tvVersao, tvMsgGenerica;
     private Button btnGenerico;

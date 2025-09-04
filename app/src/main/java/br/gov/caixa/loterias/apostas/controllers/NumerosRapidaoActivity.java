@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.NumerosSelecionadosRapidao;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -27,7 +27,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.NumeroSelecionadoRapidaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
-public class NumerosRapidaoActivity extends AppCompatActivity implements NumeroSelecionadoRapidaoAdapter.NumeroSelecionadoListener{
+public class NumerosRapidaoActivity extends LoteriasBaseAppActivity implements NumeroSelecionadoRapidaoAdapter.NumeroSelecionadoListener{
     NumerosSelecionadosRapidao[] listaNumerosSelecionadosRapidao;
     List<Integer> numerosLista = new ArrayList<>();
     List<Integer> listaNumerosContrariosRapidao = new ArrayList<>();

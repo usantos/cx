@@ -25,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -34,6 +33,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.utils.ComboUtil;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
@@ -116,7 +116,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.VerificaMsgPush;
 import br.gov.caixa.loterias.apostas.view.holder.HomeViewHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnNotificacaoListener;
 
-public class PrincipalActivity extends AppCompatActivity
+public class PrincipalActivity extends LoteriasBaseAppActivity
         implements DiscreteScrollView.ScrollListener<HomeViewHolder>,
         DiscreteScrollView.OnItemChangedListener<HomeViewHolder> {
 
@@ -849,6 +849,14 @@ public class PrincipalActivity extends AppCompatActivity
             Uri uri = Uri.parse(ENDERECO_INSTANTANEA);
             Intent activity = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(activity);
+        } else if (modalidade == ModalidadeEnum.COMBO) {
+            if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_combo));
+                Intent activity = new Intent(PrincipalActivity.this, CombosActivity.class);
+                startActivity(activity);
+            } else {
+                AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false);
+            }
         } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));
             Intent activity = new Intent(PrincipalActivity.this, clazz);

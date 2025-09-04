@@ -18,7 +18,7 @@
             android:layout_width="18dp"
             android:layout_height="18dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="14dp"
+            android:layout_marginStart="12dp"
             android:src="@drawable/trevo_duplasena" />
 
         <TextView
@@ -27,11 +27,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="11dp"
+            android:layout_marginStart="8dp"
             android:textColor="@color/branco"
             android:textAlignment="center"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="bold"
+            android:maxLines="1"
             tools:text="@string/placeholder_dia_de_sorte" />
 
     </LinearLayout>

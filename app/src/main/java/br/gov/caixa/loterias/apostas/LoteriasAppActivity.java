@@ -4,12 +4,11 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 
-public class LoteriasAppActivity extends AppCompatActivity {
+public class LoteriasAppActivity extends LoteriasBaseAppActivity {
 
 	private Toolbar toolbar;
 	private ImageButton btnAjuda;

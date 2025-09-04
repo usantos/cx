@@ -6,13 +6,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.VolleyError;
 
 import java.util.Date;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
@@ -20,7 +20,6 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CompraAsyncResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
@@ -40,7 +39,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraAsync;
 
 
-public class ConfirmarCartaoActivity extends AppCompatActivity {
+public class ConfirmarCartaoActivity extends LoteriasBaseAppActivity {
 
 	public static final String CARTAO_SALVO = "CARTAO_SALVO";
 	public static final String CARTAO_NOVO = "CARTAO_NOVO";

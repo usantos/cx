@@ -3,8 +3,6 @@ package br.gov.caixa.loterias.apostas;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.TutorialNovaModalidadeFragmen
 import br.gov.caixa.loterias.apostas.view.fragment.TutorialPassoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnTutorialListener;
 
-public class TutorialMaisMilionariaActivity extends AppCompatActivity implements OnTutorialListener {
+public class TutorialMaisMilionariaActivity extends LoteriasBaseAppActivity implements OnTutorialListener {
 
 	private List<TutorialPassoFragment> fragmentList;
 

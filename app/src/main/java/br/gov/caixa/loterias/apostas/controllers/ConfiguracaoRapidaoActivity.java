@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,6 +19,7 @@ import com.android.volley.VolleyError;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
@@ -40,7 +40,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.ConfiguracaoRapidaoFragment6;
 import br.gov.caixa.loterias.apostas.view.fragment.ConfiguracaoRapidaoFragment8;
 import me.relex.circleindicator.CircleIndicator;
 
-public class ConfiguracaoRapidaoActivity extends AppCompatActivity {
+public class ConfiguracaoRapidaoActivity extends LoteriasBaseAppActivity {
 
 	private CircleIndicator circleIndicator;
 	private static ViewPager viewPager;

@@ -6,7 +6,6 @@ import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 
 import com.google.gson.Gson;
@@ -20,7 +19,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
-public class IntroducaoTutorialActivity extends AppCompatActivity implements View.OnClickListener {
+public class IntroducaoTutorialActivity extends LoteriasBaseAppActivity implements View.OnClickListener {
 
 	private Button btnComecar, btnPular;
 	private AppCompatCheckBox checkBox;

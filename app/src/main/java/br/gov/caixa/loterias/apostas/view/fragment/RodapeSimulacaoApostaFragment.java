@@ -27,13 +27,13 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
+import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
 public class RodapeSimulacaoApostaFragment extends Fragment {
 	private static final String ARG_VALOR_APOSTA = "VALOR_APOSTA";
 	private static final String ARG_VALOR_CARRINHO = "VALOR_CARRINHO";
-
 
 	private View view;
 	private TextView tvValorAposta;
