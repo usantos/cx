@@ -111,13 +111,13 @@ public class FiltroMarketplaceModel extends AppModel{
 			case DIA_DE_SORTE: return geraIntervalo(7, 15);
 			case SUPER_7: return geraIntervalo(7, 21);
 			case TIMEMANIA: return Collections.singletonList(10);
-			case LOTECA: return geraIntervalo(17, 25);
+			case LOTECA: return geraIntervalo(17, 26);
 			default: return geraIntervalo(5, 25);
 		}
 	}
 
 	public List<Integer> getListaTodasModalidades(){
-		return geraIntervalo(5, 25);
+		return geraIntervalo(5, 26);
 	}
 
 	private List<Integer> geraIntervalo(int start, int end) {
