@@ -1033,8 +1033,6 @@ public class PrincipalActivity extends AppCompatActivity
             return false;
         });
 
-        sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> expandableListAdapter.setGroupExpandedState(groupPosition, true));
-        sideMenuExpandableListView.setOnGroupCollapseListener(groupPosition -> expandableListAdapter.setGroupExpandedState(groupPosition, false));
     }
 
     private void redirecionaRapidao() {

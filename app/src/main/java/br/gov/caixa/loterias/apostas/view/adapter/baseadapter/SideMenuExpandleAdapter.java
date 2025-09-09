@@ -24,8 +24,6 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
     private Context context;
     private List<DrawerEnum> expandableListTitle;
     private HashMap<DrawerEnum, List<DrawerEnum>> expandableListDetail;
-    private boolean isGroup0Expanded = false;
-    private boolean isGroup4Expanded = false;
 
     public SideMenuExpandleAdapter(Context context, List<DrawerEnum> expandableListTitle,
                                    HashMap<DrawerEnum, List<DrawerEnum>> expandableListDetail) {
@@ -141,7 +139,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 imagemMaisOpcoes.setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 imagemMaisOpcoes.setSelected(isExpanded);
-                description.insert(0, isGroup0Expanded ? "Expandido: " : "Recolhido: ");
+                description.insert(0, isExpanded ? "Expandido: " : "Recolhido: ");
                 description.append(": ").append(totalItens).append(" itens, início");
                 break;
             case MENU_RESULTADOS:
@@ -176,7 +174,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 imagemMaisOpcoes.setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 imagemMaisOpcoes.setSelected(isExpanded);
-                description.insert(0, isGroup4Expanded ? "Expandido: " : "Recolhido: ");
+                description.insert(0, isExpanded  ? "Expandido: " : "Recolhido: ");
                 break;
             case MENU_REPASSES_SOCIAIS:
                 imageViewGroup.setImageResource(R.drawable.menu7_repasses);
@@ -200,6 +198,8 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
+                description.append(": ").append(totalItens).append(" itens, final");
+
 //                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
             default:
@@ -210,14 +210,6 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         convertView.setFocusable(false);
         convertView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         return convertView;
-    }
-
-    public void setGroupExpandedState(int groupPosition, boolean isExpanded) {
-        if (groupPosition == 0) {
-            isGroup0Expanded = isExpanded;
-        } else if (groupPosition == 4) {
-            isGroup4Expanded = isExpanded;
-        }
     }
 
     @Override
