@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:importantForAccessibility="no"
     tools:openDrawer="start">
 
     <include
@@ -24,6 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/branco"
+            android:importantForAccessibility="no"
+            android:focusable="false"
             android:orientation="vertical">
 
             <include
@@ -45,6 +48,7 @@
                 android:layout_marginEnd="8dp"
                 android:divider="@color/linhaDivisa"
                 android:dividerHeight="0.0dp"
+                android:importantForAccessibility="yes"
                 app:layout_constraintBottom_toTopOf="@+id/layout_rodape"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.666"
@@ -70,6 +74,8 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@color/azulescuro"
+                android:focusable="false"
+                android:importantForAccessibility="no"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">

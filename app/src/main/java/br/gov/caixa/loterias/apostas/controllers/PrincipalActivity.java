@@ -30,7 +30,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
@@ -312,9 +315,14 @@ public class PrincipalActivity extends AppCompatActivity
             texto = texto.replace(getResources().getString(R.string.percent), nomeUsuario);
             //nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
             nav_user.setText(ViewUtils.textCaixaSTDBold(this, texto));
+            nav_user.setContentDescription("Olá, " + nomeUsuario + "!" + ":Título");
         }else {
             nav_user.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.bem_vindo_ao_app)));
         }
+        TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
+        nomeCaixa.setContentDescription(getString(R.string.cef_id_tit) + ":Título");
+        TextView botaoSair = findViewById(R.id.txtSairMenu);
+        botaoSair.setContentDescription(getString(R.string.title_sair) + ":Botão");
 
         callWebservice();
 
@@ -1005,7 +1013,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     private void layoutSideMenu() {
-        final ExpandableListAdapter expandableListAdapter;
+        final SideMenuExpandleAdapter expandableListAdapter;
         final List<DrawerEnum> expandableListTitle;
         final HashMap<DrawerEnum, List<DrawerEnum>> expandableListDetail;
 
@@ -1024,6 +1032,9 @@ public class PrincipalActivity extends AppCompatActivity
             }
             return false;
         });
+
+        sideMenuExpandableListView.setOnGroupExpandListener(groupPosition -> expandableListAdapter.setGroupExpandedState(groupPosition, true));
+        sideMenuExpandableListView.setOnGroupCollapseListener(groupPosition -> expandableListAdapter.setGroupExpandedState(groupPosition, false));
     }
 
     private void redirecionaRapidao() {
@@ -1117,6 +1128,17 @@ public class PrincipalActivity extends AppCompatActivity
             }
         }
         return false;
+    }
+
+    private void configurarAcessibilidadeCarrossel(){
+        ViewCompat.setAccessibilityDelegate(homeCarousel, new AccessibilityDelegateCompat(){
+            @Override
+            public void onInitializeAccessibilityNodeInfo(@NotNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+
+                info.setCollectionInfo(null);
+            }
+        });
     }
 
     private void registrarDispositivo() {
