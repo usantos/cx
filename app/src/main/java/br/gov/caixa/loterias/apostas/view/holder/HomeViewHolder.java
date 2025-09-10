@@ -390,11 +390,11 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private SpannableStringBuilder retornaStringConcursoSemEstimativa(String numConcurso, int corModalidadeInt) {
 		final SpannableStringBuilder sb = new SpannableStringBuilder(itemView.getContext().getResources().getString(R.string.proximo_concurso_barra_n_barra_n) +
 																		  numConcurso +
-																		  itemView.getContext().getResources().getString(R.string.barra_n_barra_n_aguardando_estimativa_de_premio));
+																		  itemView.getContext().getResources().getString(R.string.barra_n_aguardando_estimativa_de_premio));
 
 		int tamT1 = itemView.getContext().getResources().getString(R.string.proximo_concurso_barra_n_barra_n).length();
 		int tamT2 = numConcurso.length();
-		int tamT3 = itemView.getContext().getResources().getString(R.string.barra_n_barra_n_aguardando_estimativa_de_premio).length();
+		int tamT3 = itemView.getContext().getResources().getString(R.string.barra_n_aguardando_estimativa_de_premio).length();
 
 		final ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), corModalidadeInt));
 		final ForegroundColorSpan corTexto      = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), R.color.cinzaescuro));

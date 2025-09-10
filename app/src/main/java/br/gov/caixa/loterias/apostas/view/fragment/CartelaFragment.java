@@ -174,12 +174,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 		if (valorEmReais.doubleValue() > 999.99){
 			if (!mudouTamanhoValor){
-				TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, -10);
+				TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, -30);
 				mudouTamanhoValor = true;
 			}
 		} else {
 			if (mudouTamanhoValor){
-				TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, 10);
+				TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, 30);
 				mudouTamanhoValor = false;
 			}
 		}

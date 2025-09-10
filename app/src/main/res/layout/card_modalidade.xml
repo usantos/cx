@@ -89,15 +89,7 @@
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
             android:background="@color/mega_verde_escuro_mkp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/amarelo"
-                android:fontFamily="@font/caixa_std_regular"
-                tools:text="Teste Teste Teste" />
-        </LinearLayout>
+            android:orientation="vertical"/>
 
         <LinearLayout
             android:id="@+id/linearLayoutContentCardModalide"
@@ -221,7 +213,7 @@
                             android:id="@+id/textVieCardAcumulatedValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="40dp"
+                            android:layout_marginTop="25dp"
                             android:textAlignment="center"
                             android:textColor="@color/mega_verde_claro_mkp"
                             android:textSize="25sp"
@@ -335,7 +327,7 @@
                                 <TextView
                                     android:id="@+id/textVieCardApostasEncerramEm"
                                     style="@style/editTextArialMTTheme"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/title_apostasEncerram"
                                     android:fontFamily="@font/caixa_std_regular"
@@ -345,7 +337,7 @@
                                 <TextView
                                     android:id="@+id/textVieCardClosingOfBets"
                                     style="@style/editTextArialMTTheme"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="bottom"
                                     android:textColor="@color/cinzaescuro"
@@ -382,7 +374,7 @@
                             android:id="@+id/cl_timer30Min"
                             android:layout_width="match_parent"
                             android:layout_height="80dp"
-                            android:layout_marginTop="60dp"
+                            android:layout_marginTop="8dp"
                             android:visibility="gone">
 
                             <TextView
@@ -434,10 +426,10 @@
                                 app:layout_constraintTop_toBottomOf="@+id/tv_contador_card"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"/>
+
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </LinearLayout>
-
 
                 </RelativeLayout>
 

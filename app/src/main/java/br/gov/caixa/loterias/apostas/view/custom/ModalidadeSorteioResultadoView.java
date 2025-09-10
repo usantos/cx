@@ -24,11 +24,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
  */
 
 public class ModalidadeSorteioResultadoView extends ScrollView {
-
     private boolean alreadyInflated = false;
-
-    private Modalidade modalidade;
-
     private TextView numeroeDataConcursoResultadoMegaSena;
     private LinearLayout contentResultadoItem;
     private ScrollView scrollResultados;
@@ -49,7 +45,6 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
         init();
     }
 
-    //@AfterViews
     protected void init() {
         this.numeroeDataConcursoResultadoMegaSena = findViewById(R.id.numeroeDataConcursoResultadoMegaSena);
         this.contentResultadoItem = findViewById(R.id.contentResultadoItem);
@@ -57,37 +52,21 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
     }
 
     public void setLayout(Modalidade modalidade) {
-
-        this.modalidade = modalidade;
         EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
 
         this.numeroeDataConcursoResultadoMegaSena.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
         this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.fromHtml("Nº <b>" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "</b> | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
         if (ModalidadeEnum.LOTECA.toString().equalsIgnoreCase(modalidade.getTipoModalidade().toString())) {
-            EscudoBO.getInstance().carregaEscudos(getContext(), new OnEscudoListener() {
-                @Override
-                public void aposCarregarEscudos() {
-                    setContentResultadoPorModalidade(modalidade);
-                }
-            });
+            EscudoBO.getInstance().carregaEscudos(getContext(), () -> setContentResultadoPorModalidade(modalidade));
         } else {
             setContentResultadoPorModalidade(modalidade);
         }
         this.scrollResultados.setFocusableInTouchMode(true);
         this.scrollResultados.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
-
     }
 
-    public ModalidadeSorteioResultadoView(Context context) {
+    private ModalidadeSorteioResultadoView(Context context) {
         super(context);
-    }
-
-    public ModalidadeSorteioResultadoView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public ModalidadeSorteioResultadoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
     }
 
     private void setContentResultadoPorModalidade(Modalidade modalidade) {
@@ -99,6 +78,7 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
                 this.contentResultadoItem.addView(view);
                 break;
             case TIMEMANIA:
+            case DIA_DE_SORTE:
                 this.contentResultadoItem.removeAllViews();
                 ModalideSorteioItemTimeManiaResultadoView view3 = ModalideSorteioItemTimeManiaResultadoView.build(getContext());
                 view3.setLayout(modalidade);
@@ -116,23 +96,11 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
                 view5.setLayout(modalidade);
                 this.contentResultadoItem.addView(view5);
                 break;
-            case DIA_DE_SORTE:
-                this.contentResultadoItem.removeAllViews();
-                ModalideSorteioItemTimeManiaResultadoView view6 = ModalideSorteioItemTimeManiaResultadoView.build(getContext());
-                view6.setLayout(modalidade);
-                this.contentResultadoItem.addView(view6);
-                break;
             case SUPER_7:
                 this.contentResultadoItem.removeAllViews();
                 SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout.build(getContext());
                 view7.setLayout(modalidade);
                 this.contentResultadoItem.addView(view7);
-                break;
-            case MAIS_MILIONARIA:
-                this.contentResultadoItem.removeAllViews();
-                ModalidadeSorteioItemUmConcursoResultadoView viewM = ModalidadeSorteioItemUmConcursoResultadoView.build(getContext());
-                viewM.setLayout(modalidade);
-                this.contentResultadoItem.addView(viewM);
                 break;
             default:
                 this.contentResultadoItem.removeAllViews();
