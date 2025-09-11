@@ -13,7 +13,6 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -23,6 +22,7 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
@@ -38,7 +38,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ItemDuvidaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
-public class TermosUsoActivity extends AppCompatActivity {
+public class TermosUsoActivity extends LoteriasBaseAppActivity {
 
     private RadioButton termosUsoButton, politicaButton, duvidasButton;
     private Button buttonTermoAceite;

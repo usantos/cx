@@ -6,10 +6,10 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
@@ -29,7 +29,7 @@ import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 
-public class FormaPagamentoActivity extends AppCompatActivity {
+public class FormaPagamentoActivity extends LoteriasBaseAppActivity {
 
 	private MeioPagamentoFragment frameMercadoPago, frameRecargaPay;
 	private Toolbar toolbar;

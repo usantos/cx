@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -23,6 +22,7 @@ import com.android.volley.VolleyError;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -39,7 +39,7 @@ import br.gov.caixa.loterias.apostas.utils.ValidacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-public class JogosConfirmadosPremioMercadoPagoActivity extends AppCompatActivity {
+public class JogosConfirmadosPremioMercadoPagoActivity extends LoteriasBaseAppActivity {
 
     protected DetalhesPremioDTO detalhesPremioDTO;
     private EditText emailPremioMercadoPagoEditText;

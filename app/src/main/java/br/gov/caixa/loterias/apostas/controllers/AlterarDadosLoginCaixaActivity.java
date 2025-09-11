@@ -7,10 +7,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
@@ -18,7 +17,7 @@ import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-public class AlterarDadosLoginCaixaActivity extends AppCompatActivity {
+public class AlterarDadosLoginCaixaActivity extends LoteriasBaseAppActivity {
     WebView paginaAlterarDadosWebView;
     AlertDialog loadViewProgresas;
 

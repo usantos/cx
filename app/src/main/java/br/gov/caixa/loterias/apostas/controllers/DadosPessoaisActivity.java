@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.VolleyError;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
@@ -48,7 +48,7 @@ import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 
-public class DadosPessoaisActivity extends AppCompatActivity {
+public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     int progressChangedValue = 0;
     private EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent;
     private TextView editValMaximoCompraContent, editValMinCompraContent, seekBarValor;

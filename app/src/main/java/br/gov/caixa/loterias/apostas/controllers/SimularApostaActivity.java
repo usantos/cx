@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -37,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Paginacao;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
@@ -80,7 +80,7 @@ import br.gov.caixa.loterias.apostas.view.listener.SurpresinhaFragmentListener;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 import static java.lang.String.format;
 
-public class SimularApostaActivity<T> extends AppCompatActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener, OnPaginacaoListener {
+public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements OnClickListener, CartelaFragmentListener, SurpresinhaFragmentListener, OnSomadorListener, OnTrevosListener, OnPaginacaoListener {
 
     public static String COR_FONTE_FUNDO_BRANCO = "COR_FONTE_FUNDO_BRANCO";
     public static String COR_FONTE_FUNDO_CLARO = "COR_FONTE_FUNDO_CLARO";
@@ -198,8 +198,10 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
         DateFormat formatterDate = new SimpleDateFormat(getResources().getString(R.string.dd_mm_yyyy_hh_mm_ss));
 
         try {
-            Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
-            dataSorteio = formatterDateFinal.format(dataFormatada);
+            if (parametroSimulacao != null && parametroSimulacao.getConcurso() != null && parametroSimulacao.getConcurso().getDataHoraSorteio() != null){
+                Date dataFormatada = formatterDate.parse(parametroSimulacao.getConcurso().getDataHoraSorteio());
+                dataSorteio = formatterDateFinal.format(dataFormatada);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -584,7 +586,7 @@ public class SimularApostaActivity<T> extends AppCompatActivity implements OnCli
     }
 
     private void configuraParametrosJogo() {
-        if (parametroSimulacao != null) {
+        if (parametroSimulacao != null && parametroSimulacao.getValoresAposta() != null) {
             for (ParametroValorApostaDTO parametro : parametroSimulacao.getValoresAposta()) {
                 if (tipoJogo == ModalidadeEnum.MAIS_MILIONARIA){
                     if (parametro.getNumeroTrevos().equals(parametroSimulacao.getTrevos().getQtdMinima())){

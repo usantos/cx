@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -13,6 +12,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.view.fragment.TutorialSuperSete1Fragment;
@@ -20,7 +20,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.TutorialSuperSete2Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TutorialSuperSete3Fragment;
 import me.relex.circleindicator.CircleIndicator;
 
-public class TutorialSuperSeteActivity extends AppCompatActivity {
+public class TutorialSuperSeteActivity extends LoteriasBaseAppActivity {
 
     //region Constants
     public static final int FRAG_APOSTA_SIMPLES = 0, FRAG_APOSTA_MULTIPLA = 1, FRAG_CONFIRMAR = 2;

@@ -10,7 +10,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -19,6 +18,7 @@ import com.android.volley.VolleyError;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
@@ -31,7 +31,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
-public class AutoSuspensaoActivity extends AppCompatActivity {
+public class AutoSuspensaoActivity extends LoteriasBaseAppActivity {
     private TextView tvSuspensao1,tvSuspensao2,tvSuspensao3,tvSuspensao4;
     private TextView tvPergunta;
     private RadioGroup rgAutosuspensao1,rgAutosuspensao2;

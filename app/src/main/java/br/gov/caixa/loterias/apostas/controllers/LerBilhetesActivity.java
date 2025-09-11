@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.zxing.ResultPoint;
@@ -27,6 +26,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LerQrCodeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -36,7 +36,7 @@ import br.gov.caixa.loterias.apostas.utils.BilheteUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 
 
-public class LerBilhetesActivity extends AppCompatActivity {
+public class LerBilhetesActivity extends LoteriasBaseAppActivity {
 
     private static int INTENT_RESULT = 123;
 

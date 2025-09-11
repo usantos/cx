@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
@@ -23,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -39,20 +39,21 @@ import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 
-public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implements OnClickListener {
-
+public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity implements OnClickListener {
     public ParametroJogoDTO parametroSimulacao;
-
     private EstiloModalidadeMKP estilo;
-
     private ModalidadeEnum modalidade;
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
+    private SubBarraModalidadeFragment subBarFragment;
+
+    private ConstraintLayout background;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
 
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.modalidade)), ParametroJogoDTO.class);
         ((TextView) findViewById(R.id.txtVoltarAoInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
+        background = findViewById(R.id.corpo_background);
 
         modalidade = (ModalidadeEnum) getIntent().getSerializableExtra(getResources().getString(R.string.tipoAposta));
 
@@ -128,13 +130,13 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
         if(valorCarrinho != null && sessaoUsuario.getValorMinimimoAposta().compareTo(BigDecimal.ZERO) > 0){
             textObservacaoConfirmacao.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.infoValorMinimoCarrinho) + getResources().getString(R.string.underline_com_espaco) + valorCarrinho + getResources().getString(R.string.underline)));
-            textObservacaoConfirmacao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+            textObservacaoConfirmacao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
         }else{
             textObservacaoConfirmacao.setVisibility(View.GONE);
         }
 
         TextView textTituloTela = findViewById(R.id.textTituloTela);
-        textTituloTela.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoEscuro()));
+        textTituloTela.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
         if (modalidade.equals(ModalidadeEnum.COMBO)) {
             textTituloTela.setText(getString(R.string.tituloComboFeito));
         }
@@ -153,7 +155,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends AppCompatActivity implem
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));
         }
-        getWindow().getDecorView().setBackground(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorClara())));
+        background.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorClara()));
+        //getWindow().getDecorView().setBackground(new ColorDrawable(ContextCompat.getColor(this, estilo.getCorClara())));
 
         GradientDrawable gd = new GradientDrawable();
         gd.setColor(ContextCompat.getColor(this, estilo.getCorEscura()));

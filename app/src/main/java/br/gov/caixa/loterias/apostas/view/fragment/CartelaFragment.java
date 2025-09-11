@@ -125,6 +125,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private SimularApostaModel model;
 	private CartelaModel cartelaModel;
 	private View rodape;
+	private boolean mudouTamanhoValor = false;
 
 	public CartelaFragment() {
 		// Required empty public constructor
@@ -171,7 +172,19 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			valorEmReais = valorEmReais.multiply(Constantes.DOIS_BIG_DECIMAL);
 		}
 
+		if (valorEmReais.doubleValue() > 999.99){
+			if (!mudouTamanhoValor){
+				TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, -30);
+				mudouTamanhoValor = true;
+			}
+		} else {
+			if (mudouTamanhoValor){
+				TextViewUtils.mudarTamanhoPorPorcentagem(valorAposta, 30);
+				mudouTamanhoValor = false;
+			}
+		}
 		ViewUtils.setMoedaFormatHtml(valorEmReais, valorAposta);
+		valorAposta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 		valorTotalAposta = valorEmReais;
 	}
 

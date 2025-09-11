@@ -3,11 +3,10 @@ package br.gov.caixa.loterias.apostas.view.activity;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.gson.Gson;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -18,7 +17,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.TutorialNovaModalidadeFragmen
 import br.gov.caixa.loterias.apostas.view.fragment.TutorialPassoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnTutorialListener;
 
-public class TutorialActivity extends AppCompatActivity implements OnTutorialListener {
+public class TutorialActivity extends LoteriasBaseAppActivity implements OnTutorialListener {
 
 	private ParametroJogoDTO parametroJogo;
 	private ModalidadeEnum modalidade;

@@ -7,10 +7,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
@@ -20,7 +20,7 @@ import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 
-public class ApresentarCartaoActivity extends AppCompatActivity {
+public class ApresentarCartaoActivity extends LoteriasBaseAppActivity {
 
 	public static final String CARTAO = "CARTAO";
 	public static final String MEIO = "MEIO";

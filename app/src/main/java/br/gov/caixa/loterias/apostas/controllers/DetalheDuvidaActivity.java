@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -12,6 +11,7 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -24,7 +24,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheDuvidaAdap
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-public class DetalheDuvidaActivity extends AppCompatActivity {
+public class DetalheDuvidaActivity extends LoteriasBaseAppActivity {
 
     public final static String SECAO_DTO_EXTRA = "secaoDTO";
 

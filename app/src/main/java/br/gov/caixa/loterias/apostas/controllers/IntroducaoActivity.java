@@ -3,12 +3,12 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -19,7 +19,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.Introducao3Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.LoginFragment;
 import me.relex.circleindicator.CircleIndicator;
 
-public class IntroducaoActivity extends AppCompatActivity {
+public class IntroducaoActivity extends LoteriasBaseAppActivity {
     FragmentPagerAdapter adapterViewPager;
 
     ViewPager vpPager;

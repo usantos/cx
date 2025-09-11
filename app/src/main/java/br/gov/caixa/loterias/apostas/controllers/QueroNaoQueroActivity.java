@@ -1,8 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-//import static br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity.ARG_DEZENAS_INICIAIS;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -31,7 +30,7 @@ import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
-public class QueroNaoQueroActivity extends AppCompatActivity {
+public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
 
     private static final int PROGNOSTICO_MAXIMO = 80;
     private static final int QUANTIDADE_COLUNAS_CARTELA = 6;

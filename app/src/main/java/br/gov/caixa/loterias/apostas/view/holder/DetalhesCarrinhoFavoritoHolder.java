@@ -69,6 +69,9 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 				}
 				tvMesDaSorte.setText(timeDoCoracao);
 				tvMesDaSorte.setTextColor(ContextCompat.getColor(ctx, estilo.getCorLetraLista()));
+				if (isSurpresinha(apostaAtual)){
+					tvMesDaSorte.setText("???");
+				}
 			} else
 				tvModalidade.setText(apostaAtual.getModalidade().getDescricao().toLowerCase());
 		}
@@ -101,6 +104,9 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 				tvMesDaSorte.setText(apostaAtual.getMesDeSorte().getNome());
 				tvMesDaSorte.setVisibility(View.VISIBLE);
 				tvMesDaSorte.setTextColor(ContextCompat.getColor(ctx, estilo.getCorLetraLista()));
+			}
+			if (isSurpresinha(apostaAtual)){
+				tvMesDaSorte.setText("???");
 			}
 		}
 	}
@@ -152,6 +158,10 @@ public class DetalhesCarrinhoFavoritoHolder extends LoteriasHolder<ApostaCarrinh
 
 		NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados());
 		fm.beginTransaction().replace(newContainerId, fragment).commit();
+	}
+
+	private boolean isSurpresinha(ApostaCarrinhoFavoritoDTO aposta){
+		return aposta.getIndicadorSurpresinha() == ApostaCarrinhoFavoritoDTO.IndicadorSurpresinhaEnum.SURPRESINHA;
 	}
 
 	@Override

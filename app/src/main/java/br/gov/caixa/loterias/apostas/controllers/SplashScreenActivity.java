@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.VolleyError;
 import com.microsoft.appcenter.AppCenter;
 import com.microsoft.appcenter.analytics.Analytics;
@@ -17,6 +15,7 @@ import com.scottyab.rootbeer.RootBeer;
 import java.io.File;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
@@ -33,8 +32,7 @@ import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.ICallbackQueueIT;
 
-
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
     public static final int SPLASH_TIME = 2000;
 

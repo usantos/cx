@@ -12,11 +12,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -33,7 +33,7 @@ import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
-public class AppIndisponivelActivity extends AppCompatActivity {
+public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
 
     private Button buttonTentarNovamente;
     private Boolean isBuscaParametro;

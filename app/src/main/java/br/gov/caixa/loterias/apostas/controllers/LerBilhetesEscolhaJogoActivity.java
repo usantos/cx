@@ -8,7 +8,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ScrollView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.VolleyError;
@@ -16,6 +15,7 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -26,7 +26,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.TiposApostasConferirApostaAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 
-public class LerBilhetesEscolhaJogoActivity extends AppCompatActivity {
+public class LerBilhetesEscolhaJogoActivity extends LoteriasBaseAppActivity {
     List<ModalidadeDTO> modalidades = new ArrayList<>();
     List<TipoAposta> tiposAposta = new ArrayList<>();
 

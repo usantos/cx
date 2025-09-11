@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
@@ -20,6 +19,7 @@ import com.github.pinball83.maskededittext.MaskedEditText;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -37,7 +37,7 @@ import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
  * Created by joafilho on 06/12/2017.
  */
 
-public class CadastroActivity extends AppCompatActivity {
+public class CadastroActivity extends LoteriasBaseAppActivity {
 
     private EditText editTextUFContent, editTextMunicipioContent;
     private List<String> listUFString, listMunicipios;

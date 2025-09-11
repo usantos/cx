@@ -6,16 +6,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.appbar.AppBarLayout;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 
-public class AjudaActivity extends AppCompatActivity {
+public class AjudaActivity extends LoteriasBaseAppActivity {
 
     private ModalidadeEnum tipoJogo;
     private TextView textConcurso, textAbertura, textProximoSorteio, textEncerramento, titleTextScroll, textScroll;

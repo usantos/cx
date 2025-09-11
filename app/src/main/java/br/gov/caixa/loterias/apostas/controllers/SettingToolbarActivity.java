@@ -4,16 +4,16 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 
 /**
  * Created by joafilho on 19/12/2017.
  */
 
-public class SettingToolbarActivity extends AppCompatActivity {
+public class SettingToolbarActivity extends LoteriasBaseAppActivity {
     @Override
     public boolean onSupportNavigateUp(){
         finish();

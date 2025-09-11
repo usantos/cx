@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -40,7 +40,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoAda
 import br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 
-public class ResultadoLerBilhetesActivity extends AppCompatActivity {
+public class ResultadoLerBilhetesActivity extends LoteriasBaseAppActivity {
     public final static String COD_BARRAS_EXTRA = "codBarras";
     public final static String TIPO_LEITURA_EXTRA = "tipoLeitura";
     public final static String NSB_EXTRA = "nsb";

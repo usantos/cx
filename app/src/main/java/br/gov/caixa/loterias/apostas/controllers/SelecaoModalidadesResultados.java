@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +12,7 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TipoApostaMultiplaSelecaoAdapter;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 
-public class SelecaoModalidadesResultados extends AppCompatActivity {
+public class SelecaoModalidadesResultados extends LoteriasBaseAppActivity {
 
     public final static String MODALIDADE = "MODALIDADE";
     public final static String MODALIDADE_VALUE = "MODALIDADE_VALUE";

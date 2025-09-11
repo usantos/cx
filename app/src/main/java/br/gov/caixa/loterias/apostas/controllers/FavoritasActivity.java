@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +17,7 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
@@ -34,7 +34,7 @@ import br.gov.caixa.loterias.apostas.view.holder.FavoritaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaFavoritaListener;
 
 
-public class FavoritasActivity extends AppCompatActivity {
+public class FavoritasActivity extends LoteriasBaseAppActivity {
 
     //region Variables Views
     public RecyclerView recyclerViewFavoritas;

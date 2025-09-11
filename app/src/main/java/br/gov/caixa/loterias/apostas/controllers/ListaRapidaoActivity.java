@@ -8,7 +8,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -40,7 +40,7 @@ import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 
-public class ListaRapidaoActivity extends AppCompatActivity {
+public class ListaRapidaoActivity extends LoteriasBaseAppActivity {
 
     private ExpandableHeightRecyclerView recyclerView;
     public List<IdentificaoDeUmaApostaDas8Modalidades> apostas;

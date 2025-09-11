@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 
@@ -13,6 +12,7 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
@@ -24,7 +24,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.listener.MeusCartoesListener;
 
-public class MeusCartoesActivity extends AppCompatActivity implements MeusCartoesListener {
+public class MeusCartoesActivity extends LoteriasBaseAppActivity implements MeusCartoesListener {
 
     private Toolbar toolbar;
 

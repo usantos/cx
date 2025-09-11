@@ -5,13 +5,12 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
 
-public class AtualizacaoActivity extends AppCompatActivity {
+public class AtualizacaoActivity extends LoteriasBaseAppActivity {
 
     public Button buttonAtualizar;
 

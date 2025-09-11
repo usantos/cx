@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +18,7 @@ import com.android.volley.VolleyError;
 
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaCarrinhoFavoritoDTO;
@@ -34,7 +34,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhosFavorito
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 import br.gov.caixa.loterias.apostas.view.listener.OnCarrinhosFavoritosClickListener;
 
-public class CarrinhosFavoritosActivity extends AppCompatActivity {
+public class CarrinhosFavoritosActivity extends LoteriasBaseAppActivity {
 	private final static int AMBAS = 0;
 
 	//region Constants

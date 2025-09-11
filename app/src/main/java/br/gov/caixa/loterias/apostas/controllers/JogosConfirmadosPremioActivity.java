@@ -10,17 +10,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.zxing.WriterException;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 
-public class JogosConfirmadosPremioActivity extends AppCompatActivity {
+public class JogosConfirmadosPremioActivity extends LoteriasBaseAppActivity {
 
     Boolean tipoCaixa = false;
     @Override

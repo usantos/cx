@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -13,10 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.io.Serializable;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -25,6 +22,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Crypto;
 import br.gov.caixa.loterias.apostas.model.enums.LeituraBilheteEnum;
@@ -33,7 +31,7 @@ import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MaskEditUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
-public class InsercaoManualCodBarrasActivity extends AppCompatActivity {
+public class InsercaoManualCodBarrasActivity extends LoteriasBaseAppActivity {
 
     EditText editTextNumeroBilhete, editTextLoterico;
     Button buttonContinuarInsercaoManualBilhetes;
