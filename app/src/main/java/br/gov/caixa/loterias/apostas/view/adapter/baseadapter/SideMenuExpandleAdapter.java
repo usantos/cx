@@ -66,7 +66,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         List<DrawerEnum> children = expandableListDetail.get(expandableListTitle.get(listPosition));
 
         StringBuilder description = new StringBuilder();
-        description.append(expandedListText).append(": Botão");
+        description.append(expandedListText);
 
         if (children != null && children.size() > 1) {
             if (expandedListPosition == 0) {
@@ -77,6 +77,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         }
 
         expandedListTextView.setContentDescription(description.toString());
+        expandedListTextView.setHint("botão");
 
         return convertView;
     }

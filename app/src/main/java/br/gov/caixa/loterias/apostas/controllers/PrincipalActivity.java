@@ -315,12 +315,14 @@ public class PrincipalActivity extends AppCompatActivity
             texto = texto.replace(getResources().getString(R.string.percent), nomeUsuario);
             //nav_user.setText(ViewUtils.textFuturaAndFuturaBold(this, texto));
             nav_user.setText(ViewUtils.textCaixaSTDBold(this, texto));
-            nav_user.setContentDescription("Olá, " + nomeUsuario + "!" + ":Título");
+            nav_user.setContentDescription("Olá, " + nomeUsuario + "!");
+            nav_user.setHint("Título");
         }else {
             nav_user.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.bem_vindo_ao_app)));
         }
         TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
-        nomeCaixa.setContentDescription(getString(R.string.cef_id_tit) + ":Título");
+        nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
+        nomeCaixa.setHint("Título");
         TextView botaoSair = findViewById(R.id.txtSairMenu);
         botaoSair.setContentDescription(getString(R.string.title_sair) + ":Botão");
 
