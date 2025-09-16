@@ -22,11 +22,9 @@ public class DetalheComboHolder extends RecyclerView.ViewHolder {
 
     private final TextView  txtQtdJogos, txtNomeModalidade, txtNumeroConcurso;
     private final ImageView backgroundTrevo;
-    private final Activity parentActivity;
 
-    public DetalheComboHolder(View itemView, Activity parentActivity) {
+    public DetalheComboHolder(View itemView) {
         super(itemView);
-        this.parentActivity = parentActivity;
 
         txtQtdJogos = itemView.findViewById(R.id.txtQtdJogosDetalheCombo);
         txtNomeModalidade = itemView.findViewById(R.id.txtModalidadeDetalheCombo);
@@ -41,14 +39,14 @@ public class DetalheComboHolder extends RecyclerView.ViewHolder {
         }
         EstiloModalidadeMKP estiloModalidade = new EstiloModalidadeMKP(modalidade);
 
-        txtQtdJogos.setTextColor(ContextCompat.getColor(parentActivity, estiloModalidade.getCorLetraLista()));
+        txtQtdJogos.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorLetraLista()));
 
         String textoQtdJogos = item.getQuantidadeApostas() == 1 ? "1 jogo" : item.getQuantidadeApostas() + " jogos";
         txtQtdJogos.setText(textoQtdJogos);
 
-        txtNomeModalidade.setTextColor(ContextCompat.getColor(parentActivity, estiloModalidade.getCorLetraLista()));
+        txtNomeModalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorLetraLista()));
 
-        Typeface semiBoldTypeface = ResourcesCompat.getFont(parentActivity, R.font.caixa_std_semi_bold);
+        Typeface semiBoldTypeface = ResourcesCompat.getFont(itemView.getContext(), R.font.caixa_std_semi_bold);
 
         if(item.getTipoConcurso().toString().equalsIgnoreCase("ESPECIAL")) {
             txtNomeModalidade.setTypeface(semiBoldTypeface);
@@ -56,7 +54,7 @@ public class DetalheComboHolder extends RecyclerView.ViewHolder {
 
         } else {
             if(ModalidadeEnum.fromModalidadeDTO(item.getModalidade()) == ModalidadeEnum.LOTOMANIA) {
-                Typeface regularTypeface = ResourcesCompat.getFont(parentActivity, R.font.caixa_std_regular);
+                Typeface regularTypeface = ResourcesCompat.getFont(itemView.getContext(), R.font.caixa_std_regular);
 
                 SpannableString spannable = getLabelLotomaniaEspelho(item, semiBoldTypeface, regularTypeface);
                 txtNomeModalidade.setText(spannable);
@@ -67,10 +65,10 @@ public class DetalheComboHolder extends RecyclerView.ViewHolder {
             }
         }
 
-        txtNumeroConcurso.setTextColor(ContextCompat.getColor(parentActivity, estiloModalidade.getCorLetraLista()));
+        txtNumeroConcurso.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidade.getCorLetraLista()));
         String textoConcurso = getLabelConcurso(item);
         txtNumeroConcurso.setText(textoConcurso);
-        backgroundTrevo.setImageDrawable(ContextCompat.getDrawable(parentActivity, estiloModalidade.getTrevoFundoDetalheCombo()));
+        backgroundTrevo.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estiloModalidade.getTrevoFundoDetalheCombo()));
     }
 
     private static @NotNull String getLabelConcurso(ModalidadeComboDTO item) {

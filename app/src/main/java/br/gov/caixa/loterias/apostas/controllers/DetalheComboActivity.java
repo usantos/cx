@@ -30,6 +30,8 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheComboAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class DetalheComboActivity extends SettingToolbarActivity  {
@@ -39,14 +41,14 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
     private static final String ARG_VALORAPOSTA = "valorAposta";
     private static final int QUANTIDADE_COLUNA_LISTA_COMBOS = 2;
     private Button btnAdicionarAoCarrinho;
-    private TextView txtNomeCombo, txtQtdApostas, txtValorCombo;
+    private TextView txtNomeCombo, txtQtdApostas, txtValorCombo, txtDescricaoCombo;
     private CheckBox checkMostrarNumeros;
     private ImageButton btnIncrementarAposta, btnDecrementarAposta;
-    RecyclerView DetalheComboRcv;
-    DetalheComboAdapter detalheComboAdapter;
-    Toolbar toolbar;
+    private RecyclerView DetalheComboRcv;
+    private DetalheComboAdapter detalheComboAdapter;
+    private Toolbar toolbar;
 
-    DetalheComboViewModel viewModel;
+    private DetalheComboViewModel viewModel;
 
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
 
@@ -80,6 +82,7 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
 
         btnAdicionarAoCarrinho = findViewById(R.id.btnAdicionarAoCarrinho);
         txtNomeCombo = findViewById(R.id.txtNomeDetalheCombo);
+        txtDescricaoCombo = findViewById(R.id.txtHeaderDetalheCombo);
         txtQtdApostas = findViewById(R.id.txtQtdDeApostas);
         txtValorCombo = findViewById(R.id.txtValorCombo);
         DetalheComboRcv = findViewById(R.id.rcvDetalheCombo);
@@ -110,8 +113,14 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
                 txtNomeCombo.setText(nomeEspecial);
             }
 
-        }else{
+        }else {
             txtNomeCombo.setText(viewModel.getCombo().getTipoCombo().getNome());
+        }
+
+        if (viewModel.getCombo() != null && viewModel.getCombo().getTipoCombo() != null
+                && viewModel.getCombo().getTipoCombo().getDescricao() != null
+                && !viewModel.getCombo().getTipoCombo().getDescricao().isEmpty()){
+            this.txtDescricaoCombo.setText(viewModel.getCombo().getTipoCombo().getDescricao());
         }
 
         if(viewModel.getValorComboLiveData() != null){
@@ -149,7 +158,7 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
             DetalheComboRcv.setLayoutManager(layoutDetalheCombos);
             DetalheComboRcv.setNestedScrollingEnabled(false);
 
-            detalheComboAdapter = new DetalheComboAdapter(DetalheComboActivity.this);
+            detalheComboAdapter = new DetalheComboAdapter();
 
             DetalheComboRcv.setAdapter(detalheComboAdapter);
 

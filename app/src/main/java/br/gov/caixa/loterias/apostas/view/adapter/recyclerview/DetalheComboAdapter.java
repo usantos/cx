@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,31 +11,23 @@ import br.gov.caixa.loterias.apostas.utils.DetalheComboDiffCallback;
 import br.gov.caixa.loterias.apostas.view.holder.DetalheComboHolder;
 import org.jetbrains.annotations.NotNull;
 
-public class DetalheComboAdapter  extends ListAdapter<ModalidadeComboDTO, DetalheComboHolder> {
+public class DetalheComboAdapter extends ListAdapter<ModalidadeComboDTO, DetalheComboHolder> {
 
-
-    private final Activity parentActivity;
-
-    public DetalheComboAdapter(Activity parentActivity) {
-
+    public DetalheComboAdapter() {
         super(new DetalheComboDiffCallback());
-        this.parentActivity = parentActivity;
     }
 
     @NonNull
     @Override
     public @NotNull DetalheComboHolder onCreateViewHolder(@NonNull @NotNull ViewGroup viewGroup, int i) {
-
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_detalhe_combo, viewGroup, false);
-        return new DetalheComboHolder(view, parentActivity);
-
+        return new DetalheComboHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull DetalheComboHolder detalheComboHolder, int position) {
         ModalidadeComboDTO item = getItem(position);
         detalheComboHolder.bind(item);
-
     }
 
 }
