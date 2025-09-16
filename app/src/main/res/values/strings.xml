@@ -268,7 +268,7 @@
     <string name="label_ver_resultados">Ver resultados</string>
     <string name="label_historico_de_apostas">Histórico de apostas</string>
     <string name="label_para_a_sorte_todo_mundo">O próximo ganhador pode ser você. Já pensou?</string>
-    <string name="label_selecione_mes_ano">Selecione o mês e ano</string>
+    <string name="label_selecione_mes_ano">Selecione o período</string>
     <string name="label_selecione_mes">Selecione o mês</string>
     <string name="label_aposta_concurso">Conc. %d</string>
     <string name="label_aposta_concurso_bold">Conc. _%d_</string>

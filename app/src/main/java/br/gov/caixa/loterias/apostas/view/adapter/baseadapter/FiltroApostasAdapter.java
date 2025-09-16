@@ -13,6 +13,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 	public static final int TIPO_APOSTAS = 0;
 	public static final int MODALIDADES = 1;
+	public static final int TIPO_CONCURSOS = 5;
 	public static final int SITUACAO = 2;
 	public static final int ORDENAR_POR = 3;
 	public static final int CONCURSO = 4;
@@ -45,11 +47,13 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	private List<String> expandableListTitle;
 	private LinkedHashMap<Integer,String> situacoes;
 	private String[] opcoesDeOrdenacao = new String[]{"Padrão", "Data Crescente", "Data Decrescente"};
-	private String[] opcoesDeTipoApostas = new String[]{"Todos", "Individual", "Bolão"};
+	private String[] opcoesDeTipoApostas = new String[]{"Todas", "Individual", "Bolão"};
+	private String[] opcoesDeTipoConcursos = new String[]{"Todos", "Normal", "Especial"};
 	private HashMap<String, List<String>> expandableListDetail;
 	private NumberPicker npSituacao;
     private NumberPicker npOrdenarPor;
     private NumberPicker npTipoAposta;
+    private NumberPicker npTipoConcurso;
     private ExpandableHeightGridView gridModalidades;
 	private EditText etNumConcurso;
 	private List<TipoAposta> tiposAposta = new ArrayList<>();
@@ -62,10 +66,12 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	private View viewConcurso;
     private View viewOrdenarPor;
     private View viewTipoAposta;
+    private View viewTipoConcurso;
 
     private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
     private int numeroOrdenarPorSelecionada = 1;
     private int numeroTipoApostaSelecionada = 1;
+    private int numeroTipoConcursoSelecionado = 1;
 
     private Boolean isUnicaSelecao = false;
 
@@ -111,14 +117,19 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getChildView(int listPosition, final int expandedListPosition,
 							 boolean isLastChild, View convertView, ViewGroup parent) {
-		if (!isUnicaSelecao) {
-			listPosition += 1;
-			if(listPosition == 3){//OrdenarPor não consta nos filtros em DetalhesComprasActivity. Em vez disso, renderiza Concurso.
-				listPosition = 4;
-			}
-		}
+//		if (!isUnicaSelecao) {
+//			listPosition += 1;
+//			if(listPosition == 3){//OrdenarPor não consta nos filtros em DetalhesComprasActivity. Em vez disso, renderiza Concurso.
+//				listPosition = 4;
+//			}
+//		}
+
+		List<Integer> listaOrdenada = getListaReOrdenada(isUnicaSelecao);
+		int posLista = listaOrdenada.get(listPosition);
+
 		LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			switch (listPosition) {
+			//switch (listPosition) {
+			switch (posLista) {
 				case TIPO_APOSTAS:
 					if (viewTipoAposta == null) {
 						viewTipoAposta = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
@@ -132,6 +143,20 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 						}
 					}
 					convertView = viewTipoAposta;
+					break;
+				case TIPO_CONCURSOS:
+					if (viewTipoConcurso == null) {
+						viewTipoConcurso = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
+						if (npTipoConcurso == null && viewTipoConcurso.findViewById(R.id.np_ordenar_por) != null) {
+							setNpTipoConcurso(viewTipoConcurso.findViewById(R.id.np_ordenar_por));
+							npTipoConcurso.setMinValue(1);
+							npTipoConcurso.setMaxValue(opcoesDeTipoConcursos.length);
+							npTipoConcurso.setValue(1);
+							npTipoConcurso.setDisplayedValues(opcoesDeTipoConcursos);
+							npTipoConcurso.setOnValueChangedListener(new ListenerTipoConcurso());
+						}
+					}
+					convertView = viewTipoConcurso;
 					break;
                 case ORDENAR_POR:
                     if (viewOrdenarPor == null) {
@@ -206,6 +231,12 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			numeroTipoApostaSelecionada = newVal;
 		}
 	}
+	private class ListenerTipoConcurso implements NumberPicker.OnValueChangeListener {
+		@Override
+		public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+			numeroTipoConcursoSelecionado = newVal;
+		}
+	}
 
 	private void configuraAdapter() {
 		populaArraysTipoAposta(getTiposAposta(), getModalidades());
@@ -246,6 +277,11 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		}
 		if (getNpTipoAposta() != null) {
 			if(getNpTipoAposta().getValue() != 0) {
+				return true;
+			}
+		}
+		if (getNpTipoConcurso() != null) {
+			if(getNpTipoConcurso().getValue() != 0) {
 				return true;
 			}
 		}
@@ -331,6 +367,10 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			numeroTipoApostaSelecionada = 0;
 			getNpTipoAposta().setValue(0);
 		}
+		if(getNpTipoConcurso() != null) {
+			numeroTipoConcursoSelecionado = 0;
+			getNpTipoConcurso().setValue(0);
+		}
 	}
 
 	private void populaArraysTipoAposta(List<TipoAposta> array, List<ModalidadeDTO> modalidades) {
@@ -375,8 +415,15 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		return npTipoAposta;
 	}
 
+	public NumberPicker getNpTipoConcurso() {
+		return npTipoConcurso;
+	}
+
 	public void setNpTipoAposta(NumberPicker npTipoAposta) {
 		this.npTipoAposta = npTipoAposta;
+	}
+	public void setNpTipoConcurso(NumberPicker npTipoConcurso) {
+		this.npTipoConcurso = npTipoConcurso;
 	}
 
 	public void setNpSituacao(NumberPicker npSituacao) {
@@ -488,6 +535,26 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	@Override
 	public boolean isChildSelectable(int listPosition, int expandedListPosition) {
 		return true;
+	}
+
+
+	private List<Integer> getListaReOrdenada(boolean isUnicaSelecao) {
+		if (isUnicaSelecao) {
+			return Arrays.asList(
+					TIPO_APOSTAS,
+					MODALIDADES,
+					TIPO_CONCURSOS,
+					SITUACAO,
+					ORDENAR_POR
+			);
+		} else {
+			return Arrays.asList(
+					TIPO_APOSTAS,
+					MODALIDADES,
+					SITUACAO,
+					CONCURSO
+			);
+		}
 	}
 
 }

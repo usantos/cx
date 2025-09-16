@@ -386,6 +386,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                 if(filtroAdapter.getNpTipoAposta() != null) {
                     page.setTipoAposta(filtroAdapter.getNpTipoAposta().getValue());
                 }
+                if(filtroAdapter.getNpTipoConcurso() != null) {
+                    page.setTipoConcurso(filtroAdapter.getNpTipoConcurso().getValue());
+                }
                 page.setOffset(0);
                 reloadingEntireList = true;
                 requestApostasConfirmadas();
