@@ -43,10 +43,11 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	private static final String ARG_APOSTA = "ARG_APOSTA";
 
 	private View view, divider;
-	private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, resultTxt, modalidadeTxt,
+	private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, resultTxt,
 			apostaTrocaTxt, txtTimeDiaAposta, labelTimeDiaAposta, tv_colunas, tv_sua_aposta,
 			tv_colunas_2, tv_resultado_super_sete, labelTimeDiaResultado, txtTimeDiaResultado, tv_val_premio, tv_val_premio_tit,
-			tv_premio_pago_tit;
+			tv_premio_pago_tit; //modalidadeTxt
+
 	private RelativeLayout informacaoAdicionalLayout, rl_fg_numeros_1, rl_fg_numeros_2 ,rl_container_result_1, rl_container_result_2,
 			rl_time_mes;
 	private RelativeLayout rl_divTopNumerosSorteados, rl_divBotNumerosSorteados;
@@ -379,7 +380,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 	private void preencheTeimosinha() {
 		if (aposta.getQuantidadeTeimosinhas() > 0) {
-			modalidadeTxt.setVisibility(View.VISIBLE);
+			//modalidadeTxt.setVisibility(View.VISIBLE);
 			quantidadeApostadasTxt.setVisibility(View.VISIBLE);
 
 			Integer quantidade      = aposta.getQuantidadeTeimosinhas();
@@ -392,7 +393,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			quantidadeApostadasTxt.setText(textoTeimosinha);
 			if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
 				quantidadeApostadasTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-				modalidadeTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+				//modalidadeTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 			}
 		}
 	}
@@ -457,7 +458,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		dataApostaTxt = view.findViewById(R.id.dataApostaTxt);
 		resultTxt = view.findViewById(R.id.resultTxt);
 		divider = view.findViewById(R.id.divider);
-		modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
+		//modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
 		apostaTrocaTxt = view.findViewById(R.id.apostaTrocaTxt);
 		txtTimeDiaAposta = view.findViewById(R.id.informacaoAdicionalTxt);
 		labelTimeDiaAposta = view.findViewById(R.id.labelInformacaoAdicionalTxt);

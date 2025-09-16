@@ -45,7 +45,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private TextView concursoTxt;
 	private AppCompatImageView addCarrinho;
 	private AppCompatImageView detalheAposta;
-	private AppCompatImageView tagBolao;
+	//private AppCompatImageView tagBolao;
 	private TextView situacaoTxt;
 	private Button btnAposteAqui;
 	private ProgressBar progressBarSituacao;
@@ -70,7 +70,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			concursoTxt = view.findViewById(R.id.concursoTxt);
 			addCarrinho = view.findViewById(R.id.id_add_carrinho);
 			detalheAposta = view.findViewById(R.id.id_detalhe_aposta);
-			tagBolao = view.findViewById(R.id.id_tag_bolao);
+			//tagBolao = view.findViewById(R.id.id_tag_bolao);
 			situacaoTxt = view.findViewById(R.id.situacaoTxt);
 			tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 			progressBarSituacao = view.findViewById(R.id.progressBarSituacao);
