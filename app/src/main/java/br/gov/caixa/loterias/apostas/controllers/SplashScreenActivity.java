@@ -21,6 +21,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
+import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.VersionResponse;
@@ -123,8 +124,13 @@ public class SplashScreenActivity extends AppCompatActivity {
             new Handler().postDelayed(() -> {
                 LoginSP.limpar();
                 //if (!redirectDeepLink()) {
+                if(!DadosUsuarioBO.checarFecharIntroducao()) {
                     startActivity(new Intent(SplashScreenActivity.this, IntroducaoActivity.class));
-                //}
+                }
+                else{
+                    startActivity(new Intent(SplashScreenActivity.this, LoginActivity.class));
+                }
+                    //}
                 finish();
             }, SPLASH_TIME);
         }

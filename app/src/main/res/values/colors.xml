@@ -14,6 +14,7 @@
     <color name="fundobrancocentralmsg">#F4F4F4</color>
     <color name="black_overlay">#66000000</color>
     <color name="branco">#ffffff</color>
+    <color name="laranja">#d87b00</color>
     <color name="branco_transparente">#99ffffff</color>
     <color name="cinza">#48586c</color>
     <color name="linhaDivisa">#d0e0e3</color>
@@ -63,6 +64,8 @@
     <color name="azulTitcaixa">#3864A3</color>
     <color name="pretoLinhaFormNovoTipoPagamento">#3e576d</color>
     <color name="verdeagua">#00bcac</color>
+    <color name="azulLabel">#00437a</color>
+    <color name="greyText">#404b52</color>
     <color name="laranjacaixa">#f39200</color>
     <color name="amareloQueimado">#f9b000</color>
     <color name="transparente50">#64ffffff</color>

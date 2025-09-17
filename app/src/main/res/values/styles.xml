@@ -328,6 +328,17 @@
         <item name="android:fontFamily">@font/caixa_std_regular</item>
     </style>
 
+    <style name="RoundedAlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/azulLabel</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">@color/greyText</item>
+        <!-- Used for the background -->
+        <item name="android:background">@drawable/rounded_dialog_background</item>
+        <item name="android:textColor">@color/azulLabel</item>
+        <item name="android:fontFamily">@font/caixa_std_regular</item>
+    </style>
+
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@color/verde_card</item>
         <item name="android:textSize">18sp</item>

@@ -22,6 +22,7 @@ import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
 
@@ -30,7 +31,6 @@ import java.util.concurrent.Executor;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.controllers.LoginActivity;
 import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
@@ -79,8 +79,6 @@ public class LoginFragment extends Fragment {
     Boolean temMatriculaBiometria = false;
     BiometriaDTO biometriaDTO;
     AlertDialog alertDialogBio;
-    TextView txtSSO;
-    TextView txtTrocaUsuario;
     Spinner ambienteSpinner;
 
     public LoginFragment() {}
@@ -97,6 +95,7 @@ public class LoginFragment extends Fragment {
 
         biometriaLinearLayout = v.findViewById(R.id.biometriaLinearLayout);
         biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
+
 
         //Selecao ambiente se NAO PRD
         if (!BuildConfig.FLAVOR.equals("prd")) {
@@ -145,7 +144,6 @@ public class LoginFragment extends Fragment {
         buttonAposte.setOnClickListener(v1 -> {
             AppCenterManager.registraEvento("ENTROU_OPCAO_DEGUSTAR");
             KeycloakBO.getInstance().limparSessao(getActivity());
-            DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
             if(DadosUsuarioBO.temUsuarioBD() &&
                     (!DadosUsuarioBO.obterNome().isEmpty() ||
                      !DadosUsuarioBO.obterCpf().isEmpty())){
@@ -158,8 +156,6 @@ public class LoginFragment extends Fragment {
         });
 
         buttonLogin  = v.findViewById(R.id.buttonFacaLogin);
-        txtSSO = v.findViewById(R.id.textViewSSO);
-        txtTrocaUsuario = v.findViewById(R.id.textViewTrocar);
         txtVersao = v.findViewById(R.id.textVersao);
         txtVersao.setText("v. "+ BuildConfig.VERSION_NAME);
 
@@ -171,13 +167,6 @@ public class LoginFragment extends Fragment {
             setBotoesParaSSO();
         }
 
-        txtTrocaUsuario.setOnClickListener(v13 -> {
-            AppCenterManager.registraEvento("ENTROU_LOGIN");
-            AlertDialogUtils.show(getContext());
-            BiometriaBO.getInstance().setIsTrocandoUsuario(true);
-            new LoginSSOModel(getActivity()).sair(LoginActivity.class, () -> {});
-        });
-
         buttonLogin.setOnClickListener(v12 -> {
 
             biometriaDTO = DadosBiometriaBO.obterBiometria();
@@ -187,12 +176,11 @@ public class LoginFragment extends Fragment {
                 biometricPrompt.authenticate(promptInfo);
             } else {
                 AppCenterManager.registraEvento("ENTROU_LOGIN");
-                DadosUsuarioBO.updateFecharIntroducao(getActivity(), true);
                 connectKeycloak();
             }
         });
 
-        if ((DadosUsuarioBO.checarFecharIntroducao(getActivity()) && DadosUsuarioBO.checarUsuarioLogado(getActivity())) && LoginSP.isPrimeiraInicializacao()){
+        if ((DadosUsuarioBO.checarFecharIntroducao() && DadosUsuarioBO.checarUsuarioLogado(getActivity())) && LoginSP.isPrimeiraInicializacao()){
             LoginSP.primeiraInicializacao(false);
             //Bloqueado para NAO entrar direto no SSO
             //connectKeycloak();
@@ -290,16 +278,12 @@ public class LoginFragment extends Fragment {
 
     private void setBotoesParaSSO() {
         buttonLogin.setText(R.string.label_faca_login_cadastre);
-        txtSSO.setVisibility(View.VISIBLE);
-        txtTrocaUsuario.setVisibility(View.INVISIBLE);
         biometriaSwitch.setChecked(false);
     }
 
     private void setBotoesParaToken() {
         buttonLogin.setText(getString(R.string.entrar) + " "
                 + StringUtils.firstWord(StringUtils.capitalizer(biometriaDTO.getNome())));
-        txtSSO.setVisibility(View.INVISIBLE);
-        txtTrocaUsuario.setVisibility(View.VISIBLE);
     }
 
     private void setUpBiometria() {

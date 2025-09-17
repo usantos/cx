@@ -11,25 +11,58 @@
 
         <ImageView
             android:id="@+id/icon_18_anos"
-            android:layout_width="63dp"
-            android:layout_height="66dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="18dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:src="@drawable/icon_18_anos"
+            android:src="@drawable/jogo_responsavel"
+            android:contentDescription="@string/apostar_imagem"
             app:layout_constraintBottom_toTopOf="@+id/guidelineDezoitoAnos"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <View
             android:id="@+id/viewTracoDezoito"
-            android:layout_width="142dp"
+            android:layout_width="125dp"
             android:layout_height="1dp"
-            android:background="@color/linhaDivisa"
+            android:importantForAccessibility="no"
+            android:layout_marginTop="24dp"
+            android:background="@color/colorAccent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guidelineDezoitoAnos"></View>
+            app:layout_constraintTop_toBottomOf="@+id/guidelineDezoitoAnos" />
+
+        <TextView
+            android:id="@+id/textViewTextoRestrito"
+            android:layout_width="347dp"
+            android:layout_height="54dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/viewTracoDezoito"
+            android:text="@string/title_restrito18anos"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:lines="2"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/textViewSaibaMais"
+            android:layout_width="347dp"
+            android:layout_height="27dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTextoRestrito"
+            android:text="@string/title_saibaMais"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/caixa_std_bold"
+            android:textSize="18sp"/>
 
         <Button
             android:layout_width="match_parent"
@@ -38,7 +71,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginStart="16dp"
-            android:background="@color/amarelo"
+            android:background="@color/colorAccent"
             android:fontFamily="@font/futura_std_bold"
             android:text="@string/title_entendi"
             android:textAllCaps="false"
@@ -48,23 +81,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/entendiButton"/>
-
-        <TextView
-            android:id="@+id/textViewTextoRestrito"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="18dp"
-            android:text="@string/title_restrito18anos"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guidelineDezoitoAnos"
-            android:lines="2"
-            android:textAlignment="center"
-            android:textColor="@color/verdeazul"
-            android:fontFamily="@font/futura_std_book"
-            android:textSize="18sp"/>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelineDezoitoAnos"

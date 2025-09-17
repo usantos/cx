@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class RestritoDezoitoAnosActivity extends AppCompatActivity {
@@ -24,13 +25,22 @@ public class RestritoDezoitoAnosActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        TextView textViewTitulo = findViewById(R.id.textLoterias);
+        textViewTitulo.setHint("Título");
+
         TextView textViewTextoRestrito = findViewById(R.id.textViewTextoRestrito);
-        textViewTextoRestrito.setText(ViewUtils.textFuturaAndFuturaBold(this, getResources().getString(R.string.app_para_maior_de_18)));
+        textViewTextoRestrito.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.app_para_maior_de_18)));
 
         Button buttonDigitarAposta = findViewById(R.id.entendiButton);
         buttonDigitarAposta.setOnClickListener(v -> {
             Intent activity = new Intent(RestritoDezoitoAnosActivity.this, IntroducaoActivity.class);
             startActivity(activity);
+        });
+
+        TextView saibaMais = findViewById(R.id.textViewSaibaMais);
+        saibaMais.setHint("Link");
+        saibaMais.setOnClickListener(v -> {
+            Utils.abreUrl(RestritoDezoitoAnosActivity.this,R.string.url_jogo_responsavel);
         });
     }
 
