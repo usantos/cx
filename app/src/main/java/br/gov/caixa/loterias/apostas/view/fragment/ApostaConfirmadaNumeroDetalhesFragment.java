@@ -191,7 +191,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			case DUPLA_SENA:
 				numerosSorteadosPrimeiro = getResultadoConcurso() != null ? getResultadoConcurso().getListaSorteadosPrimeiroSorteio() : null;
 				numerosSorteadosSegundo =  (List<Integer>) (getResultadoConcurso() != null && getResultadoConcurso().getNumerosSorteadosSegundoSorteio() != null  ?
-						getResultadoConcurso().getNumerosSorteadosSegundoSorteio() : new ArrayList<>());
+						getResultadoConcurso().getNumerosSorteadosSegundoSorteio() : null);
 				fragment = NumerosFragment.newInstance(getContext().getResources().getString(R.string.seus_numeros) + "\n\n" +
 								getContext().getResources().getString(R.string.primeiro_sorteiro),
 						aposta.getListaNumerosSelecionados(), numerosSorteadosPrimeiro,
