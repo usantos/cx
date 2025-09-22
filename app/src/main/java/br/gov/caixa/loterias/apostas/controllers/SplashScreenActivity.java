@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.microsoft.appcenter.AppCenter;
@@ -17,7 +16,6 @@ import java.io.File;
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.AcessoBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -28,9 +26,7 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
-import br.gov.caixa.loterias.apostas.utils.UtilQueueIT;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.listener.ICallbackQueueIT;
 
 public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
@@ -59,7 +55,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         //Cria canal de Notificacao
         MessagingUtils.criaCanalNotificacaoApp(this);
 
-        startaFila();
+        verificaVersao();
     }
 
     public static boolean isRootAvailable(){
@@ -69,32 +65,6 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
             }
         }
         return false;
-    }
-
-    private void startaFila() {
-        new UtilQueueIT(SplashScreenActivity.this, onQueueITListener());
-    }
-
-    private ICallbackQueueIT onQueueITListener() {
-        return new ICallbackQueueIT() {
-            @Override
-            public void callbackFila(boolean passouNaFila) {
-                Log.e("QUEUE-IT", "callbackFila -> passouNaFila: " + passouNaFila);
-                SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
-                sessaoUser.setPassouPelaQueueIT(true);
-                verificaVersao();
-            }
-
-            @Override
-            public void callbackAbrirFila() {
-                Log.e("QUEUE-IT", "callbackFila -> callbackAbrirFila");
-            }
-
-            @Override
-            public void callbackSaiuFila() {
-                Log.e("QUEUE-IT", "callbackFila -> callbackSaiuFila");
-            }
-        };
     }
 
     public void verificaVersao() {

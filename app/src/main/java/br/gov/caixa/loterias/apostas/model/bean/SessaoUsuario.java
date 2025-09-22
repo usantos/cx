@@ -21,7 +21,6 @@ public class SessaoUsuario {
     private String nome;
     private String email;
     private boolean precisaMontarCarrossel = true;
-    private boolean passouPelaQueueIT = false;
 
     private Boolean suspensaoTemporariaApostador;
     private Boolean responderAutoavaliacao;
@@ -112,12 +111,6 @@ public class SessaoUsuario {
 
     public void setPrecisaMontarCarrossel(boolean precisaMontarCarrossel) {
         this.precisaMontarCarrossel = precisaMontarCarrossel;
-    }
-
-    public boolean isPassouPelaQueueIT() { return passouPelaQueueIT; }
-
-    public void setPassouPelaQueueIT(boolean passouPelaQueueIT) {
-        this.passouPelaQueueIT = passouPelaQueueIT;
     }
 
     public Boolean getSuspensaoTemporariaApostador() {

@@ -3,8 +3,6 @@ package br.gov.caixa.loterias.apostas.model.bo.silce.internals;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.gov.caixa.loterias.apostas.R;
-
 public class CertificadoNovaAPISingleton {
     private static CertificadoNovaAPISingleton instance;
     private static List<Integer> certificados;
