@@ -52,6 +52,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DadosChavePixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -93,6 +94,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         ConferirResultadoHandler {
     private static final int PAGE_SIZE = 30;
     private static final String ARG_IS_HISTORICO = "ARG_IS_HISTORICO";
+    private static final String ARG_CONFIG_CONSULTA = "ARG_CONFIG_CONSULTA";
 
     private ApostaSilceBO apostaSilceBO;
     private TextView dateResultTxt;
@@ -126,9 +128,11 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
     public ApostasConfirmadasFragment(){}
 
-    public static ApostasConfirmadasFragment newInstance(boolean isHistorico){
+    public static ApostasConfirmadasFragment newInstance(boolean isHistorico, ConfigConsultaDTO configConsulta){
         Bundle args = new Bundle();
         args.putBoolean(ARG_IS_HISTORICO, isHistorico);
+        args.putSerializable(ARG_CONFIG_CONSULTA, configConsulta);
+
         ApostasConfirmadasFragment fragment = new ApostasConfirmadasFragment();
         fragment.setArguments(args);
         return fragment;
@@ -137,7 +141,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model = new ApostaConfirmadaModel(getActivity());
+        configConsulta = (ConfigConsultaDTO) getArguments().getSerializable(ARG_CONFIG_CONSULTA);
+        //model = new ApostaConfirmadaModel(getActivity());
+
         isOnCreate = true;
         apostaSilceBO = ApostaSilceBO.getInstance();
     }
@@ -651,31 +657,32 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private void requestMesesAnosDisponiveis() {
-        AlertDialogUtils.show(getActivity());
-        model.requestConfigConsulta(onConfigConsultaListener());
+        //AlertDialogUtils.show(getActivity());
+        //model.requestConfigConsulta(onConfigConsultaListener());
+        onMesesAnosDisponiveisResult();
     }
 
-    private OnSilceListener<ConfigConsultaDTO> onConfigConsultaListener() {
-        return new OnSilceListener<ConfigConsultaDTO>() {
-            @Override
-            public void success(ConfigConsultaDTO payload) {
-                configConsulta = payload;
-                onMesesAnosDisponiveisResult();
-            }
-
-            @Override
-            public void error(VolleyError error) {
-                onMesesAnosDisponiveisError(error);
-            }
-        };
-    }
+//    private OnSilceListener<ConfigConsultaDTO> onConfigConsultaListener() {
+//        return new OnSilceListener<ConfigConsultaDTO>() {
+//            @Override
+//            public void success(ConfigConsultaDTO payload) {
+//                configConsulta = payload;
+//                onMesesAnosDisponiveisResult();
+//            }
+//
+//            @Override
+//            public void error(VolleyError error) {
+//                onMesesAnosDisponiveisError(error);
+//            }
+//        };
+//    }
 
     private void onMesesAnosDisponiveisResult() {
         if (getActivity() == null) {
             return;
         }
 
-        AlertDialogUtils.dismiss();
+        //AlertDialogUtils.dismiss();
         mesesAnosDisponiveis = new ArrayList<>();
         mesesAnosDisponiveis.addAll(configConsulta.getPeriodos());
 
@@ -746,20 +753,19 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
         }
     }
 
-    private void onMesesAnosDisponiveisError(VolleyError error) {
-        if (getActivity() != null) {
-            AlertDialogUtils.dismiss();
-            String msgError = MensagensNetwork.setMensagem(error, getActivity());
-            page = null;
-            hasMoreItems = false;
-            updateResultDate();
-        }
-        if (error != null && error.networkResponse != null && error.networkResponse.statusCode == 401) {
-            isOnCreate = true;
-        }
-        RedirectNetwork.checkRedirect(error, getActivity());
-
-    }
+//    private void onMesesAnosDisponiveisError(VolleyError error) {
+//        if (getActivity() != null) {
+//            AlertDialogUtils.dismiss();
+//            String msgError = MensagensNetwork.setMensagem(error, getActivity());
+//            page = null;
+//            hasMoreItems = false;
+//            updateResultDate();
+//        }
+//        if (error != null && error.networkResponse != null && error.networkResponse.statusCode == 401) {
+//            isOnCreate = true;
+//        }
+//        RedirectNetwork.checkRedirect(error, getActivity());
+//    }
 
     private void updateResultDate() {
         if (page != null) {

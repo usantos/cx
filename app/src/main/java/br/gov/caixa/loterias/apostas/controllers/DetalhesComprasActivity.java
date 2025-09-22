@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.WebViewActivity;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.model.ApostaConfirmadaModel;
 import br.gov.caixa.loterias.apostas.model.model.DetalhesCompraModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
@@ -87,6 +88,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
     private Dialog dialogDevolucaoPix;
     private ImageButton ibFavoritar;
     private String dataHoraServidor;
+    private ConfigConsultaDTO configConsulta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +123,7 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
         btnDuvidas.setOnClickListener(view -> {
             abrirTermosUso();
         });
+        buscaConfigConsulta();
 
         criarCabecalho();
         //verificaPixCopiaCola();//Chamado de dentro do buscaDetalhesCompras pois nele atualiza o compraDTO
@@ -613,19 +616,16 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
         btnCancelar.setOnClickListener(v -> dialogFiltrar.dismiss());
         dialogFiltrar.getWindow().setAttributes(lp);
 
-        final List<String>                  expandableListTitle;
-        final HashMap<String, List<String>> expandableListDetail;
-
+        //final List<String>                  expandableListTitle;
+        //final HashMap<String, List<String>> expandableListDetail;
         listViewFiltro.setGroupIndicator(null);
-        expandableListDetail = ExpandableListDataFiltro.getData();
-        expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+        //expandableListDetail = ExpandableListDataFiltro.getData();
+        //expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
         filtroAdapter = new FiltroApostasAdapter(this,
-                                                 expandableListTitle,
-                                                 expandableListDetail,
                                                  modalidades,
                                                  DetalhesComprasActivity.this,
                                                  false,
-                                                 SituacoesApostaEnum.getSituacoes());
+                                                 configConsulta);
         listViewFiltro.setAdapter(filtroAdapter);
         btnLimpar.setOnClickListener(v -> {
             filtroAdapter.limpaFiltros();
@@ -752,6 +752,21 @@ public class DetalhesComprasActivity extends AppCompatActivity implements OnCopi
                     }
                 });
 
+    }
+
+    private void buscaConfigConsulta() {
+        AlertDialogUtils.show(DetalhesComprasActivity.this);
+        new ApostaConfirmadaModel(this).requestConfigConsulta(new OnSilceListener<ConfigConsultaDTO>() {
+            @Override
+            public void success(ConfigConsultaDTO payload) {
+                AlertDialogUtils.dismiss();
+                configConsulta = payload;
+            }
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        });
     }
 
     @Override
