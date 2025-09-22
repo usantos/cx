@@ -54,6 +54,7 @@
     <string name="label_compra_lista_tentar_novamente">Tentar Novamente</string>
 
     <string name="label_atencao">Atenção</string>
+    <string name="label_atencao_exclama">Atenção!</string>
     <string name="tituloSalvarAposta">Salve esta aposta :)</string>
     <string name="label_de_nome">Dê um nome</string>
 
@@ -1382,7 +1383,7 @@
     <string name="quantidade_cotas">Quantidade de Cotas</string>
     <string name="quantidade_min_cotas">Quant. de Cotas Mínima</string>
     <string name="quantidade_max_cotas">Quant. de Cotas Máxima</string>
-    <string name="quantidade_dezenas">Quant. de Dezenas</string>
+    <string name="quantidade_dezenas">Quantidade de Dezenas</string>
     <string name="qtd_min_menor_2">Quantidade mínima não pode ser menor que 2</string>
     <string name="qtd_min_maior_max">Quantidade mínima não pode ser maior que a máxima</string>
     <string name="qtd_max_menor_2">Quantidade máxima não pode ser menor que 2</string>
@@ -1435,7 +1436,7 @@
     <string name="autoavaliacao_ajuda">Onde Procurar Ajuda</string>
     <string name="autoavaliacao_parabens">_Parabéns!_\nO seu hábito de apostar não está interferindo em sua vida, você é um jogador responsável.</string>
     <string name="autoavaliacao_atencao">_Muita atenção!_\nSe você respondeu "sim" para um ou mais dessas questões, recomendamos que você procure avaliação adicional.</string>
-    <string name="autosuspensao_suspensao">Autossuspensão Jogo Responsável</string>
+    <string name="autosuspensao_suspensao">Suspensão temporária</string>
     <string name="tv_autosuspensao_1">1.Essa ação acarretará na impossibilidade de efetuar compras de apostas no Portal loterias na internet e app loterias durante o periodo selecionado</string>
     <string name="tv_autosuspensao_2">1.1 O periodo de suspensão pode ser de 24 hs, 48 hs, 7 dias, 15 dias ou 30 dias, o critério do apostador </string>
     <string name="tv_autosuspensao_3">1.2 A suspensão passa a valer a partir da confirmação da solicitação</string>
@@ -1447,12 +1448,14 @@
     <string name="tv_15_dias">15 dias</string>
     <string name="tv_30_dias">30 dias</string>
     <string name="tv_estou_ciente">Estou ciente e concordo com as informações acima</string>
-    <string name="suspender_apostas">Suspender Apostas</string>
-    <string name="tv_confirma_suspensao">A suspensão temporária de compras é irreversível enquanto durar o período selecionado.\n\nVocê confirma a suspensão por XX ?</string>
+    <string name="suspender_apostas">Confirmar Suspensão</string>
+    <string name="tv_confirma_suspensao">A suspensão temporária de compras é irreversível durante o período selecionado.\n\nVocê confirma a suspensão por _XX ?_</string>
     <string name="tv_suspenso_ate">A suspensão realizada com o prazo de XX\n\nUsuário suspenso até o dia\nYY</string>
+    <string name="tv_suspenso_ate_novo">Você foi deslogado e a suspensão temporária efetivada pelo período escolhido. Só será possível fazer novas compras após a suspensão.\n\nXX, às YY.</string>
     <string name="cotas_expiradas_excluidas_carrinho">A(s) cota(s) expirada(s) FORAM excluídas do seu carrinho</string>
     <string name="cotas_prestes_expirar">Você possui cota(s) de bolão prestes a expirar. Conclua sua compra antes do tempo da reserva acabar.</string>
     <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
+    <string name="autosuspensao_alerta_nova">Há uma suspensão temporária ativa para compras. Novas apostas poderão ser realizadas no Portal Loterias Online e no Aplicativo Loterias CAIXA após o término do período selecionado.</string>
     <string name="todas_modalidades">Todas as\nmodalidades</string>
     <string name="gerar_comprovante">Gerar Comprovante</string>
     <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
@@ -1524,6 +1527,8 @@
     <string name="remover_apostas">Remover apostas</string>
     <string name="adicionar_ao_carrinho_de_compras">Adicionar ao carrinho de apostas</string>
     <string name="card_de_aposta_contida_neste_combo">Aposta contida neste combo</string>
+    <string name="quantidade_de_palpites">Quantidade de Palpites</string>
+    <string name="excluir_numeros">Excluir Números</string>
 
 
 </resources>

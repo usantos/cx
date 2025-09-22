@@ -51,9 +51,9 @@ public class SimularApostaModel {
 	}
 
 	public void adidionaApostaNoCarrinho(Activity actv, IdentificaoDeUmaApostaDas8Modalidades aposta){
-		if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(actv)) {
+		//if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(actv)) {
 			AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(actv, aposta);
-		}
+		//}
 	}
 
 	public void addSurpresinhaCarrinho(IncluirSurpresinhaDTO surpresinha) {

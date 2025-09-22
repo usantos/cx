@@ -394,9 +394,9 @@ public class SurpresinhaFragment extends Fragment implements OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.botaoAdicionarCompletarCartela: {
-                if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
+                //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(getActivity())) {
                     adicionarSurpresinhaNoCarrinho();
-                }
+                //}
             }
             break;
         }

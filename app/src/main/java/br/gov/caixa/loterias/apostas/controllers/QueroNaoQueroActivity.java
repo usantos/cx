@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
 
-    private static final int PROGNOSTICO_MAXIMO = 80;
     private static final int QUANTIDADE_COLUNAS_CARTELA = 6;
     private static final int COR_QUERO_NAO_QUERO = R.color.azulFiltro;
     boolean isQuero = false;
@@ -48,6 +47,8 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
     private RecyclerView cartela;
     public ListaDezenaRecyclerView cartelaAdapter;
     private String titulo = "";
+    private int prognosticosMaximo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +68,9 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
     private void pegaExtras(){
         if(getIntent() != null){
               String getTitulo = getIntent().getStringExtra(FiltraMarketplaceActivity.ARG_TITULO_QUERO_NAO_QUERO);
-              //dezenasIniciais = getIntent().getIntegerArrayListExtra(FiltraMarketplaceActivity.ARG_DEZENAS_INICIAIS);
-              dezenasQuero = getIntent().getIntegerArrayListExtra(FiltraMarketplaceActivity.ARG_DEZENAS_QUERO);
+               dezenasQuero = getIntent().getIntegerArrayListExtra(FiltraMarketplaceActivity.ARG_DEZENAS_QUERO);
               dezenasNaoQuero = getIntent().getIntegerArrayListExtra(FiltraMarketplaceActivity.ARG_DEZENAS_NAO_QUERO);
+              prognosticosMaximo = getIntent().getIntExtra(FiltraMarketplaceActivity.ARG_QTD_MAX_PROGNOSTICOS, 80);
 
             if(getTitulo !=null && getTitulo.equals(FiltraMarketplaceActivity.ARG_QUERO)){
                 title.setText(getString(R.string.numeros_quero));
@@ -117,7 +118,7 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
 
     private void configuraCartela(){
 
-        dezenas = VolanteUtils.getDezenas(ModalidadeEnum.QUINA, PROGNOSTICO_MAXIMO);
+        dezenas = VolanteUtils.getDezenas(ModalidadeEnum.QUINA, prognosticosMaximo);
 
         DezenaConfig dezenaConfig = new DezenaConfig(true, COR_QUERO_NAO_QUERO, Color.WHITE, true, true);
 

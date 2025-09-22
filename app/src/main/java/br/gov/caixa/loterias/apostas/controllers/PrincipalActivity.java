@@ -1034,18 +1034,18 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         });
     }
 
-    private void redirecionaRapidao() {
-        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
-            AnimacaoFecharMenuRapido(actionApresentarTrevo);
-            if (DadosUsuarioBO.checarTutorialRapidao()) {
-                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-            } else {
-                startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
-            }
-        } else {
-            AnimacaoFecharMenuRapido(actionApresentarTrevo);
-        }
-    }
+//    private void redirecionaRapidao() {
+//        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
+//            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+//            if (DadosUsuarioBO.checarTutorialRapidao()) {
+//                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+//            } else {
+//                startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
+//            }
+//        } else {
+//            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+//        }
+//    }
 
     private void redirecionaJogoResponsavel(){
         //startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));

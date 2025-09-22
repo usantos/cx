@@ -133,9 +133,9 @@ public class CarrinhosFavoritosActivity extends LoteriasBaseAppActivity {
 
 			@Override
 			public void onTransformaCarrinho(int position) {
-				if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(CarrinhosFavoritosActivity.this)) {
+				//if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(CarrinhosFavoritosActivity.this)) {
 					transformaCarrinho(position);
-				}
+				//}
 			}
 
 			@Override

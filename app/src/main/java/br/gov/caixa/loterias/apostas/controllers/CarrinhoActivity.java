@@ -42,6 +42,7 @@ import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewComboAdapter;
@@ -298,29 +299,32 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     private void onClickAvancaPagamento() {
-        if (temCotasExpiradas()) {
-            AlertDialogUtils.show(CarrinhoActivity.this);
-            vLoading.setVisibility(View.VISIBLE);
-            model.buscaCarrinhoSilce(new OnSilceListener<CarrinhoDTO>() {
-                @Override
-                public void success(CarrinhoDTO payload) {
-                    vLoading.setVisibility(View.GONE);
-                    AlertDialogUtils.dismiss();
-                    setCarrinho(payload);
-                    if (payload.getMsgCotaExcluida() != null && payload.getMsgCotaExcluida()) {
-                        notificationCotasExcluidas();
+        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this, 2)) {
+            if (temCotasExpiradas()) {
+                AlertDialogUtils.show(CarrinhoActivity.this);
+                vLoading.setVisibility(View.VISIBLE);
+                model.buscaCarrinhoSilce(new OnSilceListener<CarrinhoDTO>() {
+                    @Override
+                    public void success(CarrinhoDTO payload) {
+                        vLoading.setVisibility(View.GONE);
+                        AlertDialogUtils.dismiss();
+                        setCarrinho(payload);
+                        if (payload.getMsgCotaExcluida() != null && payload.getMsgCotaExcluida()) {
+                            notificationCotasExcluidas();
+                        }
+                        trataPermissao();
                     }
-                    trataPermissao();
-                }
-                @Override
-                public void error(VolleyError error) {
-                    vLoading.setVisibility(View.GONE);
-                    AlertDialogUtils.dismiss();
-                    trataPermissao();
-                }
-            });
-        } else {
-            trataPermissao();
+
+                    @Override
+                    public void error(VolleyError error) {
+                        vLoading.setVisibility(View.GONE);
+                        AlertDialogUtils.dismiss();
+                        trataPermissao();
+                    }
+                });
+            } else {
+                trataPermissao();
+            }
         }
     }
 
