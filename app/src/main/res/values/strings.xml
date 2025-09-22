@@ -1383,7 +1383,7 @@
     <string name="quantidade_cotas">Quantidade de Cotas</string>
     <string name="quantidade_min_cotas">Quant. de Cotas Mínima</string>
     <string name="quantidade_max_cotas">Quant. de Cotas Máxima</string>
-    <string name="quantidade_dezenas">Quant. de Dezenas</string>
+    <string name="quantidade_dezenas">Quantidade de Dezenas</string>
     <string name="qtd_min_menor_2">Quantidade mínima não pode ser menor que 2</string>
     <string name="qtd_min_maior_max">Quantidade mínima não pode ser maior que a máxima</string>
     <string name="qtd_max_menor_2">Quantidade máxima não pode ser menor que 2</string>
@@ -1527,6 +1527,8 @@
     <string name="remover_apostas">Remover apostas</string>
     <string name="adicionar_ao_carrinho_de_compras">Adicionar ao carrinho de apostas</string>
     <string name="card_de_aposta_contida_neste_combo">Aposta contida neste combo</string>
+    <string name="quantidade_de_palpites">Quantidade de Palpites</string>
+    <string name="excluir_numeros">Excluir Números</string>
 
 
 </resources>

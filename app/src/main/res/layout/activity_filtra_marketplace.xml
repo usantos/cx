@@ -88,7 +88,7 @@
             <EditText
                 android:id="@+id/edit_loterica"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
@@ -193,64 +193,50 @@
                 app:layout_constraintTop_toBottomOf="@id/text_loterica_descritivo" />
 
             <EditText
-                android:id="@+id/edit_val_min"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_white_with_rouded_black_border"
-                android:inputType="numberDecimal"
-                android:maxLength="14"
-                android:paddingStart="8dp"
-                android:textColor="@color/bolao_hint"
-                android:textColorHint="@color/bolao_hint"
-                android:textSize="14sp"
-                android:fontFamily="@font/caixa_std_regular"
-                app:layout_constraintEnd_toStartOf="@+id/guidelineCentroFiltro"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_valor_min_aposta" />
-
-            <ImageView
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginTop="-1dp"
-                android:layout_marginEnd="-8dp"
-                android:src="@drawable/ic_real_cifrao"
-                app:layout_constraintBottom_toBottomOf="@+id/edit_val_min"
-                app:layout_constraintEnd_toStartOf="@+id/edit_val_min"
-                app:layout_constraintTop_toTopOf="@+id/edit_val_min" />
+                    android:id="@+id/edit_val_min"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/button_white_with_rouded_black_border"
+                    android:inputType="numberDecimal"
+                    android:maxLength="14"
+                    android:drawableStart="@drawable/ic_real_cifrao"
+                    android:drawablePadding="5dp"
+                    android:textColor="@color/bolao_hint"
+                    android:textColorHint="@color/bolao_hint"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:importantForAccessibility="no"
+                    android:focusable="true"
+                    android:importantForAutofill="no"
+                    app:layout_constraintEnd_toStartOf="@+id/guidelineCentroFiltro"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_valor_min_aposta" />
 
             <EditText
                 android:id="@+id/edit_val_max"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="30dp"
+                android:layout_height="48dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/button_white_with_rouded_black_border"
                 android:inputType="numberDecimal"
                 android:maxLength="14"
-                android:paddingStart="8dp"
+                android:drawableStart="@drawable/ic_real_cifrao"
+                android:drawablePadding="5dp"
                 android:fontFamily="@font/caixa_std_regular"
                 android:textColor="@color/bolao_hint"
                 android:textColorHint="@color/bolao_hint"
                 android:textSize="14sp"
+                android:importantForAutofill="no"
+                android:importantForAccessibility="no"
+                android:focusable="true"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintStart_toEndOf="@id/guidelineCentroFiltro"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_valor_min_aposta" />
-
-            <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_marginTop="-1dp"
-                android:src="@drawable/ic_real_cifrao"
-                app:layout_constraintStart_toEndOf="@+id/guidelineCentroFiltro"
-                app:layout_constraintBottom_toBottomOf="@+id/edit_val_max"
-                app:layout_constraintEnd_toStartOf="@+id/edit_val_max"
-                app:layout_constraintTop_toTopOf="@+id/edit_val_max" />
 
             <TextView
                 android:id="@+id/text_quant_min_cotas"
@@ -271,7 +257,7 @@
             <EditText
                 android:id="@+id/quant_min_cotas"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="48dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="10dp"
@@ -281,6 +267,7 @@
                 android:inputType="number"
                 android:maxLength="14"
                 android:paddingStart="8dp"
+                android:importantForAutofill="no"
                 android:textColor="@color/bolao_hint"
                 android:textColorHint="@color/bolao_hint"
                 android:textSize="14sp"
@@ -308,7 +295,7 @@
             <EditText
                 android:id="@+id/quant_max_cotas"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="48dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/button_white_with_rouded_black_border"
@@ -316,6 +303,7 @@
                 android:maxLength="14"
                 android:hint="@string/_100"
                 android:paddingStart="8dp"
+                android:importantForAutofill="no"
                 android:textColor="@color/bolao_hint"
                 android:textColorHint="@color/bolao_hint"
                 android:textSize="14sp"
@@ -391,41 +379,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/containerValidaQtdCotas" />
 
-            <EditText
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/quant_dezenas"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/button_white_with_rouded_black_border"
-                android:hint="@string/_5_a_21"
-                android:inputType="number"
-                android:maxLength="14"
-                android:paddingStart="8dp"
-                android:textColor="@color/bolao_hint"
-                android:textColorHint="@color/bolao_hint"
-                android:textSize="14sp"
                 android:fontFamily="@font/caixa_std_regular"
                 app:layout_constraintEnd_toStartOf="@+id/guidelineCentroFiltro"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_quantidade_dezenas" />
-
-            <TextView
-                android:id="@+id/txt_valida_dezenas"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:text="@string/qtd_min_menor_2"
-                android:textAlignment="textStart"
-                android:textColor="@color/vermelho_dialog"
-                android:textSize="12sp"
-                android:visibility="gone"
-                android:fontFamily="@font/caixa_std_bold"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintStart_toEndOf="@id/guidelineCentroFiltro"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/quant_dezenas" />
 
             <View
                 android:id="@+id/view_div_qtd_dezenas"
@@ -488,14 +451,13 @@
                     android:layout_width="127dp"
                     android:layout_height="34dp"
                     android:layout_marginTop="16dp"
-                    android:text="Excluir Números"
+                    android:text="@string/excluir_numeros"
                     android:layout_gravity="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
                     android:background="@drawable/btn_round_outlined"
                     android:textColor="@color/azulFiltro"
                     android:textSize="14sp"
-                    android:textFontWeight="600"
-                    android:fontFamily="@font/caixa_std_regular" />
+                    android:fontFamily="@font/caixa_std_semi_bold" />
 
             </LinearLayout>
 
@@ -559,14 +521,13 @@
                     android:layout_width="127dp"
                     android:layout_height="34dp"
                     android:layout_marginTop="16dp"
-                    android:text="Excluir Números"
+                    android:text="@string/excluir_numeros"
                     android:layout_gravity="center"
                     android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
                     android:background="@drawable/btn_round_outlined"
                     android:textColor="@color/azulFiltro"
                     android:textSize="14sp"
-                    android:textFontWeight="600"
-                    android:fontFamily="@font/caixa_std_regular" />
+                    android:fontFamily="@font/caixa_std_semi_bold" />
 
             </LinearLayout>
 
@@ -580,6 +541,15 @@
                 android:background="@color/bolao_linha"
                 app:layout_constraintTop_toBottomOf="@+id/accordionContentNaoQuero" />
 
+
+            <androidx.constraintlayout.widget.Group
+                    android:id="@+id/groupQueroNaoQuero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:constraint_referenced_ids="txt_numeros_quero, img_accordion_quero, view_div_num_quero,
+                    txt_numeros_nao_quero, view_div_num_nao_quero, img_accordion_nao_quero, view_div_num_nao_quero,
+                    "/>
 
             <Button
                 android:id="@+id/btn_limpar_filtros"
