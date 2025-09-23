@@ -55,7 +55,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	//private String[] opcoesDeOrdenacao = new String[]{"Padrão", "Data Crescente", "Data Decrescente"};
 	private List<DTOEnumLong> opcoesDeOrdenacao;
 	private String[] opcoesDeTipoApostas = new String[]{"Todas", "Individual", "Bolão"};
-	private String[] opcoesDeTipoConcursos = new String[]{"Todas", "Normal", "Especial"};
+	private String[] opcoesDeTipoConcursos = new String[]{"Todos", "Normal", "Especial"};
 	private HashMap<String, List<String>> expandableListDetail;
 	private NumberPicker npSituacao;
     private NumberPicker npOrdenarPor;
@@ -77,7 +77,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
     private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
     private int numeroOrdenarPorSelecionada;
-    private int numeroTipoApostaSelecionada = 1;
+    private int numeroTipoApostaSelecionada = 0;
     private int numeroTipoConcursoSelecionado = 0;
 	private ConfigConsultaDTO configConsulta;
 
