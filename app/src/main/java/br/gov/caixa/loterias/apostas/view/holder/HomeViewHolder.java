@@ -355,7 +355,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 						String tempoRestante;
 						if (days > 0) {
-							tempoRestante = days + (days == 1 ? " dia" : " dias");
+							tempoRestante = days + (days == 1 ? " dia" : " dias") +
+							(hours > 0 ? " e " +hours + (hours == 1 ? " hora" : " horas") : "");
 						} else if (hours > 0) {
 							tempoRestante = hours + (hours == 1 ? " hora" : " horas") + " e " + minutes + (minutes == 1 ? " minuto" : " minutos");
 						} else if (minutes > 0) {

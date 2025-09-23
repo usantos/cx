@@ -166,8 +166,13 @@ public class EncerramentoUtil {
                 }
             }
         }
-        //insert
-        SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().add(parametroSimulacaoUpIns);
+        if (parametroSimulacaoUpIns.getParametroJogo().getConcurso().getTipoConcurso().equals(TipoConcursoEnum.NORMAL)) {
+            //insert no final da Lista
+            SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().add(parametroSimulacaoUpIns);
+        } else {
+            //insert no inicio da Lista
+            SessaoUsuario.getInstance().getParametrosSimulacao().getParametros().add(0, parametroSimulacaoUpIns);
+        }
     }
 
     public static void mockApagaModalidadeNosParametroJogo(ModalidadeEnum modalidade,
