@@ -55,7 +55,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	//private String[] opcoesDeOrdenacao = new String[]{"Padrão", "Data Crescente", "Data Decrescente"};
 	private List<DTOEnumLong> opcoesDeOrdenacao;
 	private String[] opcoesDeTipoApostas = new String[]{"Todas", "Individual", "Bolão"};
-	private String[] opcoesDeTipoConcursos = new String[]{"Todos", "Normal", "Especial"};
+	private String[] opcoesDeTipoConcursos = new String[]{"Todas", "Normal", "Especial"};
 	private HashMap<String, List<String>> expandableListDetail;
 	private NumberPicker npSituacao;
     private NumberPicker npOrdenarPor;
@@ -78,7 +78,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
     private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
     private int numeroOrdenarPorSelecionada;
     private int numeroTipoApostaSelecionada = 1;
-    private int numeroTipoConcursoSelecionado = 1;
+    private int numeroTipoConcursoSelecionado = 0;
 	private ConfigConsultaDTO configConsulta;
 
     private Boolean isUnicaSelecao = false;
@@ -203,7 +203,6 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 							setNpSituacao(viewSituacao.findViewById(R.id.np_situacao_aposta));
 							npSituacao.setMinValue(1);
 							npSituacao.setMaxValue(situacoes.size());
-							//npSituacao.setDisplayedValues(situacoes.values().toArray(new String[situacoes.size()]));
 							npSituacao.setDisplayedValues(situacoes.stream()
 											.map(DTOEnumLong::getDescricao)
 											.toArray(String[]::new));
@@ -452,9 +451,6 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 
 	public int getKeySituacaoSelecionada() {
-		//Set<Integer> keySet = situacoes.keySet();
-		//Integer[] keyArray 	= keySet.toArray(new Integer[keySet.size()]);
-		//return keyArray[numeroSituacaoSelecionada - 1];
 		return numeroSituacaoSelecionada;
 	}
 
@@ -570,7 +566,6 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			);
 		} else {
 			return Arrays.asList(
-					TIPO_APOSTAS,
 					MODALIDADES,
 					SITUACAO,
 					CONCURSO
