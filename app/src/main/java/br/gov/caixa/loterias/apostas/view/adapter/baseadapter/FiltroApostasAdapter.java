@@ -62,13 +62,13 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
     private NumberPicker npOrdenarPor;
     private NumberPicker npTipoAposta;
     private NumberPicker npTipoConcurso;
-    private ExpandableHeightGridView gridModalidades;
+    private RecyclerView gridModalidades;
 	private EditText etNumConcurso;
 	private List<TipoAposta> tiposAposta = new ArrayList<>();
 	private List<ModalidadeDTO> modalidades = new ArrayList<>();
 	private List<TipoAposta> tiposApostasSalvas = new ArrayList<>();
 	private Activity activity;
-	private SelecaoModalidadesAdapter adapterModalidades;
+	private SelecaoModalidadesRecyclerAdapter adapterModalidades;
 	private View viewModalidades;
 	private View viewSituacao;
 	private View viewConcurso;
@@ -128,12 +128,6 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getChildView(int listPosition, final int expandedListPosition,
 							 boolean isLastChild, View convertView, ViewGroup parent) {
-//		if (!isUnicaSelecao) {
-//			listPosition += 1;
-//			if(listPosition == 3){//OrdenarPor não consta nos filtros em DetalhesComprasActivity. Em vez disso, renderiza Concurso.
-//				listPosition = 4;
-//			}
-//		}
 
 		List<Integer> listaOrdenada = getListaReOrdenada(isUnicaSelecao);
 		int posLista = listaOrdenada.get(listPosition);
@@ -177,11 +171,8 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
                             npOrdenarPor.setMinValue(1);
                             npOrdenarPor.setMaxValue(opcoesDeOrdenacao.size());
                             npOrdenarPor.setValue(configConsulta.getOrdenacaoPadrao().getValor().intValue());
-                            //npOrdenarPor.setDisplayedValues(opcoesDeOrdenacao);
-							npOrdenarPor.setDisplayedValues(opcoesDeOrdenacao.stream()
-									.map(DTOEnumLong::getDescricao)
-									.toArray(String[]::new));
-                            npOrdenarPor.setOnValueChangedListener(new ListenerOrdenarPor());
+							npOrdenarPor.setDisplayedValues(extrairDescricoes(opcoesDeOrdenacao));
+							npOrdenarPor.setOnValueChangedListener(new ListenerOrdenarPor());
                         }
                     }
 					convertView = viewOrdenarPor;
@@ -191,8 +182,8 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 						viewModalidades = layoutInflater.inflate(R.layout.list_item_modalidades, null);
 						if (gridModalidades == null && viewModalidades.findViewById(R.id.ehgv_grid_modalidades) != null) {
 							setGridModalidades(viewModalidades.findViewById(R.id.ehgv_grid_modalidades));
+							gridModalidades.setLayoutManager(new GridLayoutManager(context, 2));
 							gridModalidades.setAdapter(getAdapterModalidades());
-							gridModalidades.setExpanded(true);
 						}
 					}
 					convertView = viewModalidades;
@@ -204,9 +195,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 							setNpSituacao(viewSituacao.findViewById(R.id.np_situacao_aposta));
 							npSituacao.setMinValue(1);
 							npSituacao.setMaxValue(situacoes.size());
-							npSituacao.setDisplayedValues(situacoes.stream()
-											.map(DTOEnumLong::getDescricao)
-											.toArray(String[]::new));
+							npSituacao.setDisplayedValues(extrairDescricoes(situacoes));
 							npSituacao.setOnValueChangedListener(new ListenerSituacao());
 							npSituacao.setWrapSelectorWheel(false);
 						}
@@ -264,7 +253,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 					}
 				}
 			}
-			setAdapterModalidades(new SelecaoModalidadesAdapter(getActivity(), getTiposAposta(),isUnicaSelecao));
+			setAdapterModalidades(new SelecaoModalidadesRecyclerAdapter(getTiposAposta(), isUnicaSelecao, onItemClickListener()));
 		}
 	}
 
@@ -366,9 +355,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 		if(getNpSituacao() != null) {
 			int situacao = numeroSituacaoSelecionada;
-			//String situacaoSelecionada = situacoes.get(situacao).toLowerCase();
 			String situacaoSelecionada = situacoes.get(situacao-1).getDescricao();
-			//if(!situacaoSelecionada.equals(situacoes.get(SituacoesApostaEnum.TODAS).toLowerCase())) {
 			if(!situacaoSelecionada.equals(situacoes.get(situacao-1).getDescricao())) {
 				for (ApostaDTO aposta:listaAposta) {
 					if(situacaoSelecionada.equals(aposta.getSituacao().getDescricao().toLowerCase())) {
@@ -383,9 +370,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 	public void limpaFiltros(){
 		if(getNpSituacao() != null){
-			//numeroSituacaoSelecionada = 1;
 			numeroSituacaoSelecionada = configConsulta.getSituacaoPadrao().getValor().intValue();
-			//getNpSituacao().setValue(SituacoesApostaEnum.TODAS);
 			getNpSituacao().setValue(configConsulta.getSituacaoPadrao().getValor().intValue());
 		}
 		if(getAdapterModalidades()!= null){
@@ -471,11 +456,11 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		return numeroSituacaoSelecionada;
 	}
 
-	public ExpandableHeightGridView getGridModalidades() {
+	public RecyclerView getGridModalidades() {
 		return gridModalidades;
 	}
 
-	public void setGridModalidades(ExpandableHeightGridView gridModalidades) {
+	public void setGridModalidades(RecyclerView gridModalidades) {
 		this.gridModalidades = gridModalidades;
 	}
 
@@ -519,11 +504,11 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		this.activity = activity;
 	}
 
-	public SelecaoModalidadesAdapter getAdapterModalidades() {
+	public SelecaoModalidadesRecyclerAdapter getAdapterModalidades() {
 		return adapterModalidades;
 	}
 
-	public void setAdapterModalidades(SelecaoModalidadesAdapter adapterModalidades) {
+	public void setAdapterModalidades(SelecaoModalidadesRecyclerAdapter adapterModalidades) {
 		this.adapterModalidades = adapterModalidades;
 	}
 
@@ -609,5 +594,14 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		opcoesDeOrdenacao = configConsulta.getOrdenacoes();
 		numeroOrdenarPorSelecionada = configConsulta.getOrdenacaoPadrao().getValor().intValue();
 	}
+
+	public static String[] extrairDescricoes(List<DTOEnumLong> opcoes) {
+		String[] descricoes = new String[opcoes.size()];
+		for (int i = 0; i < opcoes.size(); i++) {
+			descricoes[i] = opcoes.get(i).getDescricao();
+		}
+		return descricoes;
+	}
+
 }
 
