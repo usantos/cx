@@ -74,15 +74,6 @@ public class IntroducaoActivity extends AppCompatActivity {
 
                 vpPager.post(() -> vpPager.announceForAccessibility(descricaoPagina));
 
-                dotsIndicator.setContentDescription(descricaoPagina);
-                ViewCompat.setAccessibilityDelegate(dotsIndicator, new AccessibilityDelegateCompat() {
-                    @Override
-                    public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
-                        super.onInitializeAccessibilityNodeInfo(host, info);
-                        info.setHintText("Acesse para navegar");
-                    }
-                });
-
                 ImageView logo = findViewById(R.id.imageViewLogoLoterias);
                 logo.setFocusable(true);
                 logo.setFocusableInTouchMode(true);

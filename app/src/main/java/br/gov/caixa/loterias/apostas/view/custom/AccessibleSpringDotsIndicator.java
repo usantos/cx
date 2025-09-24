@@ -157,6 +157,7 @@ public class AccessibleSpringDotsIndicator extends LinearLayout {
 
             if (i == selectedIndex) {
                 float finalScale = 1f;
+                dot.setContentDescription("Página " + (i + 1) + " Atual");
 
                 SpringForce spring = new SpringForce(finalScale);
                 spring.setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY);
@@ -171,6 +172,7 @@ public class AccessibleSpringDotsIndicator extends LinearLayout {
                 scaleX.start();
                 scaleY.start();
             } else {
+                dot.setContentDescription("Página " + (i + 1));
                 dot.setScaleX(1f);
                 dot.setScaleY(1f);
             }
