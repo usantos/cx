@@ -98,5 +98,12 @@
             <flag name="overshoot" value="11" />
         </attr>
     </declare-styleable>
+        <declare-styleable name="AccessibleDotsIndicator">
+            <attr name="dotsColor" format="color" />
+            <attr name="dotsSelectedColor" format="color" />
+            <attr name="dotsSize" format="dimension" />
+            <attr name="dotsSpacing" format="dimension" />
+            <attr name="dotsCornerRadius" format="dimension" />
+        </declare-styleable>
 
 </resources>

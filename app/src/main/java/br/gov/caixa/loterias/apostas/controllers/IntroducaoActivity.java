@@ -3,9 +3,14 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -13,12 +18,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.view.custom.AccessibleSpringDotsIndicator;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao1Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao2Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao3Fragment;
-import me.relex.circleindicator.CircleIndicator3;
 
 
 public class IntroducaoActivity extends AppCompatActivity {
@@ -40,9 +45,10 @@ public class IntroducaoActivity extends AppCompatActivity {
         MyPagerAdapter adapterViewPager = new MyPagerAdapter(this);
         vpPager.setAdapter(adapterViewPager);
 
-        CircleIndicator3 indicator = findViewById(R.id.indicator_custom);
-        indicator.setViewPager(vpPager);
-        adapterViewPager.registerAdapterDataObserver(indicator.getAdapterDataObserver());
+        AccessibleSpringDotsIndicator dotsIndicator = findViewById(R.id.dotsIndicator);
+
+        dotsIndicator.setViewPager2(vpPager);
+
         vpPager.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 
 
@@ -63,9 +69,27 @@ public class IntroducaoActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 Button button = findViewById(R.id.buttonPularIntroducao);
-                String descricaoPagina = "Página " + (position + 1) + " de 3" ;
+
+                String descricaoPagina = "Página " + (position + 1) + " de 3";
+
                 vpPager.post(() -> vpPager.announceForAccessibility(descricaoPagina));
-                indicator.setContentDescription(descricaoPagina);
+
+                dotsIndicator.setContentDescription(descricaoPagina);
+                ViewCompat.setAccessibilityDelegate(dotsIndicator, new AccessibilityDelegateCompat() {
+                    @Override
+                    public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+                        super.onInitializeAccessibilityNodeInfo(host, info);
+                        info.setHintText("Acesse para navegar entre as páginas");
+                    }
+                });
+
+                ImageView logo = findViewById(R.id.imageViewLogoLoterias);
+                logo.setFocusable(true);
+                logo.setFocusableInTouchMode(true);
+                logo.requestFocus();
+
+                logo.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+
 
                 switch (position) {
                     case 0:
@@ -88,17 +112,16 @@ public class IntroducaoActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                // Se quiser usar, mantenha aqui
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                // Se quiser usar, mantenha aqui
             }
         });
 
 
     }
+
 
 
     public class MyPagerAdapter extends FragmentStateAdapter {
