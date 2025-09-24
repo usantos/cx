@@ -21,6 +21,7 @@ public class SessaoUsuario {
     private String nome;
     private String email;
     private boolean precisaMontarCarrossel = true;
+    private boolean passouPelaFilaBRA = false;
 
     private Boolean suspensaoTemporariaApostador;
     private Boolean responderAutoavaliacao;
@@ -111,6 +112,12 @@ public class SessaoUsuario {
 
     public void setPrecisaMontarCarrossel(boolean precisaMontarCarrossel) {
         this.precisaMontarCarrossel = precisaMontarCarrossel;
+    }
+
+    public boolean isPassouPelaFilaBRA() { return passouPelaFilaBRA; }
+
+    public void setPassouPelaFilaBRA(boolean passouPelaFilaBRA) {
+        this.passouPelaFilaBRA = passouPelaFilaBRA;
     }
 
     public Boolean getSuspensaoTemporariaApostador() {

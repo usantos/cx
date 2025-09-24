@@ -62,7 +62,7 @@ class ActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbac
     public void onActivityStarted(Activity activity) {
         if (numStarted == 0) {
             SessaoUsuario sessaoUser = SessaoUsuario.getInstance();
-            if(!isRecreated && SessaoUsuarioUtil.precisaAtualizar() && !(activity instanceof SplashScreenActivity)){
+            if(!isRecreated && SessaoUsuarioUtil.precisaAtualizar() && sessaoUser.isPassouPelaFilaBRA()){
                 try{
                     atualizaBuscaParametros(activity);
                 }catch (Exception e){
