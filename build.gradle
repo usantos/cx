@@ -37,6 +37,11 @@ allprojects {
         maven {
             url "https://artifacts.mercadolibre.com/repository/android-releases"
         }
+
+        maven {
+            url("http://binario.caixa:8081/repository/releases/")
+            setAllowInsecureProtocol(true)
+        }
     }
 }
 

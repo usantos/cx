@@ -486,7 +486,12 @@
                 android:value="br.gov.caixa.loterias.apostas.controllers.RapidaoConfigActivity_" />
         </activity>
         -->
-        <activity android:name="com.queue_it.androidsdk.QueueActivity" />
+
+        <activity
+            android:name="com.filabra.adapter.android.FilaBRAActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:exported="true">
+        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"

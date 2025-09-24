@@ -352,8 +352,8 @@ repositories {
         implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
         implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
-        //Queue-IT
-        implementation 'com.queue-it.androidsdk:library-androidx:2.0.34'
+        //FilaBRA
+        implementation 'com.filabra.adapter:FilaBRAAdapter:2.6.5.1'
 
         //Joda time
         implementation 'net.danlew:android.joda:2.10.9.1'
