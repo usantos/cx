@@ -79,7 +79,7 @@ public class IntroducaoActivity extends AppCompatActivity {
                     @Override
                     public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
                         super.onInitializeAccessibilityNodeInfo(host, info);
-                        info.setHintText("Acesse para navegar entre as páginas");
+                        info.setHintText("Acesse para navegar");
                     }
                 });
 
