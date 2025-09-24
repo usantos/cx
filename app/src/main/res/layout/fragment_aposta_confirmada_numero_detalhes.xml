@@ -247,20 +247,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/apostaTrocaTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/concursoTxt"
-                android:layout_alignBottom="@id/informacaoAdicionalLayout"
-                android:fontFamily="@font/caixa_std_regular"
-                android:gravity="bottom"
-                android:text="@string/label_aposta_troca"
-                tools:textColor="@color/black"
-                android:textColor="@color/branco"
-                android:textSize="14sp"
-                android:visibility="gone" />
-
             <RelativeLayout
                 android:id="@+id/informacaoAdicionalLayout"
                 android:layout_width="wrap_content"

@@ -44,7 +44,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 	private View view, divider;
 	private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, resultTxt,
-			apostaTrocaTxt, txtTimeDiaAposta, labelTimeDiaAposta, tv_colunas, tv_sua_aposta,
+			txtTimeDiaAposta, labelTimeDiaAposta, tv_colunas, tv_sua_aposta,
 			tv_colunas_2, tv_resultado_super_sete, labelTimeDiaResultado, txtTimeDiaResultado, tv_val_premio, tv_val_premio_tit,
 			tv_premio_pago_tit; //modalidadeTxt
 
@@ -120,10 +120,6 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		preencheData();
 
 		preenchSituacaoPremio();
-
-		if (aposta.getTroca()) {
-			apostaTrocaTxt.setVisibility(View.VISIBLE);
-		}
 
 		preencheTeimosinha();
 		preencheTimeCoracaoDiaSorte();
@@ -459,7 +455,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		resultTxt = view.findViewById(R.id.resultTxt);
 		divider = view.findViewById(R.id.divider);
 		//modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
-		apostaTrocaTxt = view.findViewById(R.id.apostaTrocaTxt);
+		//apostaTrocaTxt = view.findViewById(R.id.apostaTrocaTxt);
 		txtTimeDiaAposta = view.findViewById(R.id.informacaoAdicionalTxt);
 		labelTimeDiaAposta = view.findViewById(R.id.labelInformacaoAdicionalTxt);
 		tv_colunas = view.findViewById(R.id.tv_colunas);
