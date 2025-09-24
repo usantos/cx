@@ -423,8 +423,8 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".controllers.RestritoDezoitoAnosActivity"
-            android:label="@string/title_activity_termos_uso"
             android:screenOrientation="portrait"
+            android:label=""
             android:theme="@style/AppTheme.DegradeActionBar" />
         <activity
             android:name=".controllers.ApostaConfirmadaDetalhesActivity"

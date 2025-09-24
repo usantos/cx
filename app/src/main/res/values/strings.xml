@@ -498,8 +498,10 @@
     <string name="title_entendi">Entendi</string>
     <string name="title_restrito18anos">O uso do aplicativo é restrito a maiores de 18 anos.</string>
     <string name="title_modalidades">Modalidades</string>
+    <string name="apostar_imagem">Apostar é para maiores. Jogo responsável. 18+!</string>
     <string name="title_selecioneOpcoesRapidao">Selecione as opções que você quer contemplar no Rapidão.</string>
     <string name="mercado_pago_mes_invalido">Mês inválido.</string>
+    <string name="title_saibaMais"><u>Saiba mais sobre o Jogo Responsável.</u></string>
     <string name="numero_cartao_invalido">Número do cartão inválido.</string>
 
     <!-- Mercado pago -->
@@ -743,7 +745,8 @@
     <string name="valor_selecionado">Valor selecionado:</string>
     <string name="r_130_00">R$130,00</string>
     <string name="pular_introdu_o">Pular introdução</string>
-    <string name="todas_as_apostas_na_palma_da_sua_m_o_o_dia_inteiro_todos_os_dias">Todas as apostas na palma da sua mão, o dia inteiro, todos os dias. :)</string>
+    <string name="acessar_aplicativo">Acessar o aplicativo</string>
+    <string name="todas_as_apostas_na_palma_da_sua_m_o_o_dia_inteiro_todos_os_dias">Todas as apostas na palma da sua mão, o dia inteiro, todos os dias. ;)</string>
     <string name="uma_nova_experi_ncia">Uma nova experiência</string>
     <string name="novas_funcionalidades">Novas funcionalidades</string>
     <string name="suas_apostas_ainda_mais_f_ceis_e_muito_mais_r_pidas">Suas apostas ainda mais fáceis e muito mais rápidas.</string>
@@ -869,6 +872,7 @@
     <string name="evento_entrou_tour_tela_2">ENTROU_TOUR_TELA2</string>
     <string name="evento_entrou_tour_tela_3">ENTROU_TOUR_TELA3</string>
     <string name="evento_entrou_tour_tela_4">ENTROU_TOUR_TELA4</string>
+    <string name="logoLoteriasCaixa">Logo Loterias Caixa</string>
     <string name="evento_pagina_1de4">Logo imagem CEF Loterias, Página 1 de 4</string>
     <string name="evento_pagina_2de4">Página 2 de 4</string>
     <string name="evento_pagina_3de4">Página 3 de 4</string>

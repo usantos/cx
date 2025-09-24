@@ -2,27 +2,36 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
+import android.widget.Button;
+import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
-import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
+import br.gov.caixa.loterias.apostas.view.custom.AccessibleSpringDotsIndicator;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.TopazUtil;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao1Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao2Fragment;
 import br.gov.caixa.loterias.apostas.view.fragment.Introducao3Fragment;
-import br.gov.caixa.loterias.apostas.view.fragment.LoginFragment;
-import me.relex.circleindicator.CircleIndicator;
 
-public class IntroducaoActivity extends LoteriasBaseAppActivity {
-    FragmentPagerAdapter adapterViewPager;
 
-    ViewPager vpPager;
+public class IntroducaoActivity extends AppCompatActivity {
+    MyPagerAdapter adapterViewPager;
+
+    ViewPager2 vpPager;
+
+    Button buttonPular;
 
     Boolean pulouTour = false;
 
@@ -30,98 +39,111 @@ public class IntroducaoActivity extends LoteriasBaseAppActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introducao);
-        if (DadosUsuarioBO.checarFecharIntroducao(this)){
+        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tour_tela_1));
+
+        vpPager = findViewById(R.id.vpPager);
+        MyPagerAdapter adapterViewPager = new MyPagerAdapter(this);
+        vpPager.setAdapter(adapterViewPager);
+
+        AccessibleSpringDotsIndicator dotsIndicator = findViewById(R.id.dotsIndicator);
+
+        dotsIndicator.setViewPager2(vpPager);
+
+        vpPager.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
+
+        Button button = findViewById(R.id.buttonPularIntroducao);
+        button.setOnClickListener(v -> {
+            if (!pulouTour) {
+                AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tour_tela_4));
+            }
+            pulouTour = true;
+            TopazUtil.check(this);
+            DadosUsuarioBO.updateFecharIntroducao(true);
             startActivity(new Intent(IntroducaoActivity.this, LoginActivity.class));
             finish();
-        }
-        AppCenterManager.registraEvento( getResources().getString(R.string.evento_entrou_tour_tela_1));
+            AppCenterManager.registraEvento(getResources().getString(R.string.evento_pulou_tour));
+        });
 
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
-        vpPager = findViewById(R.id.vpPager);
-        CircleIndicator indicator = findViewById(R.id.indicator_custom);
-        vpPager.setAdapter(adapterViewPager);
-        indicator.setViewPager(vpPager);
-
-
-        // Attach the page change listener inside the activity
-        vpPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            // This method will be invoked when a new page becomes selected.
+        vpPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
+                Button button = findViewById(R.id.buttonPularIntroducao);
+
+                String descricaoPagina = "Página " + (position + 1) + " de 3";
+
+                vpPager.post(() -> vpPager.announceForAccessibility(descricaoPagina));
+
+                dotsIndicator.setContentDescription(descricaoPagina);
+                ViewCompat.setAccessibilityDelegate(dotsIndicator, new AccessibilityDelegateCompat() {
+                    @Override
+                    public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+                        super.onInitializeAccessibilityNodeInfo(host, info);
+                        info.setHintText("Acesse para navegar entre as páginas");
+                    }
+                });
+
+                ImageView logo = findViewById(R.id.imageViewLogoLoterias);
+                logo.setFocusable(true);
+                logo.setFocusableInTouchMode(true);
+                logo.requestFocus();
+
+                logo.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+
+
                 switch (position) {
-                    case 1: {
+                    case 0:
+                        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tour_tela_1));
+                        button.setText(getString(R.string.pular_introdu_o));
+                        button.setVisibility(View.VISIBLE);
+                        break;
+                    case 1:
                         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tour_tela_2));
-                    }
-                    case 2: {
+                        button.setText(getString(R.string.pular_introdu_o));
+                        button.setVisibility(View.VISIBLE);
+                        break;
+                    case 2:
                         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tour_tela_3));
-                    }
-                    case 3: {
-                        if (!pulouTour) {
-                            AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tour_tela_4));
-                        }
-                    }
+                        button.setText(getString(R.string.acessar_aplicativo));
+                        button.setVisibility(View.VISIBLE);
+                        break;
                 }
             }
 
-            // This method will be invoked when the current page is scrolled
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
-            // Called when the scroll state changes:
-            // SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
             @Override
             public void onPageScrollStateChanged(int state) {
-                // Code goes here
             }
         });
 
+
     }
 
-    public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 4;
 
-        public MyPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
+
+    public class MyPagerAdapter extends FragmentStateAdapter {
+
+        public MyPagerAdapter(FragmentActivity activity) {
+            super(activity);
         }
 
-        // Returns total number of pages
         @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }
-
-        // Returns the fragment to display for that page
-        @Override
-        public Fragment getItem(int position) {
+        public Fragment createFragment(int position) {
             switch (position) {
-                case 0: // Fragment # 0 - This will show FirstFragment
-                    return Introducao1Fragment.newInstance(0, "Página # 1 de 3");
-                case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return Introducao2Fragment.newInstance(1, "Página # 2 de 3");
-                case 2: // Fragment # 1 - This will show SecondFragment
-                    return Introducao3Fragment.newInstance(2, "Página # 3 de 3");
-                case 3: // Fragment # 1 - This will show SecondFragment
-                    return LoginFragment.newInstance();
-                default:
-                    return null;
+                case 0: return Introducao1Fragment.newInstance(0, "Página # 1 de 3");
+                case 1: return Introducao2Fragment.newInstance(1, "Página # 2 de 3");
+                case 2: return Introducao3Fragment.newInstance(2, "Página # 3 de 3");
+                default: return new Fragment(); // fallback
             }
         }
 
-        // Returns the page title for the top indicator
         @Override
-        public CharSequence getPageTitle(int position) {
-            return "Página " + position + "de 3";
+        public int getItemCount() {
+            return 3;
         }
-
     }
 
-    public void pularIntroducao(){
-        AppCenterManager.registraEvento(getResources().getString(R.string.evento_pulou_tour));
-        pulouTour = true;
-        vpPager.setCurrentItem(3, true);
-        TopazUtil.check(this);
-    }
 }

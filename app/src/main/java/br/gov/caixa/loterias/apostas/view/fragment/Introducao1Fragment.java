@@ -76,14 +76,10 @@ public class Introducao1Fragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_introducao1, container, false);
 
         textView1 = v.findViewById(R.id.textView1Fragment1);
-//        textView1.setText(ViewUtils.fromHtml("Uma nova <font face='Futura Book'>experiência</font>"));
-        textView1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Uma nova _experiência_"));
+        textView1.setText(ViewUtils.textCaixaSTDBold(getContext(), "_Uma nova experiência_"));
+        textView1.setTextSize(20);
+        textView1.setHint("Título");
 
-        Button button = v.findViewById(R.id.buttonPularIntroducao);
-        button.setOnClickListener(v1 -> {
-            // Do something in response to button click
-            ((IntroducaoActivity) getActivity()).pularIntroducao();
-        });
         ViewUtils.alertVerificarIdadeListener(getActivity(), (dialog, which) -> {
             startActivity(new Intent(getActivity(), RestritoDezoitoAnosActivity.class));
             getActivity().finish();
