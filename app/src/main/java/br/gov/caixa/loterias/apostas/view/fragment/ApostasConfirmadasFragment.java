@@ -604,6 +604,12 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
                             comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
                         }
+
+                        //Por ERRO no SERVICO /apostas/:idAposta/comprovante
+                        //NAO voltar a informacao correta
+                        //Estamos utilizando a informacao do COMBO de /apostas
+                        comprovante.getAposta().setCombo(apostaDTO.getCombo());
+
                         startDetalheComprovante(comprovante);
                     }
 
