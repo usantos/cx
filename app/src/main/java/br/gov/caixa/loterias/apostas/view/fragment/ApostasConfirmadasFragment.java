@@ -585,6 +585,10 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                     @Override
                     public void onResponse(DetalhesPremioDTOResponse result) {
                         AlertDialogUtils.dismiss();
+
+                        //SERVICO /apostas/{id}/comprovante-premio Informacao COMBO está errada
+                        result.getPayload().getAposta().setCombo(apostaDTO.getCombo());
+
                         Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
                                 ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
                         startActivity(intent);
@@ -605,9 +609,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                             comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
                         }
 
-                        //Por ERRO no SERVICO /apostas/:idAposta/comprovante
-                        //NAO voltar a informacao correta
-                        //Estamos utilizando a informacao do COMBO de /apostas
+                        //SERVICO /apostas/:idAposta/comprovante  Informacao COMBO está errada
                         comprovante.getAposta().setCombo(apostaDTO.getCombo());
 
                         startDetalheComprovante(comprovante);
@@ -838,5 +840,9 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     @Override
     public void handleError(ApostaConfirmadaHolder holder, VolleyError error) {
         holder.handleError(holder, error);
+    }
+
+    private void ajusteCombo() {
+
     }
 }
