@@ -76,11 +76,22 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                     modalidade,
                     getCorEscura());
         } else {
-            FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
-                    modalidade,
-                    parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(),
-                    parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)),
-                    getCorClara(), false);
+            try{
+                FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                        modalidade,
+                        parametroSimulacao.getConcurso().getNumero().toString(),
+                        getDataSorteio(),
+                        parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)),
+                        getCorClara(), false);
+
+            }catch (Exception e){
+                FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                        modalidade,
+                        "--",
+                        "--",
+                        false,
+                        getCorClara(), false);
+            }
         }
     }
 
