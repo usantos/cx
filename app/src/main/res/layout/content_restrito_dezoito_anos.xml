@@ -51,7 +51,7 @@
         <TextView
             android:id="@+id/textViewSaibaMais"
             android:layout_width="348dp"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="28dp"
