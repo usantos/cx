@@ -374,7 +374,7 @@ repositories {
         })
 
         // root check
-        implementation 'com.scottyab:rootbeer-lib:0.1.0'
+        implementation 'com.scottyab:rootbeer-lib:0.1.1'
 
         //Topaz OFD
         implementation 'br.com.topaz:heartbeat:4.+'
