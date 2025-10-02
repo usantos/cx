@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.model.bo;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
@@ -136,10 +137,23 @@ public abstract class BaseBO {
     }
 
     private String getEndpoint(GsonRequest request){
+        String url = request.getUrl();
         if (request.getUrl().contains("/?")) {
             return "URL crashando app";
         }
-        return Bin.fromBase64(request.getUrl().replaceAll(BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE"),"")).toUtf8();
+        try {
+            String baseUrl = BuildConfigManager.getVariavel("CAIXA_BASE_URL_SILCE");
+            String encoded = url.replace(baseUrl, "");
+
+            return Bin.fromBase64(encoded).toUtf8();
+
+        } catch (IllegalArgumentException e) {
+            Log.e("Base64Error", "Erro ao decodificar Base64 da URL: " + url, e);
+            return "Base64Error: " + url;
+        } catch (Exception e) {
+            Log.e("EndpointError", "Erro inesperado ao obter endpoint", e);
+            return "EndpointError" + url;
+        }
     }
 
     public LinkedHashMap<String, String> getHeaderToken(){
