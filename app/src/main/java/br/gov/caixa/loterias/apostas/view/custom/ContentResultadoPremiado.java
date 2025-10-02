@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 
 /**
  * Created by joafilho on 02/04/2018.
@@ -32,7 +33,9 @@ public class ContentResultadoPremiado extends LinearLayout {
     private ExpandableHeightRecyclerView listaFaixaPremiacaoExpandableHeightRecyclerView;
     private ConstraintLayout clVerDetalheAposta;
     private Button botaoAposteAgora ;
-    private ImageView imgTrevoResultado, imgTagBolao;
+    private ImageView imgTrevoResultado; //, imgTagBolao;
+
+    private TipoApostaLinhaView tipoApostaLinhaView;
 
     public ContentResultadoPremiado(Context context) {
         super(context);
@@ -68,6 +71,7 @@ public class ContentResultadoPremiado extends LinearLayout {
         this.fundoBackgroundTrapezeResultadoLinearLayout = findViewById(R.id.fundoBackgroundTrapezeResultadoLinearLayout);
         this.topoResultadoPremioLinearLayout = findViewById(R.id.topoResultadoPremioLinearLayout);
         this.premioGanhoLinearLayout = findViewById(R.id.premioGanhoLinearLayout);
+        this.tipoApostaLinhaView = findViewById(R.id.tipo_aposta_linha_compras);
         this.cabecalhoListaFaixaPremiacaoLinearLayout = findViewById(R.id.cabecalhoListaFaixaPremiacaoLinearLayout);
         this.cabecalhoListaFaixaPremiacaoBolao = findViewById(R.id.cabecalhoListaFaixaPremiacaoBolao);
         this.valorEstimativaConcursoAtualTextView = findViewById(R.id.valorEstimativaConcursoAtualTextView);
@@ -83,7 +87,7 @@ public class ContentResultadoPremiado extends LinearLayout {
         this.clVerDetalheAposta = findViewById(R.id.clVerDetalheAposta);
         this.botaoAposteAgora = findViewById(R.id.botaoAposteAgora);
         this.imgTrevoResultado = findViewById(R.id.imgTrevoResultado);
-        this.imgTagBolao = findViewById(R.id.imgTagBolao);
+        //this.imgTagBolao = findViewById(R.id.imgTagBolao);
         this.tvColunaConcurso = findViewById(R.id.concursoTextView);
         this.tvColunaSituacao = findViewById(R.id.situacaoTextView);
         this.tvColunaFaixa = findViewById(R.id.faixaPremiacaoTextView);
@@ -130,9 +134,9 @@ public class ContentResultadoPremiado extends LinearLayout {
         return imgTrevoResultado;
     }
 
-    public ImageView getImgTagBolao() {
-        return imgTagBolao;
-    }
+//    public ImageView getImgTagBolao() {
+//        return imgTagBolao;
+//    }
 
     public ExpandableHeightRecyclerView getListaFaixaPremiacaoExpandableHeightRecyclerView() {
         return listaFaixaPremiacaoExpandableHeightRecyclerView;
@@ -140,6 +144,9 @@ public class ContentResultadoPremiado extends LinearLayout {
 
     public LinearLayout getPremioGanhoLinearLayout() {
         return premioGanhoLinearLayout;
+    }
+    public TipoApostaLinhaView getTipoApostaLinhaView() {
+        return tipoApostaLinhaView;
     }
 
     public ConstraintLayout getButtonVerDetalheAposta() {

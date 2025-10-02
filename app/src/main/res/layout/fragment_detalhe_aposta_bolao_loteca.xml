@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     tools:context="br.gov.caixa.loterias.apostas.view.fragment.DetalheApostaBolaoLotecaFragment">
 
-    <ImageView
-        android:id="@+id/id_tag_bolao"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_tag_bolao_outline_loteca"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/id_tag_bolao"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:src="@drawable/ic_tag_bolao_outline_loteca"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"/>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_premio_pago"
@@ -267,15 +267,26 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+        android:id="@+id/tipo_aposta_linha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clResgatePremio"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="visible"
+        />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/apostaConfirmadaLotecaLinearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clResgatePremio"
+        app:layout_constraintTop_toBottomOf="@id/tipo_aposta_linha"
         app:layout_constraintStart_toStartOf="@id/cl_data">
 
         <TextView

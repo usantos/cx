@@ -84,18 +84,18 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonApostaEspelho"
-            android:layout_width="197dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="16dp"
-            android:background="@drawable/button_border"
-            android:text="@string/label_aposta_espelho"
-            android:textAllCaps="false"
-            android:textColor="@color/branco"
-            android:textSize="14sp"
-            android:fontFamily="@font/caixa_std_bold"
-            android:visibility="gone" />
+<!--        <Button-->
+<!--            android:id="@+id/buttonApostaEspelho"-->
+<!--            android:layout_width="197dp"-->
+<!--            android:layout_height="56dp"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:background="@drawable/button_border"-->
+<!--            android:text="@string/label_aposta_espelho"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textColor="@color/branco"-->
+<!--            android:textSize="14sp"-->
+<!--            android:fontFamily="@font/caixa_std_bold"-->
+<!--            android:visibility="gone" />-->
 
         <LinearLayout
             android:id="@+id/layoutTimeCoracao"
@@ -322,12 +322,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+                android:id="@+id/tipo_aposta_linha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
             <View
                 android:id="@+id/v_div_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/cinzaclaro"/>
-
         </RelativeLayout>
 
     </LinearLayout>

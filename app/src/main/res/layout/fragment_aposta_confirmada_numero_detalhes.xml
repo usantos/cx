@@ -98,8 +98,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@id/concursoTxt"
-                android:layout_below="@id/concursoTxt"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@id/concursoLabel"
                 android:fontFamily="@font/caixa_std_regular"
                 android:textColor="@color/branco"
                 tools:textColor="@color/black"
@@ -111,9 +111,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginStart="12dp"
-                android:layout_below="@id/quantidadeApostadasTxt"
-                android:layout_alignStart="@id/quantidadeApostadasTxt"
+                android:layout_marginStart="16dp"
+                android:layout_below="@id/concursoTxt"
+                android:layout_toEndOf="@id/concursoTxt"
                 android:weightSum="1">
 
                 <TextView
@@ -247,20 +247,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/apostaTrocaTxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/concursoTxt"
-                android:layout_alignBottom="@id/informacaoAdicionalLayout"
-                android:fontFamily="@font/caixa_std_regular"
-                android:gravity="bottom"
-                android:text="@string/label_aposta_troca"
-                tools:textColor="@color/black"
-                android:textColor="@color/branco"
-                android:textSize="14sp"
-                android:visibility="gone" />
-
             <RelativeLayout
                 android:id="@+id/informacaoAdicionalLayout"
                 android:layout_width="wrap_content"
@@ -300,6 +286,18 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+                android:id="@+id/tipo_aposta_linha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_vertical_margin">
@@ -336,8 +334,8 @@
                 android:layout_below="@id/tv_sua_aposta"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_toEndOf="@id/modalidadeTxt"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:visibility="gone" />
+                android:layout_marginTop="0dp"
+                android:visibility="visible" />
 
             <RelativeLayout
                 android:id="@+id/rl_fg_numeros_2"
@@ -392,11 +390,25 @@
                 android:visibility="gone" />
 
             <RelativeLayout
+                android:id="@+id/rl_div_top_numeros_sorteados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/rl_container_result_1"
+                android:visibility="gone">
+
+                <View
+                    android:id="@+id/v_div_top_numeros_sorteados"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/branco"/>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/rl_container_result_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_fg_numeros_2"
-                android:layout_marginTop="@dimen/text_margin_20"
+                android:layout_marginTop="10dp"
                 android:layout_alignStart="@id/rl_fg_numeros_1"
                 android:visibility="gone" />
 
@@ -407,6 +419,20 @@
                 android:layout_below="@id/rl_container_result_1"
                 android:layout_alignStart="@id/rl_container_result_1"
                 android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/rl_div_bot_numeros_sorteados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_container_result_2"
+                android:visibility="gone">
+
+                <View
+                    android:id="@+id/v_div_bot_numeros_sorteados"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/branco"/>
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_time_mes"
