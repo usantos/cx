@@ -64,13 +64,15 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_favoritos));
+
+        callWebservice();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        callWebservice();
     }
 
     @Override
