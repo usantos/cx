@@ -26,11 +26,13 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.Utils;
@@ -41,17 +43,22 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 	private static final String ARG_APOSTA = "ARG_APOSTA";
 
 	private View view, divider;
-	private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, resultTxt, modalidadeTxt,
-			apostaTrocaTxt, txtTimeDiaAposta, labelTimeDiaAposta, tv_colunas, tv_sua_aposta,
+	private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, resultTxt,
+			txtTimeDiaAposta, labelTimeDiaAposta, tv_colunas, tv_sua_aposta,
 			tv_colunas_2, tv_resultado_super_sete, labelTimeDiaResultado, txtTimeDiaResultado, tv_val_premio, tv_val_premio_tit,
-			tv_premio_pago_tit;
+			tv_premio_pago_tit; //modalidadeTxt
+
 	private RelativeLayout informacaoAdicionalLayout, rl_fg_numeros_1, rl_fg_numeros_2 ,rl_container_result_1, rl_container_result_2,
 			rl_time_mes;
+	private RelativeLayout rl_divTopNumerosSorteados, rl_divBotNumerosSorteados;
+	private View divTopNumerosSorteados, divBotNumerosSorteados;
 	private ConstraintLayout cl_premio_pago, clResgatePremio;
 
 	private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
 	private EstiloModalidadeMKP estilo;
+	private TipoApostaLinhaView tipoApostaLinhaView;
+
 	List<Integer> numerosSorteadosPrimeiro, numerosSorteadosSegundo;
 	List<List<Integer>> matrizSorteados;
 
@@ -114,14 +121,40 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 		preenchSituacaoPremio();
 
-		if (aposta.getTroca()) {
-			apostaTrocaTxt.setVisibility(View.VISIBLE);
-		}
-
 		preencheTeimosinha();
 		preencheTimeCoracaoDiaSorte();
 
+		preencheTipoApostaLinha();
+		
 		configuraNumeros();
+	}
+
+	private void preencheTipoApostaLinha() {
+		List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
+
+		if (aposta.getTroca()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+		}
+		if (aposta.getIndicadorCotaBolao()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
+		}
+		if (aposta.getCombo()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
+		}
+		if (aposta.getEspelho()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+		}
+		if (aposta.getSurpresinha()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+		}
+		if (aposta.getQuantidadeTeimosinhas() > 0) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
+		}
+
+		if (listTipoApostaLinha.size() > 0) {
+			tipoApostaLinhaView.setVisibility(View.VISIBLE);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, estilo.getCorClara(), estilo.getCorFonteFundoClaro(), estilo.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.DOWN);
+		}
 	}
 
 	private void preencheData() {
@@ -154,7 +187,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			case DUPLA_SENA:
 				numerosSorteadosPrimeiro = getResultadoConcurso() != null ? getResultadoConcurso().getListaSorteadosPrimeiroSorteio() : null;
 				numerosSorteadosSegundo =  (List<Integer>) (getResultadoConcurso() != null && getResultadoConcurso().getNumerosSorteadosSegundoSorteio() != null  ?
-						getResultadoConcurso().getNumerosSorteadosSegundoSorteio() : new ArrayList<>());
+						getResultadoConcurso().getNumerosSorteadosSegundoSorteio() : null);
 				fragment = NumerosFragment.newInstance(getContext().getResources().getString(R.string.seus_numeros) + "\n\n" +
 								getContext().getResources().getString(R.string.primeiro_sorteiro),
 						aposta.getListaNumerosSelecionados(), numerosSorteadosPrimeiro,
@@ -202,9 +235,21 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 					}
 				}
 			}
-			fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
-					numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,
-					getEstiloNumeros(aposta), null);
+			//fragResultado = NumerosFragment.newInstance(getContext().getResources().getString(R.string.numeros_sorteados),
+			//		numerosSorteadosPrimeiro ,numerosSorteadosPrimeiro,
+			//		getEstiloNumeros(aposta), null);
+			rl_divTopNumerosSorteados.setVisibility(View.VISIBLE);
+			divTopNumerosSorteados.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+			rl_divBotNumerosSorteados.setVisibility(View.VISIBLE);
+			divBotNumerosSorteados.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+			String textoNumerosSorteados = getContext().getResources().getString(R.string.numeros_sorteados);
+			if (aposta.getModalidade() == ModalidadeEnum.DUPLA_SENA) {
+				textoNumerosSorteados = getContext().getResources().getString(R.string.primeiro_sorteiro)+"\n"+
+										textoNumerosSorteados;
+			}
+			fragResultado = NumerosHifenFragment.newInstance(textoNumerosSorteados,
+				numerosSorteadosPrimeiro, new ConfiguracaoNumeros(estilo.getCorEscura(), estilo.getCorFonteFundoEscuro()));
+
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commitAllowingStateLoss();
 			rl_container_result_1.setVisibility(View.VISIBLE);
 
@@ -268,7 +313,11 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				rl_fg_numeros_2.setVisibility(View.VISIBLE);
 
 				Collections.sort(numerosSorteadosSegundo);
-				fragResultado = NumerosFragment.newInstance("", numerosSorteadosSegundo ,numerosSorteadosSegundo,getEstiloNumeros(aposta), null);
+				//fragResultado = NumerosFragment.newInstance("", numerosSorteadosSegundo ,numerosSorteadosSegundo,getEstiloNumeros(aposta), null);
+				fragResultado = NumerosHifenFragment.newInstance(getContext().getResources().getString(R.string.segundo_sorteiro)+"\n"+
+																	   getContext().getResources().getString(R.string.numeros_sorteados),
+						numerosSorteadosSegundo, new ConfiguracaoNumeros(estilo.getCorEscura(), estilo.getCorFonteFundoEscuro()));
+
 				fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado).commitAllowingStateLoss();
 				rl_container_result_2.setVisibility(View.VISIBLE);
 			}
@@ -327,7 +376,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 	private void preencheTeimosinha() {
 		if (aposta.getQuantidadeTeimosinhas() > 0) {
-			modalidadeTxt.setVisibility(View.VISIBLE);
+			//modalidadeTxt.setVisibility(View.VISIBLE);
 			quantidadeApostadasTxt.setVisibility(View.VISIBLE);
 
 			Integer quantidade      = aposta.getQuantidadeTeimosinhas();
@@ -340,7 +389,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			quantidadeApostadasTxt.setText(textoTeimosinha);
 			if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
 				quantidadeApostadasTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
-				modalidadeTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
+				//modalidadeTxt.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
 			}
 		}
 	}
@@ -405,8 +454,8 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		dataApostaTxt = view.findViewById(R.id.dataApostaTxt);
 		resultTxt = view.findViewById(R.id.resultTxt);
 		divider = view.findViewById(R.id.divider);
-		modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
-		apostaTrocaTxt = view.findViewById(R.id.apostaTrocaTxt);
+		//modalidadeTxt = view.findViewById(R.id.modalidadeTxt);
+		//apostaTrocaTxt = view.findViewById(R.id.apostaTrocaTxt);
 		txtTimeDiaAposta = view.findViewById(R.id.informacaoAdicionalTxt);
 		labelTimeDiaAposta = view.findViewById(R.id.labelInformacaoAdicionalTxt);
 		tv_colunas = view.findViewById(R.id.tv_colunas);
@@ -417,10 +466,16 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 		txtTimeDiaResultado = view.findViewById(R.id.tv_time_mes);
 
 		informacaoAdicionalLayout = view.findViewById(R.id.informacaoAdicionalLayout);
+
+		tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 		rl_fg_numeros_1 = view.findViewById(R.id.rl_fg_numeros_1);
 		rl_fg_numeros_2 = view.findViewById(R.id.rl_fg_numeros_2);
+		rl_divTopNumerosSorteados = view.findViewById(R.id.rl_div_top_numeros_sorteados);
+		divTopNumerosSorteados = view.findViewById(R.id.v_div_top_numeros_sorteados);
 		rl_container_result_1 = view.findViewById(R.id.rl_container_result_1);
 		rl_container_result_2 = view.findViewById(R.id.rl_container_result_2);
+		rl_divBotNumerosSorteados = view.findViewById(R.id.rl_div_bot_numeros_sorteados);
+		divBotNumerosSorteados = view.findViewById(R.id.v_div_bot_numeros_sorteados);
 		rl_time_mes = view.findViewById(R.id.rl_time_mes);
 
 		tv_val_premio = view.findViewById(R.id.tv_val_premio);

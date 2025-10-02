@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.ResgatePixActivity;
@@ -28,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
@@ -35,6 +37,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
+import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
@@ -47,6 +50,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.OpcaoResgatePremi
 import br.gov.caixa.loterias.apostas.view.custom.ContentResultadoPremiado;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 
 public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
     public final static String DETALHES_PREMIO_DTO_EXTRA = "detalhesPremioDTO";
@@ -89,6 +93,9 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         ParametroSimulacao parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidadeEnum);
 
+        montaTipoApostaLinha(detalhesPremioDTO.getAposta(), estiloModalidadeMKP.getCorEscura(),
+                estiloModalidadeMKP.getCorFonteFundoEscuro(), estiloModalidadeMKP.getCorFonteFundoEscuro());
+
         contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
         contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidadeMKP.getTrapezio()));
         contentResultadoPremiado.getImgTrevoResultado().setImageResource(estiloModalidadeMKP.getTrevoFundoEscuro());
@@ -96,9 +103,7 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         if (isBolao(detalhesPremioDTO.getAposta())) {
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
             contentResultadoPremiado.getFundoBackgroundTrapezeResultadoLinearLayout().setBackground(ContextCompat.getDrawable(this, estiloModalidadeMKP.getTrapezio()));
-            contentResultadoPremiado.getImgTrevoResultado().setImageDrawable(VectorUtils.getShape(R.drawable.ic_money_bolao, estiloModalidadeMKP.getCorFonteFundoEscuro()));
-            contentResultadoPremiado.getImgTagBolao().setVisibility(View.VISIBLE);
-            contentResultadoPremiado.getImgTagBolao().setImageDrawable(getDrawable(estiloModalidadeMKP.getImagemTrianguloOutline()));
+            contentResultadoPremiado.getImgTrevoResultado().setImageResource(estiloModalidadeMKP.getTrevoFundoEscuro());
             contentResultadoPremiado.getTopoModalidadeResultadoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorClara()));
         }
 
@@ -147,6 +152,39 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
         trataFormasDeResgate();
         RateUtils.avaliarAplicativo(this, true);
         setResult(RESULT_FIRST_USER);
+    }
+
+    private void montaTipoApostaLinha(IdentificaoDeUmaApostaDas8Modalidades aposta,
+                                      int backGroundColorRes, int textColorRes,
+                                      int iconColorRes) {
+
+        List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
+
+        if (aposta.getTroca()) {
+            listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+        }
+        if (aposta.getIndicadorCotaBolao()) {
+            listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
+        }
+        if (aposta.getCombo()) {
+            listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
+        }
+        if (aposta.getEspelho()) {
+            listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+        }
+        if (aposta.getSurpresinha()) {
+            listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+        }
+        if (aposta.getQuantidadeTeimosinhas() > 0) {
+            listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
+        }
+
+        if (listTipoApostaLinha.size() > 0) {
+            contentResultadoPremiado.getTipoApostaLinhaView().setVisibility(View.VISIBLE);
+            contentResultadoPremiado.getTipoApostaLinhaView().setupView(listTipoApostaLinha,
+                    backGroundColorRes, textColorRes, iconColorRes,
+                    TipoApostaLinhaView.TriangleDirection.NONE);
+        }
     }
 
     private void getExtras() {

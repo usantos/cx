@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.daimajia.swipe.SwipeLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -27,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IndicadorSurpresinha;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerSingleton;
+import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -41,6 +43,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaLoto
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoSwipeList;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaCarrinhoListener;
 import br.gov.caixa.loterias.apostas.view.listener.BolaoCarrinhoListener;
 
@@ -67,6 +70,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 	private ApostaCarrinhoListener listener;
 	private BolaoCarrinhoListener listenerBolao;
 
+	private TipoApostaLinhaView tipoApostaLinhaView;
 
 	public ApostaCarrinhoHolder(View view, AppCompatActivity activity, boolean animacao, boolean isBolao, ApostaCarrinhoListener listener, BolaoCarrinhoListener listenerBolao) {
 		super(view);
@@ -95,6 +99,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		iconTimer = view.findViewById(R.id.imageViewRelogioBoloes);
 		textCotas = view.findViewById(R.id.textCotas);
 		textQtdCotas = view.findViewById(R.id.textQtdCotas);
+		tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 	}
 
 	@Override
@@ -144,7 +149,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		TextView labelQuantidadeSorteios = this.dadosApostaCarrinho.findViewById(R.id.labelQuantidadeSorteios);
 		TextView     quantidadeApostadas = this.dadosApostaCarrinho.findViewById(R.id.quantidadeApostadas);
 		TextView     quantidadeSorteios  = this.dadosApostaCarrinho.findViewById(R.id.quantidadeSorteios);
-		Button       buttonApostaEspelho = this.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
+		//Button       buttonApostaEspelho = this.dadosApostaCarrinho.findViewById(R.id.buttonApostaEspelho);
 		LinearLayout layoutTimeCoracao   = this.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
 		TextView     labelTimeCoracao    = this.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
 		TextView     textViewTimeCoracao = this.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
@@ -175,9 +180,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		quantidadeSorteios.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
 		quantidadeSorteios.setText(String.format(Locale.getDefault(), context.getResources().getString(R.string.percent_d_percent_s), quantidadeTeimosinhas, quantidadeSorteiosString));
 
-		if (aposta.getEspelho() != null && aposta.getEspelho()) {
-			buttonApostaEspelho.setVisibility(View.VISIBLE);
-		}
+//		if (aposta.getEspelho() != null && aposta.getEspelho()) {
+//			buttonApostaEspelho.setVisibility(View.VISIBLE);
+//		}
 
 		this.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(view -> listener.onDeletaAposta(aposta));
 		if (isBolao) {
@@ -265,12 +270,17 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 					if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
 						if (!isBolao){
 							configuraFragment(aposta, this);
-							this.tvNumeroConcursoNovo.setVisibility(View.VISIBLE);
-							this.textViewNumeroConcurso.setVisibility(View.GONE);
+							//this.tvNumeroConcursoNovo.setVisibility(View.VISIBLE);
+							//this.textViewNumeroConcurso.setVisibility(View.GONE);
+							this.tvNumeroConcursoNovo.setVisibility(View.GONE);
+							this.textViewNumeroConcurso.setVisibility(View.VISIBLE);
 						}
 
-						this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
-						this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+						//this.tvNumeroConcursoNovo.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+						//this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+						this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
+						this.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+
 						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 						this.valorAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 					} else {
@@ -353,6 +363,33 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		if (animacao) {
 			AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
+		}
+
+
+		List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
+
+		if (aposta.getTroca()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+		}
+		if (isBolao) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
+		}
+		if (aposta.getCombo()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
+		}
+		if (aposta.getEspelho()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+		}
+		if (aposta.getSurpresinha()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+		}
+		if (aposta.getQuantidadeTeimosinhas() > 0) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
+		}
+
+		if (listTipoApostaLinha.size() > 0) {
+			tipoApostaLinhaView.setVisibility(View.VISIBLE);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha_clara, R.color.cinzaescuro, estiloMKP.getCorLetraLista(), TipoApostaLinhaView.TriangleDirection.UP);
 		}
 	}
 

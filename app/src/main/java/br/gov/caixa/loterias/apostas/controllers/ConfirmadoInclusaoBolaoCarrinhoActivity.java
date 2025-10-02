@@ -34,7 +34,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     private String concurso;
     private String dataSorteio;
     private String dataHoraExpiracao;
-    private AppCompatImageView tagBolao;
+    //private AppCompatImageView tagBolao;
 
     private LinearLayout btnVoltarInicio;
     private TextView tvVoltarInicio, tvContador, tvDescricaoInclusao, tvConclusaoPagamento;
@@ -77,7 +77,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     }
 
     private void aplicaEstiloFonte() {
-        tagBolao.setImageResource(estilo.getImagemTrianguloOutline());
+        //tagBolao.setImageResource(estilo.getImagemTrianguloOutline());
         tvDescricaoInclusao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
         tvConclusaoPagamento.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
     }
@@ -99,7 +99,7 @@ public class ConfirmadoInclusaoBolaoCarrinhoActivity extends LoteriasAppMarketPl
     }
 
     private void setViews(){
-        tagBolao = findViewById(R.id.tag_bolao_carrinho);
+        //tagBolao = findViewById(R.id.tag_bolao_carrinho);
         btnVoltarInicio = findViewById(R.id.botaoLinearLayoutVoltarPrincipal);
         tvVoltarInicio = findViewById(R.id.txtVoltarAoInicio);
         tvContador = findViewById(R.id.txt_contador);

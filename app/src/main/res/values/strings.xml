@@ -1530,5 +1530,11 @@
     <string name="quantidade_de_palpites">Quantidade de Palpites</string>
     <string name="excluir_numeros">Excluir Números</string>
 
+    <string name="tipo_aposta_bolao">Bolão</string>
+    <string name="tipo_aposta_combo">Combo</string>
+    <string name="tipo_aposta_espelho">Espelho</string>
+    <string name="tipo_aposta_surpresinha">Surpresinha</string>
+    <string name="tipo_aposta_teimosinha">Teimosinha</string>
+    <string name="tipo_aposta_troca">Aposta de Troca</string>
 
 </resources>

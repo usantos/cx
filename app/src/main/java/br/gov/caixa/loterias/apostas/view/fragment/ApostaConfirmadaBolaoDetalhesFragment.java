@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,12 +30,14 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoNumeros;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -53,12 +57,16 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 	private IdentificaoDeUmaApostaDas8Modalidades aposta;
 
-	private View view, linhaEsqueda, linhaDireita, linhaCentral;
+	private View view, linhaEsqueda, linhaDireita, linhaCentral, divTopNumerosSorteados, divBotNumerosSorteados;
     private TextView tvPremioPago, concursoLabel, concursoTxt, cotaLabel, cotaTxt, dataApostaLabel, dataApostaTxt, statusApostaTxt, tv_val_premio, tv_val_premio_tit;
 	private TextView tvNumerosSorteados, tvNumerosSorteados2, labelMesTime, txtMesTime;
 	private TextView tvDuplaSena1, tvDuplaSena2;
-	private RecyclerView listViewSorteados, listViewSorteados2, listViewJogos, listViewJogos2, listTrevos;
-	private ImageView imgTriangulo;
+	private RecyclerView listViewSorteados, listViewSorteados2;
+	private View rl_container_result_1, rl_container_result_2;
+	private RecyclerView listViewJogos, listViewJogos2, listTrevos;
+	//private ImageView imgTriangulo;
+	private TipoApostaLinhaView tipoApostaLinhaView;
+
 	private EstiloModalidadeMKP estiloMKP;
 	private final int QUANTIDADE_COLUNA_LISTA = 6;
 
@@ -110,8 +118,10 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 			statusApostaTxt.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 			tv_val_premio.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 			tv_val_premio_tit.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			divTopNumerosSorteados.setBackgroundColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 			tvNumerosSorteados.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 			tvNumerosSorteados2.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+			divBotNumerosSorteados.setBackgroundColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 			labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 			txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
 			tvDuplaSena1.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
@@ -125,7 +135,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 	private void preencheDadosAposta() {
 		EstiloModalidadeMKP estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
-		imgTriangulo.setImageResource(estiloModalidadeMKP.getImagemTrianguloOutline());
+		//imgTriangulo.setImageResource(estiloModalidadeMKP.getImagemTrianguloOutline());
 
 		concursoTxt.setText(String.format(Locale.getDefault(), getResources().getString(R.string.percent_d), aposta.getConcursoInicial()));
 		cotaTxt.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" + aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
@@ -229,6 +239,10 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 		boolean temResultadoSegundoSorteio = temResultadoSegundoSorteio();
 		List<Integer> listSorteados2 = new ArrayList<>();
 		List<Integer> listSorteados = new ArrayList<>();
+
+		FragmentManager fm = getActivity().getSupportFragmentManager();
+		Fragment fragResultado, fragResultado2;
+
 		if (temResultadoSorteio()) {
 			if (temResultadoSegundoSorteio) {
 				tvNumerosSorteados.setText(getString(R.string.numeros_sorteados) + "\n\n" +
@@ -246,11 +260,22 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 				listViewSorteados.setLayoutManager(new LinearLayoutManager(getContext()));
 			} else {
 				listSorteados = ListaUtils.orderAscDezenas(getResultadoConcurso().getListaSorteadosPrimeiroSorteio());
-				List dezenas = getDezenas(listSorteados);
-				ListaDezenaRecyclerView numerosAdapter = new ListaDezenaRecyclerView(dezenas, listSorteados
-						, getDezenaConfig(), null);
-				listViewSorteados.setAdapter(numerosAdapter);
-				listViewSorteados.setLayoutManager(new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA));
+//				List dezenas = getDezenas(listSorteados);
+//				ListaDezenaRecyclerView numerosAdapter = new ListaDezenaRecyclerView(dezenas, listSorteados
+//						, getDezenaConfig(), null);
+//				listViewSorteados.setAdapter(numerosAdapter);
+//				listViewSorteados.setLayoutManager(new GridLayoutManager(getContext(), QUANTIDADE_COLUNA_LISTA));
+
+				listViewSorteados.setVisibility(View.GONE);
+				divTopNumerosSorteados.setBackgroundColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+				divBotNumerosSorteados.setBackgroundColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
+				divTopNumerosSorteados.setVisibility(View.VISIBLE);
+				divBotNumerosSorteados.setVisibility(View.VISIBLE);
+				rl_container_result_1.setVisibility(View.VISIBLE);
+				fragResultado = NumerosHifenFragment.newInstance("",
+						listSorteados, new ConfiguracaoNumeros(estiloMKP.getCorEscura(), estiloMKP.getCorFonteFundoEscuro()));
+				fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commitAllowingStateLoss();
+				rl_container_result_1.setVisibility(View.VISIBLE);
 			}
 
 
@@ -259,18 +284,27 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 				tvDuplaSena2.setText(getString(R.string.segundo_sorteiro));
 
 				tvNumerosSorteados2.setVisibility(View.VISIBLE);
-				listViewSorteados2.setVisibility(View.VISIBLE);
+//				listViewSorteados2.setVisibility(View.VISIBLE);
 
 				listSorteados2 = ListaUtils.orderAscDezenas(getResultadoConcurso().getListaSorteadosSegundoSorteio());
-				List dezenas2 = getDezenas(listSorteados2);
-				ListaDezenaRecyclerView numerosAdapter2 = new ListaDezenaRecyclerView(dezenas2, listSorteados2
-						, getDezenaConfig(), null);
-				listViewSorteados2.setAdapter(numerosAdapter2);
-				listViewSorteados2.setLayoutManager(new GridLayoutManager(getContext(), 6));
+//				List dezenas2 = getDezenas(listSorteados2);
+//				ListaDezenaRecyclerView numerosAdapter2 = new ListaDezenaRecyclerView(dezenas2, listSorteados2
+//						, getDezenaConfig(), null);
+//				listViewSorteados2.setAdapter(numerosAdapter2);
+//				listViewSorteados2.setLayoutManager(new GridLayoutManager(getContext(), 6));
+//				listViewSorteados.setVisibility(View.GONE);
+
+				listViewSorteados2.setVisibility(View.GONE);
+				fragResultado2 = NumerosHifenFragment.newInstance("",
+						listSorteados2, new ConfiguracaoNumeros(estiloMKP.getCorEscura(), estiloMKP.getCorFonteFundoEscuro()));
+				fm.beginTransaction().replace(R.id.rl_container_result_2, fragResultado2).commitAllowingStateLoss();
+				rl_container_result_2.setVisibility(View.VISIBLE);
 			}
 		} else {
 			((TextView)view.findViewById(R.id.id_seus_numeros)).setText("");
 		}
+
+		preencheTipoApostaLinha();
 
 		switch (aposta.getModalidade()){
 			case SUPER_7:
@@ -307,6 +341,34 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 		if (isSituacaoConcursoNaoApurado() || isApostaPequena()){
 			view.findViewById(R.id.id_view_base).setVisibility(View.VISIBLE);
+		}
+	}
+
+	private void preencheTipoApostaLinha() {
+		List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
+
+		if (aposta.getTroca()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+		}
+		if (aposta.getIndicadorCotaBolao()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
+		}
+		if (aposta.getCombo()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
+		}
+		if (aposta.getEspelho()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+		}
+		if (aposta.getSurpresinha()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+		}
+		if (aposta.getQuantidadeTeimosinhas() > 0) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
+		}
+
+		if (listTipoApostaLinha.size() > 0) {
+			tipoApostaLinhaView.setVisibility(View.VISIBLE);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, estiloMKP.getCorClara(), estiloMKP.getCorFonteFundoClaro(), estiloMKP.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.DOWN);
 		}
 	}
 
@@ -379,7 +441,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 	}
 
 	private void setaViews() {
-        imgTriangulo = view.findViewById(R.id.id_tag_bolao);
+        //imgTriangulo = view.findViewById(R.id.id_tag_bolao);
 		concursoLabel = view.findViewById(R.id.concursoLabel);
         concursoTxt = view.findViewById(R.id.concursoTxt);
 		cotaLabel = view.findViewById(R.id.cotaLabel);
@@ -398,8 +460,15 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 		labelMesTime = view.findViewById(R.id.mes_time_label);
 		txtMesTime = view.findViewById(R.id.mes_time_valor);
 
+		divTopNumerosSorteados = view.findViewById(R.id.v_div_top_numeros_sorteados);
 		listViewSorteados = view.findViewById(R.id.id_lista_sorteados);
+		rl_container_result_1 = view.findViewById(R.id.rl_container_result_1);
 		listViewSorteados2 = view.findViewById(R.id.id_lista_sorteados2);
+		rl_container_result_2 = view.findViewById(R.id.rl_container_result_2);
+		divBotNumerosSorteados = view.findViewById(R.id.v_div_bot_numeros_sorteados);
+
+		tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
+
 		listViewJogos = view.findViewById(R.id.id_lista_jogos);
 		listViewJogos2 = view.findViewById(R.id.id_lista_jogos2);
 		listTrevos = view.findViewById(R.id.id_trevos);

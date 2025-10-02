@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDa
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
 import br.gov.caixa.loterias.apostas.utils.DataUtil;
 import br.gov.caixa.loterias.apostas.utils.TestVisao;
@@ -42,6 +43,7 @@ public class DetalheApostaBolaoLotecaFragment extends ApostaConfirmadaDetalhesFr
 			statusApostaTextView, tv_val_premio, tv_val_premio_tit;
 	private ConstraintLayout cl_premio_pago, clResgatePremio;
 	private ExpandableHeightRecyclerView listaPartidasApostadasExpandebleRecyclerView;
+	private TipoApostaLinhaView tipoApostaLinhaView;
 
 	public DetalheApostaBolaoLotecaFragment() {}
 
@@ -108,6 +110,7 @@ public class DetalheApostaBolaoLotecaFragment extends ApostaConfirmadaDetalhesFr
 			statusApostaTextView.setText(aposta.getSituacao().getDescricao());
 		}
 
+		preencheTipoApostaLinha();
 		initList();
 	}
 
@@ -121,6 +124,34 @@ public class DetalheApostaBolaoLotecaFragment extends ApostaConfirmadaDetalhesFr
 			@Override
 			public void error(VolleyError error) {}
 		};
+	}
+
+	private void preencheTipoApostaLinha() {
+		List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
+
+		if (aposta.getTroca()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TROCA);
+		}
+		if (aposta.getIndicadorCotaBolao()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
+		}
+		if (aposta.getCombo()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
+		}
+		if (aposta.getEspelho()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.ESPELHO);
+		}
+		if (aposta.getSurpresinha()) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.SURPRESINHA);
+		}
+		if (aposta.getQuantidadeTeimosinhas() > 0) {
+			listTipoApostaLinha.add(TipoApostaLinhaEnum.TEIMOSINHA);
+		}
+
+		if (listTipoApostaLinha.size() > 0) {
+			tipoApostaLinhaView.setVisibility(View.VISIBLE);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.loteca_claro_mkp, R.color.branco, R.color.branco, TipoApostaLinhaView.TriangleDirection.DOWN);
+		}
 	}
 
 	private void initList() {
@@ -162,6 +193,7 @@ public class DetalheApostaBolaoLotecaFragment extends ApostaConfirmadaDetalhesFr
 		cotaTxt = view.findViewById(R.id.cotaTxt);
 		dataHoraTextView = view.findViewById(R.id.dataApostaTxt);
 		statusApostaTextView = view.findViewById(R.id.statusApostaTextView);
+		tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 		listaPartidasApostadasExpandebleRecyclerView = view.findViewById(R.id.listaPartidasApostadasExpandebleRecyclerView);
 		tv_val_premio = view.findViewById(R.id.tv_val_premio);
 		tv_val_premio_tit = view.findViewById(R.id.tv_val_premio_tit);
