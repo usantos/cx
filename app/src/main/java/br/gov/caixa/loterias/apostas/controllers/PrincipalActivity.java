@@ -169,6 +169,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
+        init();
     }
 
     @Override
@@ -369,7 +370,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     @Override
     protected void onStart() {
         super.onStart();
-        init();
         if(realizandoLogin){
             DadosUsuarioBO.updateUsuarioLogado(PrincipalActivity.this, false);
             DadosUsuarioBO.limparRegistros();
@@ -799,7 +799,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     protected void clickButtonHomeBet() {
-        nextActivity(TutorialMaisMilionariaActivity.class);
+        if(buttonHomeBet != null && buttonHomeBet.getTag() != null){
+            nextActivity(TutorialMaisMilionariaActivity.class);
+        }
     }
 
     protected void clickButtonBolao() {
