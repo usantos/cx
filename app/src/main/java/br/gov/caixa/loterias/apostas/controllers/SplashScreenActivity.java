@@ -27,12 +27,16 @@ import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.FilaBRAManager;
+import br.gov.caixa.loterias.apostas.view.listener.FilaBRAListener;
 
 public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
     public static final int SPLASH_TIME = 2000;
 
     private VersionResponse responseVersao;
+
+    private FilaBRAManager filaBRAManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,8 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
         //Cria canal de Notificacao
         MessagingUtils.criaCanalNotificacaoApp(this);
 
-        verificaVersao();
+        filaBRAManager = new FilaBRAManager();
+        startaFila();
     }
 
     public static boolean isRootAvailable(){
@@ -65,6 +70,11 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
             }
         }
         return false;
+    }
+
+    private void startaFila() {
+        //filaBRAManager.resetaFila(this);
+        filaBRAManager.iniciaFila(SplashScreenActivity.this, new FilaBRAListener(this));
     }
 
     public void verificaVersao() {
