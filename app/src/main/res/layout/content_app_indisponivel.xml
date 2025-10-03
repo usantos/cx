@@ -99,7 +99,7 @@
         android:fontFamily="@font/caixa_std_regular"
         android:backgroundTint="@color/colorAccent"
         android:dropDownWidth="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/txtVersao"
         />
