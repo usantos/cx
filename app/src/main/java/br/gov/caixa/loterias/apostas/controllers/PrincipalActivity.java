@@ -122,7 +122,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     public static final String MENU_LATERAL = "MENU_LATERAL";
     private static final int ZXING_CAMERA_PERMISSION = 1;
-    public static final String ENDERECO_INSTANTANEA = "https://instantanea.loterias.gov.br";
+    public static final String ENDERECO_INSTANTANEA = "https://instantanea.caixa.gov.br";
     private static final String TOKEN_DISPOSITIVO = "TOKEN_DISPOSITIVO";
 
     public AppBarLayout navigationBarListaModalidade;
