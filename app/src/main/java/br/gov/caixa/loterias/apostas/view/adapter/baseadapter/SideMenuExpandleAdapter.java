@@ -58,7 +58,27 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         if (fonte != null){
             expandedListTextView.setTypeface(fonte);
         }
-        expandedListTextView.setText(itemEnum.toString());
+
+        String expandedListText = itemEnum.toString();
+
+        expandedListTextView.setText(expandedListText);
+
+        List<DrawerEnum> children = expandableListDetail.get(expandableListTitle.get(listPosition));
+
+        StringBuilder description = new StringBuilder();
+        description.append(expandedListText);
+
+        if (children != null && children.size() > 1) {
+            if (expandedListPosition == 0) {
+                description.append(". ").append(children.size()).append(" itens: início da lista");
+            } else if (isLastChild) {
+                description.append(". ").append(children.size()).append(" itens: fim da lista");
+            }
+        }
+
+        expandedListTextView.setContentDescription(description.toString());
+        expandedListTextView.setHint("botão");
+
         return convertView;
     }
 
@@ -99,11 +119,18 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         if (fonte != null){
             listTitleTextView.setTypeface(fonte);
         }
-        listTitleTextView.setText(drawerEnum.toString());
+
+        String listTitle = drawerEnum.toString();
+        listTitleTextView.setText(listTitle);
+
+        StringBuilder description = new StringBuilder();
+        description.append(listTitle);
+        int totalItens = expandableListTitle != null ? expandableListTitle.size() : 0;
+
 
         ImageView imagemMaisOpcoes = convertView.findViewById(R.id.imagemMaisOpcoes);
-
         ImageView imageViewGroup = convertView.findViewById(R.id.imagemItemGroupSideMenu);
+
         switch (drawerEnum) {
             case MENU_MINHA_AREA:
                 imageViewGroup.setImageResource(R.drawable.menu1_area);
@@ -113,6 +140,8 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 imagemMaisOpcoes.setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 imagemMaisOpcoes.setSelected(isExpanded);
+                description.insert(0, isExpanded ? "Expandido: " : "Recolhido: ");
+                description.append(": ").append(totalItens).append(" itens, início");
                 break;
             case MENU_RESULTADOS:
                 imageViewGroup.setImageResource(R.drawable.menu3_resultados);
@@ -146,6 +175,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 imagemMaisOpcoes.setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 imagemMaisOpcoes.setSelected(isExpanded);
+                description.insert(0, isExpanded  ? "Expandido: " : "Recolhido: ");
                 break;
             case MENU_REPASSES_SOCIAIS:
                 imageViewGroup.setImageResource(R.drawable.menu7_repasses);
@@ -169,11 +199,17 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
+                description.append(": ").append(totalItens).append(" itens, final");
+
 //                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
             default:
                 break;
         }
+
+        listTitleTextView.setContentDescription(description.toString());
+        convertView.setFocusable(false);
+        convertView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         return convertView;
     }
 

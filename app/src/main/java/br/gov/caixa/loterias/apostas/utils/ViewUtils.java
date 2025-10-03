@@ -25,6 +25,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
@@ -158,6 +160,48 @@ public class ViewUtils {
                 //.setMessage(mensagem);
                 .setView(messageView);
     }
+
+    public static AlertDialog dialogoNew(Context context, int tituloResId, String mensagem,
+                                         DialogInterface.OnClickListener positiveListener,
+                                         DialogInterface.OnClickListener negativeListener) {
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_alert_new, null);
+
+        TextView titleView = dialogView.findViewById(R.id.dialogTitle);
+        titleView.setHint("Título");
+        TextView messageView = dialogView.findViewById(R.id.dialogMessage);
+
+        titleView.setText(context.getString(tituloResId));
+        messageView.setText(mensagem);
+
+        titleView.setTypeface(getFontCaixaStdBold(context));
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(dialogView)
+                .setCancelable(false)
+                .setNegativeButton(R.string.label_nao, negativeListener)
+                .setPositiveButton(R.string.label_sim, positiveListener)
+                .create();
+
+
+        if (dialog.getWindow() != null) {
+            int larguraPx = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    250,
+                    context.getResources().getDisplayMetrics()
+            );
+
+            dialog.getWindow().setLayout(larguraPx, WindowManager.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
+
+        return dialog;
+    }
+
+
 
     public static AlertDialog.Builder dialogo(Context context, String titulo, String mensagem) {
 
@@ -350,10 +394,14 @@ public class ViewUtils {
     }
 
     public static Dialog alertVerificarIdadeListener(Context context, DialogInterface.OnClickListener listener) {
-        Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, context.getResources().getString(R.string.MA003))
-                .setCancelable(false)
-                .setNegativeButton(R.string.label_nao, listener)
-                .setPositiveButton(R.string.label_sim, (dialogInterface, i) -> dialogInterface.dismiss()).show();
+        AlertDialog dialog = ViewUtils.dialogoNew(
+                context,
+                R.string.label_atencao,
+                context.getString(R.string.MA003),
+                (dialogInterface, i) -> dialogInterface.dismiss(),
+                listener
+        );
+        dialog.show();
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
         TextView textMessageView = dialog.findViewById(android.R.id.message);

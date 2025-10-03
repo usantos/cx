@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/app_bar_degrade"/>
+    <include layout="@layout/app_bar_loterias"/>
     <include layout="@layout/content_restrito_dezoito_anos" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

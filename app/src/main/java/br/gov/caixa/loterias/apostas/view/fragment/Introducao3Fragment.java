@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -74,7 +75,8 @@ public class Introducao3Fragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_introducao3, container, false);
 
         textView1 = v.findViewById(R.id.textView1Fragment3);
-        textView1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "Mais _praticidade_"));
+        textView1.setText(ViewUtils.textFuturaAndFuturaBold(getContext(), "_Mais praticidade_"));
+        textView1.setHint("Título");
 
         return v;
     }

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:importantForAccessibility="no"
     tools:context="br.gov.caixa.loterias.apostas.view.fragment.Introducao1Fragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -14,55 +15,58 @@
       android:layout_alignParentTop="true"
       android:layout_centerHorizontal="true"
       android:layout_gravity="center_horizontal"
-      android:layout_marginTop="18dp"
-      android:contentDescription="@string/evento_pagina_1de4"
+      android:layout_marginTop="29dp"
+      android:focusable="true"
+      android:focusableInTouchMode="true"
+      android:importantForAccessibility="yes"
+      android:contentDescription="@string/logoLoteriasCaixa"
       app:srcCompat="@drawable/logo" />
+
 
      <ImageView
          android:id="@+id/imageViewTelefone"
          android:layout_width="161dp"
          android:layout_height="70dp"
-         android:layout_below="@+id/imageViewLogoLoterias"
+         android:layout_below="@id/imageViewLogoLoterias"
          android:layout_centerHorizontal="true"
-         android:layout_marginTop="45dp"
-         app:srcCompat="@drawable/ilustra_mobile" />
+         android:importantForAccessibility="no"
+         android:layout_marginTop="54dp"
+         app:srcCompat="@drawable/ic_celular" />
+
+     <View
+         android:id="@+id/divider"
+         android:layout_width="125dp"
+         android:layout_height="1dp"
+         android:minHeight="1dp"
+         android:importantForAccessibility="no"
+         android:maxHeight="1dp"
+         android:layout_below="@id/imageViewTelefone"
+         android:layout_centerHorizontal="true"
+         android:layout_marginTop="16dp"
+         android:background="@color/branco" />
 
      <TextView
          android:id="@+id/textView1Fragment1"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:layout_below="@+id/imageViewTelefone"
+         android:layout_below="@id/divider"
          android:layout_centerHorizontal="true"
-         android:layout_gravity="center_horizontal"
-         android:layout_marginTop="19dp"
+         android:layout_marginTop="18dp"
          android:text="@string/uma_nova_experi_ncia"
          android:textColor="@color/branco"
          android:textSize="18sp" />
 
      <TextView
          android:id="@+id/textView2Fragment1"
-         android:layout_width="220dp"
+         android:layout_width="320dp"
          android:layout_height="wrap_content"
          android:layout_below="@+id/textView1Fragment1"
          android:layout_centerHorizontal="true"
          android:layout_marginTop="20dp"
          android:text="@string/todas_as_apostas_na_palma_da_sua_m_o_o_dia_inteiro_todos_os_dias"
+         android:fontFamily="@font/caixa_std_regular"
          android:textAlignment="center"
          android:textColor="@color/branco"
-         android:textSize="12sp" />
+         android:textSize="20sp" />
 
-     <Button
-         android:id="@+id/buttonPularIntroducao"
-         style="@style/Widget.AppCompat.Button"
-         android:layout_width="130dp"
-         android:layout_height="wrap_content"
-         android:layout_alignParentBottom="true"
-         android:layout_alignParentEnd="true"
-         android:layout_alignParentRight="true"
-         android:background="@android:color/transparent"
-         android:text="@string/pular_introdu_o"
-         android:textAllCaps="false"
-         android:textColor="@color/branco"
-         android:fontFamily="@font/arialmt"
-         android:textSize="12sp"/>
  </RelativeLayout>

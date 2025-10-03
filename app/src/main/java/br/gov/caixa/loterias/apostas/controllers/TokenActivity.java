@@ -167,7 +167,7 @@ public class TokenActivity extends LoteriasBaseAppActivity {
                 cpf = zeros.toString();
             }
 
-            DadosUsuarioBO.salvarUsuairo(jsonObject.getString(getResources().getString(R.string.name)), cpf);
+            DadosUsuarioBO.salvarUsuario(jsonObject.getString(getResources().getString(R.string.name)), cpf);
             if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
                 DadosBiometriaBO.salvarBiometria(response.refreshToken, jsonObject.getString(getResources().getString(R.string.name)), cpf);
             }
