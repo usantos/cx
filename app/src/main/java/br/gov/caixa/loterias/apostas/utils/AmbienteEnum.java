@@ -3,6 +3,8 @@ package br.gov.caixa.loterias.apostas.utils;
 public enum AmbienteEnum {
     EXTERNO("TQS Externo"),
     INTERNO("TQS Interno"),
+    INTERNO_ESTEIRA("TQS Interno Esteira"),
+    EXTERNO_ESTEIRA("TQS Interno Esteira"),
     HMP("Hmp"),
     PILOTO("Piloto");
 
