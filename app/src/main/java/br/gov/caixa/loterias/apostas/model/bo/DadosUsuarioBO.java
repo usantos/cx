@@ -39,6 +39,7 @@ import br.gov.caixa.loterias.apostas.utils.Aplicacao;
  * Created by cedesbr450 on 07/12/17.
  */
 public class DadosUsuarioBO extends SilceBO implements DadosUsuarioRepository {
+    private static final String INTRODUCAO_KEY = "INTRODUCAO_KEY";
     private static final String USUARIO_KEY = "USUARIO_KEY";
     private final static String RAPIDAO_KEY = "RAPIDAO_KEY";
     private final static String LOGIN_SUCESSO = "LOGIN_SUCESSO";
@@ -105,7 +106,7 @@ public class DadosUsuarioBO extends SilceBO implements DadosUsuarioRepository {
         getServiceConnection().request(request, listener);
     }
 
-    public static void salvarUsuairo(String name, String cpf) {
+    public static void salvarUsuario(String name, String cpf) {
         Context context = Aplicacao.application.getApplicationContext();
         if (context != null) {
             UsuarioCRUD              crud = new UsuarioCRUD(context);
@@ -162,20 +163,21 @@ public class DadosUsuarioBO extends SilceBO implements DadosUsuarioRepository {
     }
 
     public static void limparRegistros() {
-        salvarUsuairo("", "");
+        salvarUsuario("", "");
     }
 
-    public static void updateFecharIntroducao(Activity activity, Boolean status) {
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+    public static void updateFecharIntroducao(Boolean status) {
+        Context context =  Aplicacao.application.getApplicationContext();
+        SharedPreferences sharedPref = context.getSharedPreferences(INTRODUCAO_KEY,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean(activity.getString(R.string.key_introducao), status);
+        editor.putBoolean(INTRODUCAO_KEY, status);
         editor.commit();
-
     }
 
-    public static Boolean checarFecharIntroducao(Activity activity) {
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        Boolean status = sharedPref.getBoolean(activity.getString(R.string.key_introducao), false);
+    public static Boolean checarFecharIntroducao() {
+        Context context =  Aplicacao.application.getApplicationContext();
+        SharedPreferences sharedPref = context.getSharedPreferences(INTRODUCAO_KEY,Context.MODE_PRIVATE);
+        Boolean status = sharedPref.getBoolean(INTRODUCAO_KEY, false);
         return status;
     }
 

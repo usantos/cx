@@ -6,8 +6,7 @@
     android:layout_height="150dp"
     android:layout_marginHorizontal="10dp"
     android:layout_marginTop="110dp"
-    android:gravity="bottom"
-    android:orientation="vertical">
+    android:gravity="bottom">
 
     <ImageView
         android:id="@+id/iconCef"
@@ -27,7 +26,10 @@
         android:layout_marginStart="8dp"
         android:gravity="left"
         android:text="@string/cef_id_tit"
+        android:contentDescription="@string/cef_id_tit"
+        android:focusable="true"
         android:fontFamily="@font/caixa_std_bold"
+        android:importantForAccessibility="yes"
         android:textAppearance="@style/cef_titulo"
         android:autoSizeTextType="uniform"
         android:autoSizePresetSizes="@array/autosize_text_sizes"
@@ -44,6 +46,9 @@
         android:layout_marginBottom="5dp"
         android:lineSpacingExtra="5dp"
         android:text="@string/cef_id1"
+        android:focusable="true"
+        android:contentDescription="@string/cef_id1"
+        android:importantForAccessibility="yes"
         android:fontFamily="@font/caixa_std_regular"
         android:textColor="@color/cinzaIdcaixa"
         android:textSize="12dp"

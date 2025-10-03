@@ -168,7 +168,7 @@ public class BiometriaLogin {
                 cpf = zeros.toString();
             }
 
-            DadosUsuarioBO.salvarUsuairo(jsonObject.getString(activity.getString(R.string.name)), cpf);
+            DadosUsuarioBO.salvarUsuario(jsonObject.getString(activity.getString(R.string.name)), cpf);
             if (BiometriaBO.getInstance().getBiometriaHabilitada()) {
                 DadosBiometriaBO.salvarBiometria(response.refreshToken, jsonObject.getString(activity.getString(R.string.name)), cpf);
             }
