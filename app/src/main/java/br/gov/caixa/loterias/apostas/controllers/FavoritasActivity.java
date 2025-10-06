@@ -20,6 +20,8 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaApostaFavoritaDTO;
@@ -126,51 +128,94 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         subTituloFavoritas.setText(getResources().getString(R.string.nesta_area_estao_todas_suas_apostas));
     }
 
-    private void callWebservice() {
-        model.setMaisCompras(true);
-        model.setBloquearRequestScroll(false);
+//    private void callWebservice() {
+//        model.setMaisCompras(true);
+//        model.setBloquearRequestScroll(false);
+//
+//        AlertDialogUtils.show(this);
+//        model.buscaApostas(new OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO>() {
+//            @Override
+//            public void success(ResultadoPesquisaPaginadaApostaFavoritaDTO payload) {
+//                AlertDialogUtils.dismiss();
+//
+//                model.setOffsetItem(8);
+//                model.setApostaList(payload.getLista());
+//
+//                //recyclerView
+//                recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
+//                favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
+//                        FavoritasActivity.this, model.getApostaList(), onItemClickListener());
+//
+//                recyclerViewFavoritas.setHasFixedSize(true);
+//                recyclerViewFavoritas.setAdapter(favoritasAdapter);
+//                recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
+//
+//                scrollViewContentViewFavoritas.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
+//                    View view = v.getChildAt(v.getChildCount() - 1);
+//                    int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+//
+//                    // if diff is zero, then the bottom has been reached
+//                    if (diff == 0 && !model.getBloquearRequestScroll()) {
+//                        // do stuff
+//                        getFavoritasScroll();
+//                        model.setBloquearRequestScroll(true);
+//                    }
+//                });
+//
+//                atualizaLayout();
+//            }
+//
+//            @Override
+//            public void error(VolleyError error) {
+//                AlertDialogUtils.dismiss();
+//            }
+//
+//        });
+//    }
+private void callWebservice() {
+    //model.setMaisCompras(true);
+    //model.setBloquearRequestScroll(false);
 
-        AlertDialogUtils.show(this);
-        model.buscaApostas(new OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO>() {
-            @Override
-            public void success(ResultadoPesquisaPaginadaApostaFavoritaDTO payload) {
-                AlertDialogUtils.dismiss();
+    AlertDialogUtils.show(this);
+    model.buscaApostasAgrupadas(new OnSilceListener<AgrupadorDTOApostaFavoritaDTO>() {
+        @Override
+        public void success(AgrupadorDTOApostaFavoritaDTO payload) {
+            AlertDialogUtils.dismiss();
 
-                model.setOffsetItem(8);
-                model.setApostaList(payload.getLista());
+//            model.setOffsetItem(8);
+//            model.setApostaList(payload.getLista());
+//
+//            //recyclerView
+//            recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
+//            favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
+//                    FavoritasActivity.this, model.getApostaList(), onItemClickListener());
+//
+//            recyclerViewFavoritas.setHasFixedSize(true);
+//            recyclerViewFavoritas.setAdapter(favoritasAdapter);
+//            recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
+//
+//            scrollViewContentViewFavoritas.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
+//                View view = v.getChildAt(v.getChildCount() - 1);
+//                int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+//
+//                // if diff is zero, then the bottom has been reached
+//                if (diff == 0 && !model.getBloquearRequestScroll()) {
+//                    // do stuff
+//                    getFavoritasScroll();
+//                    model.setBloquearRequestScroll(true);
+//                }
+//            });
+//
+//            atualizaLayout();
+        }
 
-                //recyclerView
-                recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
-                favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
-                        FavoritasActivity.this, model.getApostaList(), onItemClickListener());
+        @Override
+        public void error(VolleyError error) {
+            AlertDialogUtils.dismiss();
+        }
 
-                recyclerViewFavoritas.setHasFixedSize(true);
-                recyclerViewFavoritas.setAdapter(favoritasAdapter);
-                recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
-
-                scrollViewContentViewFavoritas.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
-                    View view = v.getChildAt(v.getChildCount() - 1);
-                    int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
-
-                    // if diff is zero, then the bottom has been reached
-                    if (diff == 0 && !model.getBloquearRequestScroll()) {
-                        // do stuff
-                        getFavoritasScroll();
-                        model.setBloquearRequestScroll(true);
-                    }
-                });
-
-                atualizaLayout();
-            }
-
-            @Override
-            public void error(VolleyError error) {
-                AlertDialogUtils.dismiss();
-            }
-
-        });
-    }
-
+    });
+}
     private ApostaFavoritaListener onItemClickListener() {
         return new ApostaFavoritaListener() {
             @Override
@@ -251,32 +296,32 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         };
     }
 
-    private void getFavoritasScroll(){
-        if (!model.getMaisCompras()) {
-            return;
-        }
-        progressLoadingMore.setVisibility(View.VISIBLE);
-        model.buscaApostas(new OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO>() {
-            @Override
-            public void success(ResultadoPesquisaPaginadaApostaFavoritaDTO payload) {
-                progressLoadingMore.setVisibility(View.GONE);
-                if(payload.getLista().size() == 0){
-                    model.setMaisCompras(false);
-                }else{
-                    List<ApostaFavoritaDTO> apostaList = model.getApostaList();
-                    apostaList.addAll(payload.getLista());
-                    model.setApostaList(apostaList);
-                    favoritasAdapter.notifyDataSetChanged();
-                    model.setOffsetItem(model.getOffsetItem() + 5);
-                }
-                model.setBloquearRequestScroll(false);
-            }
-
-            @Override
-            public void error(VolleyError error) {
-                progressLoadingMore.setVisibility(View.GONE);
-                model.setBloquearRequestScroll(false);
-            }
-        });
-    }
+//    private void getFavoritasScroll(){
+//        if (!model.getMaisCompras()) {
+//            return;
+//        }
+//        progressLoadingMore.setVisibility(View.VISIBLE);
+//        model.buscaApostas(new OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO>() {
+//            @Override
+//            public void success(ResultadoPesquisaPaginadaApostaFavoritaDTO payload) {
+//                progressLoadingMore.setVisibility(View.GONE);
+//                if(payload.getLista().size() == 0){
+//                    model.setMaisCompras(false);
+//                }else{
+//                    List<ApostaFavoritaDTO> apostaList = model.getApostaList();
+//                    apostaList.addAll(payload.getLista());
+//                    model.setApostaList(apostaList);
+//                    favoritasAdapter.notifyDataSetChanged();
+//                    model.setOffsetItem(model.getOffsetItem() + 5);
+//                }
+//                model.setBloquearRequestScroll(false);
+//            }
+//
+//            @Override
+//            public void error(VolleyError error) {
+//                progressLoadingMore.setVisibility(View.GONE);
+//                model.setBloquearRequestScroll(false);
+//            }
+//        });
+//    }
 }

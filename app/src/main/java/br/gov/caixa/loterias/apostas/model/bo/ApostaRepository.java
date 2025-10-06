@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.model.bo;
 
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamento;
 import br.gov.caixa.loterias.apostas.model.bean.MeioPagamentoPix;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoFavoritoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTOResponse;
@@ -22,6 +23,7 @@ public interface ApostaRepository {
     void getEscudosEquipes(final RequestListener<EscudoEquipeEsportivaDTOResponse> listener);
     void getModalidades(final RequestListener<ModalidadeDTOResponse> listener);
     void getApostasFavoritas(final int offset, final RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse> listener);
+    void getApostasFavoritasAgrupadas(final RequestListener<AgrupadorDTOApostaFavoritaDTOResponse> listener);
     void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoResponse> listener);
     void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoResponse> listener);
     void validarCarrinhoFavorito(String nomeCarrinho, RequestListener<CarrinhoFavoritoDTOResponse> listener);

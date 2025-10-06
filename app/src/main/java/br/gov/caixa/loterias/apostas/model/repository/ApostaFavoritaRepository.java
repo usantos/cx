@@ -9,6 +9,8 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -37,6 +39,22 @@ public class ApostaFavoritaRepository extends AppRepository {
             @Override
             public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
                 checkRedirect(response);
+                listener.success(response.getPayload());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                RedirectNetwork.checkRedirect(error, getActivity());
+                listener.error(error);
+            }
+        });
+    }
+
+    public void buscaApostasAgrupadas(OnSilceListener<AgrupadorDTOApostaFavoritaDTO> listener) {
+        ServicoFactoryUtil.getApostaService().getApostasFavoritasAgrupadas(new RequestListener<AgrupadorDTOApostaFavoritaDTOResponse>() {
+            @Override
+            public void onResponse(AgrupadorDTOApostaFavoritaDTOResponse response) {
+                //checkRedirect(response);
                 listener.success(response.getPayload());
             }
 
