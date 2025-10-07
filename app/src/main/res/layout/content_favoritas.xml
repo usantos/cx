@@ -50,9 +50,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerFavoritas"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginRight="16dp"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="0dp"
             android:layout_marginTop="1dp"
             android:descendantFocusability="afterDescendants"

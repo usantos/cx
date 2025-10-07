@@ -33,12 +33,12 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 	private final Activity activity;
 	private ApostaFavoritaListener listener;
 	private FragmentManager fm;
-	private TextView tituloApostaFavorita;
+	//private TextView tituloApostaFavorita;
 	private TextView tituloNomeApostaFavorita;
 	private TextView numerosApostaFavorita;
 	private TextView nomeApostaSalvoTextView;
 	private RelativeLayout editarRelativeLayoutAddCarrinho;
-	private RelativeLayout editarRelativeLayoutFavoritos;
+	//private RelativeLayout editarRelativeLayoutFavoritos;
 	private RelativeLayout excluirRelativeLayoutFavoritos;
 	private RelativeLayout containerFragment;
 	private LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo;
@@ -55,12 +55,12 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		this.activity = activity;
 		this.listener = listener;
 		this.fm = fm;
-		tituloApostaFavorita = itemView.findViewById(R.id.tituloApostaFavorita);
+		//tituloApostaFavorita = itemView.findViewById(R.id.tituloApostaFavorita);
 		tituloNomeApostaFavorita = itemView.findViewById(R.id.tituloNomeApostaFavorita);
 		numerosApostaFavorita = itemView.findViewById(R.id.numerosApostaFavorita);
 		nomeApostaSalvoTextView = itemView.findViewById(R.id.nomeApostaSalvoTextView);
 		editarRelativeLayoutAddCarrinho = itemView.findViewById(R.id.editarRelativeLayoutAddCarrinho);
-		editarRelativeLayoutFavoritos = itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
+		//editarRelativeLayoutFavoritos = itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
 		excluirRelativeLayoutFavoritos = itemView.findViewById(R.id.excluirRelativeLayoutFavoritos);
 		linearLayoutLayoutContentAlterarFavoritasSalvo = itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
 		relativeLayoutContentAlterarFavoritasEditar = itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
@@ -88,9 +88,9 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		swipeLayout.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener(aposta, swipeLayout, position));
 
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.toString(aposta.getModalidade().getDescricao().toLowerCase(new Locale(activity.getResources().getString(R.string.pt), activity.getResources().getString(R.string.br)))));
-		tituloApostaFavorita.setText(aposta.getModalidade().getDescricao().toLowerCase());
-		tituloApostaFavorita.setTextColor(activity.getResources().getColor(estilo.getCorLetraLista()));
-		tituloNomeApostaFavorita.setText(activity.getResources().getString(R.string.espaco_barra_reta_espaco) + aposta.getNome());
+		//tituloApostaFavorita.setText(aposta.getModalidade().getDescricao().toLowerCase());
+		//tituloApostaFavorita.setTextColor(activity.getResources().getColor(estilo.getCorLetraLista()));
+		tituloNomeApostaFavorita.setText(aposta.getNome());
 
 		StringBuilder numeroStr = new StringBuilder();
 
@@ -146,7 +146,7 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(aposta.getModalidade().getDescricao().toLowerCase(new Locale(activity.getResources().getString(R.string.pt), activity.getResources().getString(R.string.br))));
 		if (modalidadeEnum.equals(ModalidadeEnum.MAIS_MILIONARIA)){
 			maisInformacoesMaisMilionaria.setVisibility(View.VISIBLE);
-			tituloApostaFavorita.setText(R.string.label_mais_milionaria);
+			//tituloApostaFavorita.setText(R.string.label_mais_milionaria);
 
 			String trevos = " ";
 			if (aposta.getParametroTrevo() !=null) {

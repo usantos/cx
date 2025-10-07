@@ -242,4 +242,8 @@
     <color name="background_detalhe_combo">#FAFAFA </color>
     <color name="azul_detalhe_combo">#3162A4</color>
 
+    <!-- Apostas favoritas -->
+    <color name="cinza130">#22292E</color>
+    <color name="cinza110">#404B52</color>
+
 </resources>

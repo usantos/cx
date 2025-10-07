@@ -31,6 +31,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasAgrupadasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.FavoritaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaFavoritaListener;
@@ -42,7 +43,8 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     public RecyclerView recyclerViewFavoritas;
     private ProgressBar progressLoadingMore;
     private NestedScrollView scrollViewContentViewFavoritas;
-    private FavoritasRecyclerViewAdapter favoritasAdapter;
+    //private FavoritasRecyclerViewAdapter favoritasAdapter;
+    private FavoritasAgrupadasAdapter favoritasAdapter;
     //endregion
 
     //region Variables class
@@ -182,31 +184,15 @@ private void callWebservice() {
         public void success(AgrupadorDTOApostaFavoritaDTO payload) {
             AlertDialogUtils.dismiss();
 
-//            model.setOffsetItem(8);
-//            model.setApostaList(payload.getLista());
-//
-//            //recyclerView
-//            recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
-//            favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
-//                    FavoritasActivity.this, model.getApostaList(), onItemClickListener());
-//
-//            recyclerViewFavoritas.setHasFixedSize(true);
-//            recyclerViewFavoritas.setAdapter(favoritasAdapter);
-//            recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
-//
-//            scrollViewContentViewFavoritas.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
-//                View view = v.getChildAt(v.getChildCount() - 1);
-//                int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
-//
-//                // if diff is zero, then the bottom has been reached
-//                if (diff == 0 && !model.getBloquearRequestScroll()) {
-//                    // do stuff
-//                    getFavoritasScroll();
-//                    model.setBloquearRequestScroll(true);
-//                }
-//            });
-//
-//            atualizaLayout();
+            //recyclerView
+            recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
+            favoritasAdapter = new FavoritasAgrupadasAdapter(FavoritasActivity.this,
+                    FavoritasActivity.this, payload.getResultado(), onItemClickListener());
+
+            recyclerViewFavoritas.setHasFixedSize(true);
+            recyclerViewFavoritas.setAdapter(favoritasAdapter);
+            recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
+
         }
 
         @Override
