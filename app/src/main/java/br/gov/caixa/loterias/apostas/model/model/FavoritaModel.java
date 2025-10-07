@@ -242,11 +242,11 @@ public class FavoritaModel extends AppModel {
 
 	}
 
-	public void alteraAposta(ApostaFavoritaDTO aposta, FavoritaHolder holder, OnSilceListener listener) {
-		aposta.setNome(holder.getNomeAlterado());
-		aposta.setOpenSwipeLayout(null);
-		repository.alteraAposta(aposta, listener);
-	}
+//	public void alteraAposta(ApostaFavoritaDTO aposta, FavoritaHolder holder, OnSilceListener listener) {
+//		aposta.setNome(holder.getNomeAlterado());
+//		aposta.setOpenSwipeLayout(null);
+//		repository.alteraAposta(aposta, listener);
+//	}
 
 	public void deletaAposta(ApostaFavoritaDTO aposta, OnSilceListener listener) {
 		repository.deletaAposta(aposta.getId(), listener);

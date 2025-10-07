@@ -223,21 +223,21 @@ private void callWebservice() {
 
             @Override
             public void onAltera(int position, FavoritaHolder holder) {
-                AlertDialogUtils.show(FavoritasActivity.this);
-                ApostaFavoritaDTO apostaFavoritaDTO = model.getApostaList().get(position);
-                model.alteraAposta(apostaFavoritaDTO, holder, new OnSilceListener() {
-                    @Override
-                    public void success(Object payload) {
-                        AlertDialogUtils.dismiss();
-                        holder.nomeAtualizado(apostaFavoritaDTO);
-                    }
-
-                    @Override
-                    public void error(VolleyError error) {
-                        apostaFavoritaDTO.setOpenSwipeLayout(true);
-                        AlertDialogUtils.dismiss();
-                    }
-                });
+//                AlertDialogUtils.show(FavoritasActivity.this);
+//                ApostaFavoritaDTO apostaFavoritaDTO = model.getApostaList().get(position);
+//                model.alteraAposta(apostaFavoritaDTO, holder, new OnSilceListener() {
+//                    @Override
+//                    public void success(Object payload) {
+//                        AlertDialogUtils.dismiss();
+//                        holder.nomeAtualizado(apostaFavoritaDTO);
+//                    }
+//
+//                    @Override
+//                    public void error(VolleyError error) {
+//                        apostaFavoritaDTO.setOpenSwipeLayout(true);
+//                        AlertDialogUtils.dismiss();
+//                    }
+//                });
             }
 
             @Override

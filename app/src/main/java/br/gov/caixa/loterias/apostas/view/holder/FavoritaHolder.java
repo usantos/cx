@@ -36,20 +36,24 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 	//private TextView tituloApostaFavorita;
 	private TextView tituloNomeApostaFavorita;
 	private TextView numerosApostaFavorita;
-	private TextView nomeApostaSalvoTextView;
+	//private TextView nomeApostaSalvoTextView;
 	private RelativeLayout editarRelativeLayoutAddCarrinho;
 	//private RelativeLayout editarRelativeLayoutFavoritos;
 	private RelativeLayout excluirRelativeLayoutFavoritos;
 	private RelativeLayout containerFragment;
-	private LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo;
-	private RelativeLayout relativeLayoutContentAlterarFavoritasEditar;
-	private EditText editTextNomeDaAposta;
-	private RelativeLayout layoutSalvarNomeAposta;
+	//private LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo;
+	//private RelativeLayout relativeLayoutContentAlterarFavoritasEditar;
+	//private EditText editTextNomeDaAposta;
+	//private RelativeLayout layoutSalvarNomeAposta;
+	private LinearLayout infoAdicionais;
 	private LinearLayout maisInformacoesLayout;
 	private LinearLayout maisInformacoesMaisMilionaria;
 	private TextView labelInformacaoText;
 	private TextView informacaoTextMaisMilionaria;
 	private TextView informacaoText;
+	private View linhaDivisoriaAposFragment;
+	private View linhaDivisoria;
+
 	public FavoritaHolder(View view, Activity activity, ApostaFavoritaListener listener, FragmentManager fm) {
 		super(view);
 		this.activity = activity;
@@ -58,34 +62,36 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		//tituloApostaFavorita = itemView.findViewById(R.id.tituloApostaFavorita);
 		tituloNomeApostaFavorita = itemView.findViewById(R.id.tituloNomeApostaFavorita);
 		numerosApostaFavorita = itemView.findViewById(R.id.numerosApostaFavorita);
-		nomeApostaSalvoTextView = itemView.findViewById(R.id.nomeApostaSalvoTextView);
+		//nomeApostaSalvoTextView = itemView.findViewById(R.id.nomeApostaSalvoTextView);
 		editarRelativeLayoutAddCarrinho = itemView.findViewById(R.id.editarRelativeLayoutAddCarrinho);
 		//editarRelativeLayoutFavoritos = itemView.findViewById(R.id.editarRelativeLayoutFavoritos);
 		excluirRelativeLayoutFavoritos = itemView.findViewById(R.id.excluirRelativeLayoutFavoritos);
-		linearLayoutLayoutContentAlterarFavoritasSalvo = itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
-		relativeLayoutContentAlterarFavoritasEditar = itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
-		editTextNomeDaAposta = itemView.findViewById(R.id.editTextNomeDaAposta);
-		layoutSalvarNomeAposta = itemView.findViewById(R.id.layoutSalvarNomeAposta);
+		//linearLayoutLayoutContentAlterarFavoritasSalvo = itemView.findViewById(R.id.linearLayoutLayoutContentAlterarFavoritasSalvo);
+		//relativeLayoutContentAlterarFavoritasEditar = itemView.findViewById(R.id.relativeLayoutContentAlterarFavoritasEditar);
+		//editTextNomeDaAposta = itemView.findViewById(R.id.editTextNomeDaAposta);
+		//layoutSalvarNomeAposta = itemView.findViewById(R.id.layoutSalvarNomeAposta);
+		infoAdicionais = itemView.findViewById(R.id.infoAdicionais);
 		maisInformacoesLayout = itemView.findViewById(R.id.maisInformacoesLayout);
 		maisInformacoesMaisMilionaria = itemView.findViewById(R.id.maisInformacoesMaisMilionaria);
 		labelInformacaoText = itemView.findViewById(R.id.labelInformacaoText);
 		informacaoTextMaisMilionaria = itemView.findViewById(R.id.informacaoTextMaisMilionaria);
 		informacaoText = itemView.findViewById(R.id.informacaoText);
 		containerFragment = itemView.findViewById(R.id.rl_container_fragment);
+		linhaDivisoriaAposFragment = itemView.findViewById(R.id.linhaDivisoriaAposFragment);
+		linhaDivisoria = itemView.findViewById(R.id.linhaDivisoria);
 	}
 
 	@Override
 	public void bind(ApostaFavoritaDTO aposta, int position) {
-		final SwipeLayout swipeLayout = (SwipeLayout) itemView;
-		swipeLayout.setClickToClose(true);
-		swipeLayout.getDragEdgeMap().clear();
-		swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.dadosApostaCarrinho));
-		swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
-		//Retirando swipe
-		swipeLayout.setSwipeEnabled(false);
-		swipeLayout.addSwipeListener(onSwipeListener(aposta));
-
-		swipeLayout.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener(aposta, swipeLayout, position));
+//		final SwipeLayout swipeLayout = (SwipeLayout) itemView;
+//		swipeLayout.setClickToClose(true);
+//		swipeLayout.getDragEdgeMap().clear();
+//		swipeLayout.addDrag(SwipeLayout.DragEdge.Left, swipeLayout.findViewById(R.id.dadosApostaCarrinho));
+//		swipeLayout.setDragEdge(SwipeLayout.DragEdge.Left);
+//		//Retirando swipe
+//		swipeLayout.setSwipeEnabled(false);
+//		swipeLayout.addSwipeListener(onSwipeListener(aposta));
+//		swipeLayout.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener(aposta, swipeLayout, position));
 
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.toString(aposta.getModalidade().getDescricao().toLowerCase(new Locale(activity.getResources().getString(R.string.pt), activity.getResources().getString(R.string.br)))));
 		//tituloApostaFavorita.setText(aposta.getModalidade().getDescricao().toLowerCase());
@@ -95,9 +101,10 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		StringBuilder numeroStr = new StringBuilder();
 
 		if(aposta.getModalidade().getValor().intValue() == 7) {
-			//tituloApostaFavorita.setTextColor(activity.getResources().getColor(estilo.getCorEscura()));
 			configuraFragment(aposta);
 			containerFragment.setVisibility(View.VISIBLE);
+			linhaDivisoriaAposFragment.setVisibility(View.VISIBLE);
+			linhaDivisoria.setVisibility(View.GONE);
 		} else {
 			containerFragment.setVisibility(View.GONE);
 			List<Integer> numSelecionados = aposta.getListaNumerosSelecionados();
@@ -121,48 +128,50 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 			listener.onAdd(position);
 		});
 
-		layoutSalvarNomeAposta.setOnClickListener(v -> {
-			if (editTextNomeDaAposta.getText().toString().equals(activity.getResources().getString(R.string.string_vazia))) {
-				ViewUtils.alertTitleButton(activity, R.string.label_atencao,
-						activity.getResources().getString(R.string.MA002) + activity.getResources().getString(R.string.espaco_nome_da_aposta),
-						activity.getResources().getString(R.string.ok));
-			} else {
-				AppUtils.fechaTeclado(activity);
-				listener.onAltera(position, this);
-			}
-		});
+//		layoutSalvarNomeAposta.setOnClickListener(v -> {
+//			if (editTextNomeDaAposta.getText().toString().equals(activity.getResources().getString(R.string.string_vazia))) {
+//				ViewUtils.alertTitleButton(activity, R.string.label_atencao,
+//						activity.getResources().getString(R.string.MA002) + activity.getResources().getString(R.string.espaco_nome_da_aposta),
+//						activity.getResources().getString(R.string.ok));
+//			} else {
+//				AppUtils.fechaTeclado(activity);
+//				listener.onAltera(position, this);
+//			}
+//		});
 
 		boolean isTimeCoracao = aposta.getTimeDoCoracao() != null && StringUtils.isNotEmpty(aposta.getTimeDoCoracao().getNome());
 		boolean isMesSorte = aposta.getMesDeSorte() != null &&StringUtils.isNotEmpty(aposta.getMesDeSorte().getNome());
-		if (isTimeCoracao || isMesSorte) {
-			maisInformacoesLayout.setVisibility(View.VISIBLE);
-			labelInformacaoText.setText(isTimeCoracao ? R.string.label_time_coracao_dois_pontos : R.string.label_mes_sorte_dois_pontos);
-			informacaoText.setText(isTimeCoracao ? aposta.getTimeDoCoracao().getNome()  + "/" + aposta.getTimeDoCoracao().getUf()
-					: aposta.getMesDeSorte().getNome());
-		}else{
-			maisInformacoesLayout.setVisibility(View.GONE);
-		}
-
 		ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(aposta.getModalidade().getDescricao().toLowerCase(new Locale(activity.getResources().getString(R.string.pt), activity.getResources().getString(R.string.br))));
-		if (modalidadeEnum.equals(ModalidadeEnum.MAIS_MILIONARIA)){
-			maisInformacoesMaisMilionaria.setVisibility(View.VISIBLE);
-			//tituloApostaFavorita.setText(R.string.label_mais_milionaria);
-
-			String trevos = " ";
-			if (aposta.getParametroTrevo() !=null) {
-				for (Object i : aposta.getParametroTrevo().getTrevosSelecionados()) {
-					trevos += i.toString() + " - ";
-				}
-				informacaoTextMaisMilionaria.setText(trevos.substring(0, trevos.length() - 2));
+		if (isTimeCoracao || isMesSorte || modalidadeEnum.equals(ModalidadeEnum.MAIS_MILIONARIA)) {
+			if (isTimeCoracao || isMesSorte) {
+				infoAdicionais.setVisibility(View.VISIBLE);
+				maisInformacoesLayout.setVisibility(View.VISIBLE);
+				labelInformacaoText.setText(isTimeCoracao ? R.string.label_time_coracao_dois_pontos : R.string.label_mes_sorte_dois_pontos);
+				informacaoText.setText(isTimeCoracao ? aposta.getTimeDoCoracao().getNome() + "/" + aposta.getTimeDoCoracao().getUf()
+						: aposta.getMesDeSorte().getNome());
 			}
-		}else{
+			if (modalidadeEnum.equals(ModalidadeEnum.MAIS_MILIONARIA)) {
+				infoAdicionais.setVisibility(View.VISIBLE);
+				maisInformacoesMaisMilionaria.setVisibility(View.VISIBLE);
+
+				String trevos = " ";
+				if (aposta.getParametroTrevo() != null) {
+					for (Object i : aposta.getParametroTrevo().getTrevosSelecionados()) {
+						trevos += i.toString() + " - ";
+					}
+					informacaoTextMaisMilionaria.setText(trevos.substring(0, trevos.length() - 2));
+				}
+			}
+		} else {
+			infoAdicionais.setVisibility(View.GONE);
+			maisInformacoesLayout.setVisibility(View.GONE);
 			maisInformacoesMaisMilionaria.setVisibility(View.GONE);
 		}
 	}
 
-	public String getNomeAlterado(){
-		return editTextNomeDaAposta.getText().toString();
-	}
+//	public String getNomeAlterado(){
+//		return editTextNomeDaAposta.getText().toString();
+//	}
 
 	private void configuraFragment(ApostaFavoritaDTO aposta) {
 		int             containerId = containerFragment.getId();
@@ -179,44 +188,44 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 
 	}
 
-	private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener(ApostaFavoritaDTO aposta, SwipeLayout swipeLayout, int position) {
-		return () -> {
-			if (listener.onTemSwipe(position)) {
-				if (aposta.getOpenSwipeLayout() == null) {
-					aposta.setOpenSwipeLayout(false);
-				} else {
-					if (aposta.getOpenSwipeLayout()) {
-						swipeLayout.open(false);
-					}
-				}
-			}
-		};
-	}
+//	private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener(ApostaFavoritaDTO aposta, SwipeLayout swipeLayout, int position) {
+//		return () -> {
+//			if (listener.onTemSwipe(position)) {
+//				if (aposta.getOpenSwipeLayout() == null) {
+//					aposta.setOpenSwipeLayout(false);
+//				} else {
+//					if (aposta.getOpenSwipeLayout()) {
+//						swipeLayout.open(false);
+//					}
+//				}
+//			}
+//		};
+//	}
 
-	private SwipeLayout.SwipeListener onSwipeListener(ApostaFavoritaDTO aposta) {
-		return new SimpleSwipeListener() {
-			@Override
-			public void onStartOpen(SwipeLayout layout) {
-				aposta.setOpenSwipeLayout(true);
-			}
+//	private SwipeLayout.SwipeListener onSwipeListener(ApostaFavoritaDTO aposta) {
+//		return new SimpleSwipeListener() {
+//			@Override
+//			public void onStartOpen(SwipeLayout layout) {
+//				aposta.setOpenSwipeLayout(true);
+//			}
+//
+//			@Override
+//			public void onStartClose(SwipeLayout layout) {
+//				relativeLayoutContentAlterarFavoritasEditar.setVisibility(View.VISIBLE);
+//				linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility(View.GONE);
+//				aposta.setOpenSwipeLayout(false);
+//			}
+//		};
+//	}
 
-			@Override
-			public void onStartClose(SwipeLayout layout) {
-				relativeLayoutContentAlterarFavoritasEditar.setVisibility(View.VISIBLE);
-				linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility(View.GONE);
-				aposta.setOpenSwipeLayout(false);
-			}
-		};
-	}
-
-	public void nomeAtualizado(ApostaFavoritaDTO apostaFavoritaDTO) {
-		apostaFavoritaDTO.setOpenSwipeLayout(true);
-		apostaFavoritaDTO.setNome(editTextNomeDaAposta.getText().toString());
-		tituloNomeApostaFavorita.setText(activity.getResources().getString(R.string.espaco_barra_reta_espaco) + editTextNomeDaAposta.getText().toString());
-		nomeApostaSalvoTextView.setText(activity.getResources().getString(R.string.barrra_aspas) +
-				editTextNomeDaAposta.getText().toString() + activity.getResources().getString(R.string.barrra_aspas));
-		editTextNomeDaAposta.setText(activity.getResources().getString(R.string.string_vazia));
-		linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility(View.VISIBLE);
-		relativeLayoutContentAlterarFavoritasEditar.setVisibility(View.GONE);
-	}
+//	public void nomeAtualizado(ApostaFavoritaDTO apostaFavoritaDTO) {
+//		apostaFavoritaDTO.setOpenSwipeLayout(true);
+//		apostaFavoritaDTO.setNome(editTextNomeDaAposta.getText().toString());
+//		tituloNomeApostaFavorita.setText(activity.getResources().getString(R.string.espaco_barra_reta_espaco) + editTextNomeDaAposta.getText().toString());
+//		nomeApostaSalvoTextView.setText(activity.getResources().getString(R.string.barrra_aspas) +
+//				editTextNomeDaAposta.getText().toString() + activity.getResources().getString(R.string.barrra_aspas));
+//		editTextNomeDaAposta.setText(activity.getResources().getString(R.string.string_vazia));
+//		linearLayoutLayoutContentAlterarFavoritasSalvo.setVisibility(View.VISIBLE);
+//		relativeLayoutContentAlterarFavoritasEditar.setVisibility(View.GONE);
+//	}
 }
