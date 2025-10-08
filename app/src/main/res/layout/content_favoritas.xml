@@ -75,7 +75,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="0dp"
                 android:fontFamily="@font/caixa_std_regular"
-                android:text="Todos"
+                android:text="Todas"
                 android:textColor="@color/cinza130"
                 android:autoSizeTextType="uniform"
                 android:autoSizePresetSizes="@array/autosize_text_sizes"

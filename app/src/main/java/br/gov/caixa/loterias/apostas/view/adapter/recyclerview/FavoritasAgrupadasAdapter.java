@@ -99,7 +99,8 @@ public class FavoritasAgrupadasAdapter extends RecyclerView.Adapter<FavoritasAgr
                     ModalidadeEnum.fromInteger(Integer.parseInt(codigo))
             );
 
-            String descricao = dto.getLista().get(0).getModalidade().getDescricao();
+            //String descricao = dto.getLista().get(0).getModalidade().getDescricao();
+            String descricao = ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(Integer.parseInt(codigo)));
 
             modalidadeTitulo.setText(descricao.toLowerCase());
             modalidadeTitulo.setTextColor(ContextCompat.getColor(context, estilo.getCorFonteFundoClaro()));
