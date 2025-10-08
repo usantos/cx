@@ -179,6 +179,8 @@ android {
                 buildConfigField "String", "URL_SSO_AUTH_HML", "BuildConfig.URL_SSO_HML+\"/auth/realms/internet/protocol/openid-connect/auth\""
                 buildConfigField "String", "URL_SSO_AUTH_PILOTO", "BuildConfig.URL_SSO_PILOTO+\"/auth/realms/internet/protocol/openid-connect/auth\""
                 buildConfigField "String", "URL_SSO_LOGOUT_EXTERNO", "BuildConfig.URL_SSO_EXTERNO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+                buildConfigField "String", "URL_SSO_LOGOUT_EXTERNO_ESTEIRA", "BuildConfig.URL_SSO_EXTERNO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+                buildConfigField "String", "URL_SSO_LOGOUT_INTERNO_ESTEIRA", "BuildConfig.URL_SSO_EXTERNO+\"/auth/realms/internet/protocol/openid-connect/logout\""
                 buildConfigField "String", "URL_SSO_LOGOUT_INTERNO", "BuildConfig.URL_SSO_INTERNO+\"/auth/realms/internet/protocol/openid-connect/logout\""
                 buildConfigField "String", "URL_SSO_LOGOUT_HML", "BuildConfig.URL_SSO_HML+\"/auth/realms/internet/protocol/openid-connect/logout\""
                 buildConfigField "String", "URL_SSO_LOGOUT_PILOTO", "BuildConfig.URL_SSO_PILOTO+\"/auth/realms/internet/protocol/openid-connect/logout\""
