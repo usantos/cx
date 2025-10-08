@@ -124,9 +124,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     }
 
     private void atualizaLayout(){
-        TextView tituloFavoritas = findViewById(R.id.tituloFavoritas);
         TextView subTituloFavoritas = findViewById(R.id.subTituloFavoritas);
-        tituloFavoritas.setText(getResources().getString(R.string.numeros_da_sorte_no_mesmo_lugar));
         subTituloFavoritas.setText(getResources().getString(R.string.nesta_area_estao_todas_suas_apostas));
     }
 
