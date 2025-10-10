@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -51,17 +52,31 @@ public class ModalidadeHolder extends LoteriasHolder<TipoAposta> implements  Vie
 		tituloTipoAposta.setText(tipoAposta.getTitulo());
 
 		if (tipoAposta.getSelect()) {
-			imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevoFundoCor());
-			linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(ctx, tipoAposta.getCorBackground()));
+			//imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevoFundoCor());
+			setImageTrevo(tipoAposta.getImagemTrevoFundoCor());
+
+			GradientDrawable drawable = (GradientDrawable) AppCompatResources
+					.getDrawable(ctx, R.drawable.background_roudend_azul)
+					.mutate().getConstantState().newDrawable().mutate();
+
+			drawable.setColor(ContextCompat.getColor(ctx, tipoAposta.getCorBackground()));
+			linearLayoutTipoAposta.setBackground(drawable);
+
 			if (tipoAposta.getTextSelectColor() != null && tipoAposta.getTextSelectColor() > 0){
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, tipoAposta.getTextSelectColor()));
 			} else {
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, R.color.branco));
 			}
 		} else {
-			imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
-			linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(ctx, R.color.branco));
-			linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(ctx, R.drawable.custom_border_cinza));
+			//imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
+			setImageTrevo(tipoAposta.getImagemTrevo());
+
+			GradientDrawable drawable = (GradientDrawable) AppCompatResources
+					.getDrawable(ctx, R.drawable.custom_border_cinza_rounded)
+					.mutate().getConstantState().newDrawable().mutate();
+
+			linearLayoutTipoAposta.setBackground(drawable);
+
 			if (tipoAposta.getTextColor() != null && tipoAposta.getTextColor() > 0){
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, tipoAposta.getTextColor()));
 			} else {
@@ -76,15 +91,36 @@ public class ModalidadeHolder extends LoteriasHolder<TipoAposta> implements  Vie
 	}
 
 	public void atualizaNaoSelecionado(TipoAposta tipoAposta) {
-		imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
-		linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(ctx, R.color.branco));
-		linearLayoutTipoAposta.setBackground(ContextCompat.getDrawable(ctx, R.drawable.custom_border_cinza));
+		//imageViewTipoAPosta.setImageResource(tipoAposta.c());
+		setImageTrevo(tipoAposta.getImagemTrevo());
+
+		Drawable baseDrawable = AppCompatResources.getDrawable(ctx, R.drawable.custom_border_cinza_rounded);
+		GradientDrawable drawable = (GradientDrawable) baseDrawable.getConstantState().newDrawable().mutate();
+
+		linearLayoutTipoAposta.setBackground(drawable);
+
 		tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, R.color.cinzatextoselecionado));
 	}
 
 	public void atualizaSelecionado(TipoAposta tipoAposta) {
-		imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevoFundoCor());
-		linearLayoutTipoAposta.setBackgroundColor(ContextCompat.getColor(ctx, tipoAposta.getCorBackground()));
+		//imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevoFundoCor());
+		setImageTrevo(tipoAposta.getImagemTrevoFundoCor());
+
+		Drawable baseDrawable = AppCompatResources.getDrawable(ctx, R.drawable.background_roudend_azul);
+		GradientDrawable drawable = (GradientDrawable) baseDrawable.getConstantState().newDrawable().mutate();
+
+		drawable.setColor(ContextCompat.getColor(ctx, tipoAposta.getCorBackground()));
+
+		linearLayoutTipoAposta.setBackground(drawable);
+
 		tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, R.color.branco));
+	}
+
+	private void setImageTrevo(Integer imagemTrevoFundoCor) {
+		if (imagemTrevoFundoCor == null) {
+			imageViewTipoAPosta.setVisibility(View.GONE);
+		} else {
+			imageViewTipoAPosta.setImageResource(imagemTrevoFundoCor);
+		}
 	}
 }

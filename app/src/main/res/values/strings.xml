@@ -1542,5 +1542,6 @@
     <string name="tipo_aposta_surpresinha">Surpresinha</string>
     <string name="tipo_aposta_teimosinha">Teimosinha</string>
     <string name="tipo_aposta_troca">Aposta de Troca</string>
+    <string name="selecione_modalidade_desejada">Selecione a modalidade desejada</string>
 
 </resources>

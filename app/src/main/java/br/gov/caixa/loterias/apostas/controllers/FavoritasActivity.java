@@ -1,46 +1,59 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.FavoritaModel;
+import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
+import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SelecaoModalidadesRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasAgrupadasAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.FavoritaHolder;
+import br.gov.caixa.loterias.apostas.view.holder.ModalidadeHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaFavoritaListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 
 public class FavoritasActivity extends LoteriasBaseAppActivity {
 
     //region Variables Views
     public RecyclerView recyclerViewFavoritas;
+    public ImageView imageFiltroSelecionado;
     private ProgressBar progressLoadingMore;
     private NestedScrollView scrollViewContentViewFavoritas;
     //private FavoritasRecyclerViewAdapter favoritasAdapter;
@@ -50,6 +63,11 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     //region Variables class
     private FavoritaModel model;
     //endregion
+    private RecyclerView gridModalidades;
+    private SelecaoModalidadesRecyclerAdapter adapterModalidades;
+    private List<TipoAposta> listTipoAposta;
+    private List<ModalidadeDTO> listModalidade = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +80,8 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_favoritas_bold)));
 
         scrollViewContentViewFavoritas = findViewById(R.id.scrollViewContentViewFavoritas);
-
+        imageFiltroSelecionado = findViewById(R.id.imageFiltroSelecionado);
+        imageFiltroSelecionado.setOnClickListener(v -> abrirFiltroModalidade(FavoritasActivity.this));
         progressLoadingMore = findViewById(R.id.favoritas_loading_more);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -177,6 +196,11 @@ private void callWebservice() {
     //model.setBloquearRequestScroll(false);
 
     AlertDialogUtils.show(this);
+
+    if (listModalidade.size() == 0) {
+        buscaModalidades();
+    }
+
     model.buscaApostasAgrupadas(new OnSilceListener<AgrupadorDTOApostaFavoritaDTO>() {
         @Override
         public void success(AgrupadorDTOApostaFavoritaDTO payload) {
@@ -245,10 +269,10 @@ private void callWebservice() {
                 //}
             }
 
-            @Override
-            public boolean onTemSwipe(int position) {
-                return model.temSwipe(position);
-            }
+//            @Override
+//            public boolean onTemSwipe(int position) {
+//                return model.temSwipe(position);
+//            }
         };
     }
 
@@ -308,4 +332,91 @@ private void callWebservice() {
 //            }
 //        });
 //    }
+
+    private void buscaModalidades() {
+        new ModalidadeModel(this).buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
+            @Override
+            public void success(List<ModalidadeDTO> payload) {
+                if (payload != null) {
+                    listModalidade = payload;
+                    criaListTipoAposta(true);
+                }
+            }
+            @Override
+            public void error(VolleyError error) {
+            }
+        });
+    }
+
+    private void criaListTipoAposta(boolean comTodas) {
+        listTipoAposta = new ArrayList<>();
+
+        if (comTodas) {
+            TipoAposta tipoAposta = new TipoAposta("Todas",
+                    R.color.blue_caixa, true, R.color.cinzatextoselecionado);
+            listTipoAposta.add(tipoAposta);
+        }
+
+        for (ModalidadeDTO item : listModalidade) {
+            TipoAposta tipoAposta = null;
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromModalidadeDTO(item));
+            switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
+                case MAIS_MILIONALIA:
+                    tipoAposta = new TipoAposta("+Milionária", estilo.getTrevoFundoClaro(),  estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+                    break;
+                case TIMEMANIA:
+                case DIA_DE_SORTE:
+                case SUPER_SETE:
+                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+                    tipoAposta.setTextSelectColor(estilo.getCorLetraLista());
+                    break;
+                default:
+                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+                    break;
+            }
+
+            if (tipoAposta != null) {
+                tipoAposta.setTitulo(tipoAposta.getTitulo().toLowerCase(new Locale("pt", "BR")));
+                listTipoAposta.add(tipoAposta);
+            }
+        }
+    }
+
+    public void abrirFiltroModalidade(Context context) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_grid, null);
+
+        gridModalidades = dialogView.findViewById(R.id.ehgv_grid_modalidades);
+        gridModalidades.setLayoutManager(new GridLayoutManager(context, 2));
+        adapterModalidades = new SelecaoModalidadesRecyclerAdapter(listTipoAposta, true, onItemClickListenerModalidade());
+        gridModalidades.setAdapter(adapterModalidades);
+
+
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(dialogView);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_roudend_branco);
+
+        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        TextView btnFilter = dialogView.findViewById(R.id.btn_filter);
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        btnFilter.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+        dialog.getWindow().setLayout((int)(getResources().getDisplayMetrics().widthPixels * 0.9), ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+    private OnItemClickListener<ModalidadeHolder> onItemClickListenerModalidade() {
+        return (holder, position) -> {
+            if (listTipoAposta.get(position).getSelect()) {
+                listTipoAposta.get(position).setSelect(false);
+                holder.atualizaNaoSelecionado(listTipoAposta.get(position));
+            } else {
+                //if (isUnicaSelecao) {
+                    adapterModalidades.limpaSelecaoModalidades();
+                //}
+                listTipoAposta.get(position).setSelect(true);
+                holder.atualizaSelecionado(listTipoAposta.get(position));
+            }
+        };
+    }
 }

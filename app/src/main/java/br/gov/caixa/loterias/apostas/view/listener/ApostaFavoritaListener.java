@@ -10,6 +10,6 @@ public interface ApostaFavoritaListener {
 
 	void onAdd(int position);
 
-	boolean onTemSwipe(int position);
+	//boolean onTemSwipe(int position);
 
 }
