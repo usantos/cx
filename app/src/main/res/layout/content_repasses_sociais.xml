@@ -15,22 +15,12 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.64" />
 
-    <View
-        android:id="@+id/linhaTopo"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/verdeazul"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guidelineTopo"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linhaTopo"
         android:layout_marginTop="1dp"
         >
 
@@ -46,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/background_gradient_verde">
+                    android:background="@drawable/background_gradient_azul">
 
                     <TextView
                         android:id="@+id/ttvTituloAno"
@@ -54,6 +44,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="40dp"
                         android:text="@string/em_2017_as_loterias_j_destinaram"
+                        android:importantForAccessibility="yes"
                         android:textAlignment="center"
                         android:textColor="@color/branco"
                         android:textSize="14.2sp"
@@ -63,6 +54,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="15dp"
+                        android:importantForAccessibility="no"
                         android:text=""
                         android:textAlignment="center"
                         android:textColor="@color/amareloQueimado"
@@ -74,6 +66,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="18dp"
+                        android:importantForAccessibility="no"
                         android:text="@string/para_melhorar_o_pa_s"
                         android:textAlignment="center"
                         android:textColor="@color/branco"
@@ -158,6 +151,7 @@
                         android:background="@color/azulClaroSelecaotime"></View>
 
                     <TextView
+                        android:id="@+id/entendaText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="17dp"
@@ -171,6 +165,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/caixa_std_book"
+                        android:importantForAccessibility="no"
                         android:text="@string/esse_dinheiro_distribu_do"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"

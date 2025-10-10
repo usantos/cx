@@ -3,10 +3,12 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.android.volley.VolleyError;
 
@@ -27,19 +29,32 @@ import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
 public class RepassesSociaisActivity extends SettingToolbarActivity {
     private RepassometroDTO repasseOBj;
+    ImageButton customButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repasses_sociais);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_Repasses sociais_"));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        TextView textTitulo = findViewById(R.id.textCustom);
+        textTitulo.setText(getString(R.string.title_repassesSociais));
+        textTitulo.setHint(getString(R.string.titulo));
+        customButton = findViewById(R.id.customButton);
+        customButton.setFocusable(true);
+        customButton.setFocusableInTouchMode(true);
+        customButton.requestFocus();
+        customButton.setContentDescription(getString(R.string.voltar));
+        customButton.setOnClickListener(v -> onBackPressed());
+        ImageButton questionButton = findViewById(R.id.buttonQuestions);
+        questionButton.setOnClickListener(v ->
+                    startActivity(new Intent(this, TermosUsoActivity.class))
+        );
+        TextView textEntenda = findViewById(R.id.entendaText);
+        textEntenda.setContentDescription(getString(R.string.entenda_como) + " "+ getString(R.string.esse_dinheiro_distribu_do));
+        textEntenda.setHint(getString(R.string.titulo));
         callWebservice();
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -130,6 +145,7 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
 
         AnimacaoCalculoRepassesSociais.start(valorRepasses, 0, repasseOBj);
 
+//        ttvTituloAno.setContentDescription(texto + " " + repasseOBj.toString() + " " + getString(R.string.para_melhorar_o_pa_s));
         Button buttonAposte = findViewById(R.id.ButtonAposteSociais);
         textViewRepasseQuadro1.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro1));
         textViewRepasseQuadro2.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro2));
@@ -165,6 +181,15 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
             valores[1] = getResources().getString(R.string.reais);
         }
         return valores;
+    }
+    @Override
+    protected void configuraActivityBack() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setElevation(0);
+        }
+
+        getSupportActionBar().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.navigation_gradient_azul, null));
     }
 
 }
