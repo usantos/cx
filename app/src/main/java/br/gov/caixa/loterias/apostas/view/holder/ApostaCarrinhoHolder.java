@@ -374,7 +374,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		if (isBolao) {
 			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
 		}
-		if (aposta.getCombo()) {
+		if (Boolean.TRUE.equals(aposta.getCombo())) {
 			listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
 		}
 		if (aposta.getEspelho()) {
