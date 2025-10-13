@@ -18,6 +18,9 @@ public class ConfiguracaoAppSingleton {
     private String urlBaseCarrinhoProducao;
     private String grupoDeCpfsQueAcessamOServicoDaAzure;
 
+    private String urlBaseApostador;
+    private String grupoDeCpfsApostador;
+
     private static ConfiguracaoAppSingleton configuracaoAppSingleton;
 
     private ConfiguracaoAppSingleton(){ }
@@ -36,6 +39,9 @@ public class ConfiguracaoAppSingleton {
             configuracaoAppSingleton.urlBaseCarrinhoPiloto="-";
             configuracaoAppSingleton.urlBaseCarrinhoProducao="-";
             configuracaoAppSingleton.grupoDeCpfsQueAcessamOServicoDaAzure = "";
+
+            configuracaoAppSingleton.urlBaseApostador = "-";
+            configuracaoAppSingleton.grupoDeCpfsApostador = "";
         }
         return configuracaoAppSingleton;
     }
@@ -118,5 +124,21 @@ public class ConfiguracaoAppSingleton {
 
     public void setGrupoDeCpfsQueAcessamOServicoDaAzure(String grupoDeCpfsQueAcessamOServicoDaAzure) {
         this.grupoDeCpfsQueAcessamOServicoDaAzure = grupoDeCpfsQueAcessamOServicoDaAzure;
+    }
+
+    public String getUrlBaseApostador() {
+        return urlBaseApostador;
+    }
+
+    public void setUrlBaseApostador(String urlBaseApostador) {
+        this.urlBaseApostador = urlBaseApostador;
+    }
+
+    public String getGrupoDeCpfsApostador() {
+        return grupoDeCpfsApostador;
+    }
+
+    public void setGrupoDeCpfsApostador(String grupoDeCpfsApostador) {
+        this.grupoDeCpfsApostador = grupoDeCpfsApostador;
     }
 }
