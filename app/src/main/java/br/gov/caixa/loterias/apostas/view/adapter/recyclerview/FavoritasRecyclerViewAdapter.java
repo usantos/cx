@@ -49,7 +49,24 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
     @Override
     public void onBindViewHolder(@NonNull FavoritaHolder holder, int position) {
         ApostaFavoritaDTO aposta = listaApostaFavorita.get(position);
-        holder.bind(aposta, position);
+
+        boolean mostrarBanner = false;
+
+        if (position == 0) {
+            mostrarBanner = true; // sempre mostra no primeiro item
+        } else {
+            ApostaFavoritaDTO apostaAnterior = listaApostaFavorita.get(position - 1);
+            int modalidadeAnterior = apostaAnterior.getModalidade().getValor().intValue();
+            int modalidadeAtual = aposta.getModalidade().getValor().intValue();
+
+            if (modalidadeAtual != modalidadeAnterior) {
+                mostrarBanner = true;
+            }
+        }
+
+        holder.bind(aposta, position, mostrarBanner);
+
+        //holder.bind(aposta, position);
     }
 
     @Override

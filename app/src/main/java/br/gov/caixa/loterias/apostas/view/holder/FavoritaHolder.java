@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -34,6 +36,7 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 	private ApostaFavoritaListener listener;
 	private FragmentManager fm;
 	//private TextView tituloApostaFavorita;
+	private LinearLayout linearLayoutTopModalidades;
 	private TextView tituloNomeApostaFavorita;
 	private TextView numerosApostaFavorita;
 	//private TextView nomeApostaSalvoTextView;
@@ -53,6 +56,10 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 	private TextView informacaoText;
 	private View linhaDivisoriaAposFragment;
 	private View linhaDivisoria;
+	private TextView modalidadeTitulo;
+	private View titulo;
+	private ImageView trevo;
+	private RelativeLayout trevoFundo;
 
 	public FavoritaHolder(View view, Activity activity, ApostaFavoritaListener listener, FragmentManager fm) {
 		super(view);
@@ -60,6 +67,12 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		this.listener = listener;
 		this.fm = fm;
 		//tituloApostaFavorita = itemView.findViewById(R.id.tituloApostaFavorita);
+		linearLayoutTopModalidades = itemView.findViewById(R.id.linearLayoutTopModalidades);
+		modalidadeTitulo = itemView.findViewById(R.id.textViewCardTitle);
+		titulo = itemView.findViewById(R.id.linearLayoutTopModalidades);
+		trevo = itemView.findViewById(R.id.trevoImagem);
+		trevoFundo = itemView.findViewById(R.id.RelativeLayoutTrevo);
+
 		tituloNomeApostaFavorita = itemView.findViewById(R.id.tituloNomeApostaFavorita);
 		numerosApostaFavorita = itemView.findViewById(R.id.numerosApostaFavorita);
 		//nomeApostaSalvoTextView = itemView.findViewById(R.id.nomeApostaSalvoTextView);
@@ -81,8 +94,13 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		linhaDivisoria = itemView.findViewById(R.id.linhaDivisoria);
 	}
 
+
 	@Override
 	public void bind(ApostaFavoritaDTO aposta, int position) {
+		bind(aposta, position, false);
+	}
+
+	public void bind(ApostaFavoritaDTO aposta, int position, boolean mostraBanner) {
 //		final SwipeLayout swipeLayout = (SwipeLayout) itemView;
 //		swipeLayout.setClickToClose(true);
 //		swipeLayout.getDragEdgeMap().clear();
@@ -93,9 +111,21 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 //		swipeLayout.addSwipeListener(onSwipeListener(aposta));
 //		swipeLayout.getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener(aposta, swipeLayout, position));
 
-		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.toString(aposta.getModalidade().getDescricao().toLowerCase(new Locale(activity.getResources().getString(R.string.pt), activity.getResources().getString(R.string.br)))));
+		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()));
 		//tituloApostaFavorita.setText(aposta.getModalidade().getDescricao().toLowerCase());
 		//tituloApostaFavorita.setTextColor(activity.getResources().getColor(estilo.getCorLetraLista()));
+		if (mostraBanner) {
+			linearLayoutTopModalidades.setVisibility(View.VISIBLE);
+			String descricao = ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()));
+			modalidadeTitulo.setText(descricao.toLowerCase());
+			modalidadeTitulo.setTextColor(activity.getResources().getColor(estilo.getCorFonteFundoClaro()));
+			titulo.setBackgroundColor(activity.getResources().getColor(estilo.getCorClara()));
+			trevo.setImageDrawable(activity.getResources().getDrawable(estilo.getTrevoFundoEscuro()));
+			trevoFundo.setBackground(activity.getResources().getDrawable(estilo.getTrapezio()));
+		} else {
+			linearLayoutTopModalidades.setVisibility(View.GONE);
+		}
+
 		tituloNomeApostaFavorita.setText(aposta.getNome());
 
 		StringBuilder numeroStr = new StringBuilder();
