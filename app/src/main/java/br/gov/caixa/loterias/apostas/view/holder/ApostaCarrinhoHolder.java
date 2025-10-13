@@ -365,6 +365,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			AnimacaoSwipeList.animacaoSwipeList(context, position, swipeLayout);
 		}
 
+
 		List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
 
 		if (aposta.getTroca() != null && aposta.getTroca()) {
@@ -373,7 +374,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		if (isBolao) {
 			listTipoApostaLinha.add(TipoApostaLinhaEnum.BOLAO);
 		}
-		if (aposta.getCombo() != null && aposta.getCombo()) {
+		if (Boolean.TRUE.equals(aposta.getCombo())) {
 			listTipoApostaLinha.add(TipoApostaLinhaEnum.COMBO);
 		}
 		if (aposta.getEspelho() != null && aposta.getEspelho()) {
