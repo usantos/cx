@@ -30,10 +30,12 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.FavoritaModel;
 import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
@@ -43,6 +45,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SelecaoModalidadesRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasAgrupadasAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.holder.FavoritaHolder;
 import br.gov.caixa.loterias.apostas.view.holder.ModalidadeHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaFavoritaListener;
@@ -53,10 +56,12 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
     //region Variables Views
     public RecyclerView recyclerViewFavoritas;
+    public TextView textFiltroSelecionado;
     public ImageView imageFiltroSelecionado;
     private ProgressBar progressLoadingMore;
     private NestedScrollView scrollViewContentViewFavoritas;
-    //private FavoritasRecyclerViewAdapter favoritasAdapter;
+
+    private FavoritasRecyclerViewAdapter favoritasAdapterModalidade;
     private FavoritasAgrupadasAdapter favoritasAdapter;
     //endregion
 
@@ -80,6 +85,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_favoritas_bold)));
 
         scrollViewContentViewFavoritas = findViewById(R.id.scrollViewContentViewFavoritas);
+        textFiltroSelecionado = findViewById(R.id.textFiltroSelecionado);
         imageFiltroSelecionado = findViewById(R.id.imageFiltroSelecionado);
         imageFiltroSelecionado.setOnClickListener(v -> abrirFiltroModalidade(FavoritasActivity.this));
         progressLoadingMore = findViewById(R.id.favoritas_loading_more);
@@ -105,7 +111,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         finish();
         return true;
     }
@@ -137,93 +143,96 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void abrirTermosUso(){
+    private void abrirTermosUso() {
         Intent activity = new Intent(this, TermosUsoActivity.class);
         startActivity(activity);
     }
 
-    private void atualizaLayout(){
+    private void atualizaLayout() {
         TextView subTituloFavoritas = findViewById(R.id.subTituloFavoritas);
         subTituloFavoritas.setText(getResources().getString(R.string.nesta_area_estao_todas_suas_apostas));
     }
 
-//    private void callWebservice() {
-//        model.setMaisCompras(true);
-//        model.setBloquearRequestScroll(false);
-//
-//        AlertDialogUtils.show(this);
-//        model.buscaApostas(new OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO>() {
-//            @Override
-//            public void success(ResultadoPesquisaPaginadaApostaFavoritaDTO payload) {
-//                AlertDialogUtils.dismiss();
-//
-//                model.setOffsetItem(8);
-//                model.setApostaList(payload.getLista());
-//
-//                //recyclerView
-//                recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
-//                favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
-//                        FavoritasActivity.this, model.getApostaList(), onItemClickListener());
-//
-//                recyclerViewFavoritas.setHasFixedSize(true);
-//                recyclerViewFavoritas.setAdapter(favoritasAdapter);
-//                recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
-//
-//                scrollViewContentViewFavoritas.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
-//                    View view = v.getChildAt(v.getChildCount() - 1);
-//                    int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
-//
-//                    // if diff is zero, then the bottom has been reached
-//                    if (diff == 0 && !model.getBloquearRequestScroll()) {
-//                        // do stuff
-//                        getFavoritasScroll();
-//                        model.setBloquearRequestScroll(true);
-//                    }
-//                });
-//
-//                atualizaLayout();
-//            }
-//
-//            @Override
-//            public void error(VolleyError error) {
-//                AlertDialogUtils.dismiss();
-//            }
-//
-//        });
-//    }
-private void callWebservice() {
-    //model.setMaisCompras(true);
-    //model.setBloquearRequestScroll(false);
+    //private void callWebservice() {
+    private void callFiltrarModalidade(Integer codModalidade) {
+        model.setMaisCompras(true);
+        model.setBloquearRequestScroll(false);
 
-    AlertDialogUtils.show(this);
+        AlertDialogUtils.show(this);
+        model.buscaApostasModalidade(codModalidade, new OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO>() {
+            @Override
+            public void success(ResultadoPesquisaPaginadaApostaFavoritaDTO payload) {
+                AlertDialogUtils.dismiss();
 
-    if (listModalidade.size() == 0) {
-        buscaModalidades();
+                model.setOffsetItem(8);
+                model.setApostaList(payload.getLista());
+
+                //recyclerView
+                recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
+                favoritasAdapterModalidade = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
+                        FavoritasActivity.this, model.getApostaList(), onItemClickListener());
+
+                recyclerViewFavoritas.setHasFixedSize(true);
+                recyclerViewFavoritas.setAdapter(favoritasAdapterModalidade);
+                recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
+
+                scrollViewContentViewFavoritas.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
+                    View view = v.getChildAt(v.getChildCount() - 1);
+                    int diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
+
+                    // if diff is zero, then the bottom has been reached
+                    if (diff == 0 && !model.getBloquearRequestScroll()) {
+                        // do stuff
+                        getFavoritasScroll();
+                        model.setBloquearRequestScroll(true);
+                    }
+                });
+
+                atualizaLayout();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+
+        });
     }
 
-    model.buscaApostasAgrupadas(new OnSilceListener<AgrupadorDTOApostaFavoritaDTO>() {
-        @Override
-        public void success(AgrupadorDTOApostaFavoritaDTO payload) {
-            AlertDialogUtils.dismiss();
+    private void callWebservice() {
+        //model.setMaisCompras(true);
+        //model.setBloquearRequestScroll(false);
 
-            //recyclerView
-            recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
-            favoritasAdapter = new FavoritasAgrupadasAdapter(FavoritasActivity.this,
-                    FavoritasActivity.this, payload.getResultado(), onItemClickListener());
+        AlertDialogUtils.show(this);
 
-            recyclerViewFavoritas.setHasFixedSize(true);
-            recyclerViewFavoritas.setAdapter(favoritasAdapter);
-            recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
-
+        if (listModalidade.size() == 0) {
+            buscaModalidades();
         }
 
-        @Override
-        public void error(VolleyError error) {
-            AlertDialogUtils.dismiss();
-        }
+        model.buscaApostasAgrupadas(new OnSilceListener<AgrupadorDTOApostaFavoritaDTO>() {
+            @Override
+            public void success(AgrupadorDTOApostaFavoritaDTO payload) {
+                AlertDialogUtils.dismiss();
 
-    });
-}
+                //recyclerView
+                recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
+                favoritasAdapter = new FavoritasAgrupadasAdapter(FavoritasActivity.this,
+                        FavoritasActivity.this, payload.getResultado(), onItemClickListener());
+
+                recyclerViewFavoritas.setHasFixedSize(true);
+                recyclerViewFavoritas.setAdapter(favoritasAdapter);
+                recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
+
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+
+        });
+    }
+
     private ApostaFavoritaListener onItemClickListener() {
         return new ApostaFavoritaListener() {
             @Override
@@ -265,7 +274,7 @@ private void callWebservice() {
             @Override
             public void onAdd(int position) {
                 //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
-                    model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
+                model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
                 //}
             }
 
@@ -304,34 +313,34 @@ private void callWebservice() {
         };
     }
 
-//    private void getFavoritasScroll(){
-//        if (!model.getMaisCompras()) {
-//            return;
-//        }
-//        progressLoadingMore.setVisibility(View.VISIBLE);
-//        model.buscaApostas(new OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO>() {
-//            @Override
-//            public void success(ResultadoPesquisaPaginadaApostaFavoritaDTO payload) {
-//                progressLoadingMore.setVisibility(View.GONE);
-//                if(payload.getLista().size() == 0){
-//                    model.setMaisCompras(false);
-//                }else{
-//                    List<ApostaFavoritaDTO> apostaList = model.getApostaList();
-//                    apostaList.addAll(payload.getLista());
-//                    model.setApostaList(apostaList);
-//                    favoritasAdapter.notifyDataSetChanged();
-//                    model.setOffsetItem(model.getOffsetItem() + 5);
-//                }
-//                model.setBloquearRequestScroll(false);
-//            }
-//
-//            @Override
-//            public void error(VolleyError error) {
-//                progressLoadingMore.setVisibility(View.GONE);
-//                model.setBloquearRequestScroll(false);
-//            }
-//        });
-//    }
+    private void getFavoritasScroll(){
+        if (!model.getMaisCompras()) {
+            return;
+        }
+        progressLoadingMore.setVisibility(View.VISIBLE);
+        model.buscaApostas(new OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO>() {
+            @Override
+            public void success(ResultadoPesquisaPaginadaApostaFavoritaDTO payload) {
+                progressLoadingMore.setVisibility(View.GONE);
+                if(payload.getLista().size() == 0){
+                    model.setMaisCompras(false);
+                }else{
+                    List<ApostaFavoritaDTO> apostaList = model.getApostaList();
+                    apostaList.addAll(payload.getLista());
+                    model.setApostaList(apostaList);
+                    favoritasAdapterModalidade.notifyDataSetChanged();
+                    model.setOffsetItem(model.getOffsetItem() + 5);
+                }
+                model.setBloquearRequestScroll(false);
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                progressLoadingMore.setVisibility(View.GONE);
+                model.setBloquearRequestScroll(false);
+            }
+        });
+    }
 
     private void buscaModalidades() {
         new ModalidadeModel(this).buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
@@ -342,6 +351,7 @@ private void callWebservice() {
                     criaListTipoAposta(true);
                 }
             }
+
             @Override
             public void error(VolleyError error) {
             }
@@ -362,7 +372,7 @@ private void callWebservice() {
             EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromModalidadeDTO(item));
             switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
                 case MAIS_MILIONALIA:
-                    tipoAposta = new TipoAposta("+Milionária", estilo.getTrevoFundoClaro(),  estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+                    tipoAposta = new TipoAposta("+Milionária", estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
                     break;
                 case TIMEMANIA:
                 case DIA_DE_SORTE:
@@ -399,10 +409,13 @@ private void callWebservice() {
         TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
         TextView btnFilter = dialogView.findViewById(R.id.btn_filter);
         btnCancel.setOnClickListener(v -> dialog.dismiss());
-        btnFilter.setOnClickListener(v -> dialog.dismiss());
+        btnFilter.setOnClickListener(v -> {
+            dialog.dismiss();
+            filtrarModalidade();
+        });
 
         dialog.show();
-        dialog.getWindow().setLayout((int)(getResources().getDisplayMetrics().widthPixels * 0.9), ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout((int) (getResources().getDisplayMetrics().widthPixels * 0.9), ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     private OnItemClickListener<ModalidadeHolder> onItemClickListenerModalidade() {
@@ -411,12 +424,19 @@ private void callWebservice() {
                 listTipoAposta.get(position).setSelect(false);
                 holder.atualizaNaoSelecionado(listTipoAposta.get(position));
             } else {
-                //if (isUnicaSelecao) {
-                    adapterModalidades.limpaSelecaoModalidades();
-                //}
+                adapterModalidades.limpaSelecaoModalidades();
                 listTipoAposta.get(position).setSelect(true);
                 holder.atualizaSelecionado(listTipoAposta.get(position));
             }
         };
+    }
+
+    public void filtrarModalidade() {
+        for (TipoAposta tipoAposta : listTipoAposta) {
+            if (tipoAposta.getSelect()) {
+                textFiltroSelecionado.setText(tipoAposta.getTitulo());
+                callFiltrarModalidade(tipoAposta.getValor());
+            }
+        }
     }
 }

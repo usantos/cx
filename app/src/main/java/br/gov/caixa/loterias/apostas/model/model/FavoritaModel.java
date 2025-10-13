@@ -63,6 +63,10 @@ public class FavoritaModel extends AppModel {
 		repository.buscaApostas(this.offsetItem, listener);
 	}
 
+	public void buscaApostasModalidade(int modalidade, OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO> listener){
+		repository.buscaApostasModalidade(modalidade, this.offsetItem, listener);
+	}
+
 	public void buscaApostasAgrupadas(OnSilceListener<AgrupadorDTOApostaFavoritaDTO> listener){
 		repository.buscaApostasAgrupadas(listener);
 	}
