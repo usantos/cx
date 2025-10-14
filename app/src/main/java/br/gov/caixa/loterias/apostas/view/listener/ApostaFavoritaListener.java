@@ -6,7 +6,7 @@ public interface ApostaFavoritaListener {
 
 	void onDeleta(int position);
 
-	void onAltera(int position, FavoritaHolder holder);
+	//void onAltera(int position, FavoritaHolder holder);
 
 	void onAdd(int position);
 

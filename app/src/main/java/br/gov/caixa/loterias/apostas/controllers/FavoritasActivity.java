@@ -47,7 +47,6 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SelecaoModalidadesRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRecyclerViewAdapter;
-import br.gov.caixa.loterias.apostas.view.holder.FavoritaHolder;
 import br.gov.caixa.loterias.apostas.view.holder.ModalidadeHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaFavoritaListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
@@ -62,8 +61,6 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     private ProgressBar progressLoadingMore;
     private NestedScrollView scrollViewContentViewFavoritas;
 
-    private FavoritasRecyclerViewAdapter favoritasAdapterModalidade;
-    //private FavoritasAgrupadasAdapter favoritasAdapter;
     private FavoritasRecyclerViewAdapter favoritasAdapter;
     //endregion
 
@@ -150,15 +147,10 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         startActivity(activity);
     }
 
-    private void atualizaLayout() {
-        TextView subTituloFavoritas = findViewById(R.id.subTituloFavoritas);
-        subTituloFavoritas.setText(getResources().getString(R.string.nesta_area_estao_todas_suas_apostas));
-    }
-
-    //private void callWebservice() {
     private void callFiltrarModalidade(Integer codModalidade) {
         model.setMaisCompras(true);
         model.setBloquearRequestScroll(false);
+        model.setOffsetItem(0);
 
         AlertDialogUtils.show(this);
         model.buscaApostasModalidade(codModalidade, new OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO>() {
@@ -171,11 +163,11 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
                 //recyclerView
                 recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
-                favoritasAdapterModalidade = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
+                favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
                         FavoritasActivity.this, model.getApostaList(), onItemClickListener());
 
                 recyclerViewFavoritas.setHasFixedSize(true);
-                recyclerViewFavoritas.setAdapter(favoritasAdapterModalidade);
+                recyclerViewFavoritas.setAdapter(favoritasAdapter);
                 recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
 
                 scrollViewContentViewFavoritas.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
@@ -190,7 +182,6 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                     }
                 });
 
-                atualizaLayout();
             }
 
             @Override
@@ -208,6 +199,10 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             buscaModalidades();
         }
 
+        model.setMaisCompras(false);
+        model.setBloquearRequestScroll(true);
+        model.setOffsetItem(0);
+
         model.buscaApostasAgrupadas(new OnSilceListener<AgrupadorDTOApostaFavoritaDTO>() {
             @Override
             public void success(AgrupadorDTOApostaFavoritaDTO payload) {
@@ -221,10 +216,13 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
                 AlertDialogUtils.dismiss();
 
+                //model.setOffsetItem(8);
+                model.setApostaList(listaUnificada);
+
                 recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
 
                 favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
-                        FavoritasActivity.this, listaUnificada, onItemClickListener());
+                        FavoritasActivity.this, model.getApostaList(), onItemClickListener());
 
                 recyclerViewFavoritas.setHasFixedSize(true);
                 recyclerViewFavoritas.setAdapter(favoritasAdapter);
@@ -259,35 +257,12 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             }
 
             @Override
-            public void onAltera(int position, FavoritaHolder holder) {
-//                AlertDialogUtils.show(FavoritasActivity.this);
-//                ApostaFavoritaDTO apostaFavoritaDTO = model.getApostaList().get(position);
-//                model.alteraAposta(apostaFavoritaDTO, holder, new OnSilceListener() {
-//                    @Override
-//                    public void success(Object payload) {
-//                        AlertDialogUtils.dismiss();
-//                        holder.nomeAtualizado(apostaFavoritaDTO);
-//                    }
-//
-//                    @Override
-//                    public void error(VolleyError error) {
-//                        apostaFavoritaDTO.setOpenSwipeLayout(true);
-//                        AlertDialogUtils.dismiss();
-//                    }
-//                });
-            }
-
-            @Override
             public void onAdd(int position) {
                 //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(FavoritasActivity.this)) {
                 model.addApostaCarrinho(model.getApostaList().get(position), onAddCarrinhoListener());
                 //}
             }
 
-//            @Override
-//            public boolean onTemSwipe(int position) {
-//                return model.temSwipe(position);
-//            }
         };
     }
 
@@ -336,7 +311,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                     List<ApostaFavoritaDTO> apostaList = model.getApostaList();
                     apostaList.addAll(payload.getLista());
                     model.setApostaList(apostaList);
-                    favoritasAdapterModalidade.notifyDataSetChanged();
+                    favoritasAdapter.notifyDataSetChanged();
                     model.setOffsetItem(model.getOffsetItem() + 5);
                 }
                 model.setBloquearRequestScroll(false);

@@ -103,9 +103,9 @@ public class FavoritaModel extends AppModel {
 		this.apostaList = apostaList;
 	}
 
-	public boolean temSwipe(int position) {
-		return apostaList.size() > 0 && position < apostaList.size();
-	}
+//	public boolean temSwipe(int position) {
+//		return apostaList.size() > 0 && position < apostaList.size();
+//	}
 
 	public void addApostaCarrinho(ApostaFavoritaDTO aposta, OnSilceListener<CarrinhoDTO> listener) {
 		carrinhoRepository.buscaCarrinho(new OnSilceListener<CarrinhoDTO>() {
