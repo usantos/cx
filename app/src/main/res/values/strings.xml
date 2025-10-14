@@ -1543,5 +1543,6 @@
     <string name="tipo_aposta_teimosinha">Teimosinha</string>
     <string name="tipo_aposta_troca">Aposta de Troca</string>
     <string name="selecione_modalidade_desejada">Selecione a modalidade desejada</string>
+    <string name="voce_ainda_nao_tem_apostas">Você ainda não tem apostas favoritas. Que tal adicionar uma agora?</string>
 
 </resources>

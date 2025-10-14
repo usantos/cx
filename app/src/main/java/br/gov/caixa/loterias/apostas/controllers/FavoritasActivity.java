@@ -10,16 +10,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ import java.util.Map;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTO;
@@ -36,6 +40,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -44,6 +50,7 @@ import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SelecaoModalidadesRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FavoritasRecyclerViewAdapter;
@@ -216,7 +223,11 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
                 AlertDialogUtils.dismiss();
 
-                //model.setOffsetItem(8);
+                if (listaUnificada.size() == 0) {
+                    telaSemApostas();
+                    return;
+                }
+
                 model.setApostaList(listaUnificada);
 
                 recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
@@ -425,5 +436,56 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                 }
             }
         }
+    }
+
+    private void telaSemApostas() {
+        criaListTipoAposta(false);
+
+        TextView subTituloFavoritas = findViewById(R.id.subTituloFavoritas);
+        subTituloFavoritas.setText(getString(R.string.voce_ainda_nao_tem_apostas));
+        subTituloFavoritas.setTextColor(ContextCompat.getColor(this, R.color.blue_caixa));
+        LinearLayout conteudoFiltro = findViewById(R.id.conteudoFiltro);
+        conteudoFiltro.setVisibility(View.GONE);
+
+        recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
+        recyclerViewFavoritas.setLayoutManager(new GridLayoutManager(this, 2));
+        adapterModalidades = new SelecaoModalidadesRecyclerAdapter(listTipoAposta, true, onItemClickListenerModalidadeSemApostas());
+        recyclerViewFavoritas.setAdapter(adapterModalidades);
+
+    }
+    private OnItemClickListener<ModalidadeHolder> onItemClickListenerModalidadeSemApostas() {
+        return (holder, position) -> {
+            if (listTipoAposta.get(position).getSelect()) {
+                listTipoAposta.get(position).setSelect(false);
+                holder.atualizaNaoSelecionado(listTipoAposta.get(position));
+            } else {
+                adapterModalidades.limpaSelecaoModalidades();
+                listTipoAposta.get(position).setSelect(true);
+                holder.atualizaSelecionado(listTipoAposta.get(position));
+            }
+
+            Integer codModalidade = listTipoAposta.get(position).getValor();
+            ModalidadeEnum modalidadeEnum = ModalidadeEnum.fromInteger(codModalidade);
+
+            ParametroJogoDTO parametroJogo = getParametroJogo(modalidadeEnum, SessaoUsuario.getInstance().getParametrosSimulacao().getParametros());
+
+            if (parametroJogo != null) {
+                Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
+                intent.putExtra("tipoAposta", modalidadeEnum);
+                intent.putExtra("modalidade", (new Gson()).toJson(parametroJogo));
+                intent.putExtra("especial", false);
+
+                startActivity(intent);
+            }
+            finish();
+        };
+    }
+    private ParametroJogoDTO getParametroJogo(ModalidadeEnum modalidade, List<ParametroSimulacao> listParametroJogo) {
+        for (ParametroSimulacao parametroSimula : listParametroJogo) {
+            if (parametroSimula != null || parametroSimula.getParametroJogo().getConcurso().getModalidade() == modalidade) {
+                return parametroSimula.getParametroJogo();
+            }
+        }
+        return null;
     }
 }

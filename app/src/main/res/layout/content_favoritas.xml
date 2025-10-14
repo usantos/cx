@@ -16,7 +16,7 @@
         >
 
     <LinearLayout
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -28,6 +28,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
             android:fontFamily="@font/caixa_std_regular"
             android:text="@string/aposta_favoritas_descricao"
             android:textColor="@color/cinza110"
@@ -35,67 +36,74 @@
             android:autoSizePresetSizes="@array/autosize_text_sizes"
             android:textSize="18sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/linhaDivisa"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tituloFiltro"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/caixa_std_regular"
-            android:text="@string/selecione_modalidade"
-            android:textColor="@color/cinza90"
-            android:autoSizeTextType="uniform"
-            android:autoSizePresetSizes="@array/autosize_text_sizes"
-            android:textSize="16sp" />
-
         <LinearLayout
+            android:id="@+id/conteudoFiltro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="16dp"
+            android:orientation="vertical"
             android:gravity="center_vertical">
 
-
-            <TextView
-                android:id="@+id/textFiltroSelecionado"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/linhaDivisa"
                 android:layout_marginRight="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:id="@+id/tituloFiltro"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/caixa_std_regular"
-                android:text="Todas"
-                android:textColor="@color/cinza130"
+                android:text="@string/selecione_modalidade"
+                android:textColor="@color/cinza90"
                 android:autoSizeTextType="uniform"
                 android:autoSizePresetSizes="@array/autosize_text_sizes"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
-            <ImageView
-                android:id="@+id/imageFiltroSelecionado"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_filtro_circular" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center_vertical">
 
+
+                <TextView
+                    android:id="@+id/textFiltroSelecionado"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="0dp"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="Todas"
+                    android:textColor="@color/cinza130"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizePresetSizes="@array/autosize_text_sizes"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/imageFiltroSelecionado"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_filtro_circular" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/linhaDivisa"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/linhaDivisa"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerFavoritas"
