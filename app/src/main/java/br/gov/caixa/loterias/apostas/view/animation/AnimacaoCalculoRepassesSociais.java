@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
@@ -54,7 +55,10 @@ public class AnimacaoCalculoRepassesSociais {
         animator.addUpdateListener(animation -> {
             String valorUpdate = String.format( "%.2f", animation.getAnimatedValue());
             valorUpdate = valorUpdate.replace(",", ".");
-            textView.setText(ViewUtils.getMoedaFormat(new BigDecimal(valorUpdate)));
+            String valorFormatado = ViewUtils.getMoedaFormat(new BigDecimal(valorUpdate));
+            textView.setText(valorFormatado);
+            textView.setContentDescription("Em " + Calendar.getInstance().get(Calendar.YEAR) + " as Loterias já destinaram " + valorFormatado + " para melhorar o país.");
+            textView.setHint("Título");
         });
         // problem here
         animator.setEvaluator(( TypeEvaluator<Double>)(fraction, startValue, endValue) -> (startValue + (endValue - startValue) * fraction));

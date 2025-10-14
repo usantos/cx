@@ -3,7 +3,9 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +33,8 @@ public class DuvidasActivity extends LoteriasBaseAppActivity {
     private ExpandableHeightRecyclerView recyclerViewDuvidas;
     private List<ListSecaoDTO> secaoDuvidas;
 
+    ImageButton customButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +52,20 @@ public class DuvidasActivity extends LoteriasBaseAppActivity {
 
     private void setViews() {
         setContentView(R.layout.activity_duvidas);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_toolbar)));
-
+        configurarToolbar();
         layoutDuvidas = findViewById(R.id.layoutDuvidas2);
         recyclerViewDuvidas = findViewById(R.id.recyclerViewDuvidas2);
+    }
+
+    private void configurarToolbar(){
+        TextView textTitulo = findViewById(R.id.textCustom);
+        textTitulo.setHint(getString(R.string.titulo));
+        customButton = findViewById(R.id.customButton);
+        customButton.setContentDescription(getString(R.string.voltar));
+        customButton.setOnClickListener(v -> onBackPressed());
+        customButton.setFocusable(true);
+        customButton.setFocusableInTouchMode(true);
+        customButton.requestFocus();
     }
 
     @Override

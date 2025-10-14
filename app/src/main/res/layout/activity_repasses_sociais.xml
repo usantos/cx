@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient_verde"
+    android:background="@drawable/background_gradient_azul"
     tools:context="br.gov.caixa.loterias.apostas.controllers.RepassesSociaisActivity"
     android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/app_bar_degrade"/>
+    <include layout="@layout/app_bar_custom_questions"/>
     <include layout="@layout/content_repasses_sociais" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
