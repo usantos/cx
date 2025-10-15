@@ -409,6 +409,9 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         dialog.setContentView(dialogView);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_roudend_branco);
 
+        ImageView btnClose = dialogView.findViewById(R.id.dialog_close);
+        btnClose.setOnClickListener(v -> dialog.dismiss());
+
         TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
         TextView btnFilter = dialogView.findViewById(R.id.btn_filter);
         btnCancel.setOnClickListener(v -> dialog.dismiss());
@@ -491,7 +494,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     }
     private ParametroJogoDTO getParametroJogo(ModalidadeEnum modalidade, List<ParametroSimulacao> listParametroJogo) {
         for (ParametroSimulacao parametroSimula : listParametroJogo) {
-            if (parametroSimula != null || parametroSimula.getParametroJogo().getConcurso().getModalidade() == modalidade) {
+            if (parametroSimula != null && parametroSimula.getParametroJogo().getConcurso().getModalidade() == modalidade) {
                 return parametroSimula.getParametroJogo();
             }
         }
