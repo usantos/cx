@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -252,19 +253,12 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         return new ApostaFavoritaListener() {
             @Override
             public void onDeleta(int position) {
-                AlertDialogUtils.show(FavoritasActivity.this);
-                model.deletaAposta(model.getApostaList().get(position), new OnSilceListener() {
-                    @Override
-                    public void success(Object payload) {
-                        AlertDialogUtils.dismiss();
-                        removeAt(position);
-                    }
-
-                    @Override
-                    public void error(VolleyError error) {
-                        AlertDialogUtils.dismiss();
-                    }
-                });
+                String nomeFavorita = model.getApostaList().get(position).getNome();
+                AlertDialog dialog = ViewUtils.dialogoNew(FavoritasActivity.this,
+                        R.string.label_atencao, getString(R.string.exclui_favorita).replace("xxx", nomeFavorita),
+                        (dialogInterface, i) -> {excluiApostaFavorita(position); dialogInterface.dismiss();},
+                        (dialogInterface, i) -> dialogInterface.dismiss());
+                dialog.show();
             }
 
             @Override
@@ -275,6 +269,21 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             }
 
         };
+    }
+
+    private void excluiApostaFavorita(int position) {
+        AlertDialogUtils.show(FavoritasActivity.this);
+        model.deletaAposta(model.getApostaList().get(position), new OnSilceListener() {
+            @Override
+            public void success(Object payload) {
+                AlertDialogUtils.dismiss();
+                removeAt(position);
+            }
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        });
     }
 
     public void removeAt(int position) {

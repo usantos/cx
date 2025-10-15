@@ -3,28 +3,17 @@ package br.gov.caixa.loterias.apostas.view.holder;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-
-import org.jetbrains.annotations.NotNull;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
-import br.gov.caixa.loterias.apostas.utils.VectorUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class ModalidadeHolder extends LoteriasHolder<TipoAposta> implements  View.OnClickListener {
@@ -119,6 +108,15 @@ public class ModalidadeHolder extends LoteriasHolder<TipoAposta> implements  Vie
 	private void setImageTrevo(Integer imagemTrevoFundoCor) {
 		if (imagemTrevoFundoCor == null) {
 			imageViewTipoAPosta.setVisibility(View.GONE);
+
+			//Alinha o Texto Todas
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.MATCH_PARENT,
+					LinearLayout.LayoutParams.WRAP_CONTENT);
+			params.gravity = Gravity.CENTER_VERTICAL;
+			tituloTipoAposta.setLayoutParams(params);
+			tituloTipoAposta.setGravity(Gravity.CENTER);
+
 		} else {
 			imageViewTipoAPosta.setImageResource(imagemTrevoFundoCor);
 		}
