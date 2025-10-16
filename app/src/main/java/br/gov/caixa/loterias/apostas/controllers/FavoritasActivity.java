@@ -105,15 +105,14 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        callWebservice();
+        buscaServicos();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == 1) {
-            callWebservice();
+            buscaServicos();
         }
     }
 
@@ -154,7 +153,75 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         Intent activity = new Intent(this, TermosUsoActivity.class);
         startActivity(activity);
     }
+    private void buscaServicos() {
 
+        if (listModalidade.size() > 0) {
+            callWebservice();
+            return;
+        }
+
+        AlertDialogUtils.show(this);
+        new ModalidadeModel(this).buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
+            @Override
+            public void success(List<ModalidadeDTO> payload) {
+                if (payload != null) {
+                    listModalidade = payload;
+                    criaListTipoAposta(true);
+                }
+                AlertDialogUtils.dismiss();
+                callWebservice();
+            }
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        });
+    }
+
+    private void callWebservice() {
+        AlertDialogUtils.show(this);
+
+        model.setMaisCompras(false);
+        model.setBloquearRequestScroll(true);
+        model.setOffsetItem(0);
+
+        model.buscaApostasAgrupadas(new OnSilceListener<AgrupadorDTOApostaFavoritaDTO>() {
+            @Override
+            public void success(AgrupadorDTOApostaFavoritaDTO payload) {
+
+                //Transforma para o formato da lista /apostas-favoritas/modalidade
+                Map<String, ResultadoPesquisaPaginadaDTOApostaFavoritaDTO> agrupador = payload.getResultado();
+                List<ApostaFavoritaDTO> listaUnificada = new ArrayList<>();
+                for (ResultadoPesquisaPaginadaDTOApostaFavoritaDTO resultado : agrupador.values()) {
+                    listaUnificada.addAll(resultado.getLista());
+                }
+
+                AlertDialogUtils.dismiss();
+
+                if (listaUnificada.size() == 0) {
+                    telaSemApostas();
+                    return;
+                }
+
+                model.setApostaList(listaUnificada);
+
+                recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
+
+                favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
+                        FavoritasActivity.this, model.getApostaList(), onItemClickListener());
+
+                recyclerViewFavoritas.setHasFixedSize(true);
+                recyclerViewFavoritas.setAdapter(favoritasAdapter);
+                recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+
+        });
+    }
     private void callFiltrarModalidade(Integer codModalidade) {
         model.setMaisCompras(true);
         model.setBloquearRequestScroll(false);
@@ -199,56 +266,6 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
         });
     }
-
-    private void callWebservice() {
-        AlertDialogUtils.show(this);
-
-        if (listModalidade.size() == 0) {
-            buscaModalidades();
-        }
-
-        model.setMaisCompras(false);
-        model.setBloquearRequestScroll(true);
-        model.setOffsetItem(0);
-
-        model.buscaApostasAgrupadas(new OnSilceListener<AgrupadorDTOApostaFavoritaDTO>() {
-            @Override
-            public void success(AgrupadorDTOApostaFavoritaDTO payload) {
-
-                //Transforma para o formato da lista /apostas-favoritas/modalidade
-                Map<String, ResultadoPesquisaPaginadaDTOApostaFavoritaDTO> agrupador = payload.getResultado();
-                List<ApostaFavoritaDTO> listaUnificada = new ArrayList<>();
-                for (ResultadoPesquisaPaginadaDTOApostaFavoritaDTO resultado : agrupador.values()) {
-                    listaUnificada.addAll(resultado.getLista());
-                }
-
-                AlertDialogUtils.dismiss();
-
-                if (listaUnificada.size() == 0) {
-                    telaSemApostas();
-                    return;
-                }
-
-                model.setApostaList(listaUnificada);
-
-                recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
-
-                favoritasAdapter = new FavoritasRecyclerViewAdapter(FavoritasActivity.this,
-                        FavoritasActivity.this, model.getApostaList(), onItemClickListener());
-
-                recyclerViewFavoritas.setHasFixedSize(true);
-                recyclerViewFavoritas.setAdapter(favoritasAdapter);
-                recyclerViewFavoritas.setLayoutManager(new LinearLayoutManager(FavoritasActivity.this));
-            }
-
-            @Override
-            public void error(VolleyError error) {
-                AlertDialogUtils.dismiss();
-            }
-
-        });
-    }
-
     private ApostaFavoritaListener onItemClickListener() {
         return new ApostaFavoritaListener() {
             @Override
@@ -289,7 +306,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     public void removeAt(int position) {
         model.removeAposta(position);
         if (model.isListaVazia()) {
-            callWebservice();
+            buscaServicos();
         }
         favoritasAdapter.notifyItemRemoved(position);
         favoritasAdapter.notifyItemRangeChanged(position, model.getApostaList().size());
@@ -341,22 +358,6 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             public void error(VolleyError error) {
                 progressLoadingMore.setVisibility(View.GONE);
                 model.setBloquearRequestScroll(false);
-            }
-        });
-    }
-
-    private void buscaModalidades() {
-        new ModalidadeModel(this).buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
-            @Override
-            public void success(List<ModalidadeDTO> payload) {
-                if (payload != null) {
-                    listModalidade = payload;
-                    criaListTipoAposta(true);
-                }
-            }
-
-            @Override
-            public void error(VolleyError error) {
             }
         });
     }
@@ -442,7 +443,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             if (tipoAposta.getSelect()) {
                 textFiltroSelecionado.setText(tipoAposta.getTitulo());
                 if (tipoAposta.getValor() == null) {
-                    callWebservice();
+                    buscaServicos();
                 } else {
                     callFiltrarModalidade(tipoAposta.getValor());
                 }
