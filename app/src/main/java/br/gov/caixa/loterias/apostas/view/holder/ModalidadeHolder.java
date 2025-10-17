@@ -50,6 +50,7 @@ public class ModalidadeHolder extends LoteriasHolder<TipoAposta> implements  Vie
 	public void bind(TipoAposta tipoAposta, int position) {
 
 		tituloTipoAposta.setText(tipoAposta.getTitulo());
+		tituloTipoAposta.setHint("Botão");
 
 		if (tipoAposta.getSelect()) {
 			//imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevoFundoCor());

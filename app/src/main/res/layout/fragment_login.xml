@@ -18,6 +18,9 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="146dp"
+            android:contentDescription="@string/logoLoteriasCaixa"
+            android:importantForAccessibility="yes"
+            android:focusable="true"
             android:background="@drawable/logo" />
 
         <Button
@@ -107,6 +110,17 @@
                 android:layout_marginEnd="9dp"
                 android:src="@drawable/digital2" />
 
+        <LinearLayout
+            android:id="@+id/rowBiometria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:labelFor="@id/biometriaSwitch"
+            android:background="?attr/selectableItemBackground">
+
             <TextView
                 android:id="@+id/textViewBiometria"
                 android:layout_width="wrap_content"
@@ -124,8 +138,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="false"
+                android:importantForAccessibility="no"
                 android:theme="@style/SwitchTheme"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </LinearLayout>
         </LinearLayout>
 
         <TextView

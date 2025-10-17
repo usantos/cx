@@ -150,6 +150,8 @@
     <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>
+    <string name="label_excluir_aposta">Excluir aposta favorita</string>
+    <string name="label_adicionar_aposta">Adicionar aposta no carrinho</string>
 
     <string name="MN003">Para continuar é necessário o aceite do termo.</string>
     <string name="termo_novo">O termo de Uso foi Atualizado. É necessário aceitar novamente.</string>
@@ -732,6 +734,7 @@
     <string name="d_vidas">Dúvidas</string>
     <string name="nome_do_carrinho_favorito">Nome do carrinho favorito</string>
     <string name="titulo">Titulo</string>
+    <string name="botao">Botão</string>
     <string name="loteca">loteca</string>
     <string name="selecione_as_op_es_e_clique_em_adicionar">Selecione as opções e clique em adicionar</string>
     <string name="selecione_o_tipo_de_concurso">Selecione o tipo de concurso</string>

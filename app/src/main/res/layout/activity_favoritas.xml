@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/app_bar_azul"/>
+    <include layout="@layout/app_bar_custom_questions"/>
     <include layout="@layout/content_favoritas" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

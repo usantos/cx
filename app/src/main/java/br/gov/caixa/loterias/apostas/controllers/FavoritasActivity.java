@@ -9,7 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -72,24 +75,39 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     private List<TipoAposta> listTipoAposta;
     private List<ModalidadeDTO> listModalidade = new ArrayList<>();
 
+    ImageButton customButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favoritas);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        TextView textTitulo = findViewById(R.id.textCustom);
+        textTitulo.setText(getString(R.string.apostas_favoritas));
+        textTitulo.setHint(getString(R.string.titulo));
+
+        customButton = findViewById(R.id.customButton);
+        customButton.setFocusable(true);
+        customButton.setFocusableInTouchMode(true);
+        customButton.requestFocus();
+        customButton.setContentDescription(getString(R.string.voltar));
+        customButton.setOnClickListener(v -> onBackPressed());
+
+        ImageButton questionButton = findViewById(R.id.buttonQuestions);
+        questionButton.setOnClickListener(v ->
+                startActivity(new Intent(this, TermosUsoActivity.class))
+        );
 
         model = new FavoritaModel(this);
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_favoritas_bold)));
 
         scrollViewContentViewFavoritas = findViewById(R.id.scrollViewContentViewFavoritas);
         textFiltroSelecionado = findViewById(R.id.textFiltroSelecionado);
         imageFiltroSelecionado = findViewById(R.id.imageFiltroSelecionado);
         imageFiltroSelecionado.setOnClickListener(v -> abrirFiltroModalidade(FavoritasActivity.this));
         progressLoadingMore = findViewById(R.id.favoritas_loading_more);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        LinearLayout conteudoFiltro = findViewById(R.id.conteudoFiltro);
+        conteudoFiltro.setContentDescription(getString(R.string.selecione_modalidade) + ":Botão:" + textFiltroSelecionado.getText() + "Selecionada");
+        conteudoFiltro.setOnClickListener(v -> abrirFiltroModalidade(FavoritasActivity.this));
 
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_favoritos));
     }
@@ -378,6 +396,12 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     public void abrirFiltroModalidade(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_grid, null);
+        TextView dialogTitle = dialogView.findViewById(R.id.dialog_title);
+        dialogTitle.setHint(getString(R.string.titulo));
+        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        btnCancel.setHint(getString(R.string.botao));
+        TextView btnFilter = dialogView.findViewById(R.id.btn_filter);
+        btnFilter.setHint(getString(R.string.botao));
 
         gridModalidades = dialogView.findViewById(R.id.ehgv_grid_modalidades);
         gridModalidades.setLayoutManager(new GridLayoutManager(context, 2));
@@ -389,8 +413,6 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         dialog.setContentView(dialogView);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_roudend_branco);
 
-        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
-        TextView btnFilter = dialogView.findViewById(R.id.btn_filter);
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         btnFilter.setOnClickListener(v -> {
             dialog.dismiss();
