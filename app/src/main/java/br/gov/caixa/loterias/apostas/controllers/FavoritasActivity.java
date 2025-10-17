@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
@@ -79,7 +81,8 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     private SelecaoModalidadesRecyclerAdapter adapterModalidades;
     private List<TipoAposta> listTipoAposta;
     private List<ModalidadeDTO> listModalidade = new ArrayList<>();
-
+    private TextView semModalidade;
+    private TextView btnIncApostaFav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,6 +235,11 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             @Override
             public void success(ResultadoPesquisaPaginadaApostaFavoritaDTO payload) {
                 AlertDialogUtils.dismiss();
+
+                if (payload.getLista() == null || payload.getLista().size() == 0) {
+                    ativaIncluirAposta(codModalidade);
+                    return;
+                }
 
                 model.setOffsetItem(8);
                 model.setApostaList(payload.getLista());
@@ -418,6 +426,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         btnCancel.setOnClickListener(v -> dialog.dismiss());
         btnFilter.setOnClickListener(v -> {
             dialog.dismiss();
+            desativaIncluirAposta();
             filtrarModalidade();
         });
 
@@ -478,20 +487,23 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             }
 
             Integer codModalidade = listTipoAposta.get(position).getValor();
-            ModalidadeEnum modalidadeEnum = ModalidadeEnum.fromInteger(codModalidade);
-
-            ParametroJogoDTO parametroJogo = getParametroJogo(modalidadeEnum, SessaoUsuario.getInstance().getParametrosSimulacao().getParametros());
-
-            if (parametroJogo != null) {
-                Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
-                intent.putExtra("tipoAposta", modalidadeEnum);
-                intent.putExtra("modalidade", (new Gson()).toJson(parametroJogo));
-                intent.putExtra("especial", false);
-
-                startActivity(intent);
-            }
-            finish();
+            redirecionaSimulador(codModalidade);
         };
+    }
+    private void redirecionaSimulador(int codModalidade) {
+        ModalidadeEnum modalidadeEnum = ModalidadeEnum.fromInteger(codModalidade);
+
+        ParametroJogoDTO parametroJogo = getParametroJogo(modalidadeEnum, SessaoUsuario.getInstance().getParametrosSimulacao().getParametros());
+
+        if (parametroJogo != null) {
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
+            intent.putExtra("tipoAposta", modalidadeEnum);
+            intent.putExtra("modalidade", (new Gson()).toJson(parametroJogo));
+            intent.putExtra("especial", false);
+
+            startActivity(intent);
+        }
+        finish();
     }
     private ParametroJogoDTO getParametroJogo(ModalidadeEnum modalidade, List<ParametroSimulacao> listParametroJogo) {
         for (ParametroSimulacao parametroSimula : listParametroJogo) {
@@ -500,5 +512,36 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             }
         }
         return null;
+    }
+
+    private void ativaIncluirAposta(int codModalidade) {
+        semModalidade = findViewById(R.id.semModalidade);
+        semModalidade.setVisibility(View.VISIBLE);
+
+        btnIncApostaFav = findViewById(R.id.txtIncApostaFavorita);
+        GradientDrawable drawable = (GradientDrawable) AppCompatResources
+                .getDrawable(this, R.drawable.background_roudend_azul)
+                .mutate().getConstantState().newDrawable().mutate();
+
+        drawable.setColor(ContextCompat.getColor(this, R.color.colorAccent));
+        btnIncApostaFav.setBackground(drawable);
+        btnIncApostaFav.setVisibility(View.VISIBLE);
+        btnIncApostaFav.setOnClickListener(v -> {
+            redirecionaSimulador(codModalidade);
+        });
+
+        recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
+        recyclerViewFavoritas.setVisibility(View.GONE);
+    }
+
+    private void desativaIncluirAposta() {
+        semModalidade = findViewById(R.id.semModalidade);
+        semModalidade.setVisibility(View.GONE);
+
+        btnIncApostaFav = findViewById(R.id.txtIncApostaFavorita);
+        btnIncApostaFav.setVisibility(View.GONE);
+
+        recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
+        recyclerViewFavoritas.setVisibility(View.VISIBLE);
     }
 }

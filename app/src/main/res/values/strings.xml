@@ -1545,5 +1545,7 @@
     <string name="selecione_modalidade_desejada">Selecione a modalidade desejada</string>
     <string name="voce_ainda_nao_tem_apostas">Você ainda não tem apostas favoritas. Que tal adicionar uma agora?</string>
     <string name="exclui_favorita">Deseja excluir a aposta favorita: xxx?</string>
+    <string name="sem_modalidade">Você ainda não tem apostas favoritas desta modalidade. Que tal adicionar uma agora?</string>
+    <string name="incluir_aposta_favorita">Incluir aposta favorita</string>
 
 </resources>
