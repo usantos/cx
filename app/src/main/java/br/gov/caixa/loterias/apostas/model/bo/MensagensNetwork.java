@@ -10,6 +10,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -62,61 +63,74 @@ public class MensagensNetwork {
 
         return errorResponse.getMessage();
     }
-
-    public static String setMensagem(VolleyError error, final Context context){
+    public static String setMensagem(VolleyError error, final Context context) {
         NetworkResponse response = error.networkResponse;
+        ErrorResponse errorResponse = new ErrorResponse();
+        Gson gsonResponse = new Gson();
 
-         if (response == null){
+        if (response == null) {
+            Throwable cause = error.getCause();
+
             if (error instanceof TimeoutError) {
                 return context.getString(R.string.erro_408);
-            }else if(error instanceof NoConnectionError){
-                Log.e("caixa", "Erro ao conexar com internet MensagensNetwork.setMensagem()");
+            } else if (error instanceof NoConnectionError) {
+                Log.e("caixa", "NoConnectionError: " + error.getMessage());
+                if (cause != null) {
+                    Log.e("caixa", "Causa raiz: " + cause.toString());
+                    if (cause instanceof IOException) {
+                        return context.getString(R.string.sistema_indisponivel);
+                    }
+                }
                 return context.getString(R.string.seminternet);
             } else if (error instanceof AuthFailureError) {
                 return context.getString(R.string.erro_401);
+            } else {
+                Log.e("caixa", "Erro desconhecido: " + error.getMessage());
+                if (cause != null) {
+                    Log.e("caixa", "Causa raiz: " + cause.toString());
+                }
+                return context.getString(R.string.sistema_indisponivel);
             }
-            return context.getString(R.string.sistema_indisponivel);
         }
 
-        Gson gsonResponse = new Gson();
-
-        ErrorResponse errorResponse = new ErrorResponse();
-
-        String body;
-        //get response body and parse with appropriate encoding
-        if(error.networkResponse.data!=null) {
+        // Tenta extrair mensagem do corpo da resposta
+        if (response.data != null) {
             try {
-                body = new String(error.networkResponse.data,"UTF-8");
+                String body = new String(response.data, "UTF-8");
                 errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
-            } catch (Exception e){
-                errorResponse = new ErrorResponse();
-                errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
+            } catch (Exception e) {
+                Log.e("caixa", "Erro ao parsear corpo da resposta: " + e.getMessage());
+                errorResponse.setMensagem(context.getString(R.string.sistema_indisponivel) + " - " + response.statusCode);
             }
         }
 
-        if (errorResponse == null){
+        if (errorResponse == null || errorResponse.getMensagem() == null || errorResponse.getMensagem().isEmpty()) {
             errorResponse = new ErrorResponse();
         }
 
-        switch (response.statusCode){
+        // Tratamento por código de status HTTP
+        switch (response.statusCode) {
             case UNAUTHORIZED:
-                errorResponse.setMensagem(  context.getString(R.string.erro_401) );
+                errorResponse.setMensagem(context.getString(R.string.erro_401));
                 break;
             case TIMEOUT:
-                errorResponse.setMensagem(  context.getString(R.string.erro_408) );
+                errorResponse.setMensagem(context.getString(R.string.erro_408));
                 break;
             case INTERNAL_SERVER_ERROR:
-                errorResponse.setMensagem(  context.getString(R.string.erro_500) );
+                errorResponse.setMensagem(context.getString(R.string.erro_500));
                 break;
             default:
-                if(errorResponse.getMensagem() == null || errorResponse.getMensagem().isEmpty()){
-                    errorResponse.setMensagem(  context.getString(R.string.nao_concluiu_operacao) );
+                if (errorResponse.getMensagem() == null || errorResponse.getMensagem().isEmpty()) {
+                    errorResponse.setMensagem(context.getString(R.string.nao_concluiu_operacao));
                 }
-            break;
+                break;
         }
 
         return errorResponse.getMensagem();
     }
+
+
+
 
     public static String getErrorMessage(VolleyError error){
         try{
