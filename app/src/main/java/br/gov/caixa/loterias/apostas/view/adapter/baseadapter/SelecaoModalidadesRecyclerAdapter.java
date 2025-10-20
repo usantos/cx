@@ -80,4 +80,17 @@ public class SelecaoModalidadesRecyclerAdapter extends RecyclerView.Adapter<Moda
 		notifyDataSetChanged();
 	}
 
+	public void selecionaOPrimeiro() {
+		if (tiposAposta != null) {
+			for (int i = 0; i < tiposAposta.size(); i++) {
+				if (i == 0) {
+					tiposAposta.get(i).setSelect(true);
+				} else {
+					tiposAposta.get(i).setSelect(false);
+				}
+			}
+		}
+		notifyDataSetChanged();
+	}
+
 }

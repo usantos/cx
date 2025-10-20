@@ -64,6 +64,8 @@ import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
 public class FavoritasActivity extends LoteriasBaseAppActivity {
 
+    private static final String TODAS = "Todas";
+
     //region Variables Views
     public RecyclerView recyclerViewFavoritas;
     public TextView textFiltroSelecionado;
@@ -374,7 +376,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         listTipoAposta = new ArrayList<>();
 
         if (comTodas) {
-            TipoAposta tipoAposta = new TipoAposta("Todas",
+            TipoAposta tipoAposta = new TipoAposta(TODAS,
                     R.color.blue_caixa, true, R.color.cinzatextoselecionado);
             listTipoAposta.add(tipoAposta);
         }
@@ -425,7 +427,12 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
         TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
         TextView btnFilter = dialogView.findViewById(R.id.btn_filter);
-        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        btnCancel.setOnClickListener(v -> {
+            if (textFiltroSelecionado.getText().toString().equalsIgnoreCase(TODAS)) {
+                adapterModalidades.selecionaOPrimeiro();
+            }
+            dialog.dismiss();
+        });
         btnFilter.setOnClickListener(v -> {
             dialog.dismiss();
             desativaIncluirAposta();

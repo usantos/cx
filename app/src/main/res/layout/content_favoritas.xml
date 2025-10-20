@@ -112,10 +112,10 @@
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/caixa_std_regular"
             android:text="@string/sem_modalidade"
-            android:textColor="@color/cinza110"
+            android:textColor="@color/blue_caixa"
             android:autoSizeTextType="uniform"
             android:autoSizePresetSizes="@array/autosize_text_sizes"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:visibility="gone"/>
 
         <TextView
