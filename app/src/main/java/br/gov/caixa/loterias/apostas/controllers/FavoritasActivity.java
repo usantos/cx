@@ -392,6 +392,8 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                     tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
                     tipoAposta.setTextSelectColor(estilo.getCorLetraLista());
                     break;
+                case LOTECA:  //Loteca não tem Apostas Favoritas (Não apresenta na lista)
+                    break;
                 default:
                     tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
                     break;
