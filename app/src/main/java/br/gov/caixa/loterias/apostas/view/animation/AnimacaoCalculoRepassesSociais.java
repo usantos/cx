@@ -51,13 +51,21 @@ public class AnimacaoCalculoRepassesSociais {
         final double calculoFinal = calculo;
 
         ValueAnimator animator = new  ValueAnimator();
-        animator.setObjectValues(oldValue, calculo); //double value
+        animator.setObjectValues(oldValue, calculo);
         animator.addUpdateListener(animation -> {
-            String valorUpdate = String.format( "%.2f", animation.getAnimatedValue());
+            String valorUpdate = String.format("%.2f", animation.getAnimatedValue());
             valorUpdate = valorUpdate.replace(",", ".");
             String valorFormatado = ViewUtils.getMoedaFormat(new BigDecimal(valorUpdate));
             textView.setText(valorFormatado);
-            textView.setContentDescription("Em " + Calendar.getInstance().get(Calendar.YEAR) + " as Loterias já destinaram " + valorFormatado + " para melhorar o país.");
+
+            String novoContentDescription = "Em " + Calendar.getInstance().get(Calendar.YEAR)
+                    + " as Loterias já destinaram " + valorFormatado + " para melhorar o país.";
+
+            CharSequence atualContentDescription = textView.getContentDescription();
+            if (atualContentDescription == null || !atualContentDescription.toString().equals(novoContentDescription)) {
+                textView.setContentDescription(novoContentDescription);
+            }
+
             textView.setHint("Título");
         });
         // problem here
