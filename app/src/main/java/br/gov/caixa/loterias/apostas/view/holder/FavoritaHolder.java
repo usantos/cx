@@ -170,7 +170,7 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 //		});
 
 		boolean isTimeCoracao = aposta.getTimeDoCoracao() != null && StringUtils.isNotEmpty(aposta.getTimeDoCoracao().getNome());
-		boolean isMesSorte = aposta.getMesDeSorte() != null &&StringUtils.isNotEmpty(aposta.getMesDeSorte().getNome());
+		boolean isMesSorte = aposta.getMesDeSorte() != null && StringUtils.isNotEmpty(aposta.getMesDeSorte().getNome()) && aposta.getMesDeSorte().getNumero().intValue() > 0;
 		ModalidadeEnum modalidadeEnum = ModalidadeEnum.toString(aposta.getModalidade().getDescricao().toLowerCase(new Locale(activity.getResources().getString(R.string.pt), activity.getResources().getString(R.string.br))));
 		if (isTimeCoracao || isMesSorte || modalidadeEnum.equals(ModalidadeEnum.MAIS_MILIONARIA)) {
 			if (isTimeCoracao || isMesSorte) {
