@@ -33,6 +33,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             android:maxLines="1"
+            android:hint="@string/button"
             tools:text="@string/placeholder_dia_de_sorte" />
 
     </LinearLayout>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -142,6 +143,9 @@ public class LerBilhetesActivity extends LoteriasBaseAppActivity {
 
 //        TextView textoLeitorCodBarras = findViewById(R.id.TextoLeitorCodBarras);
 //        textoLeitorCodBarras.setText(getResources().getString(R.string.posicione_linha_codigo_barras));
+
+        TextView resultadoText = findViewById(R.id.resultadoText);
+        resultadoText.setHint(R.string.titulo);
 
         Button fecharLeitor = findViewById(R.id.fecharLeitorCodBarras);
         fecharLeitor.setOnClickListener(v -> finish());

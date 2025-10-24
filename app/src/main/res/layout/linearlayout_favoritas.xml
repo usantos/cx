@@ -109,6 +109,7 @@
                 android:layout_width="26dp"
                 android:layout_height="24dp"
                 android:layout_centerInParent="true"
+                android:contentDescription="@string/label_adicionar_aposta"
                 android:background="@drawable/ic_favoritas_carrinho"
                 android:clickable="false" />
         </RelativeLayout>
@@ -124,6 +125,7 @@
                 android:layout_width="17dp"
                 android:layout_height="24dp"
                 android:layout_centerInParent="true"
+                android:contentDescription="@string/label_excluir_aposta"
                 android:background="@drawable/ic_favoritas_lixeira"
                 android:clickable="false" />
         </RelativeLayout>

@@ -119,6 +119,7 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 			String descricao = ModalidadeEnum.fromString(ModalidadeEnum.fromInteger(aposta.getModalidade().getValor()));
 			modalidadeTitulo.setText(descricao.toLowerCase());
 			modalidadeTitulo.setTextColor(activity.getResources().getColor(estilo.getCorFonteFundoClaro()));
+			modalidadeTitulo.setHint("Título");
 			titulo.setBackgroundColor(activity.getResources().getColor(estilo.getCorClara()));
 			trevo.setImageDrawable(activity.getResources().getDrawable(estilo.getTrevoFundoEscuro()));
 			trevoFundo.setBackground(activity.getResources().getDrawable(estilo.getTrapezio()));
@@ -127,6 +128,7 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		}
 
 		tituloNomeApostaFavorita.setText(aposta.getNome());
+		tituloNomeApostaFavorita.setHint("Título");
 
 		StringBuilder numeroStr = new StringBuilder();
 
@@ -150,6 +152,7 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 			numerosApostaFavorita.setText(numeroStr.toString().replace("100","00"));
 		} else {
 			numerosApostaFavorita.setText(numeroStr.toString());
+			numerosApostaFavorita.setContentDescription(numeroStr.toString().replace("-",","));
 		}
 
 		excluirRelativeLayoutFavoritos.setOnClickListener(v -> listener.onDeleta(position));
