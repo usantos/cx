@@ -38,7 +38,15 @@
                     android:orientation="vertical"
                     android:background="@drawable/background_gradient_azul">
 
-                    <TextView
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="yes"
+                    android:orientation="vertical">
+
+                <TextView
                         android:id="@+id/ttvTituloAno"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -73,6 +81,8 @@
                         android:textSize="14.2sp"
                         android:fontFamily="@font/caixa_std_bold"
                         android:layout_marginBottom="40dp"/>
+
+                </LinearLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -150,7 +160,14 @@
                         android:layout_marginTop="23dp"
                         android:background="@color/azulClaroSelecaotime"></View>
 
-                    <TextView
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="yes"
+                    android:orientation="vertical">
+
+                <TextView
                         android:id="@+id/entendaText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -170,7 +187,7 @@
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
-
+                </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -188,6 +205,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:importantForAccessibility="yes"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -218,6 +236,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:importantForAccessibility="yes"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -319,6 +338,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:importantForAccessibility="yes"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -349,6 +369,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:importantForAccessibility="yes"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -450,6 +471,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
+                                android:importantForAccessibility="yes"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -481,6 +503,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
                                 android:orientation="vertical"
+                                android:importantForAccessibility="yes"
                                 android:visibility="visible">
 
                                 <TextView
