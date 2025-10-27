@@ -89,6 +89,8 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     private TextView btnIncApostaFav;
     ImageButton customButton;
 
+    LinearLayout conteudoFiltro;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,9 +118,10 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         imageFiltroSelecionado = findViewById(R.id.imageFiltroSelecionado);
         imageFiltroSelecionado.setOnClickListener(v -> abrirFiltroModalidade(FavoritasActivity.this));
         progressLoadingMore = findViewById(R.id.favoritas_loading_more);
-        LinearLayout conteudoFiltro = findViewById(R.id.conteudoFiltro);
-        conteudoFiltro.setContentDescription(getString(R.string.selecione_modalidade) + ":Botão:" + textFiltroSelecionado.getText() + "Selecionada");
-        conteudoFiltro.setOnClickListener(v -> abrirFiltroModalidade(FavoritasActivity.this));
+        conteudoFiltro = findViewById(R.id.conteudoFiltro);
+        conteudoFiltro.setOnClickListener(v -> {
+            abrirFiltroModalidade(FavoritasActivity.this);
+        });
 
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_favoritos));
     }
@@ -447,8 +450,6 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         ImageView btnClose = dialogView.findViewById(R.id.dialog_close);
         btnClose.setOnClickListener(v -> dialog.dismiss());
 
-        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
-        TextView btnFilter = dialogView.findViewById(R.id.btn_filter);
         btnCancel.setOnClickListener(v -> {
             if (textFiltroSelecionado.getText().toString().equalsIgnoreCase(TODAS)) {
                 adapterModalidades.selecionaOPrimeiro();
@@ -479,9 +480,14 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     }
 
     public void filtrarModalidade() {
+        conteudoFiltro = findViewById(R.id.conteudoFiltro);
+
         for (TipoAposta tipoAposta : listTipoAposta) {
             if (tipoAposta.getSelect()) {
                 textFiltroSelecionado.setText(tipoAposta.getTitulo());
+                String descricao = getString(R.string.selecione_modalidade) + ":Botão:" + tipoAposta.getTitulo() + "Selecionada";
+                conteudoFiltro.setContentDescription(descricao);
+
                 if (tipoAposta.getValor() == null) {
                     buscaServicos();
                 } else {
@@ -497,7 +503,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         TextView subTituloFavoritas = findViewById(R.id.subTituloFavoritas);
         subTituloFavoritas.setText(getString(R.string.voce_ainda_nao_tem_apostas));
         subTituloFavoritas.setTextColor(ContextCompat.getColor(this, R.color.blue_caixa));
-        LinearLayout conteudoFiltro = findViewById(R.id.conteudoFiltro);
+        conteudoFiltro = findViewById(R.id.conteudoFiltro);
         conteudoFiltro.setVisibility(View.GONE);
 
         recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
@@ -550,6 +556,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         semModalidade.setVisibility(View.VISIBLE);
 
         btnIncApostaFav = findViewById(R.id.txtIncApostaFavorita);
+        btnIncApostaFav.setHint(R.string.botao);
         GradientDrawable drawable = (GradientDrawable) AppCompatResources
                 .getDrawable(this, R.drawable.background_roudend_azul)
                 .mutate().getConstantState().newDrawable().mutate();
@@ -570,6 +577,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         semModalidade.setVisibility(View.GONE);
 
         btnIncApostaFav = findViewById(R.id.txtIncApostaFavorita);
+        btnIncApostaFav.setHint(R.string.botao);
         btnIncApostaFav.setVisibility(View.GONE);
 
         recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
