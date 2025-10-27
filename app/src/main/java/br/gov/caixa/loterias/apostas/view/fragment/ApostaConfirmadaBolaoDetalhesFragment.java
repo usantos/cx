@@ -53,7 +53,7 @@ import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetalhesFragment {
 	private static final String ARG_APOSTA = "ARG_APOSTA";
 
-    private ConstraintLayout cl_premio_pago, clResgatePremio, clCorpoAposta;
+    private ConstraintLayout cl_premio_pago, clResgatePremio, clCorpoAposta, clCorpoApostaCont;
 
 	private IdentificaoDeUmaApostaDas8Modalidades aposta;
 
@@ -253,6 +253,18 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 			}
 
 			if (aposta.getModalidade() == ModalidadeEnum.SUPER_7){
+				ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) clCorpoAposta.getLayoutParams();
+				layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+				layoutParams.rightMargin = 150;
+				layoutParams.leftMargin = 0;
+				clCorpoAposta.setLayoutParams(layoutParams);
+
+				ConstraintSet constraintSet = new ConstraintSet();
+				constraintSet.clone(clCorpoAposta);
+				constraintSet.clear(R.id.id_corpo_aposta, ConstraintSet.START);
+				//constraintSet.clear(R.id.id_lista_jogos, ConstraintSet.START);
+				constraintSet.applyTo(clCorpoAposta);
+
 				ArrayList<List<List<Integer>>> matrizList = new ArrayList<>();
 				matrizList.add(getResultadoConcurso().getMatrizNumerosSorteadosPrimeiroSorteio());
 				SuperSeteSorteadosAdapter adapter = new SuperSeteSorteadosAdapter(matrizList, getContext(), getColunaConfig(), getDezenaConfig());
@@ -308,15 +320,17 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 		switch (aposta.getModalidade()){
 			case SUPER_7:
-				ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) clCorpoAposta.getLayoutParams();
+				ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) clCorpoApostaCont.getLayoutParams();
 				layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
 				layoutParams.rightMargin = 150;
-				clCorpoAposta.setLayoutParams(layoutParams);
+				layoutParams.leftMargin = 0;
+				clCorpoApostaCont.setLayoutParams(layoutParams);
 
 				ConstraintSet constraintSet = new ConstraintSet();
-				constraintSet.clone(clCorpoAposta);
-				constraintSet.clear(R.id.id_corpo_aposta, ConstraintSet.START);
-				constraintSet.applyTo(clCorpoAposta);
+				constraintSet.clone(clCorpoApostaCont);
+				//constraintSet.clear(R.id.id_corpo_aposta, ConstraintSet.START);
+				constraintSet.clear(R.id.id_lista_jogos, ConstraintSet.START);
+				constraintSet.applyTo(clCorpoApostaCont);
 
 				SuperSeteRecyclerViewAdapter adapter = new SuperSeteRecyclerViewAdapter(R.color.branco, aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
 						getContext(), getColunaConfig(), getDezenaConfig(), getMatrizResultado());
@@ -476,6 +490,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 		cl_premio_pago = view.findViewById(R.id.cl_premio_pago);
 		clResgatePremio = view.findViewById(R.id.clResgatePremio);
 		clCorpoAposta = view.findViewById(R.id.id_corpo_aposta);
+		clCorpoApostaCont = view.findViewById(R.id.id_corpo_aposta_cont);
 		linhaEsqueda = view.findViewById(R.id.v_separador_esq);
 		linhaDireita = view.findViewById(R.id.v_separador_dir);
 		linhaCentral = view.findViewById(R.id.divider);
