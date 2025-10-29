@@ -406,6 +406,16 @@
 <!--            app:layout_constraintStart_toStartOf="parent"/>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/id_lista_sorteados_s7"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/id_corpo_aposta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <View
         android:id="@+id/v_div_bot_numeros_sorteados"
         android:layout_width="match_parent"
@@ -414,7 +424,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/branco"
-        app:layout_constraintTop_toBottomOf="@id/id_corpo_aposta"
+        app:layout_constraintTop_toBottomOf="@id/id_lista_sorteados_s7"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:visibility="gone"/>
@@ -443,11 +453,21 @@
         app:layout_constraintTop_toBottomOf="@id/tipo_aposta_linha"
         app:layout_constraintStart_toStartOf="@id/cl_data"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/id_lista_jogos_s7"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/id_dupla_sena1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/id_corpo_aposta_cont"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/id_dupla_sena1"
+        app:layout_constraintTop_toBottomOf="@id/id_lista_jogos_s7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/cl_data">
 
@@ -455,9 +475,10 @@
             android:id="@+id/id_lista_jogos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/id_dupla_sena2"

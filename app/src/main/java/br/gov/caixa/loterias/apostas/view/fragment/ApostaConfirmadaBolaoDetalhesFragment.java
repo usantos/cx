@@ -61,9 +61,9 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
     private TextView tvPremioPago, concursoLabel, concursoTxt, cotaLabel, cotaTxt, dataApostaLabel, dataApostaTxt, statusApostaTxt, tv_val_premio, tv_val_premio_tit;
 	private TextView tvNumerosSorteados, tvNumerosSorteados2, labelMesTime, txtMesTime;
 	private TextView tvDuplaSena1, tvDuplaSena2;
-	private RecyclerView listViewSorteados, listViewSorteados2;
+	private RecyclerView listViewSorteados, listViewSorteados2, listViewSorteadosS7;
 	private View rl_container_result_1, rl_container_result_2;
-	private RecyclerView listViewJogos, listViewJogos2, listTrevos;
+	private RecyclerView listViewJogos, listViewJogos2, listTrevos, listViewJogosS7;
 	//private ImageView imgTriangulo;
 	private TipoApostaLinhaView tipoApostaLinhaView;
 
@@ -253,23 +253,26 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 			}
 
 			if (aposta.getModalidade() == ModalidadeEnum.SUPER_7){
-				ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) clCorpoAposta.getLayoutParams();
-				layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-				layoutParams.rightMargin = 150;
-				layoutParams.leftMargin = 0;
-				clCorpoAposta.setLayoutParams(layoutParams);
-
-				ConstraintSet constraintSet = new ConstraintSet();
-				constraintSet.clone(clCorpoAposta);
-				constraintSet.clear(R.id.id_corpo_aposta, ConstraintSet.START);
-				//constraintSet.clear(R.id.id_lista_jogos, ConstraintSet.START);
-				constraintSet.applyTo(clCorpoAposta);
+//				ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) clCorpoAposta.getLayoutParams();
+//				layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+//				layoutParams.rightMargin = 150;
+//				layoutParams.leftMargin = 0;
+//				clCorpoAposta.setLayoutParams(layoutParams);
+//
+//				ConstraintSet constraintSet = new ConstraintSet();
+//				constraintSet.clone(clCorpoAposta);
+//				constraintSet.clear(R.id.id_corpo_aposta, ConstraintSet.START);
+//				//constraintSet.clear(R.id.id_lista_jogos, ConstraintSet.START);
+//				constraintSet.applyTo(clCorpoAposta);
 
 				ArrayList<List<List<Integer>>> matrizList = new ArrayList<>();
 				matrizList.add(getResultadoConcurso().getMatrizNumerosSorteadosPrimeiroSorteio());
 				SuperSeteSorteadosAdapter adapter = new SuperSeteSorteadosAdapter(matrizList, getContext(), getColunaConfig(), getDezenaConfig());
-				listViewSorteados.setAdapter(adapter);
-				listViewSorteados.setLayoutManager(new LinearLayoutManager(getContext()));
+				//listViewSorteados.setAdapter(adapter);
+				//listViewSorteados.setLayoutManager(new LinearLayoutManager(getContext()));
+				listViewSorteadosS7.setAdapter(adapter);
+				listViewSorteadosS7.setVisibility(View.VISIBLE);
+				listViewSorteadosS7.setLayoutManager(new LinearLayoutManager(getContext()));
 			} else {
 				listSorteados = ListaUtils.orderAscDezenas(getResultadoConcurso().getListaSorteadosPrimeiroSorteio());
 //				List dezenas = getDezenas(listSorteados);
@@ -320,29 +323,32 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 		switch (aposta.getModalidade()){
 			case SUPER_7:
-				ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) clCorpoApostaCont.getLayoutParams();
-				layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-				layoutParams.rightMargin = 150;
-				layoutParams.leftMargin = 0;
-				clCorpoApostaCont.setLayoutParams(layoutParams);
-
-				ConstraintSet constraintSet = new ConstraintSet();
-				constraintSet.clone(clCorpoApostaCont);
-				//constraintSet.clear(R.id.id_corpo_aposta, ConstraintSet.START);
-				constraintSet.clear(R.id.id_lista_jogos, ConstraintSet.START);
-				constraintSet.applyTo(clCorpoApostaCont);
+//				ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) clCorpoApostaCont.getLayoutParams();
+//				layoutParams.width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+//				layoutParams.rightMargin = 150;
+//				layoutParams.leftMargin = 0;
+//				clCorpoApostaCont.setLayoutParams(layoutParams);
+//
+//				ConstraintSet constraintSet = new ConstraintSet();
+//				constraintSet.clone(clCorpoApostaCont);
+//				//constraintSet.clear(R.id.id_corpo_aposta, ConstraintSet.START);
+//				constraintSet.clear(R.id.id_lista_jogos, ConstraintSet.START);
+//				constraintSet.applyTo(clCorpoApostaCont);
 
 				SuperSeteRecyclerViewAdapter adapter = new SuperSeteRecyclerViewAdapter(R.color.branco, aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
 						getContext(), getColunaConfig(), getDezenaConfig(), getMatrizResultado());
-				listViewJogos.setAdapter(adapter);
+				//listViewJogos.setAdapter(adapter);
+				listViewJogosS7.setAdapter(adapter);
+				listViewJogosS7.setVisibility(View.VISIBLE);
+				listViewJogosS7.setLayoutManager(new LinearLayoutManager(getContext()));
 				break;
 			default:
 				JogosBolaoRecyclerView adpterJogos = new JogosBolaoRecyclerView(aposta.getModalidade(), R.color.branco,
 						aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao(),
 						listSorteados, getDezenaConfig(), getResultadoConcurso());
 				listViewJogos.setAdapter(adpterJogos);
+				listViewJogos.setLayoutManager(new LinearLayoutManager(getContext()));
 		}
-		listViewJogos.setLayoutManager(new LinearLayoutManager(getContext()));
 
 		if (temResultadoSegundoSorteio) {
 			listViewJogos2.setVisibility(View.VISIBLE);
@@ -475,6 +481,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 		txtMesTime = view.findViewById(R.id.mes_time_valor);
 
 		divTopNumerosSorteados = view.findViewById(R.id.v_div_top_numeros_sorteados);
+		listViewSorteadosS7 = view.findViewById(R.id.id_lista_sorteados_s7);
 		listViewSorteados = view.findViewById(R.id.id_lista_sorteados);
 		rl_container_result_1 = view.findViewById(R.id.rl_container_result_1);
 		listViewSorteados2 = view.findViewById(R.id.id_lista_sorteados2);
@@ -483,6 +490,7 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 
 		tipoApostaLinhaView = view.findViewById(R.id.tipo_aposta_linha);
 
+		listViewJogosS7 = view.findViewById(R.id.id_lista_jogos_s7);
 		listViewJogos = view.findViewById(R.id.id_lista_jogos);
 		listViewJogos2 = view.findViewById(R.id.id_lista_jogos2);
 		listTrevos = view.findViewById(R.id.id_trevos);

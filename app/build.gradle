@@ -62,7 +62,7 @@ android {
         // Sprint 119 pra tras
         //                   22                 1.21.0 = 01 021               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
-        versionCode 220102102
+        versionCode 220102103
         versionName "1.21.0"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
