@@ -51,7 +51,7 @@ public class SSLPinningUtil {
 
     public static RequestQueue pinagemPRD(Context ctx, ServicoEnum servico) {
         InputStream inputStream = null;
-        if (servico == ServicoEnum.NUVEM){
+        if (servico == ServicoEnum.NUVEM  || servico == ServicoEnum.APOSTADOR){
             inputStream = ctx.getResources().openRawResource(CertificadoNuvemSingleton.getInstance().getCertificadoAtual());
 
             return new RequestQueue(new NoCache(), new BasicNetwork(new HurlStack()));
