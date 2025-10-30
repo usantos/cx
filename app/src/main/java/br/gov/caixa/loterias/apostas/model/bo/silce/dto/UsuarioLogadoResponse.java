@@ -34,6 +34,9 @@ public class UsuarioLogadoResponse {
     @SerializedName("payload")
     private UsuarioLogado payload = null;
 
+    @SerializedName("versao")
+    private String versao = null;
+
     /**
      * Código do erro
      **/
@@ -105,6 +108,13 @@ public class UsuarioLogadoResponse {
         this.payload = payload;
     }
 
+    public String getVersao() {
+        return versao;
+    }
+
+    public void setVersao(String versao) {
+        this.versao = versao;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -120,7 +130,8 @@ public class UsuarioLogadoResponse {
                 (this.tipo == null ? usuarioLogadoResponse.tipo == null : this.tipo.equals(usuarioLogadoResponse.tipo)) &&
                 (this.redirect == null ? usuarioLogadoResponse.redirect == null : this.redirect.equals(usuarioLogadoResponse.redirect)) &&
                 (this.errosValidacao == null ? usuarioLogadoResponse.errosValidacao == null : this.errosValidacao.equals(usuarioLogadoResponse.errosValidacao)) &&
-                (this.payload == null ? usuarioLogadoResponse.payload == null : this.payload.equals(usuarioLogadoResponse.payload));
+                (this.payload == null ? usuarioLogadoResponse.payload == null : this.payload.equals(usuarioLogadoResponse.payload) &&
+                (this.versao == null ? usuarioLogadoResponse.versao == null : this.versao.equals(usuarioLogadoResponse.versao)));
     }
 
     @Override
@@ -132,6 +143,7 @@ public class UsuarioLogadoResponse {
         result = 31 * result + (this.redirect == null ? 0 : this.redirect.hashCode());
         result = 31 * result + (this.errosValidacao == null ? 0 : this.errosValidacao.hashCode());
         result = 31 * result + (this.payload == null ? 0 : this.payload.hashCode());
+        result = 31 * result + (this.versao == null ? 0 : this.versao.hashCode());
         return result;
     }
 
@@ -145,6 +157,7 @@ public class UsuarioLogadoResponse {
                 "  redirect: " + redirect + "\n" +
                 "  errosValidacao: " + errosValidacao + "\n" +
                 "  payload: " + payload + "\n" +
+                "  versao: " + versao + "\n" +
                 "}\n";
         return sb;
     }

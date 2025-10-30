@@ -308,10 +308,7 @@ public class AdicionarApostaCarrinhoHelper {
 
         if(AdicionarApostaCarrinhoHelper.activity instanceof SimularApostaActivity){
             AdicionarApostaCarrinhoHelper.activity.startActivity(telaConfirmacao);
-            ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).zerarApostas();
-            if (modalidadeEnum == ModalidadeEnum.LOTECA){
-                ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).finish();
-            }
+                ((SimularApostaActivity) AdicionarApostaCarrinhoHelper.activity).zerarApostas();
         } else {
             if(AdicionarApostaCarrinhoHelper.activity instanceof OnCompraBolaoListener) {
                 if (telaConfirmacao != null){

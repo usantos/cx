@@ -37,6 +37,40 @@ public class ParametrosConfiguraveisDTO {
     @SerializedName("grupoCpfsAcessamNovoConferenciaAposta")
     private Integer grupoCpfNovaApi = 0;
 
+    @SerializedName("hostMicroServicoApostadorPiloto")
+    private String urlBaseApostadorPiloto;
+    @SerializedName("hostMicroServicoApostadorProducao")
+    private String urlBaseApostador;
+    @SerializedName("hostMicroServicoApostadorHabilitadoPiloto")
+    private String grupoDeCpfsApostadorPiloto;
+    @SerializedName("hostMicroServicoApostadorHabilitado")
+    private String grupoDeCpfsApostador;
+
+    public String getUrlBaseApostadorPiloto() {
+        return urlBaseApostadorPiloto;
+    }
+    public void setUrlBaseApostadorPiloto(String urlBaseApostadorPiloto) {
+        this.urlBaseApostadorPiloto = urlBaseApostadorPiloto;
+    }
+
+    public String getUrlBaseApostador() {
+        return urlBaseApostador;
+    }
+    public void setUrlBaseApostador(String urlBaseApostador) {
+        this.urlBaseApostador = urlBaseApostador;
+    }
+    public String getGrupoDeCpfsApostadorPiloto() {
+        return grupoDeCpfsApostadorPiloto;
+    }
+    public void setGrupoDeCpfsApostadorPiloto(String grupoDeCpfsApostadorPiloto) {
+        this.grupoDeCpfsApostadorPiloto = grupoDeCpfsApostadorPiloto;
+    }
+    public String getGrupoDeCpfsApostador() {
+        return grupoDeCpfsApostador;
+    }
+    public void setGrupoDeCpfsApostador(String grupoDeCpfsApostador) {
+        this.grupoDeCpfsApostador = grupoDeCpfsApostador;
+    }
 
     public Boolean getMicroServico() {
         return isMicroServico;
