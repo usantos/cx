@@ -677,6 +677,8 @@
     <string name="estes_s_o_seus_dados_pessoais_por_favor_mantenha_os_sempre_atualizados">Estes são seus dados pessoais. Por favor, mantenha-os sempre atualizados.</string>
     <string name="salvar">Salvar</string>
     <string name="nesta_rea_est_o_todas_as_suas_apostas_da_sorte_s_escolher_e_apostar_boa_sorte">Nesta área estão todas as suas apostas da sorte. É só escolher e apostar. Boa Sorte!</string>
+    <string name="aposta_favoritas_descricao">Aqui ficam seus números favoritos, prontos pra você jogar sempre que precisar.</string>
+    <string name="selecione_modalidade">Selecione a modalidade</string>
     <string name="loterica">lotérica</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet.</string>
     <string name="o_ponto_de_atendimento_nmais_pr_ximo_de_voc">O ponto de atendimento mais próximo de você é:</string>
@@ -764,7 +766,7 @@
     <string name="placeholder_concurso_data">Nº 2584 | 17/07/2016</string>
     <string name="d_um_novo_nome_para_sua_aposta">Dê um novo nome para sua aposta</string>
     <string name="quot_o_pr_mio_meu_quot">\"o prêmio é meu!\"</string>
-    <string name="agora_vai">| agora vai</string>
+    <string name="agora_vai">agora vai</string>
     <string name="_01">01</string>
     <string name="domingo_00_00_0000">Domingo (00/00/0000)</string>
     <string name="_1_de_14">1 de 14</string>

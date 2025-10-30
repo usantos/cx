@@ -17,6 +17,8 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
@@ -59,6 +61,10 @@ public class FavoritaModel extends AppModel {
 	//region Methods
 	public void buscaApostas(OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO> listener){
 		repository.buscaApostas(this.offsetItem, listener);
+	}
+
+	public void buscaApostasAgrupadas(OnSilceListener<AgrupadorDTOApostaFavoritaDTO> listener){
+		repository.buscaApostasAgrupadas(listener);
 	}
 
 	public void setOffsetItem(int offsetItem){
@@ -236,11 +242,11 @@ public class FavoritaModel extends AppModel {
 
 	}
 
-	public void alteraAposta(ApostaFavoritaDTO aposta, FavoritaHolder holder, OnSilceListener listener) {
-		aposta.setNome(holder.getNomeAlterado());
-		aposta.setOpenSwipeLayout(null);
-		repository.alteraAposta(aposta, listener);
-	}
+//	public void alteraAposta(ApostaFavoritaDTO aposta, FavoritaHolder holder, OnSilceListener listener) {
+//		aposta.setNome(holder.getNomeAlterado());
+//		aposta.setOpenSwipeLayout(null);
+//		repository.alteraAposta(aposta, listener);
+//	}
 
 	public void deletaAposta(ApostaFavoritaDTO aposta, OnSilceListener listener) {
 		repository.deletaAposta(aposta.getId(), listener);

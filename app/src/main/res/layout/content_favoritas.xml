@@ -29,30 +29,78 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/caixa_std_regular"
-            android:text="@string/nesta_rea_est_o_todas_as_suas_apostas_da_sorte_s_escolher_e_apostar_boa_sorte"
-            android:textColor="@color/cinza"
+            android:text="@string/aposta_favoritas_descricao"
+            android:textColor="@color/cinza110"
             android:autoSizeTextType="uniform"
             android:autoSizePresetSizes="@array/autosize_text_sizes"
-            android:textSize="14.2sp" />
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/linhaDivisa"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp" />
 
         <TextView
-            android:id="@+id/tituloFavoritas"
+            android:id="@+id/tituloFiltro"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="1dp"
-            android:fontFamily="@font/futura_std_bold"
-            android:text="@string/numeros_da_sorte_no_mesmo_lugar"
-            android:textColor="@color/colorAccent"
-            android:textSize="14.2sp"
-            android:visibility="invisible" />
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="@string/selecione_modalidade"
+            android:textColor="@color/cinza90"
+            android:autoSizeTextType="uniform"
+            android:autoSizePresetSizes="@array/autosize_text_sizes"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical">
+
+
+            <TextView
+                android:id="@+id/filtroSelecionado"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="0dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="Todos"
+                android:textColor="@color/cinza130"
+                android:autoSizeTextType="uniform"
+                android:autoSizePresetSizes="@array/autosize_text_sizes"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imageFiltroSelecionado"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_filtro_circular" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/linhaDivisa"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerFavoritas"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_marginRight="16dp"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="0dp"
             android:layout_marginTop="1dp"
             android:descendantFocusability="afterDescendants"
@@ -67,5 +115,6 @@
             android:visibility="gone"
             />
     </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

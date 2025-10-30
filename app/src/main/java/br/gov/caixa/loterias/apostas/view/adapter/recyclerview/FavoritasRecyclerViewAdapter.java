@@ -61,5 +61,13 @@ public final class FavoritasRecyclerViewAdapter extends RecyclerView.Adapter<Fav
         return Collections.unmodifiableList(listaApostaFavorita);
     }
 
+
+    public void updateData(List<ApostaFavoritaDTO> novaLista) {
+        listaApostaFavorita.clear();
+        listaApostaFavorita.addAll(novaLista);
+        notifyDataSetChanged(); // ou use DiffUtil para melhor performance
+    }
+
+
     //endregion
 }
