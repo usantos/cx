@@ -28,7 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
-import br.gov.caixa.loterias.apostas.model.model.BarraTituloModel;
+import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.*;
 import br.gov.caixa.loterias.apostas.view.listener.*;
@@ -49,7 +49,6 @@ import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
-import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Dezena;
@@ -128,7 +127,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private View rodape;
 	private boolean mudouTamanhoValor = false;
 
-	public BarraTituloModel barraTituloModel = new BarraTituloModel();
+	public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
 	public CartelaFragment() {
 		// Required empty public constructor
 	}
@@ -207,7 +206,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 			if (getArguments() != null) {
 				try {
-					barraTituloModel = (BarraTituloModel) getArguments().getSerializable("barraTituloModel");
+					barraTituloDTO = (BarraTituloDTO) getArguments().getSerializable("barraTituloModel");
 				}catch (Exception e){
 					Log.e("ERROR", "Não foi possível adiquirir os elementos da barra de título");
 				}
@@ -516,10 +515,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 					.getApostaSuperSete(parametroJogo, dezenasSelecionadas,
 							valorTotalAposta,parentActivity.qtdConcursoSelecionado,
 							ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
-			model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloModel);
+			model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloDTO);
 		} else {
 			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = getApostaPreenchida();
-			model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloModel);
+			model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloDTO);
 		}
 	}
 
@@ -637,7 +636,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 				aposta.setGerarEspelho(true);
 				aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
-				model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloModel);
+				model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloDTO);
 			} else {
 				adicionarApostaNoCarrinho();
 			}

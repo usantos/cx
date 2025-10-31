@@ -54,7 +54,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
-import br.gov.caixa.loterias.apostas.model.model.BarraTituloModel;
+import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
@@ -138,7 +138,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private EstiloModalidadeMKP estilo;
     private int corFonteFundoEscuro;
 
-    public BarraTituloModel barraTituloModel = new BarraTituloModel();
+    public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simular_aposta);
@@ -149,9 +149,9 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
         try{
-            barraTituloModel.setDataSorteio(getDataSorteio());
-            barraTituloModel.setNumeroConcurso(parametroSimulacao.getConcurso().getNumero().toString());
-            barraTituloModel.setEspecial(isEspecial);
+            barraTituloDTO.setDataSorteio(getDataSorteio());
+            barraTituloDTO.setNumeroConcurso(parametroSimulacao.getConcurso().getNumero().toString());
+            barraTituloDTO.setEspecial(isEspecial);
 
         } catch (Exception e){
             Log.e("ERROR", "Não foi possível adiquirir os elementos da barra de título");
@@ -629,7 +629,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         fragmentManager = getSupportFragmentManager();
         cartelaFragment = new CartelaFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("barraTituloModel", barraTituloModel);
+        bundle.putSerializable("barraTituloModel", barraTituloDTO);
 
         cartelaFragment.setArguments(bundle);
 

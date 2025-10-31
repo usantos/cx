@@ -1,8 +1,8 @@
-package br.gov.caixa.loterias.apostas.model.model;
+package br.gov.caixa.loterias.apostas.utils;
 
 import java.io.Serializable;
 
-public class BarraTituloModel implements Serializable {
+public class BarraTituloDTO implements Serializable {
     private String numeroConcurso;
     private String dataSorteio;
     private boolean isEspecial;
