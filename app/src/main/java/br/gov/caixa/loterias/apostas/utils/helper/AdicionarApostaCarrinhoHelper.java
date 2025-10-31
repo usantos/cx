@@ -47,6 +47,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasCrud;
+import br.gov.caixa.loterias.apostas.model.model.BarraTituloModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
@@ -92,14 +93,25 @@ public class AdicionarApostaCarrinhoHelper {
         }
     }
 
-    public static void incluirApostaCarrinhoCartela(Activity actv, IdentificaoDeUmaApostaDas8Modalidades objectAposta) {
+    public static void incluirApostaCarrinhoCartela(Activity actv, IdentificaoDeUmaApostaDas8Modalidades objectAposta, BarraTituloModel barraTituloModel) {
         activity = actv;
         aposta = objectAposta;
         AlertDialogUtils.show(activity);
         if (aposta != null) {
-            prosseguirInclusaoAposta(actv,objectAposta);
+            if (barraTituloModel != null && (barraTituloModel.getDataSorteio() != null && barraTituloModel.getNumeroConcurso() != null)){
+                prosseguirInclusaoAposta(actv,objectAposta, barraTituloModel);
+            }else{
+                prosseguirInclusaoAposta(actv, objectAposta, null);
+            }
         }
     }
+    public static void incluirApostaCarrinhoCartela(Activity actv, IdentificaoDeUmaApostaDas8Modalidades objectAposta) {
+        activity = actv;
+        aposta = objectAposta;
+        AlertDialogUtils.show(activity);
+                prosseguirInclusaoAposta(actv, objectAposta, null);
+    }
+
 
     public static void incluirApostaCarrinhoSurpresinha(Activity actv, final IncluirSurpresinhaDTO apostaSurpresinha) {
         activity = actv;
@@ -132,7 +144,10 @@ public class AdicionarApostaCarrinhoHelper {
 
 
 
-    private static void postAdicionarApostaCarrinho() {
+    private static void postAdicionarApostaCarrinho(BarraTituloModel barraTituloModel) {
+
+        final BarraTituloModel finalBarraTituloModel = barraTituloModel;
+
         ServicoFactoryUtil.getApostaService().adicionarApostaNoCarrinho(aposta, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse result) {
@@ -151,12 +166,17 @@ public class AdicionarApostaCarrinhoHelper {
                     CarrinhoSingleton.getInstance().getCarrinho().getApostas().add(aposta);
                 }
                 CarrinhoSingleton.getInstance().getCarrinho().atualizaValorTotal();
-                telaConfirmarCarrinho(aposta.getModalidade(), aposta, result);
+                if (finalBarraTituloModel != null && (finalBarraTituloModel.getDataSorteio() != null && finalBarraTituloModel.getNumeroConcurso() != null)){
+                    telaConfirmarCarrinho(aposta.getModalidade(), aposta, result, finalBarraTituloModel);
+
+                } else {
+                    telaConfirmarCarrinho(aposta.getModalidade(), aposta, result, null);
+                }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                onError(error);
+                onError(error, finalBarraTituloModel );
             }
         });
     }
@@ -193,9 +213,14 @@ public class AdicionarApostaCarrinhoHelper {
         });
     }
 
-    private static void prosseguirInclusaoAposta(Activity activity, IdentificaoDeUmaApostaDas8Modalidades aposta) {
+    private static void prosseguirInclusaoAposta(Activity activity, IdentificaoDeUmaApostaDas8Modalidades aposta, BarraTituloModel barraTituloModel) {
         if(!checarApostasRepetidas(activity, aposta, ApostaOrigem.CARROSEL)){
-            postAdicionarApostaCarrinho();
+            if (barraTituloModel != null && (barraTituloModel.getDataSorteio() != null && barraTituloModel.getNumeroConcurso() != null)){
+                postAdicionarApostaCarrinho(barraTituloModel);
+            }
+            else {
+                postAdicionarApostaCarrinho(null);
+            }
         }
     }
 
@@ -234,7 +259,7 @@ public class AdicionarApostaCarrinhoHelper {
         ViewUtils.alertTitleButtonYesOrNotListener(AdicionarApostaCarrinhoHelper.activity, AdicionarApostaCarrinhoHelper.activity.getResources().getString(R.string.MA015), (dialog, which) -> {
             switch (origem) {
                 case CARROSEL:
-                    postAdicionarApostaCarrinho();
+                    postAdicionarApostaCarrinho(null);
                     break;
                 case LISTA_APOSTA:
                     postAdicionarApostaCarrinhoMinhasApostas();
@@ -247,10 +272,13 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void telaConfirmarCarrinho(ModalidadeEnum modalidade, Object aposta) {
-        telaConfirmarCarrinho(modalidade,  aposta, null);
+        telaConfirmarCarrinho(modalidade,  aposta, null, null);
+    }
+    private static void telaConfirmarCarrinho(ModalidadeEnum modalidade, Object aposta, BarraTituloModel barraTituloModel) {
+        telaConfirmarCarrinho(modalidade,  aposta, null, barraTituloModel);
     }
 
-    private static void telaConfirmarCarrinho(ModalidadeEnum modalidadeEnum,  Object aposta, CarrinhoDTOResponse carrinhoDtoResponse) {
+    private static void telaConfirmarCarrinho(ModalidadeEnum modalidadeEnum,  Object aposta, CarrinhoDTOResponse carrinhoDtoResponse, BarraTituloModel barraTituloModel) {
         BigDecimal valor = BigDecimal.ZERO;
         Boolean espelho = false;
         IdentificaoDeUmaApostaDas8Modalidades apostaDas8Modalidades = null;
@@ -276,6 +304,7 @@ public class AdicionarApostaCarrinhoHelper {
         } else {
             telaConfirmacao = new Intent(AdicionarApostaCarrinhoHelper.activity, ConfirmadoInclusaoCarrinhoActivity.class);
         }
+        telaConfirmacao.putExtra("barraTituloModel", barraTituloModel);
         telaConfirmacao.putExtra("tipoAposta", modalidadeEnum);
         telaConfirmacao.putExtra("valorAposta", valor);
         if(apostaDas8Modalidades != null){
@@ -560,6 +589,16 @@ public class AdicionarApostaCarrinhoHelper {
         if (MensagensNetwork.isUnauthorizedError(error)) {
             if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(activity, aposta)) {
                 telaConfirmarCarrinho(aposta.getModalidade(), aposta);
+            }
+        } else {
+            RedirectNetwork.checkRedirect(error, (Activity) activity);
+        }
+    }
+    private static void onError(VolleyError error, BarraTituloModel barraTituloModel) {
+        AlertDialogUtils.dismiss();
+        if (MensagensNetwork.isUnauthorizedError(error)) {
+            if (AdicionarApostaCarrinhoHelper.inserirApostaCarrinhoLocal(activity, aposta)) {
+                telaConfirmarCarrinho(aposta.getModalidade(), aposta, barraTituloModel);
             }
         } else {
             RedirectNetwork.checkRedirect(error, (Activity) activity);

@@ -50,9 +50,14 @@ public class SimularApostaModel {
 		listener.success(matriz);
 	}
 
-	public void adidionaApostaNoCarrinho(Activity actv, IdentificaoDeUmaApostaDas8Modalidades aposta){
+	public void adicionaApostaNoCarrinho(Activity actv, IdentificaoDeUmaApostaDas8Modalidades aposta, BarraTituloModel barraTituloModel){
 		if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(actv)) {
-			AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(actv, aposta);
+			if (barraTituloModel != null && (barraTituloModel.getDataSorteio() != null && barraTituloModel.getNumeroConcurso() != null)){
+				AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(actv, aposta, barraTituloModel);
+			}
+			else {
+				AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(actv, aposta, null);
+			}
 		}
 	}
 

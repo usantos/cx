@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -31,6 +32,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.model.BarraTituloModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -53,6 +55,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
     private SubBarraModalidadeFragment subBarFragment;
 
+    private BarraTituloModel barraTituloModel = new BarraTituloModel();
     private ConstraintLayout background;
 
     @Override
@@ -61,6 +64,11 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         setContentView(R.layout.activity_confirmado_inclusao_carrinho);
 
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.modalidade)), ParametroJogoDTO.class);
+        try {
+            barraTituloModel = (BarraTituloModel) getIntent().getSerializableExtra("barraTituloModel");
+        }catch (Exception e){
+            Log.e("ERROR", "Não foi possível adiquirir os elementos da barra de título");
+        }
         ((TextView) findViewById(R.id.txtVoltarAoInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
         background = findViewById(R.id.corpo_background);
 
@@ -76,6 +84,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                     modalidade,
                     getCorEscura());
         } else {
+//            parametroSimulacao = null;
             try{
                 FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
                         modalidade,
@@ -85,12 +94,24 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                         getCorClara(), false);
 
             }catch (Exception e){
-                FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
-                        modalidade,
-                        "--",
-                        "--",
-                        false,
-                        getCorClara(), false);
+//barraTituloModel = null;
+                if (barraTituloModel != null && (barraTituloModel.getDataSorteio() != null && barraTituloModel.getNumeroConcurso() != null)){
+                    FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                            modalidade,
+                            barraTituloModel.getNumeroConcurso().toString(),
+                            barraTituloModel.getDataSorteio().toString(),
+                            barraTituloModel.isEspecial(),
+                            getCorClara(), false);
+                }
+                else{
+                    FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                            modalidade,
+                            "",
+                            "",
+                            false,
+                            getCorClara(), false);
+                }
+
             }
         }
     }

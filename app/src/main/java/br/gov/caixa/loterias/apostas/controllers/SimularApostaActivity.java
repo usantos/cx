@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,6 +54,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroValorApostaDTO;
+import br.gov.caixa.loterias.apostas.model.model.BarraTituloModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
@@ -136,6 +138,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private EstiloModalidadeMKP estilo;
     private int corFonteFundoEscuro;
 
+    public BarraTituloModel barraTituloModel = new BarraTituloModel();
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simular_aposta);
@@ -145,6 +148,14 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     protected void init() {
         dadosCorporativosSilceBO = DadosCorporativosSilceBO.getInstance();
         getExtras();
+        try{
+            barraTituloModel.setDataSorteio(getDataSorteio());
+            barraTituloModel.setNumeroConcurso(parametroSimulacao.getConcurso().getNumero().toString());
+            barraTituloModel.setEspecial(isEspecial);
+
+        } catch (Exception e){
+            Log.e("ERROR", "Não foi possível adiquirir os elementos da barra de título");
+        }
         preencheBarraTitulo();
         setViews();
 
@@ -617,6 +628,11 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private void configuraFragments() {
         fragmentManager = getSupportFragmentManager();
         cartelaFragment = new CartelaFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("barraTituloModel", barraTituloModel);
+
+        cartelaFragment.setArguments(bundle);
+
         surpresinhaFragment = FragmentUtils.getSurpresinhaFragment();
 
         rodapeFragment = FragmentUtils.startRodapeSimulacaoAPosta(getSupportFragmentManager(), R.id.id_fg_rodape, new BigDecimal(0), new BigDecimal(0));

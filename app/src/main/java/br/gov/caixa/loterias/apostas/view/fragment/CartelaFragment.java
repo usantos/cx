@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
+import br.gov.caixa.loterias.apostas.model.model.BarraTituloModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.*;
 import br.gov.caixa.loterias.apostas.view.listener.*;
@@ -127,6 +128,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	private View rodape;
 	private boolean mudouTamanhoValor = false;
 
+	public BarraTituloModel barraTituloModel = new BarraTituloModel();
 	public CartelaFragment() {
 		// Required empty public constructor
 	}
@@ -201,6 +203,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		mSensorManager = (SensorManager) this.getContext().getSystemService(Context.SENSOR_SERVICE);
 		mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
+
+
+			if (getArguments() != null) {
+				try {
+					barraTituloModel = (BarraTituloModel) getArguments().getSerializable("barraTituloModel");
+				}catch (Exception e){
+					Log.e("ERROR", "Não foi possível adiquirir os elementos da barra de título");
+				}
+			}
 		parentActivity = ((SimularApostaActivity) getActivity());
 		identificarTipoJogo();
 		if (parentActivity != null) {
@@ -505,10 +516,10 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 					.getApostaSuperSete(parametroJogo, dezenasSelecionadas,
 							valorTotalAposta,parentActivity.qtdConcursoSelecionado,
 							ListaUtils.pegaListaSuperSete(listaAdaptersSuperSete));
-			model.adidionaApostaNoCarrinho(parentActivity, aposta);
+			model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloModel);
 		} else {
 			IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta = getApostaPreenchida();
-			model.adidionaApostaNoCarrinho(parentActivity, aposta);
+			model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloModel);
 		}
 	}
 
@@ -626,7 +637,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 				aposta.setGerarEspelho(true);
 				aposta.setValor(aposta.getValor().divide(Constantes.DOIS_BIG_DECIMAL));
-				model.adidionaApostaNoCarrinho(parentActivity, aposta);
+				model.adicionaApostaNoCarrinho(parentActivity, aposta, barraTituloModel);
 			} else {
 				adicionarApostaNoCarrinho();
 			}
