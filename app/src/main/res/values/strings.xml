@@ -713,7 +713,9 @@
     <string name="em_2017_as_loterias_j_destinaram">Em 2017, as Loterias já destinaram</string>
     <string name="para_melhorar_o_pa_s">para melhorar o país.</string>
     <string name="para_cada_nr_1_00_napostados_nas_nloterias_federais">Para cada  R$1,00 apostados nas loterias federais</string>
-    <string name="r_0_48_ns_o_destinados_na_programas_sociais">R$0,48* são destinados a programas sociais</string>
+    <string name="r_0_48_ns_o_destinados_na_programas_sociais">R$0,48 são destinados a programas sociais</string>
+    <string name="r_0_48">R$0,48</string>
+    <string name="programas_sociais">são destinados a programas sociais</string>
     <string name="entenda_como">Entenda como</string>
     <string name="esse_dinheiro_distribu_do">esse dinheiro é distribuído:</string>
     <string name="educa_o">Educação</string>
@@ -722,7 +724,7 @@
     <string name="seguran_a">Segurança</string>
     <string name="seguridade">Seguridade</string>
     <string name="outros">Outros</string>
-    <string name="o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios">*O valor inclui a parcela correspondente ao imposto de renda sobre os prêmios.</string>
+    <string name="o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios">O valor inclui a parcela correspondente ao imposto de renda sobre os prêmios.</string>
     <string name="aposte_ne_ajude_ainda_mais">Aposte e ajude ainda mais</string>
     <string name="termos_de_uso">_Termo de uso_</string>
     <string name="termos_de_uso_sem_">Termo de uso</string>
@@ -945,9 +947,9 @@
     <string name="evento_entrou_repassometro">ENTROU_REPASSOMETRO</string>
     <string name="em_espaco">Em&#160;</string>
     <string name="ja_destinaram">, as Loterias já destinaram</string>
-    <string name="html_repasse_1"><![CDATA[<html>Para cada <br><strong><font color=\"#ff7f00\">R$1,00</font></strong><br>apostados nas<br>loterias federais</html>]]></string>
-    <string name="html_repasse_2"><![CDATA[<html><strong><font color=\"#345ca5\">R$0,48*</font></strong><br>são destinados<br>a programas sociais</html>]]></string>
-    <string name="aposte_e_ajude">_Aposte_ e ajude ainda mais</string>
+    <string name="html_repasse_1"><![CDATA[<html>Para cada <br><strong><font color=\"#afca0b\">R$1,00</font></strong><br>apostados nas<br>loterias federais</html>]]></string>
+    <string name="html_repasse_2"><![CDATA[<html><strong><font color=\"#00437A\">R$0,48</font></strong><br>são destinados<br>a programas sociais</html>]]></string>
+    <string name="aposte_e_ajude"><![CDATA[<html>_Aposte_<br>e ajude ainda mais</html>]]></string>
     <string name="mil_reais">mil reais</string>
     <string name="milhoes_de_reais">milhões de reais</string>
     <string name="bilhoes_de_reais">bilhões de reais</string>

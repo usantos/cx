@@ -2,24 +2,19 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.Pair;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
@@ -31,7 +26,6 @@ import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.animation.AnimacaoCalculoRepassesSociais;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
-import kotlin.Triple;
 
 public class RepassesSociaisActivity extends SettingToolbarActivity {
     private RepassometroDTO repasseOBj;
@@ -107,7 +101,6 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         ttvTituloAno.setText(texto);
 
         String htmlTextViewRepasseQuadro1 = getResources().getString(R.string.html_repasse_1);
-        String htmlTextViewRepasseQuadro2 = getResources().getString(R.string.html_repasse_2);
         String htmlTextButtonAposte = getResources().getString(R.string.aposte_e_ajude);
         TextView textViewRepasseQuadro1 = findViewById(R.id.textViewRepasseQuadro1);
         TextView textViewRepasseQuadro2 = findViewById(R.id.textViewRepasseQuadro2);
@@ -164,13 +157,17 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         AnimacaoCalculoRepassesSociais.start(valorRepasses, 0, repasseOBj);
 
         Button buttonAposte = findViewById(R.id.ButtonAposteSociais);
+        buttonAposte.setContentDescription(getString(R.string.aposte_ne_ajude_ainda_mais));
+
+        LinearLayout infoRepasses = findViewById(R.id.infoRepasses);
+        infoRepasses.setContentDescription(getString(R.string.r_0_48_ns_o_destinados_na_programas_sociais) + ", Clicke para mais informações");
+
         textViewRepasseQuadro1.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro1));
         textViewRepasseQuadro1.setContentDescription(getString(R.string.para_cada_nr_1_00_napostados_nas_nloterias_federais));
-        textViewRepasseQuadro2.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro2));
         textViewRepasseQuadro2.setContentDescription(getString(R.string.r_0_48_ns_o_destinados_na_programas_sociais));
-        buttonAposte.setText(ViewUtils.textCaixaSTDBold(this, htmlTextButtonAposte));
-
-
+        textViewRepasseQuadro2.setOnClickListener(v -> ViewUtils.alertEntendi(this));
+        infoRepasses.setOnClickListener(v -> ViewUtils.alertEntendi(this));
+        buttonAposte.setText(ViewUtils.textCaixaSTDBold(this, ViewUtils.fromHtml(htmlTextButtonAposte).toString()));
         buttonAposte.setOnClickListener(v -> finish());
     }
 
