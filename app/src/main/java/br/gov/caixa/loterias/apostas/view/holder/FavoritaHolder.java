@@ -135,7 +135,9 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		if(aposta.getModalidade().getValor().intValue() == 7) {
 			configuraFragment(aposta);
 			containerFragment.setVisibility(View.VISIBLE);
-			linhaDivisoriaAposFragment.setVisibility(View.VISIBLE);
+			if (position > 0) {
+				linhaDivisoriaAposFragment.setVisibility(View.VISIBLE);
+			}
 			linhaDivisoria.setVisibility(View.GONE);
 		} else {
 			containerFragment.setVisibility(View.GONE);
