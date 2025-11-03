@@ -252,8 +252,13 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         relativeLayoutContentRepassados.setOnClickListener(view -> clickRelativeLayoutContentRepassados());
 
-        relativeLayoutContentRapidao.setVisibility(View.GONE);
-        relativeLayoutContentRapidao.setOnClickListener(view -> {});//clickRelativeLayoutContentRapidao());
+        if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+            relativeLayoutContentRapidao.setOnClickListener(view -> {clickRelativeLayoutContentRapidao();});
+        }else{
+            relativeLayoutContentRapidao.setVisibility(View.GONE);
+            relativeLayoutContentRapidao.setOnClickListener(view -> {});
+        }
+
 
         rlJogoResponsavel.setOnClickListener(view -> clickrlJogoResponsavel());
 
@@ -895,7 +900,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     protected void clickRelativeLayoutContentRapidao() {
         //AnimacaoFecharMenuRapido(relativeContentPrincipal);
         showMenu();
-        //redirecionaRapidao();
+        if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+            redirecionaRapidao();
+        }
     }
 
     protected void clickrlJogoResponsavel() {
@@ -947,7 +954,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 startActivity(new Intent(PrincipalActivity.this, SelecaoModalidadesResultados.class));
                 break;
             case MENU_RAPIDAO:
-                //redirecionaRapidao();
+                if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+                    redirecionaRapidao();
+                }
                 break;
             case MENU_COFERIR_BILHETE:
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -1045,18 +1054,18 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     }
 
-//    private void redirecionaRapidao() {
-//        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
-//            AnimacaoFecharMenuRapido(actionApresentarTrevo);
-//            if (DadosUsuarioBO.checarTutorialRapidao()) {
-//                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
-//            } else {
-//                startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
-//            }
-//        } else {
-//            AnimacaoFecharMenuRapido(actionApresentarTrevo);
-//        }
-//    }
+    private void redirecionaRapidao() {
+        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this,2)) {
+            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+            if (DadosUsuarioBO.checarTutorialRapidao()) {
+                startActivity(new Intent(PrincipalActivity.this, ListaRapidaoActivity.class));
+            } else {
+                startActivity(new Intent(PrincipalActivity.this, ConfiguracaoRapidaoActivity.class));
+            }
+        } else {
+            AnimacaoFecharMenuRapido(actionApresentarTrevo);
+        }
+    }
 
     private void redirecionaJogoResponsavel(){
         //startActivity(new Intent(PrincipalActivity.this, JogoResponsavelActivity.class));

@@ -37,6 +37,8 @@ public class ParametrosConfiguraveisDTO {
     @SerializedName("grupoCpfsAcessamNovoConferenciaAposta")
     private Integer grupoCpfNovaApi = 0;
 
+    @SerializedName("rapidaoHabilitado")
+    private Boolean isRapidaoHabilitado = false;
     @SerializedName("hostMicroServicoApostadorPiloto")
     private String urlBaseApostadorPiloto;
     @SerializedName("hostMicroServicoApostadorProducao")
@@ -184,4 +186,13 @@ public class ParametrosConfiguraveisDTO {
     public void setGrupoCpfNovaApi(Integer grupoCpfNovaApi) {
         this.grupoCpfNovaApi = grupoCpfNovaApi;
     }
+
+    public Boolean isRapidaoHabilitado() {
+        return isRapidaoHabilitado;
+    }
+
+    public void setRapidaoHabilitado(Boolean rapidaoHabilitado) {
+        isRapidaoHabilitado = rapidaoHabilitado;
+    }
+
 }
