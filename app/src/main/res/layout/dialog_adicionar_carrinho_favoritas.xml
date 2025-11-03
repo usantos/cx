@@ -27,7 +27,7 @@
                 android:lineSpacingExtra="5dp"
                 android:text="@string/selecione_as_op_es_e_clique_em_adicionar"
                 android:textAlignment="center"
-                android:textColor="@color/verdeazul" />
+                android:textColor="@color/blue_caixa" />
 
             <Button
                 android:id="@+id/selecioneConcursoButton"
@@ -35,11 +35,11 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/button_border_azul"
+                android:background="@drawable/button_border_cinza"
                 android:fontFamily="@font/caixa_std_bold"
-                android:text="@string/selecione_o_tipo_de_concurso"
+                android:text="@string/tipo_de_concurso"
                 android:textAllCaps="false"
-                android:textColor="@color/textColorToolbar"
+                android:textColor="@color/greyText"
                 android:textSize="14dp" />
 
             <NumberPicker
@@ -56,11 +56,11 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/button_border_azul"
+                android:background="@drawable/button_border_cinza"
                 android:fontFamily="@font/caixa_std_bold"
-                android:text="@string/selecione_a_qtd_de_teimosinhas"
+                android:text="@string/quantidade_teimosinhas"
                 android:textAllCaps="false"
-                android:textColor="@color/textColorToolbar"
+                android:textColor="@color/greyText"
                 android:textSize="14dp"
                 android:visibility="gone" />
 
@@ -80,7 +80,7 @@
         android:id="@+id/cancelarModalFavoritosAddCarrinhoButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:background="@color/verdeazul"
+        android:background="@color/colorAccent"
         android:fontFamily="@font/caixa_std_bold"
         android:text="@string/cancelar"
         android:textAllCaps="false"
@@ -99,7 +99,7 @@
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_weight="0.5"
-        android:background="@color/verdeazul"
+        android:background="@color/colorAccent"
         android:fontFamily="@font/caixa_std_bold"
         android:text="@string/adicionar_no_carrinho"
         android:textAllCaps="false"

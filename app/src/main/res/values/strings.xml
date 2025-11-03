@@ -738,7 +738,9 @@
     <string name="loteca">loteca</string>
     <string name="selecione_as_op_es_e_clique_em_adicionar">Selecione as opções e clique em adicionar</string>
     <string name="selecione_o_tipo_de_concurso">Selecione o tipo de concurso</string>
+    <string name="tipo_de_concurso">Tipo de Concurso</string>
     <string name="selecione_a_qtd_de_teimosinhas">Selecione a qtd. de teimosinhas</string>
+    <string name="quantidade_teimosinhas">Quantidade de teimosinhas</string>
     <string name="adicionar_no_carrinho">Adicionar no carrinho</string>
     <string name="cvv">CVV</string>
     <string name="_1">1</string>
