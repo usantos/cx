@@ -296,34 +296,33 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="44dp"
-                            android:gravity="center"
-                            android:background="@color/greyText"
+                            android:background="@drawable/icgrouprepasses"
+                            android:backgroundTint="@color/greyText"
                             android:orientation="horizontal">
 
 
                             <LinearLayout
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_weight="1"
-                                android:gravity="center_horizontal"
                                 android:orientation="vertical">
 
                                 <TextView
                                     android:id="@+id/textEducacao"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_marginTop="14dp"
                                     android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/educa_o"
                                     android:importantForAccessibility="no"
                                     android:textAlignment="center"
                                     android:textColor="@color/branco"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                                 <View
                                     android:layout_width="match_parent"
                                     android:layout_height="5dp"
-                                    android:layout_marginTop="6dp"
+                                    android:layout_marginTop="7dp"
                                     android:background="@color/corEdu" />
                             </LinearLayout>
 
@@ -337,18 +336,18 @@
                                     android:id="@+id/textCultura"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_marginTop="14dp"
                                     android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/cultura"
                                     android:importantForAccessibility="no"
                                     android:textAlignment="center"
                                     android:textColor="@color/branco"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                                 <View
                                     android:layout_width="match_parent"
                                     android:layout_height="5dp"
-                                    android:layout_marginTop="6dp"
+                                    android:layout_marginTop="7dp"
                                     android:background="@color/corGoiaba" />
                             </LinearLayout>
                         </LinearLayout>
@@ -432,7 +431,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="44dp"
-                            android:background="@color/greyText"
+                            android:background="@drawable/icgrouprepasses"
+                            android:backgroundTint="@color/greyText"
                             android:orientation="horizontal">
 
                             <LinearLayout
@@ -445,18 +445,18 @@
                                     android:id="@+id/textEsporte"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_marginTop="14dp"
                                     android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/esporte"
                                     android:importantForAccessibility="no"
                                     android:textAlignment="center"
                                     android:textColor="@color/branco"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                                 <View
                                     android:layout_width="match_parent"
                                     android:layout_height="5dp"
-                                    android:layout_marginTop="6dp"
+                                    android:layout_marginTop="7dp"
                                     android:background="@color/corEsp" />
                             </LinearLayout>
 
@@ -470,18 +470,18 @@
                                     android:id="@+id/textSeguranca"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_marginTop="14dp"
                                     android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/seguran_a"
                                     android:importantForAccessibility="no"
                                     android:textAlignment="center"
                                     android:textColor="@color/branco"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                                 <View
                                     android:layout_width="match_parent"
                                     android:layout_height="5dp"
-                                    android:layout_marginTop="6dp"
+                                    android:layout_marginTop="7dp"
                                     android:background="@color/corSeg" />
                             </LinearLayout>
                         </LinearLayout>
@@ -566,7 +566,8 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="44dp"
-                            android:background="@color/greyText"
+                            android:background="@drawable/icgrouprepasses"
+                            android:backgroundTint="@color/greyText"
                             android:orientation="horizontal">
 
                             <LinearLayout
@@ -579,18 +580,18 @@
                                     android:id="@+id/textSeguridade"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_marginTop="14dp"
                                     android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/seguridade"
                                     android:importantForAccessibility="no"
                                     android:textAlignment="center"
                                     android:textColor="@color/branco"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                                 <View
                                     android:layout_width="match_parent"
                                     android:layout_height="5dp"
-                                    android:layout_marginTop="6dp"
+                                    android:layout_marginTop="7dp"
                                     android:background="@color/corSegu" />
                             </LinearLayout>
 
@@ -605,18 +606,18 @@
                                     android:id="@+id/textOutros"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
+                                    android:layout_marginTop="14dp"
                                     android:fontFamily="@font/caixa_std_bold"
                                     android:text="@string/outros"
                                     android:importantForAccessibility="no"
                                     android:textAlignment="center"
                                     android:textColor="@color/branco"
-                                    android:textSize="16sp" />
+                                    android:textSize="14sp" />
 
                                 <View
                                     android:layout_width="match_parent"
                                     android:layout_height="5dp"
-                                    android:layout_marginTop="6dp"
+                                    android:layout_marginTop="7dp"
                                     android:background="@color/corOutros" />
                             </LinearLayout>
                         </LinearLayout>
