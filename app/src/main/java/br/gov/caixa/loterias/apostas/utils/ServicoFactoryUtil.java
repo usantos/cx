@@ -1,14 +1,6 @@
 package br.gov.caixa.loterias.apostas.utils;
+import br.gov.caixa.loterias.apostas.model.bo.*;
 
-import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaNuvemBO;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaRepository;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativoRepository;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosNuvemBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioNuvemBO;
-import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioRepository;
 
 public class ServicoFactoryUtil {
 
@@ -29,7 +21,9 @@ public class ServicoFactoryUtil {
 	}
 
 	public static DadosUsuarioRepository getDadosUsuarioService() {
-		if (ServicoNuvemUtil.isServicoNuvem()) {
+		if(ServicoApostadorUtil.isServicoApostador()){
+			return DadosUsuarioApostadorBO.getInstance();
+		} else if (ServicoNuvemUtil.isServicoNuvem()) {
 			return DadosUsuarioNuvemBO.getInstance();
 		} else {
 			return DadosUsuarioBO.getInstance();
