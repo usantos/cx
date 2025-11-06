@@ -50,6 +50,7 @@ public class ItemDuvidaAdapter extends RecyclerView.Adapter<ItemDuvidaAdapter.It
         ListSecaoDTO secaoDTO = itensDuvida.get(position);
         holder.textItemDuvida.setTag(secaoDTO.getId());
         holder.textItemDuvida.setText(secaoDTO.getNome());
+        holder.textItemDuvida.setHint("Botão");
     }
 
     @Override

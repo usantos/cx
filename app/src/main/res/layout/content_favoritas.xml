@@ -40,12 +40,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:importantForAccessibility="yes"
             android:gravity="center_vertical">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/linhaDivisa"
+                android:importantForAccessibility="no"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp" />
@@ -57,6 +59,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="10dp"
+                android:importantForAccessibility="no"
                 android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/selecione_modalidade"
                 android:textColor="@color/cinza90"
@@ -69,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginEnd="16dp"
+                android:importantForAccessibility="no"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -79,6 +83,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/caixa_std_regular"
+                    android:importantForAccessibility="no"
                     android:text="Todas"
                     android:textColor="@color/cinza130"
                     android:autoSizeTextType="uniform"
@@ -89,6 +94,7 @@
                     android:id="@+id/imageFiltroSelecionado"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/ic_filtro_circular"/>
             </LinearLayout>
 
@@ -111,6 +117,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/caixa_std_regular"
+            android:importantForAccessibility="yes"
             android:text="@string/sem_modalidade"
             android:textColor="@color/blue_caixa"
             android:autoSizeTextType="uniform"

@@ -9,6 +9,8 @@
     <color name="azulpush">#0066B3</color>
     <color name="azulBolao">#2F5095</color>
     <color name="azulFiltro">#005EA8</color>
+    <color name="azulGradienteStart">#0082AA</color>
+    <color name="azulGradienteEnd">#005CAB</color>
     <color name="pushbotaoaposteagora">#0164AF</color>
     <color name="pushbotaoconferiragora">#4BBDAC</color>/
     <color name="fundobrancocentralmsg">#F4F4F4</color>
