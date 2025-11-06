@@ -392,6 +392,77 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static Dialog alertCustomDismiss(
+            Context context,
+            int labelTitle,
+            int layoutXml,
+            int labelMessage,
+            int idTitle,
+            int idMessage,
+            String dismissMessage
+    ){
+        AlertDialog dialog = ViewUtils.dialogCustomDismiss(
+                context,
+                labelTitle,
+                layoutXml,
+                idTitle,
+                idMessage,
+                context.getString(labelMessage),
+                dismissMessage
+        );
+        dialog.show();
+
+        DialogTitle textTitleView = dialog.findViewById(idTitle);
+        TextView textMessageView = dialog.findViewById(idMessage);
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+        return dialog;
+    }
+
+    public static AlertDialog dialogCustomDismiss(
+            Context context,
+            int tituloResId,
+            int layoutId,
+            int idTitle,
+            int idMessage,
+            String mensagem,
+            String dismissMessage
+    ) {
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(layoutId, null);
+
+        TextView titleView = dialogView.findViewById(idTitle);
+        titleView.setHint("Título");
+        TextView messageView = dialogView.findViewById(idMessage);
+        titleView.setText(context.getString(tituloResId));
+        messageView.setText(mensagem);
+
+        titleView.setTypeface(getFontCaixaStdBold(context));
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(dialogView)
+                .setCancelable(false)
+                .setPositiveButton(dismissMessage,(dialogInterface, i) -> dialogInterface.dismiss())
+                .create();
+
+
+        if (dialog.getWindow() != null) {
+            int larguraPx = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    250,
+                    context.getResources().getDisplayMetrics()
+            );
+
+            dialog.getWindow().setLayout(larguraPx, WindowManager.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
+
+        return dialog;
+    }
+
     public static Dialog alertVerificarIdadeListener(Context context, DialogInterface.OnClickListener listener) {
         AlertDialog dialog = ViewUtils.dialogoNew(
                 context,

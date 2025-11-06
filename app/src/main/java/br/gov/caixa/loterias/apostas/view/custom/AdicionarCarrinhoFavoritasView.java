@@ -48,6 +48,8 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     private boolean mostraTeimosinha;
     private String txtBotao;
 
+    private Boolean isExpandedTeimosinhas;
+
     public AdicionarCarrinhoFavoritasView() {}
 
     public static AdicionarCarrinhoFavoritasView newInstance() {
@@ -68,11 +70,11 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         picker_tipo_concurso = view.findViewById(R.id.picker_tipo_concurso);
-
         adicionarCarrinhoFavoritosButton = view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
         cancelarModalFavoritosAddCarrinhoButton = view.findViewById(R.id.cancelarModalFavoritosAddCarrinhoButton);
         selecioneConcursoButton = view.findViewById(R.id.selecioneConcursoButton);
         selecioneQntTeimosinhaButton = view.findViewById(R.id.selecioneQntTeimosinhaButton);
+        selecioneQntTeimosinhaButton.setHint("Recolhido");
 
         if (txtBotao != null){
             adicionarCarrinhoFavoritosButton.setText(txtBotao);
@@ -121,6 +123,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
         });
 
+
         selecioneConcursoButton.setOnClickListener(view12 -> {
             Integer alturaAnimacao = 0;
             if (picker_tipo_concurso.getHeight()==0){
@@ -130,13 +133,18 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         });
 
         selecioneQntTeimosinhaButton.setOnClickListener(view1 -> {
-            picker_qnt_teimosinhas.setVisibility(View.VISIBLE);
-            Integer alturaAnimacao = 0;
-            if (picker_qnt_teimosinhas.getHeight()==0){
-                alturaAnimacao = 100;
+            if (picker_qnt_teimosinhas.getVisibility() == View.VISIBLE) {
+                picker_qnt_teimosinhas.setVisibility(View.GONE);
+                selecioneQntTeimosinhaButton.setHint("Recolhido");
+                setarAlturaConteudo(0, picker_qnt_teimosinhas);
+            } else {
+                picker_qnt_teimosinhas.setVisibility(View.VISIBLE);
+                selecioneQntTeimosinhaButton.setHint("Expandido");
+                int alturaAnimacao = picker_qnt_teimosinhas.getHeight() == 0 ? 100 : picker_qnt_teimosinhas.getHeight();
+                setarAlturaConteudo(alturaAnimacao, picker_qnt_teimosinhas);
             }
-            setarAlturaConteudo( alturaAnimacao, picker_qnt_teimosinhas );
         });
+
 
     }
 

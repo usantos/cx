@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -122,6 +123,8 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         conteudoFiltro.setOnClickListener(v -> {
             abrirFiltroModalidade(FavoritasActivity.this);
         });
+        String descricao = getString(R.string.selecione_modalidade) + ":Botão:" + textFiltroSelecionado.getText().toString() + "Selecionada";
+        conteudoFiltro.setContentDescription(descricao);
 
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_favoritos));
     }
@@ -350,7 +353,16 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                     CarrinhoSingleton.getInstance().setCarrinho(payload);
                 }
 
-                ViewUtils.alert(FavoritasActivity.this, getResources().getString(R.string.label_favorita_no_carrinho));
+//                ViewUtils.alert(FavoritasActivity.this, getResources().getString(R.string.label_favorita_no_carrinho));
+                ViewUtils.alertCustomDismiss(
+                        FavoritasActivity.this,
+                        R.string.apostas_favoritas,
+                        R.layout.dialog_alert_new,
+                        R.string.label_new_favorita_no_carrinho,
+                        R.id.dialogTitle,
+                        R.id.dialogMessage,
+                        getString(R.string.ok)
+                );
             }
 
             @Override
@@ -432,6 +444,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         View dialogView = inflater.inflate(R.layout.dialog_grid, null);
         TextView dialogTitle = dialogView.findViewById(R.id.dialog_title);
         dialogTitle.setHint(getString(R.string.titulo));
+        dialogTitle.requestFocus();
         TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
         btnCancel.setHint(getString(R.string.botao));
         TextView btnFilter = dialogView.findViewById(R.id.btn_filter);
@@ -447,8 +460,9 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         dialog.setContentView(dialogView);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_roudend_branco);
 
-        ImageView btnClose = dialogView.findViewById(R.id.dialog_close);
+        Button btnClose = dialogView.findViewById(R.id.dialog_close);
         btnClose.setOnClickListener(v -> dialog.dismiss());
+        btnClose.setContentDescription(getString(R.string.fechar));
 
         btnCancel.setOnClickListener(v -> {
             if (textFiltroSelecionado.getText().toString().equalsIgnoreCase(TODAS)) {
@@ -460,6 +474,8 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             dialog.dismiss();
             desativaIncluirAposta();
             filtrarModalidade();
+            textFiltroSelecionado.requestFocus();
+
         });
 
         dialog.show();

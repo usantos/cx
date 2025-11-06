@@ -84,7 +84,7 @@
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/caixa_std_regular"
                     android:importantForAccessibility="no"
-                    android:text="Todas"
+                    android:text="@string/todas"
                     android:textColor="@color/cinza130"
                     android:autoSizeTextType="uniform"
                     android:autoSizePresetSizes="@array/autosize_text_sizes"
@@ -163,6 +163,7 @@
                 android:id="@+id/recyclerFavoritas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
                 android:layout_marginTop="1dp"
                 android:descendantFocusability="afterDescendants"
                 android:nestedScrollingEnabled="false" />
