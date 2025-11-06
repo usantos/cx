@@ -226,7 +226,16 @@ public class FavoritaModel extends AppModel {
 					if (response.getRedirect() != null){
 						RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
 					}
-					ViewUtils.alert( activity, activity.getResources().getString( R.string.label_favorita_no_carrinho ) );
+//					ViewUtils.alert( activity, activity.getResources().getString( R.string.label_favorita_no_carrinho ) );
+					ViewUtils.alertCustomDismiss(
+							activity,
+							R.string.apostas_favoritas,
+							R.layout.dialog_alert_new,
+							R.string.label_new_favorita_no_carrinho,
+							R.id.dialogTitle,
+							R.id.dialogMessage,
+							activity.getResources().getString(R.string.ok)
+					);
 					CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
 				}
 

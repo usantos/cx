@@ -238,6 +238,7 @@
 
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
     <string name="label_favorita_no_carrinho">Essa aposta foi para o seu carrinho</string>
+    <string name="label_new_favorita_no_carrinho">Aposta favorita inserida com sucesso</string>
     <string name="label_sem_teimosinha">Teimosinha</string>
     <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
     <string name="label_aposta_espelho">Aposta espelho</string>
@@ -649,6 +650,7 @@
 
     <string name="numeros_proibidos">Números proibidos</string>
     <string name="apostas_favoritas">Apostas favoritas</string>
+    <string name="aposta_favorita">Aposta Favorita</string>
     <string name="resgatar">Resgatar</string>
     <string name="resgatar_premio_mp">Resgatar prêmio</string>
     <string name="excelente">Excelente :)</string>
@@ -1470,6 +1472,7 @@
     <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
     <string name="autosuspensao_alerta_nova">Há uma suspensão temporária ativa para compras. Novas apostas poderão ser realizadas no Portal Loterias Online e no Aplicativo Loterias CAIXA após o término do período selecionado.</string>
     <string name="todas_modalidades">Todas as\nmodalidades</string>
+    <string name="todas">Todas</string>
     <string name="gerar_comprovante">Gerar Comprovante</string>
     <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
     <string name="usuario_bloqueio_parcial">Usuário habilitado apenas para consultas.</string>
