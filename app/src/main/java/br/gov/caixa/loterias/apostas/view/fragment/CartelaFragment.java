@@ -1523,6 +1523,17 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			} else {
 				if (CollectionUtils.isNotEmpty(aposta.getListaNumerosSelecionados())) {
 					dezenasSelecionadas = aposta.getListaNumerosSelecionados();
+					if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
+						if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+							setVisibilityCheckedNumerosLayout(View.VISIBLE);
+							Log.d("onStart", "Passou ");
+
+						} else {
+							setVisibilityCheckedNumerosLayout(View.GONE);
+							Log.d("onStart", " aqui");
+
+						}
+					}
 					simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
 					parentActivity.qtdDezenasPossiveisSelecionado = aposta.getQuantidadeNumeros();
 					parentActivity.qtdConcursoSelecionado = aposta.getQuantidadeTeimosinhas();
