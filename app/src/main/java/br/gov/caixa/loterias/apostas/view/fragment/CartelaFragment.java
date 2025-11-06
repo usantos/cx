@@ -1526,12 +1526,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 					if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
 						if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 							setVisibilityCheckedNumerosLayout(View.VISIBLE);
-							Log.d("onStart", "Passou ");
-
 						} else {
 							setVisibilityCheckedNumerosLayout(View.GONE);
-							Log.d("onStart", " aqui");
-
 						}
 					}
 					simularDezenasAdapter.atualizaSelecionados(dezenasSelecionadas);
