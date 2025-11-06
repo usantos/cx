@@ -23,6 +23,7 @@ public interface ApostaRepository {
     void getEscudosEquipes(final RequestListener<EscudoEquipeEsportivaDTOResponse> listener);
     void getModalidades(final RequestListener<ModalidadeDTOResponse> listener);
     void getApostasFavoritas(final int offset, final RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse> listener);
+    void getApostasFavoritasModalidades(final int modalidade, final int offset, final RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse> listener);
     void getApostasFavoritasAgrupadas(final RequestListener<AgrupadorDTOApostaFavoritaDTOResponse> listener);
     void deleteApostasFavoritas(final String idAposta, final RequestListener<RetornoPadraoResponse> listener);
     void buscaCarrinhosFavoritos(RequestListener<ListCarrinhoFavoritoResponse> listener);

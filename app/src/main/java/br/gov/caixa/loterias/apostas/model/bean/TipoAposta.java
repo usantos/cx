@@ -6,8 +6,8 @@ package br.gov.caixa.loterias.apostas.model.bean;
 
 public class TipoAposta {
     private String Titulo;
-    private int ImagemTrevo;
-    private int ImagemTrevoFundoCor;
+    private Integer ImagemTrevo;
+    private Integer ImagemTrevoFundoCor;
     private int CorBackground;
     private Integer valor;
     private String DescricaoEspecial;
@@ -44,6 +44,13 @@ public class TipoAposta {
         this.DescricaoEspecial = DescricaoEspecial;
     }
 
+    public TipoAposta(String Titulo, int CorBackground, Boolean isSelect, Integer textColor) {
+        this.Titulo = Titulo;
+        this.CorBackground = CorBackground;
+        this.isSelect = isSelect;
+        this.textColor = textColor;
+    }
+
     public String getTitulo() {
         return Titulo;
     }
@@ -52,11 +59,11 @@ public class TipoAposta {
         Titulo = titulo;
     }
 
-    public int getImagemTrevo() {
+    public Integer getImagemTrevo() {
         return ImagemTrevo;
     }
 
-    public void setImagemTrevo(int imagemTrevo) {
+    public void setImagemTrevo(Integer imagemTrevo) {
         ImagemTrevo = imagemTrevo;
     }
 
@@ -99,11 +106,11 @@ public class TipoAposta {
         this.textColor = textColor;
     }
 
-    public int getImagemTrevoFundoCor() {
+    public Integer getImagemTrevoFundoCor() {
         return ImagemTrevoFundoCor;
     }
 
-    public void setImagemTrevoFundoCor(int imagemTrevoFundoCor) {
+    public void setImagemTrevoFundoCor(Integer imagemTrevoFundoCor) {
         ImagemTrevoFundoCor = imagemTrevoFundoCor;
     }
 

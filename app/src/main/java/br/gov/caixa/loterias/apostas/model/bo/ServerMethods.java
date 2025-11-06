@@ -59,6 +59,7 @@ class ServerMethods {
      static final String VALIDAR_FAVORITA_PATH = "/apostas-favoritas/validar";
      static final String INCLUIR_FAVORITA_PATH = "/apostas-favoritas";
      static final String APOSTAS_FAVORITAS_PATH = "/apostas-favoritas/";
+     static final String APOSTAS_FAVORITAS_MODALIDADE_PATH = "/apostas-favoritas/modalidade";
      static final String APOSTAS_FAVORITAS_LISTA_UNICA_PATH = "/apostas-favoritas/lista-unica";
 
 
