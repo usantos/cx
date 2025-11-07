@@ -210,6 +210,7 @@ public class ViewUtils {
 
         TextView titleView = dialogView.findViewById(R.id.dialogTitle);
         titleView.setHint("Título");
+        titleView.requestFocus();
         TextView messageView = dialogView.findViewById(R.id.dialogMessage);
         titleView.setText(context.getString(tituloResId));
         messageView.setText(mensagem);

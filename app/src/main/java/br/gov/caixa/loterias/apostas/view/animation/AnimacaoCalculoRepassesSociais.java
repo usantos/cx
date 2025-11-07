@@ -66,7 +66,6 @@ public class AnimacaoCalculoRepassesSociais {
                 textView.setContentDescription(novoContentDescription);
             }
 
-            textView.setHint("Título");
         });
         // problem here
         animator.setEvaluator(( TypeEvaluator<Double>)(fraction, startValue, endValue) -> (startValue + (endValue - startValue) * fraction));
