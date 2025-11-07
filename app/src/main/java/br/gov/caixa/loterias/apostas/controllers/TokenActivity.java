@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 
@@ -37,7 +38,9 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AuthorizationServiceFactory;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
+import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 
 public class TokenActivity extends LoteriasBaseAppActivity {
     private AuthorizationService authorizationService;
@@ -57,7 +60,7 @@ public class TokenActivity extends LoteriasBaseAppActivity {
                 authorizationService.performTokenRequest(authorizationResponse.createTokenExchangeRequest(), (response, ex) -> {
                     if (response != null) {
                         if (response.accessToken == null || response.refreshToken == null) {
-                            AcessoBO.getInstance().iniciarLoginSSO(TokenActivity.this);
+                            AcessoBO.getInstance().iniciarLoginSSO(TokenActivity.this, null);
                         } else {
                             if (conseguiuLogar(response)) {
                                 LoginSP.loginRealizado(true);
@@ -133,6 +136,31 @@ public class TokenActivity extends LoteriasBaseAppActivity {
                     crud.deleteAll();
                     //finish();
                     RedirectNetwork.trataBloqueioParcial(TokenActivity.this);
+
+                    if(!getResources().getString(R.string.string_vazia).equals(KeycloakBO.getInstance().getAccessToken()) && !getResources().getString(R.string.string_vazia).equals(KeycloakBO.getInstance().getRefreshToken())){
+                        if (getIntent() != null && getIntent().getExtras() != null){
+                            Bundle extras = getIntent().getExtras();
+                            if (extras != null) {
+                                int idModalidade = extras.getInt(BolaoActivity.ARG_IDMODALIDADE);
+                                int tipoConcurso = extras.getInt(BolaoActivity.ARG_TIPO_CONCURSO);
+                                TipoConcursoEnum tipoConc = TipoConcursoEnum.fromInteger(tipoConcurso);
+
+                                Log.d("TokenActivity", "idModalidade: " + idModalidade);
+                                Log.d("TokenActivity", "tipoConcurso: " + tipoConcurso);
+
+                                if (!DadosUsuarioBO.checarTutorial(DadosUsuarioBO.BOLAO_TUTORIAL)){
+                                    startActivity(IntentUtil.getIntentTutorial(TokenActivity.this, ModalidadeEnum.BOLAO, idModalidade, tipoConc));
+                                } else {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
+                                    bundle.putInt(BolaoActivity.ARG_TIPO_CONCURSO, tipoConc.fromStringToIdTipoConcurso());
+                                    Intent intent = IntentUtil.getIntentOrigemDestino(TokenActivity.this, BolaoActivity.class, bundle);
+                                    startActivity(intent);
+                                }
+                            }
+                        }
+                    }
+
                 } else {
                     if(response.getPayload() != null && response.getPayload().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)){
                         SessaoUsuario.getInstance().setSituacaoApostador(response.getPayload().getSituacaoApostador());

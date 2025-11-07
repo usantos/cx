@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.Html;
 import android.widget.Toast;
 
@@ -112,7 +113,7 @@ public class  RedirectNetwork {
                 }
                 switch (response.statusCode){
                     case 401:
-                        AlertDialogExperimenteLogarSingleton.show(activity, true);
+                        AlertDialogExperimenteLogarSingleton.show(activity, true, null);
                         return;
                     case 400:
                         treatNegotialErros(errorResponse, error, activity);
@@ -194,7 +195,7 @@ public class  RedirectNetwork {
                 }
                 switch (response.statusCode){
                     case 401:
-                        connectKeycloak(activity);
+                        connectKeycloak(activity, null);
                         return;
                     case 404:
                     case 400:
@@ -239,7 +240,7 @@ public class  RedirectNetwork {
                     verificaRedirectTermo(activity);
                     return;
                 case LOGIN:
-                    connectKeycloak(activity);
+                    connectKeycloak(activity, null);
                     return;
                 case CADASTRAR_APOSTADOR:
                     if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
@@ -351,7 +352,7 @@ public class  RedirectNetwork {
                 verificaRedirectTermo(activity);
                 break;
             case LOGIN:
-                connectKeycloak(activity);
+                connectKeycloak(activity, null);
                 break;
             case CADASTRAR_APOSTADOR:
                 if (!activity.getClass().getName().equalsIgnoreCase(TermosUsoActivity.class.getName())) {
@@ -369,9 +370,9 @@ public class  RedirectNetwork {
     }
 
     //TODO: LOGIN - Trocando
-    public static void connectKeycloak(final Activity activity) {
+    public static void connectKeycloak(final Activity activity, Bundle bolao) {
         if(AppUtils.isNetworkAvailable(activity)){
-            AcessoBO.getInstance().iniciarLoginSSO(activity);
+            AcessoBO.getInstance().iniciarLoginSSO(activity, bolao);
         } else {
             try {
                 if (activity != null) {

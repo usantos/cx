@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.os.Bundle;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.AutoSuspensaoActivity;
@@ -20,7 +21,7 @@ import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
 public class AlertDialogExperimenteLogarSingleton {
     private static Dialog alertDialog;
 
-    public static void show(Activity activity, boolean isRedirectHome) {
+    public static void show(Activity activity, boolean isRedirectHome, Bundle bolao) {
         try{
             if (isShow()){
                 dismissDialog();
@@ -52,7 +53,7 @@ public class AlertDialogExperimenteLogarSingleton {
                 @Override
                 public void centerButtom() {
                     dismissDialog();
-                    RedirectNetwork.connectKeycloak(activity);
+                    RedirectNetwork.connectKeycloak(activity, bolao);
                 }
 
                 @Override

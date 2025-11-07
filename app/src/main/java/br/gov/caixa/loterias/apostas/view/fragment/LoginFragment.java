@@ -269,7 +269,7 @@ public class LoginFragment extends Fragment {
     private void connectKeycloak() {
         if(AppUtils.isNetworkAvailable(getContext())){
             AcessoBO.PRIMEIRO_LOGIN = true;
-            AcessoBO.getInstance().iniciarLoginSSO(getActivity());
+            AcessoBO.getInstance().iniciarLoginSSO(getActivity(), null);
         }else{
             buttonLogin.setEnabled( true );
             Log.e("caixa", "Erro ao conexar com internet LoginFragment.connectKeycloak()");
