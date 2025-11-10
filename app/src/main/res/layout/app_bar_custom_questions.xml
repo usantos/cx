@@ -38,7 +38,7 @@
                         <TextView
                             android:id="@+id/textCustom"
                             android:layout_width="wrap_content"
-                            android:layout_height="28dp"
+                            android:layout_height="wrap_content"
                             android:text="@string/biometria_popup_titulo"
                             android:textColor="@android:color/white"
                             android:layout_weight="1"

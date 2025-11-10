@@ -160,9 +160,8 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         buttonAposte.setContentDescription(getString(R.string.aposte_ne_ajude_ainda_mais));
 
         LinearLayout infoRepasses = findViewById(R.id.infoRepasses);
-        infoRepasses.setContentDescription(getString(R.string.r_0_48_ns_o_destinados_na_programas_sociais) + ", Clicke para mais informações");
+        infoRepasses.setContentDescription(getString(R.string.r_0_48_ns_o_destinados_na_programas_sociais) + ", Botão, click para mais informações");
 
-        textViewRepasseQuadro1.setText(ViewUtils.fromHtml(htmlTextViewRepasseQuadro1));
         textViewRepasseQuadro1.setContentDescription(getString(R.string.para_cada_nr_1_00_napostados_nas_nloterias_federais));
         textViewRepasseQuadro2.setContentDescription(getString(R.string.r_0_48_ns_o_destinados_na_programas_sociais));
         textViewRepasseQuadro2.setOnClickListener(v -> ViewUtils.alertEntendi(this));

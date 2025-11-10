@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -210,10 +211,11 @@ public class ViewUtils {
 
         TextView titleView = dialogView.findViewById(R.id.dialogTitle);
         titleView.setHint("Título");
-        titleView.requestFocus();
+        titleView.post(() -> titleView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED));
         TextView messageView = dialogView.findViewById(R.id.dialogMessage);
         titleView.setText(context.getString(tituloResId));
         messageView.setText(mensagem);
+        messageView.setContentDescription(mensagem);
 
         titleView.setTypeface(getFontCaixaStdBold(context));
         messageView.setTypeface(getFontCaixaStdRegular(context));
@@ -458,6 +460,7 @@ public class ViewUtils {
         dialog.show();
 
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        textTitleView.requestFocus();
         TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontCaixaStdBold(context));
         textMessageView.setTypeface(getFontCaixaStdRegular(context));
