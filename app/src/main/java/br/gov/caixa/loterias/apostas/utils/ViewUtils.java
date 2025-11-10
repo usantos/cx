@@ -211,7 +211,6 @@ public class ViewUtils {
 
         TextView titleView = dialogView.findViewById(R.id.dialogTitle);
         titleView.setHint("Título");
-        titleView.post(() -> titleView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED));
         TextView messageView = dialogView.findViewById(R.id.dialogMessage);
         titleView.setText(context.getString(tituloResId));
         messageView.setText(mensagem);
@@ -457,13 +456,13 @@ public class ViewUtils {
                 R.layout.dialog_alert_new_info,
                 context.getString(R.string.o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios)
         );
-        dialog.show();
 
+        dialog.show();
         DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
-        textTitleView.requestFocus();
         TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontCaixaStdBold(context));
         textMessageView.setTypeface(getFontCaixaStdRegular(context));
+
         return dialog;
     }
 

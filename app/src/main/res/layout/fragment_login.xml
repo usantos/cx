@@ -13,21 +13,24 @@
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="93dp"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/logoLoteriasCaixa"
             android:layout_height="95dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="146dp"
+            android:layout_marginTop="130dp"
             android:background="@drawable/logo" />
 
         <Button
             android:id="@+id/buttonAposteAgora"
-            android:layout_width="338dp"
-            android:layout_height="44dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/imageView2"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="57dp"
-            android:layout_weight="1"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:background="@drawable/button_border_new"
             android:fontFamily="@font/caixa_std_semi_bold"
             android:text="@string/label_experimente"
@@ -39,11 +42,13 @@
 
         <LinearLayout
             android:id="@+id/imageView3"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/buttonAposteAgora"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="42dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -73,12 +78,12 @@
 
         <Button
             android:id="@+id/buttonFacaLogin"
-            android:layout_width="338dp"
-            android:layout_height="44dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/imageView3"
-            android:layout_alignStart="@+id/buttonAposteAgora"
-            android:layout_alignLeft="@+id/buttonAposteAgora"
             android:layout_marginTop="42dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
             android:background="@drawable/button_border_laranja"
             android:fontFamily="@font/caixa_std_semi_bold"
             android:outlineProvider="none"
@@ -88,45 +93,60 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/biometriaLinearLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/buttonFacaLogin"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="135dp"
-            android:layout_marginBottom="148dp"
-            android:orientation="horizontal"
+            android:layout_above="@+id/textVersao"
+            android:importantForAccessibility="yes"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="32dp"
             android:visibility="visible">
 
             <ImageView
                 android:id="@+id/imageView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="9dp"
-                android:src="@drawable/digital2" />
+                android:layout_width="23dp"
+                android:layout_height="30dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/digital2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewBiometria"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
 
             <TextView
                 android:id="@+id/textViewBiometria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="9dp"
                 android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/leitor_digital"
-                android:textAlignment="center"
                 android:textColor="@color/branco"
-                android:textSize="20dp" />
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="20sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                android:importantForAccessibility="no"
+                app:layout_constraintEnd_toStartOf="@+id/biometriaSwitch"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
             <Switch
                 android:id="@+id/biometriaSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="50dp"
+                android:importantForAccessibility="no"
+                android:layout_height="40dp"
                 android:checked="false"
                 android:theme="@style/SwitchTheme"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
-        </LinearLayout>
+                tools:ignore="UseSwitchCompatOrMaterialXml"
+                app:layout_constraintStart_toEndOf="@+id/textViewBiometria"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/textVersao"
@@ -148,7 +168,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="10dp"
-            android:layout_marginBottom="26dp"
+            android:layout_marginBottom="46dp"
             android:backgroundTint="@color/branco"
             android:dropDownWidth="wrap_content"
             android:fontFamily="@font/caixa_std_regular"
