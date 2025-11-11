@@ -304,7 +304,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             public void onDeleta(int position) {
                 String nomeFavorita = model.getApostaList().get(position).getNome();
                 AlertDialog dialog = ViewUtils.dialogoNew(FavoritasActivity.this,
-                        R.string.label_atencao, getString(R.string.exclui_favorita).replace("xxx", nomeFavorita),
+                        getString(R.string.label_atencao), getString(R.string.exclui_favorita).replace("xxx", nomeFavorita),
                         (dialogInterface, i) -> {excluiApostaFavorita(position); dialogInterface.dismiss();},
                         (dialogInterface, i) -> dialogInterface.dismiss());
                 dialog.show();
@@ -353,12 +353,11 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                     CarrinhoSingleton.getInstance().setCarrinho(payload);
                 }
 
-//                ViewUtils.alert(FavoritasActivity.this, getResources().getString(R.string.label_favorita_no_carrinho));
                 ViewUtils.alertCustomDismiss(
                         FavoritasActivity.this,
                         R.string.apostas_favoritas,
                         R.layout.dialog_alert_new,
-                        R.string.label_new_favorita_no_carrinho,
+                        getString(R.string.label_new_favorita_no_carrinho),
                         R.id.dialogTitle,
                         R.id.dialogMessage,
                         getString(R.string.ok)
@@ -521,6 +520,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         subTituloFavoritas.setTextColor(ContextCompat.getColor(this, R.color.blue_caixa));
         conteudoFiltro = findViewById(R.id.conteudoFiltro);
         conteudoFiltro.setVisibility(View.GONE);
+
 
         recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
         recyclerViewFavoritas.setLayoutManager(new GridLayoutManager(this, 2));

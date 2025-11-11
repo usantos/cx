@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.animation.ValueAnimator;
+import android.opengl.Visibility;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -48,7 +50,8 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     private boolean mostraTeimosinha;
     private String txtBotao;
 
-    private Boolean isExpandedTeimosinhas;
+    Boolean toggleTipo = false;
+
 
     public AdicionarCarrinhoFavoritasView() {}
 
@@ -69,10 +72,14 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        TextView selectText = view.findViewById(R.id.selecioneText);
+        selectText.requestFocus();
+        selectText.setHint(getString(R.string.titulo));
         picker_tipo_concurso = view.findViewById(R.id.picker_tipo_concurso);
         adicionarCarrinhoFavoritosButton = view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
         cancelarModalFavoritosAddCarrinhoButton = view.findViewById(R.id.cancelarModalFavoritosAddCarrinhoButton);
         selecioneConcursoButton = view.findViewById(R.id.selecioneConcursoButton);
+        selecioneConcursoButton.setHint("Recolhido");
         selecioneQntTeimosinhaButton = view.findViewById(R.id.selecioneQntTeimosinhaButton);
         selecioneQntTeimosinhaButton.setHint("Recolhido");
 
@@ -126,10 +133,14 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
         selecioneConcursoButton.setOnClickListener(view12 -> {
             Integer alturaAnimacao = 0;
+            toggleTipo = !toggleTipo;
             if (picker_tipo_concurso.getHeight()==0){
                 alturaAnimacao = 100;
             }
+
             setarAlturaConteudo( alturaAnimacao, picker_tipo_concurso );
+
+            selecioneConcursoButton.setHint(toggleTipo ? "Expandido" : "Recolhido");
         });
 
         selecioneQntTeimosinhaButton.setOnClickListener(view1 -> {
@@ -186,6 +197,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             layoutParams.height = val;
             view.setLayoutParams(layoutParams);
         });
+
         animator.setDuration(500);
         animator.start();
     }

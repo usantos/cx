@@ -14,6 +14,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ import androidx.biometric.BiometricPrompt;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
 
@@ -58,9 +60,9 @@ import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
@@ -84,8 +86,6 @@ public class LoginFragment extends Fragment {
     Spinner ambienteSpinner;
     private boolean dialogBiometriaVisivel = false;
 
-    LinearLayout rowBiometria;
-
 
     public LoginFragment() {}
 
@@ -101,8 +101,7 @@ public class LoginFragment extends Fragment {
 
         biometriaLinearLayout = v.findViewById(R.id.biometriaLinearLayout);
         biometriaSwitch = v.findViewById(R.id.biometriaSwitch);
-        rowBiometria = v.findViewById(R.id.rowBiometria);
-        rowBiometria.setOnClickListener(view -> biometriaSwitch.toggle());
+
 
         //Selecao ambiente se NAO PRD
         if (!BuildConfig.FLAVOR.equals("prd")) {
@@ -155,7 +154,7 @@ public class LoginFragment extends Fragment {
             KeycloakBO.getInstance().limparSessao(getActivity());
             if(DadosUsuarioBO.temUsuarioBD() &&
                     (!DadosUsuarioBO.obterNome().isEmpty() ||
-                     !DadosUsuarioBO.obterCpf().isEmpty())){
+                            !DadosUsuarioBO.obterCpf().isEmpty())){
                 new LoginSSOModel(getActivity()).sair(PrincipalActivity.class, () -> {});
             } else {
                 startActivity(new Intent(getContext(), PrincipalActivity.class));
@@ -205,12 +204,12 @@ public class LoginFragment extends Fragment {
         biometriaSwitch = view.findViewById(R.id.biometriaSwitch);
         biometriaLinearLayout = view.findViewById(R.id.biometriaLinearLayout);
 
-        rowBiometria.setOnClickListener(v -> biometriaSwitch.toggle());
+        biometriaLinearLayout.setOnClickListener(v -> biometriaSwitch.toggle());
 
-        atualizarDescricaoBiometria(rowBiometria, biometriaSwitch.isChecked());
+        atualizarDescricaoBiometria(biometriaLinearLayout, biometriaSwitch.isChecked());
 
         biometriaSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            atualizarDescricaoBiometria(rowBiometria, isChecked);
+            atualizarDescricaoBiometria(biometriaLinearLayout, isChecked);
 
             if (isChecked) {
                 if(!dialogBiometriaVisivel) {
@@ -234,7 +233,6 @@ public class LoginFragment extends Fragment {
 
         rowBiometria.setContentDescription(textoFinal);
 
-        // Anuncia após garantir que a view está pronta
         rowBiometria.post(() -> {
             AccessibilityManager accessibilityManager =
                     (AccessibilityManager) requireContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
@@ -394,6 +392,7 @@ public class LoginFragment extends Fragment {
 
     private void ligaBiometria () {
         dialogBiometriaVisivel = true;
+
         DialogUtils.showDialogLeftRight(getActivity(), getString(R.string.ativar_biometria),
                 null, getString(R.string.cancelar), getString(R.string.habilitar),
                 new OnDialogListenerLeftRight() {
@@ -405,7 +404,6 @@ public class LoginFragment extends Fragment {
 
                     @Override
                     public void right() {
-
                         dialogBiometriaVisivel = false;
                         //Direcina para as configurações da Biometria
                         try {
@@ -434,6 +432,7 @@ public class LoginFragment extends Fragment {
                             setBotoesParaToken();
                         }
                         dialogBiometriaVisivel = false;
+
                     }
                     @Override
                     public void right() {
@@ -480,16 +479,16 @@ public class LoginFragment extends Fragment {
 
     private void showAlertAndExit(AmbienteEnum selectedAmbiete) {
         new AlertDialog.Builder(getContext())
-            .setTitle("Mudança de Ambiente")
-            .setMessage("O aplicativo será encerrado para aplicar as mudanças de ambeinte.")
-            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (getActivity() != null) {
-                        getActivity().finishAffinity();
+                .setTitle("Mudança de Ambiente")
+                .setMessage("O aplicativo será encerrado para aplicar as mudanças de ambeinte.")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (getActivity() != null) {
+                            getActivity().finishAffinity();
+                        }
                     }
-                }
-            })
-            .show();
+                })
+                .show();
     }
 }

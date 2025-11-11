@@ -140,7 +140,7 @@ public class ViewUtils {
         TextView messageView = new TextView(context);
         messageView.setText(mensagem);
         messageView.setTypeface(getFontCaixaStdRegular(context));
-        messageView.setPadding(50,50,50,50);
+        messageView.setPadding(50, 50, 50, 50);
 
         return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
                 //.setMessage(mensagem);
@@ -153,7 +153,7 @@ public class ViewUtils {
         TextView messageView = new TextView(context);
         messageView.setText(mensagem);
         messageView.setTypeface(getFontCaixaStdRegular(context));
-        messageView.setPadding(50,50,50,50);
+        messageView.setPadding(50, 50, 50, 50);
 
         return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
                 .setTitle(titulo)
@@ -161,7 +161,7 @@ public class ViewUtils {
                 .setView(messageView);
     }
 
-    public static AlertDialog dialogoNew(Context context, int tituloResId, String mensagem,
+    public static AlertDialog dialogoNew(Context context, String tituloResId, String mensagem,
                                          DialogInterface.OnClickListener positiveListener,
                                          DialogInterface.OnClickListener negativeListener) {
 
@@ -170,9 +170,10 @@ public class ViewUtils {
 
         TextView titleView = dialogView.findViewById(R.id.dialogTitle);
         titleView.setHint("Título");
+        titleView.requestFocus();
         TextView messageView = dialogView.findViewById(R.id.dialogMessage);
 
-        titleView.setText(context.getString(tituloResId));
+        titleView.setText(tituloResId);
         messageView.setText(mensagem);
 
         titleView.setTypeface(getFontCaixaStdBold(context));
@@ -201,13 +202,12 @@ public class ViewUtils {
     }
 
 
-
     public static AlertDialog.Builder dialogo(Context context, String titulo, String mensagem) {
 
         TextView messageView = new TextView(context);
         messageView.setText(mensagem);
         messageView.setTypeface(getFontCaixaStdRegular(context));
-        messageView.setPadding(50,50,50,50);
+        messageView.setPadding(50, 50, 50, 50);
 
         return new AlertDialog.Builder(context, R.style.MyAlertDialogStyle)
                 .setTitle(titulo)
@@ -235,7 +235,7 @@ public class ViewUtils {
                     .setPositiveButton("OK", (dialog1, which) -> dialog1.dismiss()).show();
             TextView textView = dialog.findViewById(android.R.id.message);
             textView.setTypeface(getFontCaixaStdRegular(context));
-        } catch (Exception e){
+        } catch (Exception e) {
             Log.d("", e.getLocalizedMessage());
         }
     }
@@ -264,7 +264,7 @@ public class ViewUtils {
             TextView textMessageView = dialog.findViewById(android.R.id.message);
             textTitleView.setTypeface(getFontCaixaStdBold(context));
             textMessageView.setTypeface(getFontCaixaStdRegular(context));
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("", e.getLocalizedMessage());
         }
     }
@@ -285,7 +285,7 @@ public class ViewUtils {
     public static Dialog alertTitleButtonYesOrNotListener(Context context, String message, DialogInterface.OnClickListener listener) {
         Dialog dialog = ViewUtils.dialogo(context, R.string.label_atencao, message)
                 .setCancelable(false)
-                .setNegativeButton (R.string.label_nao, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setNegativeButton(R.string.label_nao, (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton(R.string.label_sim, listener)
                 .show();
 
@@ -295,6 +295,30 @@ public class ViewUtils {
         textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
     }
+
+    public static Dialog alertTitleButtonYesOrNotListenerNew(
+            Context context,
+            String message,
+            String tituloResId,
+            DialogInterface.OnClickListener listenerYes,
+            DialogInterface.OnClickListener listenerNo
+    ) {
+        AlertDialog dialog = ViewUtils.dialogoNew(
+                context,
+                tituloResId,
+                message,
+                listenerYes,
+                listenerNo
+                );
+        dialog.show();
+
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+        return dialog;
+    }
+
 
 
     public static Dialog alertTitleButtonYesOrNotListener(Context context, String message,
@@ -396,7 +420,7 @@ public class ViewUtils {
             Context context,
             int labelTitle,
             int layoutXml,
-            int labelMessage,
+            String labelMessage,
             int idTitle,
             int idMessage,
             String dismissMessage
@@ -407,13 +431,13 @@ public class ViewUtils {
                 layoutXml,
                 idTitle,
                 idMessage,
-                context.getString(labelMessage),
+                labelMessage,
                 dismissMessage
         );
         dialog.show();
 
-        DialogTitle textTitleView = dialog.findViewById(idTitle);
-        TextView textMessageView = dialog.findViewById(idMessage);
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontCaixaStdBold(context));
         textMessageView.setTypeface(getFontCaixaStdRegular(context));
         return dialog;
@@ -434,6 +458,7 @@ public class ViewUtils {
 
         TextView titleView = dialogView.findViewById(idTitle);
         titleView.setHint("Título");
+        titleView.requestFocus();
         TextView messageView = dialogView.findViewById(idMessage);
         titleView.setText(context.getString(tituloResId));
         messageView.setText(mensagem);
@@ -466,7 +491,7 @@ public class ViewUtils {
     public static Dialog alertVerificarIdadeListener(Context context, DialogInterface.OnClickListener listener) {
         AlertDialog dialog = ViewUtils.dialogoNew(
                 context,
-                R.string.label_atencao,
+                context.getString(R.string.label_atencao),
                 context.getString(R.string.MA003),
                 (dialogInterface, i) -> dialogInterface.dismiss(),
                 listener
