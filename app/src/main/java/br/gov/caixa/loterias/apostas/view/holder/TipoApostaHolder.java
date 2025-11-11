@@ -39,7 +39,7 @@ public class TipoApostaHolder extends LoteriasHolder<TipoAposta> {
 			trevo.setImageResource(tipoAposta.getImagemTrevo());
 			background.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), R.color.branco));
 			background.setBackground(ContextCompat.getDrawable(itemView.getContext(),R.drawable.custom_border_cinza));
-			modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.cinzatextoselecionado));
+			modalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), R.color.cinzanaoselecionado));
 		}
 
 		if (listener != null){

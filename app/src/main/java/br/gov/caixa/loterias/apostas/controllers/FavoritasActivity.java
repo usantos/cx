@@ -407,7 +407,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
         if (comTodas) {
             TipoAposta tipoAposta = new TipoAposta(TODAS,
-                    R.color.blue_caixa, true, R.color.cinzatextoselecionado);
+                    R.color.blue_caixa, true, R.color.cinzanaoselecionado);
             listTipoAposta.add(tipoAposta);
         }
 
@@ -416,18 +416,18 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromModalidadeDTO(item));
             switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
                 case MAIS_MILIONALIA:
-                    tipoAposta = new TipoAposta("+Milionária", estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+                    tipoAposta = new TipoAposta("+Milionária", estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzanaoselecionado);
                     break;
                 case TIMEMANIA:
                 case DIA_DE_SORTE:
                 case SUPER_SETE:
-                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzanaoselecionado);
                     tipoAposta.setTextSelectColor(estilo.getCorLetraLista());
                     break;
                 case LOTECA:  //Loteca não tem Apostas Favoritas (Não apresenta na lista)
                     break;
                 default:
-                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzanaoselecionado);
                     break;
             }
 

@@ -179,7 +179,9 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 					labelMesTime.setText(R.string.label_mes_sorte_dois_pontos);
 					txtMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorEscura()));
 					labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoEscuro()));
-					txtMesTime.setText(getResultadoConcurso().getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+					String mesSorte = getResultadoConcurso().getPremiacaoMesDeSorte().getMesDeSorte().getNome();
+					txtMesTime.setText(mesSorte);
+					labelMesTime.setContentDescription(R.string.label_mes_sorte_dois_pontos + mesSorte);
 				}
 				break;
 			case TIMEMANIA:
@@ -189,7 +191,9 @@ public class ApostaConfirmadaBolaoDetalhesFragment extends ApostaConfirmadaDetal
 					txtMesTime.setVisibility(View.VISIBLE);
 					labelMesTime.setText(R.string.label_time_coracao_dois_pontos);
 					labelMesTime.setTextColor(ContextCompat.getColor(getContext(), estiloMKP.getCorFonteFundoClaro()));
-					txtMesTime.setText(getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome() + "-" + getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getUf());
+					String mesTime = getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getNome() + "-" + getResultadoConcurso().getPremiacaoTimeDoCoracao().getEquipe().getUf();
+					txtMesTime.setText(mesTime);
+					labelMesTime.setContentDescription(R.string.label_time_coracao_dois_pontos + mesTime);
 				}
 				break;
 			case MAIS_MILIONARIA:
