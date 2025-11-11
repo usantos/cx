@@ -149,11 +149,15 @@ public class TokenActivity extends LoteriasBaseAppActivity {
                                 Log.d("TokenActivity", "tipoConcurso: " + tipoConcurso);
 
                                 if (!DadosUsuarioBO.checarTutorial(DadosUsuarioBO.BOLAO_TUTORIAL)){
+                                    if(tipoConc != null){
                                     startActivity(IntentUtil.getIntentTutorial(TokenActivity.this, ModalidadeEnum.BOLAO, idModalidade, tipoConc));
+                                    }
                                 } else {
                                     Bundle bundle = new Bundle();
                                     bundle.putInt(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
+                                    if(tipoConc != null){
                                     bundle.putInt(BolaoActivity.ARG_TIPO_CONCURSO, tipoConc.fromStringToIdTipoConcurso());
+                                    }
                                     Intent intent = IntentUtil.getIntentOrigemDestino(TokenActivity.this, BolaoActivity.class, bundle);
                                     startActivity(intent);
                                 }
