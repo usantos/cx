@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DadosChavePixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.GerarPixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -225,8 +226,8 @@ public class FragmentUtils {
 		return SurpresinhaFragment.newInstance();
 	}
 
-    public static ApostasConfirmadasFragment getApostasConfirmadasFragment(boolean isHistorico) {
-		ApostasConfirmadasFragment fragment = ApostasConfirmadasFragment.newInstance(isHistorico);
+    public static ApostasConfirmadasFragment getApostasConfirmadasFragment(boolean isHistorico, ConfigConsultaDTO configConsulta) {
+		ApostasConfirmadasFragment fragment = ApostasConfirmadasFragment.newInstance(isHistorico, configConsulta);
 		return fragment;
 	}
 

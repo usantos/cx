@@ -12,26 +12,27 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
@@ -42,6 +43,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 	public static final int TIPO_APOSTAS = 0;
 	public static final int MODALIDADES = 1;
+	public static final int TIPO_CONCURSOS = 5;
 	public static final int SITUACAO = 2;
 	public static final int ORDENAR_POR = 3;
 	public static final int CONCURSO = 4;
@@ -49,13 +51,17 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 	private Context context;
 	private List<String> expandableListTitle;
-	private LinkedHashMap<Integer,String> situacoes;
-	private String[] opcoesDeOrdenacao = new String[]{"Padrão", "Data Crescente", "Data Decrescente"};
-	private String[] opcoesDeTipoApostas = new String[]{"Todos", "Individual", "Bolão"};
+	//private LinkedHashMap<Integer,String> situacoes;
+	private List<DTOEnumLong> situacoes;
+	//private String[] opcoesDeOrdenacao = new String[]{"Padrão", "Data Crescente", "Data Decrescente"};
+	private List<DTOEnumLong> opcoesDeOrdenacao;
+	private String[] opcoesDeTipoApostas = new String[]{"Todas", "Individual", "Bolão"};
+	private String[] opcoesDeTipoConcursos = new String[]{"Todos", "Normal", "Especial"};
 	private HashMap<String, List<String>> expandableListDetail;
 	private NumberPicker npSituacao;
     private NumberPicker npOrdenarPor;
     private NumberPicker npTipoAposta;
+    private NumberPicker npTipoConcurso;
     private RecyclerView gridModalidades;
 	private EditText etNumConcurso;
 	private List<TipoAposta> tiposAposta = new ArrayList<>();
@@ -68,26 +74,31 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	private View viewConcurso;
     private View viewOrdenarPor;
     private View viewTipoAposta;
+    private View viewTipoConcurso;
 
     private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
-    private int numeroOrdenarPorSelecionada = 1;
-    private int numeroTipoApostaSelecionada = 1;
+    private int numeroOrdenarPorSelecionada;
+    private int numeroTipoApostaSelecionada = 0;
+    private int numeroTipoConcursoSelecionado = 0;
+	private ConfigConsultaDTO configConsulta;
 
     private Boolean isUnicaSelecao = false;
 
-	public FiltroApostasAdapter(Context context, List<String> expandableListTitle,
-								HashMap<String, List<String>> expandableListDetail,
-								List<ModalidadeDTO>  modalidades, Activity activity,
+	public FiltroApostasAdapter(Context context,
+								List<ModalidadeDTO> modalidades,
+								Activity activity,
 								Boolean isUnicaSelecao,
-								LinkedHashMap<Integer,String> situacoes) {
+								ConfigConsultaDTO configConsulta) {
 		this.context = context;
-		this.expandableListTitle = expandableListTitle;
-		this.expandableListDetail = expandableListDetail;
 		this.isUnicaSelecao = isUnicaSelecao;
-		this.situacoes = situacoes;
 		this.setModalidades(modalidades);
 		this.setActivity(activity);
-		configuraAdapter();
+		this.configConsulta = configConsulta;
+
+		preConfiguraLista();
+		configuraAdapterModalidades();
+		preConfiguraSituacoes();
+		preConfiguraOrdenacoes();
 	}
 
 	@Override
@@ -117,14 +128,13 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	@Override
 	public View getChildView(int listPosition, final int expandedListPosition,
 							 boolean isLastChild, View convertView, ViewGroup parent) {
-		if (!isUnicaSelecao) {
-			listPosition += 1;
-			if(listPosition == 3){//OrdenarPor não consta nos filtros em DetalhesComprasActivity. Em vez disso, renderiza Concurso.
-				listPosition = 4;
-			}
-		}
+
+		List<Integer> listaOrdenada = getListaReOrdenada(isUnicaSelecao);
+		int posLista = listaOrdenada.get(listPosition);
+
 		LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			switch (listPosition) {
+			//switch (listPosition) {
+			switch (posLista) {
 				case TIPO_APOSTAS:
 					if (viewTipoAposta == null) {
 						viewTipoAposta = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
@@ -139,16 +149,30 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 					}
 					convertView = viewTipoAposta;
 					break;
+				case TIPO_CONCURSOS:
+					if (viewTipoConcurso == null) {
+						viewTipoConcurso = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
+						if (npTipoConcurso == null && viewTipoConcurso.findViewById(R.id.np_ordenar_por) != null) {
+							setNpTipoConcurso(viewTipoConcurso.findViewById(R.id.np_ordenar_por));
+							npTipoConcurso.setMinValue(1);
+							npTipoConcurso.setMaxValue(opcoesDeTipoConcursos.length);
+							npTipoConcurso.setValue(1);
+							npTipoConcurso.setDisplayedValues(opcoesDeTipoConcursos);
+							npTipoConcurso.setOnValueChangedListener(new ListenerTipoConcurso());
+						}
+					}
+					convertView = viewTipoConcurso;
+					break;
                 case ORDENAR_POR:
                     if (viewOrdenarPor == null) {
                         viewOrdenarPor = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
                         if (npOrdenarPor == null && viewOrdenarPor.findViewById(R.id.np_ordenar_por) != null) {
                             setNpOrdenarPor(viewOrdenarPor.findViewById(R.id.np_ordenar_por));
                             npOrdenarPor.setMinValue(1);
-                            npOrdenarPor.setMaxValue(opcoesDeOrdenacao.length);
-                            npOrdenarPor.setValue(3);
-                            npOrdenarPor.setDisplayedValues(opcoesDeOrdenacao);
-                            npOrdenarPor.setOnValueChangedListener(new ListenerOrdenarPor());
+                            npOrdenarPor.setMaxValue(opcoesDeOrdenacao.size());
+                            npOrdenarPor.setValue(configConsulta.getOrdenacaoPadrao().getValor().intValue());
+							npOrdenarPor.setDisplayedValues(extrairDescricoes(opcoesDeOrdenacao));
+							npOrdenarPor.setOnValueChangedListener(new ListenerOrdenarPor());
                         }
                     }
 					convertView = viewOrdenarPor;
@@ -171,7 +195,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 							setNpSituacao(viewSituacao.findViewById(R.id.np_situacao_aposta));
 							npSituacao.setMinValue(1);
 							npSituacao.setMaxValue(situacoes.size());
-							npSituacao.setDisplayedValues(situacoes.values().toArray(new String[situacoes.size()]));
+							npSituacao.setDisplayedValues(extrairDescricoes(situacoes));
 							npSituacao.setOnValueChangedListener(new ListenerSituacao());
 							npSituacao.setWrapSelectorWheel(false);
 						}
@@ -212,8 +236,14 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			numeroTipoApostaSelecionada = newVal;
 		}
 	}
+	private class ListenerTipoConcurso implements NumberPicker.OnValueChangeListener {
+		@Override
+		public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+			numeroTipoConcursoSelecionado = newVal;
+		}
+	}
 
-	private void configuraAdapter() {
+	private void configuraAdapterModalidades() {
 		populaArraysTipoAposta(getTiposAposta(), getModalidades());
 		if (getTiposAposta() != null || getTiposAposta().size() > 0) {
 			for (TipoAposta tipoAposta : getTiposAposta()) {
@@ -271,6 +301,11 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 				return true;
 			}
 		}
+		if (getNpTipoConcurso() != null) {
+			if(getNpTipoConcurso().getValue() != 0) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -320,8 +355,8 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 		if(getNpSituacao() != null) {
 			int situacao = numeroSituacaoSelecionada;
-			String situacaoSelecionada = situacoes.get(situacao).toLowerCase();
-			if(!situacaoSelecionada.equals(situacoes.get(SituacoesApostaEnum.TODAS).toLowerCase())) {
+			String situacaoSelecionada = situacoes.get(situacao-1).getDescricao();
+			if(!situacaoSelecionada.equals(situacoes.get(situacao-1).getDescricao())) {
 				for (ApostaDTO aposta:listaAposta) {
 					if(situacaoSelecionada.equals(aposta.getSituacao().getDescricao().toLowerCase())) {
 						listaFiltrada.add(aposta);
@@ -335,8 +370,8 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 	public void limpaFiltros(){
 		if(getNpSituacao() != null){
-			numeroSituacaoSelecionada = 1;
-			getNpSituacao().setValue(SituacoesApostaEnum.TODAS);
+			numeroSituacaoSelecionada = configConsulta.getSituacaoPadrao().getValor().intValue();
+			getNpSituacao().setValue(configConsulta.getSituacaoPadrao().getValor().intValue());
 		}
 		if(getAdapterModalidades()!= null){
 			getAdapterModalidades().limpaSelecaoModalidades();
@@ -346,12 +381,16 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			getEtNumConcurso().clearFocus();
 		}
 		if(getNpOrdenarPor() != null) {
-			numeroOrdenarPorSelecionada = 0;
-			getNpOrdenarPor().setValue(0);
+			numeroOrdenarPorSelecionada = configConsulta.getOrdenacaoPadrao().getValor().intValue();
+			getNpOrdenarPor().setValue(configConsulta.getOrdenacaoPadrao().getValor().intValue());
 		}
 		if(getNpTipoAposta() != null) {
 			numeroTipoApostaSelecionada = 0;
 			getNpTipoAposta().setValue(0);
+		}
+		if(getNpTipoConcurso() != null) {
+			numeroTipoConcursoSelecionado = 0;
+			getNpTipoConcurso().setValue(0);
 		}
 	}
 
@@ -397,8 +436,15 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		return npTipoAposta;
 	}
 
+	public NumberPicker getNpTipoConcurso() {
+		return npTipoConcurso;
+	}
+
 	public void setNpTipoAposta(NumberPicker npTipoAposta) {
 		this.npTipoAposta = npTipoAposta;
+	}
+	public void setNpTipoConcurso(NumberPicker npTipoConcurso) {
+		this.npTipoConcurso = npTipoConcurso;
 	}
 
 	public void setNpSituacao(NumberPicker npSituacao) {
@@ -407,9 +453,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 
 	public int getKeySituacaoSelecionada() {
-		Set<Integer> keySet = situacoes.keySet();
-		Integer[] keyArray 	= keySet.toArray(new Integer[keySet.size()]);
-		return keyArray[numeroSituacaoSelecionada - 1];
+		return numeroSituacaoSelecionada;
 	}
 
 	public RecyclerView getGridModalidades() {
@@ -510,6 +554,53 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 	@Override
 	public boolean isChildSelectable(int listPosition, int expandedListPosition) {
 		return true;
+	}
+
+
+	private List<Integer> getListaReOrdenada(boolean isUnicaSelecao) {
+		if (isUnicaSelecao) {
+			return Arrays.asList(
+					TIPO_APOSTAS,
+					MODALIDADES,
+					TIPO_CONCURSOS,
+					SITUACAO,
+					ORDENAR_POR
+			);
+		} else {
+			return Arrays.asList(
+					MODALIDADES,
+					SITUACAO,
+					CONCURSO
+			);
+		}
+	}
+
+	private void preConfiguraLista() {
+		if (isUnicaSelecao) {
+			expandableListDetail = ExpandableListDataFiltro.getDataSemConcurso();
+			expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+		} else {
+			expandableListDetail = ExpandableListDataFiltro.getData();
+			expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+		}
+	}
+
+	private void preConfiguraSituacoes() {
+		situacoes = configConsulta.getSituacoes();
+		numeroSituacaoSelecionada = configConsulta.getSituacaoPadrao().getValor().intValue();
+	}
+
+	private void preConfiguraOrdenacoes() {
+		opcoesDeOrdenacao = configConsulta.getOrdenacoes();
+		numeroOrdenarPorSelecionada = configConsulta.getOrdenacaoPadrao().getValor().intValue();
+	}
+
+	public static String[] extrairDescricoes(List<DTOEnumLong> opcoes) {
+		String[] descricoes = new String[opcoes.size()];
+		for (int i = 0; i < opcoes.size(); i++) {
+			descricoes[i] = opcoes.get(i).getDescricao();
+		}
+		return descricoes;
 	}
 
 }

@@ -5,7 +5,7 @@ package br.gov.caixa.loterias.apostas.model.bean;
  */
 
 public class ApostaPageRequest {
-    private int mes, ano, offset, size, situacao, modalidade, ordenarPor, tipoAposta;
+    private int mes, ano, offset, size, situacao, modalidade, ordenarPor, tipoAposta, tipoConcurso;
 
     public ApostaPageRequest(int size){
         this.size = size;
@@ -25,6 +25,14 @@ public class ApostaPageRequest {
 
     public void setTipoAposta(int tipoAposta) {
         this.tipoAposta = tipoAposta;
+    }
+
+    public int getTipoConcurso() {
+        return tipoConcurso;
+    }
+
+    public void setTipoConcurso(int tipoConcurso) {
+        this.tipoConcurso = tipoConcurso;
     }
 
     public int getMes() {
