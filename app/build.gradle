@@ -63,7 +63,7 @@ android {
         //                   22                 1.21.0 = 01 021               00
         //version code = minSdkVersion + versionName(sem pontuação) + versão interna
         versionCode 220102103
-        versionName "1.21.0"
+        versionName "1.21.1"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -189,15 +189,21 @@ android {
                 buildConfigField "String", "URL_SSO_ACCOUNT_HML", "BuildConfig.URL_SSO_HML+\"/auth/realms/internet/account\""
                 buildConfigField "String", "URL_SSO_ACCOUNT_PILOTO", "BuildConfig.URL_SSO_PILOTO+\"/auth/realms/internet/account\""
                 buildConfigField "String", "MP_PAYMENT_URL_EXTERNO", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+                buildConfigField "String", "MP_PAYMENT_URL_EXTERNO_ESTEIRA", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 buildConfigField "String", "MP_PAYMENT_URL_INTERNO", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+                buildConfigField "String", "MP_PAYMENT_URL_INTERNO_ESTEIRA", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 buildConfigField "String", "MP_PAYMENT_URL_HML", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 buildConfigField "String", "MP_PAYMENT_URL_PILOTO", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
                 buildConfigField "String", "MP_CREATE_TOKEN_URL_EXTERNO", "\"https://api.mercadopago.com/v1/card_tokens?\""
+                buildConfigField "String", "MP_CREATE_TOKEN_URL_EXTERNO_ESTEIRA", "\"https://api.mercadopago.com/v1/card_tokens?\""
                 buildConfigField "String", "MP_CREATE_TOKEN_URL_INTERNO", "\"https://api.mercadopago.com/v1/card_tokens?\""
+                buildConfigField "String", "MP_CREATE_TOKEN_URL_INTERNO_ESTEIRA", "\"https://api.mercadopago.com/v1/card_tokens?\""
                 buildConfigField "String", "MP_CREATE_TOKEN_URL_HML", "\"https://api.mercadopago.com/v1/card_tokens?\""
                 buildConfigField "String", "MP_CREATE_TOKEN_URL_PILOTO", "\"https://api.mercadopago.com/v1/card_tokens?\""
                 buildConfigField "String", "RP_CREATE_TOKEN_URL_EXTERNO", "\"https://secure-sandbox.recargapay.com\""
+                buildConfigField "String", "RP_CREATE_TOKEN_URL_EXTERNO_ESTEIRA", "\"https://secure-sandbox.recargapay.com\""
                 buildConfigField "String", "RP_CREATE_TOKEN_URL_INTERNO", "\"https://secure-sandbox.recargapay.com\""
+                buildConfigField "String", "RP_CREATE_TOKEN_URL_INTERNO_ESTEIRA", "\"https://secure-sandbox.recargapay.com\""
                 buildConfigField "String", "RP_CREATE_TOKEN_URL_HML", "\"https://secure-sandbox.recargapay.com\""
                 buildConfigField "String", "RP_CREATE_TOKEN_URL_PILOTO", "\"https://secure-sandbox.recargapay.com\""
                 buildConfigField "String", "APP_CENTER_KEY_EXTERNO", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
@@ -220,7 +226,9 @@ android {
                 buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME_INTERNO_ESTEIRA", "\"caixaloteriasdev\""
                 buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME_INTERNO_ESTEIRA", "\"loteriasdes\""
                 buildConfigField "String", "URL_BASE_API_NOTIFICACOES_EXTERNO", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES_EXTERNO_ESTEIRA", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 buildConfigField "String", "URL_BASE_API_NOTIFICACOES_INTERNO", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+                buildConfigField "String", "URL_BASE_API_NOTIFICACOES_INTERNO_ESTEIRA", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 buildConfigField "String", "URL_BASE_API_NOTIFICACOES_HML", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 buildConfigField "String", "URL_BASE_API_NOTIFICACOES_PILOTO", "\"https://api.des.caixa:8443/notificacoes-digitais\""
                 manifestPlaceholders = [
