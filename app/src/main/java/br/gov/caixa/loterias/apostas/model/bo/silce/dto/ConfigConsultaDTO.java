@@ -38,6 +38,20 @@ public class ConfigConsultaDTO implements Serializable {
   @SerializedName("periodos")
   protected List<PeriodoConsultaDTO> periodos = null;
 
+  @SerializedName("listaTipoAposta")
+  protected List<DTOEnumLong> listaTipoAposta = null;
+
+  @SerializedName("listaTipoConcurso")
+  protected List<DTOEnumLong> listaTipoConcurso = null;
+
+  public List<DTOEnumLong> getListaTipoAposta() {
+    return listaTipoAposta;
+  }
+
+  public List<DTOEnumLong> getListaTipoConcurso() {
+    return listaTipoConcurso;
+  }
+
   public DTOEnumLong getOrdenacaoPadrao() {
     return ordenacaoPadrao;
   }
