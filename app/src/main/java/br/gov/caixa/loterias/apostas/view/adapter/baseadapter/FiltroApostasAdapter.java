@@ -76,10 +76,14 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
     private View viewTipoAposta;
     private View viewTipoConcurso;
 
-    private int numeroSituacaoSelecionada = SituacoesApostaEnum.TODAS;
+    private int numeroSituacaoSelecionada;
+    private int numeroSituacaoPadrao;
     private int numeroOrdenarPorSelecionada;
-    private int numeroTipoApostaSelecionada = 0;
-    private int numeroTipoConcursoSelecionado = 0;
+    private int numeroOrdenarPorPadrao;
+    private int numeroTipoApostaSelecionada;
+    private int numeroTipoApostaPadrao;
+    private int numeroTipoConcursoPadrao;
+    private int numeroTipoConcursoSelecionado;
 	private ConfigConsultaDTO configConsulta;
 
     private Boolean isUnicaSelecao = false;
@@ -144,7 +148,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 							setNpTipoAposta(viewTipoAposta.findViewById(R.id.np_ordenar_por));
 							npTipoAposta.setMinValue(1);
 							npTipoAposta.setMaxValue(opcoesDeTipoApostas.size());
-							npTipoAposta.setValue(1);
+							npTipoAposta.setValue(numeroTipoApostaSelecionada);
 							npTipoAposta.setDisplayedValues(extrairDescricoes(opcoesDeTipoApostas));
 							npTipoAposta.setOnValueChangedListener(new ListenerTipoAposta());
 						}
@@ -156,9 +160,10 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 						viewTipoConcurso = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
 						if (npTipoConcurso == null && viewTipoConcurso.findViewById(R.id.np_ordenar_por) != null) {
 							setNpTipoConcurso(viewTipoConcurso.findViewById(R.id.np_ordenar_por));
-							npTipoConcurso.setMinValue(1);
-							npTipoConcurso.setMaxValue(opcoesDeTipoConcursos.size());
-							npTipoConcurso.setValue(1);
+							npTipoConcurso.setMinValue(0);
+							npTipoConcurso.setMaxValue(opcoesDeTipoConcursos.size()-1);
+							//npTipoConcurso.setValue(1);
+							npTipoConcurso.setValue(numeroTipoConcursoSelecionado);
 							npTipoConcurso.setDisplayedValues(extrairDescricoes(opcoesDeTipoConcursos));
 							npTipoConcurso.setOnValueChangedListener(new ListenerTipoConcurso());
 						}
@@ -170,9 +175,9 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
                         viewOrdenarPor = layoutInflater.inflate(R.layout.list_item_ordernar_por_filtro, null);
                         if (npOrdenarPor == null && viewOrdenarPor.findViewById(R.id.np_ordenar_por) != null) {
                             setNpOrdenarPor(viewOrdenarPor.findViewById(R.id.np_ordenar_por));
-                            npOrdenarPor.setMinValue(1);
-                            npOrdenarPor.setMaxValue(opcoesDeOrdenacao.size());
-                            npOrdenarPor.setValue(configConsulta.getOrdenacaoPadrao().getValor().intValue());
+                            npOrdenarPor.setMinValue(2);
+                            npOrdenarPor.setMaxValue(opcoesDeOrdenacao.size()+1);
+                            npOrdenarPor.setValue(numeroOrdenarPorSelecionada);
 							npOrdenarPor.setDisplayedValues(extrairDescricoes(opcoesDeOrdenacao));
 							npOrdenarPor.setOnValueChangedListener(new ListenerOrdenarPor());
                         }
@@ -229,7 +234,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
         @Override
         public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
             numeroOrdenarPorSelecionada = newVal;
-        }
+		}
     }
 
 	private class ListenerTipoAposta implements NumberPicker.OnValueChangeListener {
@@ -282,7 +287,8 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			}
 		}
 		if (getNpSituacao() != null) {
-			if(getNpSituacao().getValue() != 1){
+			npSituacao.setValue(numeroSituacaoSelecionada);
+			if(numeroSituacaoPadrao != numeroSituacaoSelecionada) {
 				return true;
 			}
 		}
@@ -294,17 +300,20 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			}
 		}
 		if (getNpOrdenarPor() != null) {
-			if(getNpOrdenarPor().getValue() != 0) {
+			npOrdenarPor.setValue(numeroOrdenarPorSelecionada);
+			if(numeroOrdenarPorPadrao != numeroOrdenarPorSelecionada) {
 				return true;
 			}
 		}
 		if (getNpTipoAposta() != null) {
-			if(getNpTipoAposta().getValue() != 0) {
+			npTipoAposta.setValue(numeroTipoApostaSelecionada);
+			if(numeroTipoApostaPadrao != numeroTipoApostaSelecionada) {
 				return true;
 			}
 		}
 		if (getNpTipoConcurso() != null) {
-			if(getNpTipoConcurso().getValue() != 0) {
+			npTipoConcurso.setValue(numeroTipoConcursoSelecionado);
+			if(numeroTipoConcursoPadrao != numeroTipoConcursoSelecionado) {
 				return true;
 			}
 		}
@@ -383,16 +392,16 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			getEtNumConcurso().clearFocus();
 		}
 		if(getNpOrdenarPor() != null) {
-			numeroOrdenarPorSelecionada = configConsulta.getOrdenacaoPadrao().getValor().intValue();
-			getNpOrdenarPor().setValue(configConsulta.getOrdenacaoPadrao().getValor().intValue());
+			numeroOrdenarPorSelecionada = numeroTipoConcursoPadrao;
+			getNpOrdenarPor().setValue(numeroTipoConcursoPadrao);
 		}
 		if(getNpTipoAposta() != null) {
-			numeroTipoApostaSelecionada = 0;
-			getNpTipoAposta().setValue(0);
+			numeroTipoApostaSelecionada = numeroTipoApostaPadrao;
+			getNpTipoAposta().setValue(numeroTipoApostaPadrao);
 		}
 		if(getNpTipoConcurso() != null) {
-			numeroTipoConcursoSelecionado = 0;
-			getNpTipoConcurso().setValue(0);
+			numeroTipoConcursoSelecionado = numeroTipoConcursoPadrao;
+			getNpTipoConcurso().setValue(numeroTipoConcursoPadrao);
 		}
 	}
 
@@ -589,20 +598,26 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 	private void preConfiguraSituacoes() {
 		situacoes = configConsulta.getSituacoes();
-		numeroSituacaoSelecionada = configConsulta.getSituacaoPadrao().getValor().intValue();
+		numeroSituacaoPadrao = configConsulta.getSituacaoPadrao().getValor().intValue();
+		numeroSituacaoSelecionada = numeroSituacaoPadrao;
 	}
 
 	private void preConfiguraOrdenacoes() {
 		opcoesDeOrdenacao = configConsulta.getOrdenacoes();
-		numeroOrdenarPorSelecionada = configConsulta.getOrdenacaoPadrao().getValor().intValue();
+		numeroOrdenarPorPadrao = configConsulta.getOrdenacaoPadrao().getValor().intValue();
+		numeroOrdenarPorSelecionada = numeroOrdenarPorPadrao;
 	}
 
 	private void preConfiguraTipoAposta() {
 		opcoesDeTipoApostas = configConsulta.getListaTipoAposta();
+		numeroTipoApostaPadrao = opcoesDeTipoApostas.get(0).getValor().intValue();
+		numeroTipoApostaSelecionada = numeroTipoApostaPadrao;
 	}
 
 	private void preConfiguraTipoConcurso() {
 		opcoesDeTipoConcursos = configConsulta.getListaTipoConcurso();
+		numeroTipoConcursoPadrao = opcoesDeTipoConcursos.get(0).getValor().intValue();
+		numeroTipoConcursoSelecionado = numeroTipoConcursoPadrao;
 	}
 
 	public static String[] extrairDescricoes(List<DTOEnumLong> opcoes) {

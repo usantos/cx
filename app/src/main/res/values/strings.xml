@@ -638,7 +638,7 @@
 
     <!-- Filtros -->
     <string name="modalidades_selecionadas">Modalidades Selecionadas</string>
-    <string name="tit_selecione_data">Selecione a data</string>
+    <string name="tit_selecione_data">Selecione o período</string>
     <string name="ultimos_qtd_dias">Últimos {quantidade} dias</string>
     <string name="numeros_obrigatorios">Números obrigatórios</string>
 

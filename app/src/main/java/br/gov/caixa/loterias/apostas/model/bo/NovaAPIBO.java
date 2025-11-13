@@ -77,10 +77,19 @@ public class NovaAPIBO extends BaseBO {
         }
         queryParams.put("offset", String.valueOf(page.getOffset()));
         queryParams.put("size", String.valueOf(page.getSize()));
-        if(page.getSituacao() != 0){
-            queryParams.put("situacao", String.valueOf(page.getSituacao()));
-        } else {
-            queryParams.put("situacao", String.valueOf(SituacoesApostaFiltroEnum.TODAS));
+//        if(page.getSituacao() != 0){
+//            queryParams.put("situacao", String.valueOf(page.getSituacao()));
+//        } else {
+//            queryParams.put("situacao", String.valueOf(SituacoesApostaFiltroEnum.TODAS));
+//        }
+        if(page.getSituacao() != 0) {
+            if (page.getSituacao() == 1) {
+                queryParams.put("situacao", String.valueOf(SituacoesApostaFiltroEnum.TODAS));
+            } else if (page.getSituacao() == 2) {
+                queryParams.put("situacao", String.valueOf(SituacoesApostaFiltroEnum.PAGAS));
+            } else if (page.getSituacao() == 3) {
+                queryParams.put("situacao", String.valueOf(SituacoesApostaFiltroEnum.PRESCRITAS));
+            }
         }
         if(page.getModalidade() != 0){
             queryParams.put("modalidade", String.valueOf(page.getModalidade()));
@@ -92,9 +101,9 @@ public class NovaAPIBO extends BaseBO {
         if(page.getTipoAposta() != 0) {
             queryParams.put("tipoAposta", String.valueOf(page.getTipoAposta()));
         }
-        //queryParams.put("situacao", String.valueOf(page.getSituacao()));
-
-        //        queryParams.put("idsApostas", idsApostas);
+        if(page.getTipoConcurso() != 0) {
+            queryParams.put("tipoConcurso", String.valueOf(page.getTipoConcurso()));
+        }
         return queryParams;
     }
 }
