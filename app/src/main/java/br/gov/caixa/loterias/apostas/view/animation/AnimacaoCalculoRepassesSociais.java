@@ -59,7 +59,7 @@ public class AnimacaoCalculoRepassesSociais {
             textView.setText(valorFormatado);
 
             String novoContentDescription = "Em " + Calendar.getInstance().get(Calendar.YEAR)
-                    + " as Loterias já destinaram " + valorFormatado + " para melhorar o país.";
+                    + " as Loterias CAIXA já destinaram " + valorFormatado + " para melhorar o país.";
 
             CharSequence atualContentDescription = textView.getContentDescription();
             if (atualContentDescription == null || !atualContentDescription.toString().equals(novoContentDescription)) {
