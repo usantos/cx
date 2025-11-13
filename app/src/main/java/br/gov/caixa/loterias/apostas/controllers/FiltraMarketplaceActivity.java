@@ -766,7 +766,12 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
             Log.d("FiltraMarketplace", "Parametro Jogo carregado: " + parametroJogo);
 
             if (!ModalidadeEnum.LOTECA.equals(modalidade)) {
-                prognosticoMaximo = parametroJogo.getPrognosticoMaximo();
+                if (parametroJogo.getPrognosticoMaximo() == null){
+                    prognosticoMaximo = 80;
+                }
+                else {
+                    prognosticoMaximo = parametroJogo.getPrognosticoMaximo();
+                }
             }
 
             if (ModalidadeEnum.TIMEMANIA.equals(modalidade)) {
