@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutFavoritas"
     android:layout_width="match_parent"
+    android:importantForAccessibility="no"
     android:layout_height="wrap_content"
     android:background="@color/branco">
 
@@ -14,6 +15,7 @@
         android:background="@color/mega_verde_claro_mkp"
         android:layout_marginTop="15dp"
         android:gravity="left"
+        android:importantForAccessibility="no"
         android:orientation="horizontal"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +27,7 @@
             android:id="@+id/RelativeLayoutTrevo"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
             android:background="@drawable/background_trapeze_megasena">
 
             <ImageView
@@ -33,6 +36,7 @@
                 android:layout_height="28dp"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="10dp"
+                android:importantForAccessibility="no"
                 android:scaleType="fitCenter"
                 android:src="@drawable/trevo" />
         </RelativeLayout>
