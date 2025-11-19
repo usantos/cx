@@ -26,15 +26,18 @@ public class PdfUtils{
     public static final String ARQUIVO_COMPROV_APOSTA = "Aposta";
 
     public static void abrirPdf(Uri fileUri, AppCompatActivity context) {
-        if (fileUri != null){
-            Intent myIntent = new Intent(Intent.ACTION_VIEW)
-                    .setDataAndType(fileUri, "application/pdf")
-                    .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            context.startActivity(myIntent);
+        if (fileUri != null) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(fileUri, "application/pdf");
+
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            context.startActivity(intent);
         }
     }
-
-
 
     private static String getFileApostaPath(AppCompatActivity activity, String diretorio) throws Exception {
         // cria a estrutura de diretório

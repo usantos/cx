@@ -576,6 +576,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         if(!premioPago){
             if(fileApostaUri != null){
                 PdfUtils.abrirPdf(fileApostaUri, ApostaConfirmadaDetalhesActivity.this);
+                fileApostaUri = null;
             } else {
                 AlertDialogUtils.show(this);
                 try {
@@ -585,6 +586,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                             AlertDialogUtils.dismiss();
                             fileApostaUri = PdfUtils.baixarPdfAposta(response, ApostaConfirmadaDetalhesActivity.this);
                             PdfUtils.abrirPdf(fileApostaUri, ApostaConfirmadaDetalhesActivity.this);
+                            fileApostaUri = null;
                         }
 
                         @Override
@@ -603,6 +605,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         }else{
             if(filePremioUri != null){
                 PdfUtils.abrirPdf(filePremioUri, ApostaConfirmadaDetalhesActivity.this);
+                filePremioUri = null;
             } else {
                 AlertDialogUtils.show(this);
                 try{
@@ -612,6 +615,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                             AlertDialogUtils.dismiss();
                             filePremioUri = PdfUtils.baixarPdfPremio(response, ApostaConfirmadaDetalhesActivity.this);
                             PdfUtils.abrirPdf(filePremioUri, ApostaConfirmadaDetalhesActivity.this);
+                            filePremioUri = null;
                         }
 
                         @Override
