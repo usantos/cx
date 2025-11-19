@@ -16,6 +16,7 @@ import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.Calendar;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -110,7 +111,8 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
 
         TextView textViewEducacaoValorArrecadado = findViewById(R.id.textViewEducacaoValorArrecadado);
         String[] valoresEducacao = formatValorArrecadados(repasseOBj.getPercentualEducacao());
-        textViewEducacaoValorArrecadado.setText(valoresEducacao[0]);
+        String valEducacao = "R$ " + valoresEducacao[0];
+        textViewEducacaoValorArrecadado.setText(valEducacao);
         TextView textEducacao = findViewById(R.id.textEducacao);
         textViewEducacaoValorArrecadado.setContentDescription(valoresEducacao[0] + " " + valoresEducacao[1] + " para " + textEducacao.getText());
         TextView textViewEducacaoUnidadeValor = findViewById(R.id.textViewEducacaoUnidadeValor);
@@ -118,7 +120,8 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
 
         String[] valoresCultura = formatValorArrecadados(repasseOBj.getPercentualCultura());
         TextView textViewCulturaValorArrecadado = findViewById(R.id.textViewCulturaValorArrecadado);
-        textViewCulturaValorArrecadado.setText(valoresCultura[0]);
+        String valCultura = "R$ " + valoresCultura[0];
+        textViewCulturaValorArrecadado.setText(valCultura);
         TextView textViewCultura = findViewById(R.id.textCultura);
         textViewCulturaValorArrecadado.setContentDescription(valoresCultura[0] + " " + valoresCultura[1] + " para " + textViewCultura.getText());
         TextView textViewCulturaUnidadeValor = findViewById(R.id.textViewCulturaUnidadeValor);
@@ -126,7 +129,8 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
 
         String[] valoresEsporte = formatValorArrecadados(repasseOBj.getPercentualEsporte());
         TextView textViewEsporteValorArrecadado = findViewById(R.id.textViewEsporteValorArrecadado);
-        textViewEsporteValorArrecadado.setText(valoresEsporte[0]);
+        String valEsporte = "R$ " + valoresEsporte[0];
+        textViewEsporteValorArrecadado.setText(valEsporte);
         TextView textEsporte = findViewById(R.id.textEsporte);
         textViewEsporteValorArrecadado.setContentDescription(valoresEsporte[0] + " " + valoresEsporte[1] + " para " + textEsporte.getText());
         TextView textViewEsporteUnidadeValor = findViewById(R.id.textViewEsporteUnidadeValor);
@@ -134,7 +138,8 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
 
         String[] valoresSeguranca = formatValorArrecadados(repasseOBj.getPercentualSeguranca());
         TextView textViewSegurancaValorArrecadado = findViewById(R.id.textViewSegurancaValorArrecadado);
-        textViewSegurancaValorArrecadado.setText(valoresSeguranca[0]);
+        String valSeguranca = "R$ " + valoresSeguranca[0];
+        textViewSegurancaValorArrecadado.setText(valSeguranca);
         TextView textSeguranca = findViewById(R.id.textSeguranca);
         textViewSegurancaValorArrecadado.setContentDescription(valoresSeguranca[0] + " " + valoresSeguranca[1] + " para " + textSeguranca.getText());
         TextView textViewSegurancaUnidadeValor = findViewById(R.id.textViewSegurancaUnidadeValor);
@@ -142,7 +147,8 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
 
         String[] valoresSeguridade = formatValorArrecadados(repasseOBj.getPercentualSeguridade());
         TextView textViewSeguridadeValorArrecadado = findViewById(R.id.textViewSeguridadeValorArrecadado);
-        textViewSeguridadeValorArrecadado.setText(valoresSeguridade[0]);
+        String valSeguridade = "R$ " + valoresSeguridade[0];
+        textViewSeguridadeValorArrecadado.setText(valSeguridade);
         TextView textSeguridade = findViewById(R.id.textSeguridade);
         textViewSeguridadeValorArrecadado.setContentDescription(valoresSeguridade[0] + " " + valoresSeguridade[1] + " para " + textSeguridade.getText());
         TextView textViewSeguridadeUnidadeValor = findViewById(R.id.textViewSeguridadeUnidadeValor);
@@ -150,7 +156,8 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
 
         String[] valoresOutros = formatValorArrecadados(repasseOBj.getPercentualOutros());
         TextView textViewOutrosValorArrecadado = findViewById(R.id.textViewOutrosValorArrecadado);
-        textViewOutrosValorArrecadado.setText(valoresOutros[0]);
+        String valOutros = "R$ " + valoresOutros[0];
+        textViewOutrosValorArrecadado.setText(valOutros);
         TextView textOutros = findViewById(R.id.textOutros);
         textViewOutrosValorArrecadado.setContentDescription(valoresOutros[0] + " " + valoresOutros[1] + " para " + textOutros.getText());
         TextView textViewOutrosUnidadeValor = findViewById(R.id.textViewOutrosUnidadeValor);
@@ -169,56 +176,38 @@ public class RepassesSociaisActivity extends SettingToolbarActivity {
         buttonAposte.setText(ViewUtils.textCaixaSTDBold(this, ViewUtils.fromHtml(htmlTextButtonAposte).toString()));
         buttonAposte.setOnClickListener(v -> finish());
     }
-
     private String[] formatValorArrecadados(BigDecimal valor) {
-        BigDecimal arrecadacaoAcumulada = BigDecimal.valueOf(0.0);
-        if (repasseOBj.getArrecadacaoAcumulada() != null) {
-            arrecadacaoAcumulada = repasseOBj.getArrecadacaoAcumulada();
-        }
-        valor = (arrecadacaoAcumulada.divide(BigDecimal.valueOf(100))).multiply(valor);
+        BigDecimal arrecadacaoAcumulada = repasseOBj.getArrecadacaoAcumulada() != null
+                ? repasseOBj.getArrecadacaoAcumulada()
+                : BigDecimal.ZERO;
+
+        valor = arrecadacaoAcumulada.divide(BigDecimal.valueOf(100)).multiply(valor);
+
         String[] valores = new String[2];
 
-        BigInteger valorArredondado = valor.toBigInteger();
-        String strValor = valorArredondado.toString();
-        String[] parts = strValor.split(getResources().getString(R.string.string_vazia));
-        int countParts = parts.length;
+        if (valor.compareTo(BigDecimal.valueOf(1_000_000_000)) >= 0) {
+            BigDecimal bilhoes = valor.divide(BigDecimal.valueOf(1_000_000_000), 1, RoundingMode.DOWN);
+            valores[0] = bilhoes.toPlainString().replace('.', ',');
+            valores[1] = bilhoes.compareTo(BigDecimal.valueOf(2)) < 0 ? getString(R.string.bilhao_de_reais) : getString(R.string.bilhoes_de_reais);
 
-        if (countParts == 5 || countParts == 6 || countParts == 7) {
-            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000)).toString() +
-                    getResources().getString(R.string.virgula) +
-                    parts[1 + valorArredondado.divide(BigInteger.valueOf(1000)).toString().length()];
-            valores[1] = getResources().getString(R.string.mil_reais);
+        } else if (valor.compareTo(BigDecimal.valueOf(1_000_000)) >= 0) {
+            BigDecimal milhoes = valor.divide(BigDecimal.valueOf(1_000_000), 1, RoundingMode.DOWN);
+            valores[0] = milhoes.toPlainString().replace('.', ',');
+            valores[1] = milhoes.compareTo(BigDecimal.valueOf(2)) < 0 ? getString(R.string.milhao_de_reais) : getString(R.string.milhoes_de_reais);
 
-        } else if (countParts == 8 || countParts == 9 || countParts == 10) {
-            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000000)).toString() +
-                    getResources().getString(R.string.virgula) +
-                    parts[1 + valorArredondado.divide(BigInteger.valueOf(1000000)).toString().length()];
-
-            if (valorArredondado.compareTo(BigInteger.valueOf(2_000_000)) < 0) {
-                valores[1] = getResources().getString(R.string.milhao_de_reais); 
-            } else {
-                valores[1] = getResources().getString(R.string.milhoes_de_reais); 
-            }
-
-        } else if (countParts == 11 || countParts == 12 || countParts == 13) {
-            valores[0] = valorArredondado.divide(BigInteger.valueOf(1000000000)).toString() +
-                    getResources().getString(R.string.virgula) +
-                    parts[1 + valorArredondado.divide(BigInteger.valueOf(1000000000)).toString().length()];
-
-            if (valorArredondado.compareTo(BigInteger.valueOf(2_000_000_000)) < 0) {
-                valores[1] = getResources().getString(R.string.bilhao_de_reais); 
-            } else {
-                valores[1] = getResources().getString(R.string.bilhoes_de_reais); 
-            }
+        } else if (valor.compareTo(BigDecimal.valueOf(1_000)) >= 0) {
+            BigDecimal milhares = valor.divide(BigDecimal.valueOf(1_000), 1, RoundingMode.DOWN);
+            valores[0] = milhares.toPlainString().replace('.', ',');
+            valores[1] = getString(R.string.mil_reais);
 
         } else {
-            valores[0] = strValor;
-            valores[1] = getResources().getString(R.string.reais);
+            valores[0] = valor.toPlainString().replace('.', ',');
+            valores[1] = getString(R.string.reais);
         }
 
         return valores;
     }
-    @Override
+        @Override
     protected void configuraActivityBack() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
