@@ -2,6 +2,8 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -30,6 +32,8 @@ public class SelecaoModalidadesResultados extends LoteriasBaseAppActivity {
     public final static String MODALIDADE = "MODALIDADE";
     public final static String MODALIDADE_VALUE = "MODALIDADE_VALUE";
 
+    ImageButton customButton;
+
     private RecyclerView gridModalidades;
     private List<TipoAposta> tiposAposta = new ArrayList<>();
     List<ModalidadeDTO> modalidades = new ArrayList<>();
@@ -40,16 +44,25 @@ public class SelecaoModalidadesResultados extends LoteriasBaseAppActivity {
         setContentView(R.layout.activity_selecao_modalidades_resultados);
         setViews();
         callWebservice();
+        TextView textModalidades = findViewById(R.id.tv_titulo_modalidade);
+        textModalidades.setHint(R.string.titulo);
     }
 
     private void setViews(){
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        configurarToolbar();
         gridModalidades = findViewById(R.id.ehgv_grid_modalidades);
+    }
 
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_Resultados_"));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+    private void configurarToolbar(){
+        TextView textTitulo = findViewById(R.id.textCustom);
+        textTitulo.setText(R.string.label_resultados);
+        textTitulo.setHint(getString(R.string.titulo));
+        customButton = findViewById(R.id.customButton);
+        customButton.setContentDescription(getString(R.string.voltar));
+        customButton.setOnClickListener(v -> onBackPressed());
+        customButton.setFocusable(true);
+        customButton.setFocusableInTouchMode(true);
+        customButton.requestFocus();
     }
 
     @Override

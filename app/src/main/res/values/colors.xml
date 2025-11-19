@@ -9,10 +9,13 @@
     <color name="azulpush">#0066B3</color>
     <color name="azulBolao">#2F5095</color>
     <color name="azulFiltro">#005EA8</color>
+    <color name="azulGradienteStart">#0082AA</color>
+    <color name="azulGradienteEnd">#005CAB</color>
     <color name="pushbotaoaposteagora">#0164AF</color>
     <color name="pushbotaoconferiragora">#4BBDAC</color>/
     <color name="fundobrancocentralmsg">#F4F4F4</color>
     <color name="black_overlay">#66000000</color>
+    <color name="blackText">#22292E</color>
     <color name="branco">#ffffff</color>
     <color name="laranja">#d87b00</color>
     <color name="branco_transparente">#99ffffff</color>
@@ -21,6 +24,7 @@
     <color name="cinza2">#d4dfe2</color>
     <color name="cinzaClaro">#EBF2F4</color>
     <color name="cinzaclaro">#eff5f6</color>
+    <color name="cinzaCx">#ebf1f2</color>
     <color name="cinzaescuro">#4e596b</color>
     <color name="cinza_button">#a5aab6</color>
     <color name="cinza_total">#929ea0</color>
@@ -68,6 +72,8 @@
     <color name="greyText">#404b52</color>
     <color name="laranjacaixa">#f39200</color>
     <color name="amareloQueimado">#f9b000</color>
+    <color name="colorLimao">#f5fec1</color>
+    <color name="colorLimaoCx">#afca0b</color>
     <color name="transparente50">#64ffffff</color>
     <color name="textColorToolbar">#0164a8</color>
     <color name="transparente80">#CCFFFFFF</color>
@@ -76,6 +82,12 @@
     <color name="azulfavoritas">#00b5e5</color>
     <color name="statuscolorstart">#368378</color>
     <color name="statuscolorend">#034073</color>
+    <color name="corEdu">#003C4D</color>
+    <color name="corGoiaba">#801905</color>
+    <color name="corEsp">#216E62</color>
+    <color name="corSeg">#465200</color>
+    <color name="corSegu">#753C61</color>
+    <color name="corOutros">#664800</color>
     <color name="transparente">#00ff0000</color>
     <color name="cinzabotaoapostedesativado">#f8f8f8</color>
     <color name="cinzaseekbar">#b3c7cb</color>

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RepassometroDTO;
@@ -50,11 +51,21 @@ public class AnimacaoCalculoRepassesSociais {
         final double calculoFinal = calculo;
 
         ValueAnimator animator = new  ValueAnimator();
-        animator.setObjectValues(oldValue, calculo); //double value
+        animator.setObjectValues(oldValue, calculo);
         animator.addUpdateListener(animation -> {
-            String valorUpdate = String.format( "%.2f", animation.getAnimatedValue());
+            String valorUpdate = String.format("%.2f", animation.getAnimatedValue());
             valorUpdate = valorUpdate.replace(",", ".");
-            textView.setText(ViewUtils.getMoedaFormat(new BigDecimal(valorUpdate)));
+            String valorFormatado = ViewUtils.getMoedaFormat(new BigDecimal(valorUpdate));
+            textView.setText(valorFormatado);
+
+            String novoContentDescription = "Em " + Calendar.getInstance().get(Calendar.YEAR)
+                    + " as Loterias CAIXA já destinaram " + valorFormatado + " para melhorar o país.";
+
+            CharSequence atualContentDescription = textView.getContentDescription();
+            if (atualContentDescription == null || !atualContentDescription.toString().equals(novoContentDescription)) {
+                textView.setContentDescription(novoContentDescription);
+            }
+
         });
         // problem here
         animator.setEvaluator(( TypeEvaluator<Double>)(fraction, startValue, endValue) -> (startValue + (endValue - startValue) * fraction));

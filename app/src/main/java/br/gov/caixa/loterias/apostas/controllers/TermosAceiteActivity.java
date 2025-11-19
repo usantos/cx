@@ -1,15 +1,24 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 import com.android.volley.VolleyError;
 
@@ -78,11 +87,12 @@ public class TermosAceiteActivity extends LoteriasBaseAppActivity {
 
     private void setViews() {
         setContentView(R.layout.activity_termos_aceite);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.termos_de_uso)));
-
+        TextView textTitulo = findViewById(R.id.textCustom);
+        textTitulo.setText(getString(R.string.termos_de_uso_sem_));
+        textTitulo.setHint(getString(R.string.titulo));
+        ImageButton customButton = findViewById(R.id.customButton);
+        customButton.setContentDescription(getString(R.string.voltar));
+        customButton.setOnClickListener(v -> onBackPressed());
         webViewConteudo = findViewById(R.id.webViewConteudo2);
         clTermoAceite = findViewById(R.id.cl_termo_aceite2);
     }

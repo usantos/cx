@@ -3,7 +3,7 @@
     android:padding="24dp"
     android:background="@drawable/rounded_dialog_background"
     android:layout_width="358dp"
-    android:layout_height="167dp">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/dialogTitle"

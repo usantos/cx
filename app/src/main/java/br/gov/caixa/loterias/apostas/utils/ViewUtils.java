@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -201,6 +202,44 @@ public class ViewUtils {
         return dialog;
     }
 
+
+
+    public static AlertDialog dialogoNewEntendi(Context context, int tituloResId, int layoutId, String mensagem) {
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(layoutId, null);
+
+        TextView titleView = dialogView.findViewById(R.id.dialogTitle);
+        titleView.setHint("Título");
+        TextView messageView = dialogView.findViewById(R.id.dialogMessage);
+        titleView.setText(context.getString(tituloResId));
+        messageView.setText(mensagem);
+        messageView.setContentDescription(mensagem);
+
+        titleView.setTypeface(getFontCaixaStdBold(context));
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(dialogView)
+                .setCancelable(false)
+                .setPositiveButton("Entendi",(dialogInterface, i) -> dialogInterface.dismiss())
+                .create();
+
+
+        if (dialog.getWindow() != null) {
+            int larguraPx = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    250,
+                    context.getResources().getDisplayMetrics()
+            );
+
+            dialog.getWindow().setLayout(larguraPx, WindowManager.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
+
+        return dialog;
+    }
 
 
     public static AlertDialog.Builder dialogo(Context context, String titulo, String mensagem) {
@@ -407,6 +446,23 @@ public class ViewUtils {
         TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontCaixaStdBold(context));
         textMessageView.setTypeface(getFontCaixaStdRegular(context));
+        return dialog;
+    }
+
+    public static Dialog alertEntendi(Context context){
+        AlertDialog dialog = ViewUtils.dialogoNewEntendi(
+                context,
+                R.string.label_atencao,
+                R.layout.dialog_alert_new_info,
+                context.getString(R.string.o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios)
+        );
+
+        dialog.show();
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+
         return dialog;
     }
 

@@ -57,7 +57,7 @@ public class SettingToolbarActivity extends LoteriasBaseAppActivity {
         startActivity(activity);
     }
 
-    private void configuraActivityBack() {
+    protected void configuraActivityBack() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setElevation(0);
