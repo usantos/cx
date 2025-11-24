@@ -141,6 +141,7 @@ public class ConfirmarCartaoActivity extends LoteriasBaseAppActivity {
 	private void configButton() {
 		btnApostar = findViewById(R.id.btnApostar);
 		btnApostar.setOnClickListener(v -> {
+			btnApostar.setEnabled(false);
 			apostar();
 		});
 	}
@@ -184,6 +185,7 @@ public class ConfirmarCartaoActivity extends LoteriasBaseAppActivity {
 
 			@Override
 			public void error(VolleyError error) {
+				btnApostar.setEnabled(true);
 				AlertDialogUtils.dismiss();
 			}
 		};
@@ -203,6 +205,7 @@ public class ConfirmarCartaoActivity extends LoteriasBaseAppActivity {
 
 			@Override
 			public void error(VolleyError error) {
+				btnApostar.setEnabled(true);
 				AlertDialogUtils.dismiss();
 			}
 		};
@@ -224,6 +227,7 @@ public class ConfirmarCartaoActivity extends LoteriasBaseAppActivity {
 
 			@Override
 			public void error(VolleyError error) {
+				btnApostar.setEnabled(true);
 				AlertDialogUtils.dismiss();
 			}
 		};
@@ -249,6 +253,7 @@ public class ConfirmarCartaoActivity extends LoteriasBaseAppActivity {
 
 			@Override
 			public void errorCompra(VolleyError volleyError) {
+				btnApostar.setEnabled(true);
 				onCompraError(volleyError);
 			}
 		};
@@ -264,6 +269,7 @@ public class ConfirmarCartaoActivity extends LoteriasBaseAppActivity {
 
 			@Override
 			public void error(VolleyError error) {
+				btnApostar.setEnabled(true);
 				AlertDialogUtils.dismiss();
 			}
 		};
@@ -283,6 +289,7 @@ public class ConfirmarCartaoActivity extends LoteriasBaseAppActivity {
 
 			@Override
 			public void errorCompra(VolleyError volleyError) {
+				btnApostar.setEnabled(true);
 				onCompraError(volleyError);
 			}
 		};
