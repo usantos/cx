@@ -396,7 +396,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 		String texto = res.getString(R.string.proximo_concurso_barra_n_barra_n)
 				+ numConcurso
-				+ res.getString(R.string.barra_nbarra_n_aguardando_estimativa_de_premio);
+				+ res.getString(R.string.barra_n_barra_n_aguardando_estimativa_de_premio);
 
 		SpannableStringBuilder sb = new SpannableStringBuilder(texto);
 
@@ -408,7 +408,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 		ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(context, corModalidadeInt));
 		ForegroundColorSpan corTexto = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.cinzaescuro));
-		AbsoluteSizeSpan tamanhoNumero = new AbsoluteSizeSpan(24, true); // 24sp, true indica SP
+		AbsoluteSizeSpan tamanhoNumero = new AbsoluteSizeSpan(18, true); // 24sp, true indica SP
 
 		sb.setSpan(corModalidade, 0, tamT1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		sb.setSpan(corTexto, startNum, endNum, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
