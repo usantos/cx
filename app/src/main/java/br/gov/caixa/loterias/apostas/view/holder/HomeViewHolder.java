@@ -2,9 +2,11 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.CountDownTimer;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
@@ -388,24 +390,53 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		aposta.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 	}
 
+//	private SpannableStringBuilder retornaStringConcursoSemEstimativa(String numConcurso, int corModalidadeInt) {
+//		final SpannableStringBuilder sb = new SpannableStringBuilder(itemView.getContext().getResources().getString(R.string.proximo_concurso_barra_n_barra_n) +
+//																		  numConcurso +
+//																		  itemView.getContext().getResources().getString(R.string.barra_n_aguardando_estimativa_de_premio));
+//
+//		int tamT1 = itemView.getContext().getResources().getString(R.string.proximo_concurso_barra_n_barra_n).length();
+//		int tamT2 = numConcurso.length();
+//		int tamT3 = itemView.getContext().getResources().getString(R.string.barra_n_aguardando_estimativa_de_premio).length();
+//
+//		final ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), corModalidadeInt));
+//		final ForegroundColorSpan corTexto      = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), R.color.cinzaescuro));
+//
+//		sb.setSpan(corModalidade, 0, tamT1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//		sb.setSpan(corTexto, tamT1, tamT1+tamT2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//		sb.setSpan(corModalidade, tamT1+tamT2, sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//
+//		return sb;
+//	}
+
 	private SpannableStringBuilder retornaStringConcursoSemEstimativa(String numConcurso, int corModalidadeInt) {
-		final SpannableStringBuilder sb = new SpannableStringBuilder(itemView.getContext().getResources().getString(R.string.proximo_concurso_barra_n_barra_n) +
-																		  numConcurso +
-																		  itemView.getContext().getResources().getString(R.string.barra_n_aguardando_estimativa_de_premio));
+		Context context = itemView.getContext();
+		Resources res = context.getResources();
 
-		int tamT1 = itemView.getContext().getResources().getString(R.string.proximo_concurso_barra_n_barra_n).length();
+		String texto = res.getString(R.string.proximo_concurso_barra_n_barra_n)
+				+ numConcurso
+				+ res.getString(R.string.barra_nbarra_n_aguardando_estimativa_de_premio);
+
+		SpannableStringBuilder sb = new SpannableStringBuilder(texto);
+
+		int tamT1 = res.getString(R.string.proximo_concurso_barra_n_barra_n).length();
 		int tamT2 = numConcurso.length();
-		int tamT3 = itemView.getContext().getResources().getString(R.string.barra_n_aguardando_estimativa_de_premio).length();
 
-		final ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), corModalidadeInt));
-		final ForegroundColorSpan corTexto      = new ForegroundColorSpan(ContextCompat.getColor(itemView.getContext(), R.color.cinzaescuro));
+		int startNum = tamT1;
+		int endNum = startNum + tamT2;
 
-		sb.setSpan(corModalidade, 0, tamT1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-		sb.setSpan(corTexto, tamT1, tamT1+tamT2, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-		sb.setSpan(corModalidade, tamT1+tamT2, sb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		ForegroundColorSpan corModalidade = new ForegroundColorSpan(ContextCompat.getColor(context, corModalidadeInt));
+		ForegroundColorSpan corTexto = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.cinzaescuro));
+		AbsoluteSizeSpan tamanhoNumero = new AbsoluteSizeSpan(24, true); // 24sp, true indica SP
+
+		sb.setSpan(corModalidade, 0, tamT1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		sb.setSpan(corTexto, startNum, endNum, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		sb.setSpan(tamanhoNumero, startNum, endNum, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		sb.setSpan(corModalidade, endNum, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
 		return sb;
 	}
+
 
 	private Map<TimeUnit, Long> computeDiff(Date date1, Date date2) {
 		long           diffInMillies = date2.getTime() - date1.getTime();
