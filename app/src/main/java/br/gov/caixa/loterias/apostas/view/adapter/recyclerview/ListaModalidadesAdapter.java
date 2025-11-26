@@ -185,16 +185,16 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 
 	private int fundoImagemEspecial(ModalidadeEnum modalidade) {
 		if (modalidade == ModalidadeEnum.DUPLA_SENA) {
-			return R.drawable.fundo_especial_dupla_sena_de_pascoa;
+			return R.drawable.dupla_pascoa;
 		}
 		if (modalidade == ModalidadeEnum.QUINA) {
-			return R.drawable.fundo_especial_quina_de_sao_joao;
+			return R.drawable.quina_sao_joao;
 		}
 		if (modalidade == ModalidadeEnum.LOTOFACIL) {
-			return R.drawable.fundo_especial_lotofacil_da_independencia;
+			return R.drawable.lotofacil_independencia;
 		}
 		if (modalidade == ModalidadeEnum.MEGA_SENA) {
-			return R.drawable.fundo_especial_mega_da_virada;
+			return R.drawable.rodape_mega_sena;
 		}
 		return R.color.branco;
 	}
