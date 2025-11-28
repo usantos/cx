@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/branco">
+    android:background="@drawable/dialog_background">
 
     <ScrollView
         android:id="@+id/sv_carrinho"
@@ -22,9 +22,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="5dp"
-                android:layout_marginTop="30dp"
                 android:fontFamily="@font/caixa_std_bold"
                 android:lineSpacingExtra="5dp"
+                android:textSize="16sp"
                 android:text="@string/selecione_as_op_es_e_clique_em_adicionar"
                 android:textAlignment="center"
                 android:id="@+id/selecioneText"
@@ -36,12 +36,12 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/button_border_cinza"
-                android:fontFamily="@font/caixa_std_bold"
+                android:background="@drawable/button_rounded_border_grey"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/tipo_de_concurso"
                 android:textAllCaps="false"
                 android:textColor="@color/greyText"
-                android:textSize="14dp" />
+                android:textSize="16sp" />
 
             <NumberPicker
                 android:id="@+id/picker_tipo_concurso"
@@ -57,13 +57,13 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/button_border_cinza"
-                android:fontFamily="@font/caixa_std_bold"
+                android:background="@drawable/button_rounded_border_grey"
+                android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/quantidade_teimosinhas"
                 android:contentDescription="@string/quantidade_teimosinhas"
                 android:textAllCaps="false"
                 android:textColor="@color/greyText"
-                android:textSize="14dp"
+                android:textSize="16sp"
                 android:visibility="gone" />
 
             <NumberPicker

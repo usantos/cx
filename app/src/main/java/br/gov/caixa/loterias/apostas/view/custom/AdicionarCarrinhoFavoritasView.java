@@ -1,6 +1,9 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.animation.ValueAnimator;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.opengl.Visibility;
 import android.os.Bundle;
 
@@ -66,8 +69,20 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_adicionar_carrinho_favoritas, container);
+        return inflater.inflate(R.layout.dialog_adicionar_carrinho_favoritas, container,false);
     }
+
+
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        return dialog;
+    }
+
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
