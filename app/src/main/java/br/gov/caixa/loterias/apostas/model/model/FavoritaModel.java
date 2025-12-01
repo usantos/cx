@@ -145,10 +145,6 @@ public class FavoritaModel extends AppModel {
 
 	private void checarApostasRepetidas(final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO, OnSilceListener<CarrinhoDTO> listener) {
 		if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(apostaFavoritaDTO, carrinhoDTO)) {
-//			ViewUtils.alertTitleButtonYesOrNotListener(getActivity(), getActivity().getResources().getString(R.string.MA015), (dialog, which) -> {
-//				AlertDialogUtils.show(getActivity());
-//				adicionarCarrinho(apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade(), listener);
-//			});
 			ViewUtils.alertTitleButtonYesOrNotListenerNew(getActivity(),getActivity().getResources().getString(R.string.MA015),getActivity().getResources().getString(R.string.label_atencao),(dialog, which) -> {
 				AlertDialogUtils.show(getActivity());
 				adicionarCarrinho(apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade(), listener);

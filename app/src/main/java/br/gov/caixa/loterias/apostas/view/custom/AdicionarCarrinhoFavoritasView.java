@@ -158,18 +158,26 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             selecioneConcursoButton.setHint(toggleTipo ? "Expandido" : "Recolhido");
         });
 
+
         selecioneQntTeimosinhaButton.setOnClickListener(view1 -> {
             if (picker_qnt_teimosinhas.getVisibility() == View.VISIBLE) {
-                picker_qnt_teimosinhas.setVisibility(View.GONE);
                 selecioneQntTeimosinhaButton.setHint("Recolhido");
                 setarAlturaConteudo(0, picker_qnt_teimosinhas);
-            } else {
+                picker_qnt_teimosinhas.setVisibility(View.GONE);
+               } else {
+
                 picker_qnt_teimosinhas.setVisibility(View.VISIBLE);
                 selecioneQntTeimosinhaButton.setHint("Expandido");
-                int alturaAnimacao = picker_qnt_teimosinhas.getHeight() == 0 ? 100 : picker_qnt_teimosinhas.getHeight();
+
+                int itemHeightPx = ViewUtils.setDisplayMetric(10, getContext());
+                int maxHeightPx = ViewUtils.setDisplayMetric(100, getContext());
+                int alturaAnimacao = Math.min(listaTeimosinhas.size() * itemHeightPx, maxHeightPx);
+
                 setarAlturaConteudo(alturaAnimacao, picker_qnt_teimosinhas);
+
             }
         });
+
 
 
     }
