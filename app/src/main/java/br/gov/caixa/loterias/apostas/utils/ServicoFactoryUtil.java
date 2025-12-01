@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.apostas.utils;
-
 import br.gov.caixa.loterias.apostas.model.bo.*;
+
 
 public class ServicoFactoryUtil {
 
