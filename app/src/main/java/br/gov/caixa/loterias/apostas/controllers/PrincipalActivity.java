@@ -809,7 +809,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     protected void clickButtonHomeBet() {
-        nextActivity(TutorialMaisMilionariaActivity.class);
+        if(buttonHomeBet != null && buttonHomeBet.getTag() != null){
+            nextActivity(TutorialMaisMilionariaActivity.class);
+        }
     }
 
     protected void clickButtonBolao() {
