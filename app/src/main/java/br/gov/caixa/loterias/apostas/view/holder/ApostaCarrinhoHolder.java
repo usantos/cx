@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -50,7 +49,7 @@ import br.gov.caixa.loterias.apostas.view.listener.BolaoCarrinhoListener;
 public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8Modalidades> {
 	private TextView textViewTipoAposta;
 	private TextView numerosAposta;
-	private TextView trevosAposta;
+	private TextView trevosTimeCoracaoMesSorte;
 	private TextView valorAposta;
 	private TextView textContadorBolao;
 	private TextView textCotas;
@@ -85,7 +84,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 		textViewTipoAposta = view.findViewById(R.id.tipoAposta);
 		numerosAposta = view.findViewById(R.id.numerosText);
-		trevosAposta = view.findViewById(R.id.trevos);
+		trevosTimeCoracaoMesSorte = view.findViewById(R.id.trevosTimeCoracaoMesSorte);
 		valorAposta = view.findViewById(R.id.valorAposta);
 		recycleViewDetalheAposta = view.findViewById(R.id.recycleViewDetalheAposta);
 		layoutCabecalhoLoteca = view.findViewById(R.id.layoutCabecalhoLoteca);
@@ -215,34 +214,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			swipeLayout.setSwipeEnabled(animacao);
 		}
 
-		if (ModalidadeEnum.TIMEMANIA == aposta.getModalidade()) {
-			layoutTimeCoracao.setVisibility(View.VISIBLE);
-			if (aposta != null && aposta.getIndicadorSurpresinha() != null && aposta.getIndicadorSurpresinha().getValor() != null) {
-				String timeCoracao = "-";
-				if (aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getNome() != null){
-					timeCoracao = aposta.getTimeDoCoracao().getNome();
-				}
-				if (aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getUf() != null){
-					timeCoracao = timeCoracao + "/" + aposta.getTimeDoCoracao().getUf();
-				}
-
-				labelTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
-				textViewTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
-				textViewTimeCoracao.setText(timeCoracao);
-				if (aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
-					textViewTimeCoracao.setText(context.getResources().getString(R.string.tres_interrogacoes));
-				}
-			}
-		} else if (ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade()) {
-			layoutTimeCoracao.setVisibility(View.VISIBLE);
-			labelTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
-			labelTimeCoracao.setText(R.string.label_mes_sorte);
-			textViewTimeCoracao.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorFonteFundoEscuro()));
-			textViewTimeCoracao.setText(aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNome() != null ? aposta.getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes));
-			if (aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
-				textViewTimeCoracao.setText(context.getResources().getString(R.string.tres_interrogacoes));
-			}
-		} else if(ModalidadeEnum.MAIS_MILIONARIA == aposta.getModalidade()){
+	if(ModalidadeEnum.MAIS_MILIONARIA == aposta.getModalidade()){
 			layoutTimeCoracao.setVisibility(View.VISIBLE);
 
 			int quantidade = 0;
@@ -344,14 +316,33 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			}
 		}
 
-		if (ModalidadeEnum.DIA_DE_SORTE == aposta.getModalidade() || aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
-			numeroStr.append("\n\n\n");
-		}
 
-		if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && !aposta.getIndicadorCotaBolao()){
-			this.trevosAposta.setText(removeUltimoTraco(trevosStr.toString() + "\n"));
+
+		if(aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE && !aposta.getIndicadorCotaBolao()){
+			String mesDeSorte = aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNome() != null ? aposta.getMesDeSorte().getNome() : context.getString(R.string.label_tres_interrogacoes);
+			String label = context.getString(R.string.label_dia_sorte_dois_pontos) + mesDeSorte;
+
+			if (aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
+				label = context.getString(R.string.label_dia_sorte_dois_pontos) +	context.getResources().getString(R.string.tres_interrogacoes);
+			}
+			this.trevosTimeCoracaoMesSorte.setText(label);
+		}else if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA && !aposta.getIndicadorCotaBolao()){
+			String timeCoracao = "-";
+			if (aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getNome() != null){
+				timeCoracao = aposta.getTimeDoCoracao().getNome();
+			}
+			if (aposta.getTimeDoCoracao() != null && aposta.getTimeDoCoracao().getUf() != null){
+				timeCoracao = timeCoracao + "/" + aposta.getTimeDoCoracao().getUf();
+			}
+			String label = context.getResources().getString(R.string.label_time_coracao_dois_pontos) + "\n" + timeCoracao;
+			if (aposta.getIndicadorSurpresinha().getValor() == IndicadorSurpresinha.SURPRESINHA) {
+				label = context.getResources().getString(R.string.label_time_coracao_dois_pontos)	+ context.getResources().getString(R.string.tres_interrogacoes);
+			}
+			this.trevosTimeCoracaoMesSorte.setText(label);
+		}else if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && !aposta.getIndicadorCotaBolao()){
+			this.trevosTimeCoracaoMesSorte.setText(removeUltimoTraco(trevosStr.toString() + "\n"));
 		} else {
-			this.trevosAposta.setVisibility(View.GONE);
+			this.trevosTimeCoracaoMesSorte.setVisibility(View.GONE);
 		}
 
 		if (isBolao) {
