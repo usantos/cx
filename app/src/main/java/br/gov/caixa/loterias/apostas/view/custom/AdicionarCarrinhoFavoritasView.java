@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import java.util.ArrayList;
@@ -122,6 +123,8 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         });
 
         selecioneConcursoButton.setOnClickListener(view12 -> {
+            adicionarCarrinhoFavoritosButton.setEnabled(true);
+            adicionarCarrinhoFavoritosButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.verdeazul));
             Integer alturaAnimacao = 0;
             if (picker_tipo_concurso.getHeight()==0){
                 alturaAnimacao = 100;

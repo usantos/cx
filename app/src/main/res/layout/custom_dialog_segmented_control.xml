@@ -94,7 +94,6 @@
         android:id="@+id/cl_divisao"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/et_carrinho"
         android:layout_marginTop="10dp"
         android:background="@color/cinza2"
         app:layout_constraintTop_toBottomOf="@id/sg_opcoes" />
@@ -124,6 +123,7 @@
         android:textColor="@color/verdeazul"
         android:textSize="15.8sp"
         android:fontFamily="@font/caixa_std_bold"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cl_divisao" />
 

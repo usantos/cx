@@ -402,7 +402,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     }
 
     private void editarApostaBtn() {
-        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(true));
+        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(true, "Editar Aposta"));
     }
 
     private void goToEditarAposta(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
@@ -418,16 +418,16 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
 
     private void adicionarCarrinhoBtn() {
         //if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(ApostaConfirmadaDetalhesActivity.this, 1)) {
-            AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false));
+            AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false, "Adicionar ao\n carrinho"));
         //}
     }
 
-    private OnModalidadesAbertasListener onChegagemModalidadesListener(boolean isEditing){
+    private OnModalidadesAbertasListener onChegagemModalidadesListener(boolean isEditing, String btnText){
         return new OnModalidadesAbertasListener() {
             @Override
             public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
                 DialogFragmentUtils.startEscolhaModalidade(getSupportFragmentManager(), arrayConcursos, aposta.getId(),
-                        getResources().getString(R.string.adicionar_carrinho_favoritas_view), "Editar Aposta",false,
+                        getResources().getString(R.string.adicionar_carrinho_favoritas_view), btnText,false,
                         (tipoConcurso, teimosinha) -> {
                             IdentificaoDeUmaApostaDas8Modalidades clone = aposta;
                             if (!tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())) {
