@@ -1,5 +1,9 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import static br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum.ACEITAR_TERMO_DE_USO;
+import static br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum.CADASTRAR_APOSTADOR;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
 
@@ -134,6 +138,9 @@ public class TokenActivity extends LoteriasBaseAppActivity {
                     //finish();
                     RedirectNetwork.trataBloqueioParcial(TokenActivity.this);
                 } else {
+                    if (response.getRedirect() == CADASTRAR_APOSTADOR || response.getRedirect() == ACEITAR_TERMO_DE_USO){
+                        SessaoUsuario.getInstance().setRedirectEnum(response.getRedirect());
+                    }
                     if(response.getPayload() != null && response.getPayload().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)){
                         SessaoUsuario.getInstance().setSituacaoApostador(response.getPayload().getSituacaoApostador());
                         RedirectNetwork.trataBloqueioParcial(TokenActivity.this);

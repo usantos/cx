@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostador;
 
 /**
@@ -26,6 +27,7 @@ public class SessaoUsuario {
     private Boolean suspensaoTemporariaApostador;
     private Boolean responderAutoavaliacao;
     private SituacaoApostador situacaoApostador;
+    private RedirectEnum redirectEnum;
 
     private Date dataUltimaRequisicao;
     public static int SECONDS = 180;
@@ -156,5 +158,13 @@ public class SessaoUsuario {
 
     public void setListCombosDTO(List<CombosDTO> listCombosDTO) {
         this.listCombosDTO = listCombosDTO;
+    }
+
+    public RedirectEnum getRedirectEnum() {
+        return redirectEnum;
+    }
+
+    public void setRedirectEnum(RedirectEnum redirectEnum) {
+        this.redirectEnum = redirectEnum;
     }
 }

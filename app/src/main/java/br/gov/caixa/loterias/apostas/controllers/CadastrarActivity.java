@@ -21,6 +21,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -142,6 +143,7 @@ public class CadastrarActivity extends CadastroActivity {
                 DadosUsuarioBO.getInstance().gravarUsuario(cadastrarApostadorDTO, new RequestListener<ApostadorDTOResponse>() {
                     @Override
                     public void onResponse(ApostadorDTOResponse response) {
+                        SessaoUsuario.getInstance().setRedirectEnum(null);
                         loadViewProgress.dismiss();
                          startActivity( new Intent(CadastrarActivity.this, CadastrarConfirmacaoActivity.class ));
                          CadastrarActivity.this.finish();

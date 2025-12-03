@@ -43,6 +43,7 @@ import br.gov.caixa.loterias.apostas.model.bo.keycloak.KeycloakBO;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnRefreshTokenListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BiometriaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RedirectEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoApostadorEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UsuarioLogadoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -200,10 +201,13 @@ public class LoginFragment extends Fragment {
             BiometriaBO.getInstance().setIsTrocandoUsuario(false);
             connectKeycloak();
         } else if(LoginSP.isLoginRealizado()) {
-            if(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() == null){
+            if ((SessaoUsuario.getInstance().getRedirectEnum() != null
+                    && (SessaoUsuario.getInstance().getRedirectEnum() == RedirectEnum.CADASTRAR_APOSTADOR ||
+                    SessaoUsuario.getInstance().getRedirectEnum() == RedirectEnum.ACEITAR_TERMO_DE_USO))){
                 verificarCadastroWebservice();
-            }else {
-                //PrincipalActivity_.intent(getActivity()).start();
+            } else if(SessaoUsuario.getInstance().getParametrosSimulacao().getValorLimiteDiario() == null){
+                verificarCadastroWebservice();
+            } else {
                 Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), PrincipalActivity.class);
                 getActivity().startActivity(intent);
                 getActivity().finish();
