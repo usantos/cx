@@ -87,6 +87,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
                     && (arrayConcursos.get( 0 ).getParametroJogo().getTeimosinhas().size()) > 0 ){
                 selecioneConcursoButton.setVisibility( View.GONE );
                 apresentaQtdTeimosinha(TipoConcursoEnum.NORMAL);
+                habilitaBotaoAdicionar(true);
             }
         } else {
             if(arrayConcursos.get( 0 ).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL
@@ -123,8 +124,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         });
 
         selecioneConcursoButton.setOnClickListener(view12 -> {
-            adicionarCarrinhoFavoritosButton.setEnabled(true);
-            adicionarCarrinhoFavoritosButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.verdeazul));
+            habilitaBotaoAdicionar(true);
             Integer alturaAnimacao = 0;
             if (picker_tipo_concurso.getHeight()==0){
                 alturaAnimacao = 100;
@@ -141,6 +141,16 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             setarAlturaConteudo( alturaAnimacao, picker_qnt_teimosinhas );
         });
 
+    }
+
+    private void habilitaBotaoAdicionar(boolean isEnabled) {
+        if (isEnabled){
+            adicionarCarrinhoFavoritosButton.setEnabled(true);
+            adicionarCarrinhoFavoritosButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.verdeazul));
+        } else {
+            adicionarCarrinhoFavoritosButton.setEnabled(false);
+            adicionarCarrinhoFavoritosButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.cinzaDisable));
+        }
     }
 
 
