@@ -108,7 +108,7 @@ public class LoginFragment extends Fragment {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             ambienteSpinner.setAdapter(adapter);
             //Carrega selecao salva no SharedPreferences
-            String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO.name());
+            String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO_ESTEIRA.name());
             AmbienteEnum ambienteAtual = AmbienteEnum.valueOf(ambienteSalvo);
             ambienteSpinner.setSelection(adapter.getPosition(ambienteAtual));
             //Listener salvar a selecao
