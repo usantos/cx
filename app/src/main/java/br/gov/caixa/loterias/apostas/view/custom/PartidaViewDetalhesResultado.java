@@ -89,7 +89,7 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
                 mapFaixa.put("0002", "6" + numerosAcertados);
                 mapFaixa.put("0003", "5" + numerosAcertados);
                 mapFaixa.put("0004", "4" + numerosAcertados);
-                mapFaixa.put("0005", "Mês da Sorte\n" +
+                mapFaixa.put("0005", "Mês de sorte\n" +
                         (modalidade.getResultadoConcursoDTO() == null ? "" :
                                 modalidade.getResultadoConcursoDTO().getPremiacaoMesDeSorte().getMesDeSorte().getNome()));
                 break;

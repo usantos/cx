@@ -330,7 +330,7 @@
                 android:id="@+id/mes_time_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Mês da sorte:"
+                tools:text="Mês de sorte:"
                 android:fontFamily="@font/caixa_std_regular"
                 android:visibility="gone"
                 android:layout_marginTop="16dp"
