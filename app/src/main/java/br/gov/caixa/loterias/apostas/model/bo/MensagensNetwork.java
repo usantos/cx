@@ -11,6 +11,13 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.security.cert.CertPathValidatorException;
+import java.security.cert.CertificateException;
+
+import javax.net.ssl.SSLHandshakeException;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorRecargaPayResponse;
@@ -28,19 +35,52 @@ public class MensagensNetwork {
     private static final int INTERNAL_SERVER_ERROR = 500;
 
     private MensagensNetwork(){}
+    private static Throwable getRootCause(Throwable t) {
+        Throwable cause = t;
+        while (cause != null && cause.getCause() != null && cause != cause.getCause()) {
+            cause = cause.getCause();
+        }
+        return cause;
+    }
+
+    private static boolean isSslError(Throwable t) {
+        if (t == null) return false;
+        return (t instanceof SSLHandshakeException) ||
+                (t instanceof CertificateException) ||
+                (t instanceof CertPathValidatorException);
+    }
+
+    private static boolean isConnectivityError(Throwable t) {
+        if (t == null) return false;
+        return (t instanceof UnknownHostException) ||
+                (t instanceof ConnectException) ||
+                (t instanceof SocketTimeoutException);
+    }
 
     public static String setMensagemRecargaPay(VolleyError error, Context context){
         NetworkResponse response = error.networkResponse;
 
         if (response == null){
-            if (error instanceof TimeoutError) {
+            final Throwable root = getRootCause(error);
+            Log.e("caixa", "Sem HTTP response. Classe=" + error.getClass().getSimpleName()
+                    + " Root=" + (root != null ? root.getClass().getSimpleName() : "null"), error);
+
+            if (error instanceof TimeoutError || (root instanceof SocketTimeoutException)) {
                 return context.getString(R.string.erro_408);
-            }else if(error instanceof NoConnectionError){
-                Log.e("caixa", "Erro ao conexar com internet MensagensNetwork.setMensagem()");
-                return context.getString(R.string.seminternet);
-            } else if (error instanceof AuthFailureError) {
+            }
+
+            if (isSslError(root)) {
+                return context.getString(R.string.connectionServerErro);
+            }
+
+            if (error instanceof AuthFailureError) {
                 return context.getString(R.string.erro_401);
             }
+
+            if (isConnectivityError(root) || error instanceof NoConnectionError) {
+                return context.getString(R.string.seminternet);
+            }
+
             return context.getString(R.string.sistema_indisponivel);
         }
 
@@ -67,15 +107,27 @@ public class MensagensNetwork {
         NetworkResponse response = error.networkResponse;
 
          if (response == null){
-            if (error instanceof TimeoutError) {
-                return context.getString(R.string.erro_408);
-            }else if(error instanceof NoConnectionError){
-                Log.e("caixa", "Erro ao conexar com internet MensagensNetwork.setMensagem()");
-                return context.getString(R.string.seminternet);
-            } else if (error instanceof AuthFailureError) {
-                return context.getString(R.string.erro_401);
-            }
-            return context.getString(R.string.sistema_indisponivel);
+             final Throwable root = getRootCause(error);
+             Log.e("caixa", "Sem HTTP response. Classe=" + error.getClass().getSimpleName()
+                     + " Root=" + (root != null ? root.getClass().getSimpleName() : "null"), error);
+
+             if (error instanceof TimeoutError || (root instanceof SocketTimeoutException)) {
+                 return context.getString(R.string.erro_408);
+             }
+
+             if (isSslError(root)) {
+                 return context.getString(R.string.connectionServerErro);
+             }
+
+             if (error instanceof AuthFailureError) {
+                 return context.getString(R.string.erro_401);
+             }
+
+             if (isConnectivityError(root) || error instanceof NoConnectionError) {
+                 return context.getString(R.string.seminternet);
+             }
+
+             return context.getString(R.string.sistema_indisponivel);
         }
 
         Gson gsonResponse = new Gson();
