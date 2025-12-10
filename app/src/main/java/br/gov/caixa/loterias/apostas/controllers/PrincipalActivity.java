@@ -444,7 +444,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             refezParametrosSimulacao = true;
         }
 
-        if (refezParametrosSimulacao) {
+        if (ConfiguracaoAppSingleton.getInstance().isComboApostasHabilitado() && refezParametrosSimulacao) {
             new ComboModel(this).buscaCombos(new OnSilceListener() {
                 @Override
                 public void success(Object payload) {

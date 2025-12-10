@@ -135,6 +135,10 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                     }
 
                     if (temDadosPayloadMapa(result)) {
+                        if (temDadosComboApostasHabilitado(result)) {
+                            ConfiguracaoAppSingleton.getInstance().setComboApostasHabilitado(result.getPayload().getMapa().getComboApostasHabilitado());
+                        }
+
                         ConfiguracaoAppSingleton.getInstance().setUrlBaseCarrinhoPiloto(result.getPayload().getMapa().getUrlBaseCarrinhoPiloto());
                         ConfiguracaoAppSingleton.getInstance().setUrlBaseCarrinhoProducao(result.getPayload().getMapa().getUrlBaseCarrinhoProducao());
                         ConfiguracaoAppSingleton.getInstance().setGrupoDeCpfsQueAcessamOServicoDaAzure(result.getPayload().getMapa().getGrupoDeCpfsQueAcessamOServicoDaAzure());
@@ -176,6 +180,9 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
     private Boolean temDadosPayloadMapa(ParametrosConfiguraveisDTOResponse result) {
         return result != null && result.getPayload() != null && result.getPayload().getMapa() != null;
+    }
+    private Boolean temDadosComboApostasHabilitado(ParametrosConfiguraveisDTOResponse result) {
+        return result.getPayload().getMapa().getComboApostasHabilitado() != null;
     }
 
     @Override

@@ -46,6 +46,9 @@ public class ParametrosConfiguraveisDTO {
     @SerializedName("hostMicroServicoApostadorHabilitado")
     private String grupoDeCpfsApostador;
 
+    @SerializedName("comboApostasHabilitado+")
+    private Boolean comboApostasHabilitado = null;
+
     public String getUrlBaseApostadorPiloto() {
         return urlBaseApostadorPiloto;
     }
@@ -134,6 +137,14 @@ public class ParametrosConfiguraveisDTO {
 
     public void setGrupoDeCpfsQueAcessamOServicoDaAzure(String grupoDeCpfsQueAcessamOServicoDaAzure) {
         this.grupoDeCpfsQueAcessamOServicoDaAzure = grupoDeCpfsQueAcessamOServicoDaAzure;
+    }
+
+    public Boolean getComboApostasHabilitado() {
+        return comboApostasHabilitado;
+    }
+
+    public void setComboApostasHabilitado(Boolean comboApostasHabilitado) {
+        this.comboApostasHabilitado = comboApostasHabilitado;
     }
 
     @Override

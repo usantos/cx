@@ -11,6 +11,7 @@ public class ConfiguracaoAppSingleton {
     private Boolean mostraMenuAposta;
     private Boolean isAtualizaPublicKey;
     private Boolean isBolaoHabilitado;
+    private Boolean isComboApostasHabilitado;
     private Integer grupoCpfNovaApi;
     private Boolean isNovaApi;
 
@@ -32,6 +33,7 @@ public class ConfiguracaoAppSingleton {
             configuracaoAppSingleton.isMicroServico = IS_MICRO_SERVICO_DEFAULT;
             configuracaoAppSingleton.isAtualizaPublicKey = Boolean.FALSE;
             configuracaoAppSingleton.isBolaoHabilitado = Boolean.FALSE;
+            configuracaoAppSingleton.isComboApostasHabilitado = Boolean.FALSE;
 
             configuracaoAppSingleton.grupoCpfNovaApi = 0;
             configuracaoAppSingleton.isNovaApi = Boolean.FALSE;
@@ -84,6 +86,14 @@ public class ConfiguracaoAppSingleton {
 
     public void setBolaoHabilitado(Boolean bolaoHabilitado) {
         isBolaoHabilitado = bolaoHabilitado;
+    }
+
+    public Boolean isComboApostasHabilitado() {
+        return isComboApostasHabilitado;
+    }
+
+    public void setComboApostasHabilitado(Boolean comboApostasHabilitado) {
+        isComboApostasHabilitado = comboApostasHabilitado;
     }
 
     public Integer getGrupoCpfNovaApi() {
