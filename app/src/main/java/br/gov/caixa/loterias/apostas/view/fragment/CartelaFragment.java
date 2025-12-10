@@ -224,6 +224,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 		model = new SimularApostaModel(getActivity());
 		cartelaModel = new CartelaModel();
+		partidasSelecionadas = new HashSet<>();
+		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)){
+			configuraBotoesLotecaOuLotogol();
+		}
+
 	}
 
 	@Override
@@ -809,6 +814,19 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		informeNomeTime.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
 	}
 
+	private void configuraBotoesLotecaOuLotogol(){
+		botaoFinalizar = parentActivity.getBotaoAdicionarCompletarCartela();
+		botaoFinalizar.setOnClickListener(this);
+			botaoFinalizar.setVisibility(View.INVISIBLE);
+			String textoBotao;
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
+				textoBotao = getString(R.string.label_selecionar_times_aleatoriamente);
+			} else {
+				textoBotao = getString(R.string.label_complete_placar_aleatoriamente);
+			}
+			botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(getActivity(), textoBotao));
+	}
+
 	private void configuraBotoes(View fragmentView) {
 		valorAposta = parentActivity.getValorApostaCartela();
 		atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
@@ -819,16 +837,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		botaoLimparAposta = parentActivity.getBotaoLimparAposta();
 		botaoLimparAposta.setOnClickListener(this);
 
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
-			botaoFinalizar.setVisibility(View.INVISIBLE);
-			String textoBotao;
-			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)) {
-				textoBotao = getString(R.string.label_selecionar_times_aleatoriamente);
-			} else {
-				textoBotao = getString(R.string.label_complete_placar_aleatoriamente);
-			}
-			botaoFinalizar.setText(ViewUtils.textCaixaSTDBold(getActivity(), textoBotao));
-		} else if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
+		if (dezenasSelecionadas.size() == parentActivity.qtdDezenasPossiveisSelecionado) {
 			if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA)) {
 				mGridTimeCoracao = null;
 				atualizarBotaoFinalizar(R.string.label_escolha_time_coracao);
@@ -1136,18 +1145,15 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				});
 				//configurarTimesLoteca();
 
-				partidasSelecionadas = new HashSet<>();
 				fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
 			} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
 				configurarTimesLotogol();
-				partidasSelecionadas = new HashSet<>();
 				fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
 				fragmentView.findViewById(R.id.layoutTitleLoteca).setPadding(20, 80, 0, 0);
 				((TextView) fragmentView.findViewById(R.id.titleContinue)).setText(R.string.label_quantidade_gols_cada_time);
 
 			} else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 				configuraSuperSete(fragmentView);
-				partidasSelecionadas = new HashSet<>();
 			}
 		}
 	}

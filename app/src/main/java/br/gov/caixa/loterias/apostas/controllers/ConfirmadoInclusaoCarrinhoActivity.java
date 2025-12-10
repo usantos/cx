@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import br.gov.caixa.loterias.apostas.utils.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
@@ -31,13 +32,6 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
-import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
-import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
-import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
-import br.gov.caixa.loterias.apostas.utils.VectorUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 
@@ -121,9 +115,11 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         BigDecimal valorAposta = (BigDecimal) getIntent().getSerializableExtra(getResources().getString(R.string.valorAposta));
 
         configuraLayoutTela(modalidade);
-
         TextView valorApostaText = findViewById(R.id.valorApostaConfirmacao);
-        valorApostaText.setText(ViewUtils.getMoedaFormat(valorAposta));
+        if (valorAposta.doubleValue() > 999.99){
+            TextViewUtils.mudarTamanhoPorPorcentagem(valorApostaText, -30);
+        }
+        ViewUtils.setMoedaFormatHtml( valorAposta, valorApostaText );
 
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         String valorCarrinho = ViewUtils.getMoedaFormat(sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta());
