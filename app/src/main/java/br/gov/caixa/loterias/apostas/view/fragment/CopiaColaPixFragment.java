@@ -192,7 +192,7 @@ public class CopiaColaPixFragment extends Fragment {
 					} catch (Exception e){}
 					btnCopia.setEnabled(true);
 				});
-				Utils.delay(10,() -> model.verificaStatusPixPeriodicamente(pixDTO,onCheckPixPagoListener()));
+				Utils.delay(20,() -> model.verificaStatusPixPeriodicamente(pixDTO, onCheckPixPagoListener()));
 				jaCopiou = true;
 			}
 		});
@@ -267,7 +267,9 @@ public class CopiaColaPixFragment extends Fragment {
 			@Override
 			public void errorCompra(VolleyError volleyError) {
 				try {
-					RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+					if (volleyError != null){
+						RedirectNetwork.checkRedirectCompraAsync(volleyError, getActivity());
+					}
 				} catch (Exception e){
 					Log.d("GET_ACTIVITY_ERRO", Objects.requireNonNull(e.getLocalizedMessage()));
 				}
