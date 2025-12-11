@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.microsoft.appcenter.AppCenter;
@@ -27,6 +28,7 @@ import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.FilaBRAManager;
 import br.gov.caixa.loterias.apostas.view.listener.FilaBRAListener;
@@ -119,9 +121,14 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
             ApostaSilceBO.getInstance().getApresentaHistorico(new RequestListener<ParametrosConfiguraveisDTOResponse>() {
                 @Override
                 public void onResponse(ParametrosConfiguraveisDTOResponse result) {
-
+                    Log.d("result",result.toString());
+                    Log.d("mapaBolaoHabilitado",result.getPayload().getMapa().getBolaoHabilitado().toString());
                     if (temInformacaoBolao(result)){
-                        ConfiguracaoAppSingleton.getInstance().setBolaoHabilitado(result.getPayload().getMapa().getBolaoHabilitado());
+                        Log.d("InformacaoBolao?","tem");
+                        SharedPreferencesUtils.setValor("bolaoHabilitado",result.getPayload().getMapa().getBolaoHabilitado());
+                    }
+                    else{
+                        Log.d("InformacaoBolao?","nao tem");
                     }
 
                     if (temDadosResposta(result)){

@@ -62,7 +62,7 @@ public class EncerramentoUtil {
                                                            Integer concurso) {
 
         //Verifica se Bolao Habilitado
-        if (!ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()) {
+        if (!SharedPreferencesUtils.getValorBoolean("bolaoHabilitado",false)) {
             return null;
         }
 
@@ -101,7 +101,7 @@ public class EncerramentoUtil {
     public static void verificaSeCriaCardTemporario() {
 
         //Verifica se Bolao Habilitado
-        if (!ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado()) {
+        if (!SharedPreferencesUtils.getValorBoolean("bolaoHabilitado",false)) {
             return;
         }
 

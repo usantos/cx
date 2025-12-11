@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -36,12 +35,6 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
-import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
-import br.gov.caixa.loterias.apostas.utils.ComboUtil;
-import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
-import br.gov.caixa.loterias.apostas.model.model.ComboModel;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.android.material.appbar.AppBarLayout;
@@ -64,6 +57,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
@@ -74,6 +68,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnAnimacaoViewListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
@@ -89,13 +84,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerNotificarCotasExpiradasSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
+import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.ComboUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
@@ -108,7 +107,6 @@ import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SideMenuExpandleAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.HomeAdapter;
@@ -673,7 +671,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     private OnAnimacaoViewListener onAnimacaoAcessoRapido() {
         return () -> {
-            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+            if (SharedPreferencesUtils.getValorBoolean("bolaoHabilitado",false) &&
                     temBolaoModalidadeDisponivel(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade())){
                 buttonHomeBolao.setVisibility(View.VISIBLE);
             }
@@ -783,7 +781,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                             ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
                 }
 
-                if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+                if (SharedPreferencesUtils.getValorBoolean("bolaoHabilitado",false) &&
                         temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
 
                     buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
