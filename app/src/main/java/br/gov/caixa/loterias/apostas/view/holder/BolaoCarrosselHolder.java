@@ -155,7 +155,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
 					break;
 				case QUINA:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.quina_sao_joao));
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.quina_sao_joao_novo));
 					break;
 			}
 			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
