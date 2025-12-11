@@ -121,14 +121,8 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
             ApostaSilceBO.getInstance().getApresentaHistorico(new RequestListener<ParametrosConfiguraveisDTOResponse>() {
                 @Override
                 public void onResponse(ParametrosConfiguraveisDTOResponse result) {
-                    Log.d("result",result.toString());
-                    Log.d("mapaBolaoHabilitado",result.getPayload().getMapa().getBolaoHabilitado().toString());
                     if (temInformacaoBolao(result)){
-                        Log.d("InformacaoBolao?","tem");
                         SharedPreferencesUtils.setValor("bolaoHabilitado",result.getPayload().getMapa().getBolaoHabilitado());
-                    }
-                    else{
-                        Log.d("InformacaoBolao?","nao tem");
                     }
 
                     if (temDadosResposta(result)){
