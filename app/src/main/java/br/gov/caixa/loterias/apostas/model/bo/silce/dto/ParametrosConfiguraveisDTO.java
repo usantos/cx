@@ -46,8 +46,8 @@ public class ParametrosConfiguraveisDTO {
     @SerializedName("hostMicroServicoApostadorHabilitado")
     private String grupoDeCpfsApostador;
 
-    @SerializedName("comboApostasHabilitado+")
-    private Boolean comboApostasHabilitado = null;
+    @SerializedName("comboApostasHabilitado")
+    private Boolean comboApostasHabilitado;
 
     public String getUrlBaseApostadorPiloto() {
         return urlBaseApostadorPiloto;
