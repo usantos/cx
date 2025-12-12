@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,12 +64,14 @@ public class NumerosHifenFragment extends Fragment {
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setBackgroundColor(ContextCompat.getColor(getActivity(), configuracao.getCorInteriorCirculo()));
 		layout.setPadding(16, 16, 16, 16);
+		layout.setGravity(Gravity.CENTER_HORIZONTAL);
+
 
 		// Título
 		TextView tituloView = new TextView(context);
 		tituloView.setText(titulo);
 		tituloView.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
-		tituloView.setTextSize(12);
+		tituloView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
 		tituloView.setTypeface(ViewUtils.getFontCaixaStdBold(context));
 		tituloView.setPadding(0, 0, 0, 32);
 		layout.addView(tituloView);
@@ -90,8 +93,7 @@ public class NumerosHifenFragment extends Fragment {
 			TextView numeroView = new TextView(context);
 			numeroView.setText(formatado);
 			numeroView.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
-			numeroView.setTextSize(14);
-			numeroView.setTypeface(ViewUtils.getFontCaixaStdBold(context));
+			numeroView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);			numeroView.setTypeface(ViewUtils.getFontCaixaStdBold(context));
 			numeroView.setGravity(Gravity.CENTER);
 			numeroView.setPadding(8, 8, 8, 8);
 

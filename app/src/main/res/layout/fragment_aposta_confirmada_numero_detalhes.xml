@@ -111,9 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginStart="16dp"
                 android:layout_below="@id/concursoTxt"
-                android:layout_toEndOf="@id/concursoTxt"
                 android:weightSum="1">
 
                 <TextView
@@ -298,7 +296,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_vertical_margin">
 
@@ -333,7 +331,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_sua_aposta"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@id/modalidadeTxt"
+
                 android:layout_marginTop="0dp"
                 android:visibility="visible" />
 
