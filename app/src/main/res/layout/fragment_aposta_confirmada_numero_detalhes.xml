@@ -327,13 +327,14 @@
 
             <RelativeLayout
                 android:id="@+id/rl_fg_numeros_1"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_sua_aposta"
                 android:layout_marginStart="0dp"
-
                 android:layout_marginTop="0dp"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:layout_centerHorizontal="true"
+                />
 
             <RelativeLayout
                 android:id="@+id/rl_fg_numeros_2"
