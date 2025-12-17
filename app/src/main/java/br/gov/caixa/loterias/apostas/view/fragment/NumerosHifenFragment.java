@@ -78,7 +78,7 @@ public class NumerosHifenFragment extends Fragment {
 
 		// GridLayout com 6 colunas
 		GridLayout gridLayout = new GridLayout(context);
-		gridLayout.setColumnCount(4);
+		gridLayout.setColumnCount(5);
 		gridLayout.setOrientation(GridLayout.HORIZONTAL);
 		gridLayout.setLayoutParams(new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,

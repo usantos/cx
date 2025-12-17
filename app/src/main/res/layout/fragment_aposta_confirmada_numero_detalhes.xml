@@ -315,8 +315,6 @@
                 android:id="@+id/tv_sua_aposta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@id/modalidadeTxt"
                 android:fontFamily="@font/caixa_std_regular"
                 android:gravity="center"
                 android:text="@string/seus_numeros"
@@ -330,8 +328,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_sua_aposta"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
+                android:layout_alignStart="@id/tv_sua_aposta"
                 android:visibility="visible"
                 android:layout_centerHorizontal="true"
                 />
@@ -341,7 +338,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_fg_numeros_1"
-                android:layout_alignStart="@id/rl_fg_numeros_1"
                 android:visibility="gone" />
 
             <TextView
@@ -408,7 +404,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_fg_numeros_2"
                 android:layout_marginTop="10dp"
-                android:layout_alignStart="@id/rl_fg_numeros_1"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -416,7 +411,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_container_result_1"
-                android:layout_alignStart="@id/rl_container_result_1"
                 android:visibility="gone" />
 
             <RelativeLayout

@@ -39,7 +39,7 @@ public class NumerosFragment extends Fragment {
 	private static final String SHAPE = "SHAPE";
 
 	private static final String TITULO_LISTA = "TITULO_LISTA";
-	private static final int QUANTIDADE_COLUNA_LISTA = 4;
+	private static final int QUANTIDADE_COLUNA_LISTA = 5;
 
 	private String listaTexto, listaTextoMarcados;
 	private View view = null;
