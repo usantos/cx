@@ -321,16 +321,16 @@
                 tools:textColor="@color/black"
                 android:textColor="@color/branco"
                 android:textSize="12sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:layout_alignParentLeft="true"
+            />
 
             <RelativeLayout
                 android:id="@+id/rl_fg_numeros_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_sua_aposta"
-                android:layout_alignStart="@id/tv_sua_aposta"
                 android:visibility="visible"
-                android:layout_centerHorizontal="true"
                 />
 
             <RelativeLayout
