@@ -24,6 +24,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
@@ -133,6 +134,7 @@ public class TermosUsoActivity extends LoteriasBaseAppActivity {
                 DadosCorporativosSilceBO.getInstance().aceiteTermo(new RequestListener<ResourceResponse>() {
                     @Override
                     public void onResponse(ResourceResponse response) {
+                        SessaoUsuario.getInstance().setRedirectEnum(null);
                         AlertDialogUtils.dismiss();
                         Intent intent = new Intent();
                         setResult(RESULT_OK, intent);

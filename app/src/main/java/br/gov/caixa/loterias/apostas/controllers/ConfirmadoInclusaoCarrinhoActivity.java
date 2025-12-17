@@ -124,7 +124,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
         String valorCarrinho = ViewUtils.getMoedaFormat(sessaoUsuario.getValorMinimimoAposta() == null ? BigDecimal.ZERO : sessaoUsuario.getValorMinimimoAposta());
         TextView textObservacaoConfirmacao = findViewById(R.id.textObservacaoConfirmacao);
-        if(valorCarrinho != null && sessaoUsuario.getValorMinimimoAposta().compareTo(BigDecimal.ZERO) > 0){
+        BigDecimal valorMinimo =  sessaoUsuario.getValorMinimimoAposta();
+        if(valorCarrinho != null && valorMinimo != null && valorMinimo.compareTo(BigDecimal.ZERO) > 0){
             textObservacaoConfirmacao.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.infoValorMinimoCarrinho) + getResources().getString(R.string.underline_com_espaco) + valorCarrinho + getResources().getString(R.string.underline)));
             textObservacaoConfirmacao.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
         }else{

@@ -76,7 +76,7 @@ public class AutoavaliacaoFormActivity extends LoteriasBaseAppActivity {
         btnAnterior.setOnClickListener(v -> clickAnterior());
 
         btnFechar = findViewById(R.id.btnAutoFechar);
-        btnFechar.setOnClickListener(v -> finish());
+        btnFechar.setOnClickListener(v -> onFecharListener());
 
         btnAjuda = findViewById(R.id.btnAutoAjuda);
         btnAjuda.setOnClickListener(v -> {
@@ -88,6 +88,10 @@ public class AutoavaliacaoFormActivity extends LoteriasBaseAppActivity {
         desabilitaProximo();
 
         rgAutoavaliacao.setOnCheckedChangeListener((group, checkedId) -> habilitaProximo());
+    }
+
+    private void onFecharListener() {
+        finish();
     }
 
     private void clickProximo() {
@@ -243,6 +247,7 @@ public class AutoavaliacaoFormActivity extends LoteriasBaseAppActivity {
             @Override
             public void onResponse(AutoavaliacaoResponse result) {
                 AlertDialogUtils.dismiss();
+                SessaoUsuario.getInstance().setResponderAutoavaliacao(false);
                 rgAutoavaliacao.setVisibility(View.GONE);
                 tvAutoPergunta.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 if (verificaRespostasTudoNao()) {

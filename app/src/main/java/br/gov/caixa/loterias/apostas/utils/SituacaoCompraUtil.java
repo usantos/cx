@@ -54,6 +54,13 @@ public class SituacaoCompraUtil {
 				situacao.getValor() == VALOR_FINALIZADA_CONTEM_APOSTAS_NAO_EFETIVADAS;
 	}
 
+	public static boolean isSituacaoFINALIZADA(Integer situacao) {
+		return  situacao != null && (situacao.equals(VALOR_DEBITO_REALIZADO) ||
+				situacao.equals(VALOR_FINALIZADA) ||
+				situacao.equals(VALOR_FINALIZADA_TODAS_APOSTAS_EFETIVADAS) ||
+				situacao.equals(VALOR_FINALIZADA_CONTEM_APOSTAS_NAO_EFETIVADAS));
+	}
+
 	public static boolean isSituacaoNegativa(DTOEnumLong situacao) {
 		return  situacao.getValor() == VALOR_DEBITO_NAO_AUTORIZADO ||
 				situacao.getValor() == VALOR_ESTORNADA ||

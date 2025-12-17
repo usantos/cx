@@ -118,10 +118,10 @@ public class  RedirectNetwork {
                         treatNegotialErros(errorResponse, error, activity);
                         return;
                     case 500:
-                        trataErro500(activity,errorResponse);
+                        trataErro500(activity, errorResponse);
                         return;
                     default:
-                        if (errorResponse.getCodigo() != null &&  errorResponse.getCodigo().equals( "018003" )){
+                        if (errorResponse.getCodigo() != null && errorResponse.getCodigo().equals( "018003" )){
                             enviaRegistrarMp(activity, error);
                         } else {
                             apresentaAlerta(activity, montarMensgem(activity, MensagensNetwork.setMensagem(error, activity), errorResponse.getCodigo()));
@@ -130,7 +130,11 @@ public class  RedirectNetwork {
                 }
             }
         }else {
-            AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
+            if (response.statusCode == 401){
+                AlertDialogExperimenteLogarSingleton.show(activity, true);
+            } else {
+                AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
+            }
         }
     }
 

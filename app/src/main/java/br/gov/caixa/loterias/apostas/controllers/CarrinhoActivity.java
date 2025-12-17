@@ -32,6 +32,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
+import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
@@ -40,6 +41,7 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.LocalizacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.MessagingUtils;
+import br.gov.caixa.loterias.apostas.utils.RedirectUtils;
 import br.gov.caixa.loterias.apostas.utils.SessaoUsuarioUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -299,7 +301,10 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     private void onClickAvancaPagamento() {
-        if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this, 2)) {
+        if (LoginSP.isLoginRealizado() && RedirectUtils.temRedirectCadastrarApostador()){
+            startActivity(IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, CadastrarActivity.class));
+            finish();
+        } else if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(this, 2)) {
             if (temCotasExpiradas()) {
                 AlertDialogUtils.show(CarrinhoActivity.this);
                 vLoading.setVisibility(View.VISIBLE);
@@ -327,7 +332,6 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             }
         }
     }
-
 
     private void trataPermissao() {
         int statusPermissao = LocalizacaoUtils.checaStatusPermissao(this);

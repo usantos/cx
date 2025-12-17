@@ -114,14 +114,14 @@ public class KeycloakBO {
     public String getFromToken(String attr){
         String attrBuscado = "";
         try {
-            String separar[] =  getAccessToken().split("\\.");
+            String[] separar =  getAccessToken().split("\\.");
             String tokenCorpo = separar[1];
-            byte bytes[] = Base64.decode(tokenCorpo, Base64.URL_SAFE);
+            byte[] bytes = Base64.decode(tokenCorpo, Base64.URL_SAFE);
             tokenCorpo = new String(bytes, Charset.forName("UTF-8"));
             JSONObject jsonObject;
             jsonObject = new JSONObject(tokenCorpo);
             attrBuscado = jsonObject.getString(attr);
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return attrBuscado;

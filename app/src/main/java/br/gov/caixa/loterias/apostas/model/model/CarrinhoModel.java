@@ -78,6 +78,11 @@ public class CarrinhoModel {
 		return carrinho;
 	}
 
+	public Boolean temCarrinhoLocal(){
+		CarrinhoDTO carrinhoLocal = lerCarrinhoLocal();
+		return carrinhoLocal != null && !carrinhoLocal.getApostas().isEmpty();
+	}
+
 	public void validarCarrinho(OnSilceListener listener) {
 		ServicoFactoryUtil.getApostaService().validarCarrinho(new RequestListener<ResourceResponse>() {
 			@Override

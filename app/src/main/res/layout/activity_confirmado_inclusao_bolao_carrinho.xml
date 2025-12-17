@@ -102,13 +102,12 @@
 
         <TextView
             android:id="@+id/textObservacaoConfirmacao"
-            style="@style/editTextCaixaStdTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/infoConcluaPagamentoBolao"
             android:textAlignment="center"
             android:textColor="@color/branco"
-            android:textStyle="bold"
+            android:fontFamily="@font/caixa_std_bold"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

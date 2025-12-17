@@ -21,6 +21,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.DadosUsuarioToken;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -32,9 +33,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.BairroDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CadastrarApostadorDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MunicipioIdDTO;
+import br.gov.caixa.loterias.apostas.model.model.LoginSSOModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.RedirectUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
@@ -142,6 +146,7 @@ public class CadastrarActivity extends CadastroActivity {
                 DadosUsuarioBO.getInstance().gravarUsuario(cadastrarApostadorDTO, new RequestListener<ApostadorDTOResponse>() {
                     @Override
                     public void onResponse(ApostadorDTOResponse response) {
+                        SessaoUsuario.getInstance().setRedirectEnum(null);
                         loadViewProgress.dismiss();
                          startActivity( new Intent(CadastrarActivity.this, CadastrarConfirmacaoActivity.class ));
                          CadastrarActivity.this.finish();
@@ -292,4 +297,27 @@ public class CadastrarActivity extends CadastroActivity {
         editTextEmailContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (RedirectUtils.temRedirectCadastrarApostador()){
+            executaVoltar();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        executaVoltar();
+        return true;
+    }
+
+    private void executaVoltar(){
+        AlertDialogUtils.show(this);
+        new LoginSSOModel(CadastrarActivity.this).sair(LoginActivity.class, () -> {
+            AlertDialogUtils.dismiss();
+            startActivity(IntentUtil.getIntentLimpandoPilhaActivities(CadastrarActivity.this, LoginActivity.class));
+        });
+
+    }
 }

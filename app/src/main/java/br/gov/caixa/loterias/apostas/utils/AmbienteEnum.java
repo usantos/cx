@@ -4,7 +4,7 @@ public enum AmbienteEnum {
     EXTERNO("TQS Externo"),
     INTERNO("TQS Interno"),
     INTERNO_ESTEIRA("TQS Interno Esteira"),
-    EXTERNO_ESTEIRA("TQS Interno Esteira"),
+    EXTERNO_ESTEIRA("TQS Externo Esteira"),
     HMP("Hmp"),
     PILOTO("Piloto");
 

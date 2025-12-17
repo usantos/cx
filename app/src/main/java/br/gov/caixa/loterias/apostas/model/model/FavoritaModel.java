@@ -166,7 +166,7 @@ public class FavoritaModel extends AppModel {
 			for (ParametroSimulacao modalidade : arrayConcursos) {
 				if (modalidade.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL) {
 					temEspecialENormal = true;
-					if (modalidade.getParametroJogo().getTeimosinhas().size() > 0) {
+					if (modalidade.getParametroJogo().getTeimosinhas() != null && modalidade.getParametroJogo().getTeimosinhas().size() > 0) {
 						popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
 						return;
 					}

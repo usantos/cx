@@ -49,7 +49,6 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
         pegaExtras();
         setaViews();
         atualizaMsg();
-        logAppCenter();
         setaMetodos();
 
         if (!BuildConfig.FLAVOR.equals("prd")) {
@@ -61,7 +60,7 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             ambienteSpinner.setAdapter(adapter);
             //Carrega selecao salva no SharedPreferences
-            String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO.name());
+            String ambienteSalvo = SharedPreferencesUtils.getValorString("AMBIENTE_SELECIONADO", AmbienteEnum.EXTERNO_ESTEIRA.name());
             AmbienteEnum ambienteAtual = AmbienteEnum.valueOf(ambienteSalvo);
             ambienteSpinner.setSelection(adapter.getPosition(ambienteAtual));
             //Listener salvar a selecao
@@ -101,16 +100,6 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
         ambienteSpinner = findViewById(R.id.spin_ambiente);
 
         txtVersion.setText( TextUtils.concat( getResources().getString(R.string.v) ,BuildConfig.VERSION_NAME));
-    }
-
-    private void logAppCenter() {
-        if (!AppUtils.isNetworkConnected(AppIndisponivelActivity.this)){
-
-        } else if (isBuscaParametro){
-
-        } else {
-
-        }
     }
 
     private void pegaExtras() {
@@ -176,6 +165,4 @@ public class AppIndisponivelActivity extends LoteriasBaseAppActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() { }
 }
