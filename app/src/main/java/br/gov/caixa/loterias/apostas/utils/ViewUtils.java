@@ -195,7 +195,6 @@ public class ViewUtils {
 
             dialog.getWindow().setLayout(larguraPx, WindowManager.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
-
         }
 
         return dialog;

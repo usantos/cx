@@ -50,6 +50,22 @@ public class ApostaFavoritaRepository extends AppRepository {
         });
     }
 
+    public void buscaApostasModalidade(int modalidade, int offsetItem, OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO> listener) {
+        ServicoFactoryUtil.getApostaService().getApostasFavoritasModalidades(modalidade, offsetItem, new RequestListener<ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse response) {
+                checkRedirect(response);
+                listener.success(response.getPayload());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                RedirectNetwork.checkRedirect(error, getActivity());
+                listener.error(error);
+            }
+        });
+    }
+
     public void buscaApostasAgrupadas(OnSilceListener<AgrupadorDTOApostaFavoritaDTO> listener) {
         ServicoFactoryUtil.getApostaService().getApostasFavoritasAgrupadas(new RequestListener<AgrupadorDTOApostaFavoritaDTOResponse>() {
             @Override

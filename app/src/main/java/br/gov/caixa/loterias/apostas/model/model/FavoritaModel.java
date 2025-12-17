@@ -63,6 +63,10 @@ public class FavoritaModel extends AppModel {
 		repository.buscaApostas(this.offsetItem, listener);
 	}
 
+	public void buscaApostasModalidade(int modalidade, OnSilceListener<ResultadoPesquisaPaginadaApostaFavoritaDTO> listener){
+		repository.buscaApostasModalidade(modalidade, this.offsetItem, listener);
+	}
+
 	public void buscaApostasAgrupadas(OnSilceListener<AgrupadorDTOApostaFavoritaDTO> listener){
 		repository.buscaApostasAgrupadas(listener);
 	}
@@ -99,9 +103,9 @@ public class FavoritaModel extends AppModel {
 		this.apostaList = apostaList;
 	}
 
-	public boolean temSwipe(int position) {
-		return apostaList.size() > 0 && position < apostaList.size();
-	}
+//	public boolean temSwipe(int position) {
+//		return apostaList.size() > 0 && position < apostaList.size();
+//	}
 
 	public void addApostaCarrinho(ApostaFavoritaDTO aposta, OnSilceListener<CarrinhoDTO> listener) {
 		carrinhoRepository.buscaCarrinho(new OnSilceListener<CarrinhoDTO>() {

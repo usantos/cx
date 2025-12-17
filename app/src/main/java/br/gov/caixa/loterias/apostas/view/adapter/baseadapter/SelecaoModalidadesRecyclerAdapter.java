@@ -31,7 +31,9 @@ public class SelecaoModalidadesRecyclerAdapter extends RecyclerView.Adapter<Moda
 	@NonNull
 	@Override
 	public ModalidadeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.linearlayout_tipos_apostas,
+		//View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.linearlayout_tipos_apostas,
+		//		parent, false);
+		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.linearlayout_tipos_apostas_arredondadas,
 				parent, false);
 		return new ModalidadeHolder(view, parent.getContext(), listener);
 	}
@@ -73,6 +75,19 @@ public class SelecaoModalidadesRecyclerAdapter extends RecyclerView.Adapter<Moda
 		if (tiposAposta != null) {
 			for (TipoAposta aposta : tiposAposta) {
 				aposta.setSelect(false);
+			}
+		}
+		notifyDataSetChanged();
+	}
+
+	public void selecionaOPrimeiro() {
+		if (tiposAposta != null) {
+			for (int i = 0; i < tiposAposta.size(); i++) {
+				if (i == 0) {
+					tiposAposta.get(i).setSelect(true);
+				} else {
+					tiposAposta.get(i).setSelect(false);
+				}
 			}
 		}
 		notifyDataSetChanged();

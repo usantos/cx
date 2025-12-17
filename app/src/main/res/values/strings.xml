@@ -221,7 +221,7 @@
     <string name="label_complete_placar_aleatoriamente">_Complete_\no placar aleatoriamente</string>
     <string name="label_quantidade_gols_cada_time">a quantidade de gols de cada time.</string>
     <string name="title_activity_favoritas">Favoritas</string>
-    <string name="title_activity_favoritas_bold">_Apostas Favoritas_</string>
+    <string name="title_activity_favoritas_bold">_Apostas favoritas_</string>
     <string name="title_activity_lista_compras">Minhas Compras</string>
 
     <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
@@ -1542,5 +1542,10 @@
     <string name="tipo_aposta_surpresinha">Surpresinha</string>
     <string name="tipo_aposta_teimosinha">Teimosinha</string>
     <string name="tipo_aposta_troca">Aposta de Troca</string>
+    <string name="selecione_modalidade_desejada">Selecione a modalidade desejada</string>
+    <string name="voce_ainda_nao_tem_apostas">Você ainda não tem apostas favoritas. Que tal adicionar uma agora?</string>
+    <string name="exclui_favorita">Deseja excluir a aposta favorita: xxx?</string>
+    <string name="sem_modalidade">Você ainda não tem apostas favoritas desta modalidade. Que tal adicionar uma agora?</string>
+    <string name="incluir_aposta_favorita">Incluir aposta favorita</string>
 
 </resources>
