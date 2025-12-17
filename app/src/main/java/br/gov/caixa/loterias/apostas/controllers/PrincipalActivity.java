@@ -488,12 +488,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             if(getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)){
                 trataPopupDeNotificacao();
             } else {
-                if(contRegressivo <= 3) {
+//                if(contRegressivo <= 3) {
                     new Handler().postDelayed(() -> {
                         contRegressivo++;
                         trataPopupDeNotificacaoHandler();
                         }, 3000);
-                }
+//                }
             }
         }
     }
