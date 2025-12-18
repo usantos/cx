@@ -213,16 +213,16 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.clEspeciais.setVisibility(View.VISIBLE);
 			switch (modalidade.getTipoModalidade()){
 				case MEGA_SENA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mega_virada));
+					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
 					break;
 				case DUPLA_SENA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.cabecalho_superior_dupla_de_pascoa));
+					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.dupla_pascoa));
 					break;
 				case LOTOFACIL:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.cabecalho_lotofacil_da_independencia));
+					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
 					break;
 				case QUINA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.cabecalho_sao_joao));
+					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.quina_sao_joao_novo));
 					break;
 				default:
 					this.titulo.setVisibility(View.VISIBLE);

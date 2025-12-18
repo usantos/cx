@@ -28,7 +28,7 @@ public class EstiloModalidadeMKP {
                 corEscura = R.color.quina_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_quina_mkp;
                 shapeBtnDetalhes = R.drawable.btn_rounded_quina_outlined;
-                imagemEspecialCarrossel = R.drawable.cabecalho_quina_sao_joao_caurossel;
+                imagemEspecialCarrossel = R.drawable.cabecalho_quina_sao_joao_carrossel_novo;
                 imagemTriangulo = R.drawable.ic_tag_bolao_quina;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_quina;
                 imagemEspecialDetalhes = R.drawable.cabecalho_quina_sao_joao_card_detalhes;
@@ -47,7 +47,7 @@ public class EstiloModalidadeMKP {
                 shapeBtnDetalhes = R.drawable.btn_rounded_dupla_sena_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_dupla_sena;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dupla_sena;
-                imagemEspecialCarrossel = R.drawable.cabecalho_dupla_pascoa_carrossel;
+                imagemEspecialCarrossel = R.drawable.cabecalho_dupla_pascoa_carrossel_novo;
                 imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_detalhes;
                 corLetraLista = R.color.dupla_sena_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
@@ -64,7 +64,7 @@ public class EstiloModalidadeMKP {
                 shapeBtnDetalhes = R.drawable.btn_rounded_lotofacil_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_loto_facil;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loto_facil;
-                imagemEspecialCarrossel = R.drawable.cabecalho_lotofacil_independencia_carrossel;
+                imagemEspecialCarrossel = R.drawable.cabecalho_lotofacil_independencia_carrossel_novo;
                 imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
                 corLetraLista = R.color.lotofacil_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
@@ -218,7 +218,7 @@ public class EstiloModalidadeMKP {
                 shapeBtnDetalhes = R.drawable.btn_rounded_green_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline;
-                imagemEspecialCarrossel = R.drawable.cabecalho_mega_virada_carrossel;
+                imagemEspecialCarrossel = R.drawable.cabecalho_mega_virada_carrossel_novo;
                 imagemEspecialDetalhes = R.drawable.cabecalho_mega_virada_detalhes;
                 corLetraLista = R.color.mega_verde_claro_mkp;
                 corFonteFundoClaro = R.color.branco;

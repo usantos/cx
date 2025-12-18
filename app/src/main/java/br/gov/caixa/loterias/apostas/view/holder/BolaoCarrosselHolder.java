@@ -146,16 +146,16 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			icTrevoBolao.setVisibility(View.GONE);
 			switch (bolao.getModalidade()){
 				case MEGA_SENA:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.mega_virada));
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
 					break;
 				case DUPLA_SENA:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.cabecalho_superior_dupla_de_pascoa));
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.dupla_pascoa));
 					break;
 				case LOTOFACIL:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.cabecalho_lotofacil_da_independencia));
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
 					break;
 				case QUINA:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.cabecalho_sao_joao));
+					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.quina_sao_joao_novo));
 					break;
 			}
 			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
