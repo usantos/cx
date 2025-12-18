@@ -1,6 +1,7 @@
 <resources>
     <string name="title_activity_introducao">introducaoActivity</string>
     <string name="dummy_button">Dummy Button</string>
+    <string name="button">Botão</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
     <string name="title_activity_home">HomeActivity</string>
@@ -149,6 +150,8 @@
     <string name="MA020">A situação da aposta foi atualizada, por favor verifique o comprovante gerado.</string>
     <string name="msg_favor_inserir_nome_aposta">Favor inserir um nome para sua aposta favorita</string>
     <string name="msg_erro_data_invalida"> Data Inválida</string>
+    <string name="label_excluir_aposta">Excluir aposta favorita</string>
+    <string name="label_adicionar_aposta">Adicionar aposta no carrinho</string>
 
     <string name="MN003">Para continuar é necessário o aceite do termo.</string>
     <string name="termo_novo">O termo de Uso foi Atualizado. É necessário aceitar novamente.</string>
@@ -235,6 +238,7 @@
 
     <string name="label_aposta_salva_carinha">Aposta salva :)</string>
     <string name="label_favorita_no_carrinho">Essa aposta foi para o seu carrinho</string>
+    <string name="label_new_favorita_no_carrinho">Aposta favorita inserida com sucesso</string>
     <string name="label_sem_teimosinha">Teimosinha</string>
     <string name="label_salve_esta_aposta_carinha">Salve esta aposta :)</string>
     <string name="label_aposta_espelho">Aposta espelho</string>
@@ -554,6 +558,7 @@
     <string name="mercado_pago_erro_default">Não foi possível realizar a operação. Entre em contato com o meio de pagamento pelo endereço www.mercadopago.com.br/ajuda</string>
     <string name="mercado_pago_erro_payment_not_found">Meio de pagamento não encontrado. Revise o número do seu cartão.</string>
     <string name="resultados_selecione_opcoes">Selecione a modalidade para\n ver os seus resultados</string>
+    <string name="resultados_selecione_opcoes_description">Selecione a modalidade para ver os seus resultados</string>
 
     <!-- Resultados -->
     <string name="resultados_titulo">Concurso nº %s</string>
@@ -645,6 +650,7 @@
 
     <string name="numeros_proibidos">Números proibidos</string>
     <string name="apostas_favoritas">Apostas favoritas</string>
+    <string name="aposta_favorita">Aposta Favorita</string>
     <string name="resgatar">Resgatar</string>
     <string name="resgatar_premio_mp">Resgatar prêmio</string>
     <string name="excelente">Excelente :)</string>
@@ -730,11 +736,15 @@
     <string name="d_vidas">Dúvidas</string>
     <string name="nome_do_carrinho_favorito">Nome do carrinho favorito</string>
     <string name="titulo">Titulo</string>
+    <string name="botao">Botão</string>
     <string name="loteca">loteca</string>
     <string name="selecione_as_op_es_e_clique_em_adicionar">Selecione as opções e clique em adicionar</string>
     <string name="selecione_o_tipo_de_concurso">Selecione o tipo de concurso</string>
+    <string name="tipo_de_concurso">Tipo de Concurso</string>
     <string name="selecione_a_qtd_de_teimosinhas">Selecione a qtd. de teimosinhas</string>
-    <string name="adicionar_no_carrinho">Adicionar ao carrinho</string>
+    <string name="quantidade_teimosinhas">Quantidade de teimosinhas</string>
+    <string name="adicionar_no_carrinho">Adicionar no carrinho</string>
+    <string name="adicionar_ao_carrinho">Adicionar ao carrinho</string>
     <string name="cvv">CVV</string>
     <string name="_1">1</string>
     <string name="_2">2</string>
@@ -1463,6 +1473,7 @@
     <string name="autosuspensao_alerta">Existe uma suspensão temporária de compras ativa. É necessário aguardar o período selecionado da suspensão para poder realizar novas compras no Portal Loterias Online e Aplicativo Loterias CAIXA.</string>
     <string name="autosuspensao_alerta_nova">Há uma suspensão temporária ativa para compras. Novas apostas poderão ser realizadas no Portal Loterias Online e no Aplicativo Loterias CAIXA após o término do período selecionado.</string>
     <string name="todas_modalidades">Todas as\nmodalidades</string>
+    <string name="todas">Todas</string>
     <string name="gerar_comprovante">Gerar Comprovante</string>
     <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
     <string name="usuario_bloqueio_parcial">Usuário habilitado apenas para consultas.</string>

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/branco">
+    android:background="@drawable/dialog_background">
 
     <ScrollView
         android:id="@+id/sv_carrinho"
@@ -22,12 +22,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="5dp"
-                android:layout_marginTop="30dp"
                 android:fontFamily="@font/caixa_std_bold"
                 android:lineSpacingExtra="5dp"
+                android:textSize="16sp"
                 android:text="@string/selecione_as_op_es_e_clique_em_adicionar"
                 android:textAlignment="center"
-                android:textColor="@color/verdeazul" />
+                android:id="@+id/selecioneText"
+                android:textColor="@color/blue_caixa" />
 
             <Button
                 android:id="@+id/selecioneConcursoButton"
@@ -35,12 +36,12 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/button_border_azul"
-                android:fontFamily="@font/caixa_std_bold"
-                android:text="@string/selecione_o_tipo_de_concurso"
+                android:background="@drawable/button_rounded_border_grey"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/tipo_de_concurso"
                 android:textAllCaps="false"
-                android:textColor="@color/textColorToolbar"
-                android:textSize="14dp" />
+                android:textColor="@color/greyText"
+                android:textSize="16sp" />
 
             <NumberPicker
                 android:id="@+id/picker_tipo_concurso"
@@ -56,12 +57,13 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/button_border_azul"
-                android:fontFamily="@font/caixa_std_bold"
-                android:text="@string/selecione_a_qtd_de_teimosinhas"
+                android:background="@drawable/button_rounded_border_grey"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/quantidade_teimosinhas"
+                android:contentDescription="@string/quantidade_teimosinhas"
                 android:textAllCaps="false"
-                android:textColor="@color/textColorToolbar"
-                android:textSize="14dp"
+                android:textColor="@color/greyText"
+                android:textSize="16sp"
                 android:visibility="gone" />
 
             <NumberPicker
@@ -80,7 +82,7 @@
         android:id="@+id/cancelarModalFavoritosAddCarrinhoButton"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:background="@color/verdeazul"
+        android:background="@drawable/button_border_new_blue"
         android:fontFamily="@font/caixa_std_bold"
         android:text="@string/cancelar"
         android:textAllCaps="false"
@@ -101,7 +103,7 @@
         android:layout_weight="0.5"
         android:background="@color/cinzaDisable"
         android:fontFamily="@font/caixa_std_bold"
-        android:text="@string/adicionar_no_carrinho"
+        android:text="@string/adicionar_ao_carrinho"
         android:textAllCaps="false"
         android:textColor="@color/branco"
         android:enabled="false"

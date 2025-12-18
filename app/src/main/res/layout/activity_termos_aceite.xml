@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     >
 
-    <include layout="@layout/app_bar_degrade"/>
+    <include layout="@layout/app_bar_custom"/>
     <include layout="@layout/content_termos_aceite" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

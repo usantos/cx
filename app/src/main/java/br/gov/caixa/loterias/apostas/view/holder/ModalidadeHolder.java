@@ -39,8 +39,10 @@ public class ModalidadeHolder extends LoteriasHolder<TipoAposta> implements  Vie
 	public void bind(TipoAposta tipoAposta, int position) {
 
 		tituloTipoAposta.setText(tipoAposta.getTitulo());
+		tituloTipoAposta.setHint("Botão");
 
 		if (tipoAposta.getSelect()) {
+			tituloTipoAposta.setContentDescription(tipoAposta.getTitulo() + ", Selecionado");
 			//imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevoFundoCor());
 			setImageTrevo(tipoAposta.getImagemTrevoFundoCor());
 
@@ -57,6 +59,7 @@ public class ModalidadeHolder extends LoteriasHolder<TipoAposta> implements  Vie
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, R.color.branco));
 			}
 		} else {
+			tituloTipoAposta.setContentDescription(tipoAposta.getTitulo());
 			//imageViewTipoAPosta.setImageResource(tipoAposta.getImagemTrevo());
 			setImageTrevo(tipoAposta.getImagemTrevo());
 
@@ -69,7 +72,7 @@ public class ModalidadeHolder extends LoteriasHolder<TipoAposta> implements  Vie
 			if (tipoAposta.getTextColor() != null && tipoAposta.getTextColor() > 0){
 				tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, tipoAposta.getTextColor()));
 			} else {
-				tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, R.color.cinzatextoselecionado));
+				tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, R.color.cinzanaoselecionado));
 			}
 		}
 	}
@@ -88,7 +91,7 @@ public class ModalidadeHolder extends LoteriasHolder<TipoAposta> implements  Vie
 
 		linearLayoutTipoAposta.setBackground(drawable);
 
-		tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, R.color.cinzatextoselecionado));
+		tituloTipoAposta.setTextColor(ContextCompat.getColor(ctx, R.color.cinzanaoselecionado));
 	}
 
 	public void atualizaSelecionado(TipoAposta tipoAposta) {

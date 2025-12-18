@@ -10,6 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -85,24 +88,43 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     private List<ModalidadeDTO> listModalidade = new ArrayList<>();
     private TextView semModalidade;
     private TextView btnIncApostaFav;
+    ImageButton customButton;
+
+    LinearLayout conteudoFiltro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favoritas);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        TextView textTitulo = findViewById(R.id.textCustom);
+        textTitulo.setText(getString(R.string.apostas_favoritas));
+        textTitulo.setHint(getString(R.string.titulo));
+
+        customButton = findViewById(R.id.customButton);
+        customButton.setFocusable(true);
+        customButton.setFocusableInTouchMode(true);
+        customButton.requestFocus();
+        customButton.setContentDescription(getString(R.string.voltar));
+        customButton.setOnClickListener(v -> onBackPressed());
+
+        ImageButton questionButton = findViewById(R.id.buttonQuestions);
+        questionButton.setOnClickListener(v ->
+                startActivity(new Intent(this, TermosUsoActivity.class))
+        );
 
         model = new FavoritaModel(this);
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.title_activity_favoritas_bold)));
 
         scrollViewContentViewFavoritas = findViewById(R.id.scrollViewContentViewFavoritas);
         textFiltroSelecionado = findViewById(R.id.textFiltroSelecionado);
         imageFiltroSelecionado = findViewById(R.id.imageFiltroSelecionado);
         imageFiltroSelecionado.setOnClickListener(v -> abrirFiltroModalidade(FavoritasActivity.this));
         progressLoadingMore = findViewById(R.id.favoritas_loading_more);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        conteudoFiltro = findViewById(R.id.conteudoFiltro);
+        conteudoFiltro.setOnClickListener(v -> {
+            abrirFiltroModalidade(FavoritasActivity.this);
+        });
+        String descricao = getString(R.string.selecione_modalidade) + ":Botão:" + textFiltroSelecionado.getText().toString() + "Selecionada";
+        conteudoFiltro.setContentDescription(descricao);
 
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_lista_favoritos));
 
@@ -285,7 +307,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             public void onDeleta(int position) {
                 String nomeFavorita = model.getApostaList().get(position).getNome();
                 AlertDialog dialog = ViewUtils.dialogoNew(FavoritasActivity.this,
-                        R.string.label_atencao, getString(R.string.exclui_favorita).replace("xxx", nomeFavorita),
+                        getString(R.string.label_atencao), getString(R.string.exclui_favorita).replace("xxx", nomeFavorita),
                         (dialogInterface, i) -> {excluiApostaFavorita(position); dialogInterface.dismiss();},
                         (dialogInterface, i) -> dialogInterface.dismiss());
                 dialog.show();
@@ -334,7 +356,15 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
                     CarrinhoSingleton.getInstance().setCarrinho(payload);
                 }
 
-                ViewUtils.alert(FavoritasActivity.this, getResources().getString(R.string.label_favorita_no_carrinho));
+                ViewUtils.alertCustomDismiss(
+                        FavoritasActivity.this,
+                        R.string.apostas_favoritas,
+                        R.layout.dialog_alert_new,
+                        getString(R.string.label_new_favorita_no_carrinho),
+                        R.id.dialogTitle,
+                        R.id.dialogMessage,
+                        getString(R.string.ok)
+                );
             }
 
             @Override
@@ -380,7 +410,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
 
         if (comTodas) {
             TipoAposta tipoAposta = new TipoAposta(TODAS,
-                    R.color.blue_caixa, true, R.color.cinzatextoselecionado);
+                    R.color.blue_caixa, true, R.color.cinzanaoselecionado);
             listTipoAposta.add(tipoAposta);
         }
 
@@ -389,18 +419,18 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(ModalidadeEnum.fromModalidadeDTO(item));
             switch (ModalidadeEnumSelecaoModalidades.toString(item.getDescricao().toLowerCase())) {
                 case MAIS_MILIONALIA:
-                    tipoAposta = new TipoAposta("+Milionária", estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+                    tipoAposta = new TipoAposta("+Milionária", estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzanaoselecionado);
                     break;
                 case TIMEMANIA:
                 case DIA_DE_SORTE:
                 case SUPER_SETE:
-                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzanaoselecionado);
                     tipoAposta.setTextSelectColor(estilo.getCorLetraLista());
                     break;
                 case LOTECA:  //Loteca não tem Apostas Favoritas (Não apresenta na lista)
                     break;
                 default:
-                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzatextoselecionado);
+                    tipoAposta = new TipoAposta(item.getDescricao(), estilo.getTrevoFundoClaro(), estilo.getTrevoFundoEscuro(), estilo.getCorClara(), false, item.getValor(), item.getDescricaoEspecial(), R.color.cinzanaoselecionado);
                     break;
             }
 
@@ -414,6 +444,13 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     public void abrirFiltroModalidade(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_grid, null);
+        TextView dialogTitle = dialogView.findViewById(R.id.dialog_title);
+        dialogTitle.setHint(getString(R.string.titulo));
+        dialogTitle.requestFocus();
+        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
+        btnCancel.setHint(getString(R.string.botao));
+        TextView btnFilter = dialogView.findViewById(R.id.btn_filter);
+        btnFilter.setHint(getString(R.string.botao));
 
         gridModalidades = dialogView.findViewById(R.id.ehgv_grid_modalidades);
         gridModalidades.setLayoutManager(new GridLayoutManager(context, 2));
@@ -425,11 +462,10 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         dialog.setContentView(dialogView);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_roudend_branco);
 
-        ImageView btnClose = dialogView.findViewById(R.id.dialog_close);
+        Button btnClose = dialogView.findViewById(R.id.dialog_close);
         btnClose.setOnClickListener(v -> dialog.dismiss());
+        btnClose.setContentDescription(getString(R.string.fechar));
 
-        TextView btnCancel = dialogView.findViewById(R.id.btn_cancel);
-        TextView btnFilter = dialogView.findViewById(R.id.btn_filter);
         btnCancel.setOnClickListener(v -> {
             if (textFiltroSelecionado.getText().toString().equalsIgnoreCase(TODAS)) {
                 adapterModalidades.selecionaOPrimeiro();
@@ -440,6 +476,8 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
             dialog.dismiss();
             desativaIncluirAposta();
             filtrarModalidade();
+            textFiltroSelecionado.requestFocus();
+
         });
 
         dialog.show();
@@ -460,9 +498,14 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
     }
 
     public void filtrarModalidade() {
+        conteudoFiltro = findViewById(R.id.conteudoFiltro);
+
         for (TipoAposta tipoAposta : listTipoAposta) {
             if (tipoAposta.getSelect()) {
                 textFiltroSelecionado.setText(tipoAposta.getTitulo());
+                String descricao = getString(R.string.selecione_modalidade) + ":Botão:" + tipoAposta.getTitulo() + "Selecionada";
+                conteudoFiltro.setContentDescription(descricao);
+
                 if (tipoAposta.getValor() == null) {
                     buscaServicos();
                 } else {
@@ -478,8 +521,9 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         TextView subTituloFavoritas = findViewById(R.id.subTituloFavoritas);
         subTituloFavoritas.setText(getString(R.string.voce_ainda_nao_tem_apostas));
         subTituloFavoritas.setTextColor(ContextCompat.getColor(this, R.color.blue_caixa));
-        LinearLayout conteudoFiltro = findViewById(R.id.conteudoFiltro);
+        conteudoFiltro = findViewById(R.id.conteudoFiltro);
         conteudoFiltro.setVisibility(View.GONE);
+
 
         recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);
         recyclerViewFavoritas.setLayoutManager(new GridLayoutManager(this, 2));
@@ -531,6 +575,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         semModalidade.setVisibility(View.VISIBLE);
 
         btnIncApostaFav = findViewById(R.id.txtIncApostaFavorita);
+        btnIncApostaFav.setHint(R.string.botao);
         GradientDrawable drawable = (GradientDrawable) AppCompatResources
                 .getDrawable(this, R.drawable.background_roudend_azul)
                 .mutate().getConstantState().newDrawable().mutate();
@@ -551,6 +596,7 @@ public class FavoritasActivity extends LoteriasBaseAppActivity {
         semModalidade.setVisibility(View.GONE);
 
         btnIncApostaFav = findViewById(R.id.txtIncApostaFavorita);
+        btnIncApostaFav.setHint(R.string.botao);
         btnIncApostaFav.setVisibility(View.GONE);
 
         recyclerViewFavoritas = findViewById(R.id.recyclerFavoritas);

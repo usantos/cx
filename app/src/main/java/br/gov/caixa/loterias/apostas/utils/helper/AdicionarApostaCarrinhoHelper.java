@@ -231,7 +231,7 @@ public class AdicionarApostaCarrinhoHelper {
     }
 
     private static void apresentaModalApostasRepetidas(ApostaOrigem origem) {
-        ViewUtils.alertTitleButtonYesOrNotListener(AdicionarApostaCarrinhoHelper.activity, AdicionarApostaCarrinhoHelper.activity.getResources().getString(R.string.MA015), (dialog, which) -> {
+        ViewUtils.alertTitleButtonYesOrNotListenerNew(AdicionarApostaCarrinhoHelper.activity, AdicionarApostaCarrinhoHelper.activity.getResources().getString(R.string.MA015),AdicionarApostaCarrinhoHelper.activity.getResources().getString(R.string.label_atencao), (dialog, which) -> {
             switch (origem) {
                 case CARROSEL:
                     postAdicionarApostaCarrinho();
@@ -241,6 +241,7 @@ public class AdicionarApostaCarrinhoHelper {
                     break;
             }
         },(dialog, which) ->{
+
             AlertDialogUtils.dismiss();
             dialog.dismiss();
         } );

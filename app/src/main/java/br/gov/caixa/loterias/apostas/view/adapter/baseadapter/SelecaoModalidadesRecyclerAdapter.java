@@ -31,8 +31,6 @@ public class SelecaoModalidadesRecyclerAdapter extends RecyclerView.Adapter<Moda
 	@NonNull
 	@Override
 	public ModalidadeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-		//View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.linearlayout_tipos_apostas,
-		//		parent, false);
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.linearlayout_tipos_apostas_arredondadas,
 				parent, false);
 		return new ModalidadeHolder(view, parent.getContext(), listener);

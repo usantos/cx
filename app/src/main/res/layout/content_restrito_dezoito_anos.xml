@@ -73,7 +73,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginStart="16dp"
             android:background="@color/colorAccent"
-            android:fontFamily="@font/futura_std_bold"
+            android:fontFamily="@font/caixa_std_semi_bold"
             android:text="@string/title_entendi"
             android:textAllCaps="false"
             android:textColor="@color/branco"

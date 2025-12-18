@@ -40,12 +40,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:importantForAccessibility="yes"
             android:gravity="center_vertical">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/linhaDivisa"
+                android:importantForAccessibility="no"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp" />
@@ -57,6 +59,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="10dp"
+                android:importantForAccessibility="no"
                 android:fontFamily="@font/caixa_std_regular"
                 android:text="@string/selecione_modalidade"
                 android:textColor="@color/cinza90"
@@ -69,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginEnd="16dp"
+                android:importantForAccessibility="no"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -79,7 +83,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/caixa_std_regular"
-                    android:text="Todas"
+                    android:importantForAccessibility="no"
+                    android:text="@string/todas"
                     android:textColor="@color/cinza130"
                     android:autoSizeTextType="uniform"
                     android:autoSizePresetSizes="@array/autosize_text_sizes"
@@ -89,6 +94,7 @@
                     android:id="@+id/imageFiltroSelecionado"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:importantForAccessibility="no"
                     android:src="@drawable/ic_filtro_circular"/>
             </LinearLayout>
 
@@ -111,6 +117,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/caixa_std_regular"
+            android:importantForAccessibility="yes"
             android:text="@string/sem_modalidade"
             android:textColor="@color/blue_caixa"
             android:autoSizeTextType="uniform"
@@ -141,6 +148,7 @@
         android:fillViewport="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:importantForAccessibility="no"
         android:layout_marginTop="5dp"
         app:layout_constraintTop_toBottomOf="@id/linear_topfavoritas"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -150,12 +158,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerFavoritas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:importantForAccessibility="no"
                 android:layout_marginTop="1dp"
                 android:descendantFocusability="afterDescendants"
                 android:nestedScrollingEnabled="false" />
@@ -163,6 +173,7 @@
             <ProgressBar
                 android:id="@+id/favoritas_loading_more"
                 android:layout_width="match_parent"
+                android:importantForAccessibility="no"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:padding="5dp"

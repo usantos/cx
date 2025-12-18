@@ -343,6 +343,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/branco"
                 tools:text="Março"
+                android:importantForAccessibility="no"
                 android:fontFamily="@font/caixa_std_regular"
                 android:visibility="gone"
                 android:layout_marginEnd="16dp"

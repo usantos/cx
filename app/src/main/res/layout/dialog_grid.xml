@@ -25,10 +25,12 @@
             android:text="@string/selecione_modalidade_desejada"
             android:fontFamily="@font/caixa_std_semi_bold"
             android:textSize="16sp"
+            android:focusable="true"
+            android:contentDescription="@string/selecione_modalidade_desejada"
             android:textColor="@color/branco"
             android:gravity="start" />
 
-        <ImageView
+        <Button
             android:id="@+id/dialog_close"
             android:layout_width="25dp"
             android:layout_height="25dp"

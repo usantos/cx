@@ -1,6 +1,10 @@
 package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.animation.ValueAnimator;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -8,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -49,6 +54,9 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     private boolean mostraTeimosinha;
     private String txtBotao;
 
+    Boolean toggleTipo = false;
+
+
     public AdicionarCarrinhoFavoritasView() {}
 
     public static AdicionarCarrinhoFavoritasView newInstance() {
@@ -62,18 +70,34 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_adicionar_carrinho_favoritas, container);
+        return inflater.inflate(R.layout.dialog_adicionar_carrinho_favoritas, container,false);
     }
+
+
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        return dialog;
+    }
+
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        TextView selectText = view.findViewById(R.id.selecioneText);
+        selectText.requestFocus();
+        selectText.setHint(getString(R.string.titulo));
         picker_tipo_concurso = view.findViewById(R.id.picker_tipo_concurso);
-
         adicionarCarrinhoFavoritosButton = view.findViewById(R.id.adicionarCarrinhoFavoritosButton);
         cancelarModalFavoritosAddCarrinhoButton = view.findViewById(R.id.cancelarModalFavoritosAddCarrinhoButton);
         selecioneConcursoButton = view.findViewById(R.id.selecioneConcursoButton);
+        selecioneConcursoButton.setHint("Recolhido");
         selecioneQntTeimosinhaButton = view.findViewById(R.id.selecioneQntTeimosinhaButton);
+        selecioneQntTeimosinhaButton.setHint("Recolhido");
 
         if (txtBotao != null){
             adicionarCarrinhoFavoritosButton.setText(txtBotao);
@@ -123,23 +147,41 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
         });
 
+
         selecioneConcursoButton.setOnClickListener(view12 -> {
             habilitaBotaoAdicionar(true);
             Integer alturaAnimacao = 0;
+            toggleTipo = !toggleTipo;
             if (picker_tipo_concurso.getHeight()==0){
                 alturaAnimacao = 100;
             }
+
             setarAlturaConteudo( alturaAnimacao, picker_tipo_concurso );
+
+            selecioneConcursoButton.setHint(toggleTipo ? "Expandido" : "Recolhido");
         });
 
+
         selecioneQntTeimosinhaButton.setOnClickListener(view1 -> {
-            picker_qnt_teimosinhas.setVisibility(View.VISIBLE);
-            Integer alturaAnimacao = 0;
-            if (picker_qnt_teimosinhas.getHeight()==0){
-                alturaAnimacao = 100;
+            if (picker_qnt_teimosinhas.getVisibility() == View.VISIBLE) {
+                selecioneQntTeimosinhaButton.setHint("Recolhido");
+                setarAlturaConteudo(0, picker_qnt_teimosinhas);
+                picker_qnt_teimosinhas.setVisibility(View.GONE);
+               } else {
+
+                picker_qnt_teimosinhas.setVisibility(View.VISIBLE);
+                selecioneQntTeimosinhaButton.setHint("Expandido");
+
+                int itemHeightPx = ViewUtils.setDisplayMetric(10, getContext());
+                int maxHeightPx = ViewUtils.setDisplayMetric(100, getContext());
+                int alturaAnimacao = Math.min(listaTeimosinhas.size() * itemHeightPx, maxHeightPx);
+
+                setarAlturaConteudo(alturaAnimacao, picker_qnt_teimosinhas);
+
             }
-            setarAlturaConteudo( alturaAnimacao, picker_qnt_teimosinhas );
         });
+
+
 
     }
 
@@ -191,6 +233,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             layoutParams.height = val;
             view.setLayoutParams(layoutParams);
         });
+
         animator.setDuration(500);
         animator.start();
     }

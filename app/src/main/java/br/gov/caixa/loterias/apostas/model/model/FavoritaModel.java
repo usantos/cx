@@ -145,10 +145,11 @@ public class FavoritaModel extends AppModel {
 
 	private void checarApostasRepetidas(final ApostaFavoritaDTO apostaFavoritaDTO, final CarrinhoDTO carrinhoDTO, OnSilceListener<CarrinhoDTO> listener) {
 		if (IdentificaoDeUmaApostaDas8Modalidades.checkExisteUmaApostaIgualCarrinho(apostaFavoritaDTO, carrinhoDTO)) {
-			ViewUtils.alertTitleButtonYesOrNotListener(getActivity(), getActivity().getResources().getString(R.string.MA015), (dialog, which) -> {
+			ViewUtils.alertTitleButtonYesOrNotListenerNew(getActivity(),getActivity().getResources().getString(R.string.MA015),getActivity().getResources().getString(R.string.label_atencao),(dialog, which) -> {
 				AlertDialogUtils.show(getActivity());
 				adicionarCarrinho(apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade(), listener);
-			});
+			}, ((dialogInterface, i) -> dialogInterface.dismiss()));
+
 		} else {
 			adicionarCarrinho(apostaFavoritaDTO.getId(), apostaFavoritaDTO.getModalidade(), listener);
 		}
@@ -226,7 +227,15 @@ public class FavoritaModel extends AppModel {
 					if (response.getRedirect() != null){
 						RedirectNetwork.checkRedirectSucesso( response.getRedirect(), activity);
 					}
-					ViewUtils.alert( activity, activity.getResources().getString( R.string.label_favorita_no_carrinho ) );
+					ViewUtils.alertCustomDismiss(
+							activity,
+							R.string.apostas_favoritas,
+							R.layout.dialog_alert_new,
+							activity.getResources().getString(R.string.label_new_favorita_no_carrinho),
+							R.id.dialogTitle,
+							R.id.dialogMessage,
+							activity.getResources().getString(R.string.ok)
+					);
 					CarrinhoSingleton.getInstance().setCarrinho(response.getPayload());
 				}
 

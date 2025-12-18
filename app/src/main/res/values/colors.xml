@@ -9,6 +9,8 @@
     <color name="azulpush">#0066B3</color>
     <color name="azulBolao">#2F5095</color>
     <color name="azulFiltro">#005EA8</color>
+    <color name="azulGradienteStart">#0082AA</color>
+    <color name="azulGradienteEnd">#005CAB</color>
     <color name="pushbotaoaposteagora">#0164AF</color>
     <color name="pushbotaoconferiragora">#4BBDAC</color>/
     <color name="fundobrancocentralmsg">#F4F4F4</color>
@@ -18,6 +20,7 @@
     <color name="branco_transparente">#99ffffff</color>
     <color name="cinza">#48586c</color>
     <color name="linhaDivisa">#d0e0e3</color>
+    <color name="fundoApostas">#f7fafa</color>
     <color name="cinza2">#d4dfe2</color>
     <color name="cinzaClaro">#EBF2F4</color>
     <color name="cinzaclaro">#eff5f6</color>
@@ -81,6 +84,7 @@
     <color name="cinzaseekbar">#b3c7cb</color>
     <color name="azulescuroapostafavorita">#1f2948</color>
     <color name="cinzabordanaoselecionado">#d3e2e5</color>
+    <color name="cinzanaoselecionado">#64747A</color>
     <color name="cinzatextoselecionado">#d3e3e6</color>
     <color name="cinzaHeaderTelaAjuda">#3a4859</color>
     <color name="cinzaGloboLotogol">#d2d4da</color>
