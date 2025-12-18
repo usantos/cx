@@ -33,6 +33,7 @@ public class NumerosHifenFragment extends Fragment {
 	private String titulo;
 	private ArrayList<Integer> numerosSelecionados;
 	private ConfiguracaoNumeros configuracao;
+    private int columnCount = 5;
 
 	public static NumerosHifenFragment newInstance(String titulo, List<Integer> numerosSelecionados, ConfiguracaoNumeros configuracao) {
 		NumerosHifenFragment fragment = new NumerosHifenFragment();
@@ -78,7 +79,7 @@ public class NumerosHifenFragment extends Fragment {
 
 		// GridLayout com 6 colunas
 		GridLayout gridLayout = new GridLayout(context);
-		gridLayout.setColumnCount(5);
+		gridLayout.setColumnCount(columnCount);
 		gridLayout.setOrientation(GridLayout.HORIZONTAL);
 		gridLayout.setLayoutParams(new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,
@@ -98,7 +99,7 @@ public class NumerosHifenFragment extends Fragment {
 			numeroView.setPadding(8, 8, 8, 8);
 
 			// Adiciona hífen à direita, exceto no último da linha
-			if ((i + 1) % 6 != 0 && i != numerosSelecionados.size() - 1) {
+			if ((i + 1) % columnCount != 0 && i != numerosSelecionados.size() - 1) {
 				numeroView.setText(formatado + " -");
 			}
 
