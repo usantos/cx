@@ -1,16 +1,16 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
+import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
@@ -90,6 +90,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private Integer idModalidade, idModalidadeInicial;
 	private Integer tipoConcurso, tipoConcursoInicial;
 
+	private int itensCardslVisiveis = 0;
+	private ImageView[] itemPaginacao;
+	private LinearLayout layoutPaginacaoCarrossel;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -122,6 +126,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		txtFimLista = findViewById(R.id.id_fim_lista);
 		loading = findViewById(R.id.progress_loading);
 
+		layoutPaginacaoCarrossel = findViewById(R.id.layout_paginacao_carousel);
+
+
 		scrollView.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
 			View view = v.getChildAt(v.getChildCount() - 1);
 			int  diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
@@ -133,12 +140,64 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 			}
 		});
 
-		model = new BolaoModel(this);
+        carrosselView.addOnItemChangedListener(new DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>() {
+			@Override
+			public void onCurrentItemChanged(@Nullable @org.jetbrains.annotations.Nullable RecyclerView.ViewHolder viewHolder, int position) {
+				AlertDialogUtils.dismiss();
+				//adapter aqui retorna o índice do carrossel
+				int posicaoReal = getPosicaoReal(position);
+
+				atualizaIndicadorPaginacaoCarrossel(posicaoReal);
+			}
+		});
+
+        model = new BolaoModel(this);
 
 		fragmentSomadorCarrinho();
 
 		AlertDialogUtils.show(this);
 		model.buscaDadosUsuario(onBuscaDadosUsuarios());
+	}
+
+	private int getPosicaoReal(int posicao){
+		if(itensCardslVisiveis == 0) return 0;
+		return posicao % itensCardslVisiveis;
+	}
+
+	private void setupPaginacaoCarrossel(){
+
+		itemPaginacao = new ImageView[itensCardslVisiveis];
+		layoutPaginacaoCarrossel.removeAllViews(); //Limpa os itens caso ja existam
+
+		for(int i = 0; i < itensCardslVisiveis; i++){
+			itemPaginacao[i] = new ImageView(this);
+			itemPaginacao[i].setImageResource(R.drawable.pontovazio);
+
+			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+					LinearLayout.LayoutParams.WRAP_CONTENT,
+					LinearLayout.LayoutParams.WRAP_CONTENT
+			);
+
+			params.setMargins(8,0,8,0);
+
+			layoutPaginacaoCarrossel.addView(itemPaginacao[i], params);
+		}
+
+		//Ativa o primeiro ponto inicialmente
+		if(itemPaginacao.length > 0){
+			itemPaginacao[0].setImageResource(R.drawable.pontopreenchido);
+		}
+
+	}
+
+	private void atualizaIndicadorPaginacaoCarrossel(int posicaoAtual) {
+		for (int i = 0; i < itemPaginacao.length; i++) {
+			if (i == posicaoAtual) {
+				itemPaginacao[i].setImageResource(R.drawable.pontopreenchido);
+			} else {
+				itemPaginacao[i].setImageResource(R.drawable.pontovazio);
+			}
+		}
 	}
 
 	private void buscaBoloes() {
@@ -314,6 +373,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 	private void preencheListas(List<CotasBolaoDTO> cotas) {
 		carrosselList = model.getCarrosselList(cotas);
+		itensCardslVisiveis = carrosselList.size();
+		setupPaginacaoCarrossel();
 		carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener());
 		carrosselView.setAdapter(carrosselAdapter);
 		carrosselView.setItemTransformer(new ScaleTransformer.Builder()
@@ -331,6 +392,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				listAdapter.atualizaLista(inicioRange, bolaoList.subList(inicioRange, bolaoList.size()));
 			}
 		}
+
 
 		acumulouBoloesParaApresentar = false;
 	}
