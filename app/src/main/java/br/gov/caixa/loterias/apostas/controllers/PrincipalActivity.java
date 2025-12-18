@@ -145,7 +145,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             rlMsgDisque180;
     private LinearLayout atalhoRapidoLoterias;
     private ExpandableListView sideMenuExpandableListView;
-    private NavigationView nav_view;
     private ConstraintLayout viewSair, recolherMenu;
 
     //fragments
@@ -242,7 +241,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         this.rlMsgDisque180 = findViewById(R.id.rlMsgDisque180);
         this.atalhoRapidoLoterias = findViewById(R.id.atalhoRapidoLoterias);
         this.sideMenuExpandableListView = findViewById(R.id.sideMenuExpandableListView);
-        this.nav_view = findViewById(R.id.nav_view);
         this.viewSair = findViewById(R.id.viewSair);
         View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
 
