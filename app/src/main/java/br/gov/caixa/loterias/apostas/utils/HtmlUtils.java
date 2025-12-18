@@ -416,7 +416,7 @@ public class HtmlUtils {
                                 AppUtils.listaIntToString(aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(i).getDezenas()) +
                                 "<br/><br/>";
                         if (aposta.getModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
-                            numerosSelecionados += "Mês da sorte: " +
+                            numerosSelecionados += "Mês d3 sorte: " +
                                     aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao().get(i).getMesSorte().getNome() +
                                     "<br/><br/>";
                         }

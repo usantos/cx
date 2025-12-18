@@ -151,7 +151,7 @@ public class JogosComboHolder extends LoteriasHolder<IdentificaoDeUmaApostaDas8M
 			containerTimemania.setVisibility(View.GONE);
 			containerDiaSorte.setVisibility(View.VISIBLE);
 			if (aposta.getMesDeSorte() != null && aposta.getMesDeSorte().getNome() != null && !isSupresinha(aposta) ){
-				mesSorte.setText("\nMês da sorte: " + aposta.getMesDeSorte().getNome());
+				mesSorte.setText("\nMês de sorte: " + aposta.getMesDeSorte().getNome());
 			}
 		} else if (aposta.getModalidade() == ModalidadeEnum.TIMEMANIA){
 			containerMaisMilionaria.setVisibility(View.GONE);

@@ -23,7 +23,7 @@
     <string name="carrinhoDeApostas">Carrinho \nde apostas</string>
     <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
 
-    <string name="escolhaOmes">_Escolha_\no m\u00eas da sorte</string>
+    <string name="escolhaOmes">_Escolha_\no m\u00eas de sorte</string>
     <string name="adicionarAoCarrinho">_Adicionar_\nao carrinho de apostas</string>
     <string name="limparAposta">Limpar aposta</string>
     <string name="limparCarrinho">Limpar carrinho</string>
@@ -394,12 +394,12 @@
     <!-- DIA SORTE -->
     <string name="dia_sorte_escolha_dia">Escolha os _n\u00fameros_</string>
     <string name="escolha_de_seis_a_doze_numeros">Escolha de 6 a 12 números</string>
-    <string name="dia_sorte_escolha_mes">Escolha o _mês_ da sorte</string>
+    <string name="dia_sorte_escolha_mes">Escolha o _mês_ de sorte</string>
     <string name="label_mes_surpresa">M\u00eas surpresa</string>
     <string name="label_escolher_outro_mes">Escolher outro m\u00eas</string>
-    <string name="label_mes_sorte">M\u00eas da Sorte&#160;</string>
-    <string name="label_mes_sorte_dois_pontos">M\u00eas da sorte:&#160;</string>
-    <string name="label_mes_desejado">M\u00eas da sorte</string>
+    <string name="label_mes_sorte">M\u00eas de sorte&#160;</string>
+    <string name="label_mes_sorte_dois_pontos">M\u00eas de sorte:&#160;</string>
+    <string name="label_mes_desejado">M\u00eas de sorte</string>
     <string name="label_aposta_ganhadora">%d aposta ganhadora</string>
     <string name="label_apostas_ganhadoras">%d apostas ganhadoras</string>
     <string name="label_texto_barra_texto">%s / %s</string>
@@ -440,8 +440,8 @@
     <string name="label_ultimo_resultado">Último resultado</string>
     <string name="label_acumulou_exclamacao">ACUMULOU!</string>
     <string name="label_nao_houve_acertador">sem ganhadores</string>
-    <string name="label_mes_sorte_dois_pontos_mes">M\u00eas da sorte: %s</string>
-    <string name="label_mes_sorteado">M\u00eas da sorte&#160;</string>
+    <string name="label_mes_sorte_dois_pontos_mes">M\u00eas de sorte: %s</string>
+    <string name="label_mes_sorteado">M\u00eas de sorte&#160;</string>
     <string name="label_zero">0 (zero)</string>
     <string name="title_activity_rapidao_aposta_favorita_selecao">
         RapidaoApostaFavoritaSelecaoActivity
@@ -1026,7 +1026,7 @@
     <string name="percent_d_traco">%d -&#160;</string>
     <string name="percent_zero_dois_d_traco">%02d -&#160;</string>
     <string name="barra_n_time_do_coracao_dois_pontos_espaco">\nTime do coração:&#160;</string>
-    <string name="barra_n_mes_da_sorte_dois_pontos">\nMês da sorte:&#160;</string>
+    <string name="barra_n_mes_da_sorte_dois_pontos">\nMês de sorte:&#160;</string>
     <string name="conferindo_resultado_ponto">Conferindo resultado.</string>
     <string name="a_conferir">conferir aposta</string>
     <string name="nao_apurado">Concurso ainda não apurado</string>
@@ -1049,7 +1049,7 @@
     <string name="evento_efetuou_exclusao_forma_pagamento_sucesso">EFETUOU_EXCLUSAO_FORMA_DE_PAGAMENTO_SUCESSO</string>
     <string name="dia_de_sorte">dia de sorte</string>
     <string name="barra_n_time_do_coracao_dois_pontos">\nTime do coração: </string>
-    <string name="barra_n_mes_de_sorte_dois_pontos">\nMês da sorte: </string>
+    <string name="barra_n_mes_de_sorte_dois_pontos">\nMês de sorte: </string>
     <string name="espaco_barra_reta_espaco">&#160;|&#160;</string>
     <string name="espaco_nome_da_aposta">&#160;nome da aposta</string>
     <string name="evento_efetuou_exclusao_favorito">EFETUOU_EXCLUSAO_FAVORITO</string>
@@ -1513,7 +1513,7 @@
     <string name="alerta_numero_ja_escolhido_quero_nao_quero">Não é possível selecionar um número já escolhido no outro filtro.</string>
     <string name="Quero_Nao_Quero_Impossivel_de_Identificar">Dezenas Quero ou Não Quero impossível de identificar. Activity for result de FiltraMarketplaceActivity retornando dado incorreto</string>
     <string name="interrogacoes">\???</string>
-    <string name="mes_da_sorte_interrogacoes">\nMês da sorte: ???</string>
+    <string name="mes_da_sorte_interrogacoes">\nMês de sorte: ???</string>
     <string name="time_do_coracao_interrogacoes">\nTime do coração: ???</string>
     <string name="apostas_inclu_das_no_combo">Apostas incluídas no combo</string>
     <string name="cep_invalido">O CEP informado não foi localizado. Por favor, informe um CEP válido.</string>
