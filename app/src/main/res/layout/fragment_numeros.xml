@@ -11,7 +11,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/caixa_std_bold"
-        android:gravity="center"
         android:text="@string/seus_numeros"
         android:textSize="12sp"
         />
@@ -22,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/lista_titulo"
         android:layout_alignStart="@id/lista_titulo"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:paddingVertical="16dp"
         android:columnWidth="50dp"
         android:gravity="center"
         android:isScrollContainer="false"
