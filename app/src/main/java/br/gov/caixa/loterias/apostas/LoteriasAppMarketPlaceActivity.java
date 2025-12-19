@@ -1,18 +1,16 @@
 package br.gov.caixa.loterias.apostas;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
@@ -21,7 +19,6 @@ import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
 
 public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 
-	private ConstraintLayout btnFiltrar;
 	private Toolbar toolbar;
 
 	@Override
@@ -33,9 +30,18 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 	}
 
 	public void configFiltrar(ActivityResultLauncher<Intent> launcher, FiltroAplicadoMarketplace filtro) {
-		btnFiltrar = findViewById(R.id.btn_filtrar);
+        ImageView btnFiltrar = findViewById(R.id.icone_filtrar);
 		if (btnFiltrar != null){
 			btnFiltrar.setOnClickListener(onFiltrarListener(launcher, filtro));
+		}
+		configMenu();
+	}
+
+	@Override
+	protected void configMenu(){
+		ImageView btnDuvidas = findViewById(R.id.btn_duvidas_mkp);
+		if(btnDuvidas != null){
+			btnDuvidas.setOnClickListener(v -> abrirTermosUso());
 		}
 	}
 
