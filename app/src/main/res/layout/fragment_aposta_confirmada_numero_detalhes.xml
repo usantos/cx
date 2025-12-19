@@ -425,6 +425,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_container_result_2"
+                android:paddingVertical="4dp"
                 android:visibility="gone">
 
                 <View

@@ -124,16 +124,16 @@ public class NumerosTrevosFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_numeros_trevos, container, false);
 		setaViews();
-		setHigth(view);
+		setHeight(view);
 		return view;
 	}
 
-	private void setHigth(View view) {
+	private void setHeight(View view) {
 		int pxNumeros = getPx(getQtdColunas(listaNumerosInteiros));
 		int pxTrevos = getPx(getQtdColunas(listaTrevosInteiros)) + 55;
 
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		param.height = pxNumeros + pxTrevos + 100;
+		param.height = pxNumeros + pxTrevos + 155;
 		view.setLayoutParams(param);
 	}
 
