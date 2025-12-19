@@ -249,21 +249,21 @@
         <RelativeLayout
             android:id="@+id/informacaoAdicionalLayout"
             android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/cl_data"
-        android:layout_alignStart="@id/quantidadeApostadasTxt"
-        android:layout_marginTop="70dp"
-        android:paddingBottom="16dp"
-        android:visibility="gone"
-        tools:visibility="visible">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cl_data"
+            android:layout_marginTop="70dp"
+            android:paddingBottom="16dp"
+            android:gravity="center"
+            android:visibility="gone"
+            tools:visibility="visible">
 
         <LinearLayout
             android:id="@+id/ll_informacaoAdicional"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-        android:orientation="horizontal"
-        android:gravity="center">
+            android:orientation="horizontal"
+            android:gravity="center">
 
         <TextView
             android:id="@+id/labelInformacaoAdicionalTxt"
@@ -442,20 +442,20 @@
             <RelativeLayout
                 android:id="@+id/rl_time_mes"
                 android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_container_result_1"
-            android:layout_marginTop="39dp"
-            android:paddingBottom="16dp"
-            android:padding="5dp"
-            android:visibility="gone">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_container_result_1"
+                android:layout_marginTop="39dp"
+                android:paddingBottom="16dp"
+                android:padding="5dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/ll_time_mes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                android:orientation="horizontal"
-                android:gravity="center">
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
 
                     <TextView
