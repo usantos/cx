@@ -1566,4 +1566,8 @@
     <string name="sem_modalidade">Você ainda não tem apostas favoritas desta modalidade. Que tal adicionar uma agora?</string>
     <string name="incluir_aposta_favorita">Incluir aposta favorita</string>
 
+    <string name="label_boloes">Bolões</string>
+    <string name="label_lotericas_favoritas">Lotéricas favoritas</string>
+    <string name="label_boloes_loterica">Bolões da lotérica</string>
+
 </resources>

@@ -45,6 +45,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SurpresinhaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TrevosFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloBolaoFragment;
 
 public class FragmentUtils {
 
@@ -137,6 +138,13 @@ public class FragmentUtils {
 	public static BarraTitutoSimulacaoFragment startFragmentBarraTituloSimulacao(FragmentManager fm, int id, ModalidadeEnum modalidade,
 																				 String concurso, String sorteio, boolean especial, int corBackground, boolean showBGEspecial) {
 		BarraTitutoSimulacaoFragment frag = BarraTitutoSimulacaoFragment.newInstance(modalidade, concurso, sorteio, especial, corBackground, showBGEspecial);
+		startFragmentAllowingStateLoss(fm, id, frag);
+		return frag;
+	}
+
+	public static BarraTituloBolaoFragment startFragmentBarraTituloBolao (FragmentManager fm, int id, ModalidadeEnum modalidade,
+																				 String concurso, String sorteio, BigDecimal valorPremio, boolean especial, int corBackground, int corBackgroundPremio) {
+		BarraTituloBolaoFragment frag = BarraTituloBolaoFragment.newInstance(modalidade, concurso, sorteio, valorPremio, especial, corBackground, corBackgroundPremio);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}
