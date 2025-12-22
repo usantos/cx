@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
-import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class BarraTituloBolaoFragment extends Fragment {
@@ -137,12 +136,7 @@ public class BarraTituloBolaoFragment extends Fragment {
 
     private void preencheDados() {
         if (isEspecial){
-            if (modalidade == ModalidadeEnum.LOTOFACIL){
-                tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
-                TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -20f);
-            } else {
-                tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
-            }
+            tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
         } else {
             tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
         }

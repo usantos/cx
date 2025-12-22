@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="48dp"
-    android:id="@+id/layout_fragmento"
+    android:id="@+id/layout_fragmento_mkp"
     android:background="@color/mega_verde_claro_mkp">
 
     <androidx.constraintlayout.widget.ConstraintLayout

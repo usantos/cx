@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_item_bolao"
+    android:layout_width="280dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_completo"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:background="@color/transparente"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cabecalho_bolao"
+            android:layout_width="match_parent"
+            android:layout_height="18dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/rounded_card_cabecalho_bolao"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/layoutFavoritarCabecalho"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="6dp"
+            android:elevation="1dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/shape_circulo"
+            app:layout_constraintTop_toTopOf="@+id/cabecalho_bolao"
+            app:layout_constraintEnd_toEndOf="@+id/cabecalho_bolao">
+
+            <br.gov.caixa.loterias.apostas.view.custom.BotaoFavoritar
+                android:id="@+id/btn_favoritar_mkp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="1dp"
+                />
+
+        </FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/conteudo_bolao"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="50dp"
+            android:background="@color/branco"
+            android:paddingBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="@id/btn_add_carrinho"
+            app:layout_constraintTop_toBottomOf="@id/cabecalho_bolao"
+            app:layout_constraintVertical_bias="0.0"
+            tools:layout_editor_absoluteX="28dp">
+
+            <LinearLayout
+                android:id="@+id/layoutLoterica"
+                android:layout_width="match_parent"
+                android:layout_height="112dp"
+                android:layout_marginTop="6dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginStart="37dp"
+                android:layout_marginEnd="38dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/loterica_nome"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/cinza130"
+                    android:fontFamily="@font/caixa_std_semi_bold"
+                    android:text="Lotérica Fé do mês"
+                    android:textAlignment="center"
+                     />
+
+                <TextView
+                    android:id="@+id/loterica_uf"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@color/cinza110"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="Brasília - DF"
+                    android:textAlignment="center"
+                    />
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/descricao_qtd_dezenas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="05 apostas de 20 dezenas"
+                android:textAlignment="center"
+                android:textColor="@color/cinza90"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layoutLoterica" />
+
+            <Button
+                android:id="@+id/detalhes"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/btn_rounded_green_outlined"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="Detalhes"
+                android:textAllCaps="false"
+                android:textColor="@color/mega_verde_claro_mkp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descricao_qtd_dezenas" />
+
+            <TextView
+                android:id="@+id/descricao_qtd_cotas_disponiveis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="25 cotas disponíveis de 100"
+                android:textAlignment="center"
+                android:textColor="@color/cinza90"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detalhes" />
+
+            <TextView
+                android:id="@+id/valor_cota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:text="R$ 300,00"
+                android:textSize="18sp"
+                android:textColor="@color/cinza130"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descricao_qtd_cotas_disponiveis" />
+
+            <TextView
+                android:id="@+id/label_quantidade_cotas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="Quantidade de Cotas"
+                android:textSize="16sp"
+                android:textColor="@color/cinza90"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/valor_cota" />
+
+            <TextView
+                android:id="@+id/quantidade_cotas"
+                android:layout_width="50dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textSize="18sp"
+                android:textColor="@color/cinza110"
+                android:gravity="center"
+                android:text="@string/_1"
+                android:textAlignment="center"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
+
+            <View
+                android:id="@+id/linha_numero"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/mega_verde_escuro_mkp"
+                app:layout_constraintBottom_toBottomOf="@id/quantidade_cotas"
+                app:layout_constraintEnd_toEndOf="@id/quantidade_cotas"
+                app:layout_constraintStart_toStartOf="@id/quantidade_cotas" />
+
+            <Button
+                android:id="@+id/diminui_cota"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/ic_botao_surpresinha"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/menos"
+                android:textColor="@color/branco"
+                android:textSize="24sp"
+                app:layout_constraintRight_toLeftOf="@+id/quantidade_cotas"
+                app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
+
+            <Button
+                android:id="@+id/aumenta_cota"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ic_botao_surpresinha"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/mais"
+                android:textColor="@color/branco"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toRightOf="@+id/quantidade_cotas"
+                app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btn_add_carrinho"
+            android:layout_width="0dp"
+            android:layout_height="84dp"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="16sp"
+            android:text="@string/adicionarAoCarrinho"
+            android:background="@drawable/rounded_card"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

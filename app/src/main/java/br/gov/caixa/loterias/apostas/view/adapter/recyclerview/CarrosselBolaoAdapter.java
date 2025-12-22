@@ -30,7 +30,7 @@ public class CarrosselBolaoAdapter extends RecyclerView.Adapter<BolaoCarrosselHo
 
     @Override
     public BolaoCarrosselHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_bolao, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_bolao_novo, parent, false);
 
         return new BolaoCarrosselHolder(activity, v, listener);
     }

@@ -20,6 +20,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.custom.BotaoFavoritar;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
@@ -30,9 +31,7 @@ import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
 	private Activity activity;
 	private static final int QUANTIDADE_MINIMA = 1;
-	private TextView modalidade;
 	private TextView loterica;
-	private TextView concurso;
 	private TextView cidade;
 	private TextView valor;
 	private TextView textQtdDezenas;
@@ -47,15 +46,14 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private Button btnAdd;
 	private View linhaNumero;
 	private EstiloModalidadeMKP estilo;
-
+	private BotaoFavoritar botaoFavoritar;
 	private OnItemBolaoListener listener;
 
 	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener) {
 		super(itemView);
 		this.activity = activity;
-		modalidade 	= itemView.findViewById(R.id.modalidade_bolao);
 		loterica 	= itemView.findViewById(R.id.loterica_bolao);
-		concurso 	= itemView.findViewById(R.id.concurso_bolao);
+		botaoFavoritar = itemView.findViewById(R.id.btn_favoritar_mkp);
 		cidade 		= itemView.findViewById(R.id.cidade_bolao);
 		valor 		= itemView.findViewById(R.id.valor_bolao);
 		textQtdDezenas = itemView.findViewById(R.id.descricao_qtd_dezenas_it);
@@ -63,7 +61,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 		seta 		= itemView.findViewById(R.id.seta_bolao);
 		verMais 	= itemView.findViewById(R.id.container_ver_mais);
-		valorPremio = itemView.findViewById(R.id.valor_estimado_premio);
+		//valorPremio = itemView.findViewById(R.id.valor_estimado_premio);
 		btnDetalhes = itemView.findViewById(R.id.detalhes);
 		btnDiminui 	= itemView.findViewById(R.id.diminui_cota);
 		btnAumenta 	= itemView.findViewById(R.id.aumenta_cota);
@@ -83,12 +81,6 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	public void bind(CotasBolaoDTO bolao, int position) {
 		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
 		aplicaEstilo();
-		if (isEspecial(bolao.getTipoConcurso())){
-			modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
-		} else {
-			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
-		}
-		concurso.setText(String.valueOf("Conc. "+bolao.getConcurso()));
 		if (bolao.getNomeFantasia().length() > 13){
 			loterica.setText(bolao.getNomeFantasia().substring(0,13).concat("..."));
 		} else {
@@ -100,22 +92,27 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		} else {
 			cidade.setText(cidadeUf);
 		}
-		if (bolao.getVrPremioEstimado() != null) {
-			valorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
-		}
 		valor.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrUltimaCotaComTarifa().doubleValue()));
 
-		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
+		textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
 				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
 						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
-						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 18, 16));
 
-		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
-				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
+		textQtdCotas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
+				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18));
 
 		atualizaBotoesQtdCotas(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		mostrarDetalhes(bolao.isAbertoParaMostrarDetalhes());
 		qtdCotas.setText(Integer.toString(bolao.getQtdCotasBolao()));
+		botaoFavoritar.setState(bolao.isLotericaFavorita());
+
+		botaoFavoritar.setOnStateChangeListener(isFavoritado -> {
+			if(listener != null){
+				listener.onFavoritarClick(position, isFavoritado);
+			}
+		});
+
 	}
 
 	private boolean isEspecial(int tipoConcurso){
@@ -126,13 +123,14 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
 		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
 		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
-		modalidade.setTextColor(corLetraLista);
-		valorPremio.setTextColor(corLetraLista);
 		btnDetalhes.setTextColor(corLetraLista);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);
 		btnDiminui.setTextColor(corFonteFundoEscuro);
 		btnAumenta.setBackgroundColor(corEscura);
+		btnAdd.setBackground(VectorUtils.getShape(R.drawable.btn_rounded_blue, estilo.getCorEscura()));
+		btnAdd.setTextColor(corFonteFundoEscuro);
+
 		btnAumenta.setTextColor(corFonteFundoEscuro);
 		linhaNumero.setBackgroundColor(corEscura);
 	}
