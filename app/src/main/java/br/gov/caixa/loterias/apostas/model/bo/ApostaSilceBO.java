@@ -1149,4 +1149,35 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         request.setErrorListener(interceptError(request, getHeaderToken(), listener));
         getServiceConnection().request(request, listener);
     }
+
+    public void incluirLotericaFavorita(Long idLoterica, final RequestListener<RetornoPadraoResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("nuCd", String.valueOf(idLoterica));
+        final GsonRequest request = getServiceConnection().buildPostRequest(ServerMethods.INCLUIR_LOTERICA_FAVORITA,
+                queryParams,
+                "",
+                RetornoPadraoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void excluirLotericaFavorita(Long idLoterica, final RequestListener<RetornoPadraoResponse> listener) {
+        String url = ServerMethods.EXCLUIR_LOTERICA_FAVORITA.replace("{nuCd}", String.valueOf(idLoterica));
+
+        final GsonRequest request = getServiceConnection().buildDeleteRequest(url,
+                new LinkedHashMap<>(),
+                RetornoPadraoResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+
 }

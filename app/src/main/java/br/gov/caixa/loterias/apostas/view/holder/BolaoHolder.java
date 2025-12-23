@@ -80,6 +80,8 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
 		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
+		int corPadrao = ContextCompat.getColor(activity, R.color.cinza90);
+
 		aplicaEstilo();
 		if (bolao.getNomeFantasia().length() > 13){
 			loterica.setText(bolao.getNomeFantasia().substring(0,13).concat("..."));
@@ -97,10 +99,10 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
 				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
 						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
-						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 18, 16));
+						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 18, 16,corPadrao,corPadrao));
 
 		textQtdCotas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
-				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18));
+				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18,corPadrao,corPadrao));
 
 		atualizaBotoesQtdCotas(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		mostrarDetalhes(bolao.isAbertoParaMostrarDetalhes());

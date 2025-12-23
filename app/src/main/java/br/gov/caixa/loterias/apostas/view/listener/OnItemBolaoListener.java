@@ -9,5 +9,6 @@ public interface OnItemBolaoListener {
 	void adicionarCarrinho(int position);
 	void diminui(BolaoHolder holder, int position);
 	void aumenta(BolaoHolder holder, int position);
+	void onFavoritarClick(int position, boolean isFavoritado);
 
 }

@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,12 +37,7 @@ public class BotaoFavoritar extends AppCompatImageView {
 
         setScaleType(ScaleType.FIT_CENTER);
 
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alteraEstadoFavoritar();
-            }
-        });
+        setOnClickListener(v -> alteraEstadoFavoritar());
 
     }
 

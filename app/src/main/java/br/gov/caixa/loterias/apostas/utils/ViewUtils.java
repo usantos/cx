@@ -456,6 +456,42 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static AlertDialog alertTitleNewPositiveNegativeListener(Context context, String titulo, String negativeButton,
+                                                       String positiveButton, String mensagem,
+                                                       DialogInterface.OnClickListener positiveListener,
+                                                       DialogInterface.OnClickListener negativeListener) {
+
+        TextView messageView = new TextView(context);
+        messageView.setText(mensagem);
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+        messageView.setPadding(50, 50, 50, 50);
+
+        AlertDialog dialog = new AlertDialog.Builder(context, R.style.MyAlertDialogStyleNew)
+                .setTitle(titulo)
+                .setView(messageView)
+                .setPositiveButton(positiveButton, positiveListener)
+                .setNegativeButton(negativeButton, negativeListener)
+                .create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+            // Cor do título
+            int corTitulo = ContextCompat.getColor(context, R.color.blue_caixa);
+            // Cor do texto da mensagem
+            int corMensagem = ContextCompat.getColor(context, R.color.cinza110);
+
+            // Aplica as cores nos botões
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(corTitulo);
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(corMensagem);
+
+            //aplicar fonte personalizada nos botões
+//            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(getFontCaixaStdBold(context));
+//            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTypeface(getFontCaixaStdRegular(context));
+        });
+
+        return dialog;
+    }
+
+
     public static Dialog alertCustomDismiss(
             Context context,
             int labelTitle,
@@ -551,6 +587,23 @@ public class ViewUtils {
                 R.string.label_atencao,
                 R.layout.dialog_alert_new_info,
                 context.getString(R.string.o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios)
+        );
+
+        dialog.show();
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+
+        return dialog;
+    }
+
+    public static Dialog alertEntendiCustom(Context context, String mensagem){
+        AlertDialog dialog = ViewUtils.dialogoNewEntendi(
+                context,
+                R.string.label_atencao,
+                R.layout.dialog_alert_new,
+                mensagem
         );
 
         dialog.show();
@@ -769,6 +822,40 @@ public class ViewUtils {
             return spannableStringBuilder;
         }catch (Exception e){
             return  new SpannableStringBuilder().append(texto);
+        }
+    }
+
+
+    public static SpannableStringBuilder infoPrognosticosMkp(Context context, String texto, int tamanhoFonteBold, int tamanhoFonteRegular, int corBold, int corRegular) {
+        try{
+            Typeface fontRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface fontBold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+
+            boolean isBold = false;
+            String[] parts = texto.split("_");
+            for (String part: parts) {
+                int start = spannableStringBuilder.length();
+                spannableStringBuilder.append(part);
+
+                Typeface fontToApply = isBold ? fontBold : fontRegular;
+                int fontSize = isBold ? tamanhoFonteBold : tamanhoFonteRegular;
+                int color = isBold ? corBold : corRegular;
+
+                spannableStringBuilder.setSpan(new CustomTypefaceSpan("", fontToApply),
+                        start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+                spannableStringBuilder.setSpan(new AbsoluteSizeSpan(fontSize, true),
+                        start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+                spannableStringBuilder.setSpan(new ForegroundColorSpan(color),
+                        start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+                isBold = !isBold;
+            }
+            return spannableStringBuilder;
+        }catch (Exception e){
+            return new SpannableStringBuilder().append(texto);
         }
     }
 

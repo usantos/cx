@@ -108,11 +108,16 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		btnAddCarrinho.setBackground(VectorUtils.getShape(R.drawable.rounded_card, estilo.getCorEscura()));
 		btnAddCarrinho.setTextColor(corFonteFundoEscuro);
 		linhaNumero.setBackgroundColor(corEscura);
+		textQtdCotas.setTextColor(ContextCompat.getColor(activity, R.color.cinza90));
+		textQtdDezenas.setTextColor(ContextCompat.getColor(activity, R.color.cinza90));
+
 		preencheCorCirculoFavoritar(corClara);
 
 	}
 
 	private void preencheConteudo(CotasBolaoDTO bolao) {
+
+		int corPadrao = ContextCompat.getColor(activity, R.color.cinza90);
 
 		botaoFavoritar.setState(bolao.isLotericaFavorita());
 		lotericaNome.setText(bolao.getNomeFantasia());
@@ -120,10 +125,10 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
 				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
 						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
-						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 18, 16));
+						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 18, 16, corPadrao,corPadrao));
 
 		textQtdCotas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
-								getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18));
+								getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18, corPadrao,corPadrao));
 
 		atualizaValorTotal(bolao);
 	}

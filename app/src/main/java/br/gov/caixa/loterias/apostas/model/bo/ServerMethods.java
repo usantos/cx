@@ -139,6 +139,8 @@ class ServerMethods {
      //BOLOES
      static final String BOLOES_DISPONIVEIS = "/boloes/recuperar-boloes-disponiveis";
      static final String DETALHE_BOLAO = "/boloes/detalhar-bolao";
+     static final String INCLUIR_LOTERICA_FAVORITA = "/boloes/incluir-loterica-favorita";
+     static final String EXCLUIR_LOTERICA_FAVORITA = "/boloes/excluir-loterica-favorita/{nuCd}";
 
 
      //AUTO AVALIACAO
