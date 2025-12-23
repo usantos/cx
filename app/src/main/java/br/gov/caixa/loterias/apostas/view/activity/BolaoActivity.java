@@ -197,10 +197,17 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 	}
 
 	private void preencheBarraTitulo(ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
-		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
-		boolean isEspecial = tipoConcurso == TipoConcursoEnum.ESPECIAL;
-		FragmentUtils.startFragmentBarraTituloBolao(getSupportFragmentManager(), R.id.barra_titulo_mkp,
-				modalidade, parametroJogo.getConcurso().getNumero().toString(), getDataSorteio(), parametroJogo.getConcurso().getEstimativa(),  isEspecial, estilo.getCorClara(), estilo.getCorEscura());
+
+		if (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null) {
+			FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro);
+			selectFiltroLoterica();
+		} else {
+			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+			boolean isEspecial = tipoConcurso == TipoConcursoEnum.ESPECIAL;
+			FragmentUtils.startFragmentBarraTituloBolao(getSupportFragmentManager(), R.id.barra_titulo_mkp,
+					modalidade, parametroJogo.getConcurso().getNumero().toString(), getDataSorteio(), parametroJogo.getConcurso().getEstimativa(), isEspecial, estilo.getCorClara(), estilo.getCorEscura());
+			unSelectFiltroLoterica();
+		}
 	}
 
 	private String getDataSorteio() {
@@ -239,6 +246,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 	private void unSelectLotericasFavoritas() {
 		btnLotericasFavoritas.setChecked(Boolean.FALSE);
 		layoutLotericasFavoritas.setVisibility(GONE);
+	}
+
+	private void selectFiltroLoterica() {
+		btnBoloes.setText(R.string.label_boloes_loterica);
+	}
+	private void unSelectFiltroLoterica() {
+		btnBoloes.setText(R.string.label_boloes);
 	}
 
 
@@ -514,6 +528,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 					if (filtro != null) {
 						isFiltrando = true;
 						configFiltrar(launcherFiltro, filtro);
+						preencheBarraTitulo(filtro.getModalidade(), filtro.getTipoConcurso());
 					}
 				}
 				AlertDialogUtils.show(BolaoActivity.this);

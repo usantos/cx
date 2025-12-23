@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DadosChavePixDTO;
@@ -24,6 +25,7 @@ import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostaConfirmadaBolaoDetalhesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoComboFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.BarraTitutoSimulacaoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.ConfirmacaoChavePixResgateFragment;
@@ -145,6 +147,12 @@ public class FragmentUtils {
 	public static BarraTituloBolaoFragment startFragmentBarraTituloBolao (FragmentManager fm, int id, ModalidadeEnum modalidade,
 																				 String concurso, String sorteio, BigDecimal valorPremio, boolean especial, int corBackground, int corBackgroundPremio) {
 		BarraTituloBolaoFragment frag = BarraTituloBolaoFragment.newInstance(modalidade, concurso, sorteio, valorPremio, especial, corBackground, corBackgroundPremio);
+		startFragmentAllowingStateLoss(fm, id, frag);
+		return frag;
+	}
+
+	public static BarraTituloFiltroLotericaFragment startFragmentBarraTituloFiltroLoterica (FragmentManager fm, int id, FiltroAplicadoMarketplace filtro) {
+		BarraTituloFiltroLotericaFragment frag = BarraTituloFiltroLotericaFragment.newInstance(filtro);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}
