@@ -22,6 +22,7 @@
     <string name="imagemCarrinho">Carrinho</string>
     <string name="carrinhoDeApostas">Carrinho \nde apostas</string>
     <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
+    <string name="label_premio_estimado">Pr\u00eamio estimado</string>
 
     <string name="escolhaOmes">_Escolha_\no m\u00eas de sorte</string>
     <string name="adicionarAoCarrinho">_Adicionar_\nao carrinho de apostas</string>
@@ -1486,6 +1487,7 @@
     <string name="usuario_bloqueio_parcial">Usuário habilitado apenas para consultas.</string>
     <string name="label_loterica_filtro">Lotéricas</string>
     <string name="nome_loteria">Nome da Lotérica:</string>
+    <string name="codigo_loteria">Código Lotérica:</string>
     <string name="nao_sei_cep">Não sei o meu CEP</string>
     <string name="jogo_responsavel">Jogo Responsável</string>
     <string name="Url_Correios">https://buscacepinter.correios.com.br/app/endereco/index.php</string>
@@ -1569,5 +1571,7 @@
     <string name="label_boloes">Bolões</string>
     <string name="label_lotericas_favoritas">Lotéricas favoritas</string>
     <string name="label_boloes_loterica">Bolões da lotérica</string>
+    <string name="imagem_de_coracao_para_favoritar">Imagem de coração para favoritar lotérica</string>
+    <string name="estado_vazio_mkp_descricao">Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente.</string>
 
 </resources>
