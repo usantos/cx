@@ -745,6 +745,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		if (listAdapter != null) {
 			listAdapter.notifyDataSetChanged();
 		}
+		AlertDialogUtils.dismiss();
 	}
 
 
