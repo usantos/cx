@@ -471,7 +471,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		carrosselList = model.getCarrosselList(cotas);
 		itensCardslVisiveis = carrosselList.size();
 		setupPaginacaoCarrossel();
-		carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener());
+		carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener(), filtro);
 		carrosselView.setAdapter(carrosselAdapter);
 		carrosselView.setItemTransformer(new ScaleTransformer.Builder()
 				.setMinScale(0.8f)

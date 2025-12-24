@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -45,17 +46,22 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private Button btnDiminui;
 	private Button btnAumenta;
 	private Button btnAddCarrinho;
-	private ConstraintLayout cabecalho;
+	private ConstraintLayout cabecalho, cabecalhoFiltrado;
 	private View linhaNumero;
 	private FrameLayout circuloFavoritar;
 	private EstiloModalidadeMKP estilo;
 	private BotaoFavoritar botaoFavoritar;
 	private OnItemCarrosselBolaoListener listener;
+	private FiltroAplicadoMarketplace filtro;
 
 
-	public BolaoCarrosselHolder(Activity activity, View itemView, OnItemCarrosselBolaoListener listener) {
+	public BolaoCarrosselHolder(Activity activity, View itemView, OnItemCarrosselBolaoListener listener, FiltroAplicadoMarketplace filtro) {
 		super(itemView);
 		this.activity 	= activity;
+		this.filtro = filtro;
+
+		cabecalho		  = itemView.findViewById(R.id.cabecalho_bolao);
+		cabecalhoFiltrado = itemView.findViewById(R.id.cabecalho_bolao_filtrado);
 		lotericaNome	= itemView.findViewById(R.id.loterica_nome);
 		lotericaCidade = itemView.findViewById(R.id.loterica_uf);
 		circuloFavoritar = itemView.findViewById(R.id.layoutFavoritarCabecalho);
@@ -68,7 +74,6 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		btnAumenta 		= itemView.findViewById(R.id.aumenta_cota);
 		qtdCotas 		= itemView.findViewById(R.id.quantidade_cotas);
 		btnAddCarrinho 	= itemView.findViewById(R.id.btn_add_carrinho);
-		cabecalho		= itemView.findViewById(R.id.cabecalho_bolao);
 		linhaNumero		= itemView.findViewById(R.id.linha_numero);
 
 		this.listener = listener;
@@ -78,8 +83,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		btnAddCarrinho.setOnClickListener(this);
 	}
 
-	@Override
-	public void bind(CotasBolaoDTO bolao, int position) {
+	public void bind(CotasBolaoDTO bolao, int position, FiltroAplicadoMarketplace filtro) {
+		this.filtro = filtro;
+
 		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
 		aplicaEstilo();
 		preencheConteudo(bolao);
@@ -91,6 +97,10 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 				listener.onFavoritarClick(position, isFavoritado);
 			}
 		});
+	}
+
+	public void bind(CotasBolaoDTO dto, int position) {
+		bind(dto, position, this.filtro);
 	}
 
 	private void aplicaEstilo() {
@@ -119,9 +129,21 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 		int corPadrao = ContextCompat.getColor(activity, R.color.cinza90);
 
+		//Filtrado
+		if (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null) {
+			cabecalho.setVisibility(View.GONE);
+			cabecalhoFiltrado.setVisibility(View.VISIBLE);
+			lotericaNome.setVisibility(View.GONE);
+			lotericaCidade.setVisibility(View.GONE);
+		} else {
+			cabecalho.setVisibility(View.VISIBLE);
+			cabecalhoFiltrado.setVisibility(View.GONE);
+			lotericaNome.setText(bolao.getNomeFantasia());
+			lotericaCidade.setText( bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
+		}
+
 		botaoFavoritar.setState(bolao.isLotericaFavorita());
-		lotericaNome.setText(bolao.getNomeFantasia());
-		lotericaCidade.setText( bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
+
 		textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
 				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
 						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
