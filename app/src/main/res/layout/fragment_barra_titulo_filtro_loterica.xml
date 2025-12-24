@@ -24,18 +24,19 @@
             android:layout_height="55dp"
             android:background="@drawable/trapezio_branco"
             android:visibility="visible"
+            android:layout_marginStart="-10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/trevo_mkp"
-                android:layout_width="27dp"
-                android:layout_height="28dp"
+            <br.gov.caixa.loterias.apostas.view.custom.BotaoFavoritar
+                android:id="@+id/btn_favoritar_mkp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/trevo_4" />
+                />
+
         </RelativeLayout>
 
         <TextView
