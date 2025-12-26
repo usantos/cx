@@ -126,47 +126,88 @@
             app:layout_constraintVertical_bias="0.0"
             tools:layout_editor_absoluteX="28dp">
 
-            <LinearLayout
-                android:id="@+id/layoutLoterica"
-                android:layout_width="match_parent"
-                android:layout_height="112dp"
-                android:layout_marginTop="6dp"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginStart="37dp"
-                android:layout_marginEnd="38dp"
+            <FrameLayout
+                android:id="@+id/lotarica_premio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <TextView
-                    android:id="@+id/loterica_nome"
+                <LinearLayout
+                    android:id="@+id/layoutLoterica"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="112dp"
+                    android:layout_marginTop="6dp"
+                    android:orientation="vertical"
                     android:gravity="center"
-                    android:textSize="18sp"
-                    android:textColor="@color/cinza130"
-                    android:fontFamily="@font/caixa_std_semi_bold"
-                    android:text="Lotérica Fé do mês"
-                    android:textAlignment="center"
-                     />
+                    android:layout_marginStart="37dp"
+                    android:layout_marginEnd="38dp"
+                    android:visibility="visible"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
 
-                <TextView
-                    android:id="@+id/loterica_uf"
+                    <TextView
+                        android:id="@+id/loterica_nome"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/cinza130"
+                        android:fontFamily="@font/caixa_std_semi_bold"
+                        android:text="Lotérica Fé do mês"
+                        android:textAlignment="center"
+                        />
+
+                    <TextView
+                        android:id="@+id/loterica_uf"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@color/cinza110"
+                        android:fontFamily="@font/caixa_std_regular"
+                        android:text="Brasília - DF"
+                        android:textAlignment="center"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutPremio"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:textSize="18sp"
-                    android:textColor="@color/cinza110"
-                    android:fontFamily="@font/caixa_std_regular"
-                    android:text="Brasília - DF"
-                    android:textAlignment="center"
-                    />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:visibility="gone">
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/valor_estimado_premio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:text="R$ 00.000.000,00"
+                        android:textColor="@color/mega_verde_claro_mkp"
+                        android:textSize="22sp"
+                        android:layout_gravity="center" />
 
+                    <TextView
+                        android:id="@+id/descricao_numero_concurso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/caixa_std_regular"
+                        android:text="Prêmio estimado do concurso 2345"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:layout_gravity="center" />
+                </LinearLayout>
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/descricao_qtd_dezenas"
@@ -179,7 +220,7 @@
                 android:textColor="@color/cinza90"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layoutLoterica" />
+                app:layout_constraintTop_toBottomOf="@id/lotarica_premio" />
 
             <Button
                 android:id="@+id/detalhes"

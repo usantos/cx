@@ -528,7 +528,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 					if (filtro != null) {
 						isFiltrando = true;
 						configFiltrar(launcherFiltro, filtro);
-						preencheBarraTitulo(filtro.getModalidade(), filtro.getTipoConcurso());
+						if (filtro.getModalidade() != null) {
+							idModalidade = ModalidadeEnum.fromStringToIdModalidade(filtro.getModalidade());
+							tipoConcurso = TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso());
+						}
 					}
 				}
 				AlertDialogUtils.show(BolaoActivity.this);
