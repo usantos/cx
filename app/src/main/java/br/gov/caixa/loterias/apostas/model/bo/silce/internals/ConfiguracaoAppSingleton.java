@@ -15,6 +15,7 @@ public class ConfiguracaoAppSingleton {
     private Integer grupoCpfNovaApi;
     private Boolean isNovaApi;
 
+    private Boolean isRapidaoHabilitado;
     private String urlBaseCarrinhoPiloto;
     private String urlBaseCarrinhoProducao;
     private String grupoDeCpfsQueAcessamOServicoDaAzure;
@@ -34,6 +35,7 @@ public class ConfiguracaoAppSingleton {
             configuracaoAppSingleton.isAtualizaPublicKey = Boolean.FALSE;
             configuracaoAppSingleton.isBolaoHabilitado = Boolean.FALSE;
             configuracaoAppSingleton.isComboApostasHabilitado = Boolean.FALSE;
+            configuracaoAppSingleton.isRapidaoHabilitado = Boolean.FALSE;
 
             configuracaoAppSingleton.grupoCpfNovaApi = 0;
             configuracaoAppSingleton.isNovaApi = Boolean.FALSE;
@@ -151,4 +153,13 @@ public class ConfiguracaoAppSingleton {
     public void setGrupoDeCpfsApostador(String grupoDeCpfsApostador) {
         this.grupoDeCpfsApostador = grupoDeCpfsApostador;
     }
+
+    public Boolean isRapidaoHabilitado() {
+        return isRapidaoHabilitado;
+    }
+
+    public void setRapidaoHabilitado(Boolean rapidaoHabilitado) {
+        isRapidaoHabilitado = rapidaoHabilitado;
+    }
+
 }

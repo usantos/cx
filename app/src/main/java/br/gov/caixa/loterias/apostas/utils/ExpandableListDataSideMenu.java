@@ -33,7 +33,9 @@ public class ExpandableListDataSideMenu {
 
         expandableListDetail.put(DrawerEnum.MENU_MINHA_AREA, minhaArea);
         expandableListDetail.put(DrawerEnum.MENU_RESULTADOS, new ArrayList<>());
-        //expandableListDetail.put(DrawerEnum.MENU_RAPIDAO, new ArrayList<>());
+        if(ConfiguracaoAppSingleton.getInstance().isRapidaoHabilitado()){
+            expandableListDetail.put(DrawerEnum.MENU_RAPIDAO, new ArrayList<>());
+        }
         expandableListDetail.put(DrawerEnum.MENU_COFERIR_BILHETE, new ArrayList<>());
         expandableListDetail.put(DrawerEnum.MENU_JOGO_RESPONSAVEL, jogoResponsavel);
         expandableListDetail.put(DrawerEnum.MENU_REPASSES_SOCIAIS, new ArrayList<>());
