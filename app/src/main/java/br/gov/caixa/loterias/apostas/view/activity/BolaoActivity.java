@@ -479,13 +479,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
 		if (listAdapter == null){
 			bolaoList = model.getBolaoList(cotas);
-			listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
+			listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this, filtro);
 			listView.setAdapter(listAdapter);
 		} else {
 			int inicioRange = bolaoList.size();
 			bolaoList = model.getBolaoList(cotas);
 			if (inicioRange < bolaoList.size()){
-				listAdapter.atualizaLista(inicioRange, bolaoList.subList(inicioRange, bolaoList.size()));
+				listAdapter.atualizaLista(inicioRange, bolaoList.subList(inicioRange, bolaoList.size()), filtro);
 			}
 		}
 

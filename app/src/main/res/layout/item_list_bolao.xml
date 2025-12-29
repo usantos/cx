@@ -29,6 +29,33 @@
         />
 
     <TextView
+        android:id="@+id/modalidade_bolao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="mega-sena"
+        android:textSize="16sp"
+        android:fontFamily="@font/futura_std_bold"
+        android:textColor="@color/mega_verde_claro_mkp"
+        android:visibility="gone"
+        android:layout_marginStart="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/valor_estimado_premio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R$ 0,00"
+        android:textColor="@color/cinza110"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/modalidade_bolao"
+        app:layout_constraintStart_toStartOf="@+id/modalidade_bolao"
+        />
+
+    <TextView
         android:id="@+id/loterica_bolao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,7 +111,7 @@
         android:layout_height="1dp"
         android:background="@color/linhaDivisa"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/cidade_bolao"
+        app:layout_constraintTop_toBottomOf="@+id/valor_bolao"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,17 +123,31 @@
         app:layout_constraintTop_toBottomOf="@id/linha_divisao">
 
         <TextView
+            android:id="@+id/concurso_bolao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:text="Concurso "
+            android:visibility="visible"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
             android:id="@+id/descricao_qtd_dezenas_it"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/caixa_std_regular"
             android:text="05 apostas de 20 dezenas"
             android:textColor="@color/cinza90"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/concurso_bolao" />
 
         <Button
             android:id="@+id/detalhes"

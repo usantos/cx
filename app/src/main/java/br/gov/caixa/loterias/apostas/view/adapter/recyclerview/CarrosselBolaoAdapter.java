@@ -42,7 +42,7 @@ public class CarrosselBolaoAdapter extends RecyclerView.Adapter<BolaoCarrosselHo
     @Override
     public void onBindViewHolder(final BolaoCarrosselHolder holder, final int position) {
         CotasBolaoDTO cotaBolao = bolaoList.get(position);
-        holder.bind(cotaBolao, position, filtro);
+        holder.bind(cotaBolao, position);
     }
 
     @Override

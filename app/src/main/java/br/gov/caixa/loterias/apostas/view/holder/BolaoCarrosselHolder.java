@@ -105,9 +105,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		btnAddCarrinho.setOnClickListener(this);
 	}
 
-	public void bind(CotasBolaoDTO bolao, int position, FiltroAplicadoMarketplace filtro) {
-		this.filtro = filtro;
-
+	public void bind(CotasBolaoDTO bolao, int position) {
 		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
 		aplicaEstilo();
 		preencheConteudo(bolao);
@@ -119,10 +117,6 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 				listener.onFavoritarClick(position, isFavoritado);
 			}
 		});
-	}
-
-	public void bind(CotasBolaoDTO dto, int position) {
-		bind(dto, position, this.filtro);
 	}
 
 	private void aplicaEstilo() {
