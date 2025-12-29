@@ -135,6 +135,9 @@ class ServerMethods {
      static final String RESULTADOS_MODALIDADE_CONCURSO_PATH = "resultados/{modalidade}/{concurso}";
      static final String RESULTADOS_MODALIDADE_UTLIMO = "resultados/{modalidade}";
 
+     //LOTERICAS FAVORITAS
+    static final String LOTERICAS_FAVORITAS = "/boloes/consultar-loterica-favorita";
+    static final String DELETE_LOTERICA = "/boloes/excluir-loterica-favorita/{nuCd}";
 
      //BOLOES
      static final String BOLOES_DISPONIVEIS = "/boloes/recuperar-boloes-disponiveis";

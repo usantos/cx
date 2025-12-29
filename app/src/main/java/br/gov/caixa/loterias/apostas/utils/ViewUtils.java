@@ -164,7 +164,9 @@ public class ViewUtils {
 
     public static AlertDialog dialogoNew(Context context, String tituloResId, String mensagem,
                                          DialogInterface.OnClickListener positiveListener,
-                                         DialogInterface.OnClickListener negativeListener) {
+                                         DialogInterface.OnClickListener negativeListener,
+                                         int labelNo,
+                                         int labelYes) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_alert_new, null);
@@ -183,8 +185,8 @@ public class ViewUtils {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setView(dialogView)
                 .setCancelable(false)
-                .setNegativeButton(R.string.label_nao, negativeListener)
-                .setPositiveButton(R.string.label_sim, positiveListener)
+                .setNegativeButton(labelNo, negativeListener)
+                .setPositiveButton(labelYes, positiveListener)
                 .create();
 
 
@@ -348,7 +350,9 @@ public class ViewUtils {
                 tituloResId,
                 message,
                 listenerYes,
-                listenerNo
+                listenerNo,
+                R.string.label_nao,
+                R.string.label_sim
                 );
         dialog.show();
 
@@ -534,7 +538,9 @@ public class ViewUtils {
                 context.getString(R.string.label_atencao),
                 context.getString(R.string.MA003),
                 (dialogInterface, i) -> dialogInterface.dismiss(),
-                listener
+                listener,
+                R.string.label_nao,
+                R.string.label_sim
         );
         dialog.show();
 

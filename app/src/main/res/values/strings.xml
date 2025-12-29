@@ -844,6 +844,9 @@
     <string name="confirmar">Confirmar</string>
     <string name="evento_entrou_formas_pagamento">ENTROU_FORMAS_DE_PAGAMENTO</string>
     <string name="evento_carregou_boloes_disponiveis">CARREGOU_BOLOES_DISPONIVEIS</string>
+    <string name="delete_loterica_favorita">DELETOU_LOTERICA_FAVORITA</string>
+    <string name="evento_carregou_lotericas_favoritas">CARREGOU_LOTERICAS_FAVORITAS</string>
+    <string name="deletou_lotericas_favoritas">CARREGOU_LOTERICAS_FAVORITAS</string>
     <string name="evento_carregou_detalhe_bolao">CARREGOU_DETALHE_BOLAO</string>
     <string name="string_true">true</string>
     <string name="string_false">false</string>
@@ -1563,6 +1566,7 @@
     <string name="selecione_modalidade_desejada">Selecione a modalidade desejada</string>
     <string name="voce_ainda_nao_tem_apostas">Você ainda não tem apostas favoritas. Que tal adicionar uma agora?</string>
     <string name="exclui_favorita">Deseja excluir a aposta favorita: xxx?</string>
+    <string name="exclui_loterica_favorita">Deseja excluir xxx da sua lista de favoritas?</string>
     <string name="sem_modalidade">Você ainda não tem apostas favoritas desta modalidade. Que tal adicionar uma agora?</string>
     <string name="incluir_aposta_favorita">Incluir aposta favorita</string>
 

@@ -1,27 +1,26 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
-import android.widget.*;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
@@ -31,8 +30,12 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
@@ -41,10 +44,20 @@ import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bean.PaginacaoFiltro;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostadorDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.enums.FiltroBolaoResultadoEnum;
 import br.gov.caixa.loterias.apostas.model.model.BolaoModel;
+import br.gov.caixa.loterias.apostas.model.model.LotericaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -53,15 +66,18 @@ import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrosselBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaLotericasAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoCarrosselHolder;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoHolder;
+import br.gov.caixa.loterias.apostas.view.holder.LotericasFavoritasHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnEstadoVazioListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnItemLotericaFavoritaListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnVaiParaCarrinhoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
@@ -76,11 +92,15 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private CarrosselBolaoAdapter carrosselAdapter;
 
 	private RecyclerView listView;
+    private RecyclerView lotericasListView;
 	private ProgressBar loading;
 	private ListaBolaoAdapter listAdapter;
+    private ListaLotericasAdapter lotericasAdapter;
 
 	private BolaoModel model;
+    private LotericaFavoritaModel lotericaModel;
 	private List<CotasBolaoDTO> bolaoList;
+    private List<LotericaFavoritaDTO> lotericasList;
 	private List<CotasBolaoDTO> carrosselList;
 	private SomadorCarrinhoFragment somadorCarrinhoFragment;
 	private ActivityResultLauncher<Intent> launcherFiltro;
@@ -99,6 +119,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 	private FiltroVazioFragment filtroVazioFragment;
 	private FiltroAplicadoMarketplace filtro = new FiltroAplicadoMarketplace();
 	private List<CotasBolaoDTO> cotasDisponiveis;
+
 
 	private Integer idModalidade, idModalidadeInicial;
 	private Integer tipoConcurso, tipoConcursoInicial;
@@ -140,6 +161,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 
 		listView = findViewById(R.id.lista_bolao);
+        lotericasListView = findViewById(R.id.lista_lotericas);
 		carrosselView = findViewById(R.id.bolao_carousel);
 		scrollView = findViewById(R.id.id_scrollview);
 		frameEstadoVazio = findViewById(R.id.id_fraf_estado_vazio);
@@ -157,7 +179,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		scrollView.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
 			View view = v.getChildAt(v.getChildCount() - 1);
 			int  diff = (view.getBottom() - (v.getHeight() + v.getScrollY()));
-			// if diff is zero, then the bottom has been reached
 			if (diff == 0) {
 				if (!model.isAcabouRegistros()){
 					buscarMaisBoloes();
@@ -180,7 +201,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		btnBoloes.setOnClickListener(v -> seletorBoloes());
 		btnLotericasFavoritas.setOnClickListener(v -> seletorLotericasFavoritas());
 
-		model = new BolaoModel(this);
+		lotericaModel = new LotericaFavoritaModel(this);
 
 		fragmentSomadorCarrinho();
 
@@ -188,7 +209,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		model.buscaDadosUsuario(onBuscaDadosUsuarios());
 
 		preencheBarraTitulo(ModalidadeEnum.fromInteger(idModalidadeInicial), TipoConcursoEnum.fromInteger(tipoConcurso));
-	}
+    }
 
 	private void loadParametroJogo(ModalidadeEnum modalidade) {
 		SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
@@ -287,6 +308,26 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		model.buscaBoloes(onBoloesListener());
 	}
 
+    private void buscaLotericas(){
+        lotericaModel.buscaLotericas(new OnSilceListener<List<LotericaFavoritaDTO>>() {
+            @Override
+            public void success(List<LotericaFavoritaDTO> payload) {
+                if (payload == null) {
+                    payload = simulaPayloadLoterica();
+                }
+                if (lotericasAdapter == null) {
+                    setLotericasFavoritas(payload);
+                    configuraListView(lotericasList);
+                }
+            }
+
+            @Override
+            public void error(VolleyError error) {
+
+            }
+        });
+    }
+
 	private OnSilceListener<ApostadorDTO> onBuscaDadosUsuarios() {
 		return new OnSilceListener<ApostadorDTO>() {
 			@Override
@@ -297,6 +338,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 				model.setIdModalidade(idModalidade);
 				model.setIdTipoConcurso(tipoConcurso);
 				buscaBoloes();
+                buscaLotericas();
 			}
 
 			@Override
@@ -329,8 +371,30 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		filtroVazioFragment.estadoErro();
 	}
 
+    private OnSilceListener<List<LotericaFavoritaDTO>> onLotericasListener(){
+
+        return new OnSilceListener<List<LotericaFavoritaDTO>>() {
+            @Override
+            public void success(List<LotericaFavoritaDTO> payload) {
+                if (payload == null) {
+                    payload = simulaPayloadLoterica();
+                }
+                if (lotericasAdapter == null) {
+                    setLotericasFavoritas(payload);
+                    configuraListView(lotericasList);
+                }
+            }
+
+            @Override
+            public void error(VolleyError error) {
+
+            }
+        };
+    }
+
 	private OnSilceListener<ListaBolaoDTO> onBoloesListener() {
-		return new OnSilceListener<ListaBolaoDTO>() {
+
+        return new OnSilceListener<ListaBolaoDTO>() {
 			@Override
 			public void success(ListaBolaoDTO payload) {
 
@@ -382,6 +446,132 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		payload.setCotas(new ArrayList<CotasBolaoDTO>());
 		return payload;
 	}
+
+    private List<LotericaFavoritaDTO> simulaPayloadLoterica(){
+        List<LotericaFavoritaDTO> payload = new List<LotericaFavoritaDTO>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(@Nullable Object o) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            public Iterator<LotericaFavoritaDTO> iterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @NonNull
+            @Override
+            public <T> T[] toArray(@NonNull T[] ts) {
+                return null;
+            }
+
+            @Override
+            public boolean add(LotericaFavoritaDTO lotericaFavoritaDTO) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(@Nullable Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(@NonNull Collection<?> collection) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(@NonNull Collection<? extends LotericaFavoritaDTO> collection) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int i, @NonNull Collection<? extends LotericaFavoritaDTO> collection) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(@NonNull Collection<?> collection) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(@NonNull Collection<?> collection) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public LotericaFavoritaDTO get(int i) {
+                return null;
+            }
+
+            @Override
+            public LotericaFavoritaDTO set(int i, LotericaFavoritaDTO lotericaFavoritaDTO) {
+                return null;
+            }
+
+            @Override
+            public void add(int i, LotericaFavoritaDTO lotericaFavoritaDTO) {
+
+            }
+
+            @Override
+            public LotericaFavoritaDTO remove(int i) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(@Nullable Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(@Nullable Object o) {
+                return 0;
+            }
+
+            @NonNull
+            @Override
+            public ListIterator<LotericaFavoritaDTO> listIterator() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public ListIterator<LotericaFavoritaDTO> listIterator(int i) {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            public List<LotericaFavoritaDTO> subList(int i, int i1) {
+                return Collections.emptyList();
+            }
+        };
+        return payload;
+    }
 
 	private OnSilceListener<ListaBolaoDTO> onBoloesFiltradosListener() {
 		return new OnSilceListener<ListaBolaoDTO>() {
@@ -481,6 +671,15 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		}
 	}
 
+    private void setLotericasFavoritas(List<LotericaFavoritaDTO> payload) {
+        lotericaModel.setListLotericas(payload);
+        if (lotericasList == null){
+            lotericasList = payload;
+        } else {
+            lotericasList.addAll(payload);
+        }
+    }
+
 	private void buscarMaisBoloes() {
 		loading.setVisibility(VISIBLE);
 		if (isFiltrando){
@@ -554,23 +753,23 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 			@Override
 			public void diminui(BolaoCarrosselHolder holder, int position) {
-				diminuiQuatidade(carrosselList, position, (BolaoCarrosselHolder)holder);
+				diminuiQuantidade(carrosselList, position, (BolaoCarrosselHolder)holder);
 			}
 
 			@Override
 			public void aumenta(BolaoCarrosselHolder holder, int position) {
-				aumentaQuatidade(carrosselList, position, holder);
+				aumentaQuantidade(carrosselList, position, holder);
 			}
 		};
 	}
 
-	private void aumentaQuatidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
+	private void aumentaQuantidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
 		list.get(position).aumentaQuantidade();
 		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotasBolao(), list.get(position).getQtdCotaDisponivel());
 		holder.atualizaValorTotal(list.get(position));
 	}
 
-	private void diminuiQuatidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
+	private void diminuiQuantidade(List<CotasBolaoDTO> list, int position, OnViewAumentaDiminuiQuantidade holder) {
 		list.get(position).diminuiQuantidade();
 		holder.atualizaQuantidadeTextView(list.get(position).getQtdCotasBolao(), list.get(position).getQtdCotaDisponivel());
 		holder.atualizaValorTotal(list.get(position));
@@ -584,7 +783,53 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 		}
 	}
 
-	private OnItemBolaoListener onItemBolaoListener() {
+    private OnItemLotericaFavoritaListener onItemLotericaFavoritaListener() {
+        return new OnItemLotericaFavoritaListener() {
+            @Override
+            public void verMais(LotericasFavoritasHolder holder, int position) {
+            }
+
+            @Override
+            public void excluir(LotericasFavoritasHolder holder, int position) {
+                lotericaModel.excluirLoterica(
+                        lotericaModel.getIdLotericaByPosition(position),
+                        position,
+                        new OnSilceListener<RetornoPadraoResponse>() {
+                            @Override
+                            public void success(RetornoPadraoResponse payload) {
+                                if (position >= 0 && position < lotericasList.size()) {
+                                    lotericasList.remove(position);
+                                }
+
+                                if (lotericasAdapter != null) {
+                                    lotericasAdapter.removeAt(position);
+                                }
+
+                                setLotericasFavoritas(lotericasList);
+                            }
+
+                            @Override
+                            public void error(VolleyError error) {
+                            }
+                        }
+                );
+            }
+        };
+    }
+
+
+
+    public void configuraListView(List<LotericaFavoritaDTO> list) {
+        if (lotericasAdapter == null) {
+            lotericasAdapter = new ListaLotericasAdapter(list, onItemLotericaFavoritaListener(), BolaoActivity.this);
+            lotericasListView.setAdapter(lotericasAdapter);
+        } else {
+            lotericasAdapter.replaceAll(list);
+        }
+    }
+
+
+    private OnItemBolaoListener onItemBolaoListener() {
 		return new OnItemBolaoListener() {
 			@Override
 			public void verMais(BolaoHolder holder, int position) {
@@ -604,12 +849,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 			@Override
 			public void diminui(BolaoHolder holder, int position) {
-				diminuiQuatidade(bolaoList, position, holder);
+				diminuiQuantidade(bolaoList, position, holder);
 			}
 
 			@Override
 			public void aumenta(BolaoHolder holder, int position) {
-				aumentaQuatidade(bolaoList, position, holder);
+				aumentaQuantidade(bolaoList, position, holder);
 			}
 		};
 	}

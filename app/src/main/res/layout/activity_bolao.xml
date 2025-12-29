@@ -184,9 +184,14 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/content_header_mkp"
-        app:layout_constraintBottom_toTopOf="@id/id_fg_somador_carrinho">
+        app:layout_constraintTop_toBottomOf="@id/content_header_mkp"        >
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_lotericas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toTopOf="parent"            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

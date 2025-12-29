@@ -1,11 +1,15 @@
 package br.gov.caixa.loterias.apostas.model.bo;
 
+import android.util.Log;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,6 +48,8 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericasFavoritasResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosConfiguraveisDTOResponse;
@@ -1010,6 +1016,120 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         listener.onErrorResponse(new VolleyError(new NetworkResponse(401, null, false, 0L, null)));
         return false;
     }
+
+    //LOTERICAS FAVORITAS
+
+    public void getLotericasFavoritas(final RequestListener<LotericasFavoritasResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+
+        final GsonRequest request = getServiceConnection().buildGetRequest(
+                ServerMethods.LOTERICAS_FAVORITAS,
+                queryParams,
+                LotericasFavoritasResponse.class,
+                response -> {
+                    Log.d("HTTP-SUCCESS", "Status: 200 (OK)");
+                    Log.d("HTTP-SUCCESS", "Response: " + new Gson().toJson(response));
+                    listener.getSilceListener().onResponse(response);
+                },
+
+                error -> {
+                    if (error.networkResponse != null) {
+                        Log.d("HTTP-ERROR", "Status: " + error.networkResponse.statusCode);
+                        String body = error.networkResponse.data != null
+                                ? new String(error.networkResponse.data, StandardCharsets.UTF_8)
+                                : "<sem body>";
+                        Log.d("HTTP-ERROR", "Body: " + body);
+                    } else {
+                        Log.d("HTTP-ERROR", "Sem resposta do servidor (networkResponse == null)");
+                    }
+
+                    Log.d("HTTP-ERROR", "networkTimeMs: " + error.getNetworkTimeMs());
+
+                    Log.d("HTTP-ERROR", "message: " + error.getMessage());
+                    Throwable cause = error.getCause();
+                    if (cause != null) {
+                        Log.d("HTTP-ERROR", "cause class: " + cause.getClass().getName());
+                        Log.d("HTTP-ERROR", "cause message: " + cause.getMessage());
+                        Log.d("HTTP-ERROR", Log.getStackTraceString(cause));
+                    } else {
+                        Log.d("HTTP-ERROR", Log.getStackTraceString(error));
+                    }
+
+                    if (error.networkResponse != null && error.networkResponse.headers != null) {
+                        Log.d("HTTP-ERROR", "headers: " + error.networkResponse.headers.toString());
+                    }
+
+                    listener.getErrorListener().onErrorResponse(error);
+                }
+                ,
+                getHeaderToken()
+        );
+
+        getServiceConnection().request(request, listener);
+    }
+
+    public void deleteLotericaFavorita(
+            Long nuCd,
+            final RequestListener<RetornoPadraoResponse> listener
+    ) {
+        if (nuCd == null) {
+            listener.getErrorListener().onErrorResponse(new VolleyError("nuCd não pode ser nulo"));
+            return;
+        }
+
+        final String path = ServerMethods.DELETE_LOTERICA.replace("{nuCd}", String.valueOf(nuCd));
+
+        Map<String, String> headers = getHeaderToken();
+        if (headers == null) headers = new LinkedHashMap<>();
+
+        final GsonRequest request = getServiceConnection().buildDeleteRequest(
+                path,
+                null,
+                RetornoPadraoResponse.class,
+                response -> {
+                    try {
+                        Log.d("HTTP-SUCCESS", "DELETE " + path);
+                        Log.d("HTTP-SUCCESS", "Status: 200 (OK)");
+                        Log.d("HTTP-SUCCESS", "Response: " + new Gson().toJson(response));
+                        listener.getSilceListener().onResponse(response);
+                    } catch (Exception ex) {
+                        Log.e("HTTP-SUCCESS", "Falha ao processar listener", ex);
+                    }
+                },
+                error -> {
+
+                    if (error.networkResponse != null) {
+                        Log.d("HTTP-ERROR", "Status: " + error.networkResponse.statusCode);
+                        String body = error.networkResponse.data != null
+                                ? new String(error.networkResponse.data, StandardCharsets.UTF_8)
+                                : "<sem body>";
+                        Log.d("HTTP-ERROR", "Body: " + body);
+                        if (error.networkResponse.headers != null) {
+                            Log.d("HTTP-ERROR", "resp headers: " + error.networkResponse.headers.toString());
+                        }
+                    } else {
+                        Log.d("HTTP-ERROR", "Sem resposta do servidor (networkResponse == null)");
+                    }
+
+                    Log.d("HTTP-ERROR", "networkTimeMs: " + error.getNetworkTimeMs());
+                    Log.d("HTTP-ERROR", "message: " + error.getMessage());
+                    Throwable cause = error.getCause();
+                    if (cause != null) {
+                        Log.d("HTTP-ERROR", "cause class: " + cause.getClass().getName());
+                        Log.d("HTTP-ERROR", "cause message: " + cause.getMessage());
+                        Log.d("HTTP-ERROR", Log.getStackTraceString(cause));
+                    } else {
+                        Log.d("HTTP-ERROR", Log.getStackTraceString(error));
+                    }
+
+                    listener.getErrorListener().onErrorResponse(error);
+                },
+                headers
+        );
+
+        getServiceConnection().request(request, listener);
+    }
+
 
     // BOLAO
     public void getBoloesDisponiveis(FiltroMarketPlace filtro,
