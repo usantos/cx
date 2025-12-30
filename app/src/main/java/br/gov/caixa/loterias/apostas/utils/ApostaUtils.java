@@ -432,12 +432,18 @@ public class ApostaUtils {
 		tipoConcurso.setDescricao("");
 		aposta.setTipoConcurso(tipoConcurso);
 
-		BigDecimal qntCotas = new BigDecimal(bolao.getQtdCotasBolao());
 
-		aposta.setValor(bolao.getVrCotaComTarifa().multiply(qntCotas));
+
+		aposta.setValor(atualizaValorAposta(bolao));
 		aposta.setDataSorteio(bolao.getDataSorteio());
 
 		return aposta;
+	}
+
+	private static BigDecimal atualizaValorAposta(CotasBolaoDTO bolao) {
+		Double qtdApostas = Double.valueOf(bolao.getQtdCotasBolao() - 1);
+		BigDecimal valor = bolao.getVrUltimaCotaComTarifa().add(BigDecimal.valueOf(bolao.getVrCotaComTarifa().doubleValue() * qtdApostas));
+		return valor;
 	}
 	public static IdentificaoDeUmaApostaDas8Modalidades converteDetalheBolaoEmAposta(String codigoBolao, DetalheBolaoDTO bolao) {
 		IdentificaoDeUmBolao aposta = new IdentificaoDeUmBolao();
