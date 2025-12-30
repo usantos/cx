@@ -24,7 +24,6 @@ import android.widget.TextView;
 
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -640,10 +639,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		String mensagem = "";
 
 		if(isFavoritado) {
-			mensagem = "Deseja incluir " + bolao.getNomeFantasia() + " da sua lista de favoritas?";
+			mensagem = "Deseja incluir " + bolao.getNomeFantasia() + " na sua lista de favoritas?";
 
 		}else {
-			mensagem = "Deseja excluir " + bolao.getNomeFantasia() + " na sua lista de favoritas?";
+			mensagem = "Deseja excluir " + bolao.getNomeFantasia() + " da sua lista de favoritas?";
 
 		}
 		abrePopupConfirmacaoLotericasFavoritas(mensagem, lotericaId, estadoAnterior);
@@ -682,7 +681,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 			@Override
 			public void success(RetornoPadraoResponse payload) {
 				//Sucesso na alteração do favorito, nada a fazer pois o estado já foi atualizado
-				AlertDialogUtils.dismiss();		}
+				AlertDialogUtils.dismiss();
+				btnLotericasFavoritas.performClick();
+			}
 
 			@Override
 			public void error(VolleyError error) {

@@ -1569,7 +1569,7 @@
     <string name="incluir_aposta_favorita">Incluir aposta favorita</string>
 
     <string name="label_boloes">Bolões</string>
-    <string name="label_lotericas_favoritas">Lotéricas favoritas</string>
+    <string name="label_lotericas_favoritas">Lotéricas Favoritas</string>
     <string name="label_boloes_loterica">Bolões da lotérica</string>
     <string name="imagem_de_coracao_para_favoritar">Imagem de coração para favoritar lotérica</string>
     <string name="estado_vazio_mkp_descricao">Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente.</string>

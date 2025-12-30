@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.BotaoFavoritar;
@@ -117,18 +118,16 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	private void preencheConteudo(CotasBolaoDTO bolao) {
 
-		int corPadrao = ContextCompat.getColor(activity, R.color.cinza90);
-
 		botaoFavoritar.setState(bolao.isLotericaFavorita());
-		lotericaNome.setText(bolao.getNomeFantasia());
+		lotericaNome.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
 		lotericaCidade.setText( bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
 		textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
 				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
 						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
-						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 18, 16, corPadrao,corPadrao));
+						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 18, 16));
 
 		textQtdCotas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
-								getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18, corPadrao,corPadrao));
+								getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18));
 
 		atualizaValorTotal(bolao);
 	}

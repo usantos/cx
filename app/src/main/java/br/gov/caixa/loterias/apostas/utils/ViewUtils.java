@@ -469,8 +469,8 @@ public class ViewUtils {
         AlertDialog dialog = new AlertDialog.Builder(context, R.style.MyAlertDialogStyleNew)
                 .setTitle(titulo)
                 .setView(messageView)
-                .setPositiveButton(positiveButton, positiveListener)
-                .setNegativeButton(negativeButton, negativeListener)
+                .setPositiveButton(StringUtils.capitalizerNovo(positiveButton), positiveListener)
+                .setNegativeButton(StringUtils.capitalizerNovo(negativeButton), negativeListener)
                 .create();
 
         dialog.setOnShowListener(dialogInterface -> {
@@ -826,36 +826,30 @@ public class ViewUtils {
     }
 
 
-    public static SpannableStringBuilder infoPrognosticosMkp(Context context, String texto, int tamanhoFonteBold, int tamanhoFonteRegular, int corBold, int corRegular) {
-        try{
-            Typeface fontRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
-            Typeface fontBold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
-            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+    public static SpannableStringBuilder infoPrognosticosMkp(Context context, String texto, int tamanhoFonteSemiBold, int tamanhoFonteRegular) {
+        try {
+            Typeface fonteRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface fonteSemiBold = FonteUtils.getFonte(FontCaixaEnum.SEMI_BOLD);
 
-            boolean isBold = false;
-            String[] parts = texto.split("_");
-            for (String part: parts) {
-                int start = spannableStringBuilder.length();
-                spannableStringBuilder.append(part);
+            // Remove os underlines do texto exibido
+            String textoSemUnderscore = texto.replace("_", "");
+            SpannableStringBuilder ssb = new SpannableStringBuilder(textoSemUnderscore);
 
-                Typeface fontToApply = isBold ? fontBold : fontRegular;
-                int fontSize = isBold ? tamanhoFonteBold : tamanhoFonteRegular;
-                int color = isBold ? corBold : corRegular;
+            // Aplica fonte e tamanho REGULAR para todo o texto
+            ssb.setSpan(new CustomTypefaceSpan("", fonteRegular), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            ssb.setSpan(new AbsoluteSizeSpan(tamanhoFonteRegular, true), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
 
-                spannableStringBuilder.setSpan(new CustomTypefaceSpan("", fontToApply),
-                        start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            // Calcula as posições dos trechos entre "_" no texto original
+            List<PositionStringBold> ranges = listPositionString(texto);
 
-                spannableStringBuilder.setSpan(new AbsoluteSizeSpan(fontSize, true),
-                        start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-
-                spannableStringBuilder.setSpan(new ForegroundColorSpan(color),
-                        start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-
-                isBold = !isBold;
+            // Aplica BOLD e tamanho nos intervalos calculados
+            for (PositionStringBold range : ranges) {
+                ssb.setSpan(new CustomTypefaceSpan("", fonteSemiBold), range.getStart(), range.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                ssb.setSpan(new AbsoluteSizeSpan(tamanhoFonteSemiBold, true), range.getStart(), range.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             }
-            return spannableStringBuilder;
-        }catch (Exception e){
-            return new SpannableStringBuilder().append(texto);
+            return ssb;
+        } catch (Exception e) {
+            return new SpannableStringBuilder().append(texto.replace("_", ""));
         }
     }
 

@@ -39,6 +39,7 @@ import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
@@ -365,11 +366,10 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		String valorCota =  "Valor da Cota: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaSemTarifa());
 		String valorTarifa = "Tarifa de Serviço: " + ViewUtils.getMoedaFormat(bolao.getVrTarifaServicoUltimaCota());
 		String valorTotal = "Total: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaComTarifa());
-		int corPadraoCard = ContextCompat.getColor(this, R.color.cinza90);
 
 		botaoFavoritar.setState(isLotericaFavorita);
 		tvValorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
-		tvNomeLoterica.setText(bolao.getNomeFantasia());
+		tvNomeLoterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
 		tvCodigoLoterica.setText(codigoLoterica);
 		tvCidadeUfLoterica.setText(cidadeUfLoterica);
 		tvValorCota.setText(valorCota);
@@ -383,16 +383,16 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 				!bolao.getApostas().get(0).getDezenas().isEmpty()){
 			textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(this,
 							getApostasDeDezenas(bolao.getQtdApostas(), bolao.getApostas().get(0).getDezenas().size()),
-					20,18, corPadraoCard, corPadraoCard));
+					20,18));
 		} else {
 			textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(this,
 					bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
 							getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
-							getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 20,18, corPadraoCard,corPadraoCard));
+							getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 20,18));
 		}
 
 		textQtdCotas.setText(ViewUtils.infoPrognosticosMkp(this,
-				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 20,18, corPadraoCard,corPadraoCard));
+				getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 20,18));
 
 
 		atualizaQuantidadeTextView();
