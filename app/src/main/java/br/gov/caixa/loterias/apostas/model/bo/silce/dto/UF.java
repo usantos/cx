@@ -78,4 +78,11 @@ public enum UF {
         UF uf = fromId(ibgeId);
         return uf != null ? uf.getSigla() : null;
     }
+
+    /** Retorna o nome da UF a partir do ID IBGE, ou null se não encontrado. */
+    public static String nomeFromId(int ibgeId) {
+        UF uf = fromId(ibgeId);
+        return uf != null ? uf.getNome() : null;
+    }
+
 }

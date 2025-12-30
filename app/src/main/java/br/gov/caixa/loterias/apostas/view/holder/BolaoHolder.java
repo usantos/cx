@@ -92,7 +92,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		int corPadrao = ContextCompat.getColor(activity, R.color.cinza90);
 
 		aplicaEstilo();
-		if (isFiltrado()) {
+		if (isFiltradoLoterica()) {
 			botaoFavoritar.setVisibility(View.GONE);
 			loterica.setVisibility(View.GONE);
 			modalidade.setVisibility(View.VISIBLE);
@@ -151,7 +151,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	}
 
-	private boolean isFiltrado() {
+	private boolean isFiltradoLoterica() {
 		return (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null);
 	}
 	private boolean isEspecial(int tipoConcurso){

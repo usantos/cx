@@ -126,7 +126,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		int corFonteFundoClaro = ContextCompat.getColor(activity, estilo.getCorFonteFundoClaro());
 		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
 
-		if (isFiltrado()) {
+		if (isFiltradoLoterica()) {
 			cabecalhoFiltrado.setBackgroundColor(corClara);
 			trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
 			icTrevoBolao.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
@@ -157,13 +157,19 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 		int corPadrao = ContextCompat.getColor(activity, R.color.cinza90);
 
-		if (isFiltrado()) {
+		if (isFiltradoLoterica()) {
 			cabecalho.setVisibility(View.GONE);
 			cabecalhoFiltrado.setVisibility(View.VISIBLE);
 			lotericaNome.setVisibility(View.GONE);
 			lotericaCidade.setVisibility(View.GONE);
 			layoutLoerica.setVisibility(View.GONE);
 			layoutPremio.setVisibility(View.VISIBLE);
+
+			if (isEspecial(bolao.getTipoConcurso())){
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
+			} else {
+				modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
+			}
 
 			valorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
 			concurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
@@ -189,7 +195,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		atualizaValorTotal(bolao);
 	}
 
-	private boolean isFiltrado() {
+	private boolean isFiltradoLoterica() {
 		return (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null);
 	}
 

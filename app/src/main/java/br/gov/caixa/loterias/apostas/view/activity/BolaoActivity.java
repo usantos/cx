@@ -198,8 +198,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
 	private void preencheBarraTitulo(ModalidadeEnum modalidade, TipoConcursoEnum tipoConcurso) {
 
-		if (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null) {
-			FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro);
+		if (isFiltradoLoterica()) {
+			FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, cotasDisponiveis.get(0).isLotericaFavorita());
 			selectFiltroLoterica();
 		} else {
 			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
@@ -208,6 +208,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 					modalidade, parametroJogo.getConcurso().getNumero().toString(), getDataSorteio(), parametroJogo.getConcurso().getEstimativa(), isEspecial, estilo.getCorClara(), estilo.getCorEscura());
 			unSelectFiltroLoterica();
 		}
+	}
+
+	private boolean isFiltradoLoterica() {
+		return (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null);
 	}
 
 	private String getDataSorteio() {

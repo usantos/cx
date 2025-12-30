@@ -151,8 +151,8 @@ public class FragmentUtils {
 		return frag;
 	}
 
-	public static BarraTituloFiltroLotericaFragment startFragmentBarraTituloFiltroLoterica (FragmentManager fm, int id, FiltroAplicadoMarketplace filtro) {
-		BarraTituloFiltroLotericaFragment frag = BarraTituloFiltroLotericaFragment.newInstance(filtro);
+	public static BarraTituloFiltroLotericaFragment startFragmentBarraTituloFiltroLoterica (FragmentManager fm, int id, FiltroAplicadoMarketplace filtro, boolean isLotericaFavorita) {
+		BarraTituloFiltroLotericaFragment frag = BarraTituloFiltroLotericaFragment.newInstance(filtro, isLotericaFavorita);
 		startFragmentAllowingStateLoss(fm, id, frag);
 		return frag;
 	}
