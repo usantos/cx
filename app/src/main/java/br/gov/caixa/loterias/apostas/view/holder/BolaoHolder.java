@@ -87,7 +87,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		} else {
 			loterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
 		}
-		String cidadeUf = bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla();
+		String cidadeUf = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome()) + " - " + bolao.getUf().getSigla();
 		if (cidadeUf.length() > 13) {
 			cidade.setText(cidadeUf.substring(0,13).concat("..."));
 		} else {
@@ -110,7 +110,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 		botaoFavoritar.setOnStateChangeListener(isFavoritado -> {
 			if(listener != null){
-				listener.onFavoritarClick(position, isFavoritado);
+				listener.onFavoritarClick(position);
 			}
 		});
 

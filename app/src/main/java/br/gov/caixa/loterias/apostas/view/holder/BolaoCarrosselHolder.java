@@ -89,7 +89,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 		botaoFavoritar.setOnStateChangeListener(isFavoritado -> {
 			if(listener != null){
-				listener.onFavoritarClick(position, isFavoritado);
+				listener.onFavoritarClick(position);
 			}
 		});
 	}
@@ -118,9 +118,11 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	private void preencheConteudo(CotasBolaoDTO bolao) {
 
+		String cidadeUf = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome()) + " - " + bolao.getUf().getSigla();
+
 		botaoFavoritar.setState(bolao.isLotericaFavorita());
 		lotericaNome.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
-		lotericaCidade.setText( bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
+		lotericaCidade.setText(cidadeUf);
 		textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
 				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
 						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :

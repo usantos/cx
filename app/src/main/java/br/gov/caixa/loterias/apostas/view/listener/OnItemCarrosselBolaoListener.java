@@ -8,6 +8,6 @@ public interface OnItemCarrosselBolaoListener {
 	void adicionarCarrinho(int position);
 	void diminui(BolaoCarrosselHolder holder, int position);
 	void aumenta(BolaoCarrosselHolder holder, int position);
-	void onFavoritarClick(int position, boolean isFavoritado);
+	void onFavoritarClick(int position);
 
 }

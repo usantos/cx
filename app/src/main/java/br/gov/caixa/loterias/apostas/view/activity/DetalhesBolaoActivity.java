@@ -26,7 +26,6 @@ import java.util.ArrayList;
 
 import br.gov.caixa.loterias.apostas.LoteriasAppMarketPlaceActivity;
 import br.gov.caixa.loterias.apostas.R;
-import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfiguracaoLoteca;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
@@ -42,6 +41,7 @@ import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.FavoritarLotericaHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.JogosBolaoRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.PartidasLotecaRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.SuperSeteRecyclerViewAdapter;
@@ -54,7 +54,6 @@ import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
 
-import static br.gov.caixa.loterias.apostas.model.bo.BaseBO.transformaErroEmErrorResponse;
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpites;
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
@@ -66,7 +65,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	public static final String ARG_NUMERO_COTA = "ARG_NUMERO_COTA";
 	public static final String ARG_IS_LOTERICA_FAVORITA = "ARG_IS_LOTERICA_FAVORITA";
 	private TextView tvValorPremio;
-	private TextView tvNomeLoterica, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota, tvCodigoLoterica, tvCidadeUfLoterica;
+	private TextView tvNomeLoterica, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota, tvCodigoLoterica, tvCidadeUfLoterica, tvFavoritar;
 	private TextView textQtdDezenas, textQtdCotas;
 	private Button btnAdd, btnDiminui, btnAumenta;
 	private TextView tvValorCotaBtn, tvQtdCotas;
@@ -176,85 +175,30 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		if (bolao == null) return;
 
 		Long lotericaId = bolao.getLoterica();
-		String mensagem = isFavoritado
-				? "Deseja incluir " + bolao.getNomeFantasia() + " na sua lista de favoritas?"
-				: "Deseja excluir " + bolao.getNomeFantasia() + " da sua lista de favoritas?";
+		boolean estadoAtual = isLotericaFavorita;
 
-		abrePopupConfirmacaoLotericasFavoritas(mensagem, lotericaId, isLotericaFavorita);
-	}
-
-	private void abrePopupConfirmacaoLotericasFavoritas(String mensagem, Long lotericaId, boolean estadoAnterior) {
-		Dialog dialogConfirmacao = ViewUtils.alertTitleNewPositiveNegativeListener(
+		FavoritarLotericaHelper.confirmar(
 				this,
-				getString(R.string.label_atencao),
-				getString(R.string.cancelar),
-				getString(R.string.confirmar),
-				mensagem,
-				(dialog, which) -> {
-					AlertDialogUtils.show(this);
-					if (estadoAnterior) {
-						model.excluirLotericaFavorita(lotericaId, excluirFavoritaListener(estadoAnterior));
-					} else {
-						model.incluirLotericaFavorita(lotericaId, incluirFavoritaListener(estadoAnterior));
+				lotericaId,
+				bolao.getNomeFantasia(),
+				estadoAtual,
+				new FavoritarLotericaHelper.Acoes() {
+					@Override
+					public void incluir(Long id, OnSilceListener<RetornoPadraoResponse> listener) {
+						model.incluirLotericaFavorita(id, listener);
 					}
-					isLotericaFavorita = !estadoAnterior;
-					botaoFavoritar.setState(isLotericaFavorita);
+					@Override
+					public void excluir(Long id, OnSilceListener<RetornoPadraoResponse> listener) {
+						model.excluirLotericaFavorita(id, listener);
+					}
 				},
-				(dialog, which) -> {
-					dialog.dismiss();
-					botaoFavoritar.setState(estadoAnterior);
+				novoEstado -> {
+					isLotericaFavorita = novoEstado;
+					botaoFavoritar.setState(novoEstado);
+					atualizaLabelFavoritar();
+					precisaAtualizarLista = true;
 				}
 		);
-		dialogConfirmacao.show();	}
-
-	private OnSilceListener<RetornoPadraoResponse> incluirFavoritaListener(boolean estadoAnterior) {
-		return new OnSilceListener<RetornoPadraoResponse>() {
-			@Override
-			public void success(RetornoPadraoResponse payload) {
-				AlertDialogUtils.dismiss();
-				precisaAtualizarLista = true;
-			}
-
-			@Override
-			public void error(VolleyError error) {
-				AlertDialogUtils.dismiss();
-				try {
-					ErrorResponse errorResponse =transformaErroEmErrorResponse(error);
-					if(errorResponse.getCodigo().equals("002024")){
-						ViewUtils.alertEntendiCustom(DetalhesBolaoActivity.this, errorResponse.getMensagem());
-					}else{
-						ViewUtils.alertTitleButton(DetalhesBolaoActivity.this, R.string.label_atencao, getResources().getString(R.string.nao_concluiu_operacao),
-								"Ok", dialogInterface -> {});
-
-					};
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				isLotericaFavorita = estadoAnterior;
-				botaoFavoritar.setState(estadoAnterior);
-			}
-		};
-	}
-
-
-	private OnSilceListener<RetornoPadraoResponse> excluirFavoritaListener(boolean estadoAnterior) {
-		return new OnSilceListener<RetornoPadraoResponse>() {
-			@Override
-			public void success(RetornoPadraoResponse payload) {
-				AlertDialogUtils.dismiss();
-				precisaAtualizarLista = true;
-			}
-
-			@Override
-			public void error(VolleyError error) {
-				AlertDialogUtils.dismiss();
-				ViewUtils.alertTitleButton(DetalhesBolaoActivity.this, R.string.label_atencao, getResources().getString(R.string.nao_concluiu_operacao),
-						"Ok", dialogInterface -> {});
-				isLotericaFavorita = estadoAnterior;
-				botaoFavoritar.setState(estadoAnterior);
-			}
-		};
 	}
 
 
@@ -281,6 +225,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		frameSomador = findViewById(R.id.id_fg_somador_carrinho);
 		frameRodape = findViewById(R.id.id_fg_rodape);
 		botaoFavoritar = findViewById(R.id.btn_favoritar_detalhes);
+		tvFavoritar = findViewById(R.id.txt_favoritar_loterica);
 	}
 
 	public void atualizaQuantidadeTextView() {
@@ -362,7 +307,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private void preencheDados() {
 
 		String codigoLoterica = getString(R.string.codigo_loteria) +" "+ bolao.getLotericaFormatada().getNumeroFormatado();
-		String cidadeUfLoterica = bolao.getMunicipio().getNome() + " - " + bolao.getMunicipio().getUf().getSigla();
+		String cidadeUfLoterica = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome()) + " - " + bolao.getMunicipio().getUf().getSigla();
 		String valorCota =  "Valor da Cota: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaSemTarifa());
 		String valorTarifa = "Tarifa de Serviço: " + ViewUtils.getMoedaFormat(bolao.getVrTarifaServicoUltimaCota());
 		String valorTotal = "Total: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaComTarifa());
@@ -376,6 +321,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		tvValorTarifa.setText(valorTarifa);
 		tvValorTotal.setText(valorTotal);
 		btnAdd.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.adicionarAoCarrinho)));
+		atualizaLabelFavoritar();
 		ViewUtils.setMoedaFormatHtml(getValorApostaBolao(), tvValorCotaBtn);
 
 		if (bolao.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && bolao.getApostas() != null
@@ -421,6 +367,14 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 				listaJogos.setAdapter(listaAdapter);
 				listaJogos.setLayoutManager(new LinearLayoutManager(DetalhesBolaoActivity.this));
 			}
+		}
+	}
+
+	private void atualizaLabelFavoritar(){
+		if(isLotericaFavorita){
+			tvFavoritar.setText(R.string.loterica_favorita);
+		} else {
+			tvFavoritar.setText(R.string.favoritar_loterica);
 		}
 	}
 

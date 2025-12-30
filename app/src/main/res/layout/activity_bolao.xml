@@ -110,7 +110,7 @@
             <com.yarolegovich.discretescrollview.DiscreteScrollView
                 android:id="@+id/bolao_carousel"
                 android:layout_width="wrap_content"
-                android:layout_height="535dp"
+                android:layout_height="428dp"
                 android:layout_marginTop="16dp"
                 app:dsv_orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"

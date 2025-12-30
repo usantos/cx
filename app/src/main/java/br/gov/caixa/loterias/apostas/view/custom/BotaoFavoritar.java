@@ -43,9 +43,6 @@ public class BotaoFavoritar extends AppCompatImageView {
 
     private void alteraEstadoFavoritar(){
 
-        isSelected = !isSelected;
-        super.setSelected(isSelected);
-
         if(listener != null){
             listener.onFavoritarStateChange(isSelected);
         }

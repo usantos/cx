@@ -474,18 +474,27 @@ public class ViewUtils {
                 .create();
 
         dialog.setOnShowListener(dialogInterface -> {
-            // Cor do título
+
             int corTitulo = ContextCompat.getColor(context, R.color.blue_caixa);
-            // Cor do texto da mensagem
             int corMensagem = ContextCompat.getColor(context, R.color.cinza110);
 
-            // Aplica as cores nos botões
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(corTitulo);
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(corMensagem);
 
-            //aplicar fonte personalizada nos botões
-//            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(getFontCaixaStdBold(context));
-//            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTypeface(getFontCaixaStdRegular(context));
+            final TextView btnPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            final TextView btnNegative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+            // Garantir texto em letras capitalizadas (desativar ALL CAPS do AppCompat)
+            if (btnPositive != null) {
+                btnPositive.setAllCaps(false);
+                btnPositive.setText(StringUtils.capitalizerNovo(positiveButton));
+                btnPositive.setTextColor(corTitulo);
+                // btnPositive.setTypeface(getFontCaixaStdBold(context));
+            }
+            if (btnNegative != null) {
+                btnNegative.setAllCaps(false);
+                btnNegative.setText(StringUtils.capitalizerNovo(negativeButton));
+                btnNegative.setTextColor(corMensagem);
+                // btnNegative.setTypeface(getFontCaixaStdRegular(context));
+            }
         });
 
         return dialog;

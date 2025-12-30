@@ -1,11 +1,8 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
-import android.app.Dialog;
 import android.widget.*;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-
-import static br.gov.caixa.loterias.apostas.model.bo.BaseBO.transformaErroEmErrorResponse;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
@@ -22,7 +19,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
@@ -52,6 +48,7 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.FavoritarLotericaHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrosselBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
@@ -570,8 +567,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 			}
 
 			@Override
-			public void onFavoritarClick(int position, boolean isFavoritado) {
-				favoritar(carrosselList.get(position), isFavoritado);
+			public void onFavoritarClick(int position) {
+				favoritar(carrosselList.get(position));
 			}
 		};
 	}
@@ -624,106 +621,40 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 				aumentaQuatidade(bolaoList, position, holder);
 			}
 			@Override
-			public void onFavoritarClick(int position, boolean isFavoritado) {
-				favoritar(bolaoList.get(position), isFavoritado);
+			public void onFavoritarClick(int position) {
+				favoritar(bolaoList.get(position));
 			}
 		};
 	}
 
-	private void favoritar(CotasBolaoDTO bolao, boolean isFavoritado) {
-
+	private void favoritar(CotasBolaoDTO bolao) {
 		Long lotericaId = bolao.getLoterica();
+		boolean estadoAtual = bolao.isLotericaFavorita();
 
-		boolean estadoAnterior = bolao.isLotericaFavorita();
-
-		String mensagem = "";
-
-		if(isFavoritado) {
-			mensagem = "Deseja incluir " + bolao.getNomeFantasia() + " na sua lista de favoritas?";
-
-		}else {
-			mensagem = "Deseja excluir " + bolao.getNomeFantasia() + " da sua lista de favoritas?";
-
-		}
-		abrePopupConfirmacaoLotericasFavoritas(mensagem, lotericaId, estadoAnterior);
-	}
-
-
-	private void abrePopupConfirmacaoLotericasFavoritas(String mensagem, Long lotericaId, boolean estadoAnterior) {
-
-		Dialog dialogConfirmacao = ViewUtils.alertTitleNewPositiveNegativeListener(
+		FavoritarLotericaHelper.confirmar(
 				this,
-				getString(R.string.label_atencao),
-				getString(R.string.cancelar),
-				getString(R.string.confirmar),
-				mensagem,
-				(dialog, which) ->{
-					AlertDialogUtils.show(this);
-					if(estadoAnterior){
-						//Atualiza imediatamente o estado do favorito na lista
-						model.excluirLotericaFavorita(lotericaId, excluirfavoritaListener(lotericaId, estadoAnterior));
-					}else{
-						model.incluirLotericaFavorita(lotericaId, incluirfavoritaListener(lotericaId, estadoAnterior));
+				lotericaId,
+				bolao.getNomeFantasia(),
+				estadoAtual,
+				new FavoritarLotericaHelper.Acoes() {
+					@Override
+					public void incluir(Long id, OnSilceListener<RetornoPadraoResponse> listener) {
+						model.incluirLotericaFavorita(id, listener);
 					}
-					atualizaFavoritoTodasListas(lotericaId, !estadoAnterior);
+					@Override
+					public void excluir(Long id, OnSilceListener<RetornoPadraoResponse> listener) {
+						model.excluirLotericaFavorita(id, listener);
+					}
 				},
-				(dialog, which) -> {
-					dialog.dismiss();
-					AlertDialogUtils.show(this);
-					atualizaFavoritoTodasListas(lotericaId, estadoAnterior);
+				novoEstado -> {
+					// Atualiza todas as listas após sucesso
+					atualizaFavoritoTodasListas(lotericaId, novoEstado);
+					if(novoEstado){
+						btnLotericasFavoritas.performClick();
+					}
+
 				}
 		);
-		dialogConfirmacao.show();
-	}
-
-	private OnSilceListener<RetornoPadraoResponse> incluirfavoritaListener(Long lotericaId, boolean estadoAnterior) {
-		return new OnSilceListener<RetornoPadraoResponse>() {
-			@Override
-			public void success(RetornoPadraoResponse payload) {
-				//Sucesso na alteração do favorito, nada a fazer pois o estado já foi atualizado
-				AlertDialogUtils.dismiss();
-				btnLotericasFavoritas.performClick();
-			}
-
-			@Override
-			public void error(VolleyError error) {
-				AlertDialogUtils.dismiss();
-				try{
-					ErrorResponse errorResponse =transformaErroEmErrorResponse(error);
-					if(errorResponse.getCodigo().equals("002024")){
-						ViewUtils.alertEntendiCustom(BolaoActivity.this, errorResponse.getMensagem());
-					}else{
-						ViewUtils.alertTitleButton(BolaoActivity.this, R.string.label_atencao, getResources().getString(R.string.nao_concluiu_operacao),
-								"Ok", dialogInterface -> {});
-
-					};
-
-				}catch (Exception e){
-					e.printStackTrace();
-				}
-				atualizaFavoritoTodasListas(lotericaId, estadoAnterior);
-			}
-		};
-	}
-
-
-	private OnSilceListener<RetornoPadraoResponse> excluirfavoritaListener(Long lotericaId, boolean estadoAnterior) {
-		return new OnSilceListener<RetornoPadraoResponse>() {
-			@Override
-			public void success(RetornoPadraoResponse payload) {
-				//Sucesso na alteração do favorito, nada a fazer pois o estado já foi atualizado
-				AlertDialogUtils.dismiss();
-			}
-
-			@Override
-			public void error(VolleyError error) {
-				//Reverte o estado do favorito em caso de erro
-				ViewUtils.alertTitleButton(BolaoActivity.this, R.string.label_atencao, getResources().getString(R.string.nao_concluiu_operacao),
-						"Ok", dialogInterface -> {});
-				atualizaFavoritoTodasListas(lotericaId, estadoAnterior);
-				AlertDialogUtils.dismiss();
-			}
-		};
 	}
 
 	private void atualizaFavoritoTodasListas(Long lotericaId, boolean isFavorita) {
