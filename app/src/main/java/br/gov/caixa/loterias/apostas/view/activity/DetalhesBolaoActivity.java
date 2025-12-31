@@ -306,6 +306,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 
 	private void preencheDados() {
 
+		if (bolao == null) return;
 		String codigoLoterica = getString(R.string.codigo_loteria) +" "+ bolao.getLotericaFormatada().getNumeroFormatado();
 		String cidadeUfLoterica = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome()) + " - " + bolao.getMunicipio().getUf().getSigla();
 		String valorCota =  "Valor da Cota: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaSemTarifa());
