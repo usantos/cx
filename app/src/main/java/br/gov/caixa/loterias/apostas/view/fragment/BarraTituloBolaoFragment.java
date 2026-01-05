@@ -136,7 +136,12 @@ public class BarraTituloBolaoFragment extends Fragment {
 
     private void preencheDados() {
         if (isEspecial){
-            tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+            if(modalidade.equals(ModalidadeEnum.LOTOFACIL)) {
+                tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+            } else{
+                tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
+            }
+
         } else {
             tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
         }
