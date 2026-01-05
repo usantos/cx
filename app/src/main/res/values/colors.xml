@@ -229,6 +229,8 @@
     <color name="cor_bola_unselected">#ADC0C4</color>
     <color name="cotas_boloes">#373E4A</color>
     <color name="azul_detalhe_aposta">#4FA7B2</color>
+    <color name="bolao_azul_filtro">#005CA9</color>
+    <color name="bolao_branco_hight_light">#E5F2FC</color>
 
     <!-- Instantanea -->
     <color name="instantanea_claro">#00BBE6</color>

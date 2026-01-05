@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.queryparam.FiltroMarketPlace;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -121,4 +122,34 @@ public class BolaoRepository extends AppRepository {
                     }
                 });
     }
+
+    public void incluirLotericaFavorita(Long idLoterica, OnSilceListener<RetornoPadraoResponse> listener) {
+        ApostaSilceBO.getInstance().incluirLotericaFavorita(idLoterica, new RequestListener<RetornoPadraoResponse>() {
+            @Override
+            public void onResponse(RetornoPadraoResponse response) {
+                listener.success(response);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.error(error);
+            }
+        });
+    }
+
+    public void excluirLotericaFavorita(Long idLoterica, OnSilceListener<RetornoPadraoResponse> listener) {
+        ApostaSilceBO.getInstance().excluirLotericaFavorita(idLoterica, new RequestListener<RetornoPadraoResponse>() {
+
+            @Override
+            public void onResponse(RetornoPadraoResponse response) {
+                listener.success(response);
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.error(error);
+            }
+        });
+    }
+
 }

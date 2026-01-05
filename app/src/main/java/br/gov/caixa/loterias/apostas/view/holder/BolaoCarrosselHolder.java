@@ -3,9 +3,14 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.app.Activity;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,12 +21,15 @@ import androidx.core.content.ContextCompat;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.custom.BotaoFavoritar;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnViewAumentaDiminuiQuantidade;
 
@@ -32,10 +40,7 @@ import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implements View.OnClickListener, OnViewAumentaDiminuiQuantidade {
 	private Activity activity;
 	private static final int QUANTIDADE_MINIMA = 1;
-	private TextView modalidade;
-	private TextView valorPremio;
-	private TextView concurso;
-	private TextView loterica;
+	private TextView lotericaNome, lotericaCidade;
 	private TextView textQtdDezenas;
 	private TextView textQtdCotas;
 	private TextView valorCota;
@@ -44,23 +49,46 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private Button btnDiminui;
 	private Button btnAumenta;
 	private Button btnAddCarrinho;
-	private RelativeLayout trapezio;
-	private ConstraintLayout cabecalho;
+	private ConstraintLayout cabecalho, cabecalhoFiltrado;
 	private View linhaNumero;
-	private ImageView icTrevoBolao, headerEspeciais;
-
+	private FrameLayout circuloFavoritar;
 	private EstiloModalidadeMKP estilo;
-
+	private BotaoFavoritar botaoFavoritar;
 	private OnItemCarrosselBolaoListener listener;
+	private FiltroAplicadoMarketplace filtro;
+	private TextView modalidade;
+	private TextView valorPremio;
+	private TextView concurso;
+	private TextView loterica;
+	private RelativeLayout trapezio;
+	private ImageView icTrevoBolao, headerEspeciais;
+	private LinearLayout layoutLoerica, layoutPremio;
 
 
-	public BolaoCarrosselHolder(Activity activity, View itemView, OnItemCarrosselBolaoListener listener) {
+
+	public BolaoCarrosselHolder(Activity activity, View itemView, OnItemCarrosselBolaoListener listener, FiltroAplicadoMarketplace filtro) {
 		super(itemView);
 		this.activity 	= activity;
+		this.filtro = filtro;
+
+		cabecalho		  = itemView.findViewById(R.id.cabecalho_bolao);
+		cabecalhoFiltrado = itemView.findViewById(R.id.cabecalho_bolao_filtrado);
+
+		layoutLoerica = itemView.findViewById(R.id.layoutLoterica);
+		layoutPremio = itemView.findViewById(R.id.layoutPremio);
+
 		modalidade 		= itemView.findViewById(R.id.textViewCardBolaoTitle);
 		valorPremio 	= itemView.findViewById(R.id.valor_estimado_premio);
 		concurso 		= itemView.findViewById(R.id.descricao_numero_concurso);
 		loterica 		= itemView.findViewById(R.id.loterica_cidade_uf);
+		trapezio		= itemView.findViewById(R.id.layout_trevo);
+		headerEspeciais = itemView.findViewById(R.id.header_especiais_bolao);
+		icTrevoBolao	= itemView.findViewById(R.id.trevoImagem);
+
+		lotericaNome	= itemView.findViewById(R.id.loterica_nome);
+		lotericaCidade = itemView.findViewById(R.id.loterica_uf);
+		circuloFavoritar = itemView.findViewById(R.id.layoutFavoritarCabecalho);
+		botaoFavoritar = itemView.findViewById(R.id.btn_favoritar_mkp);
 		textQtdDezenas	= itemView.findViewById(R.id.descricao_qtd_dezenas);
 		textQtdCotas	= itemView.findViewById(R.id.descricao_qtd_cotas_disponiveis);
 		valorCota 		= itemView.findViewById(R.id.valor_cota);
@@ -69,10 +97,6 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		btnAumenta 		= itemView.findViewById(R.id.aumenta_cota);
 		qtdCotas 		= itemView.findViewById(R.id.quantidade_cotas);
 		btnAddCarrinho 	= itemView.findViewById(R.id.btn_add_carrinho);
-		trapezio		= itemView.findViewById(R.id.layout_trevo);
-		headerEspeciais = itemView.findViewById(R.id.header_especiais_bolao);
-		icTrevoBolao	= itemView.findViewById(R.id.trevoImagem);
-		cabecalho		= itemView.findViewById(R.id.cabecalho_bolao);
 		linhaNumero		= itemView.findViewById(R.id.linha_numero);
 
 		this.listener = listener;
@@ -86,10 +110,15 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	public void bind(CotasBolaoDTO bolao, int position) {
 		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
 		aplicaEstilo();
-		preencheCabecalho(bolao);
 		preencheConteudo(bolao);
 		atualizaQuantidadeTextView(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		btnAddCarrinho.setText(FonteUtils.textCaixaSTDBold(activity,activity.getResources().getString(R.string.adicionarAoCarrinho)));
+
+		botaoFavoritar.setOnStateChangeListener(isFavoritado -> {
+			if(listener != null){
+				listener.onFavoritarClick(position);
+			}
+		});
 	}
 
 	private void aplicaEstilo() {
@@ -98,11 +127,18 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
 		int corFonteFundoClaro = ContextCompat.getColor(activity, estilo.getCorFonteFundoClaro());
 		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
-		trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
-		icTrevoBolao.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
-		cabecalho.setBackgroundColor(corClara);
-		modalidade.setTextColor(corFonteFundoClaro);
-		valorPremio.setTextColor(corLetraLista);
+
+		if (isFiltradoLoterica()) {
+			cabecalhoFiltrado.setBackgroundColor(corClara);
+			trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
+			icTrevoBolao.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+			modalidade.setTextColor(corFonteFundoClaro);
+			valorPremio.setTextColor(corLetraLista);
+			concurso.setTextColor(corLetraLista);
+		} else {
+			cabecalho.setBackground(VectorUtils.getShape(R.drawable.rounded_card_cabecalho_bolao, estilo.getCorClara()));
+		}
+
 		btnDetalhes.setTextColor(corLetraLista);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);
@@ -112,23 +148,57 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		btnAddCarrinho.setBackground(VectorUtils.getShape(R.drawable.rounded_card, estilo.getCorEscura()));
 		btnAddCarrinho.setTextColor(corFonteFundoEscuro);
 		linhaNumero.setBackgroundColor(corEscura);
+		textQtdCotas.setTextColor(ContextCompat.getColor(activity, R.color.cinza90));
+		textQtdDezenas.setTextColor(ContextCompat.getColor(activity, R.color.cinza90));
+
+		preencheCorCirculoFavoritar(corClara);
+
 	}
 
 	private void preencheConteudo(CotasBolaoDTO bolao) {
-		valorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
-		concurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
-														   itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold, bolao.getConcurso())));
-		loterica.setText(bolao.getNomeFantasia()+ "\n" + bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
 
-		textQtdDezenas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
+		String cidadeUf = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome()) + " - " + bolao.getUf().getSigla();
+
+		if (isFiltradoLoterica()) {
+			cabecalho.setVisibility(View.GONE);
+			cabecalhoFiltrado.setVisibility(View.VISIBLE);
+			lotericaNome.setVisibility(View.GONE);
+			lotericaCidade.setVisibility(View.GONE);
+			layoutLoerica.setVisibility(View.GONE);
+			layoutPremio.setVisibility(View.VISIBLE);
+
+			if (isEspecial(bolao.getTipoConcurso())){
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
+			} else {
+				modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
+			}
+
+			valorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
+			concurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
+					itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero, bolao.getConcurso())));
+
+		} else {
+			cabecalho.setVisibility(View.VISIBLE);
+			cabecalhoFiltrado.setVisibility(View.GONE);
+			lotericaNome.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
+			lotericaCidade.setText(cidadeUf);
+		}
+
+		botaoFavoritar.setState(bolao.isLotericaFavorita());
+
+		textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
 				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
 						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
-						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros())));
+						getApostasDeDezenas(bolao.getQtdApostas(), bolao.getQtdNumeros()), 18, 16));
 
-		textQtdCotas.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
-								getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal())));
+		textQtdCotas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
+								getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18));
 
 		atualizaValorTotal(bolao);
+	}
+
+	private boolean isFiltradoLoterica() {
+		return (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null);
 	}
 
 	@NonNull
@@ -137,38 +207,6 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		BigDecimal valor = bolao.getVrUltimaCotaComTarifa().add(BigDecimal.valueOf(bolao.getVrCotaComTarifa().doubleValue() * qtdApostas));
 
 		return ViewUtils.getMoedaFormat(valor);
-	}
-
-	private void preencheCabecalho(CotasBolaoDTO bolao) {
-		if (isEspecial(bolao.getTipoConcurso())){
-			headerEspeciais.setVisibility(View.VISIBLE);
-			trapezio.setVisibility(View.INVISIBLE);
-			icTrevoBolao.setVisibility(View.GONE);
-			switch (bolao.getModalidade()){
-				case MEGA_SENA:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
-					break;
-				case DUPLA_SENA:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.dupla_pascoa));
-					break;
-				case LOTOFACIL:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
-					break;
-				case QUINA:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.quina_sao_joao_novo));
-					break;
-			}
-			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
-				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
-			} else {
-				modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
-			}
-		} else {
-			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
-			headerEspeciais.setVisibility(View.GONE);
-			trapezio.setVisibility(View.VISIBLE);
-			icTrevoBolao.setVisibility(View.VISIBLE);
-		}
 	}
 
 	private boolean isEspecial(int tipoConcurso){
@@ -225,5 +263,25 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	private ColorStateList getCor(int cor) {
 		return ContextCompat.getColorStateList(activity, cor);
+	}
+
+	private void preencheCorCirculoFavoritar(int cor){
+		if(circuloFavoritar != null){
+			Drawable drawable = ContextCompat.getDrawable(activity, R.drawable.shape_circulo).mutate();
+
+			if(drawable instanceof GradientDrawable){
+				GradientDrawable gradientDrawable = (GradientDrawable) drawable;
+
+				int strokeWidth = (int) TypedValue.applyDimension(
+						TypedValue.COMPLEX_UNIT_DIP,
+						3,
+						activity.getResources().getDisplayMetrics()
+				);
+
+				gradientDrawable.setStroke(strokeWidth, cor);
+				circuloFavoritar.setBackground(gradientDrawable);
+			}
+
+		}
 	}
 }

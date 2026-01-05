@@ -460,6 +460,51 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static AlertDialog alertTitleNewPositiveNegativeListener(Context context, String titulo, String negativeButton,
+                                                       String positiveButton, String mensagem,
+                                                       DialogInterface.OnClickListener positiveListener,
+                                                       DialogInterface.OnClickListener negativeListener) {
+
+        TextView messageView = new TextView(context);
+        messageView.setText(mensagem);
+        messageView.setTypeface(getFontCaixaStdRegular(context));
+        messageView.setPadding(50, 50, 50, 50);
+
+        AlertDialog dialog = new AlertDialog.Builder(context, R.style.MyAlertDialogStyleNew)
+                .setTitle(titulo)
+                .setView(messageView)
+                .setPositiveButton(StringUtils.capitalizerNovo(positiveButton), positiveListener)
+                .setNegativeButton(StringUtils.capitalizerNovo(negativeButton), negativeListener)
+                .create();
+
+        dialog.setOnShowListener(dialogInterface -> {
+
+            int corTitulo = ContextCompat.getColor(context, R.color.blue_caixa);
+            int corMensagem = ContextCompat.getColor(context, R.color.cinza110);
+
+
+            final TextView btnPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            final TextView btnNegative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+            // Garantir texto em letras capitalizadas (desativar ALL CAPS do AppCompat)
+            if (btnPositive != null) {
+                btnPositive.setAllCaps(false);
+                btnPositive.setText(StringUtils.capitalizerNovo(positiveButton));
+                btnPositive.setTextColor(corTitulo);
+                // btnPositive.setTypeface(getFontCaixaStdBold(context));
+            }
+            if (btnNegative != null) {
+                btnNegative.setAllCaps(false);
+                btnNegative.setText(StringUtils.capitalizerNovo(negativeButton));
+                btnNegative.setTextColor(corMensagem);
+                // btnNegative.setTypeface(getFontCaixaStdRegular(context));
+            }
+        });
+
+        return dialog;
+    }
+
+
     public static Dialog alertCustomDismiss(
             Context context,
             int labelTitle,
@@ -557,6 +602,23 @@ public class ViewUtils {
                 R.string.label_atencao,
                 R.layout.dialog_alert_new_info,
                 context.getString(R.string.o_valor_inclui_a_parcela_correspondente_ao_imposto_de_renda_sobre_os_pr_mios)
+        );
+
+        dialog.show();
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+
+        return dialog;
+    }
+
+    public static Dialog alertEntendiCustom(Context context, String mensagem){
+        AlertDialog dialog = ViewUtils.dialogoNewEntendi(
+                context,
+                R.string.label_atencao,
+                R.layout.dialog_alert_new,
+                mensagem
         );
 
         dialog.show();
@@ -775,6 +837,34 @@ public class ViewUtils {
             return spannableStringBuilder;
         }catch (Exception e){
             return  new SpannableStringBuilder().append(texto);
+        }
+    }
+
+
+    public static SpannableStringBuilder infoPrognosticosMkp(Context context, String texto, int tamanhoFonteSemiBold, int tamanhoFonteRegular) {
+        try {
+            Typeface fonteRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface fonteSemiBold = FonteUtils.getFonte(FontCaixaEnum.SEMI_BOLD);
+
+            // Remove os underlines do texto exibido
+            String textoSemUnderscore = texto.replace("_", "");
+            SpannableStringBuilder ssb = new SpannableStringBuilder(textoSemUnderscore);
+
+            // Aplica fonte e tamanho REGULAR para todo o texto
+            ssb.setSpan(new CustomTypefaceSpan("", fonteRegular), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            ssb.setSpan(new AbsoluteSizeSpan(tamanhoFonteRegular, true), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+            // Calcula as posições dos trechos entre "_" no texto original
+            List<PositionStringBold> ranges = listPositionString(texto);
+
+            // Aplica BOLD e tamanho nos intervalos calculados
+            for (PositionStringBold range : ranges) {
+                ssb.setSpan(new CustomTypefaceSpan("", fonteSemiBold), range.getStart(), range.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                ssb.setSpan(new AbsoluteSizeSpan(tamanhoFonteSemiBold, true), range.getStart(), range.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            }
+            return ssb;
+        } catch (Exception e) {
+            return new SpannableStringBuilder().append(texto.replace("_", ""));
         }
     }
 

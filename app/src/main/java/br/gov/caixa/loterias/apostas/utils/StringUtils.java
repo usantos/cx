@@ -25,6 +25,42 @@ public class StringUtils {
         return stringBuilder.toString();
     }
 
+    public static String capitalizerNovo(String texto){
+        // Palavras que não devem ser capitalizadas (exceto se forem a primeira palavra)
+        String[] palavrasMinusculas = {"de", "da", "do", "das", "dos", "a", "o", "as", "os",
+                "e", "em", "no", "na", "nos", "nas", "por", "para"};
+
+        texto = texto.toLowerCase(new Locale("pt", "BR"));
+        StringBuilder stringBuilder = new StringBuilder();
+        String[] palavras = texto.split(" ");
+
+        for(int i = 0; i < palavras.length; i++){
+            String palavra = palavras[i];
+            boolean deveCapitalizar = true;
+
+            // Não capitaliza palavras da lista, exceto se for a primeira palavra
+            if(i > 0){
+                for(String palavraMinuscula : palavrasMinusculas){
+                    if(palavra.equals(palavraMinuscula)){
+                        deveCapitalizar = false;
+                        break;
+                    }
+                }
+            }
+
+            if(deveCapitalizar && !palavra.isEmpty()){
+                palavra = palavra.substring(0, 1).toUpperCase() + palavra.substring(1);
+            }
+
+            stringBuilder.append(palavra);
+            if(i < palavras.length - 1){
+                stringBuilder.append(" ");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+
     public static String formatDouble(Double valor){
         return String.format("%.2f", valor);
     }
