@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -46,17 +49,42 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private Button btnDiminui;
 	private Button btnAumenta;
 	private Button btnAddCarrinho;
-	private ConstraintLayout cabecalho;
+	private ConstraintLayout cabecalho, cabecalhoFiltrado;
 	private View linhaNumero;
 	private FrameLayout circuloFavoritar;
 	private EstiloModalidadeMKP estilo;
 	private BotaoFavoritar botaoFavoritar;
 	private OnItemCarrosselBolaoListener listener;
+	private FiltroAplicadoMarketplace filtro;
+	private TextView modalidade;
+	private TextView valorPremio;
+	private TextView concurso;
+	private TextView loterica;
+	private RelativeLayout trapezio;
+	private ImageView icTrevoBolao, headerEspeciais;
+	private LinearLayout layoutLoerica, layoutPremio;
 
 
-	public BolaoCarrosselHolder(Activity activity, View itemView, OnItemCarrosselBolaoListener listener) {
+
+	public BolaoCarrosselHolder(Activity activity, View itemView, OnItemCarrosselBolaoListener listener, FiltroAplicadoMarketplace filtro) {
 		super(itemView);
 		this.activity 	= activity;
+		this.filtro = filtro;
+
+		cabecalho		  = itemView.findViewById(R.id.cabecalho_bolao);
+		cabecalhoFiltrado = itemView.findViewById(R.id.cabecalho_bolao_filtrado);
+
+		layoutLoerica = itemView.findViewById(R.id.layoutLoterica);
+		layoutPremio = itemView.findViewById(R.id.layoutPremio);
+
+		modalidade 		= itemView.findViewById(R.id.textViewCardBolaoTitle);
+		valorPremio 	= itemView.findViewById(R.id.valor_estimado_premio);
+		concurso 		= itemView.findViewById(R.id.descricao_numero_concurso);
+		loterica 		= itemView.findViewById(R.id.loterica_cidade_uf);
+		trapezio		= itemView.findViewById(R.id.layout_trevo);
+		headerEspeciais = itemView.findViewById(R.id.header_especiais_bolao);
+		icTrevoBolao	= itemView.findViewById(R.id.trevoImagem);
+
 		lotericaNome	= itemView.findViewById(R.id.loterica_nome);
 		lotericaCidade = itemView.findViewById(R.id.loterica_uf);
 		circuloFavoritar = itemView.findViewById(R.id.layoutFavoritarCabecalho);
@@ -69,7 +97,6 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		btnAumenta 		= itemView.findViewById(R.id.aumenta_cota);
 		qtdCotas 		= itemView.findViewById(R.id.quantidade_cotas);
 		btnAddCarrinho 	= itemView.findViewById(R.id.btn_add_carrinho);
-		cabecalho		= itemView.findViewById(R.id.cabecalho_bolao);
 		linhaNumero		= itemView.findViewById(R.id.linha_numero);
 
 		this.listener = listener;
@@ -98,8 +125,20 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		int corClara = ContextCompat.getColor(activity, estilo.getCorClara());
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
 		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
+		int corFonteFundoClaro = ContextCompat.getColor(activity, estilo.getCorFonteFundoClaro());
 		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
-		cabecalho.setBackground(VectorUtils.getShape(R.drawable.rounded_card_cabecalho_bolao, estilo.getCorClara()));
+
+		if (isFiltradoLoterica()) {
+			cabecalhoFiltrado.setBackgroundColor(corClara);
+			trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
+			icTrevoBolao.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+			modalidade.setTextColor(corFonteFundoClaro);
+			valorPremio.setTextColor(corLetraLista);
+			concurso.setTextColor(corLetraLista);
+		} else {
+			cabecalho.setBackground(VectorUtils.getShape(R.drawable.rounded_card_cabecalho_bolao, estilo.getCorClara()));
+		}
+
 		btnDetalhes.setTextColor(corLetraLista);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);
@@ -120,9 +159,33 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 		String cidadeUf = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome()) + " - " + bolao.getUf().getSigla();
 
+		if (isFiltradoLoterica()) {
+			cabecalho.setVisibility(View.GONE);
+			cabecalhoFiltrado.setVisibility(View.VISIBLE);
+			lotericaNome.setVisibility(View.GONE);
+			lotericaCidade.setVisibility(View.GONE);
+			layoutLoerica.setVisibility(View.GONE);
+			layoutPremio.setVisibility(View.VISIBLE);
+
+			if (isEspecial(bolao.getTipoConcurso())){
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
+			} else {
+				modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
+			}
+
+			valorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
+			concurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(),
+					itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero, bolao.getConcurso())));
+
+		} else {
+			cabecalho.setVisibility(View.VISIBLE);
+			cabecalhoFiltrado.setVisibility(View.GONE);
+			lotericaNome.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
+			lotericaCidade.setText(cidadeUf);
+		}
+
 		botaoFavoritar.setState(bolao.isLotericaFavorita());
-		lotericaNome.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
-		lotericaCidade.setText(cidadeUf);
+
 		textQtdDezenas.setText(ViewUtils.infoPrognosticosMkp(itemView.getContext(),
 				bolao.getModalidade().equals(ModalidadeEnum.LOTECA) ?
 						getApostasDePalpites(bolao.getQtdApostas(), bolao.getQtdNumeros()) :
@@ -132,6 +195,10 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 								getCotaDeTotal(bolao.getQtdCotaDisponivel(), bolao.getQtdCotaTotal()), 18, 18));
 
 		atualizaValorTotal(bolao);
+	}
+
+	private boolean isFiltradoLoterica() {
+		return (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null);
 	}
 
 	@NonNull

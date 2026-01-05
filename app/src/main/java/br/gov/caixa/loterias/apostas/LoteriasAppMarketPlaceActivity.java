@@ -9,10 +9,12 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import br.gov.caixa.loterias.apostas.controllers.FiltraMarketplaceActivity;
+import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.view.activity.BolaoActivity;
@@ -31,6 +33,12 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 
 	public void configFiltrar(ActivityResultLauncher<Intent> launcher, FiltroAplicadoMarketplace filtro) {
         ImageView btnFiltrar = findViewById(R.id.icone_filtrar);
+		if (filtro == null) {
+			btnFiltrar.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.botao_filtro_mkp));
+		} else {
+			btnFiltrar.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.botao_filtro_selecionado_mkp));
+		}
+
 		if (btnFiltrar != null){
 			btnFiltrar.setOnClickListener(onFiltrarListener(launcher, filtro));
 		}

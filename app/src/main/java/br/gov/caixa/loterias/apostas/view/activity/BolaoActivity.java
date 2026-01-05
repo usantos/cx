@@ -1,8 +1,11 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
+import android.app.Dialog;
 import android.widget.*;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+
+import static br.gov.caixa.loterias.apostas.model.bo.BaseBO.transformaErroEmErrorResponse;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
@@ -19,7 +22,9 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -51,6 +56,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.FavoritarLotericaHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrosselBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
+import br.gov.caixa.loterias.apostas.view.fragment.BarraTituloFiltroLotericaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoCarrosselHolder;
@@ -109,7 +115,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 	private ConstraintLayout layoutBoloes, layoutLotericasFavoritas;
 
 	private ParametroJogoDTO parametroJogo;
-
+	private BarraTituloFiltroLotericaFragment fragBarraTituloFiltroLoterica;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +185,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		model = new BolaoModel(this);
 
 		fragmentSomadorCarrinho();
+		fragmentRegistraRetorno();
 
 		AlertDialogUtils.show(this);
 		model.buscaDadosUsuario(onBuscaDadosUsuarios());
@@ -198,18 +205,28 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		if (parametroJogo == null || parametroJogo.getConcurso() == null || parametroJogo.getConcurso().getNumero() == null) {
 			return;
 		}
-		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
-		boolean isEspecial = tipoConcurso == TipoConcursoEnum.ESPECIAL;
-		FragmentUtils.startFragmentBarraTituloBolao(
-				getSupportFragmentManager(),
-				R.id.barra_titulo_mkp,
-				modalidade,
-				parametroJogo.getConcurso().getNumero().toString(),
-				getDataSorteio(),
-				parametroJogo.getConcurso().getEstimativa(),
-				isEspecial,
-				estilo.getCorClara(),
-				estilo.getCorEscura());
+		if (isFiltradoLoterica()) {
+			fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, cotasDisponiveis.get(0).isLotericaFavorita());
+			selectFiltroLoterica();
+		} else {
+			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+			boolean isEspecial = tipoConcurso == TipoConcursoEnum.ESPECIAL;
+			FragmentUtils.startFragmentBarraTituloBolao(
+					getSupportFragmentManager(),
+					R.id.barra_titulo_mkp,
+					modalidade,
+					parametroJogo.getConcurso().getNumero().toString(),
+					getDataSorteio(),
+					parametroJogo.getConcurso().getEstimativa(),
+					isEspecial,
+					estilo.getCorClara(),
+					estilo.getCorEscura());
+			unSelectFiltroLoterica();
+		}
+	}
+
+	private boolean isFiltradoLoterica() {
+		return (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null);
 	}
 
 	private String getDataSorteio() {
@@ -251,6 +268,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 	private void unSelectLotericasFavoritas() {
 		btnLotericasFavoritas.setChecked(Boolean.FALSE);
 		layoutLotericasFavoritas.setVisibility(GONE);
+	}
+
+	private void selectFiltroLoterica() {
+		btnBoloes.setText(R.string.label_boloes_loterica);
+	}
+	private void unSelectFiltroLoterica() {
+		btnBoloes.setText(R.string.label_boloes);
 	}
 
 
@@ -476,7 +500,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		carrosselList = model.getCarrosselList(cotas);
 		itensCardslVisiveis = carrosselList.size();
 		setupPaginacaoCarrossel();
-		carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener());
+		carrosselAdapter = new CarrosselBolaoAdapter(BolaoActivity.this, carrosselList, onCarrosselItemListener(), filtro);
 		carrosselView.setAdapter(carrosselAdapter);
 		carrosselView.setItemTransformer(new ScaleTransformer.Builder()
 				.setMinScale(0.8f)
@@ -484,13 +508,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
 		if (listAdapter == null){
 			bolaoList = model.getBolaoList(cotas);
-			listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this);
+			listAdapter = new ListaBolaoAdapter(bolaoList, onItemBolaoListener(), BolaoActivity.this, filtro);
 			listView.setAdapter(listAdapter);
 		} else {
 			int inicioRange = bolaoList.size();
 			bolaoList = model.getBolaoList(cotas);
 			if (inicioRange < bolaoList.size()){
-				listAdapter.atualizaLista(inicioRange, bolaoList.subList(inicioRange, bolaoList.size()));
+				listAdapter.atualizaLista(inicioRange, bolaoList.subList(inicioRange, bolaoList.size()), filtro);
 			}
 		}
 
@@ -534,6 +558,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 					if (filtro != null) {
 						isFiltrando = true;
 						configFiltrar(launcherFiltro, filtro);
+						if (filtro.getModalidade() != null) {
+							idModalidade = ModalidadeEnum.fromStringToIdModalidade(filtro.getModalidade());
+							tipoConcurso = TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso());
+						}
 					}
 				}
 				AlertDialogUtils.show(BolaoActivity.this);
@@ -589,6 +617,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 			public void aumenta(BolaoCarrosselHolder holder, int position) {
 				aumentaQuatidade(carrosselList, position, holder);
 			}
+
 			@Override
 			public void onFavoritarClick(int position) {
 				if(carrosselList !=null && position >=0 && position < carrosselList.size()){
@@ -713,6 +742,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		if (listAdapter != null) {
 			listAdapter.notifyDataSetChanged();
 		}
+		if (fragBarraTituloFiltroLoterica != null) {
+			fragBarraTituloFiltroLoterica.setFavoritar(isFavorita);
+		}
 		AlertDialogUtils.dismiss();
 	}
 
@@ -741,5 +773,24 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 	@Override
 	public void compraSucesso(Intent intent) {
 		IntentUtil.startActivityForResult(launcherAddCarrinho, intent);
+	}
+
+
+	private void fragmentRegistraRetorno() {
+		getSupportFragmentManager().setFragmentResultListener(
+				"favoritar_result",
+				this,
+				(requestKey, result) -> {
+					boolean isFavoritado = result.getBoolean("favoritado");
+					LotericaDTO lotericaDTO = (LotericaDTO) result.getSerializable("lotericaDTO");
+
+					CotasBolaoDTO bolao = new CotasBolaoDTO();
+					bolao.setLoterica(lotericaDTO.getId());
+					bolao.setNomeFantasia(lotericaDTO.getNomeFantasia().trim());
+					bolao.setLotericaFavorita(cotasDisponiveis.get(0).isLotericaFavorita());
+
+					favoritar(bolao);
+				}
+		);
 	}
 }

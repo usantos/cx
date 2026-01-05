@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import java.math.BigDecimal;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -38,7 +39,6 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private TextView textQtdCotas;
 	private ImageView seta;
 	private ConstraintLayout verMais;
-	private TextView valorPremio;
 	private TextView qtdCotas;
 	private Button btnDetalhes;
 	private Button btnDiminui;
@@ -48,20 +48,29 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private EstiloModalidadeMKP estilo;
 	private BotaoFavoritar botaoFavoritar;
 	private OnItemBolaoListener listener;
+	private FiltroAplicadoMarketplace filtro;
+	private TextView modalidade;
+	private TextView valorPremio;
+	private TextView concurso;
 
-	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener) {
+
+	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener, FiltroAplicadoMarketplace filtro) {
 		super(itemView);
 		this.activity = activity;
-		loterica 	= itemView.findViewById(R.id.loterica_bolao);
+		this.filtro = filtro;
+
 		botaoFavoritar = itemView.findViewById(R.id.btn_favoritar_mkp);
+		loterica 	= itemView.findViewById(R.id.loterica_bolao);
 		cidade 		= itemView.findViewById(R.id.cidade_bolao);
+		modalidade 	= itemView.findViewById(R.id.modalidade_bolao);
+		valorPremio = itemView.findViewById(R.id.valor_estimado_premio);
+		concurso = itemView.findViewById(R.id.concurso_bolao);
 		valor 		= itemView.findViewById(R.id.valor_bolao);
 		textQtdDezenas = itemView.findViewById(R.id.descricao_qtd_dezenas_it);
 		textQtdCotas = itemView.findViewById(R.id.descricao_qtd_cotas_disponiveis_it);
 
 		seta 		= itemView.findViewById(R.id.seta_bolao);
 		verMais 	= itemView.findViewById(R.id.container_ver_mais);
-		//valorPremio = itemView.findViewById(R.id.valor_estimado_premio);
 		btnDetalhes = itemView.findViewById(R.id.detalhes);
 		btnDiminui 	= itemView.findViewById(R.id.diminui_cota);
 		btnAumenta 	= itemView.findViewById(R.id.aumenta_cota);
@@ -82,16 +91,40 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
 
 		aplicaEstilo();
-		if (bolao.getNomeFantasia().length() > 13){
-			loterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia().substring(0,13).concat("...")));
+		if (isFiltradoLoterica()) {
+			botaoFavoritar.setVisibility(View.GONE);
+			loterica.setVisibility(View.GONE);
+			modalidade.setVisibility(View.VISIBLE);
+			if (isEspecial(bolao.getTipoConcurso())){
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
+			} else {
+				modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
+			}
+			cidade.setVisibility(View.GONE);
+			valorPremio.setVisibility(View.VISIBLE);
+			if (bolao.getVrPremioEstimado() != null) {
+				valorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
+			}
+			concurso.setVisibility(View.VISIBLE);
+			concurso.setText(String.valueOf("Concurso " + bolao.getConcurso()));
 		} else {
-			loterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
-		}
-		String cidadeUf = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome()) + " - " + bolao.getUf().getSigla();
-		if (cidadeUf.length() > 13) {
-			cidade.setText(cidadeUf.substring(0,13).concat("..."));
-		} else {
-			cidade.setText(cidadeUf);
+			botaoFavoritar.setVisibility(View.VISIBLE);
+			modalidade.setVisibility(View.GONE);
+			loterica.setVisibility(View.VISIBLE);
+			if (bolao.getNomeFantasia().length() > 13){
+				loterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia().substring(0,13).concat("...")));
+			} else {
+				loterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
+			}
+			valorPremio.setVisibility(View.GONE);
+			cidade.setVisibility(View.VISIBLE);
+			String cidadeUf = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
+			if (cidadeUf.length() > 13) {
+				cidade.setText(cidadeUf.substring(0,13).concat("..."));
+			} else {
+				cidade.setText(cidadeUf);
+			}
+			concurso.setVisibility(View.GONE);
 		}
 		valor.setText("R$ " + StringUtils.formatToCurrency(bolao.getVrUltimaCotaComTarifa().doubleValue()));
 
@@ -116,6 +149,9 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	}
 
+	private boolean isFiltradoLoterica() {
+		return (filtro != null && filtro.getLotericaDTO() != null && filtro.getLotericaDTO().getCodigo() != null);
+	}
 	private boolean isEspecial(int tipoConcurso){
 		return tipoConcurso == 2;
 	}
@@ -124,6 +160,9 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
 		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
 		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
+
+		modalidade.setTextColor(corLetraLista);
+		concurso.setTextColor(corLetraLista);
 		btnDetalhes.setTextColor(corLetraLista);
 		btnDetalhes.setBackground(ContextCompat.getDrawable(activity, estilo.getShapeBtnDetalhes()));
 		btnDiminui.setBackgroundColor(corEscura);

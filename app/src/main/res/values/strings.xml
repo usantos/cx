@@ -21,6 +21,7 @@
     <string name="valorDessaAposta">Valor dessa\naposta</string>
     <string name="imagemCarrinho">Carrinho</string>
     <string name="carrinhoDeApostas">Carrinho \nde apostas</string>
+    <string name="label_premio_estimado_concurso_numero">Pr\u00eamio estimado do concurso %d</string>
     <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
     <string name="label_premio_estimado">Pr\u00eamio estimado</string>
 
@@ -1570,7 +1571,7 @@
 
     <string name="label_boloes">Bolões</string>
     <string name="label_lotericas_favoritas">Lotéricas Favoritas</string>
-    <string name="label_boloes_loterica">Bolões da lotérica</string>
+    <string name="label_boloes_loterica">Bolões da Lotérica</string>
     <string name="imagem_de_coracao_para_favoritar">Imagem de coração para favoritar lotérica</string>
     <string name="estado_vazio_mkp_descricao">Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente.</string>
     <string name="msg_incluir_favorita">Deseja incluir %1$s na sua lista de favoritas?</string>
