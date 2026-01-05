@@ -523,6 +523,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
 	private OnActivityForResult OnActivityForResult() {
 		return result -> {
+			seletorBoloes();
 			frameEstadoVazio.setVisibility(GONE);
 			scrollView.setVisibility(VISIBLE);
 
