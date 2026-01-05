@@ -63,17 +63,23 @@ public class BarraTituloFiltroLotericaFragment extends Fragment {
 
         botaoFavoritar.setState(estadoInicial);
 
-//        botaoFavoritar.setOnStateChangeListener(isFavoritado -> {
-//            if(listener != null){
-//                listener.onFavoritarClick(position, isFavoritado);
-//            }
-//        });
+        botaoFavoritar.setOnStateChangeListener(isFavoritado -> {
+            emitirResultadoFavorito(isFavoritado);
+        });
 
         preencheDados();
 
         return view;
     }
 
+    private void emitirResultadoFavorito(boolean isFavoritado) {
+        Bundle result = new Bundle();
+        result.putBoolean("favoritado", isFavoritado);
+        if (filtro != null && filtro.getLotericaDTO() != null) {
+            result.putSerializable("lotericaDTO", filtro.getLotericaDTO());
+        }
+        getParentFragmentManager().setFragmentResult("favoritar_result", result);
+    }
 
     private void preencheDados() {
         //botaoFavoritar.setState(bolao.isLotericaFavorita());
@@ -86,4 +92,18 @@ public class BarraTituloFiltroLotericaFragment extends Fragment {
 
         tvStringLoterica.setText(stringLoterica);
     }
+
+
+    public void setFavoritar(boolean favoritado) {
+        estadoInicial = favoritado;
+
+        if (botaoFavoritar != null) {
+            if (isAdded()) {
+                requireActivity().runOnUiThread(() -> botaoFavoritar.setState(favoritado));
+            } else {
+                botaoFavoritar.setState(favoritado);
+            }
+        }
+    }
+
 }
