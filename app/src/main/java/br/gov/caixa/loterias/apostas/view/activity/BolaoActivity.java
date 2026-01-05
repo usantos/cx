@@ -239,6 +239,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		btnBoloes.setChecked(Boolean.TRUE);
 		layoutBoloes.setVisibility(VISIBLE);
 		unSelectLotericasFavoritas();
+		if (cotasDisponiveis == null || cotasDisponiveis.isEmpty()){
+			apresentanEstadoVazio();
+		}
 	}
 
 	private void unSelectBoloes() {
