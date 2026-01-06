@@ -29,6 +29,7 @@
         android:scrollbars="none"
         android:stretchMode="columnWidth"
         android:verticalSpacing="5dp"
+        android:paddingBottom="4dp"
         app:layout_constrainedHeight="true" />
 
 </RelativeLayout>
