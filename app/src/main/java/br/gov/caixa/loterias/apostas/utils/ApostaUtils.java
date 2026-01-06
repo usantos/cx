@@ -432,7 +432,9 @@ public class ApostaUtils {
 		tipoConcurso.setDescricao("");
 		aposta.setTipoConcurso(tipoConcurso);
 
-		aposta.setValor(bolao.getVrCotaComTarifa());
+		BigDecimal qntCotas = new BigDecimal(bolao.getQtdCotasBolao());
+
+		aposta.setValor(bolao.getVrCotaComTarifa().multiply(qntCotas));
 		aposta.setDataSorteio(bolao.getDataSorteio());
 
 		return aposta;
@@ -450,7 +452,9 @@ public class ApostaUtils {
 		tipoConcurso.setValor(bolao.getTipoConcurso().toString());
 		aposta.setTipoConcurso(tipoConcurso);
 
-		aposta.setValor(bolao.getVrUltimaCotaComTarifa());
+		BigDecimal qntCotas = new BigDecimal(bolao.getQtdCotaDesejada());
+
+		aposta.setValor(bolao.getVrUltimaCotaComTarifa().multiply(qntCotas));
 		aposta.setDataSorteio(bolao.getDataSorteio());
 
 		return aposta;
