@@ -39,7 +39,7 @@ public class NumerosFragment extends Fragment {
 	private static final String SHAPE = "SHAPE";
 
 	private static final String TITULO_LISTA = "TITULO_LISTA";
-	private static final int QUANTIDADE_COLUNA_LISTA = 5;
+	private static final int QUANTIDADE_COLUNA_LISTA = 6;
 
 	private String listaTexto, listaTextoMarcados;
 	private View view = null;
@@ -131,7 +131,7 @@ public class NumerosFragment extends Fragment {
 		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
 
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		param.height = px + 55;
+		param.height = px + 150;
 		view.setLayoutParams(param);
 	}
 

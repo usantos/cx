@@ -33,7 +33,7 @@ public class NumerosHifenFragment extends Fragment {
 	private String titulo;
 	private ArrayList<Integer> numerosSelecionados;
 	private ConfiguracaoNumeros configuracao;
-    private int columnCount = 5;
+    private int columnCount = 6;
 
 	public static NumerosHifenFragment newInstance(String titulo, List<Integer> numerosSelecionados, ConfiguracaoNumeros configuracao) {
 		NumerosHifenFragment fragment = new NumerosHifenFragment();
@@ -94,7 +94,7 @@ public class NumerosHifenFragment extends Fragment {
 			TextView numeroView = new TextView(context);
 			numeroView.setText(formatado);
 			numeroView.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
-			numeroView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);			numeroView.setTypeface(ViewUtils.getFontCaixaStdBold(context));
+			numeroView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);			numeroView.setTypeface(ViewUtils.getFontCaixaStdBold(context));
 			numeroView.setGravity(Gravity.CENTER);
 			numeroView.setPadding(8, 8, 8, 8);
 
