@@ -53,7 +53,8 @@
             android:orientation="horizontal">
 
             <View
-                android:layout_width="150dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="1dp"
                 android:importantForAccessibility="no"
                 android:background="@color/branco" />
@@ -69,7 +70,8 @@
                 android:textStyle="bold" />
 
             <View
-                android:layout_width="150dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="1dp"
                 android:importantForAccessibility="no"
                 android:background="@color/branco" />
