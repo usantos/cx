@@ -15,12 +15,15 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MeioPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoCartao;
 import br.gov.caixa.loterias.apostas.model.model.CartoesModel;
+import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.activity.FormaPagamentoActivity;
 import br.gov.caixa.loterias.apostas.view.config.MeusCartoesConfig;
 import br.gov.caixa.loterias.apostas.view.listener.MeusCartoesListener;
 
@@ -33,6 +36,7 @@ public class MeusCartoesActivity extends LoteriasBaseAppActivity implements Meus
     private TextView tvSemCartao;
     private NestedScrollView scrollCartoes;
     private List<RetornoCartao> payloadMp;
+    private MeioPagamentoModel modelMeiosPagamento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,25 +44,60 @@ public class MeusCartoesActivity extends LoteriasBaseAppActivity implements Meus
         setContentView(R.layout.activity_meus_cartoes);
         pegaExtras();
         setaViews();
+        modelMeiosPagamento = new MeioPagamentoModel(MeusCartoesActivity.this);
         model = new CartoesModel(MeusCartoesActivity.this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        buscaCartoesMercadoPago();
+        buscaMeiosPagamentos();
     }
 
-    private void buscaCartoesMercadoPago(){
+    private void buscaMeiosPagamentos() {
+        AlertDialogUtils.show(this);
+        modelMeiosPagamento.buscaMeiosPagamentos(onMeiosPagamentosListener());
+    }
+
+    private OnSilceListener<List<MeioPagamentoDTO>> onMeiosPagamentosListener() {
+        return new OnSilceListener<List<MeioPagamentoDTO>>() {
+            @Override
+            public void success(List<MeioPagamentoDTO> payload) {
+                if (payload != null && !payload.isEmpty()){
+                    for (MeioPagamentoDTO meioPagamento: payload){
+
+                        if (MeioPagamentoUtils.isMercadoPago(meioPagamento.getId())){
+                            boolean temRecargaPay = MeioPagamentoUtils.isRecargaPay(meioPagamento.getId());
+
+                            buscaCartoesMercadoPago(temRecargaPay);
+
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        };
+    }
+
+    private void buscaCartoesMercadoPago(boolean temRecargaPay){
         AlertDialogUtils.show(MeusCartoesActivity.this);
-        model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_MERCADO_PAGO, onBuscaCartaoMercadoPago());
+        model.buscaCartoesPorMeioPagamento(MeioPagamentoUtils.MP_MERCADO_PAGO, onBuscaCartaoMercadoPago(temRecargaPay));
     }
 
     @NonNull
-    private OnSilceListener<List<RetornoCartao>> onBuscaCartaoMercadoPago() {
+    private OnSilceListener<List<RetornoCartao>> onBuscaCartaoMercadoPago(boolean temRecargaPay) {
         return new OnSilceListener<List<RetornoCartao>>() {
             @Override
             public void success(List<RetornoCartao> payload) {
+                if (!temRecargaPay){
+                    AlertDialogUtils.dismiss();
+                }
+
                 payloadMp = payload;
                 if (payload != null && !payload.isEmpty()){
                     FragmentUtils.meusCartoesFragment(getSupportFragmentManager(),
@@ -66,12 +105,17 @@ public class MeusCartoesActivity extends LoteriasBaseAppActivity implements Meus
                                                       payload, getConfigMercadoPago());
                 }
 
-                buscaCartoesRecargaPay();
+                if(temRecargaPay){
+                    buscaCartoesRecargaPay();
+                }
+
             }
 
             @Override
             public void error(VolleyError error) {
-                buscaCartoesRecargaPay();
+                if(temRecargaPay){
+                    buscaCartoesRecargaPay();
+                }
             }
         };
     }
@@ -88,6 +132,7 @@ public class MeusCartoesActivity extends LoteriasBaseAppActivity implements Meus
             @Override
             public void success(List<RetornoCartao> payload) {
                 AlertDialogUtils.dismiss();
+
                 configuraTela(payloadMp, payload);
 
                 if (payload != null && !payload.isEmpty()){
