@@ -12,12 +12,20 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.security.cert.CertPathValidatorException;
+import java.security.cert.CertificateException;
+
+import javax.net.ssl.SSLHandshakeException;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorRecargaPayResponse;
 import br.gov.caixa.loterias.apostas.model.bean.ErrorResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.Bin;
 import br.gov.caixa.loterias.apostas.utils.Aplicacao;
+import br.gov.caixa.loterias.apostas.utils.AppUtils;
 
 /**
  * Created by cedesbr450 on 08/12/17.
@@ -29,80 +37,119 @@ public class MensagensNetwork {
     private static final int INTERNAL_SERVER_ERROR = 500;
 
     private MensagensNetwork(){}
+    private static Throwable getRootCause(Throwable t) {
+        Throwable cause = t;
+        while (cause != null && cause.getCause() != null && cause != cause.getCause()) {
+            cause = cause.getCause();
+        }
+        return cause;
+    }
+
+    private static boolean isSslError(Throwable t) {
+        if (t == null) return false;
+        return (t instanceof SSLHandshakeException) ||
+                (t instanceof CertificateException) ||
+                (t instanceof CertPathValidatorException);
+    }
+
+    private static boolean isConnectivityError(Throwable t) {
+        if (t == null) return false;
+        return (t instanceof UnknownHostException) ||
+                (t instanceof ConnectException) ||
+                (t instanceof SocketTimeoutException);
+    }
 
     public static String setMensagemRecargaPay(VolleyError error, Context context){
         NetworkResponse response = error.networkResponse;
+        boolean isNetworkAvailable = true;
+        isNetworkAvailable = AppUtils.isNetworkAvailable(context.getApplicationContext());
 
-        if (response == null){
-            if (error instanceof TimeoutError) {
-                return context.getString(R.string.erro_408);
-            }else if(error instanceof NoConnectionError){
-                Log.e("caixa", "Erro ao conexar com internet MensagensNetwork.setMensagem()");
-                return context.getString(R.string.seminternet);
-            } else if (error instanceof AuthFailureError) {
-                return context.getString(R.string.erro_401);
-            }
-            return context.getString(R.string.sistema_indisponivel);
+        if (!isNetworkAvailable){
+            return context.getString(R.string.seminternet);
         }
+        else {
+            if (response == null){
+                final Throwable root = getRootCause(error);
+                Log.e("caixa", "Sem HTTP response. Classe=" + error.getClass().getSimpleName()
+                        + " Root=" + (root != null ? root.getClass().getSimpleName() : "null"), error);
 
-        Gson gsonResponse = new Gson();
+                if (error instanceof TimeoutError || (root instanceof SocketTimeoutException)) {
+                    return context.getString(R.string.erro_408);
+                }
 
-        ErrorRecargaPayResponse errorResponse = new ErrorRecargaPayResponse();
 
-        String body;
-        //get response body and parse with appropriate encoding
-        if(error.networkResponse.data!=null) {
-            try {
-                body = new String(error.networkResponse.data,"UTF-8");
-                errorResponse = gsonResponse.fromJson(body, ErrorRecargaPayResponse.class);
-            } catch (Exception e){
-                errorResponse = new ErrorRecargaPayResponse();
-                errorResponse.setMessage( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
+                if (error instanceof AuthFailureError) {
+                    return context.getString(R.string.erro_401);
+                }
+
+                if (isSslError(root) || isConnectivityError(root) || error instanceof NoConnectionError) {
+                    return context.getString(R.string.connectionServerErro);
+                }
+
+                return context.getString(R.string.sistema_indisponivel);
             }
-        }
 
-        return errorResponse.getMessage();
+            Gson gsonResponse = new Gson();
+
+            ErrorRecargaPayResponse errorResponse = new ErrorRecargaPayResponse();
+
+            String body;
+            //get response body and parse with appropriate encoding
+            if(error.networkResponse.data!=null) {
+                try {
+                    body = new String(error.networkResponse.data,"UTF-8");
+                    errorResponse = gsonResponse.fromJson(body, ErrorRecargaPayResponse.class);
+                } catch (Exception e){
+                    errorResponse = new ErrorRecargaPayResponse();
+                    errorResponse.setMessage( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
+                }
+            }
+
+            return errorResponse.getMessage();
+        }
     }
     public static String setMensagem(VolleyError error, final Context context) {
         NetworkResponse response = error.networkResponse;
-        ErrorResponse errorResponse = new ErrorResponse();
-        Gson gsonResponse = new Gson();
+        boolean isNetworkAvailable = AppUtils.isNetworkAvailable(context.getApplicationContext());
 
-        if (response == null) {
-            Throwable cause = error.getCause();
+        if (!isNetworkAvailable){
+            return context.getString(R.string.seminternet);
+        }
 
-            if (error instanceof TimeoutError) {
-                return context.getString(R.string.erro_408);
-            } else if (error instanceof NoConnectionError) {
-                Log.e("caixa", "NoConnectionError: " + error.getMessage());
-                if (cause != null) {
-                    Log.e("caixa", "Causa raiz: " + cause.toString());
-                    if (cause instanceof IOException) {
-                        return context.getString(R.string.sistema_indisponivel);
-                    }
+        if (response == null){
+            final Throwable root = getRootCause(error);
+            Log.e("caixa", "Sem HTTP response. Classe=" + error.getClass().getSimpleName()
+                    + " Root=" + (root != null ? root.getClass().getSimpleName() : "null"), error);
+
+            if (error instanceof TimeoutError || (root instanceof SocketTimeoutException)) {
+                    return context.getString(R.string.erro_408);
                 }
-                return context.getString(R.string.seminternet);
-            } else if (error instanceof AuthFailureError) {
-                return context.getString(R.string.erro_401);
-            } else {
-                Log.e("caixa", "Erro desconhecido: " + error.getMessage());
-                if (cause != null) {
-                    Log.e("caixa", "Causa raiz: " + cause.toString());
+
+                if (error instanceof AuthFailureError) {
+                    return context.getString(R.string.erro_401);
                 }
+
+                if (isSslError(root) || isConnectivityError(root) || error instanceof NoConnectionError) {
+                    return context.getString(R.string.connectionServerErro);
+                }
+
                 return context.getString(R.string.sistema_indisponivel);
             }
-        }
 
-        // Tenta extrair mensagem do corpo da resposta
-        if (response.data != null) {
-            try {
-                String body = new String(response.data, "UTF-8");
-                errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
-            } catch (Exception e) {
-                Log.e("caixa", "Erro ao parsear corpo da resposta: " + e.getMessage());
-                errorResponse.setMensagem(context.getString(R.string.sistema_indisponivel) + " - " + response.statusCode);
+            Gson gsonResponse = new Gson();
+            ErrorResponse errorResponse = new ErrorResponse();
+
+            String body;
+            //get response body and parse with appropriate encoding
+            if(error.networkResponse.data!=null) {
+                try {
+                    body = new String(error.networkResponse.data,"UTF-8");
+                    errorResponse = gsonResponse.fromJson(body, ErrorResponse.class);
+                } catch (Exception e){
+                    errorResponse = new ErrorResponse();
+                    errorResponse.setMensagem( context.getString( R.string.sistema_indisponivel ) + " - " + response.statusCode);
+                }
             }
-        }
 
         if (errorResponse == null || errorResponse.getMensagem() == null || errorResponse.getMensagem().isEmpty()) {
             errorResponse = new ErrorResponse();
@@ -128,9 +175,6 @@ public class MensagensNetwork {
 
         return errorResponse.getMensagem();
     }
-
-
-
 
     public static String getErrorMessage(VolleyError error){
         try{
