@@ -6,6 +6,7 @@ import static android.view.View.VISIBLE;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -89,6 +90,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 	public static final String ARG_TIPO_CONCURSO = "ARG_TIPO_CONCURSO";
 
 	public static final String ARG_FILTRO_MARKETPLACE = "ARG_FILTRO_MARKETPLACE";
+	public static final String ARG_DTO_LOTERICA = "ARG_DTO_LOTERICA";
 
 	private DiscreteScrollView carrosselView;
 	private CarrosselBolaoAdapter carrosselAdapter;
@@ -125,12 +127,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
 	private Integer idModalidade, idModalidadeInicial;
 	private Integer tipoConcurso, tipoConcursoInicial;
+	private LotericaDTO dtoLoterica;
 
 	private int itensCardslVisiveis = 0;
 	private ImageView[] itemPaginacao;
 	private LinearLayout layoutPaginacaoCarrossel;
 
 	private RadioButton btnBoloes, btnLotericasFavoritas;
+	private ConstraintLayout contentHeaderMkp;
 
 	private ConstraintLayout layoutBoloes, layoutLotericasFavoritas;
 
@@ -142,9 +146,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bolao);
 		configToolbar(R.id.toolbar);
+
 		if (getIntent() != null && getIntent().getExtras() != null) {
 			idModalidade = getIntent().getExtras().getInt(ARG_IDMODALIDADE);
 			tipoConcurso = getIntent().getExtras().getInt(ARG_TIPO_CONCURSO);
+			dtoLoterica = (LotericaDTO) getIntent().getSerializableExtra(ARG_DTO_LOTERICA);
 			idModalidadeInicial = idModalidade;
 			tipoConcursoInicial = tipoConcurso;
 			loadParametroJogo(ModalidadeEnum.fromInteger(idModalidade));
@@ -153,17 +159,13 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
 		launcherCarrinho = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
 		launcherDetalhes = IntentUtil.registerLauncherActivityForResult(this, onAtualizaListasDeCotas());
-		filtro.setModalidade(ModalidadeEnum.fromInteger(idModalidadeInicial));
-		filtro.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcursoInicial));
-		configFiltrar(launcherFiltro,filtro);
 		setTitle("");
 		toolBarTxt = findViewById(R.id.toolbar_title);
-		toolBarTxt.setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.label_bolao_bar_marketplace)));
+		configFiltrar(launcherFiltro,filtro);
 		toolBarTxt.setVisibility(VISIBLE);
-
-
 		listView = findViewById(R.id.lista_bolao);
-        lotericasListView = findViewById(R.id.lista_lotericas);
+		lotericasListView = findViewById(R.id.lista_lotericas);
+		contentHeaderMkp = findViewById(R.id.content_header_mkp);
 		carrosselView = findViewById(R.id.bolao_carousel);
 		scrollView = findViewById(R.id.id_scrollview);
 		frameEstadoVazio = findViewById(R.id.id_fraf_estado_vazio);
@@ -177,6 +179,17 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		btnLotericasFavoritas = findViewById(R.id.btn_lotericas_favoritas);
 		layoutBoloes = findViewById(R.id.contentBoloes);
 		layoutLotericasFavoritas = findViewById(R.id.contentLotericasFavoritas);
+
+		if(idModalidadeInicial != null) filtro.setModalidade(ModalidadeEnum.fromInteger(idModalidadeInicial));
+		if(tipoConcursoInicial != null) filtro.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcursoInicial));
+		toolBarTxt.setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.label_bolao_bar_marketplace)));
+
+		if (dtoLoterica != null) {
+			filtro.setLotericaDTO(dtoLoterica);
+			fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, true);
+			contentHeaderMkp.setVisibility(GONE);
+			toolBarTxt.setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.loterica_favorita)));
+		}
 
 		scrollView.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
 			View view = v.getChildAt(v.getChildCount() - 1);
@@ -438,8 +451,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 				idMunicipio = payload.getMunicipioId().getNumero().intValue();
 				idUf = payload.getMunicipioId().getIdUF().intValue();
 				model.setIdMunicipioUF(idMunicipio, idUf);
-				model.setIdModalidade(idModalidade);
-				model.setIdTipoConcurso(tipoConcurso);
+				if(idModalidade != null) model.setIdModalidade(idModalidade);
+				if(tipoConcurso != null) model.setIdTipoConcurso(tipoConcurso);
 				buscaBoloes();
                 buscaLotericas();
 			}
@@ -902,9 +915,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private OnItemLotericaFavoritaListener onItemLotericaFavoritaListener() {
         return new OnItemLotericaFavoritaListener() {
             public void verBoloes(LotericasFavoritasHolder holder, int position) {
-
-
-
+				LotericaDTO lotericaDTO = new LotericaDTO(lotericasList.get(position));
+				Intent activity = new Intent(getApplicationContext(), BolaoActivity.class);
+				activity.putExtra(BolaoActivity.ARG_IDMODALIDADE,2);
+				activity.putExtra(BolaoActivity.ARG_TIPO_CONCURSO,1);
+				activity.putExtra(BolaoActivity.ARG_DTO_LOTERICA,lotericaDTO);
+				startActivity(activity);
             }
 
             @Override

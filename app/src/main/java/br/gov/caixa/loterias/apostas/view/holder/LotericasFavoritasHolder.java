@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaFavoritaDTO;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemLotericaFavoritaListener;
 
@@ -19,7 +20,6 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
 	private Activity activity;
 	private static final int QUANTIDADE_MINIMA = 1;
 	private TextView nomeLoterica;
-	private TextView codLoterica;
 	private TextView cidade;
 	private View linhaNumero;
 
@@ -34,7 +34,6 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
 		super(itemView);
 		this.activity = activity;
 		nomeLoterica 	= itemView.findViewById(R.id.nome_loterica);
-		codLoterica 	= itemView.findViewById(R.id.cod_loterica);
 		cidade 		= itemView.findViewById(R.id.cidade_loterica);
 		linhaNumero		= itemView.findViewById(R.id.linha_numero);
         excluirLixeira = itemView.findViewById(R.id.ic_lixeira);
@@ -49,17 +48,16 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
 	@Override
 	public void bind(LotericaFavoritaDTO loterica, int position) {
 
-		codLoterica.setText(String.valueOf(loterica.getCodigo()));
 		if (loterica.getNomeFantasia().length() > 30){
-			nomeLoterica.setText(loterica.getNomeFantasia().substring(0,20).concat("..."));
+			nomeLoterica.setText(StringUtils.capitalizerNovo(loterica.getNomeFantasia().substring(0,20).concat("...")));
 		} else {
-			nomeLoterica.setText(loterica.getNomeFantasia());
+			nomeLoterica.setText(StringUtils.capitalizerNovo(loterica.getNomeFantasia()));
 		}
 		String cidadeUf = loterica.getNomeMunicipio() + " - " + loterica.getSiglaUf();
 		if (cidadeUf.length() > 30) {
-			cidade.setText(cidadeUf.substring(0,20).concat("..."));
+			cidade.setText(StringUtils.capitalizerNovo(cidadeUf.substring(0,20).concat("...")));
 		} else {
-			cidade.setText(cidadeUf);
+			cidade.setText(StringUtils.capitalizerNovo(cidadeUf));
 		}
 	}
 

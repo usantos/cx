@@ -312,4 +312,53 @@ public class LotericaDTO implements Serializable {
                 "}\n";
         return sb;
     }
+
+
+    public LotericaDTO() {
+        this.nomeFantasia = null;
+        this.nome = null;
+        this.logradouro = null;
+        this.bairro = null;
+        this.nomeMunicipio = null;
+        this.nomeUF = null;
+        this.id = null;
+        this.codigo = null;
+        this.idUF = null;
+        this.idMunicipio = null;
+        this.dvMunicipio = null;
+        this.situacao = null;
+        this.polo = null;
+        this.dv = null;
+        this.numeroFormatado = null;
+        this.idDB = null;
+    }
+
+
+    public LotericaDTO(LotericaFavoritaDTO fav) {
+        if (fav == null) return;
+
+        this.nomeFantasia   = fav.getNomeFantasia();
+        this.nomeMunicipio  = fav.getNomeMunicipio();
+        this.nomeUF         = fav.getSiglaUf();
+
+        this.polo           = fav.getPolo() != null ? fav.getPolo().longValue() : null;
+        this.dv             = fav.getDv() != null ? fav.getDv().longValue() : null;
+
+        Long codigo = fav.getCodigo();
+        Integer idUf = fav.getSiglaUf() != null ? UF.fromSigla(fav.getSiglaUf()).getIbgeId() : null;
+
+        this.codigo         = codigo != null ? String.format("%06d", codigo) : null;
+
+        this.nome           = null;
+        this.logradouro     = null;
+        this.bairro         = null;
+        this.id             = codigo != null ? codigo : null;
+        this.idUF           = idUf != null ? idUf.longValue() : null;
+        this.idMunicipio    = null;
+        this.dvMunicipio    = null;
+        this.situacao       = null;
+        this.numeroFormatado= null;
+        this.idDB           = null;
+    }
+
 }
