@@ -132,7 +132,7 @@ public class  RedirectNetwork {
             }
         }else {
             if (response.statusCode == 401){
-                AlertDialogExperimenteLogarSingleton.show(activity, true);
+                AlertDialogExperimenteLogarSingleton.show(activity, true, null);
             } else {
                 AppCenterManager.registraEvento(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA);
             }
