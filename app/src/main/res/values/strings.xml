@@ -1578,4 +1578,5 @@
     <string name="msg_excluir_favorita">Deseja excluir %1$s da sua lista de favoritas?</string>
     <string name="loterica_favorita">Lotérica Favorita</string>
     <string name="favoritar_loterica">Favoritar Lotérica</string>
+    <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
 </resources>

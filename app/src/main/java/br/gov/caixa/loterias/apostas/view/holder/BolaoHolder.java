@@ -198,10 +198,10 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	public void mostrarDetalhes(Boolean aberto) {
 		if (aberto){
-			seta.setBackground(VectorUtils.getShape(R.drawable.ic_seta_cima_resultado, R.color.azulBolao));
+			seta.setBackground(VectorUtils.getShape(R.drawable.seta_cima_lista_boloes, R.color.azulBolao));
 			verMais.setVisibility(View.VISIBLE);
 		} else {
-			seta.setBackground(VectorUtils.getShape(R.drawable.ic_seta_baixo_resultado, R.color.azulBolao));
+			seta.setBackground(VectorUtils.getShape(R.drawable.seta_baixo_lista_boloes, R.color.azulBolao));
 			verMais.setVisibility(View.GONE);
 		}
 	}
