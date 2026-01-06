@@ -151,6 +151,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 			idModalidade = getIntent().getExtras().getInt(ARG_IDMODALIDADE);
 			tipoConcurso = getIntent().getExtras().getInt(ARG_TIPO_CONCURSO);
 			dtoLoterica = (LotericaDTO) getIntent().getSerializableExtra(ARG_DTO_LOTERICA);
+			if (dtoLoterica != null) {
+				filtro.setLotericaDTO(dtoLoterica);
+			}
 			idModalidadeInicial = idModalidade;
 			tipoConcursoInicial = tipoConcurso;
 			loadParametroJogo(ModalidadeEnum.fromInteger(idModalidade));
@@ -185,7 +188,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 		toolBarTxt.setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.label_bolao_bar_marketplace)));
 
 		if (dtoLoterica != null) {
-			filtro.setLotericaDTO(dtoLoterica);
 			fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, true);
 			contentHeaderMkp.setVisibility(GONE);
 			toolBarTxt.setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.loterica_favorita)));
@@ -541,8 +543,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 					loading.setVisibility(GONE);
 				}
 
-				if(cotasDisponiveis != null && !cotasDisponiveis.isEmpty()){
-					preencheBarraTitulo(ModalidadeEnum.fromInteger(idModalidade), TipoConcursoEnum.fromInteger(tipoConcurso));
+				if(cotasDisponiveis != null && !cotasDisponiveis.isEmpty()) {
+					if (idModalidade != null && tipoConcurso != null) {
+						preencheBarraTitulo(ModalidadeEnum.fromInteger(idModalidade), TipoConcursoEnum.fromInteger(tipoConcurso));
+					}
 				}
 
 			}
@@ -742,8 +746,10 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 					}
 				}
 
-				if(cotasDisponiveis != null && !cotasDisponiveis.isEmpty()){
-					preencheBarraTitulo(ModalidadeEnum.fromInteger(idModalidade), TipoConcursoEnum.fromInteger(tipoConcurso));
+				if(cotasDisponiveis != null && !cotasDisponiveis.isEmpty()) {
+					if (idModalidade != null && tipoConcurso != null) {
+						preencheBarraTitulo(ModalidadeEnum.fromInteger(idModalidade), TipoConcursoEnum.fromInteger(tipoConcurso));
+					}
 				}
 			}
 
@@ -917,8 +923,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             public void verBoloes(LotericasFavoritasHolder holder, int position) {
 				LotericaDTO lotericaDTO = new LotericaDTO(lotericasList.get(position));
 				Intent activity = new Intent(getApplicationContext(), BolaoActivity.class);
-				activity.putExtra(BolaoActivity.ARG_IDMODALIDADE,2);
-				activity.putExtra(BolaoActivity.ARG_TIPO_CONCURSO,1);
 				activity.putExtra(BolaoActivity.ARG_DTO_LOTERICA,lotericaDTO);
 				startActivity(activity);
             }
