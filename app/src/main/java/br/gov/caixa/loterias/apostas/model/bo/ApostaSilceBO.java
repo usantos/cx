@@ -1068,69 +1068,6 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         getServiceConnection().request(request, listener);
     }
 
-    public void deleteLotericaFavorita(
-            Long nuCd,
-            final RequestListener<RetornoPadraoResponse> listener
-    ) {
-        if (nuCd == null) {
-            listener.getErrorListener().onErrorResponse(new VolleyError("nuCd não pode ser nulo"));
-            return;
-        }
-
-        final String path = ServerMethods.DELETE_LOTERICA.replace("{nuCd}", String.valueOf(nuCd));
-
-        Map<String, String> headers = getHeaderToken();
-        if (headers == null) headers = new LinkedHashMap<>();
-
-        final GsonRequest request = getServiceConnection().buildDeleteRequest(
-                path,
-                null,
-                RetornoPadraoResponse.class,
-                response -> {
-                    try {
-                        Log.d("HTTP-SUCCESS", "DELETE " + path);
-                        Log.d("HTTP-SUCCESS", "Status: 200 (OK)");
-                        Log.d("HTTP-SUCCESS", "Response: " + new Gson().toJson(response));
-                        listener.getSilceListener().onResponse(response);
-                    } catch (Exception ex) {
-                        Log.e("HTTP-SUCCESS", "Falha ao processar listener", ex);
-                    }
-                },
-                error -> {
-
-                    if (error.networkResponse != null) {
-                        Log.d("HTTP-ERROR", "Status: " + error.networkResponse.statusCode);
-                        String body = error.networkResponse.data != null
-                                ? new String(error.networkResponse.data, StandardCharsets.UTF_8)
-                                : "<sem body>";
-                        Log.d("HTTP-ERROR", "Body: " + body);
-                        if (error.networkResponse.headers != null) {
-                            Log.d("HTTP-ERROR", "resp headers: " + error.networkResponse.headers.toString());
-                        }
-                    } else {
-                        Log.d("HTTP-ERROR", "Sem resposta do servidor (networkResponse == null)");
-                    }
-
-                    Log.d("HTTP-ERROR", "networkTimeMs: " + error.getNetworkTimeMs());
-                    Log.d("HTTP-ERROR", "message: " + error.getMessage());
-                    Throwable cause = error.getCause();
-                    if (cause != null) {
-                        Log.d("HTTP-ERROR", "cause class: " + cause.getClass().getName());
-                        Log.d("HTTP-ERROR", "cause message: " + cause.getMessage());
-                        Log.d("HTTP-ERROR", Log.getStackTraceString(cause));
-                    } else {
-                        Log.d("HTTP-ERROR", Log.getStackTraceString(error));
-                    }
-
-                    listener.getErrorListener().onErrorResponse(error);
-                },
-                headers
-        );
-
-        getServiceConnection().request(request, listener);
-    }
-
-
     // BOLAO
     public void getBoloesDisponiveis(FiltroMarketPlace filtro,
                                      final RequestListener<BoloesDisponiveisResponse> listener) {

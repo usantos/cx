@@ -29,30 +29,6 @@ public class LotericaFavoritaRepository extends AppRepository {
         buscaLotericasFavoritas(listener);
     }
 
-    public void excluirLoterica(
-            Long id,
-            OnSilceListener<RetornoPadraoResponse> listener
-    ) {
-
-        ApostaSilceBO.getInstance().deleteLotericaFavorita(
-                id,
-                new RequestListener<RetornoPadraoResponse>() {
-                    @Override
-                    public void onResponse(RetornoPadraoResponse response) {
-                        AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.deletou_lotericas_favoritas));
-                        checkRedirect(response);
-                        listener.success(response);
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        AppCenterManager.registraEventoErro(AppCenterManager.ERRO_SERVICO_SEM_RESPONSEDATA, error);
-                        RedirectNetwork.checkRedirect(error, getActivity());
-                        listener.error(error);
-                    }
-                });
-    }
-
     public void buscaLotericasFavoritas(
             OnSilceListener<List<LotericaFavoritaDTO>> listener
     ){

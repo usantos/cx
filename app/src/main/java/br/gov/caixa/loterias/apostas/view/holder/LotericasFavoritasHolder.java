@@ -102,7 +102,7 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
             }
 
             case R.id.ver_bolao:
-				listener.verMais(this, getAbsoluteAdapterPosition());
+				listener.verBoloes(this, getAbsoluteAdapterPosition());
 				break;
 		}
 	}

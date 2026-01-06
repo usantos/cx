@@ -31,21 +31,14 @@ public class ListaLotericasAdapter extends RecyclerView.Adapter<LotericasFavorit
         this.activity = activity;
     }
 
-
-
-    public void removeAt(int position) {
-        if (position < 0 || position >= lotericasList.size()) return;
-        lotericasList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, lotericasList.size() - position);
-    }
-
-
     public void replaceAll(List<LotericaFavoritaDTO> novaLista) {
-        lotericasList.clear();
-        if (novaLista != null) lotericasList.addAll(novaLista);
+        this.lotericasList.clear();
+        if (novaLista != null) {
+            this.lotericasList.addAll(novaLista);
+        }
         notifyDataSetChanged();
     }
+
 
 
 

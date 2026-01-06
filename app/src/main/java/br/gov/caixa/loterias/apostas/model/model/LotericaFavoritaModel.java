@@ -38,9 +38,4 @@ public class LotericaFavoritaModel extends AppModel{
         repository.getLotericasFavoritas(listener);
 	}
 
-    public void excluirLoterica(Long id, int position,OnSilceListener<RetornoPadraoResponse> listener){
-        repository.excluirLoterica(id,listener);
-        this.listLotericas.remove(position);
-    }
-
 }

@@ -37,6 +37,7 @@ import br.gov.caixa.loterias.apostas.view.fragment.CartaoCreditoVersoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CardPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
+import br.gov.caixa.loterias.apostas.view.fragment.LotericaEmptyFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MeusCartoesFragment;
@@ -224,6 +225,11 @@ public class FragmentUtils {
 		return frag;
 	}
 
+	public static LotericaEmptyFragment startLotericaVazia(FragmentManager fm, int idFrag) {
+		LotericaEmptyFragment frag = LotericaEmptyFragment.newInstance();
+		startFragmentAllowingStateLoss(fm, idFrag, frag);
+		return frag;
+	}
 	public static MesesFragment startMesesFragment(FragmentManager fm, int id, ModalidadeEnum modalidadeEnum,
 												   ParametroJogoDTO parametro, ArrayList<Integer> selecionados) {
 		MesesFragment fragment = MesesFragment.newInstance(modalidadeEnum, parametro, selecionados);
