@@ -122,6 +122,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
 
                     if (temInformacaoBolao(result)){
                         ConfiguracaoAppSingleton.getInstance().setBolaoHabilitado(result.getPayload().getMapa().getBolaoHabilitado());
+                        SharedPreferencesUtils.setValor("bolaoHabilitado",result.getPayload().getMapa().getBolaoHabilitado());
                     }
 
                     if (temDadosResposta(result)){
