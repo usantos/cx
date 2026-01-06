@@ -111,9 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginStart="16dp"
                 android:layout_below="@id/concursoTxt"
-                android:layout_toEndOf="@id/concursoTxt"
                 android:weightSum="1">
 
                 <TextView
@@ -298,7 +296,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_vertical_margin">
 
@@ -317,32 +315,29 @@
                 android:id="@+id/tv_sua_aposta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@id/modalidadeTxt"
                 android:fontFamily="@font/caixa_std_regular"
                 android:gravity="center"
                 android:text="@string/seus_numeros"
                 tools:textColor="@color/black"
                 android:textColor="@color/branco"
                 android:textSize="12sp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:layout_alignParentLeft="true"
+            />
 
             <RelativeLayout
                 android:id="@+id/rl_fg_numeros_1"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_sua_aposta"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_toEndOf="@id/modalidadeTxt"
-                android:layout_marginTop="0dp"
-                android:visibility="visible" />
+                android:visibility="visible"
+                />
 
             <RelativeLayout
                 android:id="@+id/rl_fg_numeros_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_fg_numeros_1"
-                android:layout_alignStart="@id/rl_fg_numeros_1"
                 android:visibility="gone" />
 
             <TextView
@@ -409,7 +404,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_fg_numeros_2"
                 android:layout_marginTop="10dp"
-                android:layout_alignStart="@id/rl_fg_numeros_1"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -417,7 +411,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_container_result_1"
-                android:layout_alignStart="@id/rl_container_result_1"
                 android:visibility="gone" />
 
             <RelativeLayout

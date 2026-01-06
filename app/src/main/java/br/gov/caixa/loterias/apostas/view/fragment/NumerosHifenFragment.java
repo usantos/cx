@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ public class NumerosHifenFragment extends Fragment {
 	private String titulo;
 	private ArrayList<Integer> numerosSelecionados;
 	private ConfiguracaoNumeros configuracao;
+    private int columnCount = 5;
 
 	public static NumerosHifenFragment newInstance(String titulo, List<Integer> numerosSelecionados, ConfiguracaoNumeros configuracao) {
 		NumerosHifenFragment fragment = new NumerosHifenFragment();
@@ -63,19 +65,21 @@ public class NumerosHifenFragment extends Fragment {
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setBackgroundColor(ContextCompat.getColor(getActivity(), configuracao.getCorInteriorCirculo()));
 		layout.setPadding(16, 16, 16, 16);
+		layout.setGravity(Gravity.CENTER_HORIZONTAL);
+
 
 		// Título
 		TextView tituloView = new TextView(context);
 		tituloView.setText(titulo);
 		tituloView.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
-		tituloView.setTextSize(12);
+		tituloView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
 		tituloView.setTypeface(ViewUtils.getFontCaixaStdBold(context));
 		tituloView.setPadding(0, 0, 0, 32);
 		layout.addView(tituloView);
 
 		// GridLayout com 6 colunas
 		GridLayout gridLayout = new GridLayout(context);
-		gridLayout.setColumnCount(6);
+		gridLayout.setColumnCount(columnCount);
 		gridLayout.setOrientation(GridLayout.HORIZONTAL);
 		gridLayout.setLayoutParams(new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,
@@ -90,13 +94,12 @@ public class NumerosHifenFragment extends Fragment {
 			TextView numeroView = new TextView(context);
 			numeroView.setText(formatado);
 			numeroView.setTextColor(ContextCompat.getColor(getActivity(), configuracao.getCorTextoCirculo()));
-			numeroView.setTextSize(14);
-			numeroView.setTypeface(ViewUtils.getFontCaixaStdBold(context));
+			numeroView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);			numeroView.setTypeface(ViewUtils.getFontCaixaStdBold(context));
 			numeroView.setGravity(Gravity.CENTER);
 			numeroView.setPadding(8, 8, 8, 8);
 
 			// Adiciona hífen à direita, exceto no último da linha
-			if ((i + 1) % 6 != 0 && i != numerosSelecionados.size() - 1) {
+			if ((i + 1) % columnCount != 0 && i != numerosSelecionados.size() - 1) {
 				numeroView.setText(formatado + " -");
 			}
 

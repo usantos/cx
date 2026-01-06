@@ -252,7 +252,9 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 
 			fm.beginTransaction().replace(R.id.rl_container_result_1, fragResultado).commitAllowingStateLoss();
 			rl_container_result_1.setVisibility(View.VISIBLE);
-
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) rl_container_result_1.getLayoutParams();
+            params.rightMargin = 24;
+            rl_container_result_1.setLayoutParams(params);
 
 			if (aposta.getModalidade().equals(ModalidadeEnum.TIMEMANIA)) {
 				int corBranco = ContextCompat.getColor(getContext(), R.color.branco);
