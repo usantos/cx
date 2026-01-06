@@ -7,6 +7,7 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
+import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
 import br.gov.caixa.loterias.apostas.utils.gerador.GeradorListaNumeros;
 import br.gov.caixa.loterias.apostas.utils.gerador.GeradorMatrizNumeros;
 import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
@@ -50,10 +51,15 @@ public class SimularApostaModel {
 		listener.success(matriz);
 	}
 
-	public void adidionaApostaNoCarrinho(Activity actv, IdentificaoDeUmaApostaDas8Modalidades aposta){
-		//if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(actv)) {
-			AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(actv, aposta);
-		//}
+	public void adicionaApostaNoCarrinho(Activity actv, IdentificaoDeUmaApostaDas8Modalidades aposta, BarraTituloDTO barraTituloDTO){
+		if (!AdicionarApostaCarrinhoHelper.usuarioEstaSuspenso(actv)) {
+			if (barraTituloDTO != null && (barraTituloDTO.getDataSorteio() != null && barraTituloDTO.getNumeroConcurso() != null)){
+				AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(actv, aposta, barraTituloDTO);
+			}
+			else {
+				AdicionarApostaCarrinhoHelper.incluirApostaCarrinhoCartela(actv, aposta, null);
+			}
+		}
 	}
 
 	public void addSurpresinhaCarrinho(IncluirSurpresinhaDTO surpresinha) {

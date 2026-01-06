@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -32,6 +33,14 @@ import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
+import br.gov.caixa.loterias.apostas.utils.BarraTituloDTO;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
+import br.gov.caixa.loterias.apostas.utils.VectorUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SubBarraModalidadeFragment;
 
@@ -47,6 +56,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
     private SubBarraModalidadeFragment subBarFragment;
 
+    private BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     private ConstraintLayout background;
 
     @Override
@@ -55,6 +65,11 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         setContentView(R.layout.activity_confirmado_inclusao_carrinho);
 
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.modalidade)), ParametroJogoDTO.class);
+        try {
+            barraTituloDTO = (BarraTituloDTO) getIntent().getSerializableExtra("barraTituloModel");
+        }catch (Exception e){
+            Log.e("ERROR", "Não foi possível adiquirir os elementos da barra de título");
+        }
         ((TextView) findViewById(R.id.txtVoltarAoInicio)).setText(ViewUtils.textFuturaAndFuturaBold(this, getString(R.string.btn_title_voltarAoInicio)));
         background = findViewById(R.id.corpo_background);
 
@@ -70,11 +85,33 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
                     modalidade,
                     getCorEscura());
         } else {
-            FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
-                    modalidade,
-                    parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(),
-                    parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)),
-                    getCorClara(), false);
+            try{
+                FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                        modalidade,
+                        parametroSimulacao.getConcurso().getNumero().toString(),
+                        getDataSorteio(),
+                        parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)),
+                        getCorClara(), false);
+
+            }catch (Exception e){
+                if (barraTituloDTO != null && (barraTituloDTO.getDataSorteio() != null && barraTituloDTO.getNumeroConcurso() != null)){
+                    FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                            modalidade,
+                            barraTituloDTO.getNumeroConcurso().toString(),
+                            barraTituloDTO.getDataSorteio().toString(),
+                            barraTituloDTO.isEspecial(),
+                            getCorClara(), false);
+                }
+                else{
+                    FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
+                            modalidade,
+                            "",
+                            "",
+                            false,
+                            getCorClara(), false);
+                }
+
+            }
         }
     }
 
