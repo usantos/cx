@@ -472,7 +472,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 				}
 
 				if (!DadosUsuarioBO.checarUsuarioLogado(parentActivity)) {
-					AlertDialogExperimenteLogarSingleton.show(getActivity(), false);
+					AlertDialogExperimenteLogarSingleton.show(getActivity(), false, null);
 				}
 			}
 			break;

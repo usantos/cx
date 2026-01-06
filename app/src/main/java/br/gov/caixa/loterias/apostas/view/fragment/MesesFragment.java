@@ -161,7 +161,7 @@ public class MesesFragment extends Fragment {
             tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 64);
             parentActivity.getSalvarApostaLayout().setOnClickListener(v -> {
                 if(!DadosUsuarioBO.checarUsuarioLogado(getActivity())){
-                    RedirectNetwork.connectKeycloak(getActivity());
+                    RedirectNetwork.connectKeycloak(getActivity(), null);
                 }
                 tamanhoBotaoSalvarAposta(parentActivity.getSalvarApostaLayout().getLayoutParams(), 140);
                 parentActivity.getSalvarApostaLayout().setOnClickListener(null);

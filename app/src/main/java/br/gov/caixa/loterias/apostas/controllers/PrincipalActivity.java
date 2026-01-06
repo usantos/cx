@@ -834,7 +834,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 //startActivity(IntentUtil.getIntentOrigemDestino(this, BolaoActivity.class));
             }
         } else {
-            AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false);
+            int selecionada = Integer.parseInt(buttonHomeBet.getTag().toString());
+            int idModalidade = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidadeDetalhada().getValor();
+            TipoConcursoEnum tipoConcurso = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getTipoConcurso();
+
+            Bundle bolao = new Bundle();
+            bolao.putInt(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
+            bolao.putInt(BolaoActivity.ARG_TIPO_CONCURSO, tipoConcurso.fromStringToIdTipoConcurso());
+            AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false, bolao );
         }
     }
 
@@ -870,7 +877,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 Intent activity = new Intent(PrincipalActivity.this, CombosActivity.class);
                 startActivity(activity);
             } else {
-                AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false);
+                AlertDialogExperimenteLogarSingleton.show(PrincipalActivity.this, false, null);
             }
         } else if (modalidade == ModalidadeEnum.MAIS_MILIONARIA && !DadosUsuarioBO.checarTutorial(DadosUsuarioBO.MAIS_MILIONARIA_TUTORIAL)){
             AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_tutorial_mais_milionaria));

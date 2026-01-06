@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.biometric.BiometricManager;
@@ -45,7 +46,7 @@ public class AcessoBO extends SilceBO {
         return instance;
     }
 
-    public void iniciarLoginSSO(Activity activity){
+    public void iniciarLoginSSO(Activity activity, Bundle bolao){
         if(activity != null) {
             try {
                 AuthorizationServiceConfiguration authorizationServiceConfiguration = new AuthorizationServiceConfiguration(
@@ -59,6 +60,9 @@ public class AcessoBO extends SilceBO {
                 if (service.getBrowserDescriptor() != null) {
                     AuthorizationRequest authorizationRequest = builder.build();
                     Intent intent = new Intent(activity, TokenActivity.class);
+                    if (bolao != null){
+                        intent.putExtras(bolao);
+                    }
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                     PendingIntent pendingIntent = getPendingIntent(intent);

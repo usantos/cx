@@ -231,9 +231,13 @@ public class IntentUtil {
 
 	public static Intent getIntentTutorial(Activity activity, ModalidadeEnum modalidade, int idModalidade, TipoConcursoEnum tipoConcurso) {
 		Intent intent = new Intent(activity, TutorialActivity.class);
-		intent.putExtra(activity.getResources().getString(R.string.tipoAposta), modalidade);
+		if (modalidade != null){
+			intent.putExtra(activity.getResources().getString(R.string.tipoAposta), modalidade);
+		}
+		if (tipoConcurso != null){
+			intent.putExtra(BolaoActivity.ARG_TIPO_CONCURSO, tipoConcurso.fromStringToIdTipoConcurso());
+		}
 		intent.putExtra(BolaoActivity.ARG_IDMODALIDADE, idModalidade);
-		intent.putExtra(BolaoActivity.ARG_TIPO_CONCURSO, tipoConcurso.fromStringToIdTipoConcurso());
 		return intent;
 	}
 
