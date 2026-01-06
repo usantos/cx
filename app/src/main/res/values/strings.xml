@@ -1063,6 +1063,7 @@
     <string name="barra_n_barra_n_ainda_sem_estimativa_de_premio">\n\nainda sem estimativa de prêmio.</string>
     <string name="proximo_concurso_barra_n_barra_n">Próximo Concurso\n\n</string>
     <string name="barra_n_aguardando_estimativa_de_premio">\nAguardando estimativa de prêmio</string>
+    <string name="barra_n_barra_n_aguardando_estimativa_de_premio">\n\nAguardando estimativa de prêmio</string>
     <string name="percent_d_dia">%d dia</string>
     <string name="percent_d_dias">%d dias</string>
     <string name="espaco_e_espaco">&#160;e&#160;</string>
