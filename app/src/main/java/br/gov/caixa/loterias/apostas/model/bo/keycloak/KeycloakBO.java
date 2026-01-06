@@ -21,7 +21,6 @@ import com.android.volley.VolleyError;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.TokenRequest;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
