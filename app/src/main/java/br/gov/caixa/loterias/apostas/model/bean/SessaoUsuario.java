@@ -31,6 +31,7 @@ public class SessaoUsuario {
 
     private Date dataUltimaRequisicao;
     public static int SECONDS = 180;
+    public ParametrosSimulacao parametrosSimulacao;
 
 
     public ParametrosSimulacao getParametrosSimulacao() {
@@ -44,7 +45,6 @@ public class SessaoUsuario {
         this.parametrosSimulacao = parametrosSimulacao;
     }
 
-    public ParametrosSimulacao parametrosSimulacao;
 
     public List<CombosDTO> listCombosDTO;
 

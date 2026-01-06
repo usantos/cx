@@ -162,7 +162,14 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			valorEmReais = parametroJogo.getConcurso().getValorApostaMinima();
 		}
 
-		valorEmReais = valorEmReais.equals(BigDecimal.ZERO) ? parametroJogo.getValoresAposta().get(0).getValor() : valorEmReais;
+		try{
+			valorEmReais = valorEmReais.equals(BigDecimal.ZERO) ? parametroJogo.getValoresAposta().get(0).getValor() : valorEmReais;
+		}catch (Exception e){
+			if (parametroJogo == null) {
+				loadParametroJogo();
+			}
+				valorEmReais = valorEmReais.equals(BigDecimal.ZERO) ? parametroJogo.getValorApostaMinima() : valorEmReais;
+		}
 
 		if (qtdTeimosinhas != 0) {
 			valorEmReais = valorEmReais.multiply(BigDecimal.valueOf(qtdTeimosinhas).movePointLeft(0));
