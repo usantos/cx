@@ -399,7 +399,13 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 												   valorTotalAposta, parentActivity.qtdConcursoSelecionado);
 		}
 	}
-
+private void zeraLoteca(){
+	limparPartidadasSelecionasLoteca(Boolean.FALSE);
+	limparOpcaoOutrosNumerosLayout();
+	verificaSeMostraBotaoLimparAposta();
+	atualizaStatusBotaoFinalizar(false);
+	ocutarSalvarAposta();
+}
 	// METODO DO PROTOCOLO ONCLICK
 	@Override
 	public void onClick(View view) {
@@ -425,7 +431,11 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 					} else {
 						adcionarApostaPreencherNumerosAleatorios();
 					}
-				} else {
+				}else if(parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA)){
+					adcionarApostaPreencherNumerosAleatorios();
+					zeraLoteca();
+				}
+				else {
 					adcionarApostaPreencherNumerosAleatorios();
 				}
 			}
@@ -1443,7 +1453,7 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 	}
 
 	private void limparPartidadasSelecionasLoteca(boolean desativado) {
-		for (ParametroPartida partida : partidasSelecionadas) {
+		for (ParametroPartida partida : parametroJogo.getPartidas()) {
 			partida.setEmpate(desativado);
 			partida.getEquipe1().setSelecionado(desativado);
 			partida.getEquipe2().setSelecionado(desativado);
@@ -1452,8 +1462,8 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 			partida.setQtdItensSelecionados(0);
 		}
 		recyclerViewPartida.getAdapter().notifyDataSetChanged();
-		parentActivity.zerarApostasLoteca();
 		partidasSelecionadas.clear();
+		parentActivity.zerarApostasLoteca();
 		ocutarSalvarAposta();
 		atualizaValorApostaLoteca();
 		botaoFinalizar.setVisibility(View.INVISIBLE);
