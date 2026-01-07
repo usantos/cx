@@ -1582,5 +1582,6 @@
     <string name="msg_incluir_favorita">Deseja incluir %1$s na sua lista de favoritas?</string>
     <string name="msg_excluir_favorita">Deseja excluir %1$s da sua lista de favoritas?</string>
     <string name="loterica_favorita">Lotérica Favorita</string>
+    <string name="loterica_favorita_bold">_Lotérica Favorita_</string>
     <string name="favoritar_loterica">Favoritar Lotérica</string>
 </resources>

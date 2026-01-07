@@ -53,11 +53,15 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
 		} else {
 			nomeLoterica.setText(StringUtils.capitalizerNovo(loterica.getNomeFantasia()));
 		}
-		String cidadeUf = loterica.getNomeMunicipio() + " - " + loterica.getSiglaUf();
-		if (cidadeUf.length() > 30) {
-			cidade.setText(StringUtils.capitalizerNovo(cidadeUf.substring(0,20).concat("...")));
-		} else {
-			cidade.setText(StringUtils.capitalizerNovo(cidadeUf));
+		String nomeMunicipio = StringUtils.capitalizerNovo(loterica.getNomeMunicipio());
+		String cidadeUf;
+		if(nomeMunicipio.length() > 30){
+			cidadeUf = nomeMunicipio.substring(0,20).concat("...") + " - " + loterica.getSiglaUf();
+			cidade.setText(cidadeUf);
+		}
+		else {
+			cidadeUf = nomeMunicipio + " - " + loterica.getSiglaUf();
+			cidade.setText(cidadeUf);
 		}
 	}
 
