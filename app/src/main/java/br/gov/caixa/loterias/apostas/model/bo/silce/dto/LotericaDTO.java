@@ -333,6 +333,19 @@ public class LotericaDTO implements Serializable {
         this.idDB = null;
     }
 
+    public static String formatPoloCodigoDv(Long polo, Long codigo, Long dv) {
+        if (polo == null || codigo == null || dv == null) {
+            return null;
+        }
+
+        String codigoStr = String.valueOf(codigo);
+        String codigoPadded = codigoStr.length() <= 6
+                ? String.format("%06d", codigo)
+                : codigoStr;
+
+        return polo + "." + codigoPadded + "-" + dv;
+    }
+
 
     public LotericaDTO(LotericaFavoritaDTO fav) {
         if (fav == null) return;
@@ -347,7 +360,7 @@ public class LotericaDTO implements Serializable {
         Long codigo = fav.getCodigo();
         Integer idUf = fav.getSiglaUf() != null ? UF.fromSigla(fav.getSiglaUf()).getIbgeId() : null;
 
-        this.codigo         = codigo != null ? String.format("%06d", codigo) : null;
+        this.codigo         = formatPoloCodigoDv(polo,codigo,dv);
 
         this.nome           = null;
         this.logradouro     = null;

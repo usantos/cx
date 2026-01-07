@@ -6,7 +6,6 @@ import static android.view.View.VISIBLE;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -153,6 +152,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 			dtoLoterica = (LotericaDTO) getIntent().getSerializableExtra(ARG_DTO_LOTERICA);
 			if (dtoLoterica != null) {
 				filtro.setLotericaDTO(dtoLoterica);
+				isFiltrando=true;
 			}
 			idModalidadeInicial = idModalidade;
 			tipoConcursoInicial = tipoConcurso;
@@ -453,10 +453,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 				idMunicipio = payload.getMunicipioId().getNumero().intValue();
 				idUf = payload.getMunicipioId().getIdUF().intValue();
 				model.setIdMunicipioUF(idMunicipio, idUf);
-				if(idModalidade != null) model.setIdModalidade(idModalidade);
-				if(tipoConcurso != null) model.setIdTipoConcurso(tipoConcurso);
+				model.setIdModalidade(idModalidade);
+				model.setIdTipoConcurso(tipoConcurso);
+				if(!isFiltrando){
 				buscaBoloes();
                 buscaLotericas();
+			} else {
+					buscaBoloesFiltro();
+				}
 			}
 
 			@Override
@@ -922,7 +926,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         return new OnItemLotericaFavoritaListener() {
             public void verBoloes(LotericasFavoritasHolder holder, int position) {
 				LotericaDTO lotericaDTO = new LotericaDTO(lotericasList.get(position));
-				Intent activity = new Intent(getApplicationContext(), BolaoActivity.class);
+				Intent activity = new Intent(BolaoActivity.this, BolaoActivity.class);
 				activity.putExtra(BolaoActivity.ARG_DTO_LOTERICA,lotericaDTO);
 				startActivity(activity);
             }
