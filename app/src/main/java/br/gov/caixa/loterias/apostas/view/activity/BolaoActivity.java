@@ -158,7 +158,9 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 			}
 			idModalidadeInicial = idModalidade;
 			tipoConcursoInicial = tipoConcurso;
-			loadParametroJogo(ModalidadeEnum.fromInteger(idModalidade));
+			if(idModalidade != null){
+				loadParametroJogo(ModalidadeEnum.fromInteger(idModalidade));
+			}
 		}
 		launcherBolao = IntentUtil.registerLauncherActivityForResult(this, OnReturnActivity());
 		launcherFiltro = IntentUtil.registerLauncherActivityForResult(this, OnActivityForResult());
