@@ -67,7 +67,6 @@ public class LotericaEmptyFragment extends Fragment {
 		if (view != null){
 			descricao.setText(R.string.vazio_Lotericas_favoritas);
 		}
-
 	}
 
 	public void estadoErro() {

@@ -690,7 +690,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         }
         expandeContraiAccordionQueroNaoQuero();
         if(listaModalidadesAdapter != null) {
-            listaModalidadesAdapter.montaListComTodaModalidades(false);
+            listaModalidadesAdapter.montaListComTodaModalidades(desativarFiltro);
         }
     }
 

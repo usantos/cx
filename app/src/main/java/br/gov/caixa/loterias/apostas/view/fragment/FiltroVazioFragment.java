@@ -51,6 +51,9 @@ public class FiltroVazioFragment extends Fragment {
 			case ERRO:
 				estadoErro();
 				break;
+			case SEMBOLAO:
+				estadoSemBolao();
+				break;
 		}
 		return view;
 	}
@@ -67,7 +70,12 @@ public class FiltroVazioFragment extends Fragment {
 		}
 
 	}
-
+	public void estadoSemBolao() {
+		tipoFiltro = FiltroBolaoResultadoEnum.SEMBOLAO;
+		if (view != null){
+			descricao.setText(R.string.sem_boloes_lotericas_favoritas);
+		}
+	}
 	public void estadoErro() {
 		tipoFiltro = FiltroBolaoResultadoEnum.ERRO;
 		if (view != null){
