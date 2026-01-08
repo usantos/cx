@@ -107,7 +107,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         getExtras();
         setContentView( R.layout.activity_filtra_marketplace );
         configToolbar(R.id.toolbar);
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getResources().getString(R.string.filtrar)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getResources().getString(R.string.filtro)));
         launcher = IntentUtil.registerLauncherActivityForResult(this, onQueroNaoQueroForResult());
         model =  new FiltroMarketplaceModel(this);
         setaViews();
