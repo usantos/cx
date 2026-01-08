@@ -6,6 +6,7 @@ import static android.view.View.VISIBLE;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -118,7 +119,7 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bolao);
+        setContentView(R.layout.activity_ver_bolao);
         configToolbar(R.id.toolbar);
 
         if (getIntent() != null && getIntent().getExtras() != null) {
@@ -182,7 +183,7 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
 
         AlertDialogUtils.show(this);
         model.buscaDadosUsuario(onBuscaDadosUsuarios());
-
+        firstTimeFiltrar();
     }
 
 
@@ -430,15 +431,23 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
                             tipoConcurso = TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso());
                         }
                     }
+                    if(filtro == null){
+                        filtro = new FiltroAplicadoMarketplace();
+                        filtro.setLotericaDTO(dtoLoterica);
+                    }
+                    isFiltrando = data.getBooleanExtra(FiltraMarketplaceActivity.IS_FILTRANDO_RETORNO,false);
+                    if(!isFiltrando){
+                        firstTimeFiltrar();
+                    }
                 }
                 AlertDialogUtils.show(VerBolaoActivity.this);
                 model.zeraPaginacao();
                 cotasDisponiveis = null;
-
                 buscaBoloesFiltro();
                 listAdapter = null;
                 txtFimLista.setVisibility(GONE);
                 scrollView.scrollTo(0, 0);
+
             }
         };
     }

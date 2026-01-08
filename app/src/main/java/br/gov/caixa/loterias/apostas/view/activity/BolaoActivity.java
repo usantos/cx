@@ -279,6 +279,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         if (lotericasList == null || lotericasList.isEmpty()) {
             initLotericasVazia();
         }
+        hideFiltrar(true);
     }
 
     private void seletorBoloes() {
@@ -288,6 +289,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         if (cotasDisponiveis == null || cotasDisponiveis.isEmpty()) {
             apresentanEstadoVazio();
         }
+        hideFiltrar(false);
     }
 
 

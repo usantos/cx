@@ -31,6 +31,16 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
+	public void hideFiltrar(Boolean hideFiltrar){
+		ImageView btnFiltrar = findViewById(R.id.icone_filtrar);
+		if(hideFiltrar){
+			btnFiltrar.setVisibility(View.GONE);
+		}
+		else {
+			btnFiltrar.setVisibility(View.VISIBLE);
+		}
+	}
+
 	public void configFiltrar(ActivityResultLauncher<Intent> launcher, FiltroAplicadoMarketplace filtro) {
         ImageView btnFiltrar = findViewById(R.id.icone_filtrar);
 		if (filtro == null) {
@@ -43,6 +53,11 @@ public class LoteriasAppMarketPlaceActivity extends LoteriasAppActivity {
 			btnFiltrar.setOnClickListener(onFiltrarListener(launcher, filtro));
 		}
 		configMenu();
+	}
+
+	public void firstTimeFiltrar(){
+		ImageView btnFiltrar = findViewById(R.id.icone_filtrar);
+		btnFiltrar.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.botao_filtro_mkp));
 	}
 
 	public void configFiltrar(ActivityResultLauncher<Intent> launcher, FiltroAplicadoMarketplace filtro,Boolean desativarFiltro) {

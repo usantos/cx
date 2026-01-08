@@ -56,6 +56,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     public static final String FILTRO_MARKETPLACE_RETORNO = "FILTRO_MARKETPLACE_RETORNO";
+    public static final String IS_FILTRANDO_RETORNO = "IS_FILTRANDO_RETORNO";
     public static final String ARG_TITULO_QUERO_NAO_QUERO = "titulo";
     public static final String ARG_QUERO = "quero";
     public static final String ARG_NAO_QUERO = "naoQuero";
@@ -609,8 +610,15 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private void aplicarFiltro() {
         Intent returnIntent = new Intent();
         returnIntent.putExtra(FILTRO_MARKETPLACE_RETORNO, getExtraFiltro());
+        returnIntent.putExtra(IS_FILTRANDO_RETORNO, true);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
+    }
+
+    private void limparFiltro() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(IS_FILTRANDO_RETORNO, false);
+        setResult(Activity.RESULT_OK, returnIntent);
     }
 
     private FiltroAplicadoMarketplace getExtraFiltro() {
@@ -692,6 +700,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         if(listaModalidadesAdapter != null) {
             listaModalidadesAdapter.montaListComTodaModalidades(desativarFiltro);
         }
+        limparFiltro();
     }
 
     private void filtraLoterica(String text) {
