@@ -118,7 +118,7 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bolao);
+        setContentView(R.layout.activity_ver_bolao);
         configToolbar(R.id.toolbar);
 
         if (getIntent() != null && getIntent().getExtras() != null) {
