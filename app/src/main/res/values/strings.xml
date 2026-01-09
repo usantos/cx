@@ -1404,7 +1404,7 @@
 
     <!-- Strings de boloes mkp -->
     <string name="filtrar">_Filtrar_</string>
-    <string name="filtro">_Filtro_</string>
+    <string name="filtros">_Filtros_</string>
     <string name="filtrar_modalidades">Filtrar</string>
     <string name="modalidades">Modalidades</string>
     <string name="valor_minimo_cota">Valor Mínimo Cota</string>
