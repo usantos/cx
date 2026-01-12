@@ -629,7 +629,7 @@ public class VerBolaoActivity extends LoteriasAppMarketPlaceActivity implements 
                     assert lotericaDTO != null;
                     bolao.setLoterica(lotericaDTO.getId());
                     bolao.setNomeFantasia(lotericaDTO.getNomeFantasia().trim());
-                    bolao.setLotericaFavorita(cotasDisponiveis.get(0).isLotericaFavorita());
+                    bolao.setLotericaFavorita(true);
 
                     favoritar(bolao);
                 }
