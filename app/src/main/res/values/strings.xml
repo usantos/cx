@@ -21,7 +21,7 @@
     <string name="valorDessaAposta">Valor dessa\naposta</string>
     <string name="imagemCarrinho">Carrinho</string>
     <string name="carrinhoDeApostas">Carrinho \nde apostas</string>
-    <string name="label_premio_estimado_concurso_numero">Pr\u00eamio estimado do concurso %d</string>
+    <string name="label_premio_estimado_concurso_numero">Pr\u00eamio estimado Concurso %d</string>
     <string name="label_premio_estimado_concurso_numero_bold">Pr\u00eamio estimado do concurso _%d_</string>
     <string name="label_premio_estimado">Pr\u00eamio estimado</string>
 

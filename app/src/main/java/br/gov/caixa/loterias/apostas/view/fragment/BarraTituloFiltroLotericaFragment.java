@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UF;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.view.custom.BotaoFavoritar;
 
 public class BarraTituloFiltroLotericaFragment extends Fragment {
@@ -84,7 +85,7 @@ public class BarraTituloFiltroLotericaFragment extends Fragment {
     private void preencheDados() {
         //botaoFavoritar.setState(bolao.isLotericaFavorita());
 
-        tvNomeLoterica.setText(filtro.getLotericaDTO().getNomeFantasia().trim());
+        tvNomeLoterica.setText(StringUtils.capitalizerNovo(filtro.getLotericaDTO().getNomeFantasia().trim()));
 
         String stringLoterica = //filtro.getLotericaDTO().getCodigo().trim() + " / " +
                                 UF.nomeFromId(filtro.getLotericaDTO().getIdUF().intValue()) + " - " +
