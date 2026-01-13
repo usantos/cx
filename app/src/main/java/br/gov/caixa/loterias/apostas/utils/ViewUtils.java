@@ -31,6 +31,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -460,46 +461,40 @@ public class ViewUtils {
         return dialog;
     }
 
-    public static AlertDialog alertTitleNewPositiveNegativeListener(Context context, String titulo, String negativeButton,
-                                                       String positiveButton, String mensagem,
-                                                       DialogInterface.OnClickListener positiveListener,
-                                                       DialogInterface.OnClickListener negativeListener) {
+    public static Dialog alertTitleCustomNewPositiveNegativeListener(
+            Context context,
+            String title,
+            String message,
+            DialogInterface.OnClickListener listener,
+            DialogInterface.OnClickListener listenerNo,
+            int labelNo,
+            int labelYes
+    ) {
+        AlertDialog dialog = ViewUtils.dialogoNew(context, title, message,listener,listenerNo, labelNo, labelYes);
+        dialog.show();
 
-        TextView messageView = new TextView(context);
-        messageView.setText(mensagem);
-        messageView.setTypeface(getFontCaixaStdRegular(context));
-        messageView.setPadding(50, 50, 50, 50);
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+        final Button btnPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        final Button btnNegative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 
-        AlertDialog dialog = new AlertDialog.Builder(context, R.style.MyAlertDialogStyleNew)
-                .setTitle(titulo)
-                .setView(messageView)
-                .setPositiveButton(StringUtils.capitalizerNovo(positiveButton), positiveListener)
-                .setNegativeButton(StringUtils.capitalizerNovo(negativeButton), negativeListener)
-                .create();
-
-        dialog.setOnShowListener(dialogInterface -> {
-
-            int corTitulo = ContextCompat.getColor(context, R.color.blue_caixa);
-            int corMensagem = ContextCompat.getColor(context, R.color.cinza110);
+        int colorNo = ContextCompat.getColor(context, R.color.greyText);
 
 
-            final TextView btnPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            final TextView btnNegative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+        if (btnNegative != null) {
+            btnNegative.setAllCaps(false);
+            btnNegative.setText(StringUtils.capitalizerNovo(context.getString(labelNo)));
+            btnNegative.setTextColor(colorNo);
+            btnNegative.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+        }
 
-            // Garantir texto em letras capitalizadas (desativar ALL CAPS do AppCompat)
-            if (btnPositive != null) {
-                btnPositive.setAllCaps(false);
-                btnPositive.setText(StringUtils.capitalizerNovo(positiveButton));
-                btnPositive.setTextColor(corTitulo);
-                // btnPositive.setTypeface(getFontCaixaStdBold(context));
-            }
-            if (btnNegative != null) {
-                btnNegative.setAllCaps(false);
-                btnNegative.setText(StringUtils.capitalizerNovo(negativeButton));
-                btnNegative.setTextColor(corMensagem);
-                // btnNegative.setTypeface(getFontCaixaStdRegular(context));
-            }
-        });
+        if (btnPositive != null) {
+            btnPositive.setAllCaps(false);
+            btnPositive.setText(StringUtils.capitalizerNovo(context.getString(labelYes)));
+            btnPositive.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+        }
 
         return dialog;
     }
@@ -626,7 +621,12 @@ public class ViewUtils {
         TextView textMessageView = dialog.findViewById(android.R.id.message);
         textTitleView.setTypeface(getFontCaixaStdBold(context));
         textMessageView.setTypeface(getFontCaixaStdRegular(context));
-
+        final Button btnPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (btnPositive != null) {
+            btnPositive.setAllCaps(false);
+            btnPositive.setText(StringUtils.capitalizerNovo(context.getString(R.string.button_entendi)));
+            btnPositive.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+        }
         return dialog;
     }
 
