@@ -468,9 +468,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
 
     private void initFragmentFiltroVazio() {
-        // Estado vazio só faz sentido quando a aba Boloes está ativa
         if (!btnBoloes.isChecked()) {
-            // Se por algum motivo foi chamado, garanta que fique oculto
             unSelectEstadoVazio();
             return;
         }
@@ -483,9 +481,27 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         layoutBoloes.setVisibility(GONE);
 
         if (isFiltradoLoterica()) {
-            fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, false);
-            layoutBoloes.setVisibility(VISIBLE);
+            boolean fav = false;
+
+            if (lotericasList != null) {
+                for (LotericaFavoritaDTO loterica : lotericasList) {
+                    if (filtro.getLotericaDTO().getId().equals(loterica.getCodigo())) {
+                        fav = true;
+                        break;
+                    }
+                }
+            }
+
+            fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(
+                    getSupportFragmentManager(),
+                    R.id.barra_titulo_mkp,
+                    filtro,
+                    fav
+            );
+
+            layoutBoloes.setVisibility(View.VISIBLE);
         }
+
     }
 
     private void initLotericasVazia() {
@@ -860,11 +876,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 if (data != null) {
                     Long id = data.getLongExtra("ID_LOTERICA", -1L);
                     boolean novoEstado = data.getBooleanExtra("NOVO_ESTADO", false);
-                    for (Iterator<LotericaFavoritaDTO> it = lotericasList.iterator(); it.hasNext(); ) {
-                        if (id.equals(it.next().getCodigo())) {
-                            it.remove();
+                    if(lotericasList != null) {
+                        for (Iterator<LotericaFavoritaDTO> it = lotericasList.iterator(); it.hasNext(); ) {
+                            if (id.equals(it.next().getCodigo())) {
+                                it.remove();
+                            }
                         }
                     }
+                    assert lotericasList != null;
                     lotericaModel.setListLotericas(new ArrayList<>(lotericasList));
                     lotericasAdapter.replaceAll(new ArrayList<>(lotericasList));
                     atualizaFavoritoTodasListas(id, novoEstado);
@@ -1200,11 +1219,26 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 (requestKey, result) -> {
                     LotericaDTO lotericaDTO = (LotericaDTO) result.getSerializable("lotericaDTO");
 
+                    if (lotericaDTO == null) return;
+
                     CotasBolaoDTO bolao = new CotasBolaoDTO();
-                    assert lotericaDTO != null;
                     bolao.setLoterica(lotericaDTO.getId());
                     bolao.setNomeFantasia(lotericaDTO.getNomeFantasia().trim());
-                    bolao.setLotericaFavorita(cotasDisponiveis.get(0).isLotericaFavorita());
+
+                    if (cotasDisponiveis != null && !cotasDisponiveis.isEmpty()) {
+                        bolao.setLotericaFavorita(cotasDisponiveis.get(0).isLotericaFavorita());
+                    } else {
+                        bolao.setLotericaFavorita(false);
+                    }
+
+                    if (lotericasList != null) {
+                        for (LotericaFavoritaDTO favorita : lotericasList) {
+                            if (lotericaDTO.getId().equals(favorita.getCodigo())) {
+                                bolao.setLotericaFavorita(true);
+                                break;
+                            }
+                        }
+                    }
 
                     favoritar(bolao);
                 }
