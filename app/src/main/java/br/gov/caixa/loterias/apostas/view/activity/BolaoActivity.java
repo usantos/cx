@@ -312,7 +312,6 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private void unSelectEstadoVazio() {
         frameEstadoVazio.setVisibility(GONE);
         scrollView.setVisibility(VISIBLE);
-        layoutBoloes.setVisibility(VISIBLE);
 
         if (filtroVazioFragment != null) {
             try {
