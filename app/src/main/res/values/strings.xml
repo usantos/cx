@@ -231,6 +231,7 @@
 
     <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
     <string name="btn_entendi">entendi</string>
+    <string name="button_entendi">Entendi</string>
     <string name="msg_qtd_max_ultrapassada_milionaria">Você aumentou a quantidade de trevos, o valor será alterado. Fique atento ao valor final da sua aposta."</string>
     <string name="label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica">Não é possível selecionar quantidade de números superior ao limite para modalidade Lotérica.</string>
     <string name="msg_qtd_max_col_super_sete">Você só pode selecionar 3 números por coluna</string>

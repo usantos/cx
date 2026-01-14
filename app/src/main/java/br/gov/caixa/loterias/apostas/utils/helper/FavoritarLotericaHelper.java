@@ -38,11 +38,9 @@ public final class FavoritarLotericaHelper {
                 ? activity.getString(R.string.msg_excluir_favorita, nomeFantasia)
                 : activity.getString(R.string.msg_incluir_favorita, nomeFantasia);
 
-        Dialog dialog = ViewUtils.alertTitleNewPositiveNegativeListener(
+        ViewUtils.alertTitleCustomNewPositiveNegativeListener(
                 activity,
                 activity.getString(R.string.label_atencao),
-                activity.getString(R.string.cancelar),
-                activity.getString(R.string.confirmar),
                 mensagem,
                 (d, which) -> {
                     AlertDialogUtils.show(activity);
@@ -91,8 +89,9 @@ public final class FavoritarLotericaHelper {
                         acoes.incluir(lotericaId, listener);
                     }
                 },
-                (d, which) -> d.dismiss()
-        );
-        dialog.show();
+                (d, which) -> d.dismiss(),
+                R.string.cancelar,
+                R.string.confirmar
+                );
     }
 }
