@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 
 import java.math.BigDecimal;
 
@@ -87,6 +89,8 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 		lotericaNome	= itemView.findViewById(R.id.loterica_nome);
 		lotericaCidade = itemView.findViewById(R.id.loterica_uf);
+		evitarCortarTexto(lotericaNome, 18, 15);
+		evitarCortarTexto(lotericaCidade, 18, 15);
 		circuloFavoritar = itemView.findViewById(R.id.layoutFavoritarCabecalho);
 		botaoFavoritar = itemView.findViewById(R.id.btn_favoritar_mkp);
 		textQtdDezenas	= itemView.findViewById(R.id.descricao_qtd_dezenas);
@@ -263,6 +267,21 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	private ColorStateList getCor(int cor) {
 		return ContextCompat.getColorStateList(activity, cor);
+	}
+
+	private void evitarCortarTexto(TextView tv, int maxSp, int minSp) {
+		// 2 linhas + reticências
+		tv.setMaxLines(2);
+		tv.setEllipsize(TextUtils.TruncateAt.END);
+
+		// AutoSize compatível via AndroidX (API 14+)
+		TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+				tv,
+				minSp,  // min text size (sp)
+				maxSp,  // max text size (sp)
+				1,      // step granularity (sp)
+				TypedValue.COMPLEX_UNIT_SP
+		);
 	}
 
 	private void preencheCorCirculoFavoritar(int cor){
