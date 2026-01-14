@@ -18,6 +18,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -311,6 +312,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
     private void unSelectEstadoVazio() {
         frameEstadoVazio.setVisibility(GONE);
         scrollView.setVisibility(VISIBLE);
+        layoutBoloes.setVisibility(VISIBLE);
 
         if (filtroVazioFragment != null) {
             try {
@@ -478,6 +480,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         }
         frameEstadoVazio.setVisibility(VISIBLE);
         scrollView.setVisibility(GONE);
+        layoutBoloes.setVisibility(GONE);
+
+        if (isFiltradoLoterica()) {
+            fragBarraTituloFiltroLoterica = FragmentUtils.startFragmentBarraTituloFiltroLoterica(getSupportFragmentManager(), R.id.barra_titulo_mkp, filtro, false);
+            layoutBoloes.setVisibility(VISIBLE);
+        }
     }
 
     private void initLotericasVazia() {
@@ -486,9 +494,11 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                 lotericaVaziaFragment = FragmentUtils.startLotericaVazia(getSupportFragmentManager(), R.id.id_fraf_estado_vazio);
                 frameEstadoVazio.setVisibility(VISIBLE);
                 scrollView.setVisibility(GONE);
+                layoutBoloes.setVisibility(GONE);
             } else {
                 frameEstadoVazio.setVisibility(VISIBLE);
                 scrollView.setVisibility(GONE);
+                layoutBoloes.setVisibility(GONE);
             }
         } else {
             unSelectEstadoVazio();
@@ -816,6 +826,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
             seletorBoloes();
             frameEstadoVazio.setVisibility(GONE);
             scrollView.setVisibility(VISIBLE);
+            layoutBoloes.setVisibility(VISIBLE);
 
             if (result.getResultCode() == Activity.RESULT_OK) {
                 Intent data = result.getData();
