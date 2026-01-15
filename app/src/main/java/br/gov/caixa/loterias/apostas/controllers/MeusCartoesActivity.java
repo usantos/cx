@@ -107,6 +107,8 @@ public class MeusCartoesActivity extends LoteriasBaseAppActivity implements Meus
 
                 if(temRecargaPay){
                     buscaCartoesRecargaPay();
+                } else {
+                    configuraTela(payloadMp, null);
                 }
 
             }
@@ -115,6 +117,8 @@ public class MeusCartoesActivity extends LoteriasBaseAppActivity implements Meus
             public void error(VolleyError error) {
                 if(temRecargaPay){
                     buscaCartoesRecargaPay();
+                } else {
+                    configuraTela(null, null);
                 }
             }
         };
