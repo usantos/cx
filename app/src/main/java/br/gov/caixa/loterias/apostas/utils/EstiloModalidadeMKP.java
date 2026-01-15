@@ -21,12 +21,17 @@ public class EstiloModalidadeMKP {
     private final int tarjaEspecialTrevoCombo;
     private final int trevoFundoDetalheCombo;
 
+    private final int trapezioEspecial;
+    private final int fundoEspecial;
+
     public EstiloModalidadeMKP(ModalidadeEnum modalidade) {
         switch (modalidade) {
             case QUINA:
                 corClara = R.color.quina_claro_mkp;
                 corEscura = R.color.quina_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_quina_mkp;
+                trapezioEspecial = R.drawable.quina_trapezio;
+                fundoEspecial = R.drawable.quina_sao_joao_background;
                 shapeBtnDetalhes = R.drawable.btn_rounded_quina_outlined;
                 imagemEspecialCarrossel = R.drawable.cabecalho_quina_sao_joao_carrossel_novo;
                 imagemTriangulo = R.drawable.ic_tag_bolao_quina;
@@ -44,6 +49,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.dupla_sena_claro_mkp;
                 corEscura = R.color.dupla_sena_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_dupla_sena_mkp;
+                trapezioEspecial = R.drawable.dupa_sena_trapezio;
+                fundoEspecial = R.drawable.dupla_pascoa_background;
                 shapeBtnDetalhes = R.drawable.btn_rounded_dupla_sena_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_dupla_sena;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dupla_sena;
@@ -61,6 +68,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.lotofacil_claro_mkp;
                 corEscura = R.color.lotofacil_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_lotofacil_mkp;
+                trapezioEspecial = R.drawable.lotofacil_trapezio;
+                fundoEspecial = R.drawable.lotofacil_indep_backgound;
                 shapeBtnDetalhes = R.drawable.btn_rounded_lotofacil_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_loto_facil;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loto_facil;
@@ -78,6 +87,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.lotomania_claro_mkp;
                 corEscura = R.color.lotomania_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_lotomanial_mkp;
+                trapezioEspecial = -1;
+                fundoEspecial = -1;
                 shapeBtnDetalhes = R.drawable.btn_rounded_lotomania_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_lotomania;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_lotomania;
@@ -95,6 +106,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.milionaria_claro_mkp;
                 corEscura = R.color.milionaria_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_milionaria_mkp;
+                trapezioEspecial = -1;
+                fundoEspecial = -1;
                 shapeBtnDetalhes = R.drawable.btn_rounded_milionaria_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_milionaria;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_milionaria;
@@ -112,6 +125,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.super_sete_claro_mkp;
                 corEscura = R.color.super_sete_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_super_sete_mkp;
+                trapezioEspecial = -1;
+                fundoEspecial = -1;
                 shapeBtnDetalhes = R.drawable.btn_rounded_super_sete_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_super_sete;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_super_sete;
@@ -129,6 +144,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.loteca_claro_mkp;
                 corEscura = R.color.loteca_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_loteca_mkp;
+                trapezioEspecial = -1;
+                fundoEspecial = -1;
                 shapeBtnDetalhes = R.drawable.btn_rounded_loteca_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_loteca;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loteca;
@@ -146,6 +163,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.timemania_claro_mkp;
                 corEscura = R.color.timemania_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_timemania_mkp;
+                trapezioEspecial = -1;
+                fundoEspecial = -1;
                 shapeBtnDetalhes = R.drawable.btn_rounded_timemania_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_timemania;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_timemania;
@@ -163,6 +182,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.dia_sorte_claro_mkp;
                 corEscura = R.color.dia_sorte_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_dia_sorte_mkp;
+                trapezioEspecial = -1;
+                fundoEspecial = -1;
                 shapeBtnDetalhes = R.drawable.btn_rounded_dia_sorte_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_dia_sorte;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dia_sorte;
@@ -180,6 +201,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.instantanea_claro;
                 corEscura = R.color.instantanea_escuro;
                 trapezio = R.drawable.background_trapeze_instantanea;
+                trapezioEspecial = -1;
+                fundoEspecial = -1;
                 shapeBtnDetalhes = -1;
                 imagemTriangulo = -1;
                 imagemTrianguloOutline= -1;
@@ -197,6 +220,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.combo_claro;
                 corEscura = R.color.combo_escuro;
                 trapezio = R.drawable.background_trapeze_combo;
+                trapezioEspecial = -1;
+                fundoEspecial = -1;
                 shapeBtnDetalhes = -1;
                 imagemTriangulo = -1;
                 imagemTrianguloOutline= -1;
@@ -215,6 +240,8 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.mega_verde_claro_mkp;
                 corEscura = R.color.mega_verde_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_megasena_mkp;
+                trapezioEspecial = R.drawable.mega_sena_trapezio;
+                fundoEspecial = R.drawable.mega_virada_background;
                 shapeBtnDetalhes = R.drawable.btn_rounded_green_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline;
@@ -287,6 +314,14 @@ public class EstiloModalidadeMKP {
     }
     public int getTrevoFundoDetalheCombo() {
         return trevoFundoDetalheCombo;
+    }
+
+    public int getTrapezioEspecial() {
+        return trapezioEspecial;
+    }
+
+    public int getFundoEspecial() {
+        return fundoEspecial;
     }
 }
 

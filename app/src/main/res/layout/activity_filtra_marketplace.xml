@@ -22,6 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:clipToPadding="false"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@id/id_fg_somador_carrinho"
         app:layout_constraintTop_toTopOf="@id/gl_toolbar"
         app:layout_constraintVertical_bias="0.0"
@@ -205,6 +207,7 @@
                     android:drawableStart="@drawable/ic_real_cifrao"
                     android:drawablePadding="5dp"
                     android:textColor="@color/bolao_hint"
+                    android:hint="0,00"
                     android:textColorHint="@color/bolao_hint"
                     android:textSize="14sp"
                     android:fontFamily="@font/caixa_std_regular"
@@ -229,6 +232,7 @@
                 android:fontFamily="@font/caixa_std_regular"
                 android:textColor="@color/bolao_hint"
                 android:textColorHint="@color/bolao_hint"
+                android:hint="0,00"
                 android:textSize="14sp"
                 android:importantForAutofill="no"
                 android:importantForAccessibility="no"
@@ -551,37 +555,50 @@
                     txt_numeros_nao_quero, view_div_num_nao_quero, img_accordion_nao_quero, view_div_num_nao_quero,
                     "/>
 
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_botoes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/view_div_num_nao_quero"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
             <Button
                 android:id="@+id/btn_limpar_filtros"
-                android:layout_width="130dp"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/btn_round_outlined"
                 android:text="@string/limpar_filtros"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
                 android:textColor="@color/azulFiltro"
                 android:textSize="14sp"
                 android:fontFamily="@font/caixa_std_bold"
-                app:layout_constraintTop_toBottomOf="@+id/view_div_num_nao_quero"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_aplicar"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/btn_aplicar"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_below="@id/btn_limpar_filtros"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
                 android:background="@drawable/btn_rounded_blue"
                 android:text="@string/aplicar"
-                android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
                 android:textColor="@color/branco"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
                 android:textSize="14sp"
                 android:fontFamily="@font/caixa_std_bold"
-                app:layout_constraintTop_toBottomOf="@+id/view_div_num_nao_quero"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:textAlignment="center"
+                app:layout_constraintStart_toEndOf="@id/btn_limpar_filtros"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guidelineCentroFiltro"

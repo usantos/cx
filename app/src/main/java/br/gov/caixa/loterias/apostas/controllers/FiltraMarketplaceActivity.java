@@ -2,6 +2,8 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 
 
+import static android.view.View.GONE;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -53,6 +56,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     public static final String FILTRO_MARKETPLACE_RETORNO = "FILTRO_MARKETPLACE_RETORNO";
+    public static final String IS_FILTRANDO_RETORNO = "IS_FILTRANDO_RETORNO";
     public static final String ARG_TITULO_QUERO_NAO_QUERO = "titulo";
     public static final String ARG_QUERO = "quero";
     public static final String ARG_NAO_QUERO = "naoQuero";
@@ -67,6 +71,10 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private ListaModalidadesAdapter listaModalidadesAdapter;
     private EditText editValMin, editValMax, editQtdCotasMin, editQtdCotasMax;
     private EditText editLoterica;
+    private TextView textLoterica;
+    private AutoCompleteTextView autocomplete;
+    private TextView textLotericaDescritivo;
+
     private TextView validaQtdCotaMin, validaQtdCotaMax, txtQtdDezenas;
     private RecyclerView recyclerViewLoterica, recyclerViewQuero, recyclerViewNaoQuero, recyclerQtdDezenas;
     private LotericaAdapter lotericaAdapter;
@@ -91,6 +99,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private ListaDezenaRecyclerView qtdDezenasAdapter = null;
     private Integer QtdDezenaSelecionada = null;
     private boolean todasModalidadesAtiva = false;
+    private boolean desativarFiltro = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +107,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         getExtras();
         setContentView( R.layout.activity_filtra_marketplace );
         configToolbar(R.id.toolbar);
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getResources().getString(R.string.filtrar)));
+        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, getResources().getString(R.string.filtros)));
         launcher = IntentUtil.registerLauncherActivityForResult(this, onQueroNaoQueroForResult());
         model =  new FiltroMarketplaceModel(this);
         setaViews();
@@ -106,7 +115,17 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         setaMetodos();
         configuraQtdDezenasRcv();
         startFragmentSomadorCarrinho();
+        if(desativarFiltro) desativarFiltro();
+    }
 
+    private void desativarFiltro(){
+        if(desativarFiltro){
+            editLoterica.setVisibility(View.GONE);
+            textLoterica.setVisibility(View.GONE);
+            autocomplete.setVisibility(View.GONE);
+            textLotericaDescritivo.setVisibility(View.GONE);
+            recyclerViewLoterica.setVisibility(View.GONE);
+        }
     }
 
     private void getExtras(){
@@ -115,6 +134,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
             Bundle args = intent.getExtras();
             if (args != null) {
                 filtro = (FiltroAplicadoMarketplace) args.getSerializable(BolaoActivity.ARG_FILTRO_MARKETPLACE);
+                desativarFiltro = args.getBoolean(BolaoActivity.ARG_DESATIVAR_FILTRO);
             }
         }
     }
@@ -149,6 +169,9 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         validaQtdCotaMax = findViewById(R.id.txt_valida_cota_max);
 
         editLoterica = findViewById(R.id.edit_loterica);
+        textLoterica = findViewById(R.id.text_loterica);
+        autocomplete = findViewById(R.id.autoComplete_loterica);
+        textLotericaDescritivo = findViewById(R.id.text_loterica_descritivo);
         recyclerViewLoterica = findViewById(R.id.recyclerViewLoterica);
 
         btnPlusQuero = findViewById(R.id.img_accordion_quero);
@@ -460,9 +483,9 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
             groupQueroNaoQuero.setVisibility(View.VISIBLE);
             expandeContraiAccordionQueroNaoQuero();
         }else{
-            groupQueroNaoQuero.setVisibility(View.GONE);
-            accordionNaoQuero.setVisibility(View.GONE);
-            accordionQuero.setVisibility(View.GONE);
+            groupQueroNaoQuero.setVisibility(GONE);
+            accordionNaoQuero.setVisibility(GONE);
+            accordionQuero.setVisibility(GONE);
         }
     }
 
@@ -471,13 +494,13 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         if(dezenasSelecionadasQuero !=null && !dezenasSelecionadasQuero.isEmpty()){
             accordionQuero.setVisibility(View.VISIBLE);
         }else{
-            accordionQuero.setVisibility(View.GONE);
+            accordionQuero.setVisibility(GONE);
         }
 
         if(dezenasSelecionadasNaoQuero !=null && !dezenasSelecionadasNaoQuero.isEmpty()){
             accordionNaoQuero.setVisibility(View.VISIBLE);
         }else{
-            accordionNaoQuero.setVisibility(View.GONE);
+            accordionNaoQuero.setVisibility(GONE);
         }
     }
 
@@ -485,7 +508,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         return (holder, position) -> {
             LotericaDTO lotericaDTO = listLotericaDTO.get(position);
             editLoterica.setText(String.format("%s - %s", mioloCodigoLoterica(lotericaDTO.getCodigo()), lotericaDTO.getNomeFantasia().trim()));
-            recyclerViewLoterica.setVisibility(View.GONE);
+            recyclerViewLoterica.setVisibility(GONE);
             selectLotericaDTO = lotericaDTO;
             listaModalidadesAdapter.montaListComTodaModalidades(true);
         };
@@ -546,7 +569,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         if (editText.getText() != null && !editText.getText().toString().isEmpty()) {
             int value;
             if (editText.getText() == null || editText.getText().toString().isEmpty()) {
-                validaTextView.setVisibility(View.GONE);
+                validaTextView.setVisibility(GONE);
                 value = -1;
             } else {
                 value = Integer.parseInt(editText.getText().toString());            }
@@ -564,17 +587,17 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 validaTextView.setText(getString(msgMinErro));
                 validaTextView.setVisibility(View.VISIBLE);
             } else {
-                validaTextView.setVisibility(View.GONE);
+                validaTextView.setVisibility(GONE);
             }
         }else{
-            validaTextView.setVisibility(View.GONE);
+            validaTextView.setVisibility(GONE);
         }
     }
 
     private void habilitaDesabilitaBtnAplicar(){
 
-        if(validaQtdCotaMin.getVisibility() == View.GONE &&
-           validaQtdCotaMax.getVisibility() == View.GONE){
+        if(validaQtdCotaMin.getVisibility() == GONE &&
+           validaQtdCotaMax.getVisibility() == GONE){
             btnAplicar.setEnabled(true);
             btnAplicar.setBackground(ContextCompat.getDrawable(getApplicationContext(),R.drawable.btn_rounded_blue));
         }else{
@@ -587,8 +610,15 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
     private void aplicarFiltro() {
         Intent returnIntent = new Intent();
         returnIntent.putExtra(FILTRO_MARKETPLACE_RETORNO, getExtraFiltro());
+        returnIntent.putExtra(IS_FILTRANDO_RETORNO, true);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
+    }
+
+    private void limparFiltro() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(IS_FILTRANDO_RETORNO, false);
+        setResult(Activity.RESULT_OK, returnIntent);
     }
 
     private FiltroAplicadoMarketplace getExtraFiltro() {
@@ -656,8 +686,10 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         }
         editValMin.setText("");
         editValMax.setText("");
-        editLoterica.setText("");
-        selectLotericaDTO = null;
+        if(!desativarFiltro) {
+            editLoterica.setText("");
+            selectLotericaDTO = null;
+        }
         if(queroAdapter != null){
             excluirNumerosQuero();
         }
@@ -666,8 +698,9 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
         }
         expandeContraiAccordionQueroNaoQuero();
         if(listaModalidadesAdapter != null) {
-            listaModalidadesAdapter.montaListComTodaModalidades(false);
+            listaModalidadesAdapter.montaListComTodaModalidades(desativarFiltro);
         }
+        limparFiltro();
     }
 
     private void filtraLoterica(String text) {
@@ -684,7 +717,7 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 }
             }
         } else {
-            recyclerViewLoterica.setVisibility(View.GONE);
+            recyclerViewLoterica.setVisibility(GONE);
         }
     }
 

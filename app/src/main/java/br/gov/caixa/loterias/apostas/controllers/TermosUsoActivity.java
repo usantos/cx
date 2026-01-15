@@ -106,6 +106,10 @@ public class TermosUsoActivity extends LoteriasBaseAppActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
         }
+        // Configurações de performance
+        webViewConteudo.getSettings().setRenderPriority(android.webkit.WebSettings.RenderPriority.HIGH);
+        webViewConteudo.getSettings().setCacheMode(android.webkit.WebSettings.LOAD_CACHE_ELSE_NETWORK);
+
         webViewConteudo.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -219,15 +223,22 @@ public class TermosUsoActivity extends LoteriasBaseAppActivity {
         DadosCorporativosSilceBO.getInstance().termo(new RequestListener<TermoDeUsoDTOResponse>() {
             @Override
             public void onResponse(TermoDeUsoDTOResponse response) {
-                AlertDialogUtils.dismiss();
+
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), TermosUsoActivity.this);
                 }
 
                 termoHtml = response.getPayload().getConteudo();
-                webViewConteudo.loadData(termoHtml, getResources().getString(R.string.text_html_charset_utf_8), getResources().getString(R.string.utf_8));
-                selectTermoUso();
-                AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_termos_de_uso));
+
+                new Thread(() -> {
+                    runOnUiThread(() -> {
+                        webViewConteudo.loadData(termoHtml, getResources().getString(R.string.text_html_charset_utf_8), getResources().getString(R.string.utf_8));
+                        selectTermoUso();
+                        AlertDialogUtils.dismiss();
+                        AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_termos_de_uso));
+                    });
+                }).start();
+
             }
 
             @Override

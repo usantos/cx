@@ -31,6 +31,7 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -164,7 +165,9 @@ public class ViewUtils {
 
     public static AlertDialog dialogoNew(Context context, String tituloResId, String mensagem,
                                          DialogInterface.OnClickListener positiveListener,
-                                         DialogInterface.OnClickListener negativeListener) {
+                                         DialogInterface.OnClickListener negativeListener,
+                                         int labelNo,
+                                         int labelYes) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_alert_new, null);
@@ -183,8 +186,8 @@ public class ViewUtils {
         AlertDialog dialog = new AlertDialog.Builder(context)
                 .setView(dialogView)
                 .setCancelable(false)
-                .setNegativeButton(R.string.label_nao, negativeListener)
-                .setPositiveButton(R.string.label_sim, positiveListener)
+                .setNegativeButton(labelNo, negativeListener)
+                .setPositiveButton(labelYes, positiveListener)
                 .create();
 
 
@@ -348,7 +351,9 @@ public class ViewUtils {
                 tituloResId,
                 message,
                 listenerYes,
-                listenerNo
+                listenerNo,
+                R.string.label_nao,
+                R.string.label_sim
                 );
         dialog.show();
 
@@ -456,6 +461,45 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static Dialog alertTitleCustomNewPositiveNegativeListener(
+            Context context,
+            String title,
+            String message,
+            DialogInterface.OnClickListener listener,
+            DialogInterface.OnClickListener listenerNo,
+            int labelNo,
+            int labelYes
+    ) {
+        AlertDialog dialog = ViewUtils.dialogoNew(context, title, message,listener,listenerNo, labelNo, labelYes);
+        dialog.show();
+
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+        final Button btnPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        final Button btnNegative = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+        int colorNo = ContextCompat.getColor(context, R.color.greyText);
+
+
+        if (btnNegative != null) {
+            btnNegative.setAllCaps(false);
+            btnNegative.setText(StringUtils.capitalizerNovo(context.getString(labelNo)));
+            btnNegative.setTextColor(colorNo);
+            btnNegative.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+        }
+
+        if (btnPositive != null) {
+            btnPositive.setAllCaps(false);
+            btnPositive.setText(StringUtils.capitalizerNovo(context.getString(labelYes)));
+            btnPositive.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+        }
+
+        return dialog;
+    }
+
+
     public static Dialog alertCustomDismiss(
             Context context,
             int labelTitle,
@@ -534,7 +578,9 @@ public class ViewUtils {
                 context.getString(R.string.label_atencao),
                 context.getString(R.string.MA003),
                 (dialogInterface, i) -> dialogInterface.dismiss(),
-                listener
+                listener,
+                R.string.label_nao,
+                R.string.label_sim
         );
         dialog.show();
 
@@ -559,6 +605,28 @@ public class ViewUtils {
         textTitleView.setTypeface(getFontCaixaStdBold(context));
         textMessageView.setTypeface(getFontCaixaStdRegular(context));
 
+        return dialog;
+    }
+
+    public static Dialog alertEntendiCustom(Context context, String mensagem){
+        AlertDialog dialog = ViewUtils.dialogoNewEntendi(
+                context,
+                R.string.label_atencao,
+                R.layout.dialog_alert_new,
+                mensagem
+        );
+
+        dialog.show();
+        DialogTitle textTitleView = dialog.findViewById(R.id.alertTitle);
+        TextView textMessageView = dialog.findViewById(android.R.id.message);
+        textTitleView.setTypeface(getFontCaixaStdBold(context));
+        textMessageView.setTypeface(getFontCaixaStdRegular(context));
+        final Button btnPositive = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        if (btnPositive != null) {
+            btnPositive.setAllCaps(false);
+            btnPositive.setText(StringUtils.capitalizerNovo(context.getString(R.string.button_entendi)));
+            btnPositive.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+        }
         return dialog;
     }
 
@@ -769,6 +837,34 @@ public class ViewUtils {
             return spannableStringBuilder;
         }catch (Exception e){
             return  new SpannableStringBuilder().append(texto);
+        }
+    }
+
+
+    public static SpannableStringBuilder infoPrognosticosMkp(Context context, String texto, int tamanhoFonteSemiBold, int tamanhoFonteRegular) {
+        try {
+            Typeface fonteRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface fonteSemiBold = FonteUtils.getFonte(FontCaixaEnum.SEMI_BOLD);
+
+            // Remove os underlines do texto exibido
+            String textoSemUnderscore = texto.replace("_", "");
+            SpannableStringBuilder ssb = new SpannableStringBuilder(textoSemUnderscore);
+
+            // Aplica fonte e tamanho REGULAR para todo o texto
+            ssb.setSpan(new CustomTypefaceSpan("", fonteRegular), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            ssb.setSpan(new AbsoluteSizeSpan(tamanhoFonteRegular, true), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+            // Calcula as posições dos trechos entre "_" no texto original
+            List<PositionStringBold> ranges = listPositionString(texto);
+
+            // Aplica BOLD e tamanho nos intervalos calculados
+            for (PositionStringBold range : ranges) {
+                ssb.setSpan(new CustomTypefaceSpan("", fonteSemiBold), range.getStart(), range.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+                ssb.setSpan(new AbsoluteSizeSpan(tamanhoFonteSemiBold, true), range.getStart(), range.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            }
+            return ssb;
+        } catch (Exception e) {
+            return new SpannableStringBuilder().append(texto.replace("_", ""));
         }
     }
 
