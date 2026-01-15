@@ -174,7 +174,6 @@
     <string name="title_uf">UF</string>
     <string name="label_nascimento">Nascimento</string>
     <string name="label_email">E-mail</string>
-    <string name="label_boas_vindas">Que bom ver você por aqui :)</string>
     <string name="label_cadastro_rapido">O cadastro é bem rápido.\nPara começar, informe os dados abaixo:</string>
     <string name="label_encontre_lotorica_atraves_endereco_cep_codigo">Para isso, encontre a lotérica através\nde seu endereço, CEP ou código.</string>
     <string name="label_empate">Empate</string>
