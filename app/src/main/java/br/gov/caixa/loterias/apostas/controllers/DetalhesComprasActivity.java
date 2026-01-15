@@ -28,7 +28,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.OrientacaoPixActivity;
@@ -41,7 +40,6 @@ import br.gov.caixa.loterias.apostas.model.model.ModalidadeModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
-import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
@@ -89,6 +87,7 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
     private ImageButton ibFavoritar;
     private String dataHoraServidor;
     private ConfigConsultaDTO configConsulta;
+    private List<ModalidadeDTO> modalidades;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,20 +116,27 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
     }
 
     private void setaMetodos(){
-        btnFiltro.setOnClickListener(view -> {
-            dialogFiltrar.show();
-        });
-        btnDuvidas.setOnClickListener(view -> {
-            abrirTermosUso();
-        });
-        buscaConfigConsulta();
+        btnFiltro.setOnClickListener(view -> onFiltroListener());
+        btnDuvidas.setOnClickListener(view -> abrirTermosUso());
 
+        buscaConfigConsulta(false);
         criarCabecalho();
         //verificaPixCopiaCola();//Chamado de dentro do buscaDetalhesCompras pois nele atualiza o compraDTO
         verificaCompraProcessada();
         buscaDetalhesCompras();
         setaDialogFavoritar();
-        buscaModalidades();
+        buscaModalidades(false);
+    }
+
+    private void onFiltroListener() {
+        if (dialogFiltrar != null && !dialogFiltrar.isShowing()){
+            dialogFiltrar.show();
+        } else if (modalidades != null && configConsulta != null){
+            setaDialogFiltrar();
+            dialogFiltrar.show();
+        } else {
+            carregarFiltro();
+        }
     }
 
     private void pegaExtras(){
@@ -600,7 +606,7 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
         });
     }
 
-    private void setaDialogFiltrar(List<ModalidadeDTO> modalidades) {
+    private void setaDialogFiltrar() {
         dialogFiltrar = new Dialog(this);
         dialogFiltrar.setContentView(R.layout.dialog_filtro_compras);
         listViewFiltro = dialogFiltrar.findViewById(R.id.elv_filtros);
@@ -733,7 +739,16 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
         });
     }
 
-    private void buscaModalidades() {
+    private void carregarFiltro() {
+        if (modalidades == null){
+            buscaModalidades(true);
+        }
+        if (configConsulta == null){
+            buscaConfigConsulta(true);
+        }
+    }
+
+    private void buscaModalidades(boolean showFiltro) {
         AlertDialogUtils.show(DetalhesComprasActivity.this);
         new ModalidadeModel(DetalhesComprasActivity.this)
                 .buscaModalidades(new OnSilceListener<List<ModalidadeDTO>>() {
@@ -742,7 +757,11 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
                         AlertDialogUtils.dismiss();
 
                         if(payload != null){
-                            setaDialogFiltrar(payload);
+                            modalidades = payload;
+                        }
+
+                        if (showFiltro){
+                            onFiltroListener();
                         }
                     }
 
@@ -754,13 +773,17 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
 
     }
 
-    private void buscaConfigConsulta() {
+    private void buscaConfigConsulta(boolean showFiltro) {
         AlertDialogUtils.show(DetalhesComprasActivity.this);
         new ApostaConfirmadaModel(this).requestConfigConsulta(new OnSilceListener<ConfigConsultaDTO>() {
             @Override
             public void success(ConfigConsultaDTO payload) {
                 AlertDialogUtils.dismiss();
                 configConsulta = payload;
+
+                if (showFiltro){
+                    onFiltroListener();
+                }
             }
             @Override
             public void error(VolleyError error) {
