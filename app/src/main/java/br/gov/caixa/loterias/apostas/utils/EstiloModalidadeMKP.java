@@ -13,6 +13,7 @@ public class EstiloModalidadeMKP {
     private final int imagemTriangulo;
     private final int imagemTrianguloOutline;
     private final int imagemEspecialDetalhes;
+    private final int imagemEspecialQuadrada;
     private final int corLetraLista;
     private final int corFonteFundoClaro;
     private final int corFonteFundoEscuro;
@@ -37,6 +38,7 @@ public class EstiloModalidadeMKP {
                 imagemTriangulo = R.drawable.ic_tag_bolao_quina;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_quina;
                 imagemEspecialDetalhes = R.drawable.cabecalho_quina_sao_joao_card_detalhes;
+                imagemEspecialQuadrada = R.drawable.quina_sao_joao_quadrado;
                 corLetraLista = R.color.quina_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -56,6 +58,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dupla_sena;
                 imagemEspecialCarrossel = R.drawable.cabecalho_dupla_pascoa_carrossel_novo;
                 imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_detalhes;
+                imagemEspecialQuadrada = R.drawable.dupla_pascoa_quadrado;
                 corLetraLista = R.color.dupla_sena_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -75,6 +78,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loto_facil;
                 imagemEspecialCarrossel = R.drawable.cabecalho_lotofacil_independencia_carrossel_novo;
                 imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
+                imagemEspecialQuadrada = R.drawable.lotofacil_independencia_quadrado;
                 corLetraLista = R.color.lotofacil_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -94,6 +98,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_lotomania;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.lotomania_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -113,6 +118,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_milionaria;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.milionaria_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -132,6 +138,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_super_sete;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.super_sete_letra_mkp;
                 corFonteFundoClaro = R.color.super_sete_letra_mkp;
                 corFonteFundoEscuro = R.color.branco;
@@ -151,6 +158,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loteca;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.loteca_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -170,6 +178,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_timemania;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.timemania_letra_mkp;
                 corFonteFundoClaro = R.color.timemania_letra_mkp;
                 corFonteFundoEscuro = R.color.timemania_letra_mkp;
@@ -189,6 +198,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dia_sorte;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.dia_sorte_letra_mkp;
                 corFonteFundoClaro = R.color.dia_sorte_letra_mkp;
                 corFonteFundoEscuro = R.color.branco;
@@ -208,6 +218,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= -1;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.instantanea_claro;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -227,6 +238,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= -1;
                 imagemEspecialCarrossel = -1;
                 imagemEspecialDetalhes = -1;
+                imagemEspecialQuadrada = -1;
                 corLetraLista = R.color.combo_claro;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -247,6 +259,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline;
                 imagemEspecialCarrossel = R.drawable.cabecalho_mega_virada_carrossel_novo;
                 imagemEspecialDetalhes = R.drawable.cabecalho_mega_virada_detalhes;
+                imagemEspecialQuadrada = R.drawable.mega_virada_quadrado;
                 corLetraLista = R.color.mega_verde_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -287,6 +300,10 @@ public class EstiloModalidadeMKP {
     }
     public int getImagemEspecialDetalhes() {
         return imagemEspecialDetalhes;
+    }
+
+    public int getImagemEspecialQuadrada() {
+        return imagemEspecialQuadrada;
     }
 
     public int getCorLetraLista() {
