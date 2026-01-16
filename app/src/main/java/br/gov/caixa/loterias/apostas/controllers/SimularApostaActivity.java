@@ -869,23 +869,24 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         }
 
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
-        if (isEspecial) {
-            switch (tipoJogo){
-                case MEGA_SENA:
-                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_mega_da_virada_inferior));
-                    break;
-                case DUPLA_SENA:
-                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_dupla_de_pascoa_inferior));
-                    break;
-                case LOTOFACIL:
-                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_lotofacil_da_independencia_inferior));
-                    break;
-                case QUINA:
-                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_sao_joao_inferior));
-                    break;
-                default:
-            }
-        }
+//        if (isEspecial) {
+////            switch (tipoJogo){
+////                case MEGA_SENA:
+////                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_mega_da_virada_inferior));
+////                    break;
+////                case DUPLA_SENA:
+////                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_dupla_de_pascoa_inferior));
+////                    break;
+////                case LOTOFACIL:
+////                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_lotofacil_da_independencia_inferior));
+////                    break;
+////                case QUINA:
+////                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_sao_joao_inferior));
+////                    break;s
+////                default:
+////            }
+//            toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, estilo.getCorEscura()));
+//        }
         toolBarSimularAposta.setVisibility(visibilityToolBarSimularAposta);
         toolBarLoteca.setVisibility(visibilityToolBarLoteca);
 
