@@ -54,7 +54,7 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
         }
         TextView expandedListTextView = convertView
                 .findViewById(R.id.titleItemSideMenu);
-        Typeface fonte = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+        Typeface fonte = FonteUtils.getFonte(FontCaixaEnum.SEMI_BOLD);
         if (fonte != null){
             expandedListTextView.setTypeface(fonte);
         }
