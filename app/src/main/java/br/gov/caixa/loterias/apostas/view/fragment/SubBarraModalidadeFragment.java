@@ -101,8 +101,11 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private void aplicaEstilo() {
 		background.setBackgroundColor(ContextCompat.getColor(getContext(), estilo.getCorClara()));
 		setaVoltar.setImageDrawable(VectorUtils.getShape(R.drawable.seta_esquerda, estilo.getCorFonteFundoClaro()));
-		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1){
-			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
+//		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1){
+//			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
+//		}
+		if (isEspecial && estilo.getImagemEspecialSimples() != -1){
+			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialSimples()));
 		}
 	}
 

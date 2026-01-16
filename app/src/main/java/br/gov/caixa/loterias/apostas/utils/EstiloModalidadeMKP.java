@@ -12,7 +12,6 @@ public class EstiloModalidadeMKP {
     private final int imagemEspecialCarrossel;
     private final int imagemTriangulo;
     private final int imagemTrianguloOutline;
-    private final int imagemEspecialDetalhes;
     private final int imagemEspecialSimples;
     private final int imagemEspecialDupla;
     private final int imagemEspecialQuadrada;
@@ -36,10 +35,9 @@ public class EstiloModalidadeMKP {
                 trapezioEspecial = R.drawable.quina_trapezio;
                 fundoEspecial = R.drawable.quina_sao_joao_background;
                 shapeBtnDetalhes = R.drawable.btn_rounded_quina_outlined;
-                imagemEspecialCarrossel = R.drawable.cabecalho_quina_sao_joao_carrossel_novo;
+                imagemEspecialCarrossel = R.drawable.quina_sao_joao_novo;
                 imagemTriangulo = R.drawable.ic_tag_bolao_quina;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_quina;
-                imagemEspecialDetalhes = R.drawable.cabecalho_quina_sao_joao_card_detalhes;
                 imagemEspecialSimples = R.drawable.quina_sao_joao_simples;
                 imagemEspecialDupla = R.drawable.quina_sao_joao_dupla;
                 imagemEspecialQuadrada = R.drawable.quina_sao_joao_quadrado;
@@ -60,8 +58,7 @@ public class EstiloModalidadeMKP {
                 shapeBtnDetalhes = R.drawable.btn_rounded_dupla_sena_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_dupla_sena;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dupla_sena;
-                imagemEspecialCarrossel = R.drawable.cabecalho_dupla_pascoa_carrossel_novo;
-                imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_detalhes;
+                imagemEspecialCarrossel = R.drawable.dupla_pascoa;
                 imagemEspecialSimples = R.drawable.dupla_pascoa_simples;
                 imagemEspecialDupla = R.drawable.dupla_pascoa_dupla;
                 imagemEspecialQuadrada = R.drawable.dupla_pascoa_quadrado;
@@ -82,8 +79,7 @@ public class EstiloModalidadeMKP {
                 shapeBtnDetalhes = R.drawable.btn_rounded_lotofacil_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_loto_facil;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loto_facil;
-                imagemEspecialCarrossel = R.drawable.cabecalho_lotofacil_independencia_carrossel_novo;
-                imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
+                imagemEspecialCarrossel = R.drawable.lotofacil_independencia;
                 imagemEspecialSimples = R.drawable.lotofacil_indepedencia_simples;
                 imagemEspecialDupla = R.drawable.lotofacil_indepedencia_dupla;
                 imagemEspecialQuadrada = R.drawable.lotofacil_independencia_quadrado;
@@ -105,7 +101,6 @@ public class EstiloModalidadeMKP {
                 imagemTriangulo = R.drawable.ic_tag_bolao_lotomania;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_lotomania;
                 imagemEspecialCarrossel = -1;
-                imagemEspecialDetalhes = -1;
                 imagemEspecialSimples = -1;
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
@@ -127,7 +122,6 @@ public class EstiloModalidadeMKP {
                 imagemTriangulo = R.drawable.ic_tag_bolao_milionaria;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_milionaria;
                 imagemEspecialCarrossel = -1;
-                imagemEspecialDetalhes = -1;
                 imagemEspecialSimples = -1;
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
@@ -149,7 +143,6 @@ public class EstiloModalidadeMKP {
                 imagemTriangulo = R.drawable.ic_tag_bolao_super_sete;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_super_sete;
                 imagemEspecialCarrossel = -1;
-                imagemEspecialDetalhes = -1;
                 imagemEspecialSimples = -1;
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
@@ -171,7 +164,6 @@ public class EstiloModalidadeMKP {
                 imagemTriangulo = R.drawable.ic_tag_bolao_loteca;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loteca;
                 imagemEspecialCarrossel = -1;
-                imagemEspecialDetalhes = -1;
                 imagemEspecialSimples = -1;
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
@@ -193,7 +185,6 @@ public class EstiloModalidadeMKP {
                 imagemTriangulo = R.drawable.ic_tag_bolao_timemania;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_timemania;
                 imagemEspecialCarrossel = -1;
-                imagemEspecialDetalhes = -1;
                 imagemEspecialSimples = -1;
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
@@ -215,7 +206,6 @@ public class EstiloModalidadeMKP {
                 imagemTriangulo = R.drawable.ic_tag_bolao_dia_sorte;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dia_sorte;
                 imagemEspecialCarrossel = -1;
-                imagemEspecialDetalhes = -1;
                 imagemEspecialSimples = -1;
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
@@ -237,7 +227,6 @@ public class EstiloModalidadeMKP {
                 imagemTriangulo = -1;
                 imagemTrianguloOutline= -1;
                 imagemEspecialCarrossel = -1;
-                imagemEspecialDetalhes = -1;
                 imagemEspecialSimples = -1;
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
@@ -259,7 +248,6 @@ public class EstiloModalidadeMKP {
                 imagemTriangulo = -1;
                 imagemTrianguloOutline= -1;
                 imagemEspecialCarrossel = -1;
-                imagemEspecialDetalhes = -1;
                 imagemEspecialSimples = -1;
                 imagemEspecialDupla = -1;
                 imagemEspecialQuadrada = -1;
@@ -281,8 +269,7 @@ public class EstiloModalidadeMKP {
                 shapeBtnDetalhes = R.drawable.btn_rounded_green_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline;
-                imagemEspecialCarrossel = R.drawable.cabecalho_mega_virada_carrossel_novo;
-                imagemEspecialDetalhes = R.drawable.cabecalho_mega_virada_detalhes;
+                imagemEspecialCarrossel = R.drawable.mega_virada_novo;
                 imagemEspecialSimples = R.drawable.mega_virada_simples;
                 imagemEspecialDupla = R.drawable.mega_virada_dupla;
                 imagemEspecialQuadrada = R.drawable.mega_virada_quadrado;
@@ -331,10 +318,6 @@ public class EstiloModalidadeMKP {
 
     public int getImagemEspecialDupla() {
         return imagemEspecialDupla;
-    }
-
-    public int getImagemEspecialDetalhes() {
-        return imagemEspecialDetalhes;
     }
 
     public int getImagemEspecialQuadrada() {

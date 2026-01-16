@@ -717,11 +717,12 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     }
 
     private void setupToolbar() {
-        if (isEspecial(aposta.getTipoConcurso().getValor()) && aposta.getModalidade() == ModalidadeEnum.MEGA_SENA) {
-//            toolbar.setBackgroundResource(R.drawable.cabecalho_mega_virada_detalhes_aposta);
-            toolbar.setBackgroundResource(R.drawable.rodape_mega_sena);
-        } else if (isEspecial(aposta.getTipoConcurso().getValor())) {
-            toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
+//        if (isEspecial(aposta.getTipoConcurso().getValor()) && aposta.getModalidade() == ModalidadeEnum.MEGA_SENA) {
+////            toolbar.setBackgroundResource(R.drawable.cabecalho_mega_virada_detalhes_aposta);
+//            toolbar.setBackgroundResource(R.drawable.rodape_mega_sena);
+//        } else
+        if (isEspecial(aposta.getTipoConcurso().getValor())) {
+            toolbar.setBackgroundResource(estiloMKP.getImagemEspecialSimples());
         } else {
             toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
         }
