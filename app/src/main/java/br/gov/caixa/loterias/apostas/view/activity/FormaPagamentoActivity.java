@@ -198,7 +198,8 @@ public class FormaPagamentoActivity extends LoteriasBaseAppActivity {
 		List<Integer> bandeirasRecargaPay = new ArrayList<>();
 
 		//Lista de bandeiras de cartão de crédito que são aceitas pelo Recarga Pay
-		bandeirasRecargaPay.add(R.drawable.ic_bandeira_elo);
+		//bandeirasRecargaPay.add(R.drawable.ic_bandeira_elo);
+		bandeirasRecargaPay.add(R.drawable.elo_fundo_claro);
 		bandeirasRecargaPay.add(R.drawable.ic_bandeira_master);
 		bandeirasRecargaPay.add(R.drawable.ic_bandeira_visa);
 		return bandeirasRecargaPay;
@@ -219,7 +220,8 @@ public class FormaPagamentoActivity extends LoteriasBaseAppActivity {
 
 		bandeirasMercadoPago.add(R.drawable.ic_bandeira_amex2);
 		//listaBrandeirasMercadoPago.add(R.drawable.ic_bandeira_diners); -> Bandeira excluida.
-		bandeirasMercadoPago.add(R.drawable.ic_bandeira_elo);
+		//bandeirasMercadoPago.add(R.drawable.ic_bandeira_elo);
+		bandeirasMercadoPago.add(R.drawable.elo_fundo_claro);
 		bandeirasMercadoPago.add(R.drawable.ic_hipercard);
 		bandeirasMercadoPago.add(R.drawable.ic_bandeira_master);
 		bandeirasMercadoPago.add(R.drawable.ic_bandeira_visa);
