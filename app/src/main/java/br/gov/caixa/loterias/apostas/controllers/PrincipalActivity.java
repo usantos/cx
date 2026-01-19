@@ -167,6 +167,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private static int contRegressivo = 1;
     private int anInt;
     private int ano;
+    Boolean expandido = false;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -245,7 +246,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
         TextView texto = recolherMenu.findViewById(R.id.nav_user_text);
         ImageView arrow = recolherMenu.findViewById(R.id.imagemMaisOpcoes);
-
+        TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
+        nomeCaixa.setHint("Título, Botão, Recolhido");
+        nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
 
         buttonHomeBet.setOnClickListener(view -> clickButtonHomeBet());
 
@@ -272,7 +275,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         relativeLayoutContentLerBilhetes.setOnClickListener(view -> clickRelativeLayoutContentLerBilhetes());
 
         recolherMenu.setOnClickListener(v -> {
-            boolean expandido = texto.getVisibility() == View.VISIBLE;
+            expandido = texto.getVisibility() == View.VISIBLE;
+            String hint = "Título, Botão, " + (expandido ? "Recolhido" : "Expandido");
+            nomeCaixa.setHint(hint);
+            nomeCaixa.announceForAccessibility(getString(R.string.cef_id_tit) + hint);
             texto.setVisibility(expandido ? View.GONE : View.VISIBLE);
             arrow.setRotation(expandido ? 0f : 180f);
         });
@@ -332,7 +338,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
         TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
         nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
-        nomeCaixa.setHint("Título");
+        String hint = "Título, Botão, " + (expandido ? "Recolhido" : "Expandido");
+        nomeCaixa.setHint(hint);
         TextView botaoSair = findViewById(R.id.txtSairMenu);
         botaoSair.setContentDescription(getString(R.string.title_sair) + ":Botão");
 
