@@ -113,7 +113,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
 		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
-		aplicaEstilo();
+		aplicaEstilo(bolao);
 		preencheConteudo(bolao);
 		atualizaQuantidadeTextView(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
 		btnAddCarrinho.setText(FonteUtils.textCaixaSTDBold(activity,activity.getResources().getString(R.string.adicionarAoCarrinho)));
@@ -125,7 +125,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		});
 	}
 
-	private void aplicaEstilo() {
+	private void aplicaEstilo(CotasBolaoDTO bolao) {
 		int corClara = ContextCompat.getColor(activity, estilo.getCorClara());
 		int corEscura = ContextCompat.getColor(activity, estilo.getCorEscura());
 		int corLetraLista = ContextCompat.getColor(activity, estilo.getCorLetraLista());
@@ -133,9 +133,16 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		int corFonteFundoEscuro = ContextCompat.getColor(activity, estilo.getCorFonteFundoEscuro());
 
 		if (isFiltradoLoterica()) {
-			cabecalhoFiltrado.setBackgroundColor(corClara);
-			trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
-			icTrevoBolao.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+			if (isEspecial(bolao.getTipoConcurso())) {
+				trapezio.setVisibility(View.INVISIBLE);
+				icTrevoBolao.setVisibility(View.GONE);
+				headerEspeciais.setVisibility(View.VISIBLE);
+				headerEspeciais.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getImagemEspecialCarrossel()));
+			} else {
+				cabecalhoFiltrado.setBackgroundColor(corClara);
+				trapezio.setBackground(ContextCompat.getDrawable(activity, estilo.getTrapezio()));
+				icTrevoBolao.setImageDrawable(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrevoFundoEscuro()));
+			}
 			modalidade.setTextColor(corFonteFundoClaro);
 			valorPremio.setTextColor(corLetraLista);
 			concurso.setTextColor(corLetraLista);
