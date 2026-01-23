@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.adapter.baseadapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -25,7 +24,6 @@ import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.AutomacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class NumerosSuperSeteAdapter extends BaseAdapter {
 
@@ -40,7 +38,7 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 	//endregion
 
 	//region Initialization Methods
-	public NumerosSuperSeteAdapter(int typeGameColorDark, Activity parentActivity, List<Integer> dezenasSelecionadas) {
+	public NumerosSuperSeteAdapter(int typeGameColorDark, Context parentActivity, List<Integer> dezenasSelecionadas) {
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.context = parentActivity;
 		this.corSuperSete = typeGameColorDark;
@@ -48,7 +46,7 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		preencheNumeros();
 	}
 
-	public NumerosSuperSeteAdapter(ConfiguracaoNumerosSuperSete configuracao, Activity parentActivity, List<Integer> dezenasSelecionadas, List<Integer> listaNumerosSelecionados) {
+	public NumerosSuperSeteAdapter(ConfiguracaoNumerosSuperSete configuracao, Context parentActivity, List<Integer> dezenasSelecionadas, List<Integer> listaNumerosSelecionados) {
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.context = parentActivity;
 		this.configuracao = configuracao;
@@ -56,7 +54,7 @@ public class NumerosSuperSeteAdapter extends BaseAdapter {
 		preencheNumeros();
 	}
 
-	public NumerosSuperSeteAdapter(int typeGameColorDark, Activity parentActivity, List<Integer> dezenasSelecionadas, SuperSeteEnum coluna) {
+	public NumerosSuperSeteAdapter(int typeGameColorDark, Context parentActivity, List<Integer> dezenasSelecionadas, SuperSeteEnum coluna) {
 		this.dezenasSelecionadas = dezenasSelecionadas;
 		this.context = parentActivity;
 		this.corSuperSete = typeGameColorDark;
