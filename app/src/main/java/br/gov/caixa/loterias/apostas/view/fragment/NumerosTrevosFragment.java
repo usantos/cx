@@ -130,7 +130,7 @@ public class NumerosTrevosFragment extends Fragment {
 
 	private void setHeight(View view) {
 		int pxNumeros = getPx(getQtdColunas(listaNumerosInteiros));
-		int pxTrevos = getPx(getQtdColunas(listaTrevosInteiros)) + 55;
+		int pxTrevos = getPx(getQtdColunas(listaTrevosInteiros)) + 155;
 
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		param.height = pxNumeros + pxTrevos + 155;
