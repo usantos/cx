@@ -31,6 +31,7 @@
         <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:fillViewport="true"
                 app:layout_constraintTop_toTopOf="@+id/layout_detalhes_bolao"
                 app:layout_constraintBottom_toTopOf="@id/id_fg_rodape">
 
@@ -254,6 +255,7 @@
                         android:id="@+id/id_lista_jogos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
                         app:layout_constraintTop_toBottomOf="@id/id_linha_divisoria2"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"/>
