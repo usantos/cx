@@ -125,7 +125,6 @@ public class BarraTituloBolaoFragment extends Fragment {
         if (isEspecial){
             if(estilo.getFundoEspecial() != -1) backgroundModalidade.setBackground(AppCompatResources.getDrawable(getContext(), estilo.getFundoEspecial()));
             if(estilo.getTrapezioEspecial() != -1) layoutTrevo.setBackground(ContextCompat.getDrawable(getContext(), estilo.getTrapezioEspecial()));
-
         }else{
             layoutTrevo.setBackground(ContextCompat.getDrawable(getContext(), estilo.getTrapezio()));
             backgroundModalidade.setBackgroundColor(ContextCompat.getColor(getContext(), corBackground));

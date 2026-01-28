@@ -156,10 +156,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         } catch (Exception e){
             Log.e("ERROR", "Não foi possível adiquirir os elementos da barra de título");
         }
+
+        estilo = new EstiloModalidadeMKP(tipoJogo);
+
         preencheBarraTitulo();
         setViews();
 
-        estilo = new EstiloModalidadeMKP(tipoJogo);
         zerarApostas();
         if(aposta != null){
             mesDeSorteCartela = aposta.getMesDeSorte();
@@ -177,30 +179,31 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     }
 
     private int getCorBackgroundBarraTitulo() {
-        switch (tipoJogo) {
-            case QUINA:
-                return R.color.quina_claro_mkp;
-            case LOTOFACIL:
-                return R.color.lotofacil_claro_mkp;
-            case DUPLA_SENA:
-                return R.color.dupla_sena_claro_mkp;
-            case TIMEMANIA:
-                return R.color.timemania_claro_mkp;
-            case LOTOMANIA:
-                return R.color.lotomania_claro_mkp;
-            case LOTECA:
-                return R.color.loteca_claro_mkp;
-            case LOTOGOL:
-                return R.color.lotogolclaro;
-            case DIA_DE_SORTE:
-                return R.color.dia_sorte_claro_mkp;
-            case SUPER_7:
-                return R.color.super_sete_claro_mkp;
-            case MAIS_MILIONARIA:
-                return R.color.milionaria_claro_mkp;
-            default:
-                return R.color.mega_verde_claro_mkp;
-        }
+//        switch (tipoJogo) {
+//            case QUINA:
+//                return R.color.quina_claro_mkp;
+//            case LOTOFACIL:
+//                return R.color.lotofacil_claro_mkp;
+//            case DUPLA_SENA:
+//                return R.color.dupla_sena_claro_mkp;
+//            case TIMEMANIA:
+//                return R.color.timemania_claro_mkp;
+//            case LOTOMANIA:
+//                return R.color.lotomania_claro_mkp;
+//            case LOTECA:
+//                return R.color.loteca_claro_mkp;
+//            case LOTOGOL:
+//                return R.color.lotogolclaro;
+//            case DIA_DE_SORTE:
+//                return R.color.dia_sorte_claro_mkp;
+//            case SUPER_7:
+//                return R.color.super_sete_claro_mkp;
+//            case MAIS_MILIONARIA:
+//                return R.color.milionaria_claro_mkp;
+//            default:
+//                return R.color.mega_verde_claro_mkp;
+//        }
+        return estilo.getCorClara();
     }
 
     private String getDataSorteio() {
