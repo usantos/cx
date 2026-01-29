@@ -9,7 +9,6 @@
     <item android:gravity="bottom"
         android:id="@+id/layer_divider">
 
-        android:id="@+id/layer_divider"
         <shape android:shape="rectangle">
             <size android:height="1dp"/>
             <solid android:color="@color/linhaDivisa"/>
