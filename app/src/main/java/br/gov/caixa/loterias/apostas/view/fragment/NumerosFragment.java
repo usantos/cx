@@ -131,7 +131,7 @@ public class NumerosFragment extends Fragment {
 		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
 
 		LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		param.height = px + 150;
+		param.height = px + 175;
 		view.setLayoutParams(param);
 	}
 
