@@ -8,8 +8,7 @@
         android:id="@+id/layoutItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:paddingVertical="25dp">
+        android:minHeight="55dp">
 
         <ImageView
             android:id="@+id/imagemItemGroupSideMenu"
