@@ -106,7 +106,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 				mostraTodaModalidades(holder, true);
 			} else {
 				if (isEspecial) {
-					holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(modalidade)));
+					holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(estilo)));
 					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
 				} else {
 					holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, estilo.getCorClara()));
@@ -183,20 +183,12 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		listener.itemClick(null, 0);
 	}
 
-	private int fundoImagemEspecial(ModalidadeEnum modalidade) {
-		if (modalidade == ModalidadeEnum.DUPLA_SENA) {
-			return R.drawable.dupla_pascoa;
+	private int fundoImagemEspecial(EstiloModalidadeMKP estilo) {
+		if (estilo.getImagemEspecialQuadrada() != -1) {
+			return estilo.getImagemEspecialQuadrada();
+		} else {
+			return R.color.branco;
 		}
-		if (modalidade == ModalidadeEnum.QUINA) {
-			return R.drawable.quina_sao_joao;
-		}
-		if (modalidade == ModalidadeEnum.LOTOFACIL) {
-			return R.drawable.lotofacil_independencia;
-		}
-		if (modalidade == ModalidadeEnum.MEGA_SENA) {
-			return R.drawable.rodape_mega_sena;
-		}
-		return R.color.branco;
 	}
 
 	private void mostraTodaModalidades(ModalidadeViewHolder holder, boolean selecionado) {

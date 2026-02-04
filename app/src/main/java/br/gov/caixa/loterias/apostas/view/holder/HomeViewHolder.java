@@ -41,6 +41,7 @@ import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSingleton;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
@@ -210,27 +211,37 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 		this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
 
-		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo)) || modalidade.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA) {
+		if (modalidade.getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
 			this.titulo.setVisibility(View.GONE);
 			this.clEspeciais.setVisibility(View.VISIBLE);
-			switch (modalidade.getTipoModalidade()){
-				case MEGA_SENA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
-					break;
-				case DUPLA_SENA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.dupla_pascoa));
-					break;
-				case LOTOFACIL:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
-					break;
-				case QUINA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.quina_sao_joao_novo));
-					break;
-				default:
-					this.titulo.setVisibility(View.VISIBLE);
-					this.clEspeciais.setVisibility(View.GONE);
-			}
+			this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
 		}
+
+//		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo)) || modalidade.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA) {
+//			this.titulo.setVisibility(View.GONE);
+//			this.clEspeciais.setVisibility(View.VISIBLE);
+//			switch (modalidade.getTipoModalidade()){
+//				case MEGA_SENA:
+//					//this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
+//					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
+//					break;
+//				case DUPLA_SENA:
+//					//this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.dupla_pascoa));
+//					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
+//					break;
+//				case LOTOFACIL:
+//					//this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
+//					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
+//					break;
+//				case QUINA:
+//					//this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.quina_sao_joao_novo));
+//					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
+//					break;
+//				default:
+//					this.titulo.setVisibility(View.VISIBLE);
+//					this.clEspeciais.setVisibility(View.GONE);
+//			}
+//		}
 
 		if (modalidade.getConcurso().getEstimativa() != null &&
 			modalidade.getConcurso().getEstimativa().compareTo(BigDecimal.ZERO) != 0) {

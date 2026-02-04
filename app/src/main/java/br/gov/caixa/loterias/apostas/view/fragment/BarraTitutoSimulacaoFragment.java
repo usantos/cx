@@ -117,27 +117,12 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 
 	private void aplicaEstilo() {
 		background.setBackgroundColor(ContextCompat.getColor(getContext(), corBackground));
-		if (isEspecial && estilo.getImagemEspecialDetalhes() != -1 && showBackground){
-			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
+		//if (isEspecial && estilo.getImagemEspecialDetalhes() != -1 && showBackground){
+			//background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
+		if (isEspecial && estilo.getImagemEspecialSimples() != -1 && showBackground){
+			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialSimples()));
 		}
 
-		if (isEspecial && showBackground) {
-			switch (modalidade){
-				case MEGA_SENA:
-					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_mega_da_virada_superior));
-					break;
-				case DUPLA_SENA:
-					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_dupla_de_pascoa_superior));
-					break;
-				case LOTOFACIL:
-					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_lotofacil_da_independencia_superior));
-					break;
-				case QUINA:
-					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_sao_joao_superior));
-					break;
-				default:
-			}
-		}
 	}
 
 	private void preencheDados() {
