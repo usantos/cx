@@ -82,8 +82,8 @@ public class ApostaFavoritaRepository extends AppRepository {
         });
     }
 
-    public void incluirApostaFavorita(Long idApostaFavorita, int valorTipoConcurso, int qtdTeimosinhas, OnSilceListener<CarrinhoDTO> listener) {
-        ServicoFactoryUtil.getApostaService().postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
+    public void incluirApostaFavorita(Long idApostaFavorita, int valorTipoConcurso, int qtdTeimosinhas, Boolean espelho, OnSilceListener<CarrinhoDTO> listener) {
+        ServicoFactoryUtil.getApostaService().postIncluirApostaFavoritaCarrinho(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, espelho, new RequestListener<CarrinhoDTOResponse>() {
             @Override
             public void onResponse(CarrinhoDTOResponse response) {
                 AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_efetuou_inclusao_favorito_no_carrinho));

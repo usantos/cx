@@ -29,13 +29,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
-import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.holder.ModalidadeHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 

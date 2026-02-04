@@ -439,12 +439,18 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
                 selectTipoConcurso = null;
                 todasModalidadesAtiva = true;
                 prognosticoMaximo = 80; //Cartela com todas as modalidades selecionada
-            } else {
-                selectModalidade = listModalidadeDisponivel.get(position).getModalidade();
-                selectTipoConcurso = listModalidadeDisponivel.get(position).getTipoConcurso();
-                if(selectModalidade != null){
-                    todasModalidadesAtiva = false;
-                    atualizaVolantes(selectModalidade);
+            }
+            else {
+                if (listModalidadeDisponivel != null && position >= 0 && position < listModalidadeDisponivel.size()) {
+                    selectModalidade = listModalidadeDisponivel.get(position).getModalidade();
+                    selectTipoConcurso = listModalidadeDisponivel.get(position).getTipoConcurso();
+                    if (selectModalidade != null) {
+                        todasModalidadesAtiva = false;
+                        atualizaVolantes(selectModalidade);
+                    }
+                } else {
+                    Log.w("FiltraMarketplace", "Posição inválida ou lista vazia. position=" + position);
+                    return;
                 }
             }
 

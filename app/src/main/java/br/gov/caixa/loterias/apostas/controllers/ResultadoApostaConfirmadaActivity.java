@@ -184,6 +184,8 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
             contentResultadoPremiado.getTipoApostaLinhaView().setupView(listTipoApostaLinha,
                     backGroundColorRes, textColorRes, iconColorRes,
                     TipoApostaLinhaView.TriangleDirection.NONE);
+        } else {
+            contentResultadoPremiado.getTipoApostaLinhaView().setVisibility(View.GONE);
         }
     }
 

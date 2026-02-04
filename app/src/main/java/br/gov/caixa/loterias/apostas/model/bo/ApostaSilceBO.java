@@ -553,6 +553,7 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
     public void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita,
                                                   final Integer valorTipoConcurso,
                                                   final Integer qtdTeimosinhas,
+                                                  final Boolean espelho,
                                                   final RequestListener<CarrinhoDTOResponse> listener) {
         String url = ServerMethods.CARRINHOS_INCLUIR_APOSTA_FAVORITA_PATH.replace("{idApostaFavorita}", String.valueOf( idApostaFavorita ));
         url = url.replace("{valorTipoConcurso}", String.valueOf(valorTipoConcurso));

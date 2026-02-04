@@ -562,9 +562,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
     private void showMenu() {
         if (relativeContentPrincipal.isEnabled()) {
-            AnimacaoAbrirMenuRapido(actionApresentarTrevo);
-            buttonHomeBet.setVisibility(View.GONE);
-            buttonHomeBolao.setVisibility(View.GONE);
+            if (infiniteAdapter != null){
+                AnimacaoAbrirMenuRapido(actionApresentarTrevo, infiniteAdapter);
+                buttonHomeBet.setVisibility(View.GONE);
+                buttonHomeBolao.setVisibility(View.GONE);
+            }
         } else {
             AnimacaoFecharMenuRapido(actionApresentarTrevo);
         }
@@ -645,33 +647,35 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         });
     }
 
-    private void AnimacaoAbrirMenuRapido(View v) {
+    private void AnimacaoAbrirMenuRapido(View v, InfiniteScrollAdapter infiniteScrollAdapter) {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_menu_trevo));
 
-        relativeContentPrincipal.setEnabled(false);
-        actionApresentarTrevo.setEnabled(false);
-        atalhoRapidoLoterias.setVisibility(View.VISIBLE);
-        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
-        AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
-                v,
-                relativeContentPrincipal,
-                relativeLayoutContentRapidao,
-                relativeLayoutContentLerBilhetes,
-                rlJogoResponsavel,
-                relativeLayoutContentRepassados,
-                rlMsgDisque180,
-                relativeBlankView,
-                atalhoRapidoLoterias,
-                buttonHomeBet,
-                actionApresentarTrevo,
-                PrincipalActivity.this,
-                estilo,
-                onAnimacaoAcessoRapido());
-        int positionTopRodape = (int) relativeBlankView.getY();
+        if(infiniteScrollAdapter != null){
+            relativeContentPrincipal.setEnabled(false);
+            actionApresentarTrevo.setEnabled(false);
+            atalhoRapidoLoterias.setVisibility(View.VISIBLE);
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getTipoModalidade());
+            AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
+                    v,
+                    relativeContentPrincipal,
+                    relativeLayoutContentRapidao,
+                    relativeLayoutContentLerBilhetes,
+                    rlJogoResponsavel,
+                    relativeLayoutContentRepassados,
+                    rlMsgDisque180,
+                    relativeBlankView,
+                    atalhoRapidoLoterias,
+                    buttonHomeBet,
+                    actionApresentarTrevo,
+                    PrincipalActivity.this,
+                    estilo,
+                    onAnimacaoAcessoRapido());
+            int positionTopRodape = (int) relativeBlankView.getY();
 
-        int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
+            int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
 
-        animacoesAcessoRapido.animacaoDescerContent(positionTopRodape - itemSize);
+            animacoesAcessoRapido.animacaoDescerContent(positionTopRodape - itemSize);
+        }
     }
 
     private OnAnimacaoViewListener onAnimacaoAcessoRapido() {

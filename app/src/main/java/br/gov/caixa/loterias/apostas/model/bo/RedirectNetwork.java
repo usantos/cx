@@ -141,22 +141,26 @@ public class  RedirectNetwork {
 
     public static void checkRedirectCompraAsync(VolleyError error, final Activity activity){
         boolean lancouEvento = false;
-        if (error.networkResponse == null) {
-            AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO, error);
-
-            if (!AppUtils.isNetworkAvailable(activity)) {
-                if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
-                    ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
-                }
+        if (error == null || error.networkResponse == null) {
+            if (error == null){
+                showAlertToRedirectMinhasCompras(activity);
                 return;
             } else {
-                String msg = MensagensNetwork.setMensagem(error, activity);
-                if (msg.equalsIgnoreCase(activity.getString(R.string.sistema_indisponivel))){
-                       showAlertToRedirectMinhasCompras(activity);
+                AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO, error);
+                if (!AppUtils.isNetworkAvailable(activity)) {
+                    if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
+                        ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
+                    }
+                    return;
                 } else {
-                    ViewUtils.alertTitleButton(activity, R.string.label_atencao, msg, activity.getResources().getString(R.string.ok));
+                    String msg = MensagensNetwork.setMensagem(error, activity);
+                    if (msg.equalsIgnoreCase(activity.getString(R.string.sistema_indisponivel))){
+                        showAlertToRedirectMinhasCompras(activity);
+                    } else {
+                        ViewUtils.alertTitleButton(activity, R.string.label_atencao, msg, activity.getResources().getString(R.string.ok));
+                    }
+                    return;
                 }
-                return;
             }
         }
         NetworkResponse response = error.networkResponse;

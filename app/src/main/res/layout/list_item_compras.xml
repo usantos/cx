@@ -26,19 +26,20 @@
                 android:id="@+id/TipoPremioListaComprasTextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
+                android:layout_weight="0.5"
                 android:fontFamily="@font/caixa_std_bold"
                 android:textSize="14.2sp"
-                tools:text="Mega-sena" />
+                tools:text="Lotofácil da\nIndependencia" />
 
             <TextView
                 android:id="@+id/seusNumerosItemListaComprasTextView"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
+                android:layout_weight="0.5"
                 android:fontFamily="@font/caixa_std_regular"
                 android:textSize="12.1sp"
                 tools:text="Seus números" />
+
         </LinearLayout>
 
         <LinearLayout

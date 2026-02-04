@@ -147,7 +147,7 @@ public class NumerosSuperSeteFragment extends Fragment {
 				}
 			} else {
 				for (List<Integer> lista: matrizInteiros) {
-					listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.super_sete_claro_mkp, getActivity(), lista));
+					listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.super_sete_claro_mkp, getContext(), lista));
 				}
 			}
 
@@ -155,7 +155,7 @@ public class NumerosSuperSeteFragment extends Fragment {
 			int cont = 0;
 			for (List<Integer> lista: matrizInteiros) {
 				List<Integer> listaMarcada = matrizMarcada != null ? matrizMarcada.get(cont): null;
-				listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getActivity(), lista, listaMarcada));
+				listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(configuracao, getContext(), lista, listaMarcada));
 				cont++;
 			}
 		}

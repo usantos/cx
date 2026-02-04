@@ -427,8 +427,8 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
             @Override
             public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
                 DialogFragmentUtils.startEscolhaModalidade(getSupportFragmentManager(), arrayConcursos, aposta.getId(),
-                        getResources().getString(R.string.adicionar_carrinho_favoritas_view), btnText,false,
-                        (tipoConcurso, teimosinha) -> {
+                        getResources().getString(R.string.adicionar_carrinho_favoritas_view), btnText,false, false,
+                        (tipoConcurso, teimosinha, espelho) -> {
                             IdentificaoDeUmaApostaDas8Modalidades clone = aposta;
                             if (!tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())) {
                                 clone = ApostaUtils.converteTipoDeConcurso(aposta);

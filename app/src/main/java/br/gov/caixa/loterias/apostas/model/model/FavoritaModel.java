@@ -13,17 +13,16 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.FavoritasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
-import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.AgrupadorDTOApostaFavoritaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
@@ -35,7 +34,6 @@ import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
-import br.gov.caixa.loterias.apostas.view.holder.FavoritaHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnEscolheModalidadeDialogListener;
 
 public class FavoritaModel extends AppModel {
@@ -172,12 +170,12 @@ public class FavoritaModel extends AppModel {
 				if (modalidade.getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.NORMAL) {
 					temEspecialENormal = true;
 					if (modalidade.getParametroJogo().getTeimosinhas() != null && modalidade.getParametroJogo().getTeimosinhas().size() > 0) {
-						popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
+						popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita, temApostaEspelho(modalidade.getParametroJogo().getConcurso().getModalidade()));
 						return;
 					}
 				} else {
 					if (temEspecialENormal) {
-						popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
+						popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita, temApostaEspelho(modalidade.getParametroJogo().getConcurso().getModalidade()));
 						return;
 					}
 				}
@@ -188,11 +186,11 @@ public class FavoritaModel extends AppModel {
 				AlertDialogUtils.dismiss();
 			} else {
 				if (arrayConcursos.get(0).getParametroJogo().getConcurso().getTipoConcurso() == TipoConcursoEnum.ESPECIAL) {
-					adicionarCarrinhoCallWebservice(idApostaFavorita, 2, 0, listener);
+					adicionarCarrinhoCallWebservice(idApostaFavorita, 2, 0, null,listener);
 				} else {
 					AlertDialogUtils.dismiss();
 					if (arrayConcursos.get(0).getParametroJogo().getTeimosinhas().size() > 0) {
-						popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita);
+						popupAdicionarCarrinhoFavoritas(arrayConcursos, idApostaFavorita, temApostaEspelho(arrayConcursos.get(0).getParametroJogo().getConcurso().getModalidade()));
 						return;
 					}
 				}
@@ -200,7 +198,11 @@ public class FavoritaModel extends AppModel {
 		}
 	}
 
-	private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita) {
+	private boolean temApostaEspelho(ModalidadeEnum modalidade) {
+		return modalidade == ModalidadeEnum.LOTOMANIA;
+	}
+
+	private void popupAdicionarCarrinhoFavoritas(List<ParametroSimulacao> arrayConcursos, Long idApostaFavorita, boolean temEspelho) {
 		FragmentManager fm = ((FavoritasActivity) getActivity()).getSupportFragmentManager();
 //		AdicionarCarrinhoFavoritasView adicionarCarrinhoFavoritasView = AdicionarCarrinhoFavoritasView.newInstance();
 //		//adicionarCarrinhoFavoritasView.arrayConcursos = arrayConcursos;
@@ -210,17 +212,16 @@ public class FavoritaModel extends AppModel {
 //		adicionarCarrinhoFavoritasView.show(fm, getActivity().getResources().getString(R.string.adicionar_carrinho_favoritas_view));
 
 		DialogFragmentUtils.startEscolhaModalidade(fm, arrayConcursos, idApostaFavorita,
-				((FavoritasActivity) getActivity()).getResources().getString(R.string.adicionar_carrinho_favoritas_view),null, true,
+				((FavoritasActivity) getActivity()).getResources().getString(R.string.adicionar_carrinho_favoritas_view),null, true, temEspelho,
 				onDialogFragmentListener(idApostaFavorita));
 	}
 
 	private OnEscolheModalidadeDialogListener onDialogFragmentListener(Long idApostaFavorita) {
-		return (Integer tipoConcurso, int qtdTeimosinhas) -> {
-			Activity activity = ((FavoritasActivity) getActivity());
+		return (Integer tipoConcurso, int qtdTeimosinhas, Boolean espelho) -> {
+			Activity activity = getActivity();
 			final AlertDialog loadViewProgress = LoadingViewLoterias.show(activity);
-			final ApostaSilceBO apostaSilceBO = ApostaSilceBO.getInstance();
 
-			ServicoFactoryUtil.getApostaService().postIncluirApostaFavoritaCarrinho(idApostaFavorita, tipoConcurso, qtdTeimosinhas, new RequestListener<CarrinhoDTOResponse>() {
+			ServicoFactoryUtil.getApostaService().postIncluirApostaFavoritaCarrinho(idApostaFavorita, tipoConcurso, qtdTeimosinhas, espelho, new RequestListener<CarrinhoDTOResponse>() {
 				@Override
 				public void onResponse(CarrinhoDTOResponse response) {
 					loadViewProgress.dismiss();
@@ -250,8 +251,8 @@ public class FavoritaModel extends AppModel {
 
 
 	private void adicionarCarrinhoCallWebservice(final Long idApostaFavorita, final int valorTipoConcurso,
-												 final int qtdTeimosinhas, OnSilceListener<CarrinhoDTO> listener) {
-		repository.incluirApostaFavorita(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, listener);
+												 final int qtdTeimosinhas, Boolean espelho, OnSilceListener<CarrinhoDTO> listener) {
+		repository.incluirApostaFavorita(idApostaFavorita, valorTipoConcurso, qtdTeimosinhas, espelho, listener);
 
 	}
 
