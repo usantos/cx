@@ -109,7 +109,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/imgBandeira3"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imgBandeira1"
-                tools:src="@drawable/ic_bandeira_elo" />
+                tools:src="@drawable/elo_fundo_claro" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgBandeira3"

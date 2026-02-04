@@ -68,7 +68,8 @@ public class CartaoMeioPagamentoHolder extends LoteriasHolder<RetornoCartao> imp
 			case "diners":
 				return context.getDrawable(R.drawable.ic_diners);
 			case "elo":
-				return context.getDrawable(R.drawable.ic_bandeira_elo);
+				//return context.getDrawable(R.drawable.ic_bandeira_elo);
+				return context.getDrawable(R.drawable.elo_fundo_claro);
 			case "amex":
 			case "american express":
 			case "americanexpress":
