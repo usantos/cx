@@ -13,8 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -36,16 +36,9 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.Lifecycle;
 
-import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
-import br.gov.caixa.loterias.apostas.utils.ComboUtil;
-import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
-import br.gov.caixa.loterias.apostas.model.model.ComboModel;
-import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
@@ -64,6 +57,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
+import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.TutorialMaisMilionariaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
@@ -74,6 +68,7 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnAnimacaoViewListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
@@ -89,13 +84,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSin
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.TimerNotificarCotasExpiradasSingleton;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.model.dao.DBLoteriasHelper;
+import br.gov.caixa.loterias.apostas.model.model.ComboModel;
 import br.gov.caixa.loterias.apostas.model.model.LoginSilceModel;
 import br.gov.caixa.loterias.apostas.model.model.ParametrosSimulacaoModel;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AmbienteEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.ComboUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
@@ -145,7 +144,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             rlMsgDisque180;
     private LinearLayout atalhoRapidoLoterias;
     private ExpandableListView sideMenuExpandableListView;
-    private ConstraintLayout viewSair, recolherMenu;
+    private ConstraintLayout viewSair;
+    private ConstraintLayout recolherMenu;
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
@@ -167,6 +167,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private static int contRegressivo = 1;
     private int anInt;
     private int ano;
+    Boolean expandido = false;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -243,6 +244,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         this.sideMenuExpandableListView = findViewById(R.id.sideMenuExpandableListView);
         this.viewSair = findViewById(R.id.viewSair);
         View view_id_fg_somador_carrinho = findViewById(R.id.id_fg_somador_carrinho);
+        TextView texto = recolherMenu.findViewById(R.id.nav_user_text);
+        ImageView arrow = recolherMenu.findViewById(R.id.imagemMaisOpcoes);
+        TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
+        nomeCaixa.setHint("Título, Botão, Recolhido");
+        nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
 
         buttonHomeBet.setOnClickListener(view -> clickButtonHomeBet());
 
@@ -268,7 +274,14 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
         relativeLayoutContentLerBilhetes.setOnClickListener(view -> clickRelativeLayoutContentLerBilhetes());
 
-        recolherMenu.setOnClickListener(view -> clickRecolherMenu());
+        recolherMenu.setOnClickListener(v -> {
+            expandido = texto.getVisibility() == View.VISIBLE;
+            String hint = "Título, Botão, " + (expandido ? "Recolhido" : "Expandido");
+            nomeCaixa.setHint(hint);
+            nomeCaixa.announceForAccessibility(getString(R.string.cef_id_tit) + hint);
+            texto.setVisibility(expandido ? View.GONE : View.VISIBLE);
+            arrow.setRotation(expandido ? 0f : 180f);
+        });
     }
 
     @Override
@@ -325,7 +338,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         }
         TextView nomeCaixa = recolherMenu.findViewById(R.id.nav_user);
         nomeCaixa.setContentDescription(getString(R.string.cef_id_tit));
-        nomeCaixa.setHint("Título");
+        String hint = "Título, Botão, " + (expandido ? "Recolhido" : "Expandido");
+        nomeCaixa.setHint(hint);
         TextView botaoSair = findViewById(R.id.txtSairMenu);
         botaoSair.setContentDescription(getString(R.string.title_sair) + ":Botão");
 
@@ -945,11 +959,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             AnimacaoFecharMenuRapido(relativeContentPrincipal);
             startActivity(new Intent(PrincipalActivity.this, LerBilhetesActivity.class));
         }
-    }
-
-
-    private void clickRecolherMenu() {
-        onBackPressed();
     }
 
     private void AbrirMenusGroup(DrawerEnum item) {
