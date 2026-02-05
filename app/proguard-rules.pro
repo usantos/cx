@@ -23,3 +23,93 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Firebase
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+
+# AppAuth
+-keep class net.openid.appauth.** { *; }
+-dontwarn net.openid.appauth.**
+
+# Gson
+-keep class com.google.gson.** { *; }
+-dontwarn com.google.gson.**
+
+# Glide
+-keep class com.bumptech.glide.** { *; }
+-keep class com.bumptech.glide.load.** { *; }
+-dontwarn com.bumptech.glide.**
+
+# ZXing (scanner de código de barras)
+-keep class com.journeyapps.barcodescanner.** { *; }
+-dontwarn com.journeyapps.barcodescanner.**
+
+# AppCenter
+-keep class com.microsoft.appcenter.** { *; }
+-dontwarn com.microsoft.appcenter.**
+
+# Joda-Time
+-keep class org.joda.time.** { *; }
+-dontwarn org.joda.time.**
+
+# Volley
+-keep class com.android.volley.** { *; }
+-dontwarn com.android.volley.**
+
+# Lottie
+-keep class com.airbnb.lottie.** { *; }
+-dontwarn com.airbnb.lottie.**
+
+# RootBeer
+-keep class com.scottyab.rootbeer.** { *; }
+-dontwarn com.scottyab.rootbeer.**
+
+# MercadoLibre SDK
+-keep class com.mercadolibre.android.device.** { *; }
+-dontwarn com.mercadolibre.android.device.**
+
+# Topaz OFD
+-keep class br.com.topaz.** { *; }
+-dontwarn br.com.topaz.**
+
+# Swagger
+-keep class io.swagger.annotations.** { *; }
+-dontwarn io.swagger.annotations.**
+
+# Apache Commons
+-keep class org.apache.commons.** { *; }
+-dontwarn org.apache.commons.**
+
+# MaskedEditText
+-keep class com.github.pinball83.** { *; }
+-dontwarn com.github.pinball83.**
+
+# CurrencyEditText
+-keep class com.github.BlacKCaT27.** { *; }
+-dontwarn com.github.BlacKCaT27.**
+
+# CircleIndicator
+-keep class me.relex.circleindicator.** { *; }
+-dontwarn me.relex.circleindicator.**
+
+# QR Generator
+-keep class androidmads.library.qrgenearator.** { *; }
+-dontwarn androidmads.library.qrgenearator.**
+
+# Flexbox (se estiver usando a versão AAR)
+-keep class com.google.android.flexbox.** { *; }
+-dontwarn com.google.android.flexbox.**
+
+# Reflection (WebView JS interface)
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+# Preserva nomes de arquivos e linhas para stacktraces
+-keepattributes SourceFile,LineNumberTable
+
+# Preserva todos os campos da classe BuildConfig
+-keep class **.BuildConfig {
+    <fields>;
+}
