@@ -36,12 +36,12 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivity;
+import br.gov.caixa.loterias.apostas.controllers.DetalheMinhasApostasTeimosinhaActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
-import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.NovaAPIBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
@@ -52,7 +52,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DadosChavePixDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
@@ -634,9 +633,15 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private void startDetalheComprovante(ComprovanteApostaDTO comprovante) {
-        Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
-                ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
-        startActivity(intent);
+        if (comprovante.getAposta().getQuantidadeTeimosinhas() >0) {
+            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasTeimosinhaActivity.class,
+                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+            startActivity(intent);
+        } else {
+            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+            startActivity(intent);
+        }
     }
 
     private void handleOnItemClickHistorico(ApostaDTO apostaDTO) {

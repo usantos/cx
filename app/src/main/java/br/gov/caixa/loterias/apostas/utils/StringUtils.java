@@ -95,4 +95,9 @@ public class StringUtils {
         String cotaText = (cota <= 1) ? "cota disponível" : "cotas disponíveis";
         return "_"+cota+"_ "+cotaText+" de _"+total+"_";
     }
+
+    public static String transformToHorahMinuto(String hh_mm_ss) {
+        return hh_mm_ss.substring(0,2) + "h" +
+               hh_mm_ss.substring(3,5);
+    }
 }
