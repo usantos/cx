@@ -5,23 +5,49 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 
 public class EstiloModalidadeMKP {
 
-    private final int corClara;
-    private final int corEscura;
-    private final int trapezio;
-    private final int shapeBtnDetalhes;
-    private final int imagemEspecialCarrossel;
-    private final int imagemTriangulo;
-    private final int imagemTrianguloOutline;
-    private final int imagemEspecialDetalhes;
-    private final int corLetraLista;
-    private final int corFonteFundoClaro;
-    private final int corFonteFundoEscuro;
-    private final int trevoFundoClaro;
-    private final int trevoFundoEscuro;
-    private final int tarjaEspecialTrevoCombo;
-    private final int trevoFundoDetalheCombo;
+    private int corClara;
+    private int corEscura;
+    private int trapezio;
+    private int shapeBtnDetalhes;
+    private int imagemEspecialCarrossel;
+    private int imagemTriangulo;
+    private int imagemTrianguloOutline;
+    private int imagemEspecialDetalhes;
+    private int corLetraLista;
+    private int corFonteFundoClaro;
+    private int corFonteFundoEscuro;
+    private int trevoFundoClaro;
+    private int trevoFundoEscuro;
+    private int tarjaEspecialTrevoCombo;
+    private int trevoFundoDetalheCombo;
 
     public EstiloModalidadeMKP(ModalidadeEnum modalidade) {
+        createEstilo(modalidade);
+    }
+
+    public EstiloModalidadeMKP(ModalidadeEnum modalidadeEnum, Boolean isMega30Anos ){
+        createEstilo(modalidadeEnum);
+        if (isMega30Anos){
+            //MEGASENA
+            corClara = R.color.lotofacil_claro_mkp;
+            corEscura = R.color.lotofacil_escuro_mkp;
+            trapezio = R.drawable.background_trapeze_lotofacil_mkp;
+            shapeBtnDetalhes = R.drawable.btn_rounded_lotofacil_outlined;
+            imagemTriangulo = R.drawable.ic_tag_bolao_loto_facil;
+            imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loto_facil;
+            imagemEspecialCarrossel = R.drawable.cabecalho_lotofacil_independencia_carrossel_novo;
+            imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
+            corLetraLista = R.color.lotofacil_claro_mkp;
+            corFonteFundoClaro = R.color.branco;
+            corFonteFundoEscuro = R.color.branco;
+            trevoFundoClaro = R.drawable.trevo_lotofacil_fundo_branco;
+            trevoFundoEscuro = R.drawable.trevo_lotofacil_fundo_escuro;
+            tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_lotofacil_especial_combos;
+            trevoFundoDetalheCombo = R.drawable.trevo_lotofacil_detalhe_combo;
+        }
+    }
+
+    private void createEstilo(ModalidadeEnum modalidade){
         switch (modalidade) {
             case QUINA:
                 corClara = R.color.quina_claro_mkp;
@@ -228,7 +254,6 @@ public class EstiloModalidadeMKP {
                 tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_mega_especial_combos;
                 trevoFundoDetalheCombo = R.drawable.trevo_mega_sena_detalhe_combo;
         }
-
     }
 
     public int getCorClara() {
