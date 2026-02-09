@@ -1,13 +1,18 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
@@ -17,11 +22,11 @@ import java.util.List;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 
 public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
@@ -35,13 +40,19 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
-    private ConstraintLayout clScroll, clResgatePremio;
-    private ImageView ivResgatePremio;
+    private Toolbar toolbar;
+
+    private ConstraintLayout clScroll, clResgatePremio, clResgatePremio2, comprovanteLayout;
+    private ImageView ivResgatePremio, ivResgatePremio2;
+    private ImageView validadePremioImg, ivImageDownload;
 
     private View divider;
+
     private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, horaApostaTxt;
     private TextView statusApostaTxt, tv_val_premio, tv_val_premio_tit;
-    private TextView ResgatarPremioTxt;
+    private TextView ResgatarPremioTxt, ResgatarPremioTxt2;
+
+    private TextView validadePremioText, validadePremioLabel, gerarConprovanteTxt;
 
     private TipoApostaLinhaView tipoApostaLinhaView;
 
@@ -60,11 +71,12 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         pegaExtras();
         setaViews();
         aplicaCores();
-//        setupToolbar();
+        setupToolbar();
 //        setaMetodos();
 
         preencheCabecalho();
         preencheTipoApostaLinha();
+        preencheRodape();
     }
 
     private void pegaExtras() {
@@ -117,7 +129,27 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         }
     }
 
+    private void setupToolbar() {
+        if (isEspecial(aposta.getTipoConcurso().getValor())) {
+            toolbar.setBackgroundResource(estiloMKP.getImagemEspecialSimples());
+        } else {
+            toolbar.setBackgroundColor(ContextCompat.getColor(this, estiloMKP.getCorClara()));
+        }
+        toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
+        setSupportActionBar(toolbar);
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+            supportActionBar.setElevation(0);
+            Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.seta_esquerda);
+            upArrow.mutate().setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()), PorterDuff.Mode.SRC_ATOP);
+            getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        }
+        setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase()+"_"));
+    }
+
     private void setaViews(){
+        toolbar = findViewById(R.id.toolbar);
         clScroll = findViewById(R.id.cl_scroll_content);
 
         concursoLabel = findViewById(R.id.concursoLabel);
@@ -138,7 +170,17 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         ivResgatePremio = findViewById(R.id.ivResgatePremio);
         ResgatarPremioTxt = findViewById(R.id.ResgatarPremioTxt);
 
-    }
+        clResgatePremio2 = findViewById(R.id.clResgatePremio2);
+        ivResgatePremio2 = findViewById(R.id.ivResgatePremio2);
+        ResgatarPremioTxt2 = findViewById(R.id.ResgatarPremioTxt2);
+
+        comprovanteLayout = findViewById(R.id.comprovanteLayout);
+        ivImageDownload = findViewById(R.id.ivImageDownload);
+        gerarConprovanteTxt = findViewById(R.id.gerarConprovanteTxt);
+
+        validadePremioText = findViewById(R.id.validadePremioText);
+        validadePremioLabel = findViewById(R.id.validadePremioLabel);
+        validadePremioImg = findViewById(R.id.validadePremioImage);    }
 
     private void aplicaCores() {
         estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
@@ -157,9 +199,23 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         tv_val_premio_tit.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tv_val_premio.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
-        clResgatePremio.setBackgroundResource(estiloMKP.getCorFonteFundoEscuro());
-        ivResgatePremio.setBackgroundResource(estiloMKP.getCorClara());
-        ResgatarPremioTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorClara()));
+        clResgatePremio.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro())));
+        ivResgatePremio.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+        ResgatarPremioTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+
+        clResgatePremio2.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro())));
+        ivResgatePremio2.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+        ResgatarPremioTxt2.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+
+        comprovanteLayout.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro())));
+        ivImageDownload.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+        gerarConprovanteTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+
+        validadePremioText.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        validadePremioLabel.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+
+        validadePremioImg.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+
 
     }
 
@@ -196,6 +252,14 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
     }
 
+    private void preencheRodape() {
+        if (isApostaPremiada(aposta)){
+            clResgatePremio2.setVisibility(View.VISIBLE);
+        } else {
+            clResgatePremio2.setVisibility(View.GONE);
+        }
+    }
+
     private void preencheTipoApostaLinha() {
         List<TipoApostaLinhaEnum> listTipoApostaLinha = new ArrayList<>();
 
@@ -225,6 +289,11 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private boolean isApostaPremiada(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA;
+        //return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA;
+        return true; //**** APAGAR ***
+    }
+
+    private boolean isEspecial(String tipoConcurso){
+        return tipoConcurso.equalsIgnoreCase("2");
     }
 }
