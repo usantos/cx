@@ -18,4 +18,8 @@ public class EspecialUtils {
         boolean isEspecial = tipoConcurso.toString().equals(TipoConcursoEnum.ESPECIAL.getValor());
         return isEspecial && numeroConcurso.equals(mega30);
     }
+    public static Boolean isMega30(String numeroConcurso, Boolean isEspecial){
+        int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);
+        return isEspecial && numeroConcurso.equals(Integer.toString(mega30));
+    }
 }

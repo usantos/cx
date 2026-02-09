@@ -16,7 +16,9 @@ import java.math.BigDecimal;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -49,6 +51,8 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private EstiloModalidadeMKP estilo;
 
 	private OnItemBolaoListener listener;
+	private Boolean isMega30 = false;
+
 
 	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener) {
 		super(itemView);
@@ -81,11 +85,18 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
-		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
+		isMega30 = EspecialUtils.isMega30(bolao.getConcurso(),bolao.getTipoConcurso());
+		estilo = new EstiloModalidadeMKP(bolao.getModalidade(),isMega30);
+
 		aplicaEstilo();
 		if (isEspecial(bolao.getTipoConcurso())){
-			modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
-		} else {
+			if(isMega30) {
+				modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
+			}
+			else {
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
+			}
+			} else {
 			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
 		}
 		concurso.setText(String.valueOf("Conc. "+bolao.getConcurso()));

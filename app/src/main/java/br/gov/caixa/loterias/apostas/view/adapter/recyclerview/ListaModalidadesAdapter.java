@@ -20,7 +20,9 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
@@ -87,7 +89,8 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		//ModalidadeDisponivelCota itemModalidade = listModalidadeDisponivel.get(position);
 		ModalidadeDisponivelCota itemModalidade = listModalidadeComSemTodas.get(position);
 		ModalidadeEnum modalidade = itemModalidade.getModalidade();
-		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+		Boolean isMega30 = EspecialUtils.isMega30(itemModalidade.getConcurso(),itemModalidade.getTipoConcurso());
+		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(itemModalidade.getModalidade(),isMega30);
 		boolean isEspecial;
 		if (itemModalidade.getTipoConcurso() != null && itemModalidade.getTipoConcurso().equals(TipoConcursoEnum.ESPECIAL)) {
 			isEspecial = true;
@@ -106,9 +109,15 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 				mostraTodaModalidades(holder, true);
 			} else {
 				if (isEspecial) {
-					holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(modalidade)));
-					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
-				} else {
+					if(isMega30) {
+						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(ModalidadeEnum.LOTOFACIL)));
+						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase()));
+					}
+					else {
+						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(modalidade)));
+						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
+					}
+					} else {
 					holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, estilo.getCorClara()));
 					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
 				}
@@ -129,8 +138,13 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 				mostraTodaModalidades(holder, false);
 			} else {
 				if (isEspecial) {
-					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
-				} else {
+					if(isMega30){
+						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase()));
+					}
+					else {
+						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
+					}
+					} else {
 					holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricao(modalidade).toLowerCase()));
 				}
 				holder.viewTopFiltroModalidade.setBackgroundColor(ContextCompat.getColor(activity, R.color.branco));

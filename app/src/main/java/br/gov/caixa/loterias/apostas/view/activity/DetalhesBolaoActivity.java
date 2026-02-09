@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.DetalhesBolaoModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
@@ -88,6 +89,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private ActivityResultLauncher<Intent> launcherAddCarrinho;
 
 	private int controleChamadaServico = 1;
+	private Boolean isMega30 = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +99,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		launcherAddCarrinho = IntentUtil.registerLauncherActivityForResult(DetalhesBolaoActivity.this, onAtualizaLista());
 
 		getExtras();
-		estilo = new EstiloModalidadeMKP(modalidade);
+		estilo = new EstiloModalidadeMKP(modalidade,isMega30);
 
 		setViews();
 		aplicaEstilo();
@@ -237,6 +239,10 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 					model.buscaDetalhesBolao(codigoBolao, onBuscaDetalheBolaoListener());
 				} else {
 					bolao = payload;
+					isMega30 = EspecialUtils.isMega30(bolao.getConcurso(),bolao.getTipoConcurso());
+					estilo = new EstiloModalidadeMKP(modalidade,isMega30);
+					aplicaEstilo();
+
 					fragmentSubBarraModalidade();
 					fragmentRodape();
 					preencheDados();

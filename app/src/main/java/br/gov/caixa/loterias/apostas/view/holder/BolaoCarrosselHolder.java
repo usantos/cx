@@ -18,8 +18,11 @@ import java.math.BigDecimal;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemCarrosselBolaoListener;
@@ -52,6 +55,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private EstiloModalidadeMKP estilo;
 
 	private OnItemCarrosselBolaoListener listener;
+	private Boolean isMega30 = false;
 
 
 	public BolaoCarrosselHolder(Activity activity, View itemView, OnItemCarrosselBolaoListener listener) {
@@ -84,7 +88,8 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
-		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
+		isMega30 = EspecialUtils.isMega30(bolao.getConcurso(),bolao.getTipoConcurso());
+		estilo = new EstiloModalidadeMKP(bolao.getModalidade(),isMega30);
 		aplicaEstilo();
 		preencheCabecalho(bolao);
 		preencheConteudo(bolao);
@@ -146,7 +151,12 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			icTrevoBolao.setVisibility(View.GONE);
 			switch (bolao.getModalidade()){
 				case MEGA_SENA:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
+					if(isMega30) {
+						this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
+					}
+					else {
+						this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
+					}
 					break;
 				case DUPLA_SENA:
 					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.dupla_pascoa));
@@ -161,8 +171,13 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
 				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 			} else {
-				modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
-			}
+				if(isMega30){
+					modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
+				}
+				else {
+					modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
+				}
+				}
 		} else {
 			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
 			headerEspeciais.setVisibility(View.GONE);
