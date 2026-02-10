@@ -45,7 +45,9 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.DataHoraServidorSi
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -139,12 +141,15 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.modalidade = modalidade;
 		this.position = position;
 		setIsRecyclable(false);
-		estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+		//TODO: MEGA 30 ANOS//
+		boolean isMega30 = EspecialUtils.isMega30(modalidade.getConcurso().getNumero(), modalidade.getConcurso().getTipoConcurso());
+		estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
 
 		this.game.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorFonteFundoClaro()));
 
 		if (modalidade.getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA)) {
-			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+			//TODO: MEGA 30 ANOS//
+			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
 			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
 			this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
 			this.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
@@ -167,7 +172,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		}
 
 		if (modalidade.getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
-			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+			//TODO: MEGA 30 ANOS//
+			EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
 			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
 			this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
 			this.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
@@ -189,8 +195,13 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		}
 
 		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo))) {
-			this.game.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
-			this.tvNomeEspeciais.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
+			//TODO: MEGA 30 ANOS//
+			if(isMega30){
+				this.tvNomeEspeciais.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, "Mega-Sena\n30 anos"));
+			}else{
+				this.game.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
+				this.tvNomeEspeciais.setText(modalidade.getConcurso().getModalidadeDetalhada().getDescricaoEspecial().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt), itemView.getContext().getResources().getString(R.string.br))));
+			}
 		} else {
 			this.game.setText(ModalidadeEnum.fromString(modalidade.getTipoModalidade()));
 			if (BuildVersionUtil.isAutomacao() && modalidade.getTipoModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
@@ -215,7 +226,13 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.clEspeciais.setVisibility(View.VISIBLE);
 			switch (modalidade.getTipoModalidade()){
 				case MEGA_SENA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
+					//TODO: MEGA 30 ANOS//
+					if (isMega30){
+						this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
+					}
+					else {
+						this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
+					}
 					break;
 				case DUPLA_SENA:
 					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.dupla_pascoa));

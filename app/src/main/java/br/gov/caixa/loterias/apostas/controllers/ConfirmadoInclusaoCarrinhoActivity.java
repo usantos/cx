@@ -51,7 +51,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     public ParametroJogoDTO parametroSimulacao;
     private EstiloModalidadeMKP estilo;
     private ModalidadeEnum modalidade;
-
+    //TODO: MEGA 30 ANOS//
+    boolean isMega30;
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
     private SubBarraModalidadeFragment subBarFragment;
@@ -65,6 +66,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
         setContentView(R.layout.activity_confirmado_inclusao_carrinho);
 
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.modalidade)), ParametroJogoDTO.class);
+        //TODO: MEGA 30 ANOS//
+        isMega30 = EspecialUtils.isMega30(parametroSimulacao.getConcurso().getNumero(), parametroSimulacao.getConcurso().getTipoConcurso());
         try {
             barraTituloDTO = (BarraTituloDTO) getIntent().getSerializableExtra("barraTituloModel");
         }catch (Exception e){
@@ -116,10 +119,12 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     }
 
     private int getCorClara() {
-        return new EstiloModalidadeMKP(modalidade).getCorClara();
+        //TODO: MEGA 30 ANOS//
+        return new EstiloModalidadeMKP(modalidade, isMega30).getCorClara();
     }
     private int getCorEscura() {
-        return new EstiloModalidadeMKP(modalidade).getCorEscura();
+        //TODO: MEGA 30 ANOS//
+        return new EstiloModalidadeMKP(modalidade, isMega30).getCorEscura();
     }
 
     private String getDataSorteio() {
@@ -184,7 +189,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     }
 
     private void configuraLayoutTela(ModalidadeEnum modalidadeEnum) {
-        estilo = new EstiloModalidadeMKP(modalidadeEnum);
+        //TODO: MEGA 30 ANOS//
+        estilo = new EstiloModalidadeMKP(modalidadeEnum, isMega30);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultadosAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TrevosResultadosAdapter;
@@ -58,8 +59,9 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
     }
 
     public void setLayout(Modalidade modalidade) {
-
-        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+        //TODO: MEGA 30 ANOS//
+        boolean isMega30 = EspecialUtils.isMega30(modalidade.getConcurso().getNumero(), modalidade.getConcurso().getTipoConcurso());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
         tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
 
         NumerosResultadosAdapter numerosResultadosAdapter;
@@ -72,7 +74,8 @@ public class ModalidadeSorteioItemUmConcursoResultadoView extends LinearLayout {
         }
 
         this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
+        //TODO: MEGA 30 ANOS//
+        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade(), modalidade);
         this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
 
         if(modalidade.getNome().equalsIgnoreCase("Mais Milionária".toLowerCase())){
