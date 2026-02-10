@@ -1067,9 +1067,13 @@ public class ViewUtils {
             if (modalidadeDetalhada.getValor() == 9){
                 return Aplicacao.application.getBaseContext().getString(R.string.label_mais_milionaria);
             } else {
-                return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                        ModalidadeEnum.getDescricaoEspecialDuasLinhas(aposta.getModalidade()):
-                        modalidadeDetalhada.getDescricao();
+                if (EspecialUtils.isMega30(aposta.getConcursoAlvo(), aposta.getTipoConcurso())){
+                    return SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, "");
+                } else {
+                    return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                            ModalidadeEnum.getDescricaoEspecialDuasLinhas(aposta.getModalidade()):
+                            modalidadeDetalhada.getDescricao();
+                }
             }
         }
         return "";

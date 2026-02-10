@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.utils;
 
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
 public class EspecialUtils {
@@ -10,6 +11,12 @@ public class EspecialUtils {
     public static Boolean isMega30(Integer numeroConcurso, TipoConcursoEnum tipoConcurso){
         int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);
         boolean isEspecial = tipoConcurso.equals(TipoConcursoEnum.ESPECIAL);
+        return isEspecial && numeroConcurso.equals(mega30);
+    }
+
+    public static Boolean isMega30(Integer numeroConcurso, DTOEnumCharacter tipoConcurso){
+        int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);
+        boolean isEspecial = tipoConcurso.getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor());
         return isEspecial && numeroConcurso.equals(mega30);
     }
 
