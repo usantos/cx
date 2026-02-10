@@ -18,7 +18,9 @@ import com.google.gson.Gson;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.TermosUsoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 
@@ -40,6 +42,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 	private int corBackground;
 	private ModalidadeEnum modalidade;
 	private EstiloModalidadeMKP estilo;
+	private Boolean isMega30 = false;
 
 	public BarraTitutoSimulacaoFragment() {}
 
@@ -89,6 +92,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 
 		setClickListener();
 
+		isMega30 = EspecialUtils.isMega30(concurso,isEspecial);
 		preencheDados();
 		aplicaEstilo();
 		aplicaEstiloFonte();
@@ -123,8 +127,14 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 
 		if (isEspecial && showBackground) {
 			switch (modalidade){
+				//TODO: MEGA 30 ANOS//
 				case MEGA_SENA:
-					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_mega_da_virada_superior));
+					if(isMega30){
+						background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_lotofacil_da_independencia_superior));
+					}
+					else {
+						background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_mega_da_virada_superior));
+					}
 					break;
 				case DUPLA_SENA:
 					background.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.rodape_dupla_de_pascoa_superior));
@@ -146,7 +156,13 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
 				TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -20f);
 			} else {
-				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+				//TODO: MEGA 30 ANOS//
+
+				if (isMega30) {
+					tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase());
+				} else {
+					tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+				}
 			}
 		} else {
 			tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());

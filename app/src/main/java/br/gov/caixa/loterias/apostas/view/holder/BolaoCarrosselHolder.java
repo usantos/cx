@@ -88,6 +88,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
+		//TODO: MEGA 30 ANOS//
 		isMega30 = EspecialUtils.isMega30(bolao.getConcurso(),bolao.getTipoConcurso());
 		estilo = new EstiloModalidadeMKP(bolao.getModalidade(),isMega30);
 		aplicaEstilo();

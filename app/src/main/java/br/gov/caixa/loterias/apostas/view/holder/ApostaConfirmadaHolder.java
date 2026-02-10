@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
+import static br.gov.caixa.loterias.apostas.utils.ViewUtils.getParametroSimulacao;
+
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +32,7 @@ import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
@@ -56,6 +59,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private ApostasConfirmadasFragment fragment;
 	private EstiloModalidadeMKP estiloModalidadeMKP;
 	private TipoApostaLinhaView tipoApostaLinhaView;
+	private Boolean isMega30 = false;
 
 	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity, ApostasConfirmadasFragment fragment) {
 		super(view);
@@ -90,7 +94,13 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 	@Override
 	public void bind(ApostaDTO aposta, int position) {
-		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
+		ParametroSimulacao param = getParametroSimulacao(SessaoUsuario.getInstance(),aposta.getModalidade());
+		//TODO: MEGA 30 ANOS//
+		if(param != null) {
+			Boolean isEspecial = aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL");
+			isMega30 = EspecialUtils.isMega30(param.getParametroJogo().getConcurso().getNumero().toString(), isEspecial);
+		}
+		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade(), isMega30);
 
 		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorClara());
 

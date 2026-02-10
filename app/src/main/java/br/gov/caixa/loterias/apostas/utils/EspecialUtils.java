@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
+//TODO: MEGA 30 ANOS//
 public class EspecialUtils {
     public static String MEGA_LINHA = "ARG_30_ANOS_LINHA";
     public static String MEGA_DUAS_LINHAS = "ARG_30_ANOS_DUAS_LINHAS";

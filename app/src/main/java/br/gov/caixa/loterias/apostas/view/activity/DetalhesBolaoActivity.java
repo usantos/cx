@@ -1,5 +1,9 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpites;
+import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -50,10 +54,6 @@ import br.gov.caixa.loterias.apostas.view.fragment.RodapeSimulacaoApostaFragment
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnActivityForResult;
 import br.gov.caixa.loterias.apostas.view.listener.OnCompraBolaoListener;
-
-import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDeDezenas;
-import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpites;
-import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
 public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implements OnCompraBolaoListener {
 	public static final String ARG_CODIGO_BOLAO = "ARG_CODIGO_BOLAO";
@@ -239,6 +239,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 					model.buscaDetalhesBolao(codigoBolao, onBuscaDetalheBolaoListener());
 				} else {
 					bolao = payload;
+					//TODO: MEGA 30 ANOS//
 					isMega30 = EspecialUtils.isMega30(bolao.getConcurso(),bolao.getTipoConcurso());
 					estilo = new EstiloModalidadeMKP(modalidade,isMega30);
 					aplicaEstilo();
@@ -405,7 +406,8 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 
 	@Override
 	public void onBackPressed() {
-		if (precisaAtualizarLista){
+        super.onBackPressed();
+        if (precisaAtualizarLista){
 			setResult(RESULT_OK);
 		}
 		finish();

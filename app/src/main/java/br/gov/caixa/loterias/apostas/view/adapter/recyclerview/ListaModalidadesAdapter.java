@@ -89,6 +89,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		//ModalidadeDisponivelCota itemModalidade = listModalidadeDisponivel.get(position);
 		ModalidadeDisponivelCota itemModalidade = listModalidadeComSemTodas.get(position);
 		ModalidadeEnum modalidade = itemModalidade.getModalidade();
+		//TODO: MEGA 30 ANOS//
 		Boolean isMega30 = EspecialUtils.isMega30(itemModalidade.getConcurso(),itemModalidade.getTipoConcurso());
 		EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(itemModalidade.getModalidade(),isMega30);
 		boolean isEspecial;

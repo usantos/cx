@@ -90,6 +90,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 		aplicaEstilo();
 		if (isEspecial(bolao.getTipoConcurso())){
+			//TODO: MEGA 30 ANOS//
 			if(isMega30) {
 				modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
 			}

@@ -69,6 +69,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
@@ -147,6 +148,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     private SessaoUsuario sessaoUsuario;
     private Uri fileApostaUri;
     private Uri filePremioUri;
+    private Boolean isMega30 = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -158,14 +160,20 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         apostaSilceBO = ApostaSilceBO.getInstance();
 
         pegaExtras();
-        setaViews();
-        aplicaCorFontes();
-        setupToolbar();
-        setaMetodos();
+
 
         sessaoUsuario = SessaoUsuario.getInstance();
         parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
         parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
+        //TODO: MEGA 30 ANOS//
+        if(parametroSimulacao != null){
+            Boolean isEspecial = aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL");
+            isMega30 = EspecialUtils.isMega30(parametroSimulacao.getParametroJogo().getConcurso().getNumero().toString(), isEspecial);
+        }
+        setaViews();
+        aplicaCorFontes();
+        setupToolbar();
+        setaMetodos();
 
         if(ConfiguracaoAppSingleton.getInstance().isMicroServico() && resultadoConcurso != null){
             apresentaBySituacao(aposta.getSituacao());
@@ -254,7 +262,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     }
 
     private void setaViews(){
-        estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
+        estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade(),isMega30);
         fragmentContainer       = findViewById(R.id.fragmentContainer);
         linearLayoutBottom      = findViewById(R.id.linearLayoutBottom);
         toolbar                 = findViewById(R.id.toolbar);
@@ -717,9 +725,16 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
     }
 
     private void setupToolbar() {
+        //TODO: MEGA 30 ANOS//
+
         if (isEspecial(aposta.getTipoConcurso().getValor()) && aposta.getModalidade() == ModalidadeEnum.MEGA_SENA) {
 //            toolbar.setBackgroundResource(R.drawable.cabecalho_mega_virada_detalhes_aposta);
-            toolbar.setBackgroundResource(R.drawable.rodape_mega_sena);
+            if(isMega30) {
+                toolbar.setBackgroundResource(R.drawable.rodape_lotofacil_da_independencia_superior);
+            }
+            else {
+                toolbar.setBackgroundResource(R.drawable.rodape_mega_sena);
+            }
         } else if (isEspecial(aposta.getTipoConcurso().getValor())) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
         } else {

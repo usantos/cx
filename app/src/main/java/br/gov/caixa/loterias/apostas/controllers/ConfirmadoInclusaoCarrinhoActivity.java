@@ -58,13 +58,18 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
 
     private BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     private ConstraintLayout background;
+    private Boolean isMega30 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmado_inclusao_carrinho);
-
+        //TODO: MEGA 30 ANOS//
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.modalidade)), ParametroJogoDTO.class);
+        String numConcurso = parametroSimulacao.getConcurso().getNumero().toString();
+        Boolean especial = parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo));
+        isMega30 = EspecialUtils.isMega30(numConcurso,especial);
+
         try {
             barraTituloDTO = (BarraTituloDTO) getIntent().getSerializableExtra("barraTituloModel");
         }catch (Exception e){
@@ -116,10 +121,10 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     }
 
     private int getCorClara() {
-        return new EstiloModalidadeMKP(modalidade).getCorClara();
+        return new EstiloModalidadeMKP(modalidade,isMega30).getCorClara();
     }
     private int getCorEscura() {
-        return new EstiloModalidadeMKP(modalidade).getCorEscura();
+        return new EstiloModalidadeMKP(modalidade,isMega30).getCorEscura();
     }
 
     private String getDataSorteio() {
@@ -184,7 +189,7 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     }
 
     private void configuraLayoutTela(ModalidadeEnum modalidadeEnum) {
-        estilo = new EstiloModalidadeMKP(modalidadeEnum);
+        estilo = new EstiloModalidadeMKP(modalidadeEnum,isMega30);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, estilo.getCorEscura()));

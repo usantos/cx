@@ -148,6 +148,7 @@ public class SplashScreenActivity extends LoteriasBaseAppActivity {
                         ConfiguracaoAppSingleton.getInstance().setRapidaoHabilitado(result.getPayload().getMapa().isRapidaoHabilitado());
                         ConfiguracaoAppSingleton.getInstance().setUrlBaseApostador(result.getPayload().getMapa().getUrlBaseApostador());
                         ConfiguracaoAppSingleton.getInstance().setGrupoDeCpfsApostador(result.getPayload().getMapa().getGrupoDeCpfsApostador());
+                        //TODO: MEGA 30 ANOS//
                         if(result.getPayload().getMapa().getConcursoMega30Anos() != null && !result.getPayload().getMapa().getConcursoMega30Anos().toString().isEmpty()){
                             SharedPreferencesUtils.setValor(EspecialUtils.MEGA_VALOR,result.getPayload().getMapa().getConcursoMega30Anos());
                         }

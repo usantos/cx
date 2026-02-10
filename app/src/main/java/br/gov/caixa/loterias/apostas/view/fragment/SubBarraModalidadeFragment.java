@@ -116,6 +116,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
 				TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -20f);
 			} else {
+				//TODO: MEGA 30 ANOS//
 				if(isMega30) {
 					tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
 				}
