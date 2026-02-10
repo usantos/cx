@@ -59,6 +59,7 @@ import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.Constantes;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
@@ -90,7 +91,9 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
 
     public final static String APOSTA_EXTRA = "aposta";
     private static final int RESULT_FINISH = 3;
-
+    //TODO: MEGA 30 ANOS//
+    public final static String extra_modalidade = "modalidade";
+    private int numero_concurso;
     private ConstraintLayout toolBarLoteca;
     private Button qtdNumerosButton, qtdConcursosButton, botaoLimparAposta, botaoAdicionarCompletarCartela;
     private AppCompatImageView simularTelaAposta, surpresinhaTela;
@@ -134,7 +137,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private Boolean flagApostaSalva = false;
 
     private Boolean isSurpresinha = false;
-
+    //TODO: MEGA 30 ANOS//
+    private boolean isMega30;
     private EstiloModalidadeMKP estilo;
     private int corFonteFundoEscuro;
 
@@ -156,10 +160,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         } catch (Exception e){
             Log.e("ERROR", "Não foi possível adiquirir os elementos da barra de título");
         }
+        //TODO: MEGA 30 ANOS//
+        isMega30 = EspecialUtils.isMega30(numero_concurso, isEspecial);
         preencheBarraTitulo();
         setViews();
-
-        estilo = new EstiloModalidadeMKP(tipoJogo);
+        //TODO: MEGA 30 ANOS//
+        estilo = new EstiloModalidadeMKP(tipoJogo, isMega30);
         zerarApostas();
         if(aposta != null){
             mesDeSorteCartela = aposta.getMesDeSorte();
@@ -199,7 +205,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
             case MAIS_MILIONARIA:
                 return R.color.milionaria_claro_mkp;
             default:
-                return R.color.mega_verde_claro_mkp;
+                //TODO: MEGA 30 ANOS//
+                if (isMega30){
+                    return R.color.lotofacil_claro_mkp;
+                }else {
+                    return R.color.mega_verde_claro_mkp;
+                }
         }
     }
 
@@ -222,8 +233,13 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private void getExtras() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            //TODO: MEGA 30 ANOS//
             if (extras.containsKey(APOSTA_EXTRA)) {
                 this.aposta = ((IdentificaoDeUmaApostaDas8Modalidades) extras.getSerializable(APOSTA_EXTRA));
+                System.out.println("teste aposta " + aposta);
+            }
+            if (extras.containsKey("NUMERO_CONCURSO")){
+                this.numero_concurso = extras.getInt("NUMERO_CONCURSO");
             }
             isEspecial = extras.getBoolean(getResources().getString(R.string.extra_especial), false);
             tipoJogo = (ModalidadeEnum) extras.getSerializable(getResources().getString(R.string.tipoAposta));
@@ -654,7 +670,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private void configuraActivity() {
         switch (tipoJogo) {
             case MEGA_SENA:
-                configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_mega_virada_underline) : getResources().getString(R.string.unterline_mega_sena_underline), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp, View.VISIBLE, View.GONE);
+                //TODO: MEGA 30 ANOS//
+                if(isMega30){
+                    configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_lotofacil_independencia_underline) : getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacil_claro_mkp, R.color.lotofacil_escuro_mkp, View.VISIBLE, View.GONE);
+                } else {
+                    configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_mega_virada_underline) : getResources().getString(R.string.unterline_mega_sena_underline), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp, View.VISIBLE, View.GONE);
+                }
                 break;
             case QUINA:
                 configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_quina_sao_joao_underline) : getResources().getString(R.string.underline_quina_underline), R.color.quina_claro_mkp, R.color.quina_escuro_mkp, View.VISIBLE, View.GONE);
@@ -872,7 +893,12 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         if (isEspecial) {
             switch (tipoJogo){
                 case MEGA_SENA:
+                    //TODO: MEGA 30 ANOS//
+                    if(isMega30){
+                        toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_lotofacil_da_independencia_superior));
+                    } else{
                     toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_mega_da_virada_inferior));
+                    }
                     break;
                 case DUPLA_SENA:
                     toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_dupla_de_pascoa_inferior));

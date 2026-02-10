@@ -51,7 +51,6 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     public ParametroJogoDTO parametroSimulacao;
     private EstiloModalidadeMKP estilo;
     private ModalidadeEnum modalidade;
-
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
     private SubBarraModalidadeFragment subBarFragment;
@@ -64,8 +63,8 @@ public class ConfirmadoInclusaoCarrinhoActivity extends LoteriasBaseAppActivity 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmado_inclusao_carrinho);
-        //TODO: MEGA 30 ANOS//
         parametroSimulacao = new Gson().fromJson(getIntent().getStringExtra(getResources().getString(R.string.modalidade)), ParametroJogoDTO.class);
+        isMega30 = EspecialUtils.isMega30(parametroSimulacao.getConcurso().getNumero(), parametroSimulacao.getConcurso().getTipoConcurso());
         String numConcurso = parametroSimulacao.getConcurso().getNumero().toString();
         Boolean especial = parametroSimulacao.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo));
         isMega30 = EspecialUtils.isMega30(numConcurso,especial);
