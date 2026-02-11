@@ -15,18 +15,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ItemMinhasApostasDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheMinhasApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 
 public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
@@ -77,6 +84,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         preencheCabecalho();
         preencheTipoApostaLinha();
         preencheRodape();
+        preencheMeio();
     }
 
     private void pegaExtras() {
@@ -180,7 +188,8 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
         validadePremioText = findViewById(R.id.validadePremioText);
         validadePremioLabel = findViewById(R.id.validadePremioLabel);
-        validadePremioImg = findViewById(R.id.validadePremioImage);    }
+        validadePremioImg = findViewById(R.id.validadePremioImage);
+    }
 
     private void aplicaCores() {
         estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
@@ -289,11 +298,24 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private boolean isApostaPremiada(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        //return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA;
-        return true; //**** APAGAR ***
+        return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA;
     }
 
     private boolean isEspecial(String tipoConcurso){
         return tipoConcurso.equalsIgnoreCase("2");
+    }
+
+    private void preencheMeio() {
+
+        List<ItemMinhasApostasDTO> items = new ArrayList<>();
+
+        //Concurso nao apurado
+        items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL,
+                        Arrays.asList("01","02","03","04","05","06","07","08")));
+
+        RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        DetalheMinhasApostasAdapter adapter = new DetalheMinhasApostasAdapter(this, items);
+        recyclerView.setAdapter(adapter);
     }
 }

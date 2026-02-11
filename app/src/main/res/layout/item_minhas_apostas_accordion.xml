@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_resultado_concurso"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Resultado do Concurso 1234"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_situacao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Não premiada"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_resultado_concurso"/>
+
+        <ImageView
+            android:id="@+id/iv_expand_collapse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/arrow_down_float"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- LOTOFACIL e outras -->
+        <TextView
+            android:id="@+id/tv_label_numeros_sorteados"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Números sorteados"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_numbers_sorteados"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            tools:itemCount="3"/>
+
+        <!-- DUPKASENA -->
+        <TextView
+            android:id="@+id/tv_label_numeros_sorteados2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Números sorteados - 2o Sorteio"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_numbers_sorteados2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            tools:itemCount="3"/>
+
+        <!-- TIMEMANIA MESSORTE -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_label_time_mes_sorteado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time sorteado:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:fontFamily="@font/caixa_std_regular" />
+
+            <TextView
+                android:id="@+id/tv_time_mes_sorteado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CORINTHIAS/SP"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+        <!-- LOTOFACIL e outras -->
+        <TextView
+            android:id="@+id/tv_label_seus_numeros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seus números"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_seus_numeros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            tools:itemCount="3"/>
+
+        <!-- DUPKASENA -->
+        <TextView
+            android:id="@+id/tv_label_seus_numeros2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seus números - 2o Sorteio"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_seus_numeros2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            tools:itemCount="3"/>
+
+        <!-- TIMEMANIA MESSORTE -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_label_seu_time_mes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Seu time:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:fontFamily="@font/caixa_std_regular" />
+
+            <TextView
+                android:id="@+id/tv_seu_time_mes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FLAMENGO/RJ"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

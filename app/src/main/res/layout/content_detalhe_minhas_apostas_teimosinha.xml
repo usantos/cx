@@ -216,12 +216,23 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Bloco 3: Rodape -->
+            <!-- Bloco 3: Recycle -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_accordion_teimosinha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/rl_tipo_aposta"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"                 />
+
+            <!-- Bloco 4: Rodape -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/informacaoApostaLayout"
                 android:layout_width="match_parent"
@@ -230,7 +241,7 @@
                 android:paddingBottom="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_tipo_aposta">
+                app:layout_constraintTop_toBottomOf="@id/rv_accordion_teimosinha">
 
                 <ImageView
                     android:id="@+id/validadePremioImage"
