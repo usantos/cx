@@ -497,7 +497,6 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
         return true;
     }
 
-
     private void abrirTermosUso(){
         Intent activity = new Intent(this, TermosUsoActivity.class);
         startActivity(activity);
