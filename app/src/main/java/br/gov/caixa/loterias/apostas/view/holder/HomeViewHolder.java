@@ -221,32 +221,13 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 		this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
 
-		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo)) || modalidade.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA) {
+		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo))) {
 			this.titulo.setVisibility(View.GONE);
 			this.clEspeciais.setVisibility(View.VISIBLE);
-			switch (modalidade.getTipoModalidade()){
-				case MEGA_SENA:
-					//TODO: MEGA 30 ANOS//
-					if (isMega30){
-						this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
-					}
-					else {
-						this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
-					}
-					break;
-				case DUPLA_SENA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.dupla_pascoa));
-					break;
-				case LOTOFACIL:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
-					break;
-				case QUINA:
-					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.quina_sao_joao_novo));
-					break;
-				default:
-					this.titulo.setVisibility(View.VISIBLE);
-					this.clEspeciais.setVisibility(View.GONE);
-			}
+			this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
+		} else {
+			this.titulo.setVisibility(View.VISIBLE);
+			this.clEspeciais.setVisibility(View.GONE);
 		}
 
 		if (modalidade.getConcurso().getEstimativa() != null &&

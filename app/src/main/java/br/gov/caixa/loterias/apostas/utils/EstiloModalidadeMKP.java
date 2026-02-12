@@ -20,6 +20,7 @@ public class EstiloModalidadeMKP {
     private int trevoFundoEscuro;
     private int tarjaEspecialTrevoCombo;
     private int trevoFundoDetalheCombo;
+    private int imagemSubCabecalho;
 
     public EstiloModalidadeMKP(ModalidadeEnum modalidade) {
         createEstilo(modalidade);
@@ -29,21 +30,9 @@ public class EstiloModalidadeMKP {
         createEstilo(modalidadeEnum);
         if (isMega30Anos){
             //MEGASENA
-            corClara = R.color.lotofacil_claro_mkp;
-            corEscura = R.color.lotofacil_escuro_mkp;
-            trapezio = R.drawable.background_trapeze_lotofacil_mkp;
-            shapeBtnDetalhes = R.drawable.btn_rounded_lotofacil_outlined;
-            imagemTriangulo = R.drawable.ic_tag_bolao_loto_facil;
-            imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loto_facil;
-            imagemEspecialCarrossel = R.drawable.cabecalho_lotofacil_independencia_carrossel_novo;
-            imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
-            corLetraLista = R.color.lotofacil_claro_mkp;
-            corFonteFundoClaro = R.color.branco;
-            corFonteFundoEscuro = R.color.branco;
-            trevoFundoClaro = R.drawable.trevo_lotofacil_fundo_branco;
-            trevoFundoEscuro = R.drawable.trevo_lotofacil_fundo_escuro;
-            tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_lotofacil_especial_combos;
-            trevoFundoDetalheCombo = R.drawable.trevo_lotofacil_detalhe_combo;
+            imagemEspecialCarrossel = R.drawable.cabecalho_mega_trinta_anos_carrossel;
+            imagemEspecialDetalhes = R.drawable.cabecalho_mega_trinta_anos_detalhe;
+            imagemSubCabecalho = R.drawable.rodape_mega_trinta_anos_inferior;
         }
     }
 
@@ -54,7 +43,7 @@ public class EstiloModalidadeMKP {
                 corEscura = R.color.quina_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_quina_mkp;
                 shapeBtnDetalhes = R.drawable.btn_rounded_quina_outlined;
-                imagemEspecialCarrossel = R.drawable.cabecalho_quina_sao_joao_carrossel_novo;
+                imagemEspecialCarrossel = R.drawable.quina_sao_joao_novo;
                 imagemTriangulo = R.drawable.ic_tag_bolao_quina;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_quina;
                 imagemEspecialDetalhes = R.drawable.cabecalho_quina_sao_joao_card_detalhes;
@@ -65,6 +54,7 @@ public class EstiloModalidadeMKP {
                 trevoFundoEscuro = R.drawable.trevo_quina_fundo_escuro;
                 tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_quina_especial_combos;
                 trevoFundoDetalheCombo = R.drawable.trevo_quina_detalhe_combo;
+                imagemSubCabecalho = R.drawable.rodape_sao_joao_inferior;
                 break;
             case DUPLA_SENA:
                 corClara = R.color.dupla_sena_claro_mkp;
@@ -73,7 +63,7 @@ public class EstiloModalidadeMKP {
                 shapeBtnDetalhes = R.drawable.btn_rounded_dupla_sena_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_dupla_sena;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_dupla_sena;
-                imagemEspecialCarrossel = R.drawable.cabecalho_dupla_pascoa_carrossel_novo;
+                imagemEspecialCarrossel = R.drawable.dupla_pascoa;
                 imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_detalhes;
                 corLetraLista = R.color.dupla_sena_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
@@ -82,6 +72,7 @@ public class EstiloModalidadeMKP {
                 trevoFundoEscuro = R.drawable.trevo_dupla_sena_fundo_escuro;
                 tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_dupla_especial_combos;
                 trevoFundoDetalheCombo = R.drawable.trevo_dupla_sena_detalhe_combo;
+                imagemSubCabecalho = R.drawable.rodape_dupla_de_pascoa_inferior;
                 break;
             case LOTOFACIL:
                 corClara = R.color.lotofacil_claro_mkp;
@@ -90,7 +81,7 @@ public class EstiloModalidadeMKP {
                 shapeBtnDetalhes = R.drawable.btn_rounded_lotofacil_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_loto_facil;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loto_facil;
-                imagemEspecialCarrossel = R.drawable.cabecalho_lotofacil_independencia_carrossel_novo;
+                imagemEspecialCarrossel = R.drawable.lotofacil_independencia;
                 imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
                 corLetraLista = R.color.lotofacil_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
@@ -99,6 +90,7 @@ public class EstiloModalidadeMKP {
                 trevoFundoEscuro = R.drawable.trevo_lotofacil_fundo_escuro;
                 tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_lotofacil_especial_combos;
                 trevoFundoDetalheCombo = R.drawable.trevo_lotofacil_detalhe_combo;
+                imagemSubCabecalho = R.drawable.rodape_lotofacil_da_independencia_inferior;
                 break;
             case LOTOMANIA:
                 corClara = R.color.lotomania_claro_mkp;
@@ -244,7 +236,7 @@ public class EstiloModalidadeMKP {
                 shapeBtnDetalhes = R.drawable.btn_rounded_green_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao;
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline;
-                imagemEspecialCarrossel = R.drawable.cabecalho_mega_virada_carrossel_novo;
+                imagemEspecialCarrossel = R.drawable.mega_virada_novo;
                 imagemEspecialDetalhes = R.drawable.cabecalho_mega_virada_detalhes;
                 corLetraLista = R.color.mega_verde_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
@@ -253,6 +245,7 @@ public class EstiloModalidadeMKP {
                 trevoFundoEscuro = R.drawable.trevo_megasena_fundo_escuro;
                 tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_mega_especial_combos;
                 trevoFundoDetalheCombo = R.drawable.trevo_mega_sena_detalhe_combo;
+                imagemSubCabecalho = R.drawable.rodape_mega_da_virada_inferior;
         }
     }
 
@@ -312,6 +305,14 @@ public class EstiloModalidadeMKP {
     }
     public int getTrevoFundoDetalheCombo() {
         return trevoFundoDetalheCombo;
+    }
+
+    public int getImagemSubCabecalho() {
+        return imagemSubCabecalho;
+    }
+
+    public void setImagemSubCabecalho(int imagemSubCabecalho) {
+        this.imagemSubCabecalho = imagemSubCabecalho;
     }
 }
 

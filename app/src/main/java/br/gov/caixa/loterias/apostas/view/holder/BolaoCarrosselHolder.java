@@ -149,26 +149,8 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		if (isEspecial(bolao.getTipoConcurso())){
 			headerEspeciais.setVisibility(View.VISIBLE);
 			trapezio.setVisibility(View.INVISIBLE);
-			icTrevoBolao.setVisibility(View.GONE);
-			switch (bolao.getModalidade()){
-				case MEGA_SENA:
-					if(isMega30) {
-						this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
-					}
-					else {
-						this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
-					}
-					break;
-				case DUPLA_SENA:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.dupla_pascoa));
-					break;
-				case LOTOFACIL:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
-					break;
-				case QUINA:
-					this.headerEspeciais.setBackground(itemView.getContext().getDrawable(R.drawable.quina_sao_joao_novo));
-					break;
-			}
+			icTrevoBolao.setVisibility(View.INVISIBLE);
+			this.headerEspeciais.setBackground(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
 			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
 				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 			} else {

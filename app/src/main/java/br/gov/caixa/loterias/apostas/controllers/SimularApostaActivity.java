@@ -65,6 +65,7 @@ import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.InputUtils;
 import br.gov.caixa.loterias.apostas.utils.PaginacaoUtils;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.CartelaFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.MesesFragment;
@@ -140,7 +141,6 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     //TODO: MEGA 30 ANOS//
     private boolean isMega30;
     private EstiloModalidadeMKP estilo;
-    private int corFonteFundoEscuro;
 
     public BarraTituloDTO barraTituloDTO = new BarraTituloDTO();
     public void onCreate(Bundle savedInstanceState) {
@@ -160,12 +160,10 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         } catch (Exception e){
             Log.e("ERROR", "Não foi possível adiquirir os elementos da barra de título");
         }
-        //TODO: MEGA 30 ANOS//
         isMega30 = EspecialUtils.isMega30(numero_concurso, isEspecial);
+        estilo = new EstiloModalidadeMKP(tipoJogo, isMega30);
         preencheBarraTitulo();
         setViews();
-        //TODO: MEGA 30 ANOS//
-        estilo = new EstiloModalidadeMKP(tipoJogo, isMega30);
         zerarApostas();
         if(aposta != null){
             mesDeSorteCartela = aposta.getMesDeSorte();
@@ -183,35 +181,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     }
 
     private int getCorBackgroundBarraTitulo() {
-        switch (tipoJogo) {
-            case QUINA:
-                return R.color.quina_claro_mkp;
-            case LOTOFACIL:
-                return R.color.lotofacil_claro_mkp;
-            case DUPLA_SENA:
-                return R.color.dupla_sena_claro_mkp;
-            case TIMEMANIA:
-                return R.color.timemania_claro_mkp;
-            case LOTOMANIA:
-                return R.color.lotomania_claro_mkp;
-            case LOTECA:
-                return R.color.loteca_claro_mkp;
-            case LOTOGOL:
-                return R.color.lotogolclaro;
-            case DIA_DE_SORTE:
-                return R.color.dia_sorte_claro_mkp;
-            case SUPER_7:
-                return R.color.super_sete_claro_mkp;
-            case MAIS_MILIONARIA:
-                return R.color.milionaria_claro_mkp;
-            default:
-                //TODO: MEGA 30 ANOS//
-                if (isMega30){
-                    return R.color.lotofacil_claro_mkp;
-                }else {
-                    return R.color.mega_verde_claro_mkp;
-                }
-        }
+        return estilo.getCorClara();
     }
 
     private String getDataSorteio() {
@@ -670,9 +640,8 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
     private void configuraActivity() {
         switch (tipoJogo) {
             case MEGA_SENA:
-                //TODO: MEGA 30 ANOS//
                 if(isMega30){
-                    configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_lotofacil_independencia_underline) : getResources().getString(R.string.underline_lotofacil_underline), R.color.lotofacil_claro_mkp, R.color.lotofacil_escuro_mkp, View.VISIBLE, View.GONE);
+                    configuraTipoApostaTela(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, ""), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp, View.VISIBLE, View.GONE);
                 } else {
                     configuraTipoApostaTela(isEspecial? getResources().getString(R.string.underline_mega_virada_underline) : getResources().getString(R.string.unterline_mega_sena_underline), R.color.mega_verde_claro_mkp, R.color.mega_verde_escuro_mkp, View.VISIBLE, View.GONE);
                 }
@@ -694,9 +663,6 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
                 break;
             case LOTECA:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_loteca_underline), R.color.loteca_claro_mkp, R.color.loteca_escuro_mkp, View.GONE, View.VISIBLE);
-                break;
-            case LOTOGOL:
-                configuraTipoApostaTela(getResources().getString(R.string.underline_lotogol_underline), R.color.lotogolclaro, R.color.lotogolescuro, View.GONE, View.GONE);
                 break;
             case DIA_DE_SORTE:
                 configuraTipoApostaTela(getResources().getString(R.string.underline_dia_de_Sorte_underline), R.color.dia_sorte_claro_mkp, R.color.dia_sorte_escuro_mkp, View.VISIBLE, View.GONE);
@@ -891,39 +857,19 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
 
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
         if (isEspecial) {
-            switch (tipoJogo){
-                case MEGA_SENA:
-                    //TODO: MEGA 30 ANOS//
-                    if(isMega30){
-                        toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_lotofacil_da_independencia_superior));
-                    } else{
-                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_mega_da_virada_inferior));
-                    }
-                    break;
-                case DUPLA_SENA:
-                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_dupla_de_pascoa_inferior));
-                    break;
-                case LOTOFACIL:
-                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_lotofacil_da_independencia_inferior));
-                    break;
-                case QUINA:
-                    toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, R.drawable.rodape_sao_joao_inferior));
-                    break;
-                default:
-            }
+            toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, estilo.getImagemSubCabecalho()));
         }
         toolBarSimularAposta.setVisibility(visibilityToolBarSimularAposta);
         toolBarLoteca.setVisibility(visibilityToolBarLoteca);
 
         typeGameColorLight = lightColor;
         typeGameColorDark = darkColor;
-        this.corFonteFundoEscuro = corFonteFundoEscuro;
     }
 
     @Override
     public void atualizaDados(CarrinhoDTO carrinho) {
         ViewUtils.setMoedaFormatHtml(carrinho.getValorTotal(), rodapeFragment.getTvValorCarrinho());
-        if (carrinho != null && carrinho.getApostas() != null) {
+        if (carrinho.getApostas() != null) {
             if (carrinho.getApostas().size() <= 999) {
                 rodapeFragment.apresentaQtdApostas(true, String.valueOf(carrinho.getApostas().size()));
             } else {
