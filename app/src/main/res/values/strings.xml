@@ -1565,6 +1565,7 @@
 
     <string name="tipo_aposta_bolao">Bolão</string>
     <string name="tipo_aposta_combo">Combo</string>
+    <string name="tipo_aposta_combos">Combos</string>
     <string name="tipo_aposta_espelho">Espelho</string>
     <string name="tipo_aposta_surpresinha">Surpresinha</string>
     <string name="tipo_aposta_teimosinha">Teimosinha</string>
