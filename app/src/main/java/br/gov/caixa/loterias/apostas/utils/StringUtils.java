@@ -2,7 +2,11 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class StringUtils {
 
@@ -99,5 +103,17 @@ public class StringUtils {
     public static String transformToHorahMinuto(String hh_mm_ss) {
         return hh_mm_ss.substring(0,2) + "h" +
                hh_mm_ss.substring(3,5);
+    }
+
+    public static List<String> formatToStringList(List<? extends Number> listtNumeros) {
+        List<String> listString = new ArrayList<>();
+        if (listtNumeros == null) {
+            return listString;
+        }
+        for (Number numero : listtNumeros) {
+            long longNumero = numero.longValue();
+            listString.add(String.format("%02d", longNumero));
+        }
+        return listString;
     }
 }

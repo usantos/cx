@@ -57,6 +57,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
@@ -890,6 +891,24 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         final GsonRequest request = getServiceConnection().buildGetRequest(url,
                 queryParams,
                 ResultadoConcursoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void getResultadoModalidadeConcurso(final String modalidade, final String concurso, final RequestListener<ResultadoConcursosDTOResponse> listener) {
+        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+        queryParams.put("modalidade", String.valueOf(modalidade));
+        queryParams.put("concursos", String.valueOf(concurso));
+
+        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO;
+
+        final GsonRequest request = getServiceConnection().buildGetRequest(url,
+                queryParams,
+                ResultadoConcursosDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeaderToken());

@@ -62,8 +62,76 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             holder.headerlayout.setVisibility(View.VISIBLE);
         }
 
-        //*** COMPLETAR ***
+        //Cabecalho Accordion
+        holder.tvResultadoConcurso.setText(item.getConcurso());
+        holder.tvResultadoConcurso.setTextColor(Color.WHITE);
+        holder.tvSituacao.setText(item.getSituacao());
+        holder.tvSituacao.setTextColor(Color.WHITE);
+        holder.vLinhaAccordion1.setBackgroundColor(Color.WHITE);
+        holder.vLinhaAccordion2.setBackgroundColor(Color.WHITE);
+        holder.vLinhaAccordion1.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
 
+        holder.headerlayout.setOnClickListener(v -> {
+            item.setExpanded(!item.isExpanded());
+            notifyItemChanged(position);
+        });
+
+        if (isExpanded) {
+            desabilitaTodos(holder);
+            switch (item.getModalidade()) {
+                case LOTOFACIL:
+                    holder.tvLabelNumerosSorteados.setVisibility(View.VISIBLE);
+                    holder.rvNumberSortedos.setVisibility(View.VISIBLE);
+                    holder.tvLabelSeusNumeros.setVisibility(View.VISIBLE);
+                    holder.rvSeusNumeros.setVisibility(View.VISIBLE);
+
+                    holder.tvLabelNumerosSorteados.setTextColor(Color.WHITE);
+                    holder.tvLabelSeusNumeros.setTextColor(Color.WHITE);
+
+                    setupGridNumeros(holder.rvNumberSortedos, Shape.NO_SHAPE, 6, item.getNumerosSorteados(), Color.WHITE, Color.WHITE, Color.TRANSPARENT);
+                    setupGridNumerosWithIntersection(holder.rvSeusNumeros, Shape.CIRCULO, 6, item.getSeusNumeros(), Color.WHITE, Color.WHITE, Color.TRANSPARENT,
+                            item.getNumerosSorteados(), Color.BLACK, Color.WHITE, Color.WHITE);
+                    break;
+                case TIMEMANIA:
+                    holder.tvLabelNumerosSorteados.setVisibility(View.VISIBLE);
+                    holder.rvNumberSortedos.setVisibility(View.VISIBLE);
+                    holder.tvLabelSeusNumeros.setVisibility(View.VISIBLE);
+                    holder.rvSeusNumeros.setVisibility(View.VISIBLE);
+
+                    holder.tvTimeMesSorteado.setVisibility(View.VISIBLE);
+                    holder.tvLabelSeuTimeMes.setVisibility(View.VISIBLE);
+                    holder.tvSeuTimeMes.setVisibility(View.VISIBLE);
+
+                    holder.tvLabelNumerosSorteados.setTextColor(Color.WHITE);
+                    holder.tvLabelSeusNumeros.setTextColor(Color.WHITE);
+
+                    setupGridNumeros(holder.rvNumberSortedos, Shape.NO_SHAPE, 6, item.getNumerosSorteados(), Color.WHITE, Color.TRANSPARENT, Color.TRANSPARENT);
+                    setupGridNumerosWithIntersection(holder.rvSeusNumeros, Shape.CIRCULO, 6, item.getSeusNumeros(), Color.WHITE, Color.TRANSPARENT, Color.TRANSPARENT,
+                            item.getNumerosSorteados(), Color.BLACK, Color.WHITE, Color.WHITE);
+                    break;
+                case DUPLA_SENA:
+                    holder.tvLabelNumerosSorteados.setVisibility(View.VISIBLE);
+                    holder.rvNumberSortedos.setVisibility(View.VISIBLE);
+                    holder.tvLabelSeusNumeros.setVisibility(View.VISIBLE);
+                    holder.rvSeusNumeros.setVisibility(View.VISIBLE);
+
+                    holder.tvLabelNumerosSorteados2.setVisibility(View.VISIBLE);
+                    holder.rvNumberSortedos2.setVisibility(View.VISIBLE);
+                    holder.tvLabelSeusNumeros2.setVisibility(View.VISIBLE);
+                    holder.rvSeusNumeros2.setVisibility(View.VISIBLE);
+
+                    holder.tvLabelNumerosSorteados.setTextColor(Color.WHITE);
+                    holder.tvLabelSeusNumeros.setTextColor(Color.WHITE);
+
+                    setupGridNumeros(holder.rvNumberSortedos, Shape.NO_SHAPE, 6, item.getNumerosSorteados(), Color.WHITE, Color.TRANSPARENT, Color.TRANSPARENT);
+                    setupGridNumeros(holder.rvNumberSortedos2, Shape.NO_SHAPE, 6, item.getNumerosSorteados(), Color.WHITE, Color.TRANSPARENT, Color.TRANSPARENT);
+                    setupGridNumerosWithIntersection(holder.rvSeusNumeros, Shape.CIRCULO, 6, item.getSeusNumeros(), Color.WHITE, Color.TRANSPARENT, Color.TRANSPARENT,
+                            item.getNumerosSorteados(), Color.BLACK, Color.WHITE, Color.WHITE);
+                    setupGridNumerosWithIntersection(holder.rvSeusNumeros2, Shape.CIRCULO, 6, item.getSeusNumeros(), Color.WHITE, Color.TRANSPARENT, Color.TRANSPARENT,
+                            item.getNumerosSorteados2(), Color.BLACK, Color.WHITE, Color.WHITE);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -92,7 +160,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         recyclerView.setAdapter(adapter);
     }
     private void setupGridNumerosWithIntersection(RecyclerView recyclerView, Shape shape,  int columns, List<String> numbers, int textColor, int borderColor, int backgroudColor,
-                                                  List<String> intersectionNumbers, int intersectionColumns, int intersectionTextColor, int intersectionBorderColor, int intersectionBackgroudColor) {
+                                                  List<String> intersectionNumbers, int intersectionTextColor, int intersectionBorderColor, int intersectionBackgroudColor) {
         recyclerView.setLayoutManager(new GridLayoutManager(context, columns));
         recyclerView.setNestedScrollingEnabled(false);
         NumerosGridAdapter adapter = new NumerosGridAdapter(shape, numbers, textColor, borderColor, backgroudColor,
@@ -108,6 +176,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         LinearLayout contentlayout;
         ConstraintLayout headerlayout;
         RecyclerView rvNumberSortedos, rvNumberSortedos2, rvSeusNumeros, rvSeusNumeros2;
+        View vLinhaAccordion1, vLinhaAccordion2;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -116,6 +185,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             ivExpandCollapse = itemView.findViewById(R.id.iv_expand_collapse);
             contentlayout = itemView.findViewById(R.id.content_layout);
             headerlayout = itemView.findViewById(R.id.header_layout);
+            vLinhaAccordion1 = itemView.findViewById(R.id.v_linha_accordion1);
+            vLinhaAccordion2 = itemView.findViewById(R.id.v_linha_accordion2);
 
             tvLabelNumerosSorteados = itemView.findViewById(R.id.tv_label_numeros_sorteados);
             rvNumberSortedos = itemView.findViewById(R.id.rv_numbers_sorteados);

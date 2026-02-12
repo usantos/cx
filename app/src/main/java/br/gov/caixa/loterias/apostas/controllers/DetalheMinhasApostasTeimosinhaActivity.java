@@ -18,17 +18,26 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
+import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
+import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ItemMinhasApostasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
@@ -38,12 +47,13 @@ import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 
 public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     public static final String ARG_COMPROVANTE = "ARG_COMPROVANTE";
-    public static final String ARG_DETALHES_PREMIO = "ARG_DETALHES_PREMIO";
-    public static final String ARG_RESULTADO_CONCURSO = "ARG_RESULTADO_CONCURSO";
-    public static final String ARG_DETALHES_HISTORICO = "ARG_DETALHES_HISTORICO";
-    //public static final String ARG_SITUACAO = "ARG_SITUACAO";
+//    public static final String ARG_DETALHES_PREMIO = "ARG_DETALHES_PREMIO";
+//    public static final String ARG_RESULTADO_CONCURSO = "ARG_RESULTADO_CONCURSO";
+//    public static final String ARG_DETALHES_HISTORICO = "ARG_DETALHES_HISTORICO";
+//    public static final String ARG_SITUACAO = "ARG_SITUACAO";
 
     private ComprovanteApostaDTO comprovanteApostaDTO;
+    private List<ResultadoConcursoDTO> listRresultadoConcursoDTO;
 
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
@@ -72,9 +82,6 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detalhe_minhas_apostas_teimosinha);
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
 
-        //model = new ApostaFavoritaModel(DetalheMinhasApostasActivity.this);
-        //apostaSilceBO = ApostaSilceBO.getInstance();
-
         pegaExtras();
         setaViews();
         aplicaCores();
@@ -84,9 +91,14 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         preencheCabecalho();
         preencheTipoApostaLinha();
         preencheRodape();
-        preencheMeio();
-    }
+        //preencheCentro();
 
+        //if(ConfiguracaoAppSingleton.getInstance().isMicroServico() && resultadoConcurso != null){
+        //    apresentaBySituacao(aposta.getSituacao());
+        //} else {
+        getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
+        //}
+    }
     private void pegaExtras() {
         Bundle bundle = getIntent().getExtras();
 
@@ -305,13 +317,51 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         return tipoConcurso.equalsIgnoreCase("2");
     }
 
-    private void preencheMeio() {
+    private void getResultadoModalidade(String txtmodalidade, String concurso) {
+        AlertDialogUtils.show(this);
+        ApostaSilceBO.getInstance().getResultadoModalidadeConcurso(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursosDTOResponse>() {
+            @Override
+            public void onResponse(ResultadoConcursosDTOResponse response) {
+                AlertDialogUtils.dismiss();
+                if (response.getRedirect() != null) {
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalheMinhasApostasTeimosinhaActivity.this);
+                }
+                if(response != null){
+                    listRresultadoConcursoDTO = response.getPayload();
+                }
+                preencheCentro();
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                preencheCentro();
+            }
+        });
+    }
+
+    private void preencheCentro() {
 
         List<ItemMinhasApostasDTO> items = new ArrayList<>();
 
+        //LOTOFACIL
+//        if (listRresultadoConcursoDTO != null && listRresultadoConcursoDTO.size() > 0) {
+//            for (ResultadoConcursoDTO resultadoConcursoDTO : listRresultadoConcursoDTO) {
+//
+//                ?? Object result = resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
+//
+//                items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL, "Resultado do Concurso 1234", "Situação: Premiada",
+//                        StringUtils.formatToStringList(resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio()),
+//                        StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
+//            }
+//        }
+        items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL, "Resultado do Concurso 4321", "Situação: Não premiada",
+            Arrays.asList("01","02","03","04","05","06","07","08"),
+            StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
+
         //Concurso nao apurado
-        items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL,
-                        Arrays.asList("01","02","03","04","05","06","07","08")));
+        //items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL,
+        //                Arrays.asList("01","02","03","04","05","06","07","08")));
 
         RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
