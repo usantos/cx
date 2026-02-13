@@ -730,7 +730,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
         if (isEspecial(aposta.getTipoConcurso().getValor()) && aposta.getModalidade() == ModalidadeEnum.MEGA_SENA) {
 //            toolbar.setBackgroundResource(R.drawable.cabecalho_mega_virada_detalhes_aposta);
             if(isMega30) {
-                toolbar.setBackgroundResource(estiloMKP.getImagemSubCabecalho());
+                toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
             }
             else {
                 toolbar.setBackgroundResource(R.drawable.rodape_mega_sena);
