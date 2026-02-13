@@ -17,307 +17,305 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_detalhes_bolao"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/id_fg_sub_barra"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="gone"
-            tools:visibility="visible">
-
+        android:id="@+id/layout_detalhes_bolao"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/id_fg_sub_barra"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="@+id/layout_detalhes_bolao"
-                app:layout_constraintBottom_toTopOf="@id/id_fg_rodape">
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="@+id/layout_detalhes_bolao"
+            app:layout_constraintBottom_toTopOf="@id/id_fg_rodape">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/tag_bolao_detalhes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        tools:src="@drawable/ic_tag_bolao"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                    android:id="@+id/tag_bolao_detalhes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    tools:src="@drawable/ic_tag_bolao"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
                 <TextView
-                        android:id="@+id/id_valor_premio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="R$ 28.500.000,00"
-                        android:textColor="@color/mega_verde_claro_mkp"
-                        android:fontFamily="@font/caixa_std_bold"
-                        android:textSize="18sp"
-                        android:layout_margin="16dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                    android:id="@+id/id_valor_premio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="R$ 28.500.000,00"
+                    android:textColor="@color/mega_verde_claro_mkp"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:textSize="18sp"
+                    android:layout_margin="16dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                 />
 
                 <TextView
-                        android:id="@+id/id_descricao_valor_premio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/caixa_std_regular"
-                        android:text="@string/label_premio_estimado_concurso_numero_bold"
-                        app:layout_constraintTop_toBottomOf="@+id/id_valor_premio"
-                        app:layout_constraintStart_toStartOf="@id/id_valor_premio"/>
+                    android:id="@+id/id_descricao_valor_premio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="@string/label_premio_estimado_concurso_numero_bold"
+                    app:layout_constraintTop_toBottomOf="@+id/id_valor_premio"
+                    app:layout_constraintStart_toStartOf="@id/id_valor_premio"/>
 
                 <View
-                        android:id="@+id/id_linha_divisoria"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.8dp"
-                        android:background="@color/cinza2"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintTop_toBottomOf="@id/id_descricao_valor_premio"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                    android:id="@+id/id_linha_divisoria"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:background="@color/cinza2"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/id_descricao_valor_premio"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <TextView
-                        android:id="@+id/id_municipio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="Serra Dourada\nSantos-SP"
-                        android:textColor="@color/mega_verde_claro_mkp"
-                        android:fontFamily="@font/caixa_std_bold"
-                        android:textSize="12sp"
-                        android:lineSpacingExtra="6dp"
-                        android:layout_margin="16dp"
-                        app:layout_constraintTop_toBottomOf="@id/id_linha_divisoria"
-                        app:layout_constraintStart_toStartOf="parent"
+                    android:id="@+id/id_municipio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Serra Dourada\nSantos-SP"
+                    android:textColor="@color/mega_verde_claro_mkp"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_margin="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/id_linha_divisoria"
+                    app:layout_constraintStart_toStartOf="parent"
                 />
 
                 <TextView
-                        android:id="@+id/descricao_loterica"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:fontFamily="@font/caixa_std_regular"
-                        android:text="@string/nome_loteria"
-                        android:textAlignment="textStart"
-                        android:visibility="gone"
-                        app:layout_constraintStart_toStartOf="@id/id_municipio"
-                        app:layout_constraintTop_toBottomOf="@id/id_municipio" />
+                    android:id="@+id/descricao_loterica"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="@string/nome_loteria"
+                    android:textAlignment="textStart"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/id_municipio"
+                    app:layout_constraintTop_toBottomOf="@id/id_municipio" />
 
                 <TextView
-                        android:id="@+id/descricao_qtd_dezenas_dt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:fontFamily="@font/caixa_std_regular"
-                        tools:text="05 apostas de 20 dezenas"
-                        android:textAlignment="center"
-                        app:layout_constraintStart_toStartOf="@id/id_municipio"
-                        app:layout_constraintTop_toBottomOf="@id/descricao_loterica" />
+                    android:id="@+id/descricao_qtd_dezenas_dt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/caixa_std_regular"
+                    tools:text="05 apostas de 20 dezenas"
+                    android:textAlignment="center"
+                    app:layout_constraintStart_toStartOf="@id/id_municipio"
+                    app:layout_constraintTop_toBottomOf="@id/descricao_loterica" />
 
                 <TextView
-                        android:id="@+id/descricao_qtd_cotas_disponiveis_dt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:fontFamily="@font/caixa_std_regular"
-                        tools:text="25 cotas disponíveis de 100"
-                        android:textAlignment="center"
-                        app:layout_constraintStart_toStartOf="@id/id_municipio"
-                        app:layout_constraintTop_toBottomOf="@id/descricao_qtd_dezenas_dt" />
+                    android:id="@+id/descricao_qtd_cotas_disponiveis_dt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/caixa_std_regular"
+                    tools:text="25 cotas disponíveis de 100"
+                    android:textAlignment="center"
+                    app:layout_constraintStart_toStartOf="@id/id_municipio"
+                    app:layout_constraintTop_toBottomOf="@id/descricao_qtd_dezenas_dt" />
 
                 <TextView
-                        android:id="@+id/id_valor_cota"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/caixa_std_regular"
-                        tools:text="Valor da cota: R$ 47,50"
-                        android:layout_marginTop="4dp"
-                        app:layout_constraintTop_toBottomOf="@id/descricao_qtd_cotas_disponiveis_dt"
-                        app:layout_constraintStart_toStartOf="@id/id_municipio"
+                    android:id="@+id/id_valor_cota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    tools:text="Valor da cota: R$ 47,50"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/descricao_qtd_cotas_disponiveis_dt"
+                    app:layout_constraintStart_toStartOf="@id/id_municipio"
                 />
 
                 <TextView
-                        android:id="@+id/id_valor_tarifa_servico"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/caixa_std_regular"
-                        tools:text="Tarifa de Serviço: R$ 2,50"
-                        android:layout_marginTop="4dp"
-                        app:layout_constraintTop_toBottomOf="@id/id_valor_cota"
-                        app:layout_constraintStart_toStartOf="@id/id_municipio"
+                    android:id="@+id/id_valor_tarifa_servico"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    tools:text="Tarifa de Serviço: R$ 2,50"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/id_valor_cota"
+                    app:layout_constraintStart_toStartOf="@id/id_municipio"
                 />
 
                 <TextView
-                        android:id="@+id/id_valor_total"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="Total: R$ 50,00"
-                        android:fontFamily="@font/caixa_std_bold"
-                        android:layout_marginTop="4dp"
-                        app:layout_constraintTop_toBottomOf="@id/id_valor_tarifa_servico"
-                        app:layout_constraintStart_toStartOf="@id/id_municipio"
+                    android:id="@+id/id_valor_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Total: R$ 50,00"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/id_valor_tarifa_servico"
+                    app:layout_constraintStart_toStartOf="@id/id_municipio"
                 />
 
                 <TextView
-                        android:id="@+id/id_numero_qtd_cotas"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="Cota: 20/100"
-                        android:fontFamily="@font/caixa_std_bold"
-                        android:visibility="gone"
-                        android:layout_marginTop="4dp"
-                        app:layout_constraintTop_toBottomOf="@id/id_valor_total"
-                        app:layout_constraintStart_toStartOf="@id/id_municipio"
+                    android:id="@+id/id_numero_qtd_cotas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Cota: 20/100"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:visibility="gone"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintTop_toBottomOf="@id/id_valor_total"
+                    app:layout_constraintStart_toStartOf="@id/id_municipio"
                 />
 
                 <View
-                        android:id="@+id/id_linha_divisoria2"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.8dp"
-                        android:background="@color/cinza2"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintTop_toBottomOf="@id/id_numero_qtd_cotas"
-                        app:layout_constraintStart_toStartOf="parent"/>
+                    android:id="@+id/id_linha_divisoria2"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"
+                    android:background="@color/cinza2"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/id_numero_qtd_cotas"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
                 <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/id_lista_jogos"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toBottomOf="@id/id_linha_divisoria2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                    android:id="@+id/id_lista_jogos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/id_linha_divisoria2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
 
                 <View
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        app:layout_constraintTop_toBottomOf="@id/id_lista_jogos"
-                        tools:layout_editor_absoluteX="0dp" />
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    app:layout_constraintTop_toBottomOf="@id/id_lista_jogos"
+                    tools:layout_editor_absoluteX="0dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 
         <Button
-                android:id="@+id/id_btn_add"
-                android:layout_width="190dp"
-                android:layout_height="56dp"
-                android:layout_marginBottom="51dp"
-                android:background="@drawable/background_border_verde"
-                tools:backgroundTint="@color/mega_verde_escuro_mkp"
-                android:elevation="15dp"
-                android:fontFamily="@font/caixa_std_regular"
-                android:text="@string/adicionarAoCarrinho"
-                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            android:id="@+id/id_btn_add"
+            android:layout_width="190dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="51dp"
+            android:background="@drawable/background_border_verde"
+            tools:backgroundTint="@color/mega_verde_escuro_mkp"
+            android:elevation="15dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="@string/adicionarAoCarrinho"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            android:textColor="@color/branco"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/id_layout_qtd_cotas"
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            tools:backgroundTint="@color/mega_verde_escuro_mkp"
+            android:background="@drawable/background_border_verde"
+            android:layout_marginBottom="16dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@id/id_btn_add"
+            app:layout_constraintStart_toStartOf="@id/id_btn_add"
+            app:layout_constraintEnd_toEndOf="@id/id_btn_add">
+
+            <TextView
+                android:id="@+id/valor_cota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="R$ 50,00"
+                android:textSize="14sp"
+                android:fontFamily="@font/caixa_std_bold"
                 android:textColor="@color/branco"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/id_layout_qtd_cotas"
-                android:layout_width="190dp"
+            <TextView
+                android:id="@+id/label_quantidade_cotas"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:backgroundTint="@color/mega_verde_escuro_mkp"
-                android:background="@drawable/background_border_verde"
-                android:layout_marginBottom="16dp"
-                android:paddingBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@id/id_btn_add"
-                app:layout_constraintStart_toStartOf="@id/id_btn_add"
-                app:layout_constraintEnd_toEndOf="@id/id_btn_add"
-        >
+                android:text="Quantidade de Cotas"
+                android:textSize="14sp"
+                android:textColor="@color/branco"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintTop_toBottomOf="@id/valor_cota"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
-                    android:id="@+id/valor_cota"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="R$ 50,00"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/caixa_std_bold"
-                    android:textColor="@color/branco"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                    android:id="@+id/label_quantidade_cotas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Quantidade de Cotas"
-                    android:textSize="14sp"
-                    android:textColor="@color/branco"
-                    android:fontFamily="@font/caixa_std_bold"
-                    app:layout_constraintTop_toBottomOf="@id/valor_cota"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                    android:id="@+id/quantidade_cotas"
-                    android:layout_width="50dp"
-                    android:layout_height="32dp"
-                    android:layout_marginTop="6dp"
-                    android:gravity="center"
-                    android:text="@string/_1"
-                    android:textColor="@color/branco"
-                    android:textAlignment="center"
-                    android:fontFamily="@font/caixa_std_bold"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
+                android:id="@+id/quantidade_cotas"
+                android:layout_width="50dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="@string/_1"
+                android:textColor="@color/branco"
+                android:textAlignment="center"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
 
             <Button
-                    android:id="@+id/diminui_cota"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/ic_botao_surpresinha"
-                    android:backgroundTint="@color/cinza2"
-                    android:fontFamily="@font/caixa_std_regular"
-                    android:text="@string/menos"
-                    android:textColor="@color/mega_verde_escuro_mkp"
-                    android:textSize="24sp"
-                    app:layout_constraintRight_toLeftOf="@+id/quantidade_cotas"
-                    app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
+                android:id="@+id/diminui_cota"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ic_botao_surpresinha"
+                android:backgroundTint="@color/cinza2"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/menos"
+                android:textColor="@color/mega_verde_escuro_mkp"
+                android:textSize="24sp"
+                app:layout_constraintRight_toLeftOf="@+id/quantidade_cotas"
+                app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
 
             <Button
-                    android:id="@+id/aumenta_cota"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/ic_botao_surpresinha"
-                    android:backgroundTint="@color/branco"
-                    android:fontFamily="@font/caixa_std_regular"
-                    android:text="@string/mais"
-                    android:textColor="@color/mega_verde_escuro_mkp"
-                    android:textSize="16sp"
-                    app:layout_constraintLeft_toRightOf="@+id/quantidade_cotas"
-                    app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
+                android:id="@+id/aumenta_cota"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ic_botao_surpresinha"
+                android:backgroundTint="@color/branco"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/mais"
+                android:textColor="@color/mega_verde_escuro_mkp"
+                android:textSize="16sp"
+                app:layout_constraintLeft_toRightOf="@+id/quantidade_cotas"
+                app:layout_constraintTop_toBottomOf="@+id/label_quantidade_cotas" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
-                android:id="@+id/id_fg_rodape"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+            android:id="@+id/id_fg_rodape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <FrameLayout
-                android:id="@+id/id_fg_somador_carrinho"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
+            android:id="@+id/id_fg_somador_carrinho"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
