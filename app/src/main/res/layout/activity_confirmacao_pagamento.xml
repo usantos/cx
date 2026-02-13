@@ -18,56 +18,8 @@
         android:scaleType="fitXY"
         android:src="@drawable/duvidas_toolbar_icon"
         android:layout_marginTop="12dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/transparente" />
-
-    <TextView
-        android:id="@+id/textInfoApostas"
-        style="@style/editTextCaixaRegularTheme"
-        android:layout_width="266dp"
-        android:layout_height="156dp"
-        android:layout_marginLeft="67dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginRight="51dp"
-        android:text="@string/confirmacaoPagamentoInfoApostasPIX"
-        android:textAlignment="center"
-        android:textColor="@color/branco"
-        app:layout_constraintHorizontal_bias="0.522"
-        app:layout_constraintLeft_toLeftOf="@+id/imageViewSetaParaApostas"
-        app:layout_constraintRight_toRightOf="@+id/imageViewSetaParaApostas"
-        app:layout_constraintTop_toTopOf="@+id/imageViewSetaParaApostas" />
-
-    <View
-        android:id="@+id/v_linha"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        android:background="@color/verdeazul"
-        app:layout_constraintTop_toBottomOf="@id/textTitulo"
-        app:layout_constraintBottom_toTopOf="@+id/textInfoApostas"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageViewSetaParaApostas"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginBottom="106dp"
-        android:rotation="180"
-        android:scaleType="fitXY"
-        android:scaleY="-1"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTitulo"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/rectangle_5_copy" />
 
     <TextView
         android:id="@+id/textConfirmacao"
@@ -89,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="115dp"
         android:layout_marginRight="115dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/compra_sendo_processada"
         android:textAlignment="center"
         android:textColor="@color/branco"
@@ -97,7 +49,35 @@
         android:textSize="14.2sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/v_linha" />
+
+    <View
+        android:id="@+id/v_linha"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@color/verdeazul"
+        app:layout_constraintTop_toBottomOf="@id/textConfirmacao"
+        app:layout_constraintBottom_toTopOf="@+id/botaoAcompanheSuasCompras"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textInfoApostas"
+        style="@style/editTextCaixaRegularTheme"
+        android:layout_width="266dp"
+        android:layout_height="156dp"
+        android:layout_marginStart="67dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="51dp"
+        android:text="@string/confirmacaoPagamentoInfoApostasPIX"
+        android:textAlignment="center"
+        android:textColor="@color/branco"
+        app:layout_constraintHorizontal_bias="0.522"
+        app:layout_constraintLeft_toLeftOf="@+id/v_linha"
+        app:layout_constraintRight_toRightOf="@id/v_linha"
+        app:layout_constraintTop_toTopOf="@+id/v_linha" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/viewTabBar"
@@ -168,7 +148,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <Button
         android:id="@+id/botaoAcompanheSuasCompras"
         android:layout_width="184dp"
@@ -186,7 +165,6 @@
         app:layout_constraintBottom_toTopOf="@+id/botaoVoltarInicio"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
-
 
     <Button
         android:id="@+id/botaoVoltarInicio"
