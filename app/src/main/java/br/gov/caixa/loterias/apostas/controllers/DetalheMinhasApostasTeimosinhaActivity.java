@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -96,7 +95,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         //if(ConfiguracaoAppSingleton.getInstance().isMicroServico() && resultadoConcurso != null){
         //    apresentaBySituacao(aposta.getSituacao());
         //} else {
-        getResultadoModalidade(ApostaDTO.lowerCaseFromString(aposta.getModalidade()),aposta.getConcursoInicial().toString());
+        servicoResultadoModalidadeConcursos();
         //}
     }
     private void pegaExtras() {
@@ -249,7 +248,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             quantidadeApostadasTxt.setVisibility(View.GONE);
         } else {
             concursoTxt.setText(aposta.getConcursoInicial().toString() + " - " +
-                    (aposta.getConcursoInicial()+aposta.getQuantidadeTeimosinhas()));
+                    (aposta.getConcursoInicial()+aposta.getQuantidadeTeimosinhas()-1));
 
             if (aposta.getQuantidadeTeimosinhas() == 1) {
                 quantidadeApostadasTxt.setText(aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_aposta));
@@ -317,9 +316,14 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         return tipoConcurso.equalsIgnoreCase("2");
     }
 
-    private void getResultadoModalidade(String txtmodalidade, String concurso) {
+    private void servicoResultadoModalidadeConcursos() {
+
+        String txtModalidade = ApostaDTO.lowerCaseFromString(aposta.getModalidade());
+        Integer concursoInicial = aposta.getConcursoInicial();
+        Integer concursoFinal = Integer.valueOf((aposta.getConcursoInicial() + aposta.getQuantidadeTeimosinhas() - 1));
+
         AlertDialogUtils.show(this);
-        ApostaSilceBO.getInstance().getResultadoModalidadeConcurso(txtmodalidade,String.valueOf(concurso), new RequestListener<ResultadoConcursosDTOResponse>() {
+        ApostaSilceBO.getInstance().getResultadoModalidadeConcurso(txtModalidade, concursoInicial, concursoFinal, new RequestListener<ResultadoConcursosDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursosDTOResponse response) {
                 AlertDialogUtils.dismiss();
@@ -344,20 +348,18 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
         List<ItemMinhasApostasDTO> items = new ArrayList<>();
 
-        //LOTOFACIL
-//        if (listRresultadoConcursoDTO != null && listRresultadoConcursoDTO.size() > 0) {
-//            for (ResultadoConcursoDTO resultadoConcursoDTO : listRresultadoConcursoDTO) {
-//
-//                ?? Object result = resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
-//
-//                items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL, "Resultado do Concurso 1234", "Situação: Premiada",
-//                        StringUtils.formatToStringList(resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio()),
-//                        StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
-//            }
-//        }
-        items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL, "Resultado do Concurso 4321", "Situação: Não premiada",
-            Arrays.asList("01","02","03","04","05","06","07","08"),
-            StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
+        if (listRresultadoConcursoDTO != null && listRresultadoConcursoDTO.size() > 0) {
+            for (ResultadoConcursoDTO resultadoConcursoDTO : listRresultadoConcursoDTO) {
+
+                ArrayList<Number> resultado = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
+
+                //LOTOFACIL, QUINA, MEGASENA
+                items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
+                        "Situação: Premiada",
+                        StringUtils.formatToStringList(resultado),
+                        StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
+            }
+        }
 
         //Concurso nao apurado
         //items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL,

@@ -1593,4 +1593,6 @@
     <string name="loterica_favorita_bold">_Lotérica Favorita_</string>
     <string name="favoritar_loterica">Favoritar Lotérica</string>
     <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
+
+    <string name="resultado_concurso">Resultado do Concurso</string>
 </resources>

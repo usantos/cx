@@ -899,12 +899,16 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         getServiceConnection().request(request, listener);
     }
 
-    public void getResultadoModalidadeConcurso(final String modalidade, final String concurso, final RequestListener<ResultadoConcursosDTOResponse> listener) {
+    public void getResultadoModalidadeConcurso(final String descricaoModalidade, final Integer concursoInicial, final Integer concursoFinal, final RequestListener<ResultadoConcursosDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
-        queryParams.put("modalidade", String.valueOf(modalidade));
-        queryParams.put("concursos", String.valueOf(concurso));
+        //Map não aceita parametros repetidos
+        String queryString = "modalidade="+descricaoModalidade;
+        for (int i = concursoInicial; i <= concursoFinal; i++) {
+            queryString += "&" + "concursos=" + String.valueOf(i);
+        }
 
-        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO;
+        //??queryString precisa criptografar ?
+        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO+"?"+queryString;
 
         final GsonRequest request = getServiceConnection().buildGetRequest(url,
                 queryParams,
