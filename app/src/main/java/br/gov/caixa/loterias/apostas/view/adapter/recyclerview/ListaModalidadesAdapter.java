@@ -111,11 +111,11 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 			} else {
 				if (isEspecial) {
 					if(isMega30) {
-						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(ModalidadeEnum.LOTOFACIL)));
+						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(ModalidadeEnum.MEGA_SENA, true)));
 						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase()));
 					}
 					else {
-						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(modalidade)));
+						holder.viewTopFiltroModalidade.setBackground(ContextCompat.getDrawable(activity, fundoImagemEspecial(modalidade, false)));
 						holder.textBottomFiltroModalidade.setText(ViewUtils.textFuturaAndFuturaBold(activity, ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase()));
 					}
 					} else {
@@ -198,7 +198,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 		listener.itemClick(null, 0);
 	}
 
-	private int fundoImagemEspecial(ModalidadeEnum modalidade) {
+	private int fundoImagemEspecial(ModalidadeEnum modalidade, boolean isMega30) {
 		if (modalidade == ModalidadeEnum.DUPLA_SENA) {
 			return R.drawable.dupla_pascoa;
 		}
@@ -209,7 +209,11 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 			return R.drawable.lotofacil_independencia;
 		}
 		if (modalidade == ModalidadeEnum.MEGA_SENA) {
-			return R.drawable.rodape_mega_sena;
+			if (isMega30){
+				return R.drawable.cabecalho_mega_trinta_anos_carrossel;
+			} else {
+				return R.drawable.rodape_mega_sena;
+			}
 		}
 		return R.color.branco;
 	}
