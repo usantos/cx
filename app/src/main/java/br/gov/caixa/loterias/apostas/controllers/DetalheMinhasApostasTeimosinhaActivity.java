@@ -29,9 +29,11 @@ import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoPremiadoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ItemMinhasApostasDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
@@ -52,7 +54,9 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 //    public static final String ARG_SITUACAO = "ARG_SITUACAO";
 
     private ComprovanteApostaDTO comprovanteApostaDTO;
-    private List<ResultadoConcursoDTO> listRresultadoConcursoDTO;
+    private DetalhesPremioDTO detalhesPremioDTO;
+
+    private List<ResultadoConcursoDTO> listResultadoConcursoDTO;
 
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
@@ -87,7 +91,6 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         setupToolbar();
 //        setaMetodos();
 
-        preencheCabecalho();
         preencheTipoApostaLinha();
         preencheRodape();
         //preencheCentro();
@@ -251,25 +254,23 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
                     (aposta.getConcursoInicial()+aposta.getQuantidadeTeimosinhas()-1));
 
             if (aposta.getQuantidadeTeimosinhas() == 1) {
-                quantidadeApostadasTxt.setText(aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_aposta));
+                quantidadeApostadasTxt.setText("("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_aposta)+")");
             } else {
-                quantidadeApostadasTxt.setText(aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_apostas));
+                quantidadeApostadasTxt.setText("("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_apostas)+")");
             }
         }
 
         dataApostaTxt.setText(aposta.getDataEfetivacao());
         horaApostaTxt.setText(StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao()));
 
-        if (isApostaPremiada(aposta)){
-            //tv_val_premio.setText(ViewUtils.getMoedaFormat(getValorDoPremio()));
+        if (isApostaPremiada(aposta) && detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null){
+            tv_val_premio.setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
             clResgatePremio.setVisibility(View.VISIBLE);
         } else {
             tv_val_premio_tit.setVisibility(TextView.GONE);
             tv_val_premio.setVisibility(TextView.GONE);
             clResgatePremio.setVisibility(View.GONE);
         }
-
-
     }
 
     private void preencheRodape() {
@@ -331,14 +332,36 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalheMinhasApostasTeimosinhaActivity.this);
                 }
                 if(response != null){
-                    listRresultadoConcursoDTO = response.getPayload();
+                    listResultadoConcursoDTO = response.getPayload();
+                    servicoApostaDetalhePremio(aposta.getId());
                 }
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                preencheCabecalho();
+                preencheCentro();
+            }
+        });
+    }
+
+    private void servicoApostaDetalhePremio(Long apostaId) {
+        ApostaSilceBO.getInstance().getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
+            @Override
+            public void onResponse(DetalhesPremioDTOResponse result) {
+                AlertDialogUtils.dismiss();
+                if (result != null && result.getPayload() != null) {
+                    detalhesPremioDTO = result.getPayload();
+                }
+                preencheCabecalho();
                 preencheCentro();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
+                preencheCabecalho();
                 preencheCentro();
             }
         });
@@ -348,14 +371,22 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
         List<ItemMinhasApostasDTO> items = new ArrayList<>();
 
-        if (listRresultadoConcursoDTO != null && listRresultadoConcursoDTO.size() > 0) {
-            for (ResultadoConcursoDTO resultadoConcursoDTO : listRresultadoConcursoDTO) {
+        if (listResultadoConcursoDTO != null && listResultadoConcursoDTO.size() > 0) {
+            for (ResultadoConcursoDTO resultadoConcursoDTO : listResultadoConcursoDTO) {
+
+                String situacao = "";
+                for (ConcursoPremiadoDTO concursoPremiado : detalhesPremioDTO.getPremio().getConcursos()) {
+                    if (concursoPremiado.getConcurso().getNumero().equals(resultadoConcursoDTO.getConcurso().getNumero())) {
+                        situacao = concursoPremiado.getSituacao();
+                        break;
+                    }
+                }
 
                 ArrayList<Number> resultado = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
 
-                //LOTOFACIL, QUINA, MEGASENA
+                //LOTOFACIL, QUINA, MEGASENA, LOTOMANIA
                 items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                        "Situação: Premiada",
+                        "Situação: " + situacao,
                         StringUtils.formatToStringList(resultado),
                         StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
             }
