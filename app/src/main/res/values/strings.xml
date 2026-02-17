@@ -1595,4 +1595,11 @@
     <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
 
     <string name="resultado_concurso">Resultado do Concurso</string>
+    <string name="label_situacao">Situação:</string>
+    <string name="label_time_sorteado">Time sorteado</string>
+    <string name="label_time_do_coracao">Time do coração:</string>
+    <string name="label_mes_sorteado_">Mês sorteado</string>
+    <string name="label_mes_de_sorte">Mês de sorte:</string>
+    <string name="label_premio_dois_pontos">Prêmio:</string>
+
 </resources>

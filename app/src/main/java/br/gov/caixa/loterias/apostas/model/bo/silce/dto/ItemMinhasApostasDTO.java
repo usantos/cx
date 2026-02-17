@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ItemMinhasApostasDTO {
@@ -13,10 +14,11 @@ public class ItemMinhasApostasDTO {
     private final String seuTimeMes;
     private final List<String> numerosSorteados2;
     private final List<String> seusNumeros2;
+    private final BigDecimal valorPremio;
     private final boolean apurado;
     private boolean isExpanded = false;
 
-    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, String timeMesSorteado, String seuTimeMes, List<String> numerosSorteados2, List<String> seusNumeros2, boolean apurado) {
+    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, String timeMesSorteado, String seuTimeMes, List<String> numerosSorteados2, List<String> seusNumeros2, BigDecimal valorPremio, boolean apurado) {
         this.modalidade = modalidade;
         this.concurso = concurso;
         this.situacao = situacao;
@@ -26,27 +28,28 @@ public class ItemMinhasApostasDTO {
         this.seuTimeMes = seuTimeMes;
         this.numerosSorteados2 = numerosSorteados2;
         this.seusNumeros2 = seusNumeros2;
+        this.valorPremio = valorPremio;
         this.apurado = apurado;
     }
 
     //Construtor concurso não apurado
     public ItemMinhasApostasDTO(ModalidadeEnum modalidade, List<String> seusNumeros) {
-        this(modalidade, null, null, null, seusNumeros, null, null, null, null, false);
+        this(modalidade, null, null, null, seusNumeros, null, null, null, null, null, false);
     }
 
     //Construtor LOTOFACIL
-    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros) {
-        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, null, null, null, null, true);
+    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, BigDecimal valorPremio) {
+        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, null, null, null, null, valorPremio, true);
     }
 
     //Construtor TIMEMANIA MESSORTE
-    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, String timeMesSorteado, String seuTimeMes) {
-        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, timeMesSorteado, seuTimeMes, null, null, true);
+    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, String timeMesSorteado, String seuTimeMes, BigDecimal valorPremio) {
+        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, timeMesSorteado, seuTimeMes, null, null, valorPremio, true);
     }
 
     //Construtor DUPLASENA
-    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, List<String> numerosSorteados2, List<String> seusNumeros2) {
-        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, null, null, numerosSorteados2, seusNumeros2, true);
+    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, List<String> numerosSorteados2, List<String> seusNumeros2, BigDecimal valorPremio) {
+        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, null, null, numerosSorteados2, seusNumeros2, valorPremio, true);
     }
 
     public ModalidadeEnum getModalidade() {
@@ -83,6 +86,10 @@ public class ItemMinhasApostasDTO {
 
     public List<String> getSeusNumeros2() {
         return seusNumeros2;
+    }
+
+    public BigDecimal getValorPremio() {
+        return valorPremio;
     }
 
     public boolean isApurado() {

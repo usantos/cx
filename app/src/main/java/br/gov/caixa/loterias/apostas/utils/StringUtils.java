@@ -116,4 +116,33 @@ public class StringUtils {
         }
         return listString;
     }
+
+    public static List<String> formatToStringListFlexPrimeiro(List<?> input) {
+        List<String> out = new ArrayList<>();
+        if (input == null) return out;
+
+        for (Object item : input) {
+            if (item == null) continue;
+
+            if (item instanceof Number) {
+                Number n = (Number) item;
+                long v = Math.round(n.doubleValue()); // use n.longValue() para truncar
+                out.add(String.format("%01d", v));
+            } else if (item instanceof List<?>) {
+                List<?> inner = (List<?>) item;
+                if (inner.isEmpty()) continue;
+
+                Object first = inner.get(0);
+                if (first instanceof Number) {
+                    Number n0 = (Number) first;
+                    long v = Math.round(n0.doubleValue());
+                    out.add(String.format("%01d", v));
+                }
+                // Se "first" não for Number, ignora.
+            }
+            // Se não for Number nem List, ignora.
+        }
+        return out;
+    }
+
 }

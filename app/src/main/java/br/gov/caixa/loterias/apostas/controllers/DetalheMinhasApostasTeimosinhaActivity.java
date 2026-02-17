@@ -20,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
@@ -34,6 +36,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ItemMinhasApostasDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
@@ -222,24 +225,36 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         tv_val_premio_tit.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tv_val_premio.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
-        clResgatePremio.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro())));
-        ivResgatePremio.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
-        ResgatarPremioTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+        if (aposta.getModalidade().equals(ModalidadeEnum.SUPER_7)) {
+            clResgatePremio.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorLetraLista())));
+            ivResgatePremio.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            ResgatarPremioTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
-        clResgatePremio2.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro())));
-        ivResgatePremio2.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
-        ResgatarPremioTxt2.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+            clResgatePremio2.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorLetraLista())));
+            ivResgatePremio2.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            ResgatarPremioTxt2.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
-        comprovanteLayout.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro())));
-        ivImageDownload.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
-        gerarConprovanteTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+            comprovanteLayout.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorLetraLista())));
+            ivImageDownload.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+            gerarConprovanteTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        } else {
+            clResgatePremio.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro())));
+            ivResgatePremio.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+            ResgatarPremioTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+
+            clResgatePremio2.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro())));
+            ivResgatePremio2.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+            ResgatarPremioTxt2.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+
+            comprovanteLayout.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro())));
+            ivImageDownload.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+            gerarConprovanteTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorEscura()));
+        }
 
         validadePremioText.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         validadePremioLabel.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
         validadePremioImg.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-
-
     }
 
     private void preencheCabecalho() {
@@ -375,26 +390,74 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             for (ResultadoConcursoDTO resultadoConcursoDTO : listResultadoConcursoDTO) {
 
                 String situacao = "";
+                BigDecimal valorPremio = null;
                 for (ConcursoPremiadoDTO concursoPremiado : detalhesPremioDTO.getPremio().getConcursos()) {
                     if (concursoPremiado.getConcurso().getNumero().equals(resultadoConcursoDTO.getConcurso().getNumero())) {
                         situacao = concursoPremiado.getSituacao();
+                        valorPremio = concursoPremiado.getValorLiquido();
                         break;
                     }
                 }
 
                 ArrayList<Number> resultado = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
 
-                //LOTOFACIL, QUINA, MEGASENA, LOTOMANIA
-                items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                        "Situação: " + situacao,
-                        StringUtils.formatToStringList(resultado),
-                        StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
-            }
-        }
+                switch (resultadoConcursoDTO.getConcurso().getModalidade()) {
+                    case TIMEMANIA:
+                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
+                                situacao,
+                                StringUtils.formatToStringList(resultado),
+                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
+                                resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome()+"/"+resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getUf(),
+                                aposta.getTimeDoCoracao().getNome()+"/"+aposta.getTimeDoCoracao().getUf(),
+                                valorPremio));
+                        break;
+                    case DIA_DE_SORTE:
+                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
+                                situacao,
+                                StringUtils.formatToStringList(resultado),
+                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
+                                resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome(),
+                                aposta.getMesDeSorte().getNome(),
+                                valorPremio));
+                        break;
+                    case DUPLA_SENA:
+                        ArrayList<Number> resultado2 = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosSegundoSorteio();
 
-        //Concurso nao apurado
-        //items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL,
-        //                Arrays.asList("01","02","03","04","05","06","07","08")));
+                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
+                                situacao,
+                                StringUtils.formatToStringList(resultado),
+                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
+                                StringUtils.formatToStringList(resultado2),
+                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
+                                valorPremio));
+                        break;
+                    case SUPER_7:
+                        //List<List<Double>> listListSelecionado = (List<List<Double>>) aposta.getNumerosSelecionados();
+
+                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
+                                situacao,
+                                StringUtils.formatToStringListFlexPrimeiro(resultado),
+                                StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()),
+                                valorPremio));
+                        break;
+                    case LOTOFACIL:
+                    case QUINA:
+                    case LOTOMANIA:
+                    case MEGA_SENA:
+                    default:
+                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
+                                situacao,
+                                StringUtils.formatToStringList(resultado),
+                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
+                                valorPremio));
+                        break;
+                }
+            }
+        } //else {
+                //Concurso nao apurado
+                //items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL,
+                //                Arrays.asList("01","02","03","04","05","06","07","08")));
+        //}
 
         RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
