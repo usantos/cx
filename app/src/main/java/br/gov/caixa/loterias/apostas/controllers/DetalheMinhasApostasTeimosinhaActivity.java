@@ -432,13 +432,22 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
                                 valorPremio));
                         break;
                     case SUPER_7:
-                        //List<List<Double>> listListSelecionado = (List<List<Double>>) aposta.getNumerosSelecionados();
-
                         items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
                                 situacao,
                                 StringUtils.formatToStringListFlexPrimeiro(resultado),
                                 StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()),
                                 valorPremio));
+                        break;
+                    case MAIS_MILIONARIA:
+                        ArrayList<Number> resultadoTrevos = (ArrayList) resultadoConcursoDTO.getTrevosSorteadosPrimeiroSorteio();
+
+                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
+                                situacao,
+                                StringUtils.formatToStringList(resultado),
+                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
+                                valorPremio,
+                                StringUtils.formatToStringList1Digito(resultadoTrevos),
+                                StringUtils.formatToStringList1Digito(aposta.getTrevosSelecionados())));
                         break;
                     case LOTOFACIL:
                     case QUINA:

@@ -1,0 +1,30 @@
+<!-- res/layout/view_divider_trevo.xml -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="28dp">
+
+    <!-- Linha horizontal -->
+    <View
+        android:id="@+id/linha"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center_vertical"
+        android:background="#FFFFFFFF" />
+
+    <!-- Círculo central branco (20dp) -->
+    <FrameLayout
+        android:id="@+id/circulo_centro"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_circulo_branco">
+
+        <!-- Ícone central (12dp) -->
+        <ImageView
+            android:id="@+id/icone_centro"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_gravity="center"
+            android:src="@drawable/trevo_megasena_fundo_branco"/>
+    </FrameLayout>
+</FrameLayout>

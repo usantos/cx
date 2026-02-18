@@ -10,7 +10,6 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:background="@drawable/ic_item_trevo_branco"
-        android:backgroundTint="@color/black"
         android:gravity="center"
         android:text="01"
         android:textSize="16dp"

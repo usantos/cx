@@ -1601,5 +1601,7 @@
     <string name="label_mes_sorteado_">Mês sorteado</string>
     <string name="label_mes_de_sorte">Mês de sorte:</string>
     <string name="label_premio_dois_pontos">Prêmio:</string>
+    <string name="label_trevos_sorteados">Trevos sorteados</string>
+    <string name="label_trevos">Trevos</string>
 
 </resources>

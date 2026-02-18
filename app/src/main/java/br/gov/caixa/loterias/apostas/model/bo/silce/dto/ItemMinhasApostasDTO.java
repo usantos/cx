@@ -14,11 +14,13 @@ public class ItemMinhasApostasDTO {
     private final String seuTimeMes;
     private final List<String> numerosSorteados2;
     private final List<String> seusNumeros2;
+    private final List<String> trevosSorteados;
+    private final List<String> seusTrevos;
     private final BigDecimal valorPremio;
     private final boolean apurado;
     private boolean isExpanded = false;
 
-    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, String timeMesSorteado, String seuTimeMes, List<String> numerosSorteados2, List<String> seusNumeros2, BigDecimal valorPremio, boolean apurado) {
+    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, String timeMesSorteado, String seuTimeMes, List<String> numerosSorteados2, List<String> seusNumeros2, List<String> trevosSorteados, List<String> seusTrevos, BigDecimal valorPremio, boolean apurado) {
         this.modalidade = modalidade;
         this.concurso = concurso;
         this.situacao = situacao;
@@ -28,28 +30,35 @@ public class ItemMinhasApostasDTO {
         this.seuTimeMes = seuTimeMes;
         this.numerosSorteados2 = numerosSorteados2;
         this.seusNumeros2 = seusNumeros2;
+        this.trevosSorteados = trevosSorteados;
+        this.seusTrevos = seusTrevos;
         this.valorPremio = valorPremio;
         this.apurado = apurado;
     }
 
     //Construtor concurso não apurado
     public ItemMinhasApostasDTO(ModalidadeEnum modalidade, List<String> seusNumeros) {
-        this(modalidade, null, null, null, seusNumeros, null, null, null, null, null, false);
+        this(modalidade, null, null, null, seusNumeros, null, null, null, null, null, null, null, false);
     }
 
     //Construtor LOTOFACIL
     public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, BigDecimal valorPremio) {
-        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, null, null, null, null, valorPremio, true);
+        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, null, null, null, null, null, null, valorPremio, true);
     }
 
     //Construtor TIMEMANIA MESSORTE
     public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, String timeMesSorteado, String seuTimeMes, BigDecimal valorPremio) {
-        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, timeMesSorteado, seuTimeMes, null, null, valorPremio, true);
+        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, timeMesSorteado, seuTimeMes, null, null, null, null, valorPremio, true);
     }
 
     //Construtor DUPLASENA
     public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, List<String> numerosSorteados2, List<String> seusNumeros2, BigDecimal valorPremio) {
-        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, null, null, numerosSorteados2, seusNumeros2, valorPremio, true);
+        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, null, null, numerosSorteados2, seusNumeros2, null, null, valorPremio, true);
+    }
+
+    //Construtor MAIS_MILIONARIA
+    public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, BigDecimal valorPremio, List<String> trevosSorteados, List<String> seusTrevos) {
+        this(modalidade, concurso, situacao, numerosSorteados, seusNumeros, null, null, null, null, trevosSorteados, seusTrevos, valorPremio, true);
     }
 
     public ModalidadeEnum getModalidade() {
@@ -86,6 +95,14 @@ public class ItemMinhasApostasDTO {
 
     public List<String> getSeusNumeros2() {
         return seusNumeros2;
+    }
+
+    public List<String> getTrevosSorteados() {
+        return trevosSorteados;
+    }
+
+    public List<String> getSeusTrevos() {
+        return seusTrevos;
     }
 
     public BigDecimal getValorPremio() {

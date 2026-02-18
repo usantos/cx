@@ -110,7 +110,7 @@
             android:layout_marginTop="3dp"
             tools:itemCount="3"/>
 
-        <!-- DUPKASENA -->
+        <!-- DUPKASENA E MAISMILIONARIA-->
         <TextView
             android:id="@+id/tv_label_numeros_segundo_sorteio"
             android:layout_width="wrap_content"
@@ -155,16 +155,24 @@
                 android:layout_marginStart="4dp" />
         </LinearLayout>
 
+        <include
+            android:layout_width="212dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/divisor_trevo"
+            layout="@layout/view_divider_trevo"
+            android:layout_gravity="center_horizontal" />
+
+
         <!-- LOTOFACIL e outras -->
         <TextView
             android:id="@+id/tv_label_seus_numeros"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/caixa_std_regular"
             android:text="Seus números"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:fontFamily="@font/caixa_std_regular"
-            android:layout_marginTop="8dp"/>
+            android:textSize="18sp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_super7_seus_numeros"
@@ -190,7 +198,7 @@
             android:layout_marginTop="3dp"
             tools:itemCount="3"/>
 
-        <!-- DUPKASENA -->
+        <!-- DUPKASENA E MAISMILIONARIA-->
         <TextView
             android:id="@+id/tv_label_seus_numeros_segundo_sorteio"
             android:layout_width="wrap_content"

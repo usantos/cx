@@ -97,6 +97,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             holder.tvLabelNumerosSorteados.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
             holder.tvLabelSeusNumeros.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
+            holder.ivIconeCentro.setImageDrawable(context.getDrawable(estilo.getTrevoFundoClaro()));
+
             if (item.getValorPremio() != null) {
                 holder.llPremio.setVisibility(View.VISIBLE);
                 holder.tvLabelPremio.setVisibility(View.VISIBLE);
@@ -177,8 +179,30 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                     setupGridNumeros(holder.rvSuper7Sorteados, Shape.RETANGULO, 7, listCabecalho1a7, context.getColor(estilo.getCorEscura()), context.getColor(estilo.getCorClara()), context.getColor(estilo.getCorClara()));
                     setupGridNumeros(holder.rvNumberSortedos, Shape.RETANGULO, 7, item.getNumerosSorteados(), context.getColor(estilo.getCorFonteFundoEscuro()), Color.TRANSPARENT, Color.TRANSPARENT);
                     setupGridNumeros(holder.rvSuper7SeusNumeros, Shape.RETANGULO, 7, listCabecalho1a7, context.getColor(estilo.getCorEscura()), context.getColor(estilo.getCorClara()), context.getColor(estilo.getCorClara()));
-                    setupGridNumerosWithIntersection(holder.rvSeusNumeros, Shape.CIRCULO, 7, item.getSeusNumeros(), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorEscura()),
+                    setupGridNumerosWithIntersectionS7(holder.rvSeusNumeros, Shape.CIRCULO, 7, item.getSeusNumeros(), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorEscura()),
                             item.getNumerosSorteados(), context.getColor(estilo.getCorEscura()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()));
+                    break;
+                case MAIS_MILIONARIA:
+                    holder.tvLabelNumerosSegundoSorteio.setVisibility(View.VISIBLE);
+                    holder.rvNumberSortedos2.setVisibility(View.VISIBLE);
+                    holder.tvLabelSeusNumerosSegundoSorteio.setVisibility(View.VISIBLE);
+                    holder.rvSeusNumeros2.setVisibility(View.VISIBLE);
+
+                    holder.tvLabelNumerosSegundoSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+                    holder.tvLabelNumerosSegundoSorteio.setText(R.string.label_trevos_sorteados);
+
+                    holder.tvLabelSeusNumerosSegundoSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+                    holder.tvLabelSeusNumerosSegundoSorteio.setText(R.string.label_trevos);
+
+                    setupGridNumeros(holder.rvNumberSortedos, Shape.NO_SHAPE, 6, item.getNumerosSorteados(), context.getColor(estilo.getCorFonteFundoEscuro()), Color.TRANSPARENT, Color.TRANSPARENT);
+
+                    setupGridNumerosWithIntersection(holder.rvSeusNumeros, Shape.CIRCULO, 6, item.getSeusNumeros(), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorEscura()),
+                            item.getNumerosSorteados(), context.getColor(estilo.getCorEscura()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()));
+
+                    setupGridNumerosWithIntersection(holder.rvNumberSortedos2, Shape.TREVO, 2, item.getTrevosSorteados(), context.getColor(estilo.getCorFonteFundoEscuro()),  Color.TRANSPARENT,  Color.TRANSPARENT,
+                            item.getTrevosSorteados(), context.getColor(estilo.getCorEscura()),  Color.TRANSPARENT,  Color.TRANSPARENT);
+                    setupGridNumerosWithIntersection(holder.rvSeusNumeros2, Shape.TREVO, 2, item.getSeusTrevos(), context.getColor(estilo.getCorFonteFundoEscuro()),  Color.TRANSPARENT,  Color.TRANSPARENT,
+                            item.getTrevosSorteados(), context.getColor(estilo.getCorEscura()),  Color.TRANSPARENT,  Color.TRANSPARENT);
                     break;
                 case LOTOFACIL:
                 case QUINA:
@@ -231,13 +255,21 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                 intersectionNumbers, intersectionTextColor, intersectionBorderColor, intersectionBackgroudColor);
         recyclerView.setAdapter(adapter);
     }
+    private void setupGridNumerosWithIntersectionS7(RecyclerView recyclerView, Shape shape,  int columns, List<String> numbers, int textColor, int borderColor, int backgroudColor,
+                                                  List<String> intersectionNumbers, int intersectionTextColor, int intersectionBorderColor, int intersectionBackgroudColor) {
+        recyclerView.setLayoutManager(new GridLayoutManager(context, columns));
+        recyclerView.setNestedScrollingEnabled(false);
+        NumerosGridAdapter adapter = new NumerosGridAdapter(shape, numbers, textColor, borderColor, backgroudColor,
+                intersectionNumbers, intersectionTextColor, intersectionBorderColor, intersectionBackgroudColor, true);
+        recyclerView.setAdapter(adapter);
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvResultadoConcurso, tvLabelSituacao, tvSituacao, tvLabelNumerosSorteados, tvLabelNumerosPrimeiroSorteio, tvLabelNumerosSegundoSorteio;
         TextView tvLabelTimeMesSorteado, tvTimeMesSorteado, tvLabelSeusNumeros, tvLabelSeusNumerosPrimeiroSorteio, tvLabelSeusNumerosSegundoSorteio;
         TextView tvLabelSeuTimeMes, tvSeuTimeMes;
         TextView tvLabelPremio, tvPremio;
-        ImageView ivExpandCollapse;
+        ImageView ivExpandCollapse, ivIconeCentro;
         LinearLayout contentlayout, llPremio;
         ConstraintLayout headerlayout;
         RecyclerView rvNumberSortedos, rvNumberSortedos2, rvSeusNumeros, rvSeusNumeros2, rvSuper7Sorteados, rvSuper7SeusNumeros;
@@ -253,6 +285,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             headerlayout = itemView.findViewById(R.id.header_layout);
             vLinhaAccordion1 = itemView.findViewById(R.id.v_linha_accordion1);
             vLinhaAccordion2 = itemView.findViewById(R.id.v_linha_accordion2);
+            ivIconeCentro = itemView.findViewById(R.id.icone_centro);
 
             tvLabelNumerosSorteados = itemView.findViewById(R.id.tv_label_numeros_sorteados);
             rvNumberSortedos = itemView.findViewById(R.id.rv_numbers_sorteados);
