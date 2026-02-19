@@ -117,6 +117,18 @@ public class StringUtils {
         return listString;
     }
 
+    public static List<String> formatToStringList1Digito(List<? extends Number> listtNumeros) {
+        List<String> listString = new ArrayList<>();
+        if (listtNumeros == null) {
+            return listString;
+        }
+        for (Number numero : listtNumeros) {
+            long longNumero = numero.longValue();
+            listString.add(String.format("%1d", longNumero));
+        }
+        return listString;
+    }
+
     public static List<String> formatToStringListFlexPrimeiro(List<?> input) {
         List<String> out = new ArrayList<>();
         if (input == null) return out;

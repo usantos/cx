@@ -64,13 +64,12 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             holder.rvSeusNumeros.setVisibility(View.VISIBLE);
             holder.tvLabelSeusNumeros.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
-            setupGridNumeros(holder.rvSeusNumeros, Shape.CIRCULO, 6,  item.getSeusNumeros(), Color.WHITE, Color.WHITE, Color.TRANSPARENT);
+            setupGridNumeros(holder.rvSeusNumeros, Shape.CIRCULO, 6,  item.getSeusNumeros(), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorEscura()));
             return;
-        } else {
-            holder.headerlayout.setVisibility(View.VISIBLE);
         }
 
         //Cabecalho Accordion
+        holder.headerlayout.setVisibility(View.VISIBLE);
         holder.tvResultadoConcurso.setText(context.getString(R.string.resultado_concurso) + " " + item.getConcurso());
         holder.tvResultadoConcurso.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
         holder.tvLabelSituacao.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));

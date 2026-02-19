@@ -1,12 +1,19 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 
+import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
+import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -19,17 +26,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 
+import org.apache.commons.collections4.CollectionUtils;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
+import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
@@ -37,17 +50,27 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTORespons
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ItemMinhasApostasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogFragmentUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.IntentUtil;
+import br.gov.caixa.loterias.apostas.utils.MensagemUtils;
+import br.gov.caixa.loterias.apostas.utils.PdfUtils;
+import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
+import br.gov.caixa.loterias.apostas.utils.helper.AdicionarApostaCarrinhoHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheMinhasApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
+import br.gov.caixa.loterias.apostas.view.listener.OnModalidadesAbertasListener;
 
 public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     public static final String ARG_COMPROVANTE = "ARG_COMPROVANTE";
@@ -81,6 +104,12 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
     private EstiloModalidadeMKP estiloMKP;
 
+    //Botoes
+    private RelativeLayout carrinhoApostasBtn, adicionarCarrinhoBtn, editarApostaBtn;
+    private Uri fileApostaUri, filePremioUri;
+    private ParametroSimulacao parametroSimulacao, parametroSimulacaoTrocado;
+    private SessaoUsuario sessaoUsuario;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,17 +121,17 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         setaViews();
         aplicaCores();
         setupToolbar();
-//        setaMetodos();
+        setaMetodos();
+
+        sessaoUsuario = SessaoUsuario.getInstance();
+        parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
+        parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
 
         preencheTipoApostaLinha();
         preencheRodape();
         //preencheCentro();
 
-        //if(ConfiguracaoAppSingleton.getInstance().isMicroServico() && resultadoConcurso != null){
-        //    apresentaBySituacao(aposta.getSituacao());
-        //} else {
         servicoResultadoModalidadeConcursos();
-        //}
     }
     private void pegaExtras() {
         Bundle bundle = getIntent().getExtras();
@@ -117,40 +146,6 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
         if (comprovanteApostaDTO != null) {
             aposta = comprovanteApostaDTO.getAposta();
-//                premioPago = false;
-//                if (comprovanteApostaDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)){
-//                    apostaMatriz = comprovanteApostaDTO.getAposta();
-//                    apostaMatriz.setNumerosSelecionados(comprovanteApostaDTO.getAposta().getMatrizNumerosSelecionados());
-//                }
-//                valorPremio = null;
-//            } else {
-//                premioPago = Boolean.TRUE;
-//                if (detalhesPremioDTO != null) {
-//                    aposta = detalhesPremioDTO.getAposta();
-//                    if (detalhesPremioDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)){
-//                        apostaMatriz = detalhesPremioDTO.getAposta();
-//                        apostaMatriz.setNumerosSelecionados(detalhesPremioDTO.getAposta().getMatrizNumerosSelecionados());
-//                    }
-//                    valorPremio = detalhesPremioDTO.getPremio().getValorLiquido();
-//                } else {
-//                    aposta = detalhesHistoricoPremioDTO.getAposta();
-//                    if (detalhesHistoricoPremioDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)){
-//                        apostaMatriz = detalhesHistoricoPremioDTO.getAposta();
-//                        apostaMatriz.setNumerosSelecionados(detalhesHistoricoPremioDTO.getAposta().getMatrizNumerosSelecionados());
-//                    }
-//                    valorPremio = detalhesHistoricoPremioDTO.getPremioDTO().getValorLiquido();
-//                }
-//            }
-//
-//            if (Objects.equals(aposta.getSituacao().getValor(), SituacaoResultadoBilheteEnum.EFETIVADA.getValor())) {
-//                if(!ConfiguracaoAppSingleton.getInstance().isMicroServico() || aposta.getSituacao().getDescricao().contains("Aposta não conferida")) {
-//                    isBuscandoSituacaoSilce = true;
-//                    ConferirResultadoHelper.conferirResultadoHandler = this;
-//                    ConferirResultadoHelper.conferirResultado(aposta.getId(), this);
-//                }
-//            } else {
-//                inibirTeim();
-//            }
         }
     }
 
@@ -206,6 +201,10 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         validadePremioText = findViewById(R.id.validadePremioText);
         validadePremioLabel = findViewById(R.id.validadePremioLabel);
         validadePremioImg = findViewById(R.id.validadePremioImage);
+
+        carrinhoApostasBtn = findViewById(R.id.carrinhoApostasBtn);
+        editarApostaBtn = findViewById(R.id.editarApostaBtn);
+        adicionarCarrinhoBtn = findViewById(R.id.adicionarCarrinhoBtn);
     }
 
     private void aplicaCores() {
@@ -257,9 +256,216 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         validadePremioImg.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
     }
 
-    private void preencheCabecalho() {
-        statusApostaTxt.setText(aposta.getSituacao().getDescricao());
+    private void setaMetodos(){
+        clResgatePremio.setOnClickListener(v-> startResgateActivity());
+        clResgatePremio2.setOnClickListener(v-> startResgateActivity());
 
+        //favoriteBtn.setOnClickListener(v-> favoriteBtn());
+        //favoritadoLayout.setOnClickListener(v -> favoritadoLayout());
+        //layoutTextoSalveAposta.setOnClickListener(v -> layoutTextoSalveAposta());
+        //salvarApostaImg.setOnClickListener(v -> salvarApostaImg());
+        comprovanteLayout.setOnClickListener(v -> getComprovantePdf());
+        editarApostaBtn.setOnClickListener(v -> editarApostaBtn());
+        adicionarCarrinhoBtn.setOnClickListener(v -> adicionarCarrinhoBtn());
+        carrinhoApostasBtn.setOnClickListener(v -> carrinhoApostasBtn());
+    }
+
+    private void startResgateActivity() {
+        Intent intent = IntentUtil.getIntentOrigemDestino(this, ResultadoApostaConfirmadaActivity.class);
+        intent.putExtra(ResultadoApostaConfirmadaActivity.DETALHES_PREMIO_DTO_EXTRA, ((Serializable) detalhesPremioDTO));
+        intent.putExtra(ResultadoApostaConfirmadaActivity.COMPROVANTE_EXTRA, ((Serializable) comprovanteApostaDTO));
+        startActivity(intent);
+    }
+
+    private void carrinhoApostasBtn() {
+        AlertDialogUtils.show(this);
+
+        ServicoFactoryUtil.getApostaService().buscaCarrinho(new RequestListener<CarrinhoDTOResponse>() {
+            @Override
+            public void onResponse(CarrinhoDTOResponse response) {
+                AlertDialogUtils.dismiss();
+                if (response.getRedirect() != null){
+                    RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DetalheMinhasApostasTeimosinhaActivity.this);
+                }
+                Bundle args = new Bundle();
+                args.putSerializable(CARRINHO, (Serializable) response.getPayload());
+                startActivity(new Intent(DetalheMinhasApostasTeimosinhaActivity.this, CarrinhoActivity.class).putExtras(args));
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                if (MensagensNetwork.isUnauthorizedError(error)) {
+                    startActivity(new Intent(DetalheMinhasApostasTeimosinhaActivity.this, CarrinhoActivity.class).putExtra(LER_CARRINHO_LOCAL, true));
+                } else {
+                    RedirectNetwork.checkRedirect( error, DetalheMinhasApostasTeimosinhaActivity.this);
+                }
+            }
+        });
+    }
+
+    private void adicionarCarrinhoBtn() {
+        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(false, "Adicionar ao\n carrinho"));
+    }
+
+    private void editarApostaBtn() {
+        AdicionarApostaCarrinhoHelper.checagemModadalidadesAbertas(aposta.getModalidade(), onChegagemModalidadesListener(true, "Editar Aposta"));
+    }
+
+    private OnModalidadesAbertasListener onChegagemModalidadesListener(boolean isEditing, String btnText){
+        return new OnModalidadesAbertasListener() {
+            @Override
+            public void ambasAbertas(List<ParametroSimulacao> arrayConcursos) {
+                DialogFragmentUtils.startEscolhaModalidade(getSupportFragmentManager(), arrayConcursos, aposta.getId(),
+                        getResources().getString(R.string.adicionar_carrinho_favoritas_view), btnText,false, false,
+                        (tipoConcurso, teimosinha, espelho) -> {
+                            IdentificaoDeUmaApostaDas8Modalidades clone = aposta;
+                            if (!tipoConcurso.toString().equalsIgnoreCase(aposta.getTipoConcurso().getValor())) {
+                                clone = ApostaUtils.converteTipoDeConcurso(aposta);
+                            }
+                            parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, clone.getModalidade(), clone.getTipoConcurso().getValor());
+                            if (isEditing){
+                                goToEditarAposta(clone);
+                            } else {
+                                adicionaApostaCarrinho(clone);
+                            }
+                        });
+            }
+
+            @Override
+            public void ambasFechadas() {
+                AlertDialogUtils.dismiss();
+                ViewUtils.alertTitulo(DetalheMinhasApostasTeimosinhaActivity.this, R.string.label_atencao,"Modalidade não disponível no momento.");
+            }
+
+            @Override
+            public void unicaModalidade(List<ParametroSimulacao> arrayConcursos, TipoConcursoEnum tipoConcursoEnum) {
+                if (tipoConcursoEnum.getValor().equals(aposta.getTipoConcurso().getValor())){
+                    if (isEditing){
+                        goToEditarAposta(aposta);
+                    } else {
+                        adicionaApostaCarrinho(aposta);
+                    }
+                } else {
+                    String msg = MensagemUtils.getMensagemConverteModalidade(aposta.getModalidade(), aposta.getTipoConcurso().getValor());
+
+                    ViewUtils.alertTitleButtonPositiveListener(DetalheMinhasApostasTeimosinhaActivity.this, R.string.label_atencao, msg, R.string.confirmar, (dialog, which) -> {
+                        IdentificaoDeUmaApostaDas8Modalidades clone =  ApostaUtils.converteTipoDeConcurso(aposta);
+                        parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, clone.getModalidade(), clone.getTipoConcurso().getValor());
+                        if (isEditing){
+                            goToEditarAposta(clone);
+                        } else {
+                            adicionaApostaCarrinho(clone);
+                        }
+                    });
+                }
+            }
+        };
+    }
+
+    private void goToEditarAposta(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta){
+        if (CollectionUtils.isNotEmpty(aposta.getNumerosSelecionados())) {
+            Intent intent = IntentUtil.getIntentOrigemDestino(this, SimularApostaActivity.class);
+            intent.putExtra(SimularApostaActivity.APOSTA_EXTRA, ((Serializable) aposta));
+            intent.putExtra("tipoAposta", ((Serializable) aposta.getModalidade()));
+            intent.putExtra("modalidade", ((Serializable) (new Gson()).toJson(parametroSimulacaoTrocado.getParametroJogo())));
+            intent.putExtra("especial", isEspecial(aposta.getTipoConcurso().getValor()));
+            startActivity(intent);
+        }
+    }
+
+    private void adicionaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta) {
+
+        IdentificaoDeUmaApostaDas8Modalidades<List<List<Integer>>> apostaMatriz;
+
+        if (comprovanteApostaDTO != null) {
+            if (comprovanteApostaDTO.getAposta().getModalidade().equals(ModalidadeEnum.SUPER_7)) {
+                apostaMatriz = comprovanteApostaDTO.getAposta();
+                apostaMatriz.setNumerosSelecionados(comprovanteApostaDTO.getAposta().getMatrizNumerosSelecionados());
+            }
+        }
+        ModalidadeEnum modalidade = (aposta != null && aposta.getModalidade()!= null) ? aposta.getModalidade(): null;
+        if (modalidade != null && !modalidade.equals(ModalidadeEnum.LOTECA)){
+            if (!modalidade.equals(ModalidadeEnum.SUPER_7)) {
+                aposta.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
+            } else {
+                apostaMatriz = comprovanteApostaDTO.getAposta();
+                apostaMatriz.setNumerosSelecionados(comprovanteApostaDTO.getAposta().getMatrizNumerosSelecionados());
+                AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, apostaMatriz);
+                return;
+            }
+        }
+
+        AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
+    }
+
+    private void getComprovantePdf() {
+        boolean premioPago = true;
+        if (comprovanteApostaDTO != null) {
+            premioPago = false;
+        }
+        if(!premioPago){
+            if(fileApostaUri != null){
+                PdfUtils.abrirPdf(fileApostaUri, DetalheMinhasApostasTeimosinhaActivity.this);
+                fileApostaUri = null;
+            } else {
+                AlertDialogUtils.show(this);
+                try {
+                    ApostaSilceBO.getInstance().baixarComprovanteAposta(aposta.getId(), new RequestListener<String>() {
+                        @Override
+                        public void onResponse(String  response) {
+                            AlertDialogUtils.dismiss();
+                            fileApostaUri = PdfUtils.baixarPdfAposta(response, DetalheMinhasApostasTeimosinhaActivity.this);
+                            PdfUtils.abrirPdf(fileApostaUri, DetalheMinhasApostasTeimosinhaActivity.this);
+                            fileApostaUri = null;
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                            RedirectNetwork.checkRedirect(error,DetalheMinhasApostasTeimosinhaActivity.this);
+                            error.getLocalizedMessage();
+                        }
+                    });
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.d("ApostaConfirmadaDetAct", "Não foi possível acessar o serviço para baixar comprovante de aposta");
+                }
+            }
+        }else{
+            if(filePremioUri != null){
+                PdfUtils.abrirPdf(filePremioUri, DetalheMinhasApostasTeimosinhaActivity.this);
+                filePremioUri = null;
+            } else {
+                AlertDialogUtils.show(this);
+                try{
+                    ApostaSilceBO.getInstance().baixarComprovantePremio(aposta.getId(), new RequestListener<String>() {
+                        @Override
+                        public void onResponse(String  response) {
+                            AlertDialogUtils.dismiss();
+                            filePremioUri = PdfUtils.baixarPdfPremio(response, DetalheMinhasApostasTeimosinhaActivity.this);
+                            PdfUtils.abrirPdf(filePremioUri, DetalheMinhasApostasTeimosinhaActivity.this);
+                            filePremioUri = null;
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            AlertDialogUtils.dismiss();
+                            RedirectNetwork.checkRedirect(error,DetalheMinhasApostasTeimosinhaActivity.this);
+                            error.getLocalizedMessage();
+                        }
+                    });
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Log.d("ApostaConfirmadaDetAct", "Não foi possível acessar o serviço para baixar comprovante de prêmio");
+                }
+            }
+        }
+    }
+
+
+    private void preencheCabecalho() {
         concursoTxt.setText(aposta.getConcursoInicial().toString());
 
         if (aposta.getQuantidadeTeimosinhas() == 0) {
@@ -279,12 +485,25 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         horaApostaTxt.setText(StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao()));
 
         if (isApostaPremiada(aposta) && detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null){
+            statusApostaTxt.setText(aposta.getSituacao().getDescricao());
             tv_val_premio.setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
             clResgatePremio.setVisibility(View.VISIBLE);
         } else {
+            statusApostaTxt.setVisibility(View.GONE);
             tv_val_premio_tit.setVisibility(TextView.GONE);
             tv_val_premio.setVisibility(TextView.GONE);
             clResgatePremio.setVisibility(View.GONE);
+            validadePremioText.setVisibility(View.GONE);
+            validadePremioLabel.setVisibility(View.GONE);
+            validadePremioImg.setVisibility(View.GONE);
+            if (isConcursoNaoApurado(aposta)) {
+                tv_val_premio_tit.setVisibility(TextView.VISIBLE);
+                tv_val_premio_tit.setText(R.string.label_concurso_nao_apurado);
+            }
+            if (isApostaNaoPremiada(aposta)) {
+                tv_val_premio_tit.setVisibility(TextView.VISIBLE);
+                tv_val_premio_tit.setText(R.string.label_aposta_nao_premiada);
+            }
         }
     }
 
@@ -327,7 +546,12 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     private boolean isApostaPremiada(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA;
     }
-
+    private boolean isConcursoNaoApurado(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta.getSituacao().getValor() == SituacaoAposta.CONCURSO_NAO_APURADO;
+    }
+    private boolean isApostaNaoPremiada(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA;
+    }
     private boolean isEspecial(String tipoConcurso){
         return tipoConcurso.equalsIgnoreCase("2");
     }
@@ -462,11 +686,12 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
                         break;
                 }
             }
-        } //else {
-                //Concurso nao apurado
-                //items.add(new ItemMinhasApostasDTO(ModalidadeEnum.LOTOFACIL,
-                //                Arrays.asList("01","02","03","04","05","06","07","08")));
-        //}
+        } else {
+            //Concurso nao apurado
+            items.add(new ItemMinhasApostasDTO(aposta.getModalidade(),
+                    StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
+        }
+
 
         RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

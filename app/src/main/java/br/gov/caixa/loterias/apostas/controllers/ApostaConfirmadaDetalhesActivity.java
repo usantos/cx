@@ -484,7 +484,6 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                 return;
             }
         }
-
         AdicionarApostaCarrinhoHelper.incluirApostaCarrinho(this, aposta);
     }
 
