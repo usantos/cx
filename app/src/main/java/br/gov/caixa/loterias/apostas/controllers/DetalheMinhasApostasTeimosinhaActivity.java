@@ -3,6 +3,7 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINHO;
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
+import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 
@@ -41,21 +44,27 @@ import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoPremiadoDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ItemMinhasApostasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
+import br.gov.caixa.loterias.apostas.model.model.ApostaFavoritaModel;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
@@ -105,10 +114,15 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     private EstiloModalidadeMKP estiloMKP;
 
     //Botoes
-    private RelativeLayout carrinhoApostasBtn, adicionarCarrinhoBtn, editarApostaBtn;
+    private RelativeLayout carrinhoApostasBtn, adicionarCarrinhoBtn, editarApostaBtn, favoritadoLayout, favoriteBtn, layoutTextoSalveAposta, layoutnomeApostaLayout;
     private Uri fileApostaUri, filePremioUri;
     private ParametroSimulacao parametroSimulacao, parametroSimulacaoTrocado;
     private SessaoUsuario sessaoUsuario;
+    private ImageView salvarApostaImg;
+    private EditText nomeApostaEditTxt;
+    private ApostaFavoritaDTO apostaFavoritaDTO;
+    private ApostaFavoritaModel model;
+
 
 
     @Override
@@ -123,6 +137,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         setupToolbar();
         setaMetodos();
 
+        model = new ApostaFavoritaModel(DetalheMinhasApostasTeimosinhaActivity.this);
         sessaoUsuario = SessaoUsuario.getInstance();
         parametroSimulacao = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
         parametroSimulacaoTrocado = ViewUtils.getParametroSimulacao(sessaoUsuario, aposta.getModalidade());
@@ -149,6 +164,11 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
     private void setupToolbar() {
         if (isEspecial(aposta.getTipoConcurso().getValor())) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialSimples());
@@ -202,9 +222,16 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         validadePremioLabel = findViewById(R.id.validadePremioLabel);
         validadePremioImg = findViewById(R.id.validadePremioImage);
 
+        //Botoes
         carrinhoApostasBtn = findViewById(R.id.carrinhoApostasBtn);
         editarApostaBtn = findViewById(R.id.editarApostaBtn);
         adicionarCarrinhoBtn = findViewById(R.id.adicionarCarrinhoBtn);
+        favoritadoLayout = findViewById(R.id.favoritadoLayout);
+        favoriteBtn = findViewById(R.id.favoriteBtn);
+        layoutTextoSalveAposta  = findViewById(R.id.layoutTextoSalveAposta);
+        salvarApostaImg = findViewById(R.id.salvarApostaImg);
+        layoutnomeApostaLayout  = findViewById(R.id.layoutnomeApostaLayout);
+        nomeApostaEditTxt = findViewById(R.id.nomeApostaEditTxt);
     }
 
     private void aplicaCores() {
@@ -260,10 +287,10 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         clResgatePremio.setOnClickListener(v-> startResgateActivity());
         clResgatePremio2.setOnClickListener(v-> startResgateActivity());
 
-        //favoriteBtn.setOnClickListener(v-> favoriteBtn());
-        //favoritadoLayout.setOnClickListener(v -> favoritadoLayout());
-        //layoutTextoSalveAposta.setOnClickListener(v -> layoutTextoSalveAposta());
-        //salvarApostaImg.setOnClickListener(v -> salvarApostaImg());
+        favoriteBtn.setOnClickListener(v-> favoriteBtn());
+        favoritadoLayout.setOnClickListener(v -> favoritadoLayout());
+        layoutTextoSalveAposta.setOnClickListener(v -> layoutTextoSalveAposta());
+        salvarApostaImg.setOnClickListener(v -> salvarApostaImg());
         comprovanteLayout.setOnClickListener(v -> getComprovantePdf());
         editarApostaBtn.setOnClickListener(v -> editarApostaBtn());
         adicionarCarrinhoBtn.setOnClickListener(v -> adicionarCarrinhoBtn());
@@ -464,6 +491,112 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         }
     }
 
+    private void favoriteBtn() {
+        if (layoutnomeApostaLayout.getVisibility() == View.VISIBLE){
+            layoutnomeApostaLayout.setVisibility(View.GONE);
+        } else {
+            layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+        }
+        if(favoritadoLayout.getVisibility() == View.VISIBLE){
+            favoritadoLayout.setVisibility(View.INVISIBLE);
+            layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+        }
+        favoriteBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void favoritadoLayout() {
+        if(favoritadoLayout.getVisibility() == View.VISIBLE){
+            favoritadoLayout.setVisibility(View.INVISIBLE);
+            layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+            favoriteBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void layoutTextoSalveAposta() {
+        layoutnomeApostaLayout.setVisibility(View.VISIBLE);
+        layoutTextoSalveAposta.setClickable(false);
+    }
+
+    private void salvarApostaImg() {
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(nomeApostaEditTxt.getText().toString())) {
+            AlertDialogUtils.show(this);
+
+            ParametroJogoDTO parametroJogo;
+            apostaFavoritaDTO = new ApostaFavoritaDTO();
+            if (parametroSimulacao != null && parametroSimulacao.getParametroJogo() != null) {
+                parametroJogo = parametroSimulacao.getParametroJogo();
+                DTOEnumInteger modalidade = new DTOEnumInteger();
+                modalidade.setDescricao(parametroJogo.getConcurso().getModalidadeDetalhada().getDescricao());
+                modalidade.setValor(parametroJogo.getConcurso().getModalidadeDetalhada().getValor());
+                apostaFavoritaDTO.setModalidade(modalidade);
+            }
+            if (nomeApostaEditTxt != null && nomeApostaEditTxt.getText() != null && nomeApostaEditTxt.getText().toString() != null){
+                if(nomeApostaEditTxt.getText().toString().length() > 25){
+                    apostaFavoritaDTO.setNome(nomeApostaEditTxt.getText().toString().substring(0, 25));
+                } else {
+                    apostaFavoritaDTO.setNome(nomeApostaEditTxt.getText().toString());
+                }
+            } else {
+                apostaFavoritaDTO.setNome("");
+            }
+            if(aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
+                apostaFavoritaDTO.setParametroTrevo(new ParametroTrevo());
+
+                apostaFavoritaDTO.getParametroTrevo().setTrevosSelecionados(aposta.getTrevosSelecionados());
+            }
+            if(aposta.getModalidade() == ModalidadeEnum.SUPER_7){
+                apostaFavoritaDTO.setNumerosSelecionados(aposta.getMatrizNumerosSelecionados());
+            } else {
+                apostaFavoritaDTO.setNumerosSelecionados(aposta.getListaNumerosSelecionados());
+            }
+            apostaFavoritaDTO.setTimeDoCoracao(aposta.getTimeDoCoracao());
+            apostaFavoritaDTO.setMesDeSorte(aposta.getMesDeSorte());
+
+
+            model.validaAposta(apostaFavoritaDTO, onValidaApostaListener());
+
+        } else {
+            ViewUtils.alert(this, getString(R.string.msg_favor_inserir_nome_aposta));
+        }
+    }
+    private OnSilceListener<NetworkResponse> onValidaApostaListener() {
+        return new OnSilceListener<NetworkResponse>() {
+            @Override
+            public void success(NetworkResponse payload) {
+                salvarAposta();
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+                if(isErroNegocial(error)){
+                    ViewUtils.alertTitleButtonYesOrNotListener(DetalheMinhasApostasTeimosinhaActivity.this,
+                            MensagensNetwork.getErrorMessage(error),
+                            (dialogInterface, i) ->
+                                    salvarAposta());
+                } else {
+                    RedirectNetwork.checkRedirect(error, DetalheMinhasApostasTeimosinhaActivity.this);
+                };
+            }
+        };
+    }
+
+    private void salvarAposta(){
+        model.salvaAposta(apostaFavoritaDTO, new OnSilceListener<NetworkResponse>() {
+            @Override
+            public void success(NetworkResponse payload) {
+                AlertDialogUtils.dismiss();
+                favoritadoLayout.setVisibility(View.VISIBLE);
+                layoutnomeApostaLayout.setVisibility(View.GONE);
+                favoriteBtn.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void error(VolleyError error) {
+                AlertDialogUtils.dismiss();
+            }
+        });
+    }
 
     private void preencheCabecalho() {
         concursoTxt.setText(aposta.getConcursoInicial().toString());
