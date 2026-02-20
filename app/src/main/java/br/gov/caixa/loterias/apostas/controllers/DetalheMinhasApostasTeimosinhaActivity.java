@@ -255,7 +255,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
                 tv_val_premio_tit.setVisibility(TextView.VISIBLE);
                 tv_val_premio_tit.setText(R.string.label_concurso_nao_apurado);
             }
-            if (isApostaNaoPremiada(aposta)) {
+            if (isApostaNaoPremiadaOuConcursoFuturo(aposta)) {
                 tv_val_premio_tit.setVisibility(TextView.VISIBLE);
                 tv_val_premio_tit.setText(R.string.label_aposta_nao_premiada);
             }
@@ -304,8 +304,9 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     private boolean isConcursoNaoApurado(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         return aposta.getSituacao().getValor() == SituacaoAposta.CONCURSO_NAO_APURADO;
     }
-    private boolean isApostaNaoPremiada(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        return aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA;
+    private boolean isApostaNaoPremiadaOuConcursoFuturo(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA ||
+               aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA_CONCORRENDO_A_CONCURSO_FUTURO;
     }
     private boolean isEspecial(String tipoConcurso){
         return tipoConcurso.equalsIgnoreCase("2");
@@ -357,7 +358,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                RedirectNetwork.checkRedirect(error, DetalheMinhasApostasTeimosinhaActivity.this);
+                //RedirectNetwork.checkRedirect(error, DetalheMinhasApostasTeimosinhaActivity.this);
 
                 preencheCabecalho();
                 preencheCentro();
@@ -373,7 +374,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         if (listResultadoConcursoDTO != null && listResultadoConcursoDTO.size() > 0) {
             for (ResultadoConcursoDTO resultadoConcursoDTO : listResultadoConcursoDTO) {
 
-                String situacao = "";
+                String situacao = getString(R.string.label_aposta_nao_premiada);
                 BigDecimal valorPremio = null;
                 if (detalhesPremioDTO != null) {
                     for (ConcursoPremiadoDTO concursoPremiado : detalhesPremioDTO.getPremio().getConcursos()) {

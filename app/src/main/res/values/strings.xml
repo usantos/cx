@@ -1603,7 +1603,7 @@
     <string name="label_premio_dois_pontos">Prêmio:</string>
     <string name="label_trevos_sorteados">Trevos sorteados</string>
     <string name="label_trevos">Trevos</string>
-    <string name="label_concurso_nao_apurado">Concurso\nnão aporado</string>
+    <string name="label_concurso_nao_apurado">Concurso\nnão apurado</string>
     <string name="label_aposta_nao_premiada">Não premiada</string>
 
 </resources>
