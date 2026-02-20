@@ -1,11 +1,13 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,8 +60,6 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     private List<ResultadoConcursoDTO> listResultadoConcursoDTO;
 
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
-
-    private Toolbar toolbar;
 
     private ConstraintLayout clScroll, clResgatePremio, clResgatePremio2, comprovanteLayout;
     private ImageView ivResgatePremio, ivResgatePremio2;
@@ -117,7 +117,9 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         finish();
         return true;
     }
+
     private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (isEspecial(aposta.getTipoConcurso().getValor())) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialSimples());
         } else {
@@ -134,10 +136,19 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(upArrow);
         }
         setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase()+"_"));
+
+        ImageButton btnDuvidas = findViewById(R.id.ib_duvidas);
+        btnDuvidas.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
+        btnDuvidas.setOnClickListener(view -> {
+            abrirTermosUso();
+        });
     }
 
+    protected void abrirTermosUso() {
+        Intent intent = new Intent(getBaseContext(), TermosUsoActivity.class);
+        startActivity(intent);
+    }
     private void setaViews(){
-        toolbar = findViewById(R.id.toolbar);
         clScroll = findViewById(R.id.cl_scroll_content);
 
         concursoLabel = findViewById(R.id.concursoLabel);
