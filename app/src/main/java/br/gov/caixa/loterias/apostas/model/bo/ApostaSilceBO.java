@@ -48,7 +48,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericasFavoritasResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
@@ -901,13 +900,13 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
 
     public void getResultadoModalidadeConcurso(final String descricaoModalidade, final Integer concursoInicial, final Integer concursoFinal, final RequestListener<ResultadoConcursosDTOResponse> listener) {
         LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+
         //Map não aceita parametros repetidos
-        String queryString = "modalidade="+descricaoModalidade;
+        String queryString = "modalidade=" + descricaoModalidade;
         for (int i = concursoInicial; i <= concursoFinal; i++) {
-            queryString += "&" + "concursos=" + String.valueOf(i);
+            queryString += "&concursos=" + i;
         }
 
-        //??queryString precisa criptografar ?
         String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO+"?"+queryString;
 
         final GsonRequest request = getServiceConnection().buildGetRequest(url,
