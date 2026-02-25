@@ -404,52 +404,54 @@ public class PartidaViewDetalhesResultado extends LinearLayout {
     }
 
     private void adicionarPremiados(List<PremiacaoConcursoDTO> listaPremiados, Modalidade modalidade) {
-        for (PremiacaoConcursoDTO premiacaoConcurso : listaPremiados) {
+        if (listaPremiados != null){
+            for (PremiacaoConcursoDTO premiacaoConcurso : listaPremiados) {
 
-            TextView title1 = new TextView(getContext());
-            TextView title2 = new TextView(getContext());
-            TextView title3 = new TextView(getContext());
+                TextView title1 = new TextView(getContext());
+                TextView title2 = new TextView(getContext());
+                TextView title3 = new TextView(getContext());
 
-            String faixa = obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
+                String faixa = obterMapFaixa(modalidade).get(premiacaoConcurso.getDescricao());
 
-            title1.setText(faixa);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                title1.setText(faixa);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-            layoutParams.setMargins(0, 18, 0, 0);
-            title1.setLayoutParams(layoutParams);
-            title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
-            title1.setTextColor(ContextCompat.getColor(getContext(), corFonte));
-            this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
+                layoutParams.setMargins(0, 18, 0, 0);
+                title1.setLayoutParams(layoutParams);
+                title1.setTextAppearance(getContext(), R.style.fontForTitle1Premiados);
+                title1.setTextColor(ContextCompat.getColor(getContext(), corFonte));
+                this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title1);
 
 
-            if (premiacaoConcurso.getQuantidadeGanhadores() > 1) {
-                title2.setText(getResources().getString(R.string.label_apostas_ganhadoras, premiacaoConcurso.getQuantidadeGanhadores()));
-            } else if (premiacaoConcurso.getQuantidadeGanhadores() == 1) {
-                title2.setText(getResources().getString(R.string.label_aposta_ganhadora, premiacaoConcurso.getQuantidadeGanhadores()));
-            } else {
-                title2.setText(R.string.label_nao_houve_acertador);
-                title3.setVisibility(View.GONE);
+                if (premiacaoConcurso.getQuantidadeGanhadores() > 1) {
+                    title2.setText(getResources().getString(R.string.label_apostas_ganhadoras, premiacaoConcurso.getQuantidadeGanhadores()));
+                } else if (premiacaoConcurso.getQuantidadeGanhadores() == 1) {
+                    title2.setText(getResources().getString(R.string.label_aposta_ganhadora, premiacaoConcurso.getQuantidadeGanhadores()));
+                } else {
+                    title2.setText(R.string.label_nao_houve_acertador);
+                    title3.setVisibility(View.GONE);
+                }
+
+                LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                title2.setLayoutParams(layoutParams2);
+                title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
+                title2.setTextColor(ContextCompat.getColor(getContext(), corFonte));
+                this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
+
+
+                title3.setText("Prêmio: " + ViewUtils.getMoedaFormat(premiacaoConcurso.getValor()));
+                LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                title3.setLayoutParams(layoutParams3);
+                title3.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
+                title3.setTextColor(ContextCompat.getColor(getContext(), corFonte));
+                this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
+
             }
-
-            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            title2.setLayoutParams(layoutParams2);
-            title2.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
-            title2.setTextColor(ContextCompat.getColor(getContext(), corFonte));
-            this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title2);
-
-
-            title3.setText("Prêmio: " + ViewUtils.getMoedaFormat(premiacaoConcurso.getValor()));
-            LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            title3.setLayoutParams(layoutParams3);
-            title3.setTextAppearance(getContext(), R.style.fontForTitle2Premiados);
-            title3.setTextColor(ContextCompat.getColor(getContext(), corFonte));
-            this.contentResuldadoDetalhesPremiacaoLinearLayout.addView(title3);
-
         }
     }
 
