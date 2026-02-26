@@ -10,19 +10,20 @@ public class EspecialUtils {
 
     public static Boolean isMega30(Integer numeroConcurso, TipoConcursoEnum tipoConcurso){
         int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);
-        boolean isEspecial = tipoConcurso.equals(TipoConcursoEnum.ESPECIAL);
+        boolean isEspecial = tipoConcurso != null && tipoConcurso.equals(TipoConcursoEnum.ESPECIAL);
         return isEspecial && numeroConcurso.equals(mega30);
     }
 
     public static Boolean isMega30(Integer numeroConcurso, DTOEnumCharacter tipoConcurso){
         int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);
-        boolean isEspecial = tipoConcurso.getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor());
+        boolean isEspecial = tipoConcurso != null && tipoConcurso.getValor() != null &&
+                tipoConcurso.getValor().equalsIgnoreCase(TipoConcursoEnum.ESPECIAL.getValor());
         return isEspecial && numeroConcurso.equals(mega30);
     }
 
     public static Boolean isMega30(Integer numeroConcurso, Integer tipoConcurso){
         int mega30 = SharedPreferencesUtils.getValorInt(MEGA_VALOR, -1);
-        boolean isEspecial = tipoConcurso.toString().equals(TipoConcursoEnum.ESPECIAL.getValor());
+        boolean isEspecial = tipoConcurso != null && tipoConcurso.toString().equals(TipoConcursoEnum.ESPECIAL.getValor());
         return isEspecial && numeroConcurso.equals(mega30);
     }
 
