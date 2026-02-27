@@ -438,7 +438,7 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/icon_carrinho"
+                android:src="@drawable/ic_carrinho2"
                 app:tint="@color/cinza90"/>
 
             <TextView
@@ -533,7 +533,7 @@
                         android:layout_width="21dp"
                         android:layout_height="21dp"
                         android:layout_marginEnd="10dp"
-                        android:src="@drawable/icon_favoritar" />
+                        android:src="@drawable/ic_favoritar2" />
 
                     <TextView
                         android:id="@+id/labelSalveApostaTxt"

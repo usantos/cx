@@ -35,6 +35,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoPremiadoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.FaixaPremiadaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ItemMinhasApostasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
@@ -329,7 +330,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         Integer concursoInicial = aposta.getConcursoInicial();
         Integer concursoFinal = Integer.valueOf((aposta.getConcursoInicial() + aposta.getQuantidadeTeimosinhas() - 1));
 
-        AlertDialogUtils.show(this);
+        AlertDialogUtils.show(DetalheMinhasApostasTeimosinhaActivity.this);
         ApostaSilceBO.getInstance().getResultadoModalidadeConcurso(txtModalidade, concursoInicial, concursoFinal, new RequestListener<ResultadoConcursosDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursosDTOResponse response) {
@@ -355,6 +356,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private void servicoApostaDetalhePremio(Long apostaId) {
+        AlertDialogUtils.show(DetalheMinhasApostasTeimosinhaActivity.this);
         ApostaSilceBO.getInstance().getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
@@ -385,7 +387,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         if (listResultadoConcursoDTO != null && listResultadoConcursoDTO.size() > 0) {
             for (ResultadoConcursoDTO resultadoConcursoDTO : listResultadoConcursoDTO) {
 
-                String situacao = getString(R.string.label_aposta_nao_premiada);
+                String situacao = getString(R.string.label_concurso_nao_premiado);
                 BigDecimal valorPremio = null;
                 if (detalhesPremioDTO != null) {
                     for (ConcursoPremiadoDTO concursoPremiado : detalhesPremioDTO.getPremio().getConcursos()) {
