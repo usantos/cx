@@ -85,10 +85,13 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_detalhe_minhas_apostas_teimosinha);
+        setContentView(R.layout.activity_detalhe_minhas_apostas_teimosinha);
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_gerenciar_apostas_detalhes));
 
         pegaExtras();
+        setaViews();
+        aplicaCores();
+        setupToolbar();
 
         servicoResultadoModalidadeConcursos();
     }
@@ -117,11 +120,10 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
     private void populaTela() {
         AlertDialogUtils.show(DetalheMinhasApostasTeimosinhaActivity.this);
-        setContentView(R.layout.activity_detalhe_minhas_apostas_teimosinha);
-
-        setaViews();
-        aplicaCores();
-        setupToolbar();
+//
+//        setaViews();
+//        aplicaCores();
+//        setupToolbar();
 
         detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasTeimosinhaActivity.this);
         detalhesMinhasApostasButtonHelper.setuoButtonListeners();
@@ -497,6 +499,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         DetalheMinhasApostasAdapter adapter = new DetalheMinhasApostasAdapter(this, items);
+        recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
     }
 }

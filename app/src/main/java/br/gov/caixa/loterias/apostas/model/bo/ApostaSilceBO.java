@@ -10,6 +10,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import java.nio.charset.StandardCharsets;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -899,15 +901,20 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
     }
 
     public void getResultadoModalidadeConcurso(final String descricaoModalidade, final Integer concursoInicial, final Integer concursoFinal, final RequestListener<ResultadoConcursosDTOResponse> listener) {
-        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+//        //Map não aceita parametros repetidos
+//        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+//        String queryString = "modalidade=" + descricaoModalidade;
+//        for (int i = concursoInicial; i <= concursoFinal; i++) {
+//            queryString += "&concursos=" + i;
+//        }
+//        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO+"?"+queryString;
 
-        //Map não aceita parametros repetidos
-        String queryString = "modalidade=" + descricaoModalidade;
+        List<Map.Entry<String, String>> queryParams = new ArrayList<>();
+        queryParams.add(new AbstractMap.SimpleEntry<>("modalidade", descricaoModalidade));
         for (int i = concursoInicial; i <= concursoFinal; i++) {
-            queryString += "&concursos=" + i;
+            queryParams.add(new AbstractMap.SimpleEntry<>("concursos", String.valueOf(i)));
         }
-
-        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO+"?"+queryString;
+        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO;
 
         final GsonRequest request = getServiceConnection().buildGetRequest(url,
                 queryParams,
