@@ -127,9 +127,10 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
 		}
 
-		if (isEspecial && showBackground) {
+		if (isEspecial && showBackground || isMega30) {
 			background.setBackground(AppCompatResources.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
 		}
+
 	}
 
 	private void preencheDados() {
