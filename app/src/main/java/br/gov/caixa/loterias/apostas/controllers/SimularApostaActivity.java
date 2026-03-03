@@ -856,7 +856,7 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         }
 
         toolBarSimularAposta.setBackgroundColor(ContextCompat.getColor(this, darkColor));
-        if (isEspecial) {
+        if (isEspecial && !isMega30) {
             toolBarSimularAposta.setBackground(AppCompatResources.getDrawable(this, estilo.getImagemSubCabecalho()));
         }
         toolBarSimularAposta.setVisibility(visibilityToolBarSimularAposta);
