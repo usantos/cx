@@ -112,6 +112,9 @@ public class StringUtils {
         }
         for (Number numero : listtNumeros) {
             long longNumero = numero.longValue();
+            if (longNumero == 100) {
+                longNumero = 0L;
+            }
             listString.add(String.format("%02d", longNumero));
         }
         return listString;

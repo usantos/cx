@@ -597,9 +597,15 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         //SERVICO /apostas/{id}/comprovante-premio Informacao COMBO está errada
                         result.getPayload().getAposta().setCombo(apostaDTO.getCombo());
 
-                        Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
-                                ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
-                        startActivity(intent);
+                        if (result.getPayload().getAposta().getQuantidadeTeimosinhas() >0) {
+                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasTeimosinhaActivity.class,
+                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+                            startActivity(intent);
+                        } else {
+                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
