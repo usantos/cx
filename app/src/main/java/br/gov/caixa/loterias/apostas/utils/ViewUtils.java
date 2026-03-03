@@ -840,6 +840,29 @@ public class ViewUtils {
         }
     }
 
+    public static SpannableStringBuilder textCaixaSTDSemiBold(Context context, String texto) {
+        try{
+            Typeface fontRegular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface fontSemiBold = FonteUtils.getFonte(FontCaixaEnum.SEMI_BOLD);
+            SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder();
+
+            boolean isSemiBold = false;
+            String[] parts = texto.split("_");
+            for (String part: parts) {
+                int start = spannableStringBuilder.length();
+                spannableStringBuilder.append(part);
+                Typeface fontToApply = isSemiBold ? fontSemiBold : fontRegular;
+                spannableStringBuilder.setSpan(new CustomTypefaceSpan("", fontToApply),
+                        start, spannableStringBuilder.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+                isSemiBold = !isSemiBold;
+            }
+            return spannableStringBuilder;
+        }catch (Exception e){
+            return  new SpannableStringBuilder().append(texto);
+        }
+    }
+
 
     public static SpannableStringBuilder infoPrognosticosMkp(Context context, String texto, int tamanhoFonteSemiBold, int tamanhoFonteRegular) {
         try {
@@ -857,7 +880,7 @@ public class ViewUtils {
             // Calcula as posições dos trechos entre "_" no texto original
             List<PositionStringBold> ranges = listPositionString(texto);
 
-            // Aplica BOLD e tamanho nos intervalos calculados
+            // Aplica SemiBold e tamanho nos intervalos calculados
             for (PositionStringBold range : ranges) {
                 ssb.setSpan(new CustomTypefaceSpan("", fonteSemiBold), range.getStart(), range.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
                 ssb.setSpan(new AbsoluteSizeSpan(tamanhoFonteSemiBold, true), range.getStart(), range.getEnd(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);

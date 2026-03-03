@@ -89,6 +89,11 @@
     <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
     <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
+    <string name="confirmacaoPagamentoProcessamento">Estamos processando sua compra.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, a aposta precisa estar _EFETIVADA_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo2">O pagamento realizado _não garante_ automaticamente a efetivação da aposta.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo3">Se a aposta não for registrada, o valor será devolvido.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo4">Você pode acompanhar tudo em _Minhas Compras_.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -1591,4 +1596,7 @@
     <string name="loterica_favorita_bold">_Lotérica Favorita_</string>
     <string name="favoritar_loterica">Favoritar Lotérica</string>
     <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
+    <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>
+    <string name="marcador_oval">Marcador oval (bullet) para item de lista</string>
+    <string name="botao_duvidas">Botão dúvidas</string>
 </resources>

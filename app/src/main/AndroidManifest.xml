@@ -272,7 +272,7 @@
             android:configChanges="orientation"
             android:label="@string/title_activity_confirmacao_pagamento"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.DegradeActionBar"  />
         <activity
             android:name=".controllers.AdicionaCartaoActivity"
             android:configChanges="orientation"
