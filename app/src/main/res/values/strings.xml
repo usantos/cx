@@ -1572,7 +1572,7 @@
     <string name="label_modal_checkbox_aposta_espelho">Ao selecionar esta opção, o sistema fará a aposta automaticamente, escolhendo os 50 números que não foram registrados na sua aposta original.</string>
 
     <!-- MEGA 30 ANOS   -->
-    <string name="mega_sena_30_anos">mega-Sena 30 anos</string>
+    <string name="mega_sena_30_anos">mega-sena 30 anos</string>
     <string name="mega_sena_30_anos_duas_linhas">mega-sena\n30 anos</string>
 
 </resources>

@@ -29,7 +29,6 @@ import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CodigoResgateDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
@@ -38,11 +37,12 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.MeioPagamentoUtil;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
-import br.gov.caixa.loterias.apostas.utils.VectorUtils;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.FaixaPremiacaoBolaoAdapter;
@@ -116,7 +116,14 @@ public class ResultadoApostaConfirmadaActivity extends SettingToolbarActivity {
 
         //contentResultadoPremiado.getPremioInfoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidade.getCorEscura()));
         contentResultadoPremiado.getPremioInfoLinearLayout().setBackgroundColor(ContextCompat.getColor(this, estiloModalidadeMKP.getCorEscura()));
-        contentResultadoPremiado.getTituloModalidadeTextView().setText(ViewUtils.getNomeModalidadePorAposta(detalhesPremioDTO.getAposta()).toLowerCase());
+        String descricaoModalidade = "";
+        if (EspecialUtils.isMega30(detalhesPremioDTO.getAposta().getConcursoAlvo(), detalhesPremioDTO.getAposta().getTipoConcurso())){
+            descricaoModalidade = SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_LINHA, "");
+            contentResultadoPremiado.getTituloModalidadeTextView().setTextSize(20);
+        } else {
+            descricaoModalidade = ViewUtils.getNomeModalidadePorAposta(detalhesPremioDTO.getAposta()).toLowerCase();
+        }
+        contentResultadoPremiado.getTituloModalidadeTextView().setText(descricaoModalidade);
         contentResultadoPremiado.getButtonVerDetalheAposta().setOnClickListener(v -> finish());
 
         if (detalhesPremioDTO.getPremio().getValorLiquido() != null && !(BigDecimal.ZERO.compareTo(detalhesPremioDTO.getPremio().getValorLiquido()) == 0)) {
