@@ -72,7 +72,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private Button buttonActionResultadosModalidade;
 	private RelativeLayout relativeLayoutTopResultados;
 	private LinearLayout linearLayoutResultadosApostas;
-	private RelativeLayout setaDireitaAcaoRelativeLayout;
+	private RelativeLayout setaDireitaAcaoRelativeLayout, layoutContainerCard;
 	private RelativeLayout setaEsquerdaAcaoRelativeLayout;
 	private ImageView imgSetaResultado;
 	private View viewSeparador;
@@ -128,6 +128,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		tvNomeEspeciais = itemView.findViewById(R.id.tv_nome_especiais);
 		clEspeciais = itemView.findViewById(R.id.cl_especiais);
 		imgSetaResultado = itemView.findViewById(R.id.imgSetaResultado);
+		layoutContainerCard = itemView.findViewById(R.id.layoutContainerCard);
 
 		setaEsquerdaAcaoRelativeLayout = itemView.findViewById(R.id.setaEsquerdaAcaoRelativeLayout);
 		setaDireitaAcaoRelativeLayout = itemView.findViewById(R.id.setaDireitaAcaoRelativeLayout);
@@ -199,6 +200,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			}
 		}
 
+		this.layoutContainerCard.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.trevos_background_card));
 		this.buttonActionResultadosModalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorFonteFundoEscuro()));
 		this.imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo_resultado, estilo.getCorFonteFundoEscuro()));
 
