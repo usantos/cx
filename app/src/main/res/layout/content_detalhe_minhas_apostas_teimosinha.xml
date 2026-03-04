@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -52,6 +52,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:text="1234 - 4321"
+                    android:visibility="invisible"
                     app:layout_constraintTop_toBottomOf="@id/concursoLabel"
                     app:layout_constraintStart_toStartOf="@id/concursoLabel" />
 
@@ -64,6 +65,7 @@
                     android:textSize="18sp"
                     android:text="(24 apostas)"
                     android:layout_marginStart="6dp"
+                    android:visibility="invisible"
                     app:layout_constraintStart_toEndOf="@+id/concursoTxt"
                     app:layout_constraintTop_toTopOf="@+id/concursoTxt"
                     />
@@ -100,6 +102,7 @@
                         android:text="01/01/2026"
                         android:textColor="@color/black"
                         android:textSize="18sp"
+                        android:visibility="invisible"
                         app:layout_constraintStart_toStartOf="@id/dataAposta"
                         app:layout_constraintTop_toBottomOf="@id/dataAposta" />
 
@@ -111,6 +114,7 @@
                         android:text="11h20"
                         android:textColor="@color/black"
                         android:textSize="18sp"
+                        android:visibility="invisible"
                         app:layout_constraintStart_toStartOf="@id/dataAposta"
                         app:layout_constraintTop_toBottomOf="@id/dataApostaTxt" />
 
@@ -133,6 +137,7 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginStart="20dp"
+                        android:visibility="gone"
                         app:layout_constraintTop_toTopOf="@+id/dataAposta"
                         app:layout_constraintStart_toEndOf="@id/divider" />
 
@@ -145,6 +150,7 @@
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:layout_marginStart="20dp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="@id/divider"
                         app:layout_constraintTop_toTopOf="@+id/dataApostaTxt" />
 
@@ -157,6 +163,7 @@
                         android:text="@string/r_0_00"
                         android:textSize="16sp"
                         android:layout_marginStart="20dp"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="@id/divider"
                         app:layout_constraintTop_toTopOf="@+id/horaApostaTxt" />
 
@@ -170,6 +177,7 @@
                     android:background="@drawable/rounded_text_view_colunas"
                     android:backgroundTint="@color/black"
                     android:layout_marginTop="22dp"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/cl_data"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -257,6 +265,7 @@
                     android:layout_marginStart="21dp"
                     android:src="@drawable/ic_validade"
                     app:tint="@color/black"
+                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -270,6 +279,7 @@
                     android:textSize="18sp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="-6dp"
+                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="@id/validadePremioImage"
                     app:layout_constraintStart_toEndOf="@id/validadePremioImage" />
 
@@ -283,6 +293,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:layout_marginStart="8dp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@id/validadePremioImage"
                     app:layout_constraintTop_toBottomOf="@id/validadePremioLabel" />
 
@@ -294,6 +305,7 @@
                     android:background="@drawable/rounded_text_view_colunas"
                     android:backgroundTint="@color/black"
                     android:layout_marginTop="12dp"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/validadePremioText"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -334,6 +346,7 @@
                     android:background="@drawable/rounded_text_view_colunas"
                     android:backgroundTint="@color/black"
                     android:layout_marginTop="12dp"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/clResgatePremio2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -381,7 +394,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/v_bottom"

@@ -93,8 +93,19 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         aplicaCores();
         setupToolbar();
 
+        detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasTeimosinhaActivity.this);
+        detalhesMinhasApostasButtonHelper.setuoButtonListeners();
+
         servicoResultadoModalidadeConcursos();
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AlertDialogUtils.dismiss();
+    }
+
     private void pegaExtras() {
         Bundle bundle = getIntent().getExtras();
 
@@ -119,22 +130,10 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private void populaTela() {
-        AlertDialogUtils.show(DetalheMinhasApostasTeimosinhaActivity.this);
-//
-//        setaViews();
-//        aplicaCores();
-//        setupToolbar();
-
-        detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasTeimosinhaActivity.this);
-        detalhesMinhasApostasButtonHelper.setuoButtonListeners();
-
+        preencheCabecalho();
         preencheTipoApostaLinha();
         preencheRodape();
-
-        preencheCabecalho();
         preencheCentro();
-
-        AlertDialogUtils.dismiss();
     }
 
     private void setupToolbar() {
@@ -252,6 +251,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private void preencheCabecalho() {
+        concursoTxt.setVisibility(View.VISIBLE);
         concursoTxt.setText(aposta.getConcursoInicial().toString());
 
         if (aposta.getQuantidadeTeimosinhas() == 0) {
@@ -260,6 +260,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             concursoTxt.setText(aposta.getConcursoInicial().toString() + " - " +
                     (aposta.getConcursoInicial()+aposta.getQuantidadeTeimosinhas()-1));
 
+            quantidadeApostadasTxt.setVisibility(View.VISIBLE);
             if (aposta.getQuantidadeTeimosinhas() == 1) {
                 quantidadeApostadasTxt.setText("("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_aposta)+")");
             } else {
@@ -267,13 +268,21 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             }
         }
 
+        dataApostaTxt.setVisibility(View.VISIBLE);
         dataApostaTxt.setText(aposta.getDataEfetivacao());
+        horaApostaTxt.setVisibility(View.VISIBLE);
         horaApostaTxt.setText(StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao()));
 
         if (isApostaPremiada(aposta) && detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null){
+            statusApostaTxt.setVisibility(View.VISIBLE);
             statusApostaTxt.setText(aposta.getSituacao().getDescricao());
+            tv_val_premio_tit.setVisibility(TextView.VISIBLE);
+            tv_val_premio.setVisibility(TextView.VISIBLE);
             tv_val_premio.setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
             clResgatePremio.setVisibility(View.VISIBLE);
+            validadePremioText.setVisibility(View.VISIBLE);
+            validadePremioLabel.setVisibility(View.VISIBLE);
+            validadePremioImg.setVisibility(View.VISIBLE);
         } else {
             statusApostaTxt.setVisibility(View.GONE);
             tv_val_premio_tit.setVisibility(TextView.GONE);
@@ -298,6 +307,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private void preencheRodape() {
+        comprovanteLayout.setVisibility(View.VISIBLE);
         if (isApostaPremiada(aposta)){
             clResgatePremio2.setVisibility(View.VISIBLE);
         } else {
@@ -351,16 +361,15 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private void servicoResultadoModalidadeConcursos() {
+        AlertDialogUtils.show(DetalheMinhasApostasTeimosinhaActivity.this);
 
         String txtModalidade = ApostaDTO.lowerCaseFromString(aposta.getModalidade());
         Integer concursoInicial = aposta.getConcursoInicial();
         Integer concursoFinal = Integer.valueOf((aposta.getConcursoInicial() + aposta.getQuantidadeTeimosinhas() - 1));
 
-        AlertDialogUtils.show(DetalheMinhasApostasTeimosinhaActivity.this);
         ApostaSilceBO.getInstance().getResultadoModalidadeConcurso(txtModalidade, concursoInicial, concursoFinal, new RequestListener<ResultadoConcursosDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursosDTOResponse response) {
-                AlertDialogUtils.dismiss();
                 if (response.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalheMinhasApostasTeimosinhaActivity.this);
                 }
@@ -370,38 +379,38 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
                         servicoApostaDetalhePremio(aposta.getId());
                     } else {
                         populaTela();
+                        AlertDialogUtils.dismiss();
                     }
                 }
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, DetalheMinhasApostasTeimosinhaActivity.this);
 
                 populaTela();
+                AlertDialogUtils.dismiss();
             }
         });
     }
 
     private void servicoApostaDetalhePremio(Long apostaId) {
-        AlertDialogUtils.show(DetalheMinhasApostasTeimosinhaActivity.this);
         ApostaSilceBO.getInstance().getApostaDetalhePremio(apostaId, new RequestListener<DetalhesPremioDTOResponse>() {
             @Override
             public void onResponse(DetalhesPremioDTOResponse result) {
-                AlertDialogUtils.dismiss();
                 if (result != null && result.getPayload() != null) {
                     detalhesPremioDTO = result.getPayload();
                 }
                 populaTela();
+                AlertDialogUtils.dismiss();
             }
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                AlertDialogUtils.dismiss();
                 RedirectNetwork.checkRedirect(error, DetalheMinhasApostasTeimosinhaActivity.this);
 
                 populaTela();
+                AlertDialogUtils.dismiss();
             }
         });
     }
