@@ -273,203 +273,228 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/content_info_confirmacao"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_confirmacao"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/btn_acompanhe_compras_confirmacao"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:overScrollMode="ifContentScrolls"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_confirmacao">
-
-            <ImageView
-                android:id="@+id/img_processamento_compra"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:src="@drawable/ic_processamento_compra"
-                android:importantForAccessibility="no"
-                android:focusable="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textTitulo_confirmacao"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/caixa_std_semi_bold"
-                android:text="@string/confirmacaoPagamentoProcessamento"
-                android:textAlignment="center"
-                android:textColor="@color/branco"
-                android:textSize="20sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_processamento_compra" />
-
-            <View
-                android:id="@+id/v_linha_confirmacao"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@color/bolao_slider_areola"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textTitulo_confirmacao" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_confirmacao"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_acompanhe_compras_confirmacao">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/container_infos_confirmacao"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="40dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/v_linha_confirmacao">
+                android:layout_height="match_parent">
 
-
-                <LinearLayout
-                    android:id="@+id/layout_info1"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content_info_confirmacao"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
 
                     <ImageView
-                        android:id="@+id/bullet_info1"
-                        android:layout_width="7dp"
-                        android:layout_height="7dp"
-                        android:layout_marginTop="7dp"
+                        android:id="@+id/img_processamento_compra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:src="@drawable/ic_processamento_compra"
                         android:importantForAccessibility="no"
                         android:focusable="false"
-                        android:src="@drawable/bullet_branco" />
-
-                    <TextView
-                        android:id="@+id/textInfo1_confirmacao"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:fontFamily="@font/caixa_std_regular"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/branco"
-                        android:textSize="16sp"
-                        android:importantForAccessibility="yes"
-                        android:focusable="true"
-                        tools:text="@string/confirmacaoPagamentoProcessamentoInfo1"
-                        />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/layout_info2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_info1">
-
-                    <ImageView
-                        android:id="@+id/bullet_info2"
-                        android:layout_width="7dp"
-                        android:layout_height="7dp"
-                        android:layout_marginTop="7dp"
-                        android:importantForAccessibility="no"
-                        android:focusable="false"
-                        android:src="@drawable/bullet_branco" />
-
-                    <TextView
-                        android:id="@+id/textInfo2_confirmacao"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginStart="8dp"
-                        android:fontFamily="@font/caixa_std_regular"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/branco"
-                        android:textSize="16sp"
-                        android:importantForAccessibility="yes"
-                        android:focusable="true"
-                        tools:text="@string/confirmacaoPagamentoProcessamentoInfo2" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_info3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_info2">
-
-                    <ImageView
-                        android:id="@+id/bullet_info3"
-                        android:layout_width="7dp"
-                        android:layout_height="7dp"
-                        android:layout_marginTop="7dp"
-                        android:importantForAccessibility="no"
-                        android:focusable="false"
-                        android:src="@drawable/bullet_branco" />
-
-                    <TextView
-                        android:id="@+id/textInfo3_confirmacao"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:fontFamily="@font/caixa_std_regular"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/branco"
-                        android:textSize="16sp"
-                        android:importantForAccessibility="yes"
-                        android:focusable="true"
-                        tools:text="@string/confirmacaoPagamentoProcessamentoInfo3" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_info3">
-
-                    <ImageView
-                        android:id="@+id/bullet_info4"
-                        android:layout_width="7dp"
-                        android:layout_height="7dp"
-                        android:layout_marginTop="7dp"
-                        android:src="@drawable/bullet_branco"
-                        android:importantForAccessibility="no"
-                        android:focusable="false"
-                        app:layout_constraintEnd_toStartOf="@+id/textInfo4_confirmacao"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/bullet_info3" />
-
-                    <TextView
-                        android:id="@+id/textInfo4_confirmacao"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:fontFamily="@font/caixa_std_regular"
-                        android:textAlignment="textStart"
-                        android:textColor="@color/branco"
-                        android:textSize="16sp"
-                        android:importantForAccessibility="yes"
-                        android:focusable="true"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/bullet_info4"
-                        app:layout_constraintTop_toBottomOf="@+id/textInfo3_confirmacao"
-                        tools:text="@string/confirmacaoPagamentoProcessamentoInfo4" />
-                </LinearLayout>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textTitulo_confirmacao"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/caixa_std_semi_bold"
+                        android:text="@string/confirmacaoPagamentoProcessamento"
+                        android:textAlignment="center"
+                        android:textColor="@color/branco"
+                        android:textSize="20sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/img_processamento_compra" />
+
+                    <View
+                        android:id="@+id/v_linha_confirmacao"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@color/bolao_slider_areola"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textTitulo_confirmacao" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/container_infos_confirmacao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/v_linha_confirmacao">
+
+
+                        <LinearLayout
+                            android:id="@+id/layout_info1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/bullet_info1"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginTop="7dp"
+                                android:importantForAccessibility="no"
+                                android:focusable="false"
+                                android:src="@drawable/bullet_branco" />
+
+                            <TextView
+                                android:id="@+id/textInfo1_confirmacao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:fontFamily="@font/caixa_std_regular"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/branco"
+                                android:textSize="16sp"
+                                android:importantForAccessibility="yes"
+                                android:focusable="true"
+                                tools:text="@string/confirmacaoPagamentoProcessamentoInfo1"
+                                />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/layout_info2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layout_info1">
+
+                            <ImageView
+                                android:id="@+id/bullet_info2"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginTop="7dp"
+                                android:importantForAccessibility="no"
+                                android:focusable="false"
+                                android:src="@drawable/bullet_branco" />
+
+                            <TextView
+                                android:id="@+id/textInfo2_confirmacao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginStart="8dp"
+                                android:fontFamily="@font/caixa_std_regular"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/branco"
+                                android:textSize="16sp"
+                                android:importantForAccessibility="yes"
+                                android:focusable="true"
+                                tools:text="@string/confirmacaoPagamentoProcessamentoInfo2" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_info3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layout_info2">
+
+                            <ImageView
+                                android:id="@+id/bullet_info3"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginTop="7dp"
+                                android:importantForAccessibility="no"
+                                android:focusable="false"
+                                android:src="@drawable/bullet_branco" />
+
+                            <TextView
+                                android:id="@+id/textInfo3_confirmacao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:fontFamily="@font/caixa_std_regular"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/branco"
+                                android:textSize="16sp"
+                                android:importantForAccessibility="yes"
+                                android:focusable="true"
+                                tools:text="@string/confirmacaoPagamentoProcessamentoInfo3" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layout_info3">
+
+                            <ImageView
+                                android:id="@+id/bullet_info4"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginTop="7dp"
+                                android:src="@drawable/bullet_branco"
+                                android:importantForAccessibility="no"
+                                android:focusable="false"
+                                app:layout_constraintEnd_toStartOf="@+id/textInfo4_confirmacao"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/bullet_info3" />
+
+                            <TextView
+                                android:id="@+id/textInfo4_confirmacao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:fontFamily="@font/caixa_std_regular"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/branco"
+                                android:textSize="16sp"
+                                android:importantForAccessibility="yes"
+                                android:focusable="true"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/bullet_info4"
+                                app:layout_constraintTop_toBottomOf="@+id/textInfo3_confirmacao"
+                                tools:text="@string/confirmacaoPagamentoProcessamentoInfo4" />
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </androidx.core.widget.NestedScrollView>
 
 
         <View
