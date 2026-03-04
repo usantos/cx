@@ -491,7 +491,6 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         getServiceConnection().request(request, listener);
     }
 
-
     public void getApostaComprovantePremio(Long id, final RequestListener<DetalhesPremioDTOResponse> listener) {
 
         String url = ServerMethods.APOSTAS_COMPROVANTE_PREMIO_PATH.replace("{id}", id.toString());

@@ -2,21 +2,21 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.DetalhesComprasActivity;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalhesApostaLotogolDetalhesComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ComprasDezenasView;
@@ -67,7 +67,13 @@ public class CompraHolder extends LoteriasHolder<ApostaDTO> {
 		String teimosinhasTxt = qtdTeimosinhas + (qtdTeimosinhas > 1 ? itemView.getContext().getResources().getString(R.string.espaco_teimosinhas) : itemView.getContext().getResources().getString(R.string.espaco_teimosinha));
 
 		this.tipoPremioListaComprasTextView.setTextColor(colorText);
-		String nomeAposta =  ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase();
+		String nomeAposta =  "";
+		if (EspecialUtils.isMega30(aposta.getConcursoAlvo(), aposta.getTipoConcurso())){
+			nomeAposta = SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, "");
+		} else {
+			nomeAposta = ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase();
+		}
+
 		//modalidade fica em Futura Bold
 		this.tipoPremioListaComprasTextView.setText(ViewUtils.textFuturaAndFuturaBold(itemView.getContext(), itemView.getContext().getString(R.string.texto_futura_bold, nomeAposta)));
 

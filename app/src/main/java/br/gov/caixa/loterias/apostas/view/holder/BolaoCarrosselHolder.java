@@ -26,8 +26,11 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -65,6 +68,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 	private RelativeLayout trapezio;
 	private ImageView icTrevoBolao, headerEspeciais;
 	private LinearLayout layoutLoerica, layoutPremio;
+    private Boolean isMega30 = false;
 
 
 
@@ -112,7 +116,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
-		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
+        isMega30 = EspecialUtils.isMega30(bolao.getConcurso(),bolao.getTipoConcurso());
 		aplicaEstilo(bolao);
 		preencheConteudo(bolao);
 		atualizaQuantidadeTextView(bolao.getQtdCotasBolao(), bolao.getQtdCotaDisponivel());
@@ -218,6 +222,30 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 		BigDecimal valor = bolao.getVrUltimaCotaComTarifa().add(BigDecimal.valueOf(bolao.getVrCotaComTarifa().doubleValue() * qtdApostas));
 
 		return ViewUtils.getMoedaFormat(valor);
+	}
+
+	private void preencheCabecalho(CotasBolaoDTO bolao) {
+		if (isEspecial(bolao.getTipoConcurso())){
+			headerEspeciais.setVisibility(View.VISIBLE);
+			trapezio.setVisibility(View.INVISIBLE);
+			icTrevoBolao.setVisibility(View.INVISIBLE);
+			this.headerEspeciais.setBackground(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
+			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
+				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
+			} else {
+				if(isMega30){
+					modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
+				}
+				else {
+					modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
+				}
+				}
+		} else {
+			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
+			headerEspeciais.setVisibility(View.GONE);
+			trapezio.setVisibility(View.VISIBLE);
+			icTrevoBolao.setVisibility(View.VISIBLE);
+		}
 	}
 
 	private boolean isEspecial(int tipoConcurso){

@@ -89,6 +89,7 @@
     <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
     <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
+    <string name="compra_sendo_processada">Sua compra está sendo processada</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -816,6 +817,8 @@
     <string name="event_alterar_dados_caixa">ENTROU_ALTERAR_DADOS_CAIXA</string>
     <string name="extra_tipo_aposta">tipoAposta</string>
     <string name="extra_modalidade">modalidade</string>
+    //TODO: MEGA 30 ANOS//
+    <string name="numero_concurso">NUMERO_CONCURSO</string>
     <string name="extra_especial">especial</string>
     <string name="evento_gerenciar_apostas_detalhes">ENTROU_GERENCIAR_APOSTAS_DETALHE</string>
     <string name="v">v</string>
@@ -1591,4 +1594,9 @@
     <string name="loterica_favorita_bold">_Lotérica Favorita_</string>
     <string name="favoritar_loterica">Favoritar Lotérica</string>
     <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
+
+    <!-- MEGA 30 ANOS   -->
+    <string name="mega_sena_30_anos">mega-sena 30 anos</string>
+    <string name="mega_sena_30_anos_duas_linhas">mega-sena\n30 anos</string>
+
 </resources>

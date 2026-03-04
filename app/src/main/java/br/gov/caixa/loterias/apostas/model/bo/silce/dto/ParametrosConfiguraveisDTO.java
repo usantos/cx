@@ -29,7 +29,6 @@ public class ParametrosConfiguraveisDTO {
     @SerializedName("grupoDeCpfsQueAcessamOServicoDaAzure")
     private String grupoDeCpfsQueAcessamOServicoDaAzure;
 
-
     @SerializedName("hostNovoMicroServicoConferenciaApostaProducao")
     private String urlBaseNovaApiPRD;
     @SerializedName("hostNovoMicroServicoConferenciaApostaPiloto")
@@ -50,6 +49,8 @@ public class ParametrosConfiguraveisDTO {
 
     @SerializedName("comboApostasHabilitado")
     private Boolean comboApostasHabilitado;
+    @SerializedName("concursoMega30Anos")
+    private Integer concursoMega30Anos;
 
     public String getUrlBaseApostadorPiloto() {
         return urlBaseApostadorPiloto;
@@ -206,4 +207,11 @@ public class ParametrosConfiguraveisDTO {
         isRapidaoHabilitado = rapidaoHabilitado;
     }
 
+    public Integer getConcursoMega30Anos() {
+        return concursoMega30Anos;
+    }
+
+    public void setConcursoMega30Anos(Integer concursoMega30Anos) {
+        this.concursoMega30Anos = concursoMega30Anos;
+    }
 }

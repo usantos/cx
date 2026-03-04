@@ -5,28 +5,44 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 
 public class EstiloModalidadeMKP {
 
-    private final int corClara;
-    private final int corEscura;
-    private final int trapezio;
-    private final int shapeBtnDetalhes;
-    private final int imagemEspecialCarrossel;
-    private final int imagemTriangulo;
-    private final int imagemTrianguloOutline;
-    private final int imagemEspecialSimples;
-    private final int imagemEspecialDupla;
-    private final int imagemEspecialQuadrada;
-    private final int corLetraLista;
-    private final int corFonteFundoClaro;
-    private final int corFonteFundoEscuro;
-    private final int trevoFundoClaro;
-    private final int trevoFundoEscuro;
-    private final int tarjaEspecialTrevoCombo;
-    private final int trevoFundoDetalheCombo;
+    private int corClara;
+    private int corEscura;
+    private int trapezio;
+    private int shapeBtnDetalhes;
+    private int imagemEspecialCarrossel;
+    private int imagemTriangulo;
+    private int imagemTrianguloOutline;
+    private int imagemEspecialSimples;
+    private int imagemEspecialDupla;
+    private int imagemEspecialQuadrada;
+    private int imagemEspecialDetalhes;
+    private int corLetraLista;
+    private int corFonteFundoClaro;
+    private int corFonteFundoEscuro;
+    private int trevoFundoClaro;
+    private int trevoFundoEscuro;
+    private int tarjaEspecialTrevoCombo;
+    private int trevoFundoDetalheCombo;
+    private int imagemSubCabecalho;
 
     private final int trapezioEspecial;
     private final int fundoEspecial;
 
     public EstiloModalidadeMKP(ModalidadeEnum modalidade) {
+        createEstilo(modalidade);
+    }
+
+    public EstiloModalidadeMKP(ModalidadeEnum modalidadeEnum, Boolean isMega30Anos ){
+        createEstilo(modalidadeEnum);
+        if (isMega30Anos){
+            //MEGASENA
+            imagemEspecialCarrossel = R.drawable.cabecalho_mega_trinta_anos_carrossel;
+            imagemEspecialDetalhes = R.drawable.cabecalho_mega_trinta_anos_detalhe;
+            imagemSubCabecalho = R.drawable.rodape_mega_trinta_anos_inferior;
+        }
+    }
+
+    private void createEstilo(ModalidadeEnum modalidade){
         switch (modalidade) {
             case QUINA:
                 corClara = R.color.quina_claro_mkp;
@@ -48,6 +64,7 @@ public class EstiloModalidadeMKP {
                 trevoFundoEscuro = R.drawable.trevo_quina_fundo_escuro;
                 tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_quina_especial_combos;
                 trevoFundoDetalheCombo = R.drawable.trevo_quina_detalhe_combo;
+                imagemSubCabecalho = R.drawable.rodape_sao_joao_inferior;
                 break;
             case DUPLA_SENA:
                 corClara = R.color.dupla_sena_claro_mkp;
@@ -62,6 +79,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialSimples = R.drawable.dupla_pascoa_simples;
                 imagemEspecialDupla = R.drawable.dupla_pascoa_dupla;
                 imagemEspecialQuadrada = R.drawable.dupla_pascoa_quadrado;
+                imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_detalhes;
                 corLetraLista = R.color.dupla_sena_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -69,6 +87,7 @@ public class EstiloModalidadeMKP {
                 trevoFundoEscuro = R.drawable.trevo_dupla_sena_fundo_escuro;
                 tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_dupla_especial_combos;
                 trevoFundoDetalheCombo = R.drawable.trevo_dupla_sena_detalhe_combo;
+                imagemSubCabecalho = R.drawable.rodape_dupla_de_pascoa_inferior;
                 break;
             case LOTOFACIL:
                 corClara = R.color.lotofacil_claro_mkp;
@@ -83,6 +102,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialSimples = R.drawable.lotofacil_indepedencia_simples;
                 imagemEspecialDupla = R.drawable.lotofacil_indepedencia_dupla;
                 imagemEspecialQuadrada = R.drawable.lotofacil_independencia_quadrado;
+                imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
                 corLetraLista = R.color.lotofacil_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -90,6 +110,7 @@ public class EstiloModalidadeMKP {
                 trevoFundoEscuro = R.drawable.trevo_lotofacil_fundo_escuro;
                 tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_lotofacil_especial_combos;
                 trevoFundoDetalheCombo = R.drawable.trevo_lotofacil_detalhe_combo;
+                imagemSubCabecalho = R.drawable.rodape_lotofacil_da_independencia_inferior;
                 break;
             case LOTOMANIA:
                 corClara = R.color.lotomania_claro_mkp;
@@ -273,6 +294,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialSimples = R.drawable.mega_virada_simples;
                 imagemEspecialDupla = R.drawable.mega_virada_dupla;
                 imagemEspecialQuadrada = R.drawable.mega_virada_quadrado;
+                imagemEspecialDetalhes = R.drawable.cabecalho_mega_virada_detalhes;
                 corLetraLista = R.color.mega_verde_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -280,8 +302,8 @@ public class EstiloModalidadeMKP {
                 trevoFundoEscuro = R.drawable.trevo_megasena_fundo_escuro;
                 tarjaEspecialTrevoCombo = R.drawable.tarja_trevo_mega_especial_combos;
                 trevoFundoDetalheCombo = R.drawable.trevo_mega_sena_detalhe_combo;
+                imagemSubCabecalho = R.drawable.rodape_mega_da_virada_inferior;
         }
-
     }
 
     public int getCorClara() {
@@ -358,5 +380,14 @@ public class EstiloModalidadeMKP {
     public int getFundoEspecial() {
         return fundoEspecial;
     }
+
+    public int getImagemSubCabecalho() {
+        return imagemSubCabecalho;
+    }
+
+    public void setImagemSubCabecalho(int imagemSubCabecalho) {
+        this.imagemSubCabecalho = imagemSubCabecalho;
+    }
+
 }
 

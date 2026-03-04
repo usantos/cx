@@ -86,9 +86,6 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
         }
     }
 
-    @Override
-    public void onBackPressed() { }
-
     private void configuraBotoes(){
 
         btnVoltarInicio.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));

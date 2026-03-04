@@ -23,10 +23,10 @@ public class CombosActivity extends SettingToolbarActivity implements onComboCli
     public static final String ARG_COMBO = "ARG_COMBO";
     private static final int QUANTIDADE_COLUNA_LISTA_COMBOS = 2;
 
-    Toolbar toolbar;
+    private Toolbar toolbar;
 
-    RecyclerView listaCombosRcv;
-    ListaComboAdapter listaComboAdapter;
+    private RecyclerView listaCombosRcv;
+    private ListaComboAdapter listaComboAdapter;
 
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
 

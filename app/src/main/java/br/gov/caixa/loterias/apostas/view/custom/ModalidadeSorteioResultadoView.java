@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.EscudoBO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnEscudoListener;
@@ -52,7 +53,9 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
     }
 
     public void setLayout(Modalidade modalidade) {
-        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
+        //TODO: MEGA 30 ANOS//
+        boolean isMega30 = EspecialUtils.isMega30(modalidade.getConcurso().getNumero(), modalidade.getConcurso().getTipoConcurso());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade(), isMega30);
 
         this.numeroeDataConcursoResultadoMegaSena.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
         this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.fromHtml("Nº <b>" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "</b> | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
@@ -101,6 +104,21 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
                 SuperSeteResultadoLayout view7 = SuperSeteResultadoLayout.build(getContext());
                 view7.setLayout(modalidade);
                 this.contentResultadoItem.addView(view7);
+                break;
+            case MEGA_SENA:
+                //TODO: MEGA 30 ANOS//
+                boolean isMega30 = EspecialUtils.isMega30(modalidade.getConcurso().getNumero(), modalidade.getConcurso().getTipoConcurso());
+                if (isMega30){
+                    this.contentResultadoItem.removeAllViews();
+                    ModalidadeSorteioItemUmConcursoResultadoView view8 = ModalidadeSorteioItemUmConcursoResultadoView.build(getContext());
+                    view8.setLayout(modalidade);
+                    this.contentResultadoItem.addView(view8);
+                } else {
+                    this.contentResultadoItem.removeAllViews();
+                    ModalidadeSorteioItemUmConcursoResultadoView view6 = ModalidadeSorteioItemUmConcursoResultadoView.build(getContext());
+                    view6.setLayout(modalidade);
+                    this.contentResultadoItem.addView(view6);
+                }
                 break;
             default:
                 this.contentResultadoItem.removeAllViews();
