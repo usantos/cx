@@ -43,6 +43,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
@@ -653,7 +654,19 @@ public class AdicionarApostaCarrinhoHelper {
 
     public static void checagemModadalidadesAbertas(ModalidadeEnum modalidadeEnum, OnModalidadesAbertasListener listener){
         List<ParametroSimulacao> arrayConcursos = new ArrayList<>();
-        List<ParametroSimulacao> parametroSimulacaoList = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+
+        ParametrosSimulacao paramsSimulacao = SessaoUsuario.getInstance().getParametrosSimulacao();
+        if (paramsSimulacao == null) {
+            listener.ambasFechadas();
+            return;
+        }
+
+        List<ParametroSimulacao> parametroSimulacaoList = paramsSimulacao.getParametros();
+        if (parametroSimulacaoList == null) {
+            listener.ambasFechadas();
+            return;
+        }
+
         for (ParametroSimulacao concurso : parametroSimulacaoList) {
             if (concurso.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
                 arrayConcursos.add(concurso);
