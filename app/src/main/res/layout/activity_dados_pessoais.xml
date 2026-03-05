@@ -7,8 +7,9 @@
     tools:context="br.gov.caixa.loterias.apostas.controllers.DadosPessoaisActivity"
     android:fitsSystemWindows="true">
 
+    <include layout="@layout/content_dados_pessoais"/>
     <include layout="@layout/app_bar_degrade_extend"/>
-    <include layout="@layout/content_dados_pessoais" />
+    <include layout="@layout/footer_atualizar_dados_pessoais"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

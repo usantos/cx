@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,13 +9,9 @@
     tools:context="br.gov.caixa.loterias.apostas.controllers.DadosPessoaisActivity"
     tools:showIn="@layout/activity_dados_pessoais"
     android:orientation="vertical"
-    >
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="126dp"
-        android:layout_marginHorizontal="10dp"
-        android:id="@+id/scrollViewDadosPessoais">
+    android:layout_marginBottom="122dp"
+    android:layout_marginHorizontal="10dp"
+    android:id="@+id/scrollViewDadosPessoais">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -304,31 +300,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
-
-    <Button
-        android:id="@+id/updateDadosPesoaisButton"
-        android:layout_width="184dp"
-        android:layout_height="84dp"
-        android:background="@color/verdeazul"
-        android:fontFamily="@font/caixa_std_bold"
-        android:text="@string/atualizar"
-        android:textAllCaps="false"
-        android:textColor="@color/branco"
-        android:textSize="17.7sp"
-        app:layout_constraintTop_toTopOf="@id/view_bottom"
-        app:layout_constraintBottom_toTopOf="@id/view_bottom"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <View
-        android:id="@+id/view_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:background="@color/cinzamercadopago"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
