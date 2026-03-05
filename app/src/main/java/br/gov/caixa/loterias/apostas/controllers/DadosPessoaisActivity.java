@@ -1,19 +1,21 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -49,13 +51,12 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 
 public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
-    int progressChangedValue = 0;
-    private EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent;
-    private TextView editValMaximoCompraContent, editValMinCompraContent, seekBarValor;
+    private TextInputLayout editTextLimiteLayout;
+    private EditText editTextNomeContent, editTextUFContent, editTextMunicipioContent, editTextEmailContent, editTextLimiteContent;
+    private TextView validaLimiteMinContent, validaLimiteMaxContent;
     private MaskedEditText editTextCpfContent, editTextCepContent;
     private SegmentedButtonGroup segmentedButtonSexo;
-    private Button updateDadosPesoaisButton, naoSeiCepButton;
-    private Button updateDadosPessoaisLimiteButton;
+    private Button updateDadosPesoaisButton, naoSeiCepButton, updateDadosPessoaisLimiteButton;
 
     private List<String> listUFString, listMunicipios, listBairros;
     private List<MunicipioDTO> municipioDTOList;
@@ -63,7 +64,6 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     protected String ufSelect;
     protected String municipioSelect;
     protected MunicipioIdDTO municipioIdDTOSelect;
-    private SeekBar seekbarLimite;
     private ApostadorDTO apostadorDTO;
 
     @Override
@@ -95,6 +95,10 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         editTextUFContent = findViewById( R.id.editTextUFContent );
         editTextMunicipioContent = findViewById( R.id.editTextMunicipioContent );
         editTextEmailContent = findViewById( R.id.editTextEmailContent );
+        editTextLimiteContent = findViewById( R.id.editTextLimiteContent );
+        editTextLimiteLayout = findViewById( R.id.editTextLimite );
+        validaLimiteMinContent = findViewById( R.id.txt_valida_limite_min );
+        validaLimiteMaxContent = findViewById( R.id.txt_valida_limite_max );
         segmentedButtonSexo = findViewById( R.id.segmentedButtonSexo );
         updateDadosPesoaisButton = findViewById( R.id.updateDadosPesoaisButton );
         naoSeiCepButton = findViewById(R.id.naoSeiCep);
@@ -102,33 +106,6 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
 
         Toolbar toolbar = findViewById( R.id.toolbar );
         TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
-
-        seekBarValor = (TextView) findViewById(R.id.seekbar_valor);
-
-        editValMinCompraContent =  findViewById(R.id.seekbar_valor_min);
-        editValMaximoCompraContent = findViewById(R.id.seekbar_valor_max);
-
-        seekbarLimite = findViewById(R.id.seekBar);
-
-        seekbarLimite.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if(apostadorDTO != null && apostadorDTO.getLimiteMinimoDiario() != null && progress <= apostadorDTO.getLimiteMinimoDiario().intValue()) {
-                    progress = apostadorDTO.getLimiteMinimoDiario().intValue();
-                }
-                progressChangedValue = progress;
-                seekBarValor.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
 
         ufSelect  = getResources().getString(R.string.string_vazia);
         municipioSelect = getResources().getString(R.string.string_vazia);
@@ -163,8 +140,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
                 apostadorAlteracaoDTO.setMunicipioId( municipioIdDTOSelect );
 
 
-//                SessaoUsuario sessaoUsuario = (SessaoUsuario) seekBarValor.getText();
-                apostadorAlteracaoDTO.setLimiteDiario(new BigDecimal(progressChangedValue));
+                apostadorAlteracaoDTO.setLimiteDiario(getLimiteDefinido());
                 updateDadosCadastrais( apostadorAlteracaoDTO );
                 SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
             }
@@ -182,10 +158,8 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
                 public void onResponse(ApostadorDTOResponse response) {
                     apostadorDTO = response.getPayload();
 
-                    editValMaximoCompraContent.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado()));
-                    updateDadosPessoaisLimiteButton.setText(getString(R.string.dados_limite_compra) +
-                            NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado())
-                    );
+                    String valor = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado());
+                    updateDadosPessoaisLimiteButton.setText(getString(R.string.dados_limite_compra, valor));
 
                     AppCenterManager.registraEvento("ENTROU_RECALCULAR_LIMITE_AUTORIZADO");
                     AlertDialogUtils.dismiss();
@@ -206,14 +180,15 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         editTextNomeContent.setText( apostadorDTO.getNome() );
         editTextCepContent.setMaskedText( apostadorDTO.getCep() );
         editTextEmailContent.setText( apostadorDTO.getEmail() );
+        editTextLimiteContent.setText( NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiario()) );
 
-        seekBarValor.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiario()));
-        editValMinCompraContent.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteMinimoDiario()));
-        editValMaximoCompraContent.setText(NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado()));
+        String valorLimiteMin = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteMinimoDiario());
+        String valorLimiteMax = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado());
+        editTextLimiteLayout.setHelperText(valorLimiteMin + " até " + valorLimiteMax);
+        validaLimiteMinContent.setText(getString(R.string.restringe_limite_ao_minimo, valorLimiteMin));
+        validaLimiteMaxContent.setText(getString(R.string.restringe_limite_ao_maximo, valorLimiteMax));
 
-        updateDadosPessoaisLimiteButton.setText(getString(R.string.dados_limite_compra) +
-                NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado())
-        );
+        updateDadosPessoaisLimiteButton.setText(getString(R.string.dados_limite_compra, valorLimiteMax));
 
         editTextCpfContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
         editTextNomeContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_input_ok, 0);
@@ -227,6 +202,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
             segmentedButtonSexo.setPosition( 0 );
         }
         editTextCepContent.addTextChangedListener(getTextWatcher(editTextCepContent));
+        editTextLimiteContent.addTextChangedListener(getTextWatcher(editTextLimiteContent));
 
     }
 
@@ -245,12 +221,6 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
                 municipioIdDTOSelect = apostadorDTO.getMunicipioId();
                 getUfeMunicipio();
 
-                seekbarLimite.setMax(apostadorDTO.getLimiteDiarioAutorizado().intValue());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    seekbarLimite.setMin(apostadorDTO.getLimiteMinimoDiario().intValue());
-                }
-                seekbarLimite.setProgress(apostadorDTO.getLimiteDiario().intValue());
-
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }
@@ -266,14 +236,28 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         } );
     }
 
+    private BigDecimal getLimiteDefinido() {
+        String clean = editTextLimiteContent.getText().toString().replaceAll("[\\sR$,.]", "");
+        return new BigDecimal(clean).movePointLeft(2);
+    }
+
     private TextWatcher getTextWatcher(final EditText editText) {
         return new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
 
+            private String current = "";
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (editText == editTextLimiteContent && !charSequence.toString().equals(current)) {
+                    editText.removeTextChangedListener(this);
+                    String formatted = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format((getLimiteDefinido()));
+                    current = formatted;
+                    editText.setText(formatted);
+                    editText.setSelection(formatted.length());
+                    editText.addTextChangedListener(this);
+                }
+            }
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editText == editTextCepContent){
@@ -284,6 +268,22 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
                     } else {
                         editText.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0 );
                         //habilitaBotao(true);
+                    }
+                }
+                else if(editText == editTextLimiteContent){
+                    BigDecimal limite = getLimiteDefinido();
+                    boolean menorQueMin = limite.compareTo(apostadorDTO.getLimiteMinimoDiario()) < 0;
+                    boolean maiorQueMax = limite.compareTo(apostadorDTO.getLimiteDiarioAutorizado()) > 0;
+                    validaLimiteMinContent.setVisibility(menorQueMin ? View.VISIBLE : View.GONE);
+                    validaLimiteMaxContent.setVisibility(maiorQueMax ? View.VISIBLE : View.GONE);
+                    boolean valido = !menorQueMin && !maiorQueMax;
+                    editText.setCompoundDrawablesWithIntrinsicBounds(0, 0, valido ? R.drawable.icon_input_ok : 0, 0);
+                    View target = maiorQueMax ? validaLimiteMaxContent : (menorQueMin ? validaLimiteMinContent : null);
+                    if (target != null) {
+                        target.post(() -> {
+                            Rect r = new Rect(0, 0, target.getWidth(), target.getHeight());
+                            target.requestRectangleOnScreen(r, true);
+                        });
                     }
                 }
             }
@@ -351,7 +351,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
                 if (response.getRedirect() != null){
                     RedirectNetwork.checkRedirectSucesso( response.getRedirect(), DadosPessoaisActivity.this);
                 }else {
-                    SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(new BigDecimal(progressChangedValue));
+                    SessaoUsuario.getInstance().getParametrosSimulacao().setValorLimiteDiario(getLimiteDefinido());
                     startActivity(new Intent(DadosPessoaisActivity.this, DadosPessoaisConfirmacaoActivity.class));
                     finish();
                 }
