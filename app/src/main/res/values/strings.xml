@@ -673,10 +673,11 @@
     <string name="placeholder_two">Two</string>
     <string name="placeholder_three">three</string>
     <string name="atualizar">Atualizar</string>
-    <string name="seekbar_titulo">Limite Diário de Apostas</string>
-    <string name="seekbar_val_min">R$ 30,00</string>
-    <string name="seekbar_val_max">R$ 945,00</string>
-    <string name="dados_limite_compra">Solicitar limite \n acima de \n</string>
+    <string name="limite_titulo">Limite Diário de Apostas</string>
+    <string name="restringe_limite_ao_minimo">O valor mínimo é %1$s</string>
+    <string name="restringe_limite_ao_maximo">O valor máximo é %1$s</string>
+    <string name="limite_maximo_e_minimo">R$ 2,00 até R$ 9.300,00</string>
+    <string name="dados_limite_compra">Solicitar limite\nacima de\n%1$s</string>
     <string name="precisamos_que_voc_informe_numa_lot_rica_de_sua_prefer_ncia">Precisamos que você informe uma lotérica de sua preferência.</string>
     <string name="cidade">Cidade</string>
     <string name="bairro">Bairro</string>
