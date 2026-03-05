@@ -141,28 +141,30 @@ public class  RedirectNetwork {
 
     public static void checkRedirectCompraAsync(VolleyError error, final Activity activity){
         boolean lancouEvento = false;
-        if (error == null || error.networkResponse == null) {
-            if (error == null){
-                showAlertToRedirectMinhasCompras(activity);
+        if (error == null) {
+            showAlertToRedirectMinhasCompras(activity);
+            return;
+        }
+
+        if (error.networkResponse == null) {
+            AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO, error);
+            if (!AppUtils.isNetworkAvailable(activity)) {
+                if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
+                    ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
+                }
                 return;
             } else {
-                AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO, error);
-                if (!AppUtils.isNetworkAvailable(activity)) {
-                    if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
-                        ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
-                    }
-                    return;
+                String msg = MensagensNetwork.setMensagem(error, activity);
+                if (msg.equalsIgnoreCase(activity.getString(R.string.sistema_indisponivel))) {
+                    showAlertToRedirectMinhasCompras(activity);
                 } else {
-                    String msg = MensagensNetwork.setMensagem(error, activity);
-                    if (msg.equalsIgnoreCase(activity.getString(R.string.sistema_indisponivel))){
-                        showAlertToRedirectMinhasCompras(activity);
-                    } else {
-                        ViewUtils.alertTitleButton(activity, R.string.label_atencao, msg, activity.getResources().getString(R.string.ok));
-                    }
-                    return;
+                    ViewUtils.alertTitleButton(activity, R.string.label_atencao, msg,
+                            activity.getResources().getString(R.string.ok));
                 }
+                return;
             }
         }
+
         NetworkResponse response = error.networkResponse;
 
         Gson gsonResponse = new Gson();
