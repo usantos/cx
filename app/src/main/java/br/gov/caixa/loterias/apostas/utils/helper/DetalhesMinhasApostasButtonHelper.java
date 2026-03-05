@@ -4,7 +4,6 @@ import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.CARRINH
 import static br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity.LER_CARRINHO_LOCAL;
 import static br.gov.caixa.loterias.apostas.utils.Utils.isErroNegocial;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,7 +28,6 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
-import br.gov.caixa.loterias.apostas.controllers.DetalheMinhasApostasTeimosinhaActivity;
 import br.gov.caixa.loterias.apostas.controllers.ResultadoApostaConfirmadaActivity;
 import br.gov.caixa.loterias.apostas.controllers.SimularApostaActivity;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
@@ -79,7 +78,7 @@ public class DetalhesMinhasApostasButtonHelper {
         sessaoUsuario = SessaoUsuario.getInstance();
     }
 
-    public void setuoButtonListeners() {
+    public void setupButtonListeners() {
         ConstraintLayout clResgatePremio = activity.findViewById(R.id.clResgatePremio);
         ConstraintLayout clResgatePremio2 = activity.findViewById(R.id.clResgatePremio2);
         RelativeLayout carrinhoApostasBtn = activity.findViewById(R.id.carrinhoApostasBtn);

@@ -1609,5 +1609,6 @@
     <string name="label_acertos_dois_pontos">Acertos:</string>
     <string name="label_acertos_nenhum">nenhum</string>
     <string name="label_premio_dois_pontos">Prêmio:</string>
+    <string name="erro_minas_apostas_teimosinha">Não conseguimos processar sua solicitação.\nTente novamente!</string>
 
 </resources>

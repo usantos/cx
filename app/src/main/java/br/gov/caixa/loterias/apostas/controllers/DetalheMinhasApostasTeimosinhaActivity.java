@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -80,7 +81,8 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
     //Botoes
     DetalhesMinhasApostasButtonHelper detalhesMinhasApostasButtonHelper;
-
+    ConstraintLayout clbottons;
+    LinearLayout llAdicFav;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,9 +94,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         setaViews();
         aplicaCores();
         setupToolbar();
-
-        detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasTeimosinhaActivity.this);
-        detalhesMinhasApostasButtonHelper.setuoButtonListeners();
+        desativaComponentes();
 
         servicoResultadoModalidadeConcursos();
     }
@@ -130,6 +130,11 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private void populaTela() {
+        ativaComponentes();
+
+        detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasTeimosinhaActivity.this);
+        detalhesMinhasApostasButtonHelper.setupButtonListeners();
+
         preencheCabecalho();
         preencheTipoApostaLinha();
         preencheRodape();
@@ -199,8 +204,82 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         validadePremioText = findViewById(R.id.validadePremioText);
         validadePremioLabel = findViewById(R.id.validadePremioLabel);
         validadePremioImg = findViewById(R.id.validadePremioImage);
+
+        //Botoes
+        clbottons = findViewById(R.id.v_bottom);
+        llAdicFav = findViewById(R.id.ll_adic_fav);
     }
 
+    private void desativaComponentes() {
+        concursoLabel.setVisibility(View.GONE);
+        concursoTxt.setVisibility(View.GONE);
+        quantidadeApostadasTxt.setVisibility(View.GONE);
+        dataAposta.setVisibility(View.GONE);
+        dataApostaTxt.setVisibility(View.GONE);
+        horaApostaTxt.setVisibility(View.GONE);
+        divider.setVisibility(View.GONE);
+
+        statusApostaTxt.setVisibility(View.GONE);
+        tv_val_premio_tit.setVisibility(View.GONE);
+        tv_val_premio.setVisibility(View.GONE);
+
+        tipoApostaLinhaView.setVisibility(View.GONE);
+
+        clResgatePremio.setVisibility(View.GONE);
+        ivResgatePremio.setVisibility(View.GONE);
+        ResgatarPremioTxt.setVisibility(View.GONE);
+
+        clResgatePremio2.setVisibility(View.GONE);
+        ivResgatePremio2.setVisibility(View.GONE);
+        ResgatarPremioTxt2.setVisibility(View.GONE);
+
+        comprovanteLayout.setVisibility(View.GONE);
+        ivImageDownload.setVisibility(View.GONE);
+        gerarConprovanteTxt.setVisibility(View.GONE);
+
+        validadePremioText.setVisibility(View.GONE);
+        validadePremioLabel.setVisibility(View.GONE);
+        validadePremioImg.setVisibility(View.GONE);
+
+        //Botoes
+        clbottons.setVisibility(View.GONE);
+        llAdicFav.setVisibility(View.GONE);
+    }
+    private void ativaComponentes() {
+        concursoLabel.setVisibility(View.VISIBLE);
+        concursoTxt.setVisibility(View.VISIBLE);
+        quantidadeApostadasTxt.setVisibility(View.VISIBLE);
+        dataAposta.setVisibility(View.VISIBLE);
+        dataApostaTxt.setVisibility(View.VISIBLE);
+        horaApostaTxt.setVisibility(View.VISIBLE);
+        divider.setVisibility(View.VISIBLE);
+
+        statusApostaTxt.setVisibility(View.VISIBLE);
+        tv_val_premio_tit.setVisibility(View.VISIBLE);
+        tv_val_premio.setVisibility(View.VISIBLE);
+
+        tipoApostaLinhaView.setVisibility(View.VISIBLE);
+
+        clResgatePremio.setVisibility(View.VISIBLE);
+        ivResgatePremio.setVisibility(View.VISIBLE);
+        ResgatarPremioTxt.setVisibility(View.VISIBLE);
+
+        clResgatePremio2.setVisibility(View.VISIBLE);
+        ivResgatePremio2.setVisibility(View.VISIBLE);
+        ResgatarPremioTxt2.setVisibility(View.VISIBLE);
+
+        comprovanteLayout.setVisibility(View.VISIBLE);
+        ivImageDownload.setVisibility(View.VISIBLE);
+        gerarConprovanteTxt.setVisibility(View.VISIBLE);
+
+        validadePremioText.setVisibility(View.VISIBLE);
+        validadePremioLabel.setVisibility(View.VISIBLE);
+        validadePremioImg.setVisibility(View.VISIBLE);
+
+        //Botoes
+        clbottons.setVisibility(View.VISIBLE);
+        llAdicFav.setVisibility(View.VISIBLE);
+    }
     private void aplicaCores() {
         estiloMKP = new EstiloModalidadeMKP(aposta.getModalidade());
 
@@ -359,6 +438,10 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     private boolean isEspecial(String tipoConcurso){
         return tipoConcurso.equalsIgnoreCase("2");
     }
+    private boolean chamaServicoApostaDetalhePremio(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA ||
+                aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO;
+    }
 
     private void servicoResultadoModalidadeConcursos() {
         AlertDialogUtils.show(DetalheMinhasApostasTeimosinhaActivity.this);
@@ -375,7 +458,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
                 }
                 if(response != null){
                     listResultadoConcursoDTO = response.getPayload();
-                    if (detalhesPremioDTO == null) {
+                    if (detalhesPremioDTO == null && chamaServicoApostaDetalhePremio(aposta)) {
                         servicoApostaDetalhePremio(aposta.getId());
                     } else {
                         populaTela();
@@ -386,10 +469,8 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                RedirectNetwork.checkRedirect(error, DetalheMinhasApostasTeimosinhaActivity.this);
-
-                populaTela();
                 AlertDialogUtils.dismiss();
+                apresentaErro();
             }
         });
     }
@@ -407,12 +488,17 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                RedirectNetwork.checkRedirect(error, DetalheMinhasApostasTeimosinhaActivity.this);
-
-                populaTela();
                 AlertDialogUtils.dismiss();
+                apresentaErro();
             }
         });
+    }
+
+    private void apresentaErro() {
+
+        ViewUtils.alertFecharCustom(this, this.getString(R.string.erro_minas_apostas_teimosinha),
+                () -> { this.finish(); }
+        );
     }
 
     private void preencheCentro() {

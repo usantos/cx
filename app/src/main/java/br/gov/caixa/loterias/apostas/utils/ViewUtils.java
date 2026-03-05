@@ -12,7 +12,9 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Html;
@@ -25,6 +27,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -34,6 +37,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.DialogTitle;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -629,6 +633,59 @@ public class ViewUtils {
         }
         return dialog;
     }
+
+    public static Dialog alertFecharCustom(Context context, String mensagem, @Nullable Runnable onFechar) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_alert_caixa, null);
+
+        TextView tvTitle = dialogView.findViewById(R.id.dialogTitle);
+        TextView tvMessage = dialogView.findViewById(R.id.dialogMessage);
+        TextView tvClose  = dialogView.findViewById(R.id.dialogClose);
+
+        if (tvTitle != null) tvTitle.setText(context.getString(R.string.label_atencao));
+        if (tvMessage != null) {
+            tvMessage.setText(mensagem);
+            tvMessage.setContentDescription(mensagem);
+        }
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(dialogView)
+                .setCancelable(false) // igual ao seu padrão
+                .create();
+
+        // Clique no "Fechar" (DENTRO do card)
+        if (tvClose != null) {
+            tvClose.setOnClickListener(v -> {
+                if (onFechar != null) onFechar.run();
+                dialog.dismiss();
+            });
+        }
+
+        dialog.setOnShowListener(dlg -> {
+            if (dialog.getWindow() != null) {
+                Window window = dialog.getWindow();
+
+                // A janela fica transparente; o fundo arredondado está no ROOT do layout
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                // Largura responsiva (~92% da tela)
+                DisplayMetrics dm = context.getResources().getDisplayMetrics();
+                int widthPx = (int) (dm.widthPixels * 0.92f);
+                window.setLayout(widthPx, WindowManager.LayoutParams.WRAP_CONTENT);
+
+                // Centralizado
+                window.setGravity(Gravity.CENTER);
+                WindowManager.LayoutParams lp = window.getAttributes();
+                lp.y = 0;
+                lp.dimAmount = 0f; // 0 = sem escurecimento, 1 = totalmente escuro
+                window.setAttributes(lp);
+            }
+        });
+
+        dialog.show();
+        return dialog;
+    }
+
 
     public static String getMoedaFormat(BigDecimal valor) {
         if (valor == null) {
