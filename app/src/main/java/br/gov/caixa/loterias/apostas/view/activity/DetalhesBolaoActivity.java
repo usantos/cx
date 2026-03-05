@@ -5,7 +5,6 @@ import static br.gov.caixa.loterias.apostas.utils.StringUtils.getApostasDePalpit
 import static br.gov.caixa.loterias.apostas.utils.StringUtils.getCotaDeTotal;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
@@ -112,7 +111,6 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		model = new DetalhesBolaoModel(this);
 		aplicaModoVisualizacao();
 
-
 	}
 
 	private void aplicaModoVisualizacao() {
@@ -202,7 +200,6 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 				}
 		);
 	}
-
 
 	private void setViews() {
 		layoutDetalhes = findViewById(R.id.layout_detalhes_bolao);
@@ -312,7 +309,6 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	}
 
 	private void preencheDados() {
-
 		if (bolao == null) return;
 		String codigoLoterica = getString(R.string.codigo_loteria) +" "+ bolao.getLotericaFormatada().getNumeroFormatado();
 		String cidadeUfLoterica = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome()) + " - " + bolao.getMunicipio().getUf().getSigla();

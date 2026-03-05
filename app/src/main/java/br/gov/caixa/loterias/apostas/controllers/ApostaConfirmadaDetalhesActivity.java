@@ -728,7 +728,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                 toolbar.setBackgroundResource(R.drawable.cabecalho_mega_trinta_anos_detalhe);
             }
             else {
-                toolbar.setBackgroundResource(R.drawable.rodape_mega_sena);
+                toolbar.setBackgroundResource(R.drawable.mega_virada_simples);
             }
         } else if (isEspecial(aposta.getTipoConcurso().getValor())) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());

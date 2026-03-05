@@ -25,8 +25,8 @@ public class EstiloModalidadeMKP {
     private int trevoFundoDetalheCombo;
     private int imagemSubCabecalho;
 
-    private final int trapezioEspecial;
-    private final int fundoEspecial;
+    private int trapezioEspecial;
+    private int fundoEspecial;
 
     public EstiloModalidadeMKP(ModalidadeEnum modalidade) {
         createEstilo(modalidade);
@@ -79,7 +79,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialSimples = R.drawable.dupla_pascoa_simples;
                 imagemEspecialDupla = R.drawable.dupla_pascoa_dupla;
                 imagemEspecialQuadrada = R.drawable.dupla_pascoa_quadrado;
-                imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_detalhes;
+                imagemEspecialDetalhes = R.drawable.cabecalho_dupla_pascoa_carrossel;
                 corLetraLista = R.color.dupla_sena_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -102,7 +102,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialSimples = R.drawable.lotofacil_indepedencia_simples;
                 imagemEspecialDupla = R.drawable.lotofacil_indepedencia_dupla;
                 imagemEspecialQuadrada = R.drawable.lotofacil_independencia_quadrado;
-                imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_independencia_detalhes;
+                imagemEspecialDetalhes = R.drawable.cabecalho_lotofacil_da_independencia;
                 corLetraLista = R.color.lotofacil_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -294,7 +294,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialSimples = R.drawable.mega_virada_simples;
                 imagemEspecialDupla = R.drawable.mega_virada_dupla;
                 imagemEspecialQuadrada = R.drawable.mega_virada_quadrado;
-                imagemEspecialDetalhes = R.drawable.cabecalho_mega_virada_detalhes;
+                imagemEspecialDetalhes = R.drawable.cabecalho_mega_da_virada_detalhe_aposta;
                 corLetraLista = R.color.mega_verde_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
                 corFonteFundoEscuro = R.color.branco;
@@ -387,6 +387,10 @@ public class EstiloModalidadeMKP {
 
     public void setImagemSubCabecalho(int imagemSubCabecalho) {
         this.imagemSubCabecalho = imagemSubCabecalho;
+    }
+
+    public int getImagemEspecialDetalhes() {
+        return imagemEspecialDetalhes;
     }
 
 }

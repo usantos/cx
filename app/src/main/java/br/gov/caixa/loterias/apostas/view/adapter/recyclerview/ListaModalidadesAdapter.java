@@ -212,7 +212,7 @@ public class ListaModalidadesAdapter extends RecyclerView.Adapter<ListaModalidad
 			if (isMega30){
 				return R.drawable.cabecalho_mega_trinta_anos_carrossel;
 			} else {
-				return R.drawable.rodape_mega_sena;
+				return R.drawable.cabecalho_mega_virada_carrossel;
 			}
 		}
 		return R.color.branco;
