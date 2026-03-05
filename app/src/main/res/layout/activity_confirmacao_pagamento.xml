@@ -31,7 +31,7 @@
             android:layout_marginEnd="8dp"
             android:contentDescription="@string/botao_duvidas"
             android:background="@color/transparente" />
-    
+
         <TextView
             android:id="@+id/textInfoApostas"
             style="@style/editTextCaixaRegularTheme"
@@ -47,7 +47,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/imageViewSetaParaApostas"
             app:layout_constraintRight_toRightOf="@+id/imageViewSetaParaApostas"
             app:layout_constraintTop_toTopOf="@+id/imageViewSetaParaApostas" />
-    
+
         <View
             android:id="@+id/v_linha"
             android:layout_width="0dp"
@@ -59,7 +59,7 @@
             app:layout_constraintBottom_toTopOf="@+id/textInfoApostas"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
-    
+
         <ImageView
             android:id="@+id/imageViewSetaParaApostas"
             android:layout_width="0dp"
@@ -81,7 +81,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textTitulo"
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/rectangle_5_copy" />
-    
+
         <TextView
             android:id="@+id/textConfirmacao"
             android:layout_width="0dp"
@@ -95,7 +95,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    
+
         <TextView
             android:id="@+id/textTitulo"
             android:layout_width="0dp"
@@ -111,7 +111,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/viewTabBar"
             android:layout_width="0dp"
@@ -122,7 +122,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
-    
+
             <RelativeLayout
                 android:id="@+id/carrinhoApostas"
                 android:layout_width="0dp"
@@ -137,7 +137,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="10dp"
                 android:clipToPadding="false">
-    
+
                 <TextView
                     android:id="@+id/textViewCarrinhoCartelaCount"
                     android:layout_width="wrap_content"
@@ -153,14 +153,14 @@
                     android:textSize="12sp"
                     android:outlineProvider="none"
                     android:translationZ="3dp"/>
-    
+
                 <Button
                     android:id="@+id/botaoCarrinho"
                     android:layout_width="34dp"
                     android:layout_height="40dp"
                     android:background="@drawable/icon_apostas"
                     android:layout_centerHorizontal="true"/>
-    
+
                 <TextView
                     android:id="@+id/textInfoCarrinho"
                     android:layout_width="wrap_content"
@@ -172,13 +172,12 @@
                     android:textColor="@color/azulescuro"
                     android:textSize="12sp"
                     style="@style/editTextCaixaRegularTheme"/>
-    
-    
+
             </RelativeLayout>
-    
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    
-    
+
+
         <Button
             android:id="@+id/botaoAcompanheSuasCompras"
             android:layout_width="184dp"
@@ -196,8 +195,8 @@
             app:layout_constraintBottom_toTopOf="@+id/botaoVoltarInicio"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
-    
-    
+
+
         <Button
             android:id="@+id/botaoVoltarInicio"
             android:layout_width="184dp"
@@ -486,16 +485,12 @@
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
         </androidx.core.widget.NestedScrollView>
-
 
         <View
             android:id="@+id/viewTabBarConfirmacao"
@@ -527,7 +522,6 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
-
         <Button
             android:id="@+id/btn_voltar_inicio_confirmacao"
             android:layout_width="274dp"
@@ -544,6 +538,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

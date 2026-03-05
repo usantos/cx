@@ -64,7 +64,6 @@ import br.gov.caixa.loterias.apostas.model.model.SimularApostaModel;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.SuperSeteAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotecaAdapter;
-import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.LotogolAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.TimeCoracaoAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
@@ -456,8 +455,6 @@ private void zeraLoteca(){
 					limparPartidadasSelecionasLoteca(Boolean.FALSE);
 				} else if (parametroJogo.isTipoJogo(ModalidadeEnum.TIMEMANIA) && isTelaSelecaoTimeAtivado) {
 					limparTimeSelecionado();
-				} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL) && partidasSelecionadas != null) {
-					limparPartidasSelecionadasLotogol(Boolean.FALSE);
 				} else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 					limpaNumerosSuperSete();
 				} else {
@@ -1173,13 +1170,7 @@ private void zeraLoteca(){
 				//configurarTimesLoteca();
 
 				fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
-			} else if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)) {
-				configurarTimesLotogol();
-				fragmentView.findViewById(R.id.layoutTitleLoteca).setVisibility(View.VISIBLE);
-				fragmentView.findViewById(R.id.layoutTitleLoteca).setPadding(20, 80, 0, 0);
-				((TextView) fragmentView.findViewById(R.id.titleContinue)).setText(R.string.label_quantidade_gols_cada_time);
-
-			} else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
+			}else if (parametroJogo.isTipoJogo(ModalidadeEnum.SUPER_7)) {
 				configuraSuperSete(fragmentView);
 			}
 		}
@@ -1266,13 +1257,6 @@ private void zeraLoteca(){
 		lotecaAdapter = new LotecaAdapter(parametroJogo, this);
 		recyclerViewPartida.setLayoutManager(new LinearLayoutManager(getActivity()));
 		recyclerViewPartida.setAdapter(lotecaAdapter);
-		recyclerViewPartida.setExpanded(true);
-	}
-
-	private void configurarTimesLotogol() {
-		LotogolAdapter lotogolAdapter = new LotogolAdapter(parametroJogo.getPartidas(), this);
-		recyclerViewPartida.setLayoutManager(new LinearLayoutManager(getActivity()));
-		recyclerViewPartida.setAdapter(lotogolAdapter);
 		recyclerViewPartida.setExpanded(true);
 	}
 
@@ -1477,19 +1461,6 @@ private void zeraLoteca(){
 		ocutarSalvarAposta();
 		atualizaValorApostaLoteca();
 		botaoFinalizar.setVisibility(View.INVISIBLE);
-	}
-
-	private void limparPartidasSelecionadasLotogol(boolean desativado) {
-		for (ParametroPartida partida : parametroJogo.getPartidas()) {
-			partida.setSelecionado(desativado);
-			partida.getEquipe1().setPlacar(StringUtils.EMPTY);
-			partida.getEquipe2().setPlacar(StringUtils.EMPTY);
-
-		}
-		partidasSelecionadas.clear();
-		recyclerViewPartida.setExpanded(true);
-		recyclerViewPartida.setAdapter(new LotogolAdapter(parametroJogo.getPartidas(), this));
-		verificaSeMostraSalvarApostaView();
 	}
 
 	@Override

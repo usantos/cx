@@ -89,6 +89,7 @@
     <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
     <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
+    <string name="compra_sendo_processada">Sua compra está sendo processada</string>
     <string name="confirmacaoPagamentoProcessamento">Estamos processando sua compra.</string>
     <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, a aposta precisa estar _EFETIVADA_.</string>
     <string name="confirmacaoPagamentoProcessamentoInfo2">O pagamento realizado _não garante_ automaticamente a efetivação da aposta.</string>
@@ -821,6 +822,8 @@
     <string name="event_alterar_dados_caixa">ENTROU_ALTERAR_DADOS_CAIXA</string>
     <string name="extra_tipo_aposta">tipoAposta</string>
     <string name="extra_modalidade">modalidade</string>
+    //TODO: MEGA 30 ANOS//
+    <string name="numero_concurso">NUMERO_CONCURSO</string>
     <string name="extra_especial">especial</string>
     <string name="evento_gerenciar_apostas_detalhes">ENTROU_GERENCIAR_APOSTAS_DETALHE</string>
     <string name="v">v</string>
@@ -1599,4 +1602,8 @@
     <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>
     <string name="marcador_oval">Marcador oval (bullet) para item de lista</string>
     <string name="botao_duvidas">Botão dúvidas</string>
+
+    <!-- MEGA 30 ANOS   -->
+    <string name="mega_sena_30_anos">mega-sena 30 anos</string>
+    <string name="mega_sena_30_anos_duas_linhas">mega-sena\n30 anos</string>
 </resources>

@@ -17,7 +17,9 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.FiltroAplicadoMarketplace;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -52,6 +54,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private TextView modalidade;
 	private TextView valorPremio;
 	private TextView concurso;
+    private Boolean isMega30 = false;
 
 
 	public BolaoHolder(Activity activity, View itemView, OnItemBolaoListener listener, FiltroAplicadoMarketplace filtro) {
@@ -88,7 +91,8 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 
 	@Override
 	public void bind(CotasBolaoDTO bolao, int position) {
-		estilo = new EstiloModalidadeMKP(bolao.getModalidade());
+		isMega30 = EspecialUtils.isMega30(bolao.getConcurso(),bolao.getTipoConcurso());
+		estilo = new EstiloModalidadeMKP(bolao.getModalidade(),isMega30);
 
 		aplicaEstilo();
 		if (isFiltradoLoterica()) {
@@ -96,8 +100,13 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 			loterica.setVisibility(View.GONE);
 			modalidade.setVisibility(View.VISIBLE);
 			if (isEspecial(bolao.getTipoConcurso())){
-				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
-			} else {
+                if(isMega30) {
+                    modalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
+                }
+                else {
+                    modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
+                }
+            } else {
 				modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
 			}
 			cidade.setVisibility(View.GONE);

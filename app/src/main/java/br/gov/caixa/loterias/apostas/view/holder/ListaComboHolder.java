@@ -9,7 +9,9 @@ import androidx.core.content.ContextCompat;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CombosDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.onComboClickListener;
 
@@ -37,17 +39,25 @@ public class ListaComboHolder extends LoteriasHolder<CombosDTO>{
 
     @Override
     public void bind(CombosDTO item, int position) {
+        boolean isMega30 = false;
+        if (item.getModalidadesCombo() != null && !item.getModalidadesCombo().isEmpty()){
+            isMega30 = EspecialUtils.isMega30(item.getModalidadesCombo().get(0).getNumero(), item.getModalidadesCombo().get(0).getTipoConcurso());
+        }
 
         ModalidadeEnum modalidade = ModalidadeEnum.fromInteger(item.getModalidadesCombo().get(0).getModalidade().getValor());
         if (modalidade == null) {
             modalidade = ModalidadeEnum.QUINA; // Coloca Quina para não dar erro se for null.
         }
-        EstiloModalidadeMKP estiloModalidade = new EstiloModalidadeMKP(modalidade);
+        EstiloModalidadeMKP estiloModalidade = new EstiloModalidadeMKP(modalidade, isMega30);
         if (item.getTipoCombo().getCodigo().longValue() == CombosDTO.TipoComboEnum.ESPECIAL.getValue()) {
             imgTrevoHeader.setBackground(ContextCompat.getDrawable(parentActivity, estiloModalidade.getTrevoFundoEscuro()));
             imgTarjaTrevo.setBackground(ContextCompat.getDrawable(parentActivity, estiloModalidade.getTarjaEspecialTrevoCombo()));
             txtNomeCombo.setTextColor(ContextCompat.getColor(parentActivity, estiloModalidade.getCorLetraLista()));
-            txtNomeCombo.setText(item.getModalidadesCombo().get(0).getModalidade().getDescricaoEspecial());
+            if (isMega30){
+                txtNomeCombo.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, ""));
+            } else {
+                txtNomeCombo.setText(item.getModalidadesCombo().get(0).getModalidade().getDescricaoEspecial());
+            }
 
         } else {
             txtNomeCombo.setTextColor(ContextCompat.getColor(parentActivity, R.color.azul_combo));

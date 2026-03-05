@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.apostas.view.holder;
 
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -15,7 +14,10 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeComboDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.utils.CustomTypefaceSpan;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
+
 import org.jetbrains.annotations.NotNull;
 
 public class DetalheComboHolder extends RecyclerView.ViewHolder {
@@ -50,8 +52,11 @@ public class DetalheComboHolder extends RecyclerView.ViewHolder {
 
         if(item.getTipoConcurso().toString().equalsIgnoreCase("ESPECIAL")) {
             txtNomeModalidade.setTypeface(semiBoldTypeface);
-            txtNomeModalidade.setText(item.getModalidade().getDescricaoEspecial().toLowerCase());
-
+            if(EspecialUtils.isMega30(item.getNumero(), item.getTipoConcurso())){
+                txtNomeModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, ""));
+            } else {
+                txtNomeModalidade.setText(item.getModalidade().getDescricaoEspecial().toLowerCase());
+            }
         } else {
             if(ModalidadeEnum.fromModalidadeDTO(item.getModalidade()) == ModalidadeEnum.LOTOMANIA) {
                 Typeface regularTypeface = ResourcesCompat.getFont(itemView.getContext(), R.font.caixa_std_regular);
