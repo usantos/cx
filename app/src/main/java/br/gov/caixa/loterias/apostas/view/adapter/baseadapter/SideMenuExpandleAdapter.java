@@ -222,6 +222,13 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 DividerUtils.setDividerVisible(layoutItem, false);
 //                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
+            case MENU_SOBRE_CAIXA:
+                imageViewGroup.setImageResource(0);
+                listTitleTextView.setTextColor(context.getResources().getColor(R.color.vermelho_cancelada));
+                listTitleTextView.setHint("botão");
+                convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
+                imagemMaisOpcoes.setVisibility(View.GONE);
+                break;
             default:
                 break;
         }

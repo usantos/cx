@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:fontFamily="@font/caixa_std_regular"
-        android:maxLines="3"
+        android:maxLines="5"
         android:paddingTop="5dp"
         android:paddingBottom="6dp"
         android:importantForAccessibility="yes"

@@ -991,6 +991,12 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             case MENU_DUVIDAS:
                 startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
                 break;
+            case MENU_SOBRE_CAIXA:
+                String url = "https://www.caixa.gov.br/sobre-a-caixa/governanca-corporativa/caixa-loterias/Paginas/default.aspx";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+                break;
             default:
                 break;
         }
