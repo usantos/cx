@@ -251,6 +251,18 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         if(page.getTipoAposta() != 0) {
             queryParams.put("tipoAposta", String.valueOf(page.getTipoAposta()));
         }
+
+        if(page.isSurpresinha() != 0){
+            queryParams.put("surpresinha", String.valueOf(page.isSurpresinha()));
+        }
+
+        if(page.isTeimosinha() != 0){
+            queryParams.put("teimosinha", String.valueOf(page.isTeimosinha()));
+        }
+
+        if(page.isCombo() != 0){
+            queryParams.put("combo", String.valueOf(page.isCombo()));
+        }
         if(page.getTipoConcurso() != 0) {
             queryParams.put("tipoConcurso", String.valueOf(page.getTipoConcurso()));
         }
@@ -479,7 +491,6 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         getServiceConnection().request(request, listener);
     }
 
-
     public void getApostaComprovantePremio(Long id, final RequestListener<DetalhesPremioDTOResponse> listener) {
 
         String url = ServerMethods.APOSTAS_COMPROVANTE_PREMIO_PATH.replace("{id}", id.toString());
@@ -553,6 +564,7 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
     public void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita,
                                                   final Integer valorTipoConcurso,
                                                   final Integer qtdTeimosinhas,
+                                                  final Boolean espelho,
                                                   final RequestListener<CarrinhoDTOResponse> listener) {
         String url = ServerMethods.CARRINHOS_INCLUIR_APOSTA_FAVORITA_PATH.replace("{idApostaFavorita}", String.valueOf( idApostaFavorita ));
         url = url.replace("{valorTipoConcurso}", String.valueOf(valorTipoConcurso));

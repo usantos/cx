@@ -11,6 +11,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
 import com.google.gson.Gson;
@@ -37,6 +39,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 	private boolean isEspecial;
 	private ModalidadeEnum modalidade;
 	private EstiloModalidadeMKP estilo;
+	Boolean isMega30 = false;
 
 	public SubBarraModalidadeFragment() {
 		// Required empty public constructor
@@ -62,7 +65,8 @@ public class SubBarraModalidadeFragment extends Fragment {
 			sorteio = getArguments().getString(ARG_SORTEIO);
 			isEspecial = getArguments().getBoolean(ARG_ESPECIAL);
 			modalidade = new Gson().fromJson(getArguments().getString(ARG_MODALIDADE), ModalidadeEnum.class);
-			estilo = new EstiloModalidadeMKP(modalidade);
+			isMega30 = EspecialUtils.isMega30(concurso,isEspecial);
+			estilo = new EstiloModalidadeMKP(modalidade,isMega30);
 		}
 	}
 
@@ -115,7 +119,13 @@ public class SubBarraModalidadeFragment extends Fragment {
 				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
 				TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -20f);
 			} else {
-				tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
+				//TODO: MEGA 30 ANOS//
+				if(isMega30) {
+					tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,""));
+				}
+				else {
+						tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
+				}
 			}
 		} else {
 			tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());

@@ -101,6 +101,19 @@ public class NovaAPIBO extends BaseBO {
         if(page.getTipoAposta() != 0) {
             queryParams.put("tipoAposta", String.valueOf(page.getTipoAposta()));
         }
+
+        if(page.isSurpresinha() != 0){
+            queryParams.put("surpresinha", String.valueOf(page.isSurpresinha()));
+        }
+
+        if(page.isTeimosinha() != 0){
+            queryParams.put("teimosinha", String.valueOf(page.isTeimosinha()));
+        }
+
+        if(page.isCombo() != 0){
+            queryParams.put("comboApostas", String.valueOf(page.isCombo()));
+        }
+
         if(page.getTipoConcurso() != 0) {
             queryParams.put("tipoConcurso", String.valueOf(page.getTipoConcurso()));
         }

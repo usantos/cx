@@ -390,14 +390,25 @@ public class ApostaNuvemBO extends NuvemBO implements ApostaRepository {
     public void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita,
                                                   final Integer valorTipoConcurso,
                                                   final Integer qtdTeimosinhas,
+                                                  final Boolean espelho,
                                                   final RequestListener<CarrinhoDTOResponse> listener) {
-        String url = ServerMethods.CARRINHOS_INCLUIR_APOSTA_FAVORITA_PATH.replace("{idApostaFavorita}", String.valueOf( idApostaFavorita ));
-        url = url.replace("{valorTipoConcurso}", String.valueOf(valorTipoConcurso));
-        url = url.replace("{qtdTeimosinhas}", String.valueOf(qtdTeimosinhas));
+        String url;
+        Map<String, String> queryParams = new HashMap<>();
+        if (espelho != null){
+            url = ServerMethods.CARRINHOS_INCLUIR_APOSTA_FAVORITA;
+            queryParams.put("idApostaFavorita", String.valueOf( idApostaFavorita ));
+            queryParams.put("valorTipoConcurso", String.valueOf( valorTipoConcurso ));
+            queryParams.put("qtdTeimosinhas", String.valueOf( qtdTeimosinhas ));
+            queryParams.put("espelho", String.valueOf(espelho));
+        } else {
+            url = ServerMethods.CARRINHOS_INCLUIR_APOSTA_FAVORITA_PATH.replace("{idApostaFavorita}", String.valueOf( idApostaFavorita ));
+            url = url.replace("{valorTipoConcurso}", String.valueOf(valorTipoConcurso));
+            url = url.replace("{qtdTeimosinhas}", String.valueOf(qtdTeimosinhas));
+        }
 
         final GsonRequest request = getServiceConnection().buildPostRequest( LOGADO + url,
                 new LinkedHashMap<>(),
-                "",
+                queryParams,
                 CarrinhoDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),

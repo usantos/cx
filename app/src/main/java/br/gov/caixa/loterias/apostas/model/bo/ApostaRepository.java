@@ -53,7 +53,7 @@ public interface ApostaRepository {
     void deleteComboCarrinho(String id, final RequestListener<CarrinhoDTOResponse> listener);
 
     void postIncluirApostaFavoritaCarrinho(final Long idApostaFavorita, final Integer valorTipoConcurso,
-                                           final Integer qtdTeimosinhas, final RequestListener<CarrinhoDTOResponse> listener);
+                                           final Integer qtdTeimosinhas, final Boolean espelho,  final RequestListener<CarrinhoDTOResponse> listener);
 
     void transformarCarrinho(Long idCarrinhoFavorito, Integer opcaoSelecionada, RequestListener<CarrinhoDTOResponse> listener);
 

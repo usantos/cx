@@ -230,36 +230,39 @@ public enum ModalidadeEnum implements Serializable {
     }
 
     public static Integer fromStringToIdModalidade(ModalidadeEnum modalidade) {
-        switch (modalidade) {
-            case MEGA_SENA:
-                return 2;
-            case QUINA:
-                return 3;
-            case SUPER_7:
-                return 7;
-            case LOTOFACIL:
-                return 8;
-            case MAIS_MILIONARIA:
-                return 9;
-            case DIA_DE_SORTE:
-                return 11;
-            case LOTOGOL:
-                return 14;
-            case LOTOMANIA:
-                return 16;
-            case DUPLA_SENA:
-                return 18;
-            case LOTECA:
-                return 19;
-            case TIMEMANIA:
-                return 20;
-            case INSTANTANEA:
-                return 1502;
-            case COMBO:
-                return 0;
-            case BOLAO:
-                return 0;
+        if (modalidade != null){
+            switch (modalidade) {
+                case MEGA_SENA:
+                    return 2;
+                case QUINA:
+                    return 3;
+                case SUPER_7:
+                    return 7;
+                case LOTOFACIL:
+                    return 8;
+                case MAIS_MILIONARIA:
+                    return 9;
+                case DIA_DE_SORTE:
+                    return 11;
+                case LOTOGOL:
+                    return 14;
+                case LOTOMANIA:
+                    return 16;
+                case DUPLA_SENA:
+                    return 18;
+                case LOTECA:
+                    return 19;
+                case TIMEMANIA:
+                    return 20;
+                case INSTANTANEA:
+                    return 1502;
+                case COMBO:
+                    return 0;
+                case BOLAO:
+                    return 0;
+            }
         }
+
         return null;
     }
 }

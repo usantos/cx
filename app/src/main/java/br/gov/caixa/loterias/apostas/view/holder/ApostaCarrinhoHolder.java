@@ -341,10 +341,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			this.trevosTimeCoracaoMesSorte.setText(label);
 		}else if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA && !aposta.getIndicadorCotaBolao()){
 			this.trevosTimeCoracaoMesSorte.setText(removeUltimoTraco(trevosStr.toString() + "\n"));
-		} else {
-			if (this.trevosTimeCoracaoMesSorte != null) {
-				this.trevosTimeCoracaoMesSorte.setVisibility(View.GONE);
-			}
+		} else if (aposta.getIndicadorCotaBolao() != null && !aposta.getIndicadorCotaBolao()){
+            this.trevosTimeCoracaoMesSorte.setVisibility(View.GONE);
 		}
 
 		if (isBolao) {

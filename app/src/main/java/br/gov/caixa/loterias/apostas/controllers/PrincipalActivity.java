@@ -96,6 +96,7 @@ import br.gov.caixa.loterias.apostas.utils.ComboUtil;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.EncerramentoUtil;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataSideMenu;
 import br.gov.caixa.loterias.apostas.utils.FragmentUtils;
@@ -576,9 +577,11 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
     private void showMenu() {
         if (relativeContentPrincipal.isEnabled()) {
-            AnimacaoAbrirMenuRapido(actionApresentarTrevo);
-            buttonHomeBet.setVisibility(View.GONE);
-            buttonHomeBolao.setVisibility(View.GONE);
+            if (infiniteAdapter != null){
+                AnimacaoAbrirMenuRapido(actionApresentarTrevo, infiniteAdapter);
+                buttonHomeBet.setVisibility(View.GONE);
+                buttonHomeBolao.setVisibility(View.GONE);
+            }
         } else {
             AnimacaoFecharMenuRapido(actionApresentarTrevo);
         }
@@ -659,33 +662,37 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         });
     }
 
-    private void AnimacaoAbrirMenuRapido(View v) {
+    private void AnimacaoAbrirMenuRapido(View v, InfiniteScrollAdapter infiniteScrollAdapter) {
         AppCenterManager.registraEvento(getResources().getString(R.string.evento_entrou_menu_trevo));
 
-        relativeContentPrincipal.setEnabled(false);
-        actionApresentarTrevo.setEnabled(false);
-        atalhoRapidoLoterias.setVisibility(View.VISIBLE);
-        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
-        AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
-                v,
-                relativeContentPrincipal,
-                relativeLayoutContentRapidao,
-                relativeLayoutContentLerBilhetes,
-                rlJogoResponsavel,
-                relativeLayoutContentRepassados,
-                rlMsgDisque180,
-                relativeBlankView,
-                atalhoRapidoLoterias,
-                buttonHomeBet,
-                actionApresentarTrevo,
-                PrincipalActivity.this,
-                estilo,
-                onAnimacaoAcessoRapido());
-        int positionTopRodape = (int) relativeBlankView.getY();
+        if(infiniteScrollAdapter != null){
+            relativeContentPrincipal.setEnabled(false);
+            actionApresentarTrevo.setEnabled(false);
+            atalhoRapidoLoterias.setVisibility(View.VISIBLE);
+            //TODO: MEGA 30 ANOS//
+            boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteScrollAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+            EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteScrollAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
+            AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
+                    v,
+                    relativeContentPrincipal,
+                    relativeLayoutContentRapidao,
+                    relativeLayoutContentLerBilhetes,
+                    rlJogoResponsavel,
+                    relativeLayoutContentRepassados,
+                    rlMsgDisque180,
+                    relativeBlankView,
+                    atalhoRapidoLoterias,
+                    buttonHomeBet,
+                    actionApresentarTrevo,
+                    PrincipalActivity.this,
+                    estilo,
+                    onAnimacaoAcessoRapido());
+            int positionTopRodape = (int) relativeBlankView.getY();
 
-        int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
+            int itemSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 105, this.getResources().getDisplayMetrics());
 
-        animacoesAcessoRapido.animacaoDescerContent(positionTopRodape - itemSize);
+            animacoesAcessoRapido.animacaoDescerContent(positionTopRodape - itemSize);
+        }
     }
 
     private OnAnimacaoViewListener onAnimacaoAcessoRapido() {
@@ -701,7 +708,9 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private void AnimacaoFecharMenuRapido(View v) {
         relativeContentPrincipal.setEnabled(true);
         actionApresentarTrevo.setEnabled(false);
-        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade());
+        //TODO: MEGA 30 ANOS//
+        boolean isMega30 = EspecialUtils.isMega30(data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getNumero(), data.get(infiniteAdapter.getRealCurrentPosition()).getConcurso().getTipoConcurso());
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(infiniteAdapter.getRealCurrentPosition()).getTipoModalidade(), isMega30);
         AnimacoesAcessoRapido animacoesAcessoRapido = new AnimacoesAcessoRapido(
                 v,
                 relativeContentPrincipal,
@@ -774,16 +783,20 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
         if (viewHolder != null) {
+            //TODO: MEGA 30 ANOS//
+            boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
             if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
-                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
+                //TODO: MEGA 30 ANOS//
+                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
                 buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
                 buttonHomeBet.setTag(adapterPosition);
                 buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
                 buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
                 buttonHomeBolao.setVisibility(View.GONE);
             } else {
-                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
+                //TODO: MEGA 30 ANOS//
+                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
                 if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
                     buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
                 } else {
@@ -864,6 +877,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         int              selecionada   = Integer.parseInt(buttonHomeBet.getTag().toString());
         ModalidadeEnum   modalidade    = modalidadesParaListar.get(selecionada).getParametroJogo().getConcurso().getModalidade();
         ParametroJogoDTO parametroJogo = modalidadesParaListar.get(selecionada).getParametroJogo();
+        //TODO: MEGA 30 ANOS//
+        int numeroConcurso = parametroJogo.getConcurso().getNumero();
 
         //
         Long tempoExtraRestanteAposEncerrmento = EncerramentoUtil.
@@ -906,6 +921,8 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             Intent activity = new Intent(PrincipalActivity.this, SimularApostaActivity.class);
             activity.putExtra(getString(R.string.extra_tipo_aposta), parametroJogo.getConcurso().getModalidade());
             activity.putExtra(getString(R.string.extra_modalidade), (new Gson()).toJson(parametroJogo));
+            //TODO: MEGA 30 ANOS//
+            activity.putExtra(getString(R.string.numero_concurso), numeroConcurso);
             activity.putExtra(getString(R.string.extra_especial),parametroJogo.getConcurso().getTipoConcurso().toString().equals(getResources().getString(R.string.especial_maiusculo)));
             startActivity(activity);
         }

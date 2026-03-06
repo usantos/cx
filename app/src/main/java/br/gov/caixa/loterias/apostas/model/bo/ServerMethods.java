@@ -23,6 +23,7 @@ class ServerMethods {
      static final String CARRINHOS_REGISTRAR_APOSTAS_PATH = "/carrinhos/registrar-apostas";
      static final String CARRINHOS_REGISTRAR_APOSTAS_ASYNC_PATH = "/carrinhos/registrar-apostas-async";
      static final String CARRINHOS_INCLUIR_APOSTA_FAVORITA_PATH = "/carrinhos/incluir-aposta-favorita/{idApostaFavorita}/{valorTipoConcurso}/{qtdTeimosinhas}";
+     static final String CARRINHOS_INCLUIR_APOSTA_FAVORITA = "/carrinhos/incluir-aposta-favorita";
 
 
      //CARRINHO FAVORITOS

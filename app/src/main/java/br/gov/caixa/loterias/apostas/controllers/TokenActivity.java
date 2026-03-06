@@ -170,11 +170,18 @@ public class TokenActivity extends LoteriasBaseAppActivity {
                     }
 
                 } else {
-                    if (response.getRedirect() == CADASTRAR_APOSTADOR || response.getRedirect() == ACEITAR_TERMO_DE_USO){
-                        SessaoUsuario.getInstance().setRedirectEnum(response.getRedirect());
-                        startActivity(IntentUtil.getIntentOrigemDestino(TokenActivity.this, CadastrarActivity.class));
-                        finish();
+                    switch (response.getRedirect()){
+                        case CADASTRAR_APOSTADOR:
+                            SessaoUsuario.getInstance().setRedirectEnum(response.getRedirect());
+                            startActivity(IntentUtil.getIntentOrigemDestino(TokenActivity.this, CadastrarActivity.class));
+                            finish();
+                            break;
+                        case ACEITAR_TERMO_DE_USO:
+                            SessaoUsuario.getInstance().setRedirectEnum(response.getRedirect());
+                            finish();
+                            break;
                     }
+
                     if(response.getPayload() != null && response.getPayload().getSituacaoApostador().getEnum().equals(SituacaoApostadorEnum.BLOQUEADO_PARCIAL)){
                         SessaoUsuario.getInstance().setSituacaoApostador(response.getPayload().getSituacaoApostador());
                         RedirectNetwork.trataBloqueioParcial(TokenActivity.this);

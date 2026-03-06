@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.internals.UltimaNotificacaoSingleton;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 
 public class LoginSilceModel extends AppModel {
@@ -26,6 +27,7 @@ public class LoginSilceModel extends AppModel {
 			public void onResponse(NetworkResponse result) {
 				AppCenterManager.registraEvento(getActivity().getResources().getString(R.string.evento_logout_sucesso));
 				SessaoUsuario.getInstance().setResponderAutoavaliacao(false);
+				UltimaNotificacaoSingleton.getInstance().setPagamentoNaoIdentificado(false);
 
 				new LoginSSOModel(getActivity()).sair(LoginActivity.class, () -> listener.success(result));
 			}

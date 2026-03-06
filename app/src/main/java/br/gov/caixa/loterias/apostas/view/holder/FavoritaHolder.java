@@ -2,33 +2,30 @@ package br.gov.caixa.loterias.apostas.view.holder;
 
 import android.app.Activity;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
-import com.daimajia.swipe.SimpleSwipeListener;
-import com.daimajia.swipe.SwipeLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
-import br.gov.caixa.loterias.apostas.utils.AppUtils;
+import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
+import br.gov.caixa.loterias.apostas.utils.DezenaUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
-import br.gov.caixa.loterias.apostas.utils.Utils;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
-import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecyclerView;
+import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
+import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaFavoritaListener;
 
 public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
@@ -43,7 +40,7 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 	private RelativeLayout editarRelativeLayoutAddCarrinho;
 	//private RelativeLayout editarRelativeLayoutFavoritos;
 	private RelativeLayout excluirRelativeLayoutFavoritos;
-	private RelativeLayout containerFragment;
+	private RelativeLayout containerSuperSete;
 	//private LinearLayout linearLayoutLayoutContentAlterarFavoritasSalvo;
 	//private RelativeLayout relativeLayoutContentAlterarFavoritasEditar;
 	//private EditText editTextNomeDaAposta;
@@ -89,7 +86,7 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		labelInformacaoText = itemView.findViewById(R.id.labelInformacaoText);
 		informacaoTextMaisMilionaria = itemView.findViewById(R.id.informacaoTextMaisMilionaria);
 		informacaoText = itemView.findViewById(R.id.informacaoText);
-		containerFragment = itemView.findViewById(R.id.rl_container_fragment);
+		containerSuperSete = itemView.findViewById(R.id.container_super_sete);
 		linhaDivisoriaAposFragment = itemView.findViewById(R.id.linhaDivisoriaAposFragment);
 		linhaDivisoria = itemView.findViewById(R.id.linhaDivisoria);
 	}
@@ -133,14 +130,14 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 		StringBuilder numeroStr = new StringBuilder();
 
 		if(aposta.getModalidade().getValor().intValue() == 7) {
-			configuraFragment(aposta);
-			containerFragment.setVisibility(View.VISIBLE);
+			containerSuperSete.setVisibility(View.VISIBLE);
+			configuraSuperSete(aposta);
 			if (position > 0) {
 				linhaDivisoriaAposFragment.setVisibility(View.VISIBLE);
 			}
 			linhaDivisoria.setVisibility(View.GONE);
 		} else {
-			containerFragment.setVisibility(View.GONE);
+			containerSuperSete.setVisibility(View.GONE);
 			List<Integer> numSelecionados = aposta.getListaNumerosSelecionados();
 			for (Integer num : numSelecionados) {
 				if (num.equals(numSelecionados.get(aposta.getListaNumerosSelecionados().size() - 1))) {
@@ -208,19 +205,46 @@ public class FavoritaHolder extends LoteriasHolder<ApostaFavoritaDTO> {
 //		return editTextNomeDaAposta.getText().toString();
 //	}
 
-	private void configuraFragment(ApostaFavoritaDTO aposta) {
-		int             containerId = containerFragment.getId();
-		Fragment oldFragment = fm.findFragmentById(containerId);
-		if(oldFragment != null) {
-			fm.beginTransaction().remove(oldFragment).commit();
+	private void configuraSuperSete(ApostaFavoritaDTO aposta) {
+		ArrayList<RecyclerView> listaGridsSuperSete = new ArrayList<>();
+		listaGridsSuperSete.add(itemView.findViewById(R.id.rv_super_sete_primeiro));
+		listaGridsSuperSete.add(itemView.findViewById(R.id.rv_super_sete_segundo));
+		listaGridsSuperSete.add(itemView.findViewById(R.id.rv_super_sete_terceiro));
+		listaGridsSuperSete.add(itemView.findViewById(R.id.rv_super_sete_quarto));
+		listaGridsSuperSete.add(itemView.findViewById(R.id.rv_super_sete_quinto));
+		listaGridsSuperSete.add(itemView.findViewById(R.id.rv_super_sete_sexto));
+		listaGridsSuperSete.add(itemView.findViewById(R.id.rv_super_sete_setimo));
+
+		ArrayList<ListaDezenaRecyclerView> listaAdaptersSuperSete = new ArrayList<>();
+		if (BuildVersionUtil.isAutomacao()){
+			int index = 0;
+			for (Object lista: aposta.getMatrizNumerosSelecionados()) {
+				List<Integer> listaNova = (List<Integer>) lista;
+				listaAdaptersSuperSete.add(new ListaDezenaRecyclerView(DezenaUtils.getDezenasOrdenadas(listaNova), new ArrayList<>(), getDezenaConfigSuper7(), null));
+				//listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.super_sete_claro_mkp, itemView.getContext(), listaNova, AutomacaoUtils.getSuperSeteEnumPorColuna(index)));
+				index++;
+			}
+		} else {
+			for (Object lista: aposta.getMatrizNumerosSelecionados()) {
+				List<Integer> listaNova = (List<Integer>) lista;
+				listaAdaptersSuperSete.add(new ListaDezenaRecyclerView(DezenaUtils.getDezenasOrdenadas(listaNova), new ArrayList<>(), getDezenaConfigSuper7(), null));
+				//listaAdaptersSuperSete.add(new NumerosSuperSeteAdapter(R.color.super_sete_claro_mkp, itemView.getContext(), listaNova));
+			}
 		}
 
-		int newContainerId = (int) Utils.getIdUnico();
-		containerFragment.setId(newContainerId);
+		for(int i = 0; i < listaAdaptersSuperSete.size(); i++) {
+			listaGridsSuperSete.get(i).setAdapter(listaAdaptersSuperSete.get(i));
+			listaGridsSuperSete.get(i).setLayoutManager(new GridLayoutManager(itemView.getContext(), 1));
+		}
 
-		NumerosSuperSeteFragment fragment = NumerosSuperSeteFragment.newInstance(aposta.getMatrizNumerosSelecionados());
-		fm.beginTransaction().replace(newContainerId, fragment).commit();
+	}
 
+	private DezenaConfig getDezenaConfigSuper7() {
+		ShapeConfig shapeConfig = new ShapeConfig(R.color.branco, R.color.super_sete_escuro_mkp);
+
+		return new DezenaConfig(false, R.color.super_sete_letra_mkp,
+				R.layout.item_dezena_detalhe_super7,
+				shapeConfig,false);
 	}
 
 //	private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener(ApostaFavoritaDTO aposta, SwipeLayout swipeLayout, int position) {

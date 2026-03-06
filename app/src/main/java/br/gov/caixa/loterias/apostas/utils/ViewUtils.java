@@ -1124,16 +1124,37 @@ public class ViewUtils {
             if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
                 return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
                         ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade()) : ModalidadeEnum.getDescricao(aposta.getModalidade());
+            } else if (aposta.getModalidade() == ModalidadeEnum.MEGA_SENA){
+                if (aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
+                    Boolean isMega30 = EspecialUtils.isMega30(aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
+                    if (isMega30){
+                        return SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"");
+                    } else {
+                        return ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade());
+                    }
+                } else {
+                    return modalidadeDetalhada.getDescricao();
+                }
             } else {
                 return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                        modalidadeDetalhada.getDescricaoEspecial():
+                        modalidadeDetalhada.getDescricaoEspecial() :
                         modalidadeDetalhada.getDescricao();
             }
-        } else {
-            return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                    ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade()) :
-                    ModalidadeEnum.getDescricao(aposta.getModalidade());
         }
+
+        return getNomeModalidadePorApostaMockada(aposta);
+    }
+
+    private static String getNomeModalidadePorApostaMockada(ApostaDTO aposta) {
+        return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade()) :
+                ModalidadeEnum.getDescricao(aposta.getModalidade());
+    }
+
+    private static String getNomeModalidadePorApostaMockada(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade()) :
+                ModalidadeEnum.getDescricao(aposta.getModalidade());
     }
 
     public static String getNomeModalidadePorAposta(IdentificaoDeUmaApostaDas8Modalidades aposta) {
@@ -1142,17 +1163,27 @@ public class ViewUtils {
         if(param != null){
             ModalidadeDTO modalidadeDetalhada = param.getParametroJogo().getConcurso().getModalidadeDetalhada();
 
-            if (modalidadeDetalhada.getValor() == 9){
+            if (aposta.getModalidade() == ModalidadeEnum.MAIS_MILIONARIA){
                 return context.getString(R.string.label_mais_milionaria);
+            } else if (aposta.getModalidade() == ModalidadeEnum.MEGA_SENA){
+                if (aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
+                    Boolean isMega30 = EspecialUtils.isMega30(aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
+                    if (isMega30){
+                        return SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_LINHA,"");
+                    } else {
+                        return ModalidadeEnum.getDescricaoEspecial(aposta.getModalidade());
+                    }
+                } else {
+                    return modalidadeDetalhada.getDescricao();
+                }
             } else {
                 return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
                         modalidadeDetalhada.getDescricaoEspecial():
                         modalidadeDetalhada.getDescricao();
             }
-        } /*else {
-            return ModalidadeEnum.fromString(aposta.getModalidade());
-        }*/
-        return "";
+        }
+
+        return getNomeModalidadePorApostaMockada(aposta);
     }
 
     public static String getNomeModalidadePorApostaDuasLinas(IdentificaoDeUmaApostaDas8Modalidades aposta) {
@@ -1163,9 +1194,13 @@ public class ViewUtils {
             if (modalidadeDetalhada.getValor() == 9){
                 return Aplicacao.application.getBaseContext().getString(R.string.label_mais_milionaria);
             } else {
-                return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
-                        ModalidadeEnum.getDescricaoEspecialDuasLinhas(aposta.getModalidade()):
-                        modalidadeDetalhada.getDescricao();
+                if (EspecialUtils.isMega30(aposta.getConcursoAlvo(), aposta.getTipoConcurso())){
+                    return SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, "");
+                } else {
+                    return aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL") ?
+                            ModalidadeEnum.getDescricaoEspecialDuasLinhas(aposta.getModalidade()):
+                            modalidadeDetalhada.getDescricao();
+                }
             }
         }
         return "";

@@ -89,6 +89,7 @@
     <string name="confirmacaoPagamentoInfoApostas">Você pode acompanhar a situação da sua compra enquanto ela é processada. Acesse o menu Compras.</string>
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
     <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
+    <string name="compra_sendo_processada">Sua compra está sendo processada</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -176,7 +177,6 @@
     <string name="title_uf">UF</string>
     <string name="label_nascimento">Nascimento</string>
     <string name="label_email">E-mail</string>
-    <string name="label_boas_vindas">Que bom ver você por aqui :)</string>
     <string name="label_cadastro_rapido">O cadastro é bem rápido.\nPara começar, informe os dados abaixo:</string>
     <string name="label_encontre_lotorica_atraves_endereco_cep_codigo">Para isso, encontre a lotérica através\nde seu endereço, CEP ou código.</string>
     <string name="label_empate">Empate</string>
@@ -817,6 +817,8 @@
     <string name="event_alterar_dados_caixa">ENTROU_ALTERAR_DADOS_CAIXA</string>
     <string name="extra_tipo_aposta">tipoAposta</string>
     <string name="extra_modalidade">modalidade</string>
+    //TODO: MEGA 30 ANOS//
+    <string name="numero_concurso">NUMERO_CONCURSO</string>
     <string name="extra_especial">especial</string>
     <string name="evento_gerenciar_apostas_detalhes">ENTROU_GERENCIAR_APOSTAS_DETALHE</string>
     <string name="v">v</string>
@@ -1566,6 +1568,7 @@
 
     <string name="tipo_aposta_bolao">Bolão</string>
     <string name="tipo_aposta_combo">Combo</string>
+    <string name="tipo_aposta_combos">Combos</string>
     <string name="tipo_aposta_espelho">Espelho</string>
     <string name="tipo_aposta_surpresinha">Surpresinha</string>
     <string name="tipo_aposta_teimosinha">Teimosinha</string>
@@ -1576,6 +1579,7 @@
     <string name="exclui_loterica_favorita">Deseja excluir xxx da sua lista de favoritas?</string>
     <string name="sem_modalidade">Você ainda não tem apostas favoritas desta modalidade. Que tal adicionar uma agora?</string>
     <string name="incluir_aposta_favorita">Incluir aposta favorita</string>
+    <string name="label_modal_checkbox_aposta_espelho">Ao selecionar esta opção, o sistema fará a aposta automaticamente, escolhendo os 50 números que não foram registrados na sua aposta original.</string>
 
     <string name="label_boloes">Bolões</string>
     <string name="label_lotericas_favoritas">Lotéricas Favoritas</string>
@@ -1590,4 +1594,9 @@
     <string name="loterica_favorita_bold">_Lotérica Favorita_</string>
     <string name="favoritar_loterica">Favoritar Lotérica</string>
     <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
+
+    <!-- MEGA 30 ANOS   -->
+    <string name="mega_sena_30_anos">mega-sena 30 anos</string>
+    <string name="mega_sena_30_anos_duas_linhas">mega-sena\n30 anos</string>
+
 </resources>

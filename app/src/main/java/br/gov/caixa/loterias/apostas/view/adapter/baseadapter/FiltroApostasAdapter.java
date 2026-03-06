@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.BotoesFiltroApostas;
 import br.gov.caixa.loterias.apostas.model.bean.TipoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConfigConsultaDTO;
@@ -29,13 +30,11 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnumSelecaoModalidades;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesApostaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.Tupla;
-import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView;
 import br.gov.caixa.loterias.apostas.view.holder.ModalidadeHolder;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 
@@ -85,6 +84,7 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
     private int numeroTipoConcursoPadrao;
     private int numeroTipoConcursoSelecionado;
 	private ConfigConsultaDTO configConsulta;
+	private BotoesFiltroApostas botoesFiltroApostas;
 
     private Boolean isUnicaSelecao = false;
 
@@ -98,6 +98,27 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 		this.setModalidades(modalidades);
 		this.setActivity(activity);
 		this.configConsulta = configConsulta;
+
+		preConfiguraLista();
+		configuraAdapterModalidades();
+		preConfiguraSituacoes();
+		preConfiguraOrdenacoes();
+		preConfiguraTipoAposta();
+		preConfiguraTipoConcurso();
+	}
+
+	public FiltroApostasAdapter(Context context,
+								List<ModalidadeDTO> modalidades,
+								Activity activity,
+								Boolean isUnicaSelecao,
+								ConfigConsultaDTO configConsulta,
+								BotoesFiltroApostas botoesFiltroApostas) {
+		this.context = context;
+		this.isUnicaSelecao = isUnicaSelecao;
+		this.setModalidades(modalidades);
+		this.setActivity(activity);
+		this.configConsulta = configConsulta;
+		this.botoesFiltroApostas = botoesFiltroApostas;
 
 		preConfiguraLista();
 		configuraAdapterModalidades();
@@ -317,6 +338,13 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 				return true;
 			}
 		}
+
+		if(getBotoesFiltroApostas() != null) {
+            return botoesFiltroApostas.getCombo() == 3
+                    || botoesFiltroApostas.getSurpresinha() == 3
+                    || botoesFiltroApostas.getTeimosinha() == 3;
+		}
+
 		return false;
 	}
 
@@ -403,6 +431,13 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 			numeroTipoConcursoSelecionado = numeroTipoConcursoPadrao;
 			getNpTipoConcurso().setValue(numeroTipoConcursoPadrao);
 		}
+
+		if(getBotoesFiltroApostas() != null) {
+			getBotoesFiltroApostas().setCombo(0);
+			getBotoesFiltroApostas().setSurpresinha(0);
+			getBotoesFiltroApostas().setTeimosinha(0);
+		}
+
 	}
 
 	private void populaArraysTipoAposta(List<TipoAposta> array, List<ModalidadeDTO> modalidades) {
@@ -505,6 +540,14 @@ public class FiltroApostasAdapter extends BaseExpandableListAdapter {
 
 	public void setTiposApostasSalvas(List<TipoAposta> tiposApostasSalvas) {
 		this.tiposApostasSalvas = tiposApostasSalvas;
+	}
+
+	public void setBotoesFiltroApostas(BotoesFiltroApostas botoesFiltroApostas) {
+		this.botoesFiltroApostas = botoesFiltroApostas;
+	}
+
+	public BotoesFiltroApostas getBotoesFiltroApostas() {
+		return botoesFiltroApostas;
 	}
 
 	public Activity getActivity() {

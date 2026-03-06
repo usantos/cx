@@ -263,6 +263,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:orientation="horizontal"
+            android:padding="8dp"
             android:gravity="center">
 
         <TextView
@@ -291,7 +292,6 @@
     </LinearLayout>
 </RelativeLayout>
 
-
     </RelativeLayout>
 
         <RelativeLayout
@@ -304,6 +304,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -351,13 +352,27 @@
                 android:layout_below="@id/rl_fg_numeros_1"
                 android:visibility="gone" />
 
+            <RelativeLayout
+                android:id="@+id/rl_div_top_numeros_sorteados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_fg_numeros_2"
+                android:visibility="gone">
+
+                <View
+                    android:id="@+id/v_div_top_numeros_sorteados"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/branco"/>
+            </RelativeLayout>
+
+
             <TextView
                 android:id="@+id/tv_resultado_super_sete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@id/tv_sua_aposta"
-                android:layout_below="@+id/rl_fg_numeros_1"
-                android:layout_marginTop="5dp"
+                android:layout_below="@id/rl_div_top_numeros_sorteados"
                 android:fontFamily="@font/caixa_std_regular"
                 android:gravity="center"
                 android:text="@string/numeros_sorteados"
@@ -396,25 +411,11 @@
                 android:visibility="gone" />
 
             <RelativeLayout
-                android:id="@+id/rl_div_top_numeros_sorteados"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/rl_container_result_1"
-                android:visibility="gone">
-
-                <View
-                    android:id="@+id/v_div_top_numeros_sorteados"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/branco"/>
-            </RelativeLayout>
-
-            <RelativeLayout
                 android:id="@+id/rl_container_result_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rl_fg_numeros_2"
-                android:layout_marginTop="10dp"
+                android:layout_below="@id/tv_resultado_super_sete"
+                android:layout_marginTop="15dp"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -429,7 +430,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_container_result_2"
-                android:paddingVertical="4dp"
                 android:visibility="gone">
 
                 <View

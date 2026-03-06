@@ -14,7 +14,9 @@ import java.util.Collections;
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
@@ -27,6 +29,8 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
     private final Context context;
     private final List<Integer> numeroslista;
     private final ModalidadeEnum modalidade;
+    //TODO: MEGA 30 ANOS//
+    private Modalidade mod;
 
     public NumerosResultadosAdapter(final Context context, final List<Integer> numeroslista, final ModalidadeEnum modalidade) {
         this.context = context;
@@ -35,6 +39,17 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
         if(numeroslista != null){
             ordenaLista();
         }
+    }
+
+    public NumerosResultadosAdapter(final Context context, final List<Integer> numeroslista, final ModalidadeEnum modalidade, Modalidade mod) {
+        //TODO: MEGA 30 ANOS//
+        this.context = context;
+        this.numeroslista = numeroslista;
+        this.modalidade = modalidade;
+        if(numeroslista != null){
+            ordenaLista();
+        }
+        this.mod = mod;
     }
 
     private void ordenaLista() {
@@ -59,7 +74,12 @@ public final class NumerosResultadosAdapter extends RecyclerView.Adapter<Numeros
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade);
+        //TODO: MEGA 30 ANOS//
+        boolean isMega30 = false;
+        if (mod != null){
+            isMega30 = EspecialUtils.isMega30(mod.getConcurso().getNumero(), mod.getConcurso().getTipoConcurso());
+        }
+        EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade, isMega30);
         int numeroResultado = numeroslista.get(position);
         String numero = numeroResultado < 10 ? context.getResources().getString(R.string.zero) + numeroResultado : context.getResources().getString(R.string.string_vazia) + numeroResultado;
         if (numero.equals("100")){

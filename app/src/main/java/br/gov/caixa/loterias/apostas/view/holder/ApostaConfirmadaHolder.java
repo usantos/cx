@@ -30,9 +30,11 @@ import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.BuildVersionUtil;
 import br.gov.caixa.loterias.apostas.utils.ConcursoUtils;
+import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.NovaApiUtils;
+import br.gov.caixa.loterias.apostas.utils.SharedPreferencesUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.fragment.ApostasConfirmadasFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
@@ -56,6 +58,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 	private ApostasConfirmadasFragment fragment;
 	private EstiloModalidadeMKP estiloModalidadeMKP;
 	private TipoApostaLinhaView tipoApostaLinhaView;
+	private Boolean isMega30 = false;
 
 	public ApostaConfirmadaHolder(View view, OnApostaConfirmadaListener listener, boolean listaVazia, Activity parentActivity, ApostasConfirmadasFragment fragment) {
 		super(view);
@@ -90,14 +93,27 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 	@Override
 	public void bind(ApostaDTO aposta, int position) {
-		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade());
+		if (aposta.getConcursoAlvo() != null && aposta.getConcursoAlvo().toString().equalsIgnoreCase("5847")){
+			aposta.getConcursoAlvo();
+		}
+		if (aposta.getConcursoInicial() != null && aposta.getConcursoInicial().toString().equalsIgnoreCase("5847")){
+			aposta.getConcursoAlvo();
+		}
+		if(aposta.getTipoConcurso().getDescricao().equalsIgnoreCase("ESPECIAL")){
+			isMega30 = EspecialUtils.isMega30(aposta.getConcursoAlvo() != null ? aposta.getConcursoAlvo() : aposta.getConcursoInicial(), aposta.getTipoConcurso());
+		}
+		estiloModalidadeMKP = new EstiloModalidadeMKP(aposta.getModalidade(), isMega30);
 
 		int color = ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorClara());
 
 		this.color = color;
 		this.stripe.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
 		this.modalidadeTxt.setTextColor(ContextCompat.getColor(itemView.getContext(), estiloModalidadeMKP.getCorLetraLista()));
-		this.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
+		if (isMega30) {
+			modalidadeTxt.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS, ""));
+		} else {
+			this.modalidadeTxt.setText(ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase());
+		}
 		this.dataApostaTxt.setText(aposta.getDataCompra());
 
 		String descricaoStatus = getDescricaoString(aposta, position);

@@ -75,7 +75,7 @@
                 android:layout_height="33dp"
                 android:background="@drawable/custom_bottom_rouded"
                 android:text="Modalidade"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 android:textColor="@color/branco"
                 android:gravity="center"

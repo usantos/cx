@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.opengl.Visibility;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
@@ -43,6 +43,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
     private NumberPicker picker_tipo_concurso;
     private NumberPicker picker_qnt_teimosinhas;
+    private AppCompatCheckBox checkBox;
 
     private List<ParametroSimulacao>  arrayConcursos = new ArrayList<>();
     private Long idApostaFavorita;
@@ -54,7 +55,8 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
     private boolean mostraTeimosinha;
     private String txtBotao;
 
-    Boolean toggleTipo = false;
+    private Boolean toggleTipo = false;
+    private boolean temEspelho;
 
 
     public AdicionarCarrinhoFavoritasView() {}
@@ -98,6 +100,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         selecioneConcursoButton.setHint("Recolhido");
         selecioneQntTeimosinhaButton = view.findViewById(R.id.selecioneQntTeimosinhaButton);
         selecioneQntTeimosinhaButton.setHint("Recolhido");
+        checkBox = view.findViewById(R.id.checkbox_aposta_espelho);
 
         if (txtBotao != null){
             adicionarCarrinhoFavoritosButton.setText(txtBotao);
@@ -142,11 +145,7 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             apresentaQtdTeimosinha(arrayConcursos.get(newVal).getParametroJogo().getConcurso().getTipoConcurso());
         });
 
-
-        picker_qnt_teimosinhas.setOnValueChangedListener((numberPicker, oldVal, newVal) -> {
-
-        });
-
+        picker_qnt_teimosinhas.setOnValueChangedListener((numberPicker, oldVal, newVal) -> {});
 
         selecioneConcursoButton.setOnClickListener(view12 -> {
             habilitaBotaoAdicionar(true);
@@ -181,8 +180,11 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             }
         });
 
-
-
+        if (temEspelho){
+            checkBox.setVisibility(View.VISIBLE);
+        } else {
+            checkBox.setVisibility(View.GONE);
+        }
     }
 
     private void habilitaBotaoAdicionar(boolean isEnabled) {
@@ -208,7 +210,8 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
             }
             int teimosinha = Integer.parseInt(listaTeimosinhas.get(picker_qnt_teimosinhas.getValue()));
             dismiss();
-            listener.selecionado(tipoConcurso, teimosinha);
+
+            listener.selecionado(tipoConcurso, teimosinha, checkBox.getVisibility() == View.VISIBLE ? checkBox.isChecked() : null);
         }
     }
 
@@ -249,7 +252,6 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
         }
     }
 
-
     public void setIdApostaFavorita(Long idApostaFavorita) {
         this.idApostaFavorita = idApostaFavorita;
     }
@@ -268,6 +270,10 @@ public class AdicionarCarrinhoFavoritasView extends DialogFragment implements Vi
 
     public void setTextoBotao(String txtBotao){
         this.txtBotao = txtBotao;
+    }
+
+    public void setTemEspelho(boolean temEspelho) {
+        this.temEspelho = temEspelho;
     }
 }
 

@@ -193,6 +193,9 @@ public class ResultadoLerBilhetesActivity extends LoteriasBaseAppActivity {
                 } else {
                     atualizarLayoutNaoPremiado();
                 }
+                if (contentResultadoPremiado.getTipoApostaLinhaView() != null){
+                    contentResultadoPremiado.getTipoApostaLinhaView().setVisibility(View.GONE);
+                }
                 AlertDialogUtils.dismiss();
             }
 
