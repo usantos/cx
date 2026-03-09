@@ -60,6 +60,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PeriodoConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -621,6 +622,13 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         ComprovanteApostaDTO comprovante = result.getPayload();
                         if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
                             comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                        }
+
+                        //Utilizada na Teimosinha, apostaDTO-Situacao.PREMIADA e comprovante-Situacao-EFETIVADA
+                        if (comprovante.getAposta().getQuantidadeTeimosinhas() >0) {
+                            if (apostaDTO.getSituacao().getValor() == SituacaoAposta.PREMIADA && comprovante.getAposta().getSituacao().getValor() == SituacaoAposta.EFETIVADA) {
+                                comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                            }
                         }
 
                         //SERVICO /apostas/:idAposta/comprovante  Informacao COMBO está errada
