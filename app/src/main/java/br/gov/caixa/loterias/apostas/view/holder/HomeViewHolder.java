@@ -201,7 +201,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		}
 
 		this.buttonActionResultadosModalidade.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorFonteFundoEscuro()));
-		this.imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo_resultado, estilo.getCorFonteFundoEscuro()));
+		//this.imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo_resultado, estilo.getCorFonteFundoEscuro()));
+		this.imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo, estilo.getCorFonteFundoEscuro()));
 
 		this.relativeLayoutTopResultados.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
 		this.linearLayoutResultadosApostas.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorEscura()));
@@ -550,7 +551,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 														this.setaDireitaAcaoRelativeLayout,
 														true, this);
 						//imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_cima_resultado));
-						imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_cima_resultado, estilo.getCorFonteFundoEscuro()));
+						//imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_cima_resultado, estilo.getCorFonteFundoEscuro()));
+						imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_x_bold, estilo.getCorFonteFundoEscuro()));
 
 					} else {
 						animacaoAbrirResultados(itemView.getContext(),
@@ -560,7 +562,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 												this.setaEsquerdaAcaoRelativeLayout,
 												this.setaDireitaAcaoRelativeLayout);
 						//imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_cima_resultado));
-						imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_cima_resultado, estilo.getCorFonteFundoEscuro()));
+						//imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_cima_resultado, estilo.getCorFonteFundoEscuro()));
+						imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_x_bold, estilo.getCorFonteFundoEscuro()));
 
 					}
 				} else {
@@ -571,7 +574,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 											 this.setaEsquerdaAcaoRelativeLayout,
 											 this.setaDireitaAcaoRelativeLayout);
 					//imgSetaResultado.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_seta_baixo_resultado));
-					imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo_resultado, estilo.getCorFonteFundoEscuro()));
+					//imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo_resultado, estilo.getCorFonteFundoEscuro()));
+					imgSetaResultado.setImageDrawable(VectorUtils.getShape(R.drawable.ic_seta_baixo, estilo.getCorFonteFundoEscuro()));
 
 				}
 				break;
