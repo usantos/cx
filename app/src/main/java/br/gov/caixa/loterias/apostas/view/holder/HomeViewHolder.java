@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.controllers.PrincipalActivity;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDisponivelCota;
@@ -486,8 +487,11 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		);
 		modalidade.setResultadosAberto(true);
 		animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(315, context));
-		//setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
-		//setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+
+		//Ocultar botões da tela principal enquanto resultados estão abertos
+		if (parentActivity instanceof PrincipalActivity) {
+			((PrincipalActivity) parentActivity).ocultarBotoesHomeParaResultados();
+		}
 	}
 
 	private void animacaoFecharResultados(Context context,
@@ -504,8 +508,11 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		);
 
 		animacoesResultados.AnimacaoSubirContent();
-		//setaDireitaAcaoRelativeLayout.setVisibility(View.INVISIBLE);
-		//setaEsquerdaAcaoRelativeLayout.setVisibility(View.INVISIBLE);
+
+		//Reapresentar botões conforme regras ao recolher os resultados
+		if (parentActivity instanceof PrincipalActivity) {
+			((PrincipalActivity) parentActivity).exibirBotoesHomeAposResultados();
+		}
 	}
 
 	@Override
