@@ -1598,5 +1598,8 @@
     <!-- MEGA 30 ANOS   -->
     <string name="mega_sena_30_anos">mega-sena 30 anos</string>
     <string name="mega_sena_30_anos_duas_linhas">mega-sena\n30 anos</string>
+    <string name="caixa_loterias">Você será direcionado para o site da CAIXA Loterias e sairá do aplicativo. Deseja continuar?</string>
+    <string name="label_cancelar">Cancelar</string>
+    <string name="label_confirmar">Confirmar</string>
 
 </resources>

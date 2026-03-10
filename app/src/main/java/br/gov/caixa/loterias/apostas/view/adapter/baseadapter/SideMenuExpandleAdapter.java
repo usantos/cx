@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.utils.DividerUtils;
 import br.gov.caixa.loterias.apostas.utils.DrawerEnum;
 import br.gov.caixa.loterias.apostas.utils.FonteUtils;
+import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
     private Context context;
@@ -217,17 +219,19 @@ public class SideMenuExpandleAdapter extends BaseExpandableListAdapter {
                 listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
-                description.append(": ").append(totalItens).append(" itens, final");
                 layoutItem.setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
-                DividerUtils.setDividerVisible(layoutItem, false);
+                DividerUtils.setDividerVisible(layoutItem, true);
+                layoutItem.setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
 //                convertView.findViewById(R.id.layoutItem).setBackgroundResource(R.drawable.drawer_linha_divisao_bg);
                 break;
             case MENU_SOBRE_CAIXA:
-                imageViewGroup.setImageResource(0);
-                listTitleTextView.setTextColor(context.getResources().getColor(R.color.vermelho_cancelada));
+                imageViewGroup.setImageResource(R.drawable.link);
+                listTitleTextView.setTextColor(context.getResources().getColor(R.color.cinza));
                 listTitleTextView.setHint("botão");
                 convertView.setBackgroundColor(context.getResources().getColor(R.color.branco));
                 imagemMaisOpcoes.setVisibility(View.GONE);
+                description.append(": ").append(totalItens).append(" itens, final");
+                layoutItem.setOnClickListener(view -> ViewUtils.abrirMenuCaixa(context));
                 break;
             default:
                 break;
