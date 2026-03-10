@@ -16,8 +16,8 @@
             android:text="@string/placeholder_concurso_data"
             android:id="@+id/numeroeDataConcursoResultadoMegaSena"
             android:layout_gravity="center_horizontal"
-            android:textColor="@color/branco"
-            android:textSize="14.2sp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/caixa_std_regular"/>
         <LinearLayout

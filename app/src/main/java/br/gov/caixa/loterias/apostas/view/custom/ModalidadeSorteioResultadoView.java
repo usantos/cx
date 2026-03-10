@@ -55,7 +55,10 @@ public class ModalidadeSorteioResultadoView extends ScrollView {
         EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(modalidade.getTipoModalidade());
 
         this.numeroeDataConcursoResultadoMegaSena.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
-        this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.fromHtml("Nº <b>" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "</b> | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
+        //this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.fromHtml("Nº <b>" + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "</b> | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
+        this.numeroeDataConcursoResultadoMegaSena.setText(ViewUtils.textCaixaSTDBold(getContext(), "_Nº " + modalidade.getResultadoConcursoDTO().getConcurso().getNumero() + "_ | " + modalidade.getResultadoConcursoDTO().getConcurso().getDataSorteio()));
+        //title1.setText(ViewUtils.textCaixaSTDBold(getContext(), getResources().getString(R.string.label_premiacao_bold)));
+
         if (ModalidadeEnum.LOTECA.toString().equalsIgnoreCase(modalidade.getTipoModalidade().toString())) {
             EscudoBO.getInstance().carregaEscudos(getContext(), () -> setContentResultadoPorModalidade(modalidade));
         } else {
