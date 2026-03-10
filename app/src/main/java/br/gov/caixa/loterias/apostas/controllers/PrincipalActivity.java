@@ -781,45 +781,6 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
             updateHomeButtonsForPosition(adapterPosition);
         }
 
-//        adapterPosition  = infiniteAdapter.getRealCurrentPosition();
-//        if (viewHolder != null) {
-//            if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
-//                data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
-//                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
-//                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-//                buttonHomeBet.setTag(adapterPosition);
-//                buttonHomeBet.setTextColor(ContextCompat.getColor(this,estilo.getCorFonteFundoClaro()));
-//                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
-//                buttonHomeBolao.setVisibility(View.GONE);
-//            } else {
-//                EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade());
-//                if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.TIMEMANIA)){
-//                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
-//                } else {
-//                    buttonHomeBet.setTextColor(ContextCompat.getColor(this, R.color.branco));
-//                }
-//                buttonHomeBet.setBackgroundColor(ContextCompat.getColor(this, estilo.getCorEscura()));
-//                buttonHomeBet.setTag(adapterPosition);
-//                if (modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima() == null ||
-//                    modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima().compareTo(BigDecimal.ZERO) == 0) {
-//                    buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
-//                } else {
-//                    buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
-//                            getResources().getString(R.string.espaco_em_branco) +
-//                            ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
-//                }
-//
-//                if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
-//                        temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
-//
-//                    buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
-//                                    .getString(R.string.apostas_boloes)));
-//                    buttonHomeBolao.setVisibility(View.VISIBLE);
-//                } else {
-//                    buttonHomeBolao.setVisibility(View.GONE);
-//                }
-//            }
-//        }
     }
 
 
