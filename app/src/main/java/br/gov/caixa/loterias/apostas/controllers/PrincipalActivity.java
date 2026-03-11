@@ -453,6 +453,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
+        //Não apager (utilizado pra testes)
         //EncerramentoUtil.mockApagaModalidadeNosParametroJogo(
         //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
         EncerramentoUtil.verificaSeCriaCardTemporario();
@@ -785,18 +786,15 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     private void updateHomeButtonsForPosition(int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
 
-        // >>> INÍCIO: guarda de segurança para "resultados abertos" <<<
         if (data != null
                 && adapterPosition >= 0
                 && adapterPosition < data.size()
                 && Boolean.TRUE.equals(data.get(adapterPosition).getResultadosAberto())) {
             if (buttonHomeBet != null)    buttonHomeBet.setVisibility(View.GONE);
             if (buttonHomeBolao != null)  buttonHomeBolao.setVisibility(View.GONE);
-            return; // card atual está com resultados abertos -> não exibir botões
+            return;
         }
-        // >>> FIM guarda <<<
 
-        // A partir daqui, card atual está "fechado": garanta visibilidade do "Aposte"
         if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
 
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||

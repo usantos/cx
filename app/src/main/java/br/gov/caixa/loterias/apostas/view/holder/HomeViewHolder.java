@@ -219,32 +219,6 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
 		}
 
-//		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo)) || modalidade.getConcurso().getModalidade() == ModalidadeEnum.MAIS_MILIONARIA) {
-//			this.titulo.setVisibility(View.GONE);
-//			this.clEspeciais.setVisibility(View.VISIBLE);
-//			switch (modalidade.getTipoModalidade()){
-//				case MEGA_SENA:
-//					//this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.mega_virada_novo));
-//					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
-//					break;
-//				case DUPLA_SENA:
-//					//this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.dupla_pascoa));
-//					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
-//					break;
-//				case LOTOFACIL:
-//					//this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.lotofacil_independencia));
-//					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
-//					break;
-//				case QUINA:
-//					//this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(R.drawable.quina_sao_joao_novo));
-//					this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
-//					break;
-//				default:
-//					this.titulo.setVisibility(View.VISIBLE);
-//					this.clEspeciais.setVisibility(View.GONE);
-//			}
-//		}
-
 		if (modalidade.getConcurso().getEstimativa() != null &&
 			modalidade.getConcurso().getEstimativa().compareTo(BigDecimal.ZERO) != 0) {
 			String estimativaFormatado = ViewUtils.getMoedaFormatPorExtenso(modalidade.getConcurso().getEstimativa());
@@ -320,8 +294,9 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			layoutParams.width = ViewUtils.setDisplayMetric(280, itemView.getContext());
 			this.linearLayoutResultadosApostas.setLayoutParams(layoutParams);
 
-			//this.setaDireitaAcaoRelativeLayout.setVisibility(View.VISIBLE);
-			//this.setaEsquerdaAcaoRelativeLayout.setVisibility(View.VISIBLE);
+			if (parentActivity instanceof PrincipalActivity) {
+				((PrincipalActivity) parentActivity).ocultarBotoesHomeParaResultados();
+			}
 		} else {
 			ViewGroup.LayoutParams layoutParams = this.linearLayoutResultadosApostas.getLayoutParams();
 			layoutParams.height = 0;
@@ -340,6 +315,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		try {
 			dataFechamentoSorteio = DateUtils.criaDataHora(modalidade.getConcurso().getDataFechamento(), formatoData);
 
+			//Não apagar (utilizado pra testes)
 //			EncerramentoUtil.mockSetDataHoraEncerramento(
 //					"06/05/2025",
 //					"10:30:00",
@@ -487,6 +463,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				ViewUtils.setDisplayMetric(280, context)
 		);
 		modalidade.setResultadosAberto(true);
+		//animacoesResultados.AnimacaoDescerContent(1300);
 		animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(315, context));
 
 		//Ocultar botões da tela principal enquanto resultados estão abertos
