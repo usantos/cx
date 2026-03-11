@@ -18,288 +18,288 @@
         android:layout_height="match_parent"
         android:id="@+id/scrollViewDadosPessoais">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextCpf"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content">
 
-            <com.github.pinball83.maskededittext.MaskedEditText
-                android:id="@+id/editTextCpfContent"
-                android:ems="10"
-                android:hint="@string/title_cpf"
-                style="@style/editTextRegisterThemeCaixa"
-                android:inputType="number"
-                app:mask="***.***.***-**"
-                app:notMaskedSymbol="*"
-                android:enabled="false"
-                android:alpha="0.3"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextCpf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextNome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/editTextCpf">
-
-            <EditText
-                android:id="@+id/editTextNomeContent"
-                android:ems="10"
-                android:hint="@string/label_nome"
-                style="@style/editTextRegisterThemeCaixa"
-                android:inputType="textPersonName"
-                android:enabled="false"
-                android:alpha="0.3"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup
-            android:id="@+id/segmentedButtonSexo"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="20dp"
-            android:elevation="2dp"
-            app:sb_textStyle="bold"
-            app:sbg_animateSelector="fastOutSlowIn"
-            app:sbg_animateSelectorDuration="1000"
-            app:sbg_backgroundColor="@color/cinzaclaro"
-            app:sbg_position="0"
-            app:sbg_ripple="true"
-            app:sbg_selectorColor="@color/verdeazul"
-            app:layout_constraintTop_toBottomOf="@id/editTextNome">
-
-            <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_weight="1"
-                android:textSize="16sp"
-                app:sb_text="Masculino"
-                app:sb_textColor="@color/verdeazul"
-                android:textAlignment="center"
-                app:sb_textColor_onSelection="@color/branco"
-                app:sb_textStyle="bold"
-                style="@style/editTextRegisterThemeCaixa"
-                app:sb_textGravity="center"
-                android:layout_gravity="center_vertical"
-                tools:ignore="RtlCompat" />
-
-            <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_weight="1"
-                android:textSize="16sp"
-                app:sb_text="Feminino"
-                app:sb_textColor="@color/verdeazul"
-                app:sb_textColor_onSelection="@color/branco"
-                app:sb_textStyle="bold"
-                style="@style/editTextRegisterThemeCaixa"
-                />
-
-        </br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextCEP"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="bottom"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/segmentedButtonSexo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/naoSeiCep">
-
-            <com.github.pinball83.maskededittext.MaskedEditText
-                android:id="@+id/editTextCepContent"
-                style="@style/editTextRegisterThemeCaixa"
-                android:ems="10"
-                android:hint="@string/label_cep"
-                android:inputType="number"
-                app:mask="*****-***"
-                app:notMaskedSymbol="*" />
+                <com.github.pinball83.maskededittext.MaskedEditText
+                    android:id="@+id/editTextCpfContent"
+                    android:ems="10"
+                    android:hint="@string/title_cpf"
+                    style="@style/editTextRegisterThemeCaixa"
+                    android:inputType="number"
+                    app:mask="***.***.***-**"
+                    app:notMaskedSymbol="*"
+                    android:enabled="false"
+                    android:alpha="0.3"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/naoSeiCep"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/caixa_std_regular"
-            android:textColor="@color/cinza"
-            android:text="@string/nao_sei_cep"
-            android:background="@drawable/button_border_verde"
-            android:textAllCaps="false"
-            android:textSize="14sp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintTop_toTopOf="@id/editTextCEP"
-            app:layout_constraintStart_toEndOf="@id/editTextCEP"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/editTextCpf">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextUF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/editTextCEP">
+                <EditText
+                    android:id="@+id/editTextNomeContent"
+                    android:ems="10"
+                    android:hint="@string/label_nome"
+                    style="@style/editTextRegisterThemeCaixa"
+                    android:inputType="textPersonName"
+                    android:enabled="false"
+                    android:alpha="0.3"/>
 
-            <EditText
-                android:id="@+id/editTextUFContent"
-                style="@style/editTextRegisterThemeCaixa"
-                android:ems="10"
-                android:focusableInTouchMode="false"
-                android:hint="@string/title_uf"
-                android:inputType="textPersonName"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup
+                android:id="@+id/segmentedButtonSexo"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:elevation="2dp"
+                app:sb_textStyle="bold"
+                app:sbg_animateSelector="fastOutSlowIn"
+                app:sbg_animateSelectorDuration="1000"
+                app:sbg_backgroundColor="@color/cinzaclaro"
+                app:sbg_position="0"
+                app:sbg_ripple="true"
+                app:sbg_selectorColor="@color/verdeazul"
+                app:layout_constraintTop_toBottomOf="@id/editTextNome">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextMunicipio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/editTextUF">
+                <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    app:sb_text="Masculino"
+                    app:sb_textColor="@color/verdeazul"
+                    android:textAlignment="center"
+                    app:sb_textColor_onSelection="@color/branco"
+                    app:sb_textStyle="bold"
+                    style="@style/editTextRegisterThemeCaixa"
+                    app:sb_textGravity="center"
+                    android:layout_gravity="center_vertical"
+                    tools:ignore="RtlCompat" />
 
-            <EditText
-                android:id="@+id/editTextMunicipioContent"
-                style="@style/editTextRegisterThemeCaixa"
-                android:ems="10"
-                android:focusableInTouchMode="false"
-                android:hint="@string/label_municipio"
-                android:inputType="textPersonName" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    app:sb_text="Feminino"
+                    app:sb_textColor="@color/verdeazul"
+                    app:sb_textColor_onSelection="@color/branco"
+                    app:sb_textStyle="bold"
+                    style="@style/editTextRegisterThemeCaixa"
+                    />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="30dp"
-            app:layout_constraintTop_toBottomOf="@id/editTextMunicipio">
+            </br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup>
 
-            <EditText
-                android:id="@+id/editTextEmailContent"
-                style="@style/editTextRegisterThemeCaixa"
-                android:ems="10"
-                android:hint="@string/label_email"
-                android:inputType="textEmailAddress"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextCEP"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/segmentedButtonSexo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/naoSeiCep">
+
+                <com.github.pinball83.maskededittext.MaskedEditText
+                    android:id="@+id/editTextCepContent"
+                    style="@style/editTextRegisterThemeCaixa"
+                    android:ems="10"
+                    android:hint="@string/label_cep"
+                    android:inputType="number"
+                    app:mask="*****-***"
+                    app:notMaskedSymbol="*" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/naoSeiCep"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/caixa_std_regular"
+                android:textColor="@color/cinza"
+                android:text="@string/nao_sei_cep"
+                android:background="@drawable/button_border_verde"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toTopOf="@id/editTextCEP"
+                app:layout_constraintStart_toEndOf="@id/editTextCEP"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextUF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:enabled="false"
-                android:alpha="0.3"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/editTextCEP">
 
-        <TextView
-            android:id="@+id/limite_titulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="@string/limite_titulo"
-            android:textSize="15.7sp"
-            android:fontFamily="@font/caixa_std_bold"
-            app:layout_constraintTop_toBottomOf="@id/editTextEmail"
-            />
+                <EditText
+                    android:id="@+id/editTextUFContent"
+                    style="@style/editTextRegisterThemeCaixa"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/title_uf"
+                    android:inputType="textPersonName"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editTextLimite"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="10dp"
-            app:helperText="@string/limite_maximo_e_minimo"
-            app:helperTextTextAppearance="@style/helperTextRegisterThemeCaixa"
-            app:hintEnabled="false"
-            app:layout_constraintTop_toBottomOf="@id/limite_titulo"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/editTextLimiteContent"
-                style="@style/editTextRegisterThemeCaixa"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextMunicipio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="4dp"
-                android:layout_marginBottom="-10dp"
-                android:inputType="number"
-                android:text="R$ 4.123,31" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:enabled="false"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@id/editTextUF">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerValidaValorLimite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/editTextLimite"
-            app:layout_constraintStart_toStartOf="parent">
+                <EditText
+                    android:id="@+id/editTextMunicipioContent"
+                    style="@style/editTextRegisterThemeCaixa"
+                    android:ems="10"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/label_municipio"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp"
+                app:layout_constraintTop_toBottomOf="@id/editTextMunicipio">
+
+                <EditText
+                    android:id="@+id/editTextEmailContent"
+                    style="@style/editTextRegisterThemeCaixa"
+                    android:ems="10"
+                    android:hint="@string/label_email"
+                    android:inputType="textEmailAddress"
+                    android:enabled="false"
+                    android:alpha="0.3"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/txt_valida_limite_min"
+                android:id="@+id/limite_titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/restringe_limite_ao_minimo"
-                android:textAlignment="center"
-                android:textColor="@color/vermelho_dialog"
-                android:textSize="16sp"
-                android:fontFamily="@font/caixa_std_regular"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:layout_marginLeft="20dp"
+                android:text="@string/limite_titulo"
+                android:textSize="15.7sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+                />
 
-            <TextView
-                android:id="@+id/txt_valida_limite_max"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editTextLimite"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/restringe_limite_ao_maximo"
-                android:textAlignment="center"
-                android:textColor="@color/vermelho_dialog"
-                android:textSize="16sp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="10dp"
+                app:helperText="@string/limite_maximo_e_minimo"
+                app:helperTextTextAppearance="@style/helperTextRegisterThemeCaixa"
+                app:hintEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/limite_titulo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <EditText
+                    android:id="@+id/editTextLimiteContent"
+                    style="@style/editTextRegisterThemeCaixa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="4dp"
+                    android:layout_marginBottom="-10dp"
+                    android:inputType="number"
+                    android:text="R$ 4.123,31" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerValidaValorLimite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/editTextLimite"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/txt_valida_limite_min"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/restringe_limite_ao_minimo"
+                    android:textAlignment="center"
+                    android:textColor="@color/vermelho_dialog"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/txt_valida_limite_max"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/restringe_limite_ao_maximo"
+                    android:textAlignment="center"
+                    android:textColor="@color/vermelho_dialog"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/updateDadosPessoaisLimiteButton"
+                android:layout_width="184dp"
+                android:layout_height="84dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:background="@color/verdeazul"
+                android:layout_centerHorizontal="true"
+                android:text="@string/dados_limite_compra"
                 android:fontFamily="@font/caixa_std_regular"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
+                android:textAllCaps="false"
+                android:textColor="@color/branco"
+                android:textSize="15.7sp"
+                app:layout_constraintTop_toBottomOf="@id/containerValidaValorLimite"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
-            android:id="@+id/updateDadosPessoaisLimiteButton"
-            android:layout_width="184dp"
-            android:layout_height="84dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="30dp"
-            android:background="@color/verdeazul"
-            android:layout_centerHorizontal="true"
-            android:text="@string/dados_limite_compra"
-            android:fontFamily="@font/caixa_std_regular"
-            android:textAllCaps="false"
-            android:textColor="@color/branco"
-            android:textSize="15.7sp"
-            app:layout_constraintTop_toBottomOf="@id/containerValidaValorLimite"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
