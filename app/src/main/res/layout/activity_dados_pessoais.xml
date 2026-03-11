@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.gov.caixa.loterias.apostas.controllers.DadosPessoaisActivity"
-    android:fitsSystemWindows="true">
+    tools:context="br.gov.caixa.loterias.apostas.controllers.DadosPessoaisActivity">
 
     <include layout="@layout/content_dados_pessoais"/>
     <include layout="@layout/app_bar_degrade_extend"/>
