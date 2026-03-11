@@ -780,12 +780,24 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         if (viewHolder != null) {
             updateHomeButtonsForPosition(adapterPosition);
         }
-
     }
-
 
     private void updateHomeButtonsForPosition(int adapterPosition) {
         adapterPosition  = infiniteAdapter.getRealCurrentPosition();
+
+        // >>> INÍCIO: guarda de segurança para "resultados abertos" <<<
+        if (data != null
+                && adapterPosition >= 0
+                && adapterPosition < data.size()
+                && Boolean.TRUE.equals(data.get(adapterPosition).getResultadosAberto())) {
+            if (buttonHomeBet != null)    buttonHomeBet.setVisibility(View.GONE);
+            if (buttonHomeBolao != null)  buttonHomeBolao.setVisibility(View.GONE);
+            return; // card atual está com resultados abertos -> não exibir botões
+        }
+        // >>> FIM guarda <<<
+
+        // A partir daqui, card atual está "fechado": garanta visibilidade do "Aposte"
+        if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
 
         if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
