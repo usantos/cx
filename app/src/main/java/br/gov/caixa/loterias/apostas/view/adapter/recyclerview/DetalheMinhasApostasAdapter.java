@@ -311,12 +311,14 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
         switch (item.getModalidade()) {
             case TIMEMANIA:
-                item.getSeuTimeMes().equalsIgnoreCase(item.getSeuTimeMes());
-                acertos += " + Time do coração";
+                if (item.getSeuTimeMes().equalsIgnoreCase(item.getTimeMesSorteado())) {
+                    acertos += " + Time do coração";
+                }
                 break;
             case DIA_DE_SORTE:
-                item.getSeuTimeMes().equalsIgnoreCase(item.getSeuTimeMes());
-                acertos += " + Mes da Sorte";
+                if (item.getSeuTimeMes().equalsIgnoreCase(item.getTimeMesSorteado())) {
+                    acertos += " + Mes da Sorte";
+                }
                 break;
             case MAIS_MILIONARIA:
                 int trevosAcertados = 0;
