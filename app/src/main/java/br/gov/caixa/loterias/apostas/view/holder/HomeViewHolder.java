@@ -463,8 +463,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 				ViewUtils.setDisplayMetric(280, context)
 		);
 		modalidade.setResultadosAberto(true);
-		//animacoesResultados.AnimacaoDescerContent(1300);
-		animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(315, context));
+		//animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(315, context));
+		animacoesResultados.AnimacaoDescerContent(1300);
 
 		//Ocultar botões da tela principal enquanto resultados estão abertos
 		if (parentActivity instanceof PrincipalActivity) {
