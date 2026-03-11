@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.android.volley.VolleyError;
 import com.github.pinball83.maskededittext.MaskedEditText;
@@ -71,7 +74,22 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_dados_pessoais );
         setaViews();
+        View footer = findViewById(R.id.footerDadosPessoais);
+        View scroll = findViewById(R.id.containerScrollViewDadosPessoais);
+        ViewCompat.setOnApplyWindowInsetsListener(scroll, (v, insets) -> {
+            Insets ime = insets.getInsets(WindowInsetsCompat.Type.ime());
+            Insets sys = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            int imeOnly = ime.bottom - sys.bottom;
+            int needed = Math.max(0, imeOnly - footer.getHeight());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), needed);
+            return WindowInsetsCompat.CONSUMED;
+        });
         setaMetodos();
+    }
+
+    @Override
+    protected boolean baseConsumeInsets() {
+        return false;
     }
 
     @Override
