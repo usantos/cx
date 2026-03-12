@@ -490,8 +490,8 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		int yBottomTop = locTop[1] + topResultados.getHeight();
 
 		//Folga - Titulo 71dp ou direto a altura
-		//int margemInferiorPx = ViewUtils.setDisplayMetric(71, topResultados.getContext());
-		int margemInferiorPx = titulo.getHeight();
+		//int margemInferiorPx = titulo.getHeight(); //Não funciona nas Especiais
+		int margemInferiorPx = ViewUtils.setDisplayMetric(71, topResultados.getContext());
 
 		// Deslocamento
 		int deslocamento = bottomCardUtil - yBottomTop - margemInferiorPx;
