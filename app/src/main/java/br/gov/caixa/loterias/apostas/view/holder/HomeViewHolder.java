@@ -464,12 +464,38 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		);
 		modalidade.setResultadosAberto(true);
 		//animacoesResultados.AnimacaoDescerContent(ViewUtils.getRealScreenSize(context).y - ViewUtils.setDisplayMetric(315, context));
-		animacoesResultados.AnimacaoDescerContent(1300);
+		//animacoesResultados.AnimacaoDescerContent(1300);
+
+		int deslocamento = calculaDeslocamentoPelaJanelaEMargem(linearLayoutTopResultados);
+		animacoesResultados.AnimacaoDescerContent(deslocamento);
+
 
 		//Ocultar botões da tela principal enquanto resultados estão abertos
 		if (parentActivity instanceof PrincipalActivity) {
 			((PrincipalActivity) parentActivity).ocultarBotoesHomeParaResultados();
 		}
+	}
+	private int calculaDeslocamentoPelaJanelaEMargem(View topResultados) {
+		// Bottom visível da janela (sem status/nav bar/teclado)
+		android.graphics.Rect janela = new android.graphics.Rect();
+		topResultados.getWindowVisibleDisplayFrame(janela);
+
+		// Bottom útil do card = janela.bottom - 116dp (margem do carrossel no XML)
+		int margemCarouselPx = ViewUtils.setDisplayMetric(116, topResultados.getContext());
+		int bottomCardUtil = janela.bottom - margemCarouselPx;
+
+		// Bottom do topo na tela
+		int[] locTop = new int[2];
+		topResultados.getLocationOnScreen(locTop);
+		int yBottomTop = locTop[1] + topResultados.getHeight();
+
+		//Folga - Titulo 71dp ou direto a altura
+		//int margemInferiorPx = ViewUtils.setDisplayMetric(71, topResultados.getContext());
+		int margemInferiorPx = titulo.getHeight();
+
+		// Deslocamento
+		int deslocamento = bottomCardUtil - yBottomTop - margemInferiorPx;
+		return Math.max(0, deslocamento);
 	}
 
 	private void animacaoFecharResultados(Context context,
