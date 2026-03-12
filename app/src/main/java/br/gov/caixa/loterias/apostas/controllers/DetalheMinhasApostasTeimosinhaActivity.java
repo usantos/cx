@@ -432,7 +432,8 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         return aposta.getSituacao().getValor() == SituacaoAposta.PREMIADA;
     }
     private boolean isConcursoNaoApurado(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        return aposta.getSituacao().getValor() == SituacaoAposta.CONCURSO_NAO_APURADO;
+        return aposta.getSituacao().getValor() == SituacaoAposta.CONCURSO_NAO_APURADO ||
+               aposta.getSituacao().getValor() == SituacaoAposta.EFETIVADA;
     }
     private boolean isApostaNaoPremiadaOuConcursoFuturo(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         return aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA ||
