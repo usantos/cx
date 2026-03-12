@@ -96,7 +96,11 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         setupToolbar();
         desativaComponentes();
 
-        servicoResultadoModalidadeConcursos();
+        if (isConcursoNaoApurado(aposta)) {
+            populaTela();
+        } else{
+            servicoResultadoModalidadeConcursos();
+        }
     }
 
 
