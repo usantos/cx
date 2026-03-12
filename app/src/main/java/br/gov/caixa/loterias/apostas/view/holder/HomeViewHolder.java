@@ -287,6 +287,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 		this.buttonActionResultadosModalidade.setOnClickListener(this);
 		this.imgSetaResultado.setOnClickListener(this);
+		this.relativeLayoutTopResultados.setOnClickListener(this);
 
 		if (modalidade.getResultadosAberto()) {
 			ViewGroup.LayoutParams layoutParams = this.linearLayoutResultadosApostas.getLayoutParams();
@@ -542,6 +543,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 									 this.setaDireitaAcaoRelativeLayout,
 									 false, this);
 				break;
+			case R.id.relativeLayoutTopResultados:
 			case R.id.imgSetaResultado:
 			case R.id.buttonActionResultadosModalidade:
 				if (this.linearLayoutResultadosApostas.getHeight() == 0) {
