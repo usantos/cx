@@ -102,7 +102,7 @@
                         android:text="01/01/2026"
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@id/dataAposta"
                         app:layout_constraintTop_toBottomOf="@id/dataAposta" />
 
@@ -114,7 +114,7 @@
                         android:text="11h20"
                         android:textColor="@color/black"
                         android:textSize="18sp"
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@id/dataAposta"
                         app:layout_constraintTop_toBottomOf="@id/dataApostaTxt" />
 
@@ -137,9 +137,23 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginStart="20dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintTop_toTopOf="@+id/dataAposta"
                         app:layout_constraintStart_toEndOf="@id/divider" />
+
+                    <TextView
+                        android:id="@+id/tvStatusCentralizado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/caixa_std_regular"
+                        android:text="@string/label_concurso_nao_apurado"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:layout_marginStart="20dp"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="@id/divider"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <TextView
                         android:id="@+id/tv_val_premio_tit"
@@ -150,7 +164,7 @@
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:layout_marginStart="20dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@id/divider"
                         app:layout_constraintTop_toTopOf="@+id/dataApostaTxt" />
 
@@ -163,7 +177,7 @@
                         android:text="@string/r_0_00"
                         android:textSize="16sp"
                         android:layout_marginStart="20dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintStart_toStartOf="@id/divider"
                         app:layout_constraintTop_toTopOf="@+id/horaApostaTxt" />
 

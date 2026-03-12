@@ -70,7 +70,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     private View divider;
 
     private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, horaApostaTxt;
-    private TextView statusApostaTxt, tv_val_premio, tv_val_premio_tit;
+    private TextView statusApostaTxt, tv_val_premio, tv_val_premio_tit, tvStatusCentralizado;
     private TextView ResgatarPremioTxt, ResgatarPremioTxt2;
 
     private TextView validadePremioText, validadePremioLabel, gerarConprovanteTxt;
@@ -189,6 +189,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
         statusApostaTxt = findViewById(R.id.statusApostaTextView);
         tv_val_premio_tit = findViewById(R.id.tv_val_premio_tit);
+        tvStatusCentralizado = findViewById(R.id.tvStatusCentralizado);
         tv_val_premio = findViewById(R.id.tv_val_premio);
 
         tipoApostaLinhaView = findViewById(R.id.tipo_aposta_linha);
@@ -299,6 +300,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
         statusApostaTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tv_val_premio_tit.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        tvStatusCentralizado.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tv_val_premio.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
         if (aposta.getModalidade().equals(ModalidadeEnum.SUPER_7)) {
@@ -351,9 +353,9 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             }
         }
 
-        dataApostaTxt.setVisibility(View.VISIBLE);
+        //dataApostaTxt.setVisibility(View.VISIBLE);
         dataApostaTxt.setText(aposta.getDataEfetivacao());
-        horaApostaTxt.setVisibility(View.VISIBLE);
+        //horaApostaTxt.setVisibility(View.VISIBLE);
         horaApostaTxt.setText(StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao()));
 
         if (isApostaPremiada(aposta) && detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null){
@@ -375,16 +377,16 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             validadePremioLabel.setVisibility(View.GONE);
             validadePremioImg.setVisibility(View.GONE);
             if (isConcursoNaoApurado(aposta)) {
-                tv_val_premio_tit.setVisibility(TextView.VISIBLE);
-                tv_val_premio_tit.setText(R.string.label_concurso_nao_apurado);
+                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
+                tvStatusCentralizado.setText(R.string.label_concurso_nao_apurado);
             }
             if (isApostaNaoPremiadaOuConcursoFuturo(aposta)) {
-                tv_val_premio_tit.setVisibility(TextView.VISIBLE);
-                tv_val_premio_tit.setText(R.string.label_aposta_nao_premiada);
+                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
+                tvStatusCentralizado.setText(R.string.label_aposta_nao_premiada);
             }
             if (isApostaPremioPago(aposta)) {
-                tv_val_premio_tit.setVisibility(TextView.VISIBLE);
-                tv_val_premio_tit.setText(R.string.label_aposta_premio_pago);
+                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
+                tvStatusCentralizado.setText(R.string.label_aposta_premio_pago);
             }
         }
     }
@@ -590,8 +592,13 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             }
         } else {
             //Concurso nao apurado
-            items.add(new ItemMinhasApostasDTO(aposta.getModalidade(),
-                    StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
+            if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
+                items.add(new ItemMinhasApostasDTO(aposta.getModalidade(),
+                        StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados())));
+            } else {
+                items.add(new ItemMinhasApostasDTO(aposta.getModalidade(),
+                        StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
+            }
         }
 
 

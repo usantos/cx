@@ -66,7 +66,9 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             holder.rvMeusNumeros.setVisibility(View.VISIBLE);
             holder.tvLabelMeusNumeros.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
-            setupGridNumeros(holder.rvMeusNumeros, Shape.CIRCULO, 6,  item.getSeusNumeros(), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorEscura()));
+            int colunas = (item.getModalidade() == ModalidadeEnum.SUPER_7) ? 7 : 6;
+
+            setupGridNumeros(holder.rvMeusNumeros, Shape.CIRCULO, colunas,  item.getSeusNumeros(), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorEscura()));
             return;
         }
 
@@ -331,7 +333,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                     }
                 }
                 if (trevosAcertados > 0) {
-                    acertos += trevosAcertados + " trevo" + (trevosAcertados>1 ? "s" : "");
+                    acertos += " + " + trevosAcertados + " trevo" + (trevosAcertados>1 ? "s" : "");
                 }
                 break;
             case DUPLA_SENA:
