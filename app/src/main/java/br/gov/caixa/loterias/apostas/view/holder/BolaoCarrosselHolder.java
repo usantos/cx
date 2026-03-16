@@ -150,7 +150,9 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			headerEspeciais.setVisibility(View.VISIBLE);
 			trapezio.setVisibility(View.INVISIBLE);
 			icTrevoBolao.setVisibility(View.INVISIBLE);
-			this.headerEspeciais.setBackground(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
+			if (estilo.getImagemEspecialCarrossel() > 0){
+				this.headerEspeciais.setBackground(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
+			}
 			if (bolao.getModalidade() == ModalidadeEnum.LOTOFACIL){
 				modalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(bolao.getModalidade()).toLowerCase());
 			} else {
@@ -160,7 +162,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 				else {
 					modalidade.setText(ModalidadeEnum.getDescricaoEspecial(bolao.getModalidade()).toLowerCase());
 				}
-				}
+			}
 		} else {
 			modalidade.setText(ModalidadeEnum.fromString(bolao.getModalidade()).toLowerCase());
 			headerEspeciais.setVisibility(View.GONE);

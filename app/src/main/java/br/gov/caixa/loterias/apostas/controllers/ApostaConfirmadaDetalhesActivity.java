@@ -730,7 +730,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
             else {
                 toolbar.setBackgroundResource(R.drawable.rodape_mega_sena);
             }
-        } else if (isEspecial(aposta.getTipoConcurso().getValor())) {
+        } else if (isEspecial(aposta.getTipoConcurso().getValor()) && estiloMKP.getImagemEspecialDetalhes() > 0) {
             toolbar.setBackgroundResource(estiloMKP.getImagemEspecialDetalhes());
         } else {
             toolbar.setBackgroundColor(ContextCompat.getColor(this, getCorClara()));
