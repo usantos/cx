@@ -303,7 +303,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         tvStatusCentralizado.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tv_val_premio.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
-        if (aposta.getModalidade().equals(ModalidadeEnum.SUPER_7)) {
+        if (aposta.getModalidade().equals(ModalidadeEnum.SUPER_7) || aposta.getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE)) {
             clResgatePremio.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorLetraLista())));
             ivResgatePremio.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
             ResgatarPremioTxt.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
