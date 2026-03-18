@@ -2,6 +2,7 @@ package br.gov.caixa.loterias.apostas.view.custom;
 
 import android.content.Context;
 
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,10 +14,15 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.Modalidade;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Shape;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosGridAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.NumerosResultadosAdapter;
 
 
@@ -76,21 +82,31 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
             }else{
                 this.textTimeCoracao.setText(R.string.label_tres_interrogacoes);
             }
+
+            tracoViewDivisoriaResultado.setBackground(getContext().getDrawable(estilo.getCorFonteFundoEscuro()));
+
         } else {
             this.textTimeCoracao.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
             this.textTimeCoracao.setText(modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getNome() + "/" +
                     modalidade.getResultadoConcursoDTO().getPremiacaoTimeDoCoracao().getEquipe().getUf());
+
+            tracoViewDivisoriaResultado.setBackground(getContext().getDrawable(estilo.getCorFonteFundoClaro()));
         }
-        this.tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
+        //this.tracoViewDivisoriaResultado.setBackground(getContext().getResources().getDrawable(estilo.getCorClara()));
+
         NumerosResultadosAdapter numerosResultadosAdapter;
         int numberOfColumns = 3;
         if (modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio().size() > 6) {
             numberOfColumns = 4;
         }
-        this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
-        this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
-
+        //this.recyclerNumerosResultado.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
+        //numerosResultadosAdapter = new NumerosResultadosAdapter(getContext(), modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio(), modalidade.getTipoModalidade());
+        //this.recyclerNumerosResultado.setAdapter(numerosResultadosAdapter);
+        if (modalidade.getTipoModalidade() == ModalidadeEnum.DIA_DE_SORTE) {
+            setupGridNumeros(recyclerNumerosResultado, Shape.NO_SHAPE, numberOfColumns, StringUtils.formatToStringList(modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio()), getContext().getColor(estilo.getCorFonteFundoEscuro()), Color.TRANSPARENT, Color.TRANSPARENT);
+        } else {
+            setupGridNumeros(recyclerNumerosResultado, Shape.NO_SHAPE, numberOfColumns, StringUtils.formatToStringList(modalidade.getResultadoConcursoDTO().getListaSorteadosPrimeiroSorteio()), getContext().getColor(estilo.getCorFonteFundoClaro()), Color.TRANSPARENT, Color.TRANSPARENT);
+        }
 
         this.partidaViewDetalhesResultadoView.setLayout(modalidade);
     }
@@ -105,6 +121,12 @@ public class ModalideSorteioItemTimeManiaResultadoView extends LinearLayout {
 
     public ModalideSorteioItemTimeManiaResultadoView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+    private void setupGridNumeros(RecyclerView recyclerView, Shape shape, int columns, List<String> numbers, int textColor, int borderColor, int backgroudColor) {
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), columns));
+        recyclerView.setNestedScrollingEnabled(false);
+        NumerosGridAdapter adapter = new NumerosGridAdapter(shape, numbers, textColor, borderColor, backgroudColor);
+        recyclerView.setAdapter(adapter);
     }
 
 }
