@@ -20,6 +20,7 @@
     <ScrollView
         android:id="@+id/scroll_filtra_market"
         android:layout_width="match_parent"
+        android:fillViewport="true"
         android:layout_height="0dp"
         android:orientation="vertical"
         android:clipToPadding="false"
@@ -69,6 +70,7 @@
                 android:id="@+id/lista_modalidades"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -131,6 +133,7 @@
                 android:id="@+id/recyclerViewLoterica"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
+                android:nestedScrollingEnabled="false"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
@@ -387,6 +390,7 @@
                 android:id="@+id/quant_dezenas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
                 android:layout_marginEnd="15dp"
                 android:layout_marginStart="12dp"
                 android:fontFamily="@font/caixa_std_regular"
@@ -449,6 +453,7 @@
                     android:id="@+id/rcv_quero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     android:layout_marginTop="10dp"/>
                 <Button
                     android:id="@+id/btn_excluir_num_quero"
@@ -519,6 +524,7 @@
                     android:id="@+id/rcv_nao_quero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     android:layout_marginTop="10dp"/>
                 <Button
                     android:id="@+id/btn_excluir_num_nao_quero"

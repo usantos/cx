@@ -5,11 +5,13 @@
     android:background="@color/branco">
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
         <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
             android:id="@+id/recyclerViewDetalhesDuvida"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
             android:clickable="false"/>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>
