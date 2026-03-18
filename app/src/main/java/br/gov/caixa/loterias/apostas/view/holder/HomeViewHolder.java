@@ -225,7 +225,12 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo))) {
 			this.titulo.setVisibility(View.GONE);
 			this.clEspeciais.setVisibility(View.VISIBLE);
-			this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
+			if (estilo.getImagemEspecialCarrossel() > 0){
+				this.ivEspeciais.setImageDrawable(itemView.getContext().getDrawable(estilo.getImagemEspecialCarrossel()));
+			} else {
+				this.titulo.setVisibility(View.VISIBLE);
+				this.clEspeciais.setVisibility(View.GONE);
+			}
 		} else {
 			this.titulo.setVisibility(View.VISIBLE);
 			this.clEspeciais.setVisibility(View.GONE);

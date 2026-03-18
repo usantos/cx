@@ -129,7 +129,7 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 			background.setBackground(ContextCompat.getDrawable(getContext(), estilo.getImagemEspecialSimples()));
 		}
 
-		if (isEspecial && showBackground || isMega30) {
+		if ((isEspecial && showBackground || isMega30) && estilo.getImagemEspecialDetalhes() > 0) {
 			background.setBackground(AppCompatResources.getDrawable(getContext(), estilo.getImagemEspecialDetalhes()));
 		}
 
