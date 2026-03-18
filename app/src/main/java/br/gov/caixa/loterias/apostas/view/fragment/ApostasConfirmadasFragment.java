@@ -36,6 +36,7 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivity;
+import br.gov.caixa.loterias.apostas.controllers.DetalheMinhasApostasTeimosinhaActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
 import br.gov.caixa.loterias.apostas.model.bean.BotoesFiltroApostas;
@@ -60,6 +61,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PeriodoConsultaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOHistoricoApostaDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -605,9 +607,15 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         //SERVICO /apostas/{id}/comprovante-premio Informacao COMBO está errada
                         result.getPayload().getAposta().setCombo(apostaDTO.getCombo());
 
-                        Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
-                                ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
-                        startActivity(intent);
+                        if (result.getPayload().getAposta().getQuantidadeTeimosinhas() >0) {
+                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasTeimosinhaActivity.class,
+                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+                            startActivity(intent);
+                        } else {
+                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+                                    ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
@@ -623,6 +631,13 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         ComprovanteApostaDTO comprovante = result.getPayload();
                         if (ConfiguracaoAppSingleton.getInstance().isMicroServico()){
                             comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                        }
+
+                        //Utilizada na Teimosinha, apostaDTO-Situacao.PREMIADA e comprovante-Situacao-EFETIVADA
+                        if (comprovante.getAposta().getQuantidadeTeimosinhas() >0) {
+                            if (apostaDTO.getSituacao().getValor() == SituacaoAposta.PREMIADA && comprovante.getAposta().getSituacao().getValor() == SituacaoAposta.EFETIVADA) {
+                                comprovante.getAposta().setSituacao(apostaDTO.getSituacao());
+                            }
                         }
 
                         //SERVICO /apostas/:idAposta/comprovante  Informacao COMBO está errada
@@ -641,9 +656,15 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private void startDetalheComprovante(ComprovanteApostaDTO comprovante) {
-        Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
-                ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
-        startActivity(intent);
+        if (comprovante.getAposta().getQuantidadeTeimosinhas() >0) {
+            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasTeimosinhaActivity.class,
+                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+            startActivity(intent);
+        } else {
+            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), ApostaConfirmadaDetalhesActivity.class,
+                    ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
+            startActivity(intent);
+        }
     }
 
     private void handleOnItemClickHistorico(ApostaDTO apostaDTO) {

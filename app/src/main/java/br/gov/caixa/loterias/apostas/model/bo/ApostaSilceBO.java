@@ -10,6 +10,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
 import java.nio.charset.StandardCharsets;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,7 +50,6 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IncluirSurpresinhaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListApostaCarrinhoFavoritoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ListCarrinhoFavoritoResponse;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericasFavoritasResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.MesAnoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeDTOResponse;
@@ -57,6 +58,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RapidaoDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResourceResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConsultaBilheteDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoPesquisaPaginadaDTOApostaFavoritaDTOResponse;
@@ -901,6 +903,33 @@ public class ApostaSilceBO extends SilceBO implements ApostaRepository {
         final GsonRequest request = getServiceConnection().buildGetRequest(url,
                 queryParams,
                 ResultadoConcursoDTOResponse.class,
+                listener.getSilceListener(),
+                listener.getErrorListener(),
+                getHeaderToken());
+
+        request.setErrorListener(interceptError(request, getHeaderToken(), listener));
+        getServiceConnection().request(request, listener);
+    }
+
+    public void getResultadoModalidadeConcurso(final String descricaoModalidade, final Integer concursoInicial, final Integer concursoFinal, final RequestListener<ResultadoConcursosDTOResponse> listener) {
+//        //Map não aceita parametros repetidos
+//        LinkedHashMap<String, String> queryParams = new LinkedHashMap<>();
+//        String queryString = "modalidade=" + descricaoModalidade;
+//        for (int i = concursoInicial; i <= concursoFinal; i++) {
+//            queryString += "&concursos=" + i;
+//        }
+//        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO+"?"+queryString;
+
+        List<Map.Entry<String, String>> queryParams = new ArrayList<>();
+        queryParams.add(new AbstractMap.SimpleEntry<>("modalidade", descricaoModalidade));
+        for (int i = concursoInicial; i <= concursoFinal; i++) {
+            queryParams.add(new AbstractMap.SimpleEntry<>("concursos", String.valueOf(i)));
+        }
+        String url = ServerMethods.RESULTADOS_MODALIDADE_CONCURSO;
+
+        final GsonRequest request = getServiceConnection().buildGetRequest(url,
+                queryParams,
+                ResultadoConcursosDTOResponse.class,
                 listener.getSilceListener(),
                 listener.getErrorListener(),
                 getHeaderToken());

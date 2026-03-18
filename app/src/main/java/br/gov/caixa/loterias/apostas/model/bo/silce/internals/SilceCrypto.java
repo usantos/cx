@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.model.bo.silce.internals;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SilceCrypto {
@@ -27,7 +28,13 @@ public class SilceCrypto {
             throw new RuntimeException("Falha ao tentar descriptografar os parâmetros", e);
         }
     }
-
+    public Bin encryptParams(List<Map.Entry<String, String>> params) {
+        try {
+            return crypto.encrypt(Bin.fromUtf8(concatenateParams(params)));
+        } catch (Exception e) {
+            throw new RuntimeException("Falha ao tentar descriptografar os parâmetros", e);
+        }
+    }
     public String decryptBody(String encryptedBody) {
         try {
             return crypto.decrypt(Bin.fromBase64(encryptedBody)).toUtf8();
@@ -63,6 +70,26 @@ public class SilceCrypto {
         }
 
         return singleParam.toString();
+    }
+
+    private String concatenateParams(List<Map.Entry<String, String>> params) {
+        StringBuilder sb = new StringBuilder();
+        boolean first = true;
+
+        for (Map.Entry<String, String> entry : params) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            if (value != null) {
+                if (!first) {
+                    sb.append("&&");
+                }
+                sb.append(key).append("==").append(value);
+                first = false;
+            }
+        }
+
+        return sb.toString();
     }
 
     public static SilceCrypto create() {
