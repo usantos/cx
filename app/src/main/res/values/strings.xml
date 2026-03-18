@@ -90,6 +90,11 @@
     <string name="confirmacaopagamentoParabens">Seu pedido foi realizado com sucesso!</string>
     <string name="confirmacaopagamentoParabensPix">Sua compra está em processamento.</string>
     <string name="compra_sendo_processada">Sua compra está sendo processada</string>
+    <string name="confirmacaoPagamentoProcessamento">Estamos processando sua compra.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo1">Para participar dos sorteios, a aposta precisa estar _EFETIVADA_.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo2">O pagamento realizado _não garante_ automaticamente a efetivação da aposta.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo3">Se a aposta não for registrada, o valor será devolvido.</string>
+    <string name="confirmacaoPagamentoProcessamentoInfo4">Você pode acompanhar tudo em _Minhas Compras_.</string>
     <string name="minhasApostas">Minhas apostas</string>
     <string name="btn_title_voltarAoInicio">_Voltar_\nao início</string>
     <string name="confirmacaoPagamentoBotaoVoltarInicio">_Voltar_\nao início</string>
@@ -288,6 +293,7 @@
     <string name="label_carrinho_apostas">Carrinho\nde apostas</string>
     <string name="label_salve_aposta">Salve esta aposta :)</string>
     <string name="concurso">Concurso</string>
+    <string name="concursos">Concursos</string>
     <string name="data_da_aposta">Data da aposta:</string>
     <string name="seus_numeros">Seus números</string>
     <string name="sua_aposta">Sua aposta</string>
@@ -337,6 +343,7 @@
     <string name="label_sua_aposta">Sua aposta</string>
     <string name="label_concurso_abreviado_espaco">Conc.&#160;</string>
     <string name="label_data_aposta">Data da aposta:</string>
+    <string name="label_dt_aposta">Data aposta:</string>
     <string name="label_conferir_resultado">Conferir resultado</string>
     <string name="label_nao_apurado">Não apurado</string>
     <string name="label_concurso_prescrito">Concurso prescrito</string>
@@ -674,10 +681,11 @@
     <string name="placeholder_two">Two</string>
     <string name="placeholder_three">three</string>
     <string name="atualizar">Atualizar</string>
-    <string name="seekbar_titulo">Limite Diário de Apostas</string>
-    <string name="seekbar_val_min">R$ 30,00</string>
-    <string name="seekbar_val_max">R$ 945,00</string>
-    <string name="dados_limite_compra">Solicitar limite \n acima de \n</string>
+    <string name="limite_titulo">Limite Diário de Apostas</string>
+    <string name="restringe_limite_ao_minimo">O valor mínimo é %1$s</string>
+    <string name="restringe_limite_ao_maximo">O valor máximo é %1$s</string>
+    <string name="limite_maximo_e_minimo">R$ 2,00 até R$ 9.300,00</string>
+    <string name="dados_limite_compra">Solicitar limite\nacima de\n%1$s</string>
     <string name="precisamos_que_voc_informe_numa_lot_rica_de_sua_prefer_ncia">Precisamos que você informe uma lotérica de sua preferência.</string>
     <string name="cidade">Cidade</string>
     <string name="bairro">Bairro</string>
@@ -1088,8 +1096,8 @@
     <string name="textoInfoSelecioneFormaPagamento">textoInfoSelecioneFormaPagamento</string>
     <string name="como_jogar">Como jogar</string>
     <string name="no_whatsapp">Não existe whatsapp instalado neste celular.</string>
-    <string name="cef_id_tit">Caixa Econômica Federal</string>
-    <string name="cef_id1">CNPJ 00.360.305/0001-04\nSBS QUADRA 4 LT 3/4 - ASA SUL\nCEP 70.070-140 BRASILIA - DF</string>
+    <string name="cef_id_tit">CAIXA Loterias</string>
+    <string name="cef_id1">CNPJ 24.038.490.0001-83\nED. José Alencar - SEPN 512, Conjunto C, Lote 12, Asa Norte, Brasília - DF\nCEP 70760-500 BRASÍLIA - DF</string>
 
     <!-- Tutorial SuperSete -->
     <string name="bem_vindo_super_sete">Bem vindo ao  \n_Super Sete_</string>
@@ -1493,6 +1501,7 @@
     <string name="todas_modalidades">Todas as\nmodalidades</string>
     <string name="todas">Todas</string>
     <string name="gerar_comprovante">Gerar Comprovante</string>
+    <string name="gr_comprovante">Gerar comprovante</string>
     <string name="cota_zerou">Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão</string>
     <string name="usuario_bloqueio_parcial">Usuário habilitado apenas para consultas.</string>
     <string name="label_loterica_filtro">Lotéricas</string>
@@ -1595,8 +1604,32 @@
     <string name="favoritar_loterica">Favoritar Lotérica</string>
     <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
 
+    <string name="resultado_concurso">Resultado do Concurso</string>
+    <string name="label_situacao">Situação:</string>
+    <string name="label_time_sorteado">Time sorteado</string>
+    <string name="label_time_do_coracao">Time do coração:</string>
+    <string name="label_mes_sorteado_">Mês sorteado</string>
+    <string name="label_mes_de_sorte">Mês de sorte:</string>
+    <string name="label_trevos_sorteados">Trevos sorteados</string>
+    <string name="label_trevos">Trevos</string>
+    <string name="label_concurso_nao_apurado">Concurso\nnão apurado</string>
+    <string name="label_aposta_nao_premiada">Não premiada</string>
+    <string name="label_concurso_nao_premiado">Não premiado</string>
+    <string name="label_aposta_premio_pago">Prêmio pago</string>
+    <string name="label_acertos_dois_pontos">Acertos:</string>
+    <string name="label_acertos_nenhum">nenhum</string>
+    <string name="label_premio_dois_pontos">Prêmio:</string>
+    <string name="erro_minas_apostas_teimosinha">Não conseguimos processar sua solicitação.\nTente novamente!</string>
+
+    <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>
+    <string name="marcador_oval">Marcador oval (bullet) para item de lista</string>
+    <string name="botao_duvidas">Botão dúvidas</string>
+
     <!-- MEGA 30 ANOS   -->
     <string name="mega_sena_30_anos">mega-sena 30 anos</string>
     <string name="mega_sena_30_anos_duas_linhas">mega-sena\n30 anos</string>
+    <string name="caixa_loterias">Você será direcionado para o site da CAIXA Loterias e sairá do aplicativo. Deseja continuar?</string>
+    <string name="label_cancelar">Cancelar</string>
+    <string name="label_confirmar">Confirmar</string>
 
 </resources>

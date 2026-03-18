@@ -41,6 +41,7 @@ public class ExpandableListDataSideMenu {
         expandableListDetail.put(DrawerEnum.MENU_REPASSES_SOCIAIS, new ArrayList<>());
         expandableListDetail.put(DrawerEnum.MENU_TERMO_USO, new ArrayList<>());
         expandableListDetail.put(DrawerEnum.MENU_DUVIDAS, new ArrayList<>());
+        expandableListDetail.put(DrawerEnum.MENU_SOBRE_CAIXA, new ArrayList<>());
 
         return expandableListDetail;
     }

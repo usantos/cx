@@ -1,9 +1,16 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.android.volley.VolleyError;
 
@@ -29,17 +36,17 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
     private Long origem;
     private Long fluxo;
     private Long idAposta;
-    private TextView titulo;
+    private TextView titulo, info1, info2,info3,info4;
     private TextView infoApostas;
-    private Button btnVoltarInicio;
-    private Button btnAcompanheCompras;
-
+    private Button btnVoltarInicio, btnVoltarInicioConfirmacao;
+    private ImageButton btnTermoConfirmacao;
+    private Button btnAcompanheCompras, btnAcompanheComprasConfirmacao;
+    private ConstraintLayout layoutResgatePix, layoutConfirmacaoPagamento, rootLayout;
     protected DetalhesPremioDTO detalhesPremioDTO;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ViewUtils.configuraStatusBarGradientLayout(this, getWindow());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmacao_pagamento);
@@ -49,33 +56,55 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
 
         getExtras();
         configLayout();
-        configuraBotoes();
         RateUtils.avaliarAplicativo(this,RateUtils.getQtdCompras());
     }
 
     private void configViews() {
+
+        rootLayout = findViewById(R.id.confirmacaoPagamentoMainLayout);
+
+        //Layout resgate por PIX (não alterado, mantém comportamento anterior)
         titulo = findViewById(R.id.textTitulo);
         infoApostas = findViewById(R.id.textInfoApostas);
         btnVoltarInicio = findViewById(R.id.botaoVoltarInicio);
         btnAcompanheCompras = findViewById(R.id.botaoAcompanheSuasCompras);
+        layoutResgatePix = findViewById(R.id.layout_ResgatePix);
+
+        //Layout confirmacao pagamento
+        layoutConfirmacaoPagamento = findViewById(R.id.layout_confirmacao_pagamento);
+        btnTermoConfirmacao = findViewById(R.id.botao_termo_confirmacao);
+        btnVoltarInicioConfirmacao = findViewById(R.id.btn_voltar_inicio_confirmacao);
+        btnAcompanheComprasConfirmacao = findViewById(R.id.btn_acompanhe_compras_confirmacao);
+        info1 = findViewById(R.id.textInfo1_confirmacao);
+        info2 = findViewById(R.id.textInfo2_confirmacao);
+        info3 = findViewById(R.id.textInfo3_confirmacao);
+        info4 = findViewById(R.id.textInfo4_confirmacao);
     }
 
     private void configLayout() {
-        if (origem != null && origem.equals(MeioPagamentoUtils.PIX)) {
-            if (fluxo != null && fluxo.equals(PixUtils.FLUXO_RESGATE)){
-                titulo.setText(R.string.resgate_pix_concluido);
-                infoApostas.setText(R.string.premio_pix_ja_creditado);
-                btnVoltarInicio.setBackgroundColor(getResources().getColor(R.color.branco));
-                btnVoltarInicio.setTextColor(getResources().getColor(R.color.verde_acompanha_compras));
-                btnAcompanheCompras.setBackgroundColor(getResources().getColor(R.color.verde_acompanha_compras));
-            } else {
-                titulo.setText(R.string.confirmacaopagamentoParabensPix);
-                infoApostas.setText(R.string.confirmacaoPagamentoInfoApostasPIX);
-                btnVoltarInicio.setBackgroundColor(getResources().getColor(R.color.branco));
-                btnVoltarInicio.setTextColor(getResources().getColor(R.color.verde_acompanha_compras));
-                btnAcompanheCompras.setBackgroundColor(getResources().getColor(R.color.verde_acompanha_compras));
-            }
-         }
+        if (isPixResgate()){
+            layoutResgatePix.setVisibility(VISIBLE);
+            layoutConfirmacaoPagamento.setVisibility(GONE);
+            titulo.setText(R.string.resgate_pix_concluido);
+            infoApostas.setText(R.string.premio_pix_ja_creditado);
+            btnVoltarInicio.setBackgroundColor(getResources().getColor(R.color.branco));
+            btnVoltarInicio.setTextColor(getResources().getColor(R.color.verde_acompanha_compras));
+            btnAcompanheCompras.setBackgroundColor(getResources().getColor(R.color.verde_acompanha_compras));
+
+            ViewUtils.configuraStatusBarGradientLayout(this, getWindow());
+            rootLayout.setBackground(ContextCompat.getDrawable(this, R.drawable.navigation_gradient));
+            configuraBotoesResgatePix();
+
+        } else {
+            layoutResgatePix.setVisibility(GONE);
+            layoutConfirmacaoPagamento.setVisibility(VISIBLE);
+
+            info1.setText(ViewUtils.textCaixaSTDSemiBold(this, getString(R.string.confirmacaoPagamentoProcessamentoInfo1)));
+            info2.setText(ViewUtils.textCaixaSTDSemiBold(this, getString(R.string.confirmacaoPagamentoProcessamentoInfo2)));
+            info3.setText(ViewUtils.textCaixaSTDSemiBold(this, getString(R.string.confirmacaoPagamentoProcessamentoInfo3)));
+            info4.setText(ViewUtils.textCaixaSTDSemiBold(this, getString(R.string.confirmacaoPagamentoProcessamentoInfo4)));
+            configuraBotoesConfirmacaoPagamento();
+        }
     }
 
     private void getExtras() {
@@ -86,14 +115,27 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
         }
     }
 
-    private void configuraBotoes(){
+    private void configuraBotoesConfirmacaoPagamento(){
+
+        btnAcompanheComprasConfirmacao.setOnClickListener(view ->
+                startActivity(new Intent(ConfirmacaoPagamentoActivity.this, ListaComprasActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |  Intent.FLAG_ACTIVITY_SINGLE_TOP)));
+
+        btnVoltarInicioConfirmacao.setOnClickListener(view -> {
+            Intent intent = IntentUtil.getIntentOrigemDestino(ConfirmacaoPagamentoActivity.this, PrincipalActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+
+        btnTermoConfirmacao.setOnClickListener(v -> {
+            Intent activity = new Intent(this, TermosUsoActivity.class);
+            startActivity(activity);
+        });
+
+    }
+    private void configuraBotoesResgatePix(){
 
         btnVoltarInicio.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.confirmacaoPagamentoBotaoVoltarInicio)));
-        if (isPixResgate()){
-            btnAcompanheCompras.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.visualizar_comprovante)));
-        } else {
-            btnAcompanheCompras.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.label_acompanhe_suas_compras_pix)));
-        }
+        btnAcompanheCompras.setText(ViewUtils.textCaixaSTDBold(this, getString(R.string.visualizar_comprovante)));
 
         btnVoltarInicio.setOnClickListener(view -> {
             //PrincipalActivity_.intent(ConfirmacaoPagamentoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
@@ -102,19 +144,13 @@ public class ConfirmacaoPagamentoActivity extends SettingToolbarActivity {
             startActivity(intent);
         });
 
-        if (isPixResgate()){
-            btnAcompanheCompras.setOnClickListener(view -> {
-                if (detalhesPremioDTO != null){
-                    PdfUtils.createComprovantePremioPdf(detalhesPremioDTO, ConfirmacaoPagamentoActivity.this);
-                }  else {
-                    atualizaComprovante();
-                }
-            });
-        } else {
-            btnAcompanheCompras.setOnClickListener(view ->
-                                                           startActivity(new Intent(ConfirmacaoPagamentoActivity.this, ListaComprasActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |  Intent.FLAG_ACTIVITY_SINGLE_TOP)));
-
-        }
+        btnAcompanheCompras.setOnClickListener(view -> {
+            if (detalhesPremioDTO != null){
+                PdfUtils.createComprovantePremioPdf(detalhesPremioDTO, ConfirmacaoPagamentoActivity.this);
+            }  else {
+                atualizaComprovante();
+            }
+        });
 
         findViewById(R.id.botao_termo).setOnClickListener(v -> {
             Intent activity = new Intent(this, TermosUsoActivity.class);

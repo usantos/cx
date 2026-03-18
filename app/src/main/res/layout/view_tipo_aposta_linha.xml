@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:background="@color/transparente"
             android:clipToPadding="false"
-            android:padding="6dp" />
+            android:padding="6dp"
+            tools:itemCount="3" />
 
     </LinearLayout>
 

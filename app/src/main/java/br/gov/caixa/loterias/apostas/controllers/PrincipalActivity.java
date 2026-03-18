@@ -2,8 +2,10 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -454,6 +456,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
         BigDecimal valorMinimoCarrinho = SessaoUsuario.getInstance().getParametrosSimulacao().getValorMinimoCarrinho();
         textViewHomeMinimumPurchaseValue.setText(String.format(getResources().getString(R.string.valor_minimo_compra), ViewUtils.getMoedaFormat(valorMinimoCarrinho)));
 
+        //Não apager (utilizado pra testes)
         //EncerramentoUtil.mockApagaModalidadeNosParametroJogo(
         //                        ModalidadeEnum.MEGA_SENA, TipoConcursoEnum.ESPECIAL, 5621);
         EncerramentoUtil.verificaSeCriaCardTemporario();
@@ -781,11 +784,29 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
 
     @Override
     public void onCurrentItemChanged(@Nullable HomeViewHolder viewHolder, int adapterPosition) {
-        adapterPosition  = infiniteAdapter.getRealCurrentPosition();
+
         if (viewHolder != null) {
-            //TODO: MEGA 30 ANOS//
-            boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
-            if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
+            updateHomeButtonsForPosition(adapterPosition);
+        }
+    }
+
+    private void updateHomeButtonsForPosition(int adapterPosition) {
+        adapterPosition  = infiniteAdapter.getRealCurrentPosition();
+
+        if (data != null
+                && adapterPosition >= 0
+                && adapterPosition < data.size()
+                && Boolean.TRUE.equals(data.get(adapterPosition).getResultadosAberto())) {
+            if (buttonHomeBet != null)    buttonHomeBet.setVisibility(View.GONE);
+            if (buttonHomeBolao != null)  buttonHomeBolao.setVisibility(View.GONE);
+            return;
+        }
+
+        if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
+
+        //TODO: MEGA 30 ANOS//
+        boolean isMega30 = EspecialUtils.isMega30(data.get(adapterPosition).getConcurso().getNumero(), data.get(adapterPosition).getConcurso().getTipoConcurso());
+        if (data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.INSTANTANEA) ||
                 data.get(adapterPosition).getTipoModalidade().equals(ModalidadeEnum.COMBO)) {
                 //TODO: MEGA 30 ANOS//
                 EstiloModalidadeMKP estilo = new EstiloModalidadeMKP(data.get(adapterPosition).getTipoModalidade(), isMega30);
@@ -806,25 +827,40 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 buttonHomeBet.setTag(adapterPosition);
                 if (modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima() == null ||
                     modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima().compareTo(BigDecimal.ZERO) == 0) {
-                    buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
-                } else {
-                    buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
-                            getResources().getString(R.string.espaco_em_branco) +
-                            ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
-                }
+                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte)));
+            } else {
+                buttonHomeBet.setText(ViewUtils.textCaixaSTDBold(this, getResources().getString(R.string.aposte_por) +
+                        getResources().getString(R.string.espaco_em_branco) +
+                        ViewUtils.getMoedaFormat(modalidadesParaListar.get(adapterPosition).getParametroJogo().getConcurso().getValorApostaMinima())));
+            }
 
-                if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
-                        temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
+            if (ConfiguracaoAppSingleton.getInstance().isBolaoHabilitado() &&
+                    temBolaoModalidadeDisponivel(data.get(adapterPosition).getTipoModalidade())) {
 
-                    buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
-                                    .getString(R.string.apostas_boloes)));
-                    buttonHomeBolao.setVisibility(View.VISIBLE);
-                } else {
-                    buttonHomeBolao.setVisibility(View.GONE);
-                }
+                buttonHomeBolao.setText(ViewUtils.textCaixaSTDBold(this, getResources()
+                        .getString(R.string.apostas_boloes)));
+                buttonHomeBolao.setVisibility(View.VISIBLE);
+            } else {
+                buttonHomeBolao.setVisibility(View.GONE);
             }
         }
     }
+
+    public void ocultarBotoesHomeParaResultados() {
+        if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.GONE);
+        if (buttonHomeBolao != null) buttonHomeBolao.setVisibility(View.GONE);
+    }
+
+    public void exibirBotoesHomeAposResultados() {
+        if (infiniteAdapter != null) {
+            int adapterPosition = infiniteAdapter.getRealCurrentPosition();
+            updateHomeButtonsForPosition(adapterPosition); // reaplica regras de apresentação
+        }
+        // Garante que fiquem visíveis após recalcular (se as regras mandarem ocultar o bolão, ele seguirá GONE)
+        if (buttonHomeBet != null) buttonHomeBet.setVisibility(View.VISIBLE);
+        // buttonHomeBolao é controlado por updateHomeButtonsForPosition
+    }
+
 
     private boolean temBolaoModalidadeDisponivel(ModalidadeEnum modalidade) {
         List<ModalidadeDisponivelCota> listModalidadesDisponiveis = SessaoUsuario.getInstance().getParametrosSimulacao().getModalidadesDisponiveisCotas();
@@ -979,7 +1015,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     private void AbrirMenusGroup(DrawerEnum item) {
-        if (item != DrawerEnum.MENU_MINHA_AREA && item != DrawerEnum.MENU_JOGO_RESPONSAVEL) {
+        if (item != DrawerEnum.MENU_MINHA_AREA && item != DrawerEnum.MENU_JOGO_RESPONSAVEL && item != DrawerEnum.MENU_SOBRE_CAIXA) {
             drawerLayout.closeDrawer(GravityCompat.START, false);
         }
         switch (item) {
@@ -1007,6 +1043,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 break;
             case MENU_DUVIDAS:
                 startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
+                break;
+            case MENU_SOBRE_CAIXA:
+//                ViewUtils.abrirMenuCaixa(this);
+
                 break;
             default:
                 break;

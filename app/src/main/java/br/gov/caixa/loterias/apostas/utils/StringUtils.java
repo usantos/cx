@@ -2,7 +2,11 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class StringUtils {
 
@@ -95,4 +99,65 @@ public class StringUtils {
         String cotaText = (cota <= 1) ? "cota disponível" : "cotas disponíveis";
         return "_"+cota+"_ "+cotaText+" de _"+total+"_";
     }
+
+    public static String transformToHorahMinuto(String hh_mm_ss) {
+        return hh_mm_ss.substring(0,2) + "h" +
+               hh_mm_ss.substring(3,5);
+    }
+
+    public static List<String> formatToStringList(List<? extends Number> listtNumeros) {
+        List<String> listString = new ArrayList<>();
+        if (listtNumeros == null) {
+            return listString;
+        }
+        for (Number numero : listtNumeros) {
+            long longNumero = numero.longValue();
+            if (longNumero == 100) {
+                longNumero = 0L;
+            }
+            listString.add(String.format("%02d", longNumero));
+        }
+        return listString;
+    }
+
+    public static List<String> formatToStringList1Digito(List<? extends Number> listtNumeros) {
+        List<String> listString = new ArrayList<>();
+        if (listtNumeros == null) {
+            return listString;
+        }
+        for (Number numero : listtNumeros) {
+            long longNumero = numero.longValue();
+            listString.add(String.format("%1d", longNumero));
+        }
+        return listString;
+    }
+
+    public static List<String> formatToStringListFlexPrimeiro(List<?> input) {
+        List<String> out = new ArrayList<>();
+        if (input == null) return out;
+
+        for (Object item : input) {
+            if (item == null) continue;
+
+            if (item instanceof Number) {
+                Number n = (Number) item;
+                long v = Math.round(n.doubleValue()); // use n.longValue() para truncar
+                out.add(String.format("%01d", v));
+            } else if (item instanceof List<?>) {
+                List<?> inner = (List<?>) item;
+                if (inner.isEmpty()) continue;
+
+                Object first = inner.get(0);
+                if (first instanceof Number) {
+                    Number n0 = (Number) first;
+                    long v = Math.round(n0.doubleValue());
+                    out.add(String.format("%01d", v));
+                }
+                // Se "first" não for Number, ignora.
+            }
+            // Se não for Number nem List, ignora.
+        }
+        return out;
+    }
+
 }
