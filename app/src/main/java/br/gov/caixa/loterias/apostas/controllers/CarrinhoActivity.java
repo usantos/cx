@@ -334,38 +334,38 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     private void trataPermissao() {
-        int statusPermissao = LocalizacaoUtils.checaStatusPermissao(this);
+        LocalizacaoUtils.checaStatusPermissaoAsync(this, result -> {
+            if (result == LocalizacaoUtils.LOC_NAO_PERMITIDA ||
+                    result == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE ||
+                    result == LocalizacaoUtils.LOC_DESATIVADA) {
+                DialogUtils.showDialogDefault(this, 0,
+                        getResources().getString(R.string.label_atencao),
+                        getString(R.string.posso_consultar_sua_localizacao),
+                        getResources().getString(R.string.label_sim),
+                        getResources().getString(R.string.label_nao),
+                        new OnDialogListenerLeftRight() {
+                            @Override
+                            public void left() {
+                                if (result == LocalizacaoUtils.LOC_NAO_PERMITIDA ||
+                                        result == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE)
+                                    LocalizacaoUtils.intentConfigPermissao(CarrinhoActivity.this);
+                                if (result == LocalizacaoUtils.LOC_DESATIVADA)
+                                    LocalizacaoUtils.intentConfigGps(CarrinhoActivity.this);
+                            }
 
-        if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA ||
-            statusPermissao == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE ||
-            statusPermissao == LocalizacaoUtils.LOC_DESATIVADA) {
-            DialogUtils.showDialogDefault(this, 0,
-                                          getResources().getString(R.string.label_atencao),
-                                          getString(R.string.posso_consultar_sua_localizacao),
-                                          getResources().getString(R.string.label_sim),
-                                          getResources().getString(R.string.label_nao),
-                                          new OnDialogListenerLeftRight() {
-                                              @Override
-                                              public void left() {
-                                                  if (statusPermissao == LocalizacaoUtils.LOC_NAO_PERMITIDA ||
-                                                          statusPermissao == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE)
-                                                      LocalizacaoUtils.intentConfigPermissao(CarrinhoActivity.this);
-                                                  if (statusPermissao == LocalizacaoUtils.LOC_DESATIVADA)
-                                                      LocalizacaoUtils.intentConfigGps(CarrinhoActivity.this);
-                                              }
-
-                                              @Override
-                                              public void right() {
-                                                  showAlertLocalizacao();
-                                              }
-                                          });
-        } else {
-            if (statusPermissao == LocalizacaoUtils.LOC_NO_BRASIL) {
-                onFluxoLocalizacaoNoBrasil();
+                            @Override
+                            public void right() {
+                                showAlertLocalizacao();
+                            }
+                        });
             } else {
-                showAlertLocalizacao();
+                if (result == LocalizacaoUtils.LOC_NO_BRASIL) {
+                    onFluxoLocalizacaoNoBrasil();
+                } else {
+                    showAlertLocalizacao();
+                }
             }
-        }
+        });
     }
 
     @Override
