@@ -205,6 +205,31 @@ public class ViewUtils {
         return dialog;
     }
 
+    public static void abrirMenuCaixa(Context context) {
+        AlertDialog dialog = ViewUtils.dialogoNew(context,
+                context.getString(R.string.label_atencao), context.getString(R.string.caixa_loterias),
+                (dialogInterface, i) -> {openLink(context); dialogInterface.dismiss();},
+                (dialogInterface, i) -> dialogInterface.dismiss()
+                ,R.string.label_cancelar,R.string.label_confirmar);
+
+        dialog.show();
+
+        Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+        nbutton.setText(R.string.label_cancelar);
+        nbutton.setAllCaps(false);
+        nbutton.setTextColor(context.getResources().getColor(R.color.cinza));
+
+        Button pbutton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        pbutton.setAllCaps(false);
+    }
+
+    private static void openLink(Context context){
+        String url = "https://www.caixa.gov.br/sobre-a-caixa/governanca-corporativa/caixa-loterias/Paginas/default.aspx";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        context.startActivity(i);
+    }
+
 
 
     public static AlertDialog dialogoNewEntendi(Context context, int tituloResId, int layoutId, String mensagem) {

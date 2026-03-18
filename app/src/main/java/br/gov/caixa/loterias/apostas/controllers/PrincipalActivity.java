@@ -2,8 +2,10 @@ package br.gov.caixa.loterias.apostas.controllers;
 
 import android.Manifest;
 import android.animation.AnimatorSet;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -979,7 +981,7 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
     }
 
     private void AbrirMenusGroup(DrawerEnum item) {
-        if (item != DrawerEnum.MENU_MINHA_AREA && item != DrawerEnum.MENU_JOGO_RESPONSAVEL) {
+        if (item != DrawerEnum.MENU_MINHA_AREA && item != DrawerEnum.MENU_JOGO_RESPONSAVEL && item != DrawerEnum.MENU_SOBRE_CAIXA) {
             drawerLayout.closeDrawer(GravityCompat.START, false);
         }
         switch (item) {
@@ -1007,6 +1009,10 @@ public class PrincipalActivity extends LoteriasBaseAppActivity
                 break;
             case MENU_DUVIDAS:
                 startActivity(new Intent(PrincipalActivity.this, DuvidasActivity.class));
+                break;
+            case MENU_SOBRE_CAIXA:
+//                ViewUtils.abrirMenuCaixa(this);
+
                 break;
             default:
                 break;

@@ -17,7 +17,8 @@ public enum DrawerEnum {
     MENU_JOGO_RESPONSAVEL_SUSPENSAO("Suspensão temporária"),
     MENU_REPASSES_SOCIAIS("Repasses sociais"),
     MENU_TERMO_USO("Termo de uso"),
-    MENU_DUVIDAS("Dúvidas");
+    MENU_DUVIDAS("Dúvidas"),
+    MENU_SOBRE_CAIXA("Sobre a CAIXA Loterias");
 
     private final String texto;
 
