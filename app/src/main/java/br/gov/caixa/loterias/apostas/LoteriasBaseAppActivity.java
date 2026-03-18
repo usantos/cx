@@ -15,8 +15,12 @@ public abstract class LoteriasBaseAppActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        AppUtils.applyInsets(this);
+        AppUtils.applyInsets(this, baseConsumeInsets());
 		setSystenBarsColors();
+	}
+
+	protected boolean baseConsumeInsets() {
+		return true;
 	}
 
 	public void setSystenBarsColors(){
