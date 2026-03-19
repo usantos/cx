@@ -607,7 +607,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         //SERVICO /apostas/{id}/comprovante-premio Informacao COMBO está errada
                         result.getPayload().getAposta().setCombo(apostaDTO.getCombo());
 
-                        if (result.getPayload().getAposta().getQuantidadeTeimosinhas() >0) {
+                        if (result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0 || result.getPayload().getAposta().getIndicadorCotaBolao()) {
                             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasTeimosinhaActivity.class,
                                     ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
                             startActivity(intent);
@@ -656,7 +656,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private void startDetalheComprovante(ComprovanteApostaDTO comprovante) {
-        if (comprovante.getAposta().getQuantidadeTeimosinhas() >0) {
+        if (comprovante.getAposta().getQuantidadeTeimosinhas() > 0 ||  comprovante.getAposta().getIndicadorCotaBolao()) {
             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasTeimosinhaActivity.class,
                     ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
             startActivity(intent);
