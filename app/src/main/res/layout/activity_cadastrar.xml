@@ -288,6 +288,30 @@
             app:layout_constraintTop_toBottomOf="@id/tv_declaracao_termo_uso"
             app:layout_constraintStart_toStartOf="@id/tv_declaracao_termo_uso"/>
 
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/aceiteNotificacoes"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/check_box_selected"
+            android:button="@color/transparente50"
+            app:layout_constraintTop_toBottomOf="@id/termoPolitica"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_declaracao_notificacoes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/editTextArialMTTheme"
+            android:textColor="@color/cinza"
+            android:text="@string/declaracao_notificacoes"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintTop_toTopOf="@id/aceiteNotificacoes"
+            app:layout_constraintStart_toEndOf="@id/aceiteNotificacoes"/>
+
+
+
         <Button
             android:id="@+id/buttonFinalizarCadastro"
             android:layout_width="match_parent"
@@ -303,7 +327,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/aceiteTermo"/>
+            app:layout_constraintTop_toBottomOf="@id/aceiteNotificacoes"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

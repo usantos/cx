@@ -284,6 +284,7 @@ repositories {
         implementation 'androidx.navigation:navigation-fragment:2.7.7'
         implementation 'androidx.navigation:navigation-ui:2.7.7'
         implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
+        implementation 'androidx.appcompat:appcompat:1.7.1'
         // versions
         def supportVersion = '27.1.1'
         def lottieVersion = '3.6.1';
