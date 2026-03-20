@@ -1604,6 +1604,7 @@
     <string name="favoritar_loterica">Favoritar Lotérica</string>
     <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
 
+    <string name="label_aposta_maiuscula">Aposta</string>
     <string name="resultado_concurso">Resultado do Concurso</string>
     <string name="label_situacao">Situação:</string>
     <string name="label_time_sorteado">Time sorteado</string>
