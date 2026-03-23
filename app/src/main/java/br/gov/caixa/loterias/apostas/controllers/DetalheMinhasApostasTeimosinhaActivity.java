@@ -401,7 +401,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             tvTextCidadeUf.setText(StringUtils.capitalizerNovo(aposta.getReservaCotaBolao().getNumeroLoterica().getNomeMunicipio().trim()) + " - " + UF.siglaFromId(aposta.getReservaCotaBolao().getNumeroLoterica().getIdUF().intValue()));
 
             NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-            tvTextValorCota.setText(nf.format(aposta.getReservaCotaBolao().getVrTotalCota()));
+            tvTextValorCota.setText(nf.format(aposta.getReservaCotaBolao().getVrCotaReservada()));
             tvTextTarifa.setText(nf.format(aposta.getReservaCotaBolao().getVrTarifaServico()));
             tvTextCota.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" + aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
 
@@ -699,37 +699,72 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         if (listApostaBolaoDTO != null && listApostaBolaoDTO.size() > 0) {
             for (ApostaBolaoDTO apostaBolaoDTO : listApostaBolaoDTO) {
 
-                ResultadoConcursoDTO resultadoConcursoDTO = listResultadoConcursoDTO.stream()
-                        .filter(dto -> dto != null
-                                && dto.getConcurso() != null
-                                && Objects.equals(dto.getConcurso().getNumero(), aposta.getConcursoAlvo()))
-                        .findFirst()
-                        .orElse(null);
-
+                ResultadoConcursoDTO resultadoConcursoDTO = null;
                 ArrayList<Number> listResultados = null;
-                if (resultadoConcursoDTO != null) {
-                   listResultados = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
+                if (listResultadoConcursoDTO != null && listResultadoConcursoDTO.size() > 0) {
+                    resultadoConcursoDTO = listResultadoConcursoDTO.get(0);
+                    listResultados = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
                 }
 
                 ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
+                item.setModalidade(aposta.getModalidade());
+                item.setApurado(true);
                 item.setBolao(true);
+                if (aposta.getModalidade() != ModalidadeEnum.SUPER_7) {
+                    item.setSeusNumeros(StringUtils.formatToStringList(apostaBolaoDTO.getDezenas()));
+                }
+                if (resultadoConcursoDTO != null) {
+                    if (aposta.getModalidade() != ModalidadeEnum.SUPER_7) {
+                        item.setNumerosSorteados(StringUtils.formatToStringList(listResultados));
+                    }
+                }
 
                 switch (aposta.getModalidade()) {
+                    case TIMEMANIA:
+                        item.setSeuTimeMes(apostaBolaoDTO.getTimeCoracao().getNome() + "/" + apostaBolaoDTO.getTimeCoracao().getUf());
+                        if (resultadoConcursoDTO != null) {
+                            item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome() + "/" + resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getUf());
+                        }
+                        break;
+
+                    case DIA_DE_SORTE:
+                        item.setSeuTimeMes(apostaBolaoDTO.getMesSorte().getNome());
+                        if (resultadoConcursoDTO != null) {
+                            item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+                        }
+                        break;
+
+                    case DUPLA_SENA:
+                        item.setSeusNumeros2(StringUtils.formatToStringList(apostaBolaoDTO.getDezenas()));
+                        if (resultadoConcursoDTO != null) {
+                            ArrayList<Number> listResultados2 = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
+                            item.setNumerosSorteados2(StringUtils.formatToStringList(listResultados2));
+                        }
+                        break;
+
+                    case SUPER_7:
+                        item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(apostaBolaoDTO.getDezenas()));
+                        if (resultadoConcursoDTO != null) {
+                            item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(listResultados));
+                        }
+                        break;
+
+                    case MAIS_MILIONARIA:
+                        item.setSeusTrevos(StringUtils.formatToStringList1Digito(apostaBolaoDTO.getTrevos()));
+                        if (resultadoConcursoDTO != null) {
+                            ArrayList<Number> resultadoTrevos = (ArrayList) resultadoConcursoDTO.getTrevosSorteadosPrimeiroSorteio();
+                            item.setTrevosSorteados(StringUtils.formatToStringList1Digito(resultadoTrevos));
+                        }
+                        break;
+
                     case LOTOFACIL:
                     case QUINA:
                     case LOTOMANIA:
                     case MEGA_SENA:
                     default:
-                        item.setModalidade(aposta.getModalidade());
-                        item.setApurado(true);
-                        item.setBolao(true);
-                        item.setSeusNumeros(StringUtils.formatToStringList(apostaBolaoDTO.getDezenas()));
-                        if (listResultados != null) {
-                            item.setNumerosSorteados(StringUtils.formatToStringList(listResultados));
-                        }
-                        items.add(item);
                         break;
                 }
+                items.add(item);
             }
         }
 

@@ -31,7 +31,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     private final Context context;
 
     private EstiloModalidadeMKP estilo;
-    private boolean isExpanded = false;
+    private boolean isExpanded;
 
     public DetalheMinhasApostasAdapter(Context context, List<ItemMinhasApostasDTO> items) {
         this.context = context;
@@ -51,12 +51,15 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemMinhasApostasDTO item = items.get(position);
 
-        //holder.clAcordeonCorpo.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
-        //holder.ivExpandCollapse.setRotation(isExpanded ? 180 : 0);
-        //holder.ivExpandCollapse.setColorFilter(context.getColor(estilo.getCorFonteFundoEscuro()));
+        isExpanded = item.isExpanded();
 
-        if(!item.isApurado()) {
-            montaAcordeonCorpoSemResultado(holder, item);
+        //if(!item.isApurado()) {
+        if(!item.isTemAcordeon()) {
+            if (item.getNumerosSorteados() == null) {
+                montaAcordeonCorpoSemResultado(holder, item);
+            } else {
+                montaAcordeonCorpo(holder, item);
+            }
             return;
         }
 
@@ -67,7 +70,11 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         }
 
         if (isExpanded) {
-            montaAcordeonCorpo(holder, item);
+            if (item.getNumerosSorteados() == null) {
+                montaAcordeonCorpoSemResultado(holder, item);
+            } else {
+                montaAcordeonCorpo(holder, item);
+            }
         }
     }
 
@@ -119,6 +126,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.vLinhaAccordion1.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
 
         holder.clAcordeonCabeca.setOnClickListener(v -> {
+            item.setExpanded(!item.isExpanded());
             isExpanded = !isExpanded;
             notifyItemChanged(position);
         });
@@ -143,6 +151,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.vLinhaAccordion1.setVisibility(isExpanded ? View.GONE : View.VISIBLE);
 
         holder.clAcordeonCabeca.setOnClickListener(v -> {
+            item.setExpanded(!item.isExpanded());
             isExpanded = !isExpanded;
             notifyItemChanged(position);
         });
@@ -294,8 +303,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     private void montaAcordeonCorpoSemResultado(ViewHolder holder, ItemMinhasApostasDTO item) {
         desabilitaTodos(holder);
 
-        holder.clAcordeonCabeca.setVisibility(View.GONE);
-        holder.clAcordeonCorpo.setVisibility(View.VISIBLE);
+        holder.clAcordeonCorpo.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
 
         holder.tvLabelMeusNumeros.setVisibility(View.VISIBLE);
         holder.rvMeusNumeros.setVisibility(View.VISIBLE);

@@ -18,7 +18,9 @@ public class ItemMinhasApostasDTO {
     private List<String> seusTrevos;
     private BigDecimal valorPremio;
     private boolean apurado = true;
+    private boolean temAcordeon = true;
     private boolean isBolao = false;
+    private boolean isExpanded = false;
 
     public ItemMinhasApostasDTO(ModalidadeEnum modalidade, String concurso, String situacao, List<String> numerosSorteados, List<String> seusNumeros, String timeMesSorteado, String seuTimeMes, List<String> numerosSorteados2, List<String> seusNumeros2, List<String> trevosSorteados, List<String> seusTrevos, BigDecimal valorPremio, boolean apurado) {
         this.modalidade = modalidade;
@@ -151,8 +153,17 @@ public class ItemMinhasApostasDTO {
     public boolean isApurado() {
         return apurado;
     }
+
     public void setApurado(boolean apurado) {
         this.apurado = apurado;
+    }
+
+    public boolean isTemAcordeon() {
+        return temAcordeon;
+    }
+
+    public void setTemAcordeon(boolean temAcordeon) {
+        this.temAcordeon = temAcordeon;
     }
 
     public boolean isBolao() {
@@ -162,5 +173,11 @@ public class ItemMinhasApostasDTO {
     public void setBolao(boolean bolao) {
         isBolao = bolao;
     }
+    public boolean isExpanded() {
+        return isExpanded;
+    }
 
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+    }
 }
