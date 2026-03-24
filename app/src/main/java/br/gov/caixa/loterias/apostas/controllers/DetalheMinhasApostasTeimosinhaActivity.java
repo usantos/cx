@@ -28,7 +28,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
@@ -154,7 +153,11 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         if (isBolao()) {
             preencheCentroBolao();
         } else {
-            preencheCentro();
+            if (isTeimosinha(aposta)) {
+                preencheCentroTeimosinha();
+            } else {
+                preencheApostaSimples();
+            }
         }
     }
 
@@ -373,7 +376,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
     private void preencheCabecalho() {
 
-        if (isBolao()) {
+        if (aposta.getQuantidadeTeimosinhas() == 0) {
             concursoLabel.setText(getString(R.string.label_concurso));
         }
 
@@ -571,7 +574,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         );
     }
 
-    private void preencheCentro() {
+    private void preencheCentroTeimosinha() {
 
         List<ItemMinhasApostasDTO> items = new ArrayList<>();
 
@@ -657,7 +660,8 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             //Concurso nao apurado
             ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
             item.setModalidade(aposta.getModalidade());
-            item.setApurado(false);
+            //item.setApurado(false);
+            item.setTemAcordeon(false);
 
             switch (aposta.getModalidade()) {
                 case TIMEMANIA:
@@ -667,6 +671,10 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
                 case DIA_DE_SORTE:
                     item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
                     item.setSeuTimeMes(aposta.getMesDeSorte().getNome());
+                    break;
+                case DUPLA_SENA:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    item.setSeusNumeros2(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
                     break;
                 case SUPER_7:
                     item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
@@ -708,7 +716,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
                 ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
                 item.setModalidade(aposta.getModalidade());
-                item.setApurado(true);
+                //item.setApurado(true);
                 item.setBolao(true);
                 if (aposta.getModalidade() != ModalidadeEnum.SUPER_7) {
                     item.setSeusNumeros(StringUtils.formatToStringList(apostaBolaoDTO.getDezenas()));
@@ -774,4 +782,141 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
     }
+
+    private void preencheApostaSimples() {
+
+        List<ItemMinhasApostasDTO> items = new ArrayList<>();
+
+        if (listResultadoConcursoDTO != null && listResultadoConcursoDTO.size() > 0) {
+
+            ResultadoConcursoDTO resultadoConcursoDTO = listResultadoConcursoDTO.get(0);
+
+            BigDecimal valorPremio = null;
+            if (detalhesPremioDTO != null) {
+                for (ConcursoPremiadoDTO concursoPremiado : detalhesPremioDTO.getPremio().getConcursos()) {
+                    if (concursoPremiado.getConcurso().getNumero().equals(resultadoConcursoDTO.getConcurso().getNumero())) {
+                        valorPremio = concursoPremiado.getValorLiquido();
+                        break;
+                    }
+                }
+            }
+
+            ArrayList<Number> resultado = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
+
+            ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
+            item.setModalidade(aposta.getModalidade());
+            item.setConcurso(resultadoConcursoDTO.getConcurso().getNumero().toString());
+            item.setTemAcordeon(false);
+            item.setValorPremio(valorPremio);
+
+            if (aposta.getModalidade() != ModalidadeEnum.SUPER_7) {
+                item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+            }
+            if (resultadoConcursoDTO != null) {
+                if (aposta.getModalidade() != ModalidadeEnum.SUPER_7) {
+                    item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                }
+            }
+
+
+            switch (resultadoConcursoDTO.getConcurso().getModalidade()) {
+                case TIMEMANIA:
+                    item.setSeuTimeMes(aposta.getTimeDoCoracao().getNome()+"/"+aposta.getTimeDoCoracao().getUf());
+                    if (resultadoConcursoDTO != null) {
+                        item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome() + "/" + resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getUf());
+                    }
+                    item.setValorPremio(valorPremio);
+                    items.add(item);
+                    break;
+
+                case DIA_DE_SORTE:
+                    item.setSeuTimeMes(aposta.getMesDeSorte().getNome());
+                    if (resultadoConcursoDTO != null) {
+                        item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+                    }
+                    item.setValorPremio(valorPremio);
+                    items.add(item);
+                    break;
+
+                case DUPLA_SENA:
+                    ArrayList<Number> resultado2 = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosSegundoSorteio();
+                    item.setSeusNumeros2(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    if (resultadoConcursoDTO != null) {
+                        item.setNumerosSorteados2(StringUtils.formatToStringList(resultado2));
+                    }
+                    item.setValorPremio(valorPremio);
+                    items.add(item);
+                    break;
+
+                case SUPER_7:
+                    item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                    if (resultadoConcursoDTO != null) {
+                        item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(resultado));
+                    }
+                    item.setValorPremio(valorPremio);
+                    items.add(item);
+                    break;
+
+                case MAIS_MILIONARIA:
+                    ArrayList<Number> resultadoTrevos = (ArrayList) resultadoConcursoDTO.getTrevosSorteadosPrimeiroSorteio();
+
+                    item.setSeusTrevos(StringUtils.formatToStringList1Digito(aposta.getTrevosSelecionados()));
+                    if (resultadoConcursoDTO != null) {
+                        item.setTrevosSorteados(StringUtils.formatToStringList1Digito(resultadoTrevos));
+                    }
+                    item.setValorPremio(valorPremio);
+                    items.add(item);
+                    break;
+
+                case LOTOFACIL:
+                case QUINA:
+                case LOTOMANIA:
+                case MEGA_SENA:
+                default:
+                    item.setValorPremio(valorPremio);
+                    items.add(item);
+                    break;
+            }
+
+        } else {
+            //Concurso nao apurado
+            ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
+            item.setModalidade(aposta.getModalidade());
+            item.setTemAcordeon(false);
+
+            switch (aposta.getModalidade()) {
+                case TIMEMANIA:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    item.setSeuTimeMes(aposta.getTimeDoCoracao().getNome()+"/"+aposta.getTimeDoCoracao().getUf());
+                    break;
+                case DIA_DE_SORTE:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    item.setSeuTimeMes(aposta.getMesDeSorte().getNome());
+                    break;
+                case DUPLA_SENA:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    item.setSeusNumeros2(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    break;
+                case SUPER_7:
+                    item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                    break;
+                case MAIS_MILIONARIA:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    item.setSeusTrevos(StringUtils.formatToStringList1Digito(aposta.getTrevosSelecionados()));
+                    break;
+                default:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    break;
+            }
+
+            items.add(item);
+        }
+
+        RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        DetalheMinhasApostasAdapter adapter = new DetalheMinhasApostasAdapter(this, items);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setAdapter(adapter);
+    }
+
 }

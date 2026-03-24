@@ -51,6 +51,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemMinhasApostasDTO item = items.get(position);
 
+        desabilitaTodos(holder);
+
         isExpanded = item.isExpanded();
 
         //if(!item.isApurado()) {
@@ -83,6 +85,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         return items.size();
     }
     private void desabilitaTodos(ViewHolder holder) {
+        holder.clAcordeonCorpo.setVisibility(View.GONE);
+        holder.clAcordeonCabeca.setVisibility(View.GONE);
         holder.tvLabelNumerosSorteados.setVisibility(View.GONE);
         holder.rvNumberSortedos.setVisibility(View.GONE);
         holder.rvSuper7Sorteados.setVisibility(View.GONE);
@@ -158,9 +162,10 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     }
 
     private void montaAcordeonCorpo(ViewHolder holder, ItemMinhasApostasDTO item) {
-        desabilitaTodos(holder);
+        //desabilitaTodos(holder);
 
-        holder.clAcordeonCorpo.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        //holder.clAcordeonCorpo.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        holder.clAcordeonCorpo.setVisibility(View.VISIBLE);
 
         //Todos
         holder.tvLabelNumerosSorteados.setVisibility(View.VISIBLE);
@@ -173,6 +178,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.tvLabelMeusNumeros.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
         holder.ivIconeCentro.setImageDrawable(context.getDrawable(estilo.getTrevoFundoClaro()));
+        //holder.vLinhaAccordion2.setBackgroundColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
         //Acertos
         holder.llAcertos.setVisibility(View.VISIBLE);
@@ -301,14 +307,16 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     }
 
     private void montaAcordeonCorpoSemResultado(ViewHolder holder, ItemMinhasApostasDTO item) {
-        desabilitaTodos(holder);
+        //desabilitaTodos(holder);
 
-        holder.clAcordeonCorpo.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        //holder.clAcordeonCorpo.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        holder.clAcordeonCorpo.setVisibility(View.VISIBLE);
 
         holder.tvLabelMeusNumeros.setVisibility(View.VISIBLE);
         holder.rvMeusNumeros.setVisibility(View.VISIBLE);
 
         holder.tvLabelMeusNumeros.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+        //holder.vLinhaAccordion2.setBackgroundColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
         switch (item.getModalidade()) {
             case TIMEMANIA:
@@ -342,8 +350,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                 //holder.tvLabelNumerosPrimeiroSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
                 //holder.tvLabelNumerosSegundoSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
-                //holder.tvLabelMeusNumerosPrimeiroSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
-                //holder.tvLabelMeusNumerosSegundoSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+                holder.tvLabelMeusNumerosPrimeiroSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+                holder.tvLabelMeusNumerosSegundoSorteio.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
 
                 setupGridNumeros(holder.rvMeusNumeros, Shape.CIRCULO, 6, item.getSeusNumeros(), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorEscura()));
                 setupGridNumeros(holder.rvMeusNumeros2, Shape.CIRCULO, 6, item.getSeusNumeros2(), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorEscura()));

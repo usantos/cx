@@ -56,6 +56,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesHistoricoPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PeriodoConsultaDTO;
@@ -607,7 +608,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         //SERVICO /apostas/{id}/comprovante-premio Informacao COMBO está errada
                         result.getPayload().getAposta().setCombo(apostaDTO.getCombo());
 
-                        if (result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0 || result.getPayload().getAposta().getIndicadorCotaBolao()) {
+                        if (result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0 || result.getPayload().getAposta().getIndicadorCotaBolao() ||
+                            result.getPayload().getAposta().getModalidade() != ModalidadeEnum.LOTECA) {
                             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasTeimosinhaActivity.class,
                                     ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
                             startActivity(intent);
@@ -656,7 +658,8 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private void startDetalheComprovante(ComprovanteApostaDTO comprovante) {
-        if (comprovante.getAposta().getQuantidadeTeimosinhas() > 0 ||  comprovante.getAposta().getIndicadorCotaBolao()) {
+        if (comprovante.getAposta().getQuantidadeTeimosinhas() > 0 ||  comprovante.getAposta().getIndicadorCotaBolao()  ||
+                comprovante.getAposta().getModalidade() != ModalidadeEnum.LOTECA) {
             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasTeimosinhaActivity.class,
                     ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
             startActivity(intent);
