@@ -27,6 +27,32 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
+            android:id="@+id/tv_apresenta_surpresinha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_surpresinha"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_marginStart="5dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/tv_aposta_numero_bolao"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+        <ImageView
+            android:id="@+id/ivApresentaSurpresinha"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_surpresinha_linha"
+            android:layout_marginStart="5dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/tv_apresenta_surpresinha"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
             android:id="@+id/tv_resultado_concurso"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

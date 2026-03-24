@@ -716,8 +716,8 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
                 ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
                 item.setModalidade(aposta.getModalidade());
-                //item.setApurado(true);
                 item.setBolao(true);
+                item.setSurpresinha(apostaBolaoDTO.isSurpresinha());
                 if (aposta.getModalidade() != ModalidadeEnum.SUPER_7) {
                     item.setSeusNumeros(StringUtils.formatToStringList(apostaBolaoDTO.getDezenas()));
                 }

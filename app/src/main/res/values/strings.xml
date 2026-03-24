@@ -1604,6 +1604,7 @@
     <string name="favoritar_loterica">Favoritar Lotérica</string>
     <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
 
+    <!-- DETALHE MINHAS APOSTAS -->
     <string name="label_aposta_maiuscula">Aposta</string>
     <string name="resultado_concurso">Resultado do Concurso</string>
     <string name="label_situacao">Situação:</string>
@@ -1625,6 +1626,7 @@
     <string name="label_valor_cota">Valor da Cota:</string>
     <string name="label_tarifa_servico">Tarifa de Serviço:</string>
     <string name="label_cota">Cota:</string>
+    <string name="label_surpresinha">| Surpresinha</string>
 
 
     <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>

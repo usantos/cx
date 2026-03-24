@@ -18,6 +18,8 @@ public class ItemMinhasApostasDTO {
     private List<String> seusTrevos;
     private BigDecimal valorPremio;
     private boolean apurado = true;
+
+    private boolean isSurpresinha = false;
     private boolean temAcordeon = true;
     private boolean isBolao = false;
     private boolean isExpanded = false;
@@ -156,6 +158,14 @@ public class ItemMinhasApostasDTO {
 
     public void setApurado(boolean apurado) {
         this.apurado = apurado;
+    }
+
+    public boolean isSurpresinha() {
+        return isSurpresinha;
+    }
+
+    public void setSurpresinha(boolean surpresinha) {
+        isSurpresinha = surpresinha;
     }
 
     public boolean isTemAcordeon() {

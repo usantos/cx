@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -149,6 +150,14 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.tvApostaNumeroBolao.setVisibility(View.VISIBLE);
         holder.tvApostaNumeroBolao.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
         holder.tvApostaNumeroBolao.setText(context.getString(R.string.label_aposta_maiuscula) + " " + (position +1));
+
+        if (item.isSurpresinha()) {
+            holder.tvApresentaSurpresinha.setVisibility(View.VISIBLE);
+            holder.tvApresentaSurpresinha.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
+            holder.ivApresentaSurpresinha.setVisibility(View.VISIBLE);
+            //holder.ivApresentaSurpresinha.setImageDrawable(context.getDrawable(estilo.getCorFonteFundoEscuro()));
+            holder.ivApresentaSurpresinha.setColorFilter(context.getColor(estilo.getCorFonteFundoEscuro()));
+        }
 
         holder.vLinhaAccordion1.setBackgroundColor(context.getColor(estilo.getCorFonteFundoEscuro()));
         holder.vLinhaAccordion2.setBackgroundColor(context.getColor(estilo.getCorFonteFundoEscuro()));
@@ -486,7 +495,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvApostaNumeroBolao, tvResultadoConcurso, tvLabelSituacao, tvSituacao, tvLabelNumerosSorteados, tvLabelNumerosPrimeiroSorteio, tvLabelNumerosSegundoSorteio;
+        TextView tvApostaNumeroBolao, tvApresentaSurpresinha, tvResultadoConcurso, tvLabelSituacao, tvSituacao, tvLabelNumerosSorteados, tvLabelNumerosPrimeiroSorteio, tvLabelNumerosSegundoSorteio;
         TextView tvLabelTimeMesSorteado, tvTimeMesSorteado, tvLabelMeusNumeros, tvLabelMeusNumerosPrimeiroSorteio, tvLabelMeusNumerosSegundoSorteio;
         TextView tvLabelMeuTimeMes, tvMeuTimeMes;
         TextView tvLabelPremio, tvPremio, tvLabelAcertos, tvLabelAcertos1, tvAcertos, tvAcertos1;
@@ -495,10 +504,13 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         ConstraintLayout clAcordeonCabeca;
         RecyclerView rvNumberSortedos, rvNumberSortedos2, rvMeusNumeros, rvMeusNumeros2, rvSuper7Sorteados, rvSuper7MeusNumeros;
         View vLinhaAccordion1, vLinhaAccordion2, vDivisorTrevo;
+        ImageView ivApresentaSurpresinha;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvApostaNumeroBolao = itemView.findViewById(R.id.tv_aposta_numero_bolao);
+            tvApresentaSurpresinha = itemView.findViewById(R.id.tv_apresenta_surpresinha);
+            ivApresentaSurpresinha = itemView.findViewById(R.id.ivApresentaSurpresinha);
             tvResultadoConcurso = itemView.findViewById(R.id.tv_resultado_concurso);
             tvLabelSituacao = itemView.findViewById(R.id.tv_label_situacao);
             tvSituacao = itemView.findViewById(R.id.tv_situacao);
