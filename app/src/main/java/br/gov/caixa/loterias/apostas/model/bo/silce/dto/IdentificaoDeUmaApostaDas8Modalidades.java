@@ -740,9 +740,26 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 	}
 
 	public static BigDecimal getValorApostaFavoritaPorProagnostico(ApostaFavoritaDTO apostaFavoritaDTO) {
+		if (apostaFavoritaDTO == null || apostaFavoritaDTO.getModalidade() == null)
+			return BigDecimal.ZERO;
+
 		ModalidadeEnum           modalidadeEnum         = ModalidadeEnum.fromInteger(apostaFavoritaDTO.getModalidade().getValor());
-		List<ParametroSimulacao> parametroSimulacaoList = SessaoUsuario.getInstance().getParametrosSimulacao().getParametros();
+
+		SessaoUsuario sessao = SessaoUsuario.getInstance();
+		if(sessao == null || sessao.getParametrosSimulacao() == null)
+			return BigDecimal.ZERO;
+
+		List<ParametroSimulacao> parametroSimulacaoList = sessao.getParametrosSimulacao().getParametros();
+		if(parametroSimulacaoList == null){
+			return BigDecimal.ZERO;
+		}
+
 		for (ParametroSimulacao parametroSimulacao : parametroSimulacaoList) {
+			if (parametroSimulacao == null) continue;
+			if (parametroSimulacao.getParametroJogo() == null) continue;
+			if (parametroSimulacao.getParametroJogo().getConcurso() == null) continue;
+			if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == null) continue;
+
 			if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
 				if (modalidadeEnum == ModalidadeEnum.LOTECA) {
 					return parametroSimulacao.getParametroJogo().getValorApostaMinima();
@@ -764,7 +781,7 @@ IdentificaoDeUmaApostaDas8Modalidades<T> implements Serializable {
 				}
 			}
 		}
-		return new BigDecimal("0");
+		return BigDecimal.ZERO;
 	}
 
 	public static BigDecimal getValorApostaPorPrognostico(IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> identificaoDeUmaApostaDas8Modalidades) {
