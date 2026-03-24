@@ -293,6 +293,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="20dp"
+            android:checked="true"
             android:layout_marginTop="50dp"
             android:background="@drawable/check_box_selected"
             android:button="@color/transparente50"

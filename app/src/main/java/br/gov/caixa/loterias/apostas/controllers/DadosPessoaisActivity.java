@@ -74,6 +74,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     private ApostadorDTO apostadorDTO;
     private Switch notificacaoSwitch;
     private LinearLayout containerNotificacoes;
+    private Boolean telaRenderizada = false;
 
 
     @Override
@@ -177,13 +178,13 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         );
 
         notificacaoSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!telaRenderizada) return;
             atualizarDescricaoNotificacoes(containerNotificacoes,isChecked);
             if (isChecked) {
-               notificacaoSwitch.setChecked(true);
-               apostadorDTO.setAceitaReceberNoticias(true);
+                ViewUtils.alertEntendiCustom(this, "Ao ativar esta opção, você receberá notificações importantes de loterias se estiverem habilitadas no seu aparelho. A funcionalidade pode ser ativada ou desativada a qualquer momento. Para salvar, clique em atualizar."
+                );
             } else {
-                notificacaoSwitch.setChecked(false);
-                apostadorDTO.setAceitaReceberNoticias(false);
+                ViewUtils.alertEntendiCustom(this, "Ao desativar esta opção, você não receberá mais notificações de loterias. Para salvar, clique em atualizar.");
             }
         });
 
@@ -263,6 +264,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         editTextCepContent.addTextChangedListener(getTextWatcher(editTextCepContent));
         editTextLimiteContent.addTextChangedListener(getTextWatcher(editTextLimiteContent));
 
+        telaRenderizada = true;
     }
 
     @Override
