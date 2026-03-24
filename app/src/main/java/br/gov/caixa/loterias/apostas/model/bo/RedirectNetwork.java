@@ -65,7 +65,7 @@ public class  RedirectNetwork {
             AppCenterManager.registraEventoErro(AppCenterManager.ERRO_GENERICO, error);
 
             if (!AppUtils.isNetworkAvailable(activity)) {
-                if (!activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
+                if (activity != null && !activity.getClass().toString().equalsIgnoreCase(SplashScreenActivity.class.toString())) {
                     ViewUtils.alert(activity, activity.getResources().getString(R.string.seminternet));
                 }
                 return;
