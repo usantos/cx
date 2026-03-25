@@ -479,7 +479,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
         if (listTipoApostaLinha.size() > 0) {
             tipoApostaLinhaView.setVisibility(View.VISIBLE);
-            tipoApostaLinhaView.setupView(listTipoApostaLinha, estiloMKP.getCorClara(), estiloMKP.getCorFonteFundoClaro(), estiloMKP.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.DOWN);
+            tipoApostaLinhaView.setupView(listTipoApostaLinha, estiloMKP.getCorClara(), estiloMKP.getCorFonteFundoClaro(), estiloMKP.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.DOWN, true);
         }
     }
 
@@ -595,72 +595,69 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
                 ArrayList<Number> resultado = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
 
-                switch (resultadoConcursoDTO.getConcurso().getModalidade()) {
+                ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
+                item.setModalidade(aposta.getModalidade());
+                item.setConcurso(resultadoConcursoDTO.getConcurso().getNumero().toString());
+                item.setSituacao(situacao);
+                item.setValorPremio(valorPremio);
+
+                //switch (resultadoConcursoDTO.getConcurso().getModalidade()) {
+                switch (aposta.getModalidade()) {
                     case TIMEMANIA:
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringList(resultado),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome()+"/"+resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getUf(),
-                                aposta.getTimeDoCoracao().getNome()+"/"+aposta.getTimeDoCoracao().getUf(),
-                                valorPremio));
+                        item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                        item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome() + "/" + resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getUf());
+                        item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        item.setSeuTimeMes(aposta.getTimeDoCoracao().getNome()+"/"+aposta.getTimeDoCoracao().getUf());
+                        items.add(item);
                         break;
+
                     case DIA_DE_SORTE:
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringList(resultado),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome(),
-                                aposta.getMesDeSorte().getNome(),
-                                valorPremio));
+                        item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                        item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+                        item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        item.setSeuTimeMes(aposta.getMesDeSorte().getNome());
+                        items.add(item);
                         break;
+
                     case DUPLA_SENA:
+                        item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
                         ArrayList<Number> resultado2 = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosSegundoSorteio();
-
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringList(resultado),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                StringUtils.formatToStringList(resultado2),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                valorPremio));
+                        item.setNumerosSorteados2(StringUtils.formatToStringList(resultado2));
+                        item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        item.setSeusNumeros2(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        items.add(item);
                         break;
+
                     case SUPER_7:
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringListFlexPrimeiro(resultado),
-                                StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()),
-                                valorPremio));
+                        item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(resultado));
+                        item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                        items.add(item);
                         break;
-                    case MAIS_MILIONARIA:
-                        ArrayList<Number> resultadoTrevos = (ArrayList) resultadoConcursoDTO.getTrevosSorteadosPrimeiroSorteio();
 
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringList(resultado),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                valorPremio,
-                                StringUtils.formatToStringList1Digito(resultadoTrevos),
-                                StringUtils.formatToStringList1Digito(aposta.getTrevosSelecionados())));
+                    case MAIS_MILIONARIA:
+                        item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                        ArrayList<Number> resultadoTrevos = (ArrayList) resultadoConcursoDTO.getTrevosSorteadosPrimeiroSorteio();
+                        item.setTrevosSorteados(StringUtils.formatToStringList1Digito(resultadoTrevos));
+                        item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        item.setSeusTrevos(StringUtils.formatToStringList1Digito(aposta.getTrevosSelecionados()));
+                        items.add(item);
                         break;
+
                     case LOTOFACIL:
                     case QUINA:
                     case LOTOMANIA:
                     case MEGA_SENA:
                     default:
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringList(resultado),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                valorPremio));
+                        item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                        item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        items.add(item);
                         break;
                 }
             }
         } else {
-            //Concurso nao apurado
+            //Aposta não apurada
             ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
             item.setModalidade(aposta.getModalidade());
-            //item.setApurado(false);
             item.setTemAcordeon(false);
 
             switch (aposta.getModalidade()) {

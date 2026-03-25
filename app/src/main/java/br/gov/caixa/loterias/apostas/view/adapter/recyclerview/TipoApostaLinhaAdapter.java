@@ -26,17 +26,19 @@ public class TipoApostaLinhaAdapter extends RecyclerView.Adapter<TipoApostaLinha
     private  Context context;
     private int textColor;
     private int iconColor;
+    private boolean isBold;
 
-    public TipoApostaLinhaAdapter(Context context, List<TipoApostaLinhaEnum> itemList,int textColor, int iconColor) {
+    public TipoApostaLinhaAdapter(Context context, List<TipoApostaLinhaEnum> itemList,int textColor, int iconColor, boolean isBold) {
         this.context = context;
         this.itemList = itemList;
         this.textColor = textColor;
         this.iconColor = iconColor;
+        this.isBold = isBold;
     }
 
     @Override
     public TipoApostaLinhaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.row_tipo_aposta, parent, false);
+        View view = LayoutInflater.from(context).inflate(isBold ? R.layout.row_tipo_aposta_bold : R.layout.row_tipo_aposta, parent, false);
         return new TipoApostaLinhaHolder(view);
     }
 

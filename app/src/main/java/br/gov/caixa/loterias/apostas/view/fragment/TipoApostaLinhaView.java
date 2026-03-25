@@ -68,6 +68,10 @@ public class TipoApostaLinhaView extends LinearLayout {
 	}
 
 	public void setupView(List<TipoApostaLinhaEnum> itemList, int backgroundColorResId, int textColorResId, int iconColorResId, TipoApostaLinhaView.TriangleDirection direction) {
+		this.setupView(itemList, backgroundColorResId, textColorResId, iconColorResId, direction, false);
+	}
+
+	public void setupView(List<TipoApostaLinhaEnum> itemList, int backgroundColorResId, int textColorResId, int iconColorResId, TipoApostaLinhaView.TriangleDirection direction, boolean isBoald) {
 
 		flexboxContentContainer.setBackgroundColor(ContextCompat.getColor(getContext(), backgroundColorResId));
 
@@ -76,7 +80,7 @@ public class TipoApostaLinhaView extends LinearLayout {
 		flexboxLayoutManager.setFlexWrap(FlexWrap.WRAP);
 		recyclerView.setLayoutManager(flexboxLayoutManager);
 
-		TipoApostaLinhaAdapter tipoApostaLinhaAdapter = new TipoApostaLinhaAdapter(getContext(), itemList, textColorResId, iconColorResId);
+		TipoApostaLinhaAdapter tipoApostaLinhaAdapter = new TipoApostaLinhaAdapter(getContext(), itemList, textColorResId, iconColorResId, isBoald);
 		recyclerView.setAdapter(tipoApostaLinhaAdapter);
 
 		setupTriangle(direction, backgroundColorResId);
