@@ -436,7 +436,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".controllers.DetalheMinhasApostasTeimosinhaActivity"
+            android:name=".controllers.DetalheMinhasApostasActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

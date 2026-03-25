@@ -56,7 +56,7 @@ import br.gov.caixa.loterias.apostas.utils.helper.DetalhesMinhasApostasButtonHel
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheMinhasApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 
-public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
+public class DetalheMinhasApostasActivity extends AppCompatActivity {
     public static final String ARG_COMPROVANTE = "ARG_COMPROVANTE";
     public static final String ARG_DETALHES_PREMIO = "ARG_DETALHES_PREMIO";
 
@@ -142,7 +142,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     private void populaTela() {
         ativaComponentes();
 
-        detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasTeimosinhaActivity.this);
+        detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasActivity.this);
         detalhesMinhasApostasButtonHelper.setupButtonListeners();
         detalhesMinhasApostasButtonHelper.setupDTO(comprovanteApostaDTO, detalhesPremioDTO, aposta);
 
@@ -514,7 +514,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private void servicoResultadoModalidadeConcursos() {
-        AlertDialogUtils.show(DetalheMinhasApostasTeimosinhaActivity.this);
+        AlertDialogUtils.show(DetalheMinhasApostasActivity.this);
 
         String txtModalidade = ApostaDTO.lowerCaseFromString(aposta.getModalidade());
         Integer concursoInicial = aposta.getConcursoInicial();
@@ -527,7 +527,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             @Override
             public void onResponse(ResultadoConcursosDTOResponse response) {
                 if (response.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalheMinhasApostasTeimosinhaActivity.this);
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalheMinhasApostasActivity.this);
                 }
                 if(response != null){
                     listResultadoConcursoDTO = response.getPayload();

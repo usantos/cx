@@ -36,10 +36,9 @@ import java.util.Objects;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.controllers.ApostaConfirmadaDetalhesActivity;
-import br.gov.caixa.loterias.apostas.controllers.DetalheMinhasApostasTeimosinhaActivity;
+import br.gov.caixa.loterias.apostas.controllers.DetalheMinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.controllers.MinhasApostasActivity;
 import br.gov.caixa.loterias.apostas.model.bean.ApostaPageRequest;
-import br.gov.caixa.loterias.apostas.model.bean.BotoesFiltroApostas;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaMicroServicoBO;
@@ -610,7 +609,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
 
                         if (result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0 || result.getPayload().getAposta().getIndicadorCotaBolao() ||
                             result.getPayload().getAposta().getModalidade() != ModalidadeEnum.LOTECA) {
-                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasTeimosinhaActivity.class,
+                            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
                                     ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
                             startActivity(intent);
                         } else {
@@ -660,7 +659,7 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     private void startDetalheComprovante(ComprovanteApostaDTO comprovante) {
         if (comprovante.getAposta().getQuantidadeTeimosinhas() > 0 ||  comprovante.getAposta().getIndicadorCotaBolao()  ||
                 comprovante.getAposta().getModalidade() != ModalidadeEnum.LOTECA) {
-            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasTeimosinhaActivity.class,
+            Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
                     ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
             startActivity(intent);
         } else {
