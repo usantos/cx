@@ -143,7 +143,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         ativaComponentes();
 
         detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasActivity.this);
-        detalhesMinhasApostasButtonHelper.setupButtonListeners();
+        detalhesMinhasApostasButtonHelper.setupButtonListeners(isBolao());
         detalhesMinhasApostasButtonHelper.setupDTO(comprovanteApostaDTO, detalhesPremioDTO, aposta);
 
         preencheCabecalho();
