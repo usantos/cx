@@ -126,6 +126,45 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/opcaoOutrosNumerosLayout"
+        android:layout_width="match_parent"
+        android:minHeight="74dp"
+        android:layout_height="wrap_content"
+        android:background="@color/cinza"
+        android:paddingBottom="15dp"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/selcioneOutrosNumeros"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/check_box_selected"
+            android:button="@color/verdeagua"
+            android:clickable="false" />
+
+        <TextView
+            android:id="@+id/infoSelecioneOutrosNumeros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="16dp"
+            android:layout_toRightOf="@+id/selcioneOutrosNumeros"
+            android:textColor="@color/branco"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"/>
+    </RelativeLayout>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/cartelaFragmentScrollView"
         android:layout_width="match_parent"
@@ -133,44 +172,6 @@
         android:layout_below="@+id/rl_colunas_super_7"
         android:fillViewport="true"
         android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <RelativeLayout
-                android:id="@+id/opcaoOutrosNumerosLayout"
-                android:layout_width="match_parent"
-                android:minHeight="74dp"
-                android:layout_height="wrap_content"
-                android:background="@color/cinza"
-                android:paddingBottom="15dp"
-                android:clickable="true"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/selcioneOutrosNumeros"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/check_box_selected"
-                    android:button="@color/verdeagua"
-                    android:clickable="false" />
-
-                <TextView
-                    android:id="@+id/infoSelecioneOutrosNumeros"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_toRightOf="@+id/selcioneOutrosNumeros"
-                    android:textColor="@color/branco"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/caixa_std_regular"/>
-            </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cartelaFragmentMainLayout"
@@ -450,8 +451,7 @@
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
+    </LinearLayout>
 </RelativeLayout>
