@@ -44,6 +44,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTORes
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
@@ -360,7 +361,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
         if (isApostaPremiada(aposta) && detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null){
             statusApostaTxt.setVisibility(View.VISIBLE);
-            statusApostaTxt.setText(aposta.getSituacao().getDescricao());
+            statusApostaTxt.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
             tv_val_premio_tit.setVisibility(TextView.VISIBLE);
             tv_val_premio.setVisibility(TextView.VISIBLE);
             tv_val_premio.setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
@@ -376,17 +377,15 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             validadePremioText.setVisibility(View.GONE);
             validadePremioLabel.setVisibility(View.GONE);
             validadePremioImg.setVisibility(View.GONE);
+            tvStatusCentralizado.setVisibility(TextView.VISIBLE);
             if (isConcursoNaoApurado(aposta)) {
-                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
                 tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.CONCURSO_NAO_APURADO.getDescricao().replace(" não", "\nnão"));
             }
-            if (isApostaNaoPremiadaOuConcursoFuturo(aposta)) {
-                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
+            else if (isApostaNaoPremiadaOuConcursoFuturo(aposta)) {
                 tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.NAO_PREMIADA.getDescricao());
             }
-            if (isApostaPremioPago(aposta)) {
-                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
-                tvStatusCentralizado.setText(R.string.label_aposta_premio_pago);
+            else {
+                tvStatusCentralizado.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
             }
         }
     }
