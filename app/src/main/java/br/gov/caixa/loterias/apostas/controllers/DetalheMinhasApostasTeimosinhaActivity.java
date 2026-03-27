@@ -438,9 +438,6 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         return aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA ||
                aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA_CONCORRENDO_A_CONCURSO_FUTURO;
     }
-    private boolean isApostaPremioPago(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        return aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO;
-    }
     private boolean isEspecial(String tipoConcurso){
         return tipoConcurso.equalsIgnoreCase("2");
     }
