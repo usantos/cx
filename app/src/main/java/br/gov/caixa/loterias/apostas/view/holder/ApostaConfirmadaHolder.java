@@ -206,7 +206,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 			if (ConfiguracaoAppSingleton.getInstance().isNovaApi() || ConfiguracaoAppSingleton.getInstance().isMicroServico()){
 				descricaoStatus = aposta.getSituacao().getDescricao();
 			}else {
-				descricaoStatus = itemView.getContext().getResources().getString(R.string.nao_apurado).toLowerCase();
+				descricaoStatus = SituacaoAposta.EnumSituacaoAposta.CONCURSO_NAO_APURADO.getDescricao().toLowerCase();
 
 				if (!BuildVersionUtil.isPRD()){
 					descricaoStatus = "* " +descricaoStatus + " *";
@@ -286,7 +286,7 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 		}
 	}
 	public boolean precisaConferirSituacao(){
-		if (this.situacaoTxt != null && this.situacaoTxt.getText().toString().contains(itemView.getContext().getString(R.string.a_conferir))){
+		if (this.situacaoTxt != null && this.situacaoTxt.getText().toString().contains(SituacaoAposta.EnumSituacaoAposta.EFETIVADA.getDescricao().toLowerCase(new Locale(itemView.getContext().getResources().getString(R.string.pt),itemView.getContext().getResources().getString(R.string.br))))){
 			return true;
 		}
 		return false;

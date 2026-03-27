@@ -378,11 +378,11 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             validadePremioImg.setVisibility(View.GONE);
             if (isConcursoNaoApurado(aposta)) {
                 tvStatusCentralizado.setVisibility(TextView.VISIBLE);
-                tvStatusCentralizado.setText(R.string.label_concurso_nao_apurado);
+                tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.CONCURSO_NAO_APURADO.getDescricao().replace(" não", "\nnão"));
             }
             if (isApostaNaoPremiadaOuConcursoFuturo(aposta)) {
                 tvStatusCentralizado.setVisibility(TextView.VISIBLE);
-                tvStatusCentralizado.setText(R.string.label_aposta_nao_premiada);
+                tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.NAO_PREMIADA.getDescricao());
             }
             if (isApostaPremioPago(aposta)) {
                 tvStatusCentralizado.setVisibility(TextView.VISIBLE);
