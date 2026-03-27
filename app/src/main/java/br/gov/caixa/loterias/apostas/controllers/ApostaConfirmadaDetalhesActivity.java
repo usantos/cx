@@ -61,6 +61,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroTrevo;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTOResponse;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoResultadoBilheteEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.ConfiguracaoAppSingleton;
@@ -799,7 +800,7 @@ public class ApostaConfirmadaDetalhesActivity extends LoteriasBaseAppActivity im
                 Objects.equals(SituacaoResultadoBilheteEnum.PREMIADA_AINDA_CONCORRENDO.getValor(), situacao.getValor())) {
             getApostaDetalhePremio(aposta.getId(), this, comprovanteApostaDTO);
         }
-        if(!situacao.getDescricao().equalsIgnoreCase("Premiada")){
+        if(!(situacao.getValor() == SituacaoAposta.PREMIADA)){
             inibirTeim();
         }
     }
