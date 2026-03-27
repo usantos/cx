@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CotasBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumCharacter;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumInteger;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DTOEnumLong;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalheBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.EquipeDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmBolao;
@@ -29,6 +30,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotecaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.PartidaLotogolDTO;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.TipoConcursoEnum;
 
 public class ApostaUtils {
@@ -107,6 +109,14 @@ public class ApostaUtils {
 		aposta.setTimeDoCoracao(equipeSelecionada);
 
 		return aposta;
+	}
+
+	public static String descricaoCorrigida(DTOEnumLong situacao) {
+		if (situacao == null || situacao.getValor() == null) {
+			return "";
+		}
+		SituacaoAposta.EnumSituacaoAposta e = SituacaoAposta.EnumSituacaoAposta.fromCode(situacao.getValor().intValue());
+		return e != null ? e.getDescricao() : situacao.getDescricao();
 	}
 
 	public static IdentificaoDeUmaApostaDas8Modalidades getApostaDiaDeSorte(ParametroJogoDTO parametroJogo,
