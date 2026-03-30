@@ -382,7 +382,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
                 tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.CONCURSO_NAO_APURADO.getDescricao().replace(" não", "\nnão"));
             }
             else if (isApostaNaoPremiadaOuConcursoFuturo(aposta)) {
-                tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.NAO_PREMIADA.getDescricao());
+                tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.NAO_PREMIADA.getDescricao().replace(" não", "\nnão"));
             }
             else {
                 tvStatusCentralizado.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
