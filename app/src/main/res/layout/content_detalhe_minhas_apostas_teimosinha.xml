@@ -238,28 +238,16 @@
                     app:layout_constraintBottom_toBottomOf="parent">
 
                     <TextView
-                        android:id="@+id/tvlabelNoneLoterica"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvNomeLoterica"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/caixa_std_regular"
                         android:textColor="@color/black"
-                        android:text="@string/nome_loteria"
-                        android:textSize="18sp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-                    <TextView
-                        android:id="@+id/tvTextNoneLoterica"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/caixa_std_bold"
-                        android:textColor="@color/black"
-                        android:text="Boa Sorte"
-                        android:textSize="16sp"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginTop="2dp"
-                        app:layout_constraintTop_toTopOf="@+id/tvlabelNoneLoterica"
-                        app:layout_constraintStart_toEndOf="@+id/tvlabelNoneLoterica" />
 
                     <TextView
                         android:id="@+id/tvlabelCidadeUf"
@@ -270,7 +258,7 @@
                         android:text="@string/label_cidade_uf"
                         android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvlabelNoneLoterica" />
+                        app:layout_constraintTop_toBottomOf="@+id/tvNomeLoterica" />
 
                     <TextView
                         android:id="@+id/tvTextCidadeUf"
@@ -282,7 +270,7 @@
                         android:textSize="16sp"
                         android:layout_marginStart="4dp"
                         android:layout_marginTop="2dp"
-                        app:layout_constraintTop_toBottomOf="@+id/tvlabelNoneLoterica"
+                        app:layout_constraintTop_toBottomOf="@+id/tvNomeLoterica"
                         app:layout_constraintStart_toEndOf="@+id/tvlabelCidadeUf" />
 
                     <TextView

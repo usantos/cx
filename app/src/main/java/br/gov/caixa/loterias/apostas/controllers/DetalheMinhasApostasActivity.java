@@ -4,8 +4,12 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -46,10 +50,13 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UF;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.CustomTypefaceSpan;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.DetalhesMinhasApostasButtonHelper;
@@ -77,7 +84,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     private TextView statusApostaTxt, tv_val_premio, tv_val_premio_tit, tvStatusCentralizado;
     private TextView ResgatarPremioTxt, ResgatarPremioTxt2;
 
-    private TextView tvlabelNoneLoterica, tvTextNoneLoterica, tvlabelCidadeUf, tvTextCidadeUf, tvlabelValorCota, tvTextValorCota,
+    private TextView tvNomeLoterica, tvlabelCidadeUf, tvTextCidadeUf, tvlabelValorCota, tvTextValorCota,
                      tvlabelTarifa, tvTextTarifa, tvlabelCota, tvTextCota;
     private TextView validadePremioText, validadePremioLabel, gerarConprovanteTxt;
 
@@ -211,8 +218,8 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         tipoApostaLinhaView = findViewById(R.id.tipo_aposta_linha);
 
         clInformacoesBolao = findViewById(R.id.clInformacoesBolao);
-        tvlabelNoneLoterica = findViewById(R.id.tvlabelNoneLoterica);
-        tvTextNoneLoterica = findViewById(R.id.tvTextNoneLoterica);
+        //tvlabelNoneLoterica = findViewById(R.id.tvlabelNoneLoterica);
+        tvNomeLoterica = findViewById(R.id.tvNomeLoterica);
         tvlabelCidadeUf = findViewById(R.id.tvlabelCidadeUf);
         tvTextCidadeUf = findViewById(R.id.tvTextCidadeUf);
         tvlabelValorCota = findViewById(R.id.tvlabelValorCota);
@@ -331,8 +338,8 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         tvStatusCentralizado.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tv_val_premio.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
-        tvlabelNoneLoterica.setTextColor(getColor(estiloMKP.getCorFonteFundoEscuro()));
-        tvTextNoneLoterica.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        //tvlabelNoneLoterica.setTextColor(getColor(estiloMKP.getCorFonteFundoEscuro()));
+        tvNomeLoterica.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tvlabelCidadeUf.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tvTextCidadeUf.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tvlabelValorCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
@@ -400,7 +407,27 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             horaApostaTxt.setText(aposta.getReservaCotaBolao().getHoraRegistroBolao());
 
             clInformacoesBolao.setVisibility(View.VISIBLE);
-            tvTextNoneLoterica.setText(aposta.getReservaCotaBolao().getNumeroLoterica().getNome());
+
+            //tvNomeLoterica.setText(aposta.getReservaCotaBolao().getNumeroLoterica().getNome());
+            Typeface regular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface bold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+            String label = "Nome da Lotérica: ";
+            String valor = aposta.getReservaCotaBolao().getNumeroLoterica().getNome();
+            SpannableStringBuilder ssb = new SpannableStringBuilder();
+            // Label
+            int startLabel = 0;
+            ssb.append(label);
+            int endLabel = ssb.length();
+            ssb.setSpan(new CustomTypefaceSpan("", regular),startLabel,endLabel,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(new AbsoluteSizeSpan(18, true),startLabel,endLabel,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            // Valor
+            int startValor = ssb.length();
+            ssb.append(valor);
+            int endValor = ssb.length();
+            ssb.setSpan(new CustomTypefaceSpan("", bold),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(new AbsoluteSizeSpan(16, true),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvNomeLoterica.setText(ssb);
+
             tvTextCidadeUf.setText(StringUtils.capitalizerNovo(aposta.getReservaCotaBolao().getNumeroLoterica().getNomeMunicipio().trim()) + " - " + UF.siglaFromId(aposta.getReservaCotaBolao().getNumeroLoterica().getIdUF().intValue()));
 
             NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));

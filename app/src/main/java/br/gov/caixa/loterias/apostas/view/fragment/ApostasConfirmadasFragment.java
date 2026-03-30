@@ -607,8 +607,12 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
                         //SERVICO /apostas/{id}/comprovante-premio Informacao COMBO está errada
                         result.getPayload().getAposta().setCombo(apostaDTO.getCombo());
 
-                        if (result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0 || result.getPayload().getAposta().getIndicadorCotaBolao() ||
-                            result.getPayload().getAposta().getModalidade() != ModalidadeEnum.LOTECA) {
+                        boolean isTeimosinha = result.getPayload().getAposta().getQuantidadeTeimosinhas() > 0;
+                        boolean isBolao = result.getPayload().getAposta().getIndicadorCotaBolao();
+                        boolean isSimples = !isTeimosinha && !isBolao;
+                        boolean isLoteca = result.getPayload().getAposta().getModalidade() == ModalidadeEnum.LOTECA;
+
+                        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
                             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
                                     ApostaConfirmadaDetalhesActivity.ARG_DETALHES_PREMIO, result.getPayload());
                             startActivity(intent);
@@ -657,8 +661,13 @@ public class ApostasConfirmadasFragment extends Fragment implements MinhasAposta
     }
 
     private void startDetalheComprovante(ComprovanteApostaDTO comprovante) {
-        if (comprovante.getAposta().getQuantidadeTeimosinhas() > 0 ||  comprovante.getAposta().getIndicadorCotaBolao()  ||
-                comprovante.getAposta().getModalidade() != ModalidadeEnum.LOTECA) {
+
+        boolean isTeimosinha = comprovante.getAposta().getQuantidadeTeimosinhas() > 0;
+        boolean isBolao = comprovante.getAposta().getIndicadorCotaBolao();
+        boolean isSimples = !isTeimosinha && !isBolao;
+        boolean isLoteca = comprovante.getAposta().getModalidade() == ModalidadeEnum.LOTECA;
+
+        if (isTeimosinha || (isBolao && !isLoteca) || (isSimples && !isLoteca)) {
             Intent intent = IntentUtil.getIntentOrigemDestino(getActivity(), DetalheMinhasApostasActivity.class,
                     ApostaConfirmadaDetalhesActivity.ARG_COMPROVANTE, comprovante);
             startActivity(intent);
