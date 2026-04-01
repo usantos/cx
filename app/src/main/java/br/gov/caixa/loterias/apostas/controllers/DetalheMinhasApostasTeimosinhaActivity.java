@@ -339,24 +339,39 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         concursoTxt.setVisibility(View.VISIBLE);
         concursoTxt.setText(aposta.getConcursoInicial().toString());
 
+        //Apenas para acessibilidade
+        concursoLabel.setContentDescription(aposta.getConcursoInicial().toString());
+
         if (aposta.getQuantidadeTeimosinhas() == 0) {
             quantidadeApostadasTxt.setVisibility(View.GONE);
         } else {
+            String accessibilityContent = getString(R.string.concursos) + aposta.getConcursoInicial().toString() + " - " +
+                    (aposta.getConcursoInicial()+aposta.getQuantidadeTeimosinhas()-1);
+
             concursoTxt.setText(aposta.getConcursoInicial().toString() + " - " +
                     (aposta.getConcursoInicial()+aposta.getQuantidadeTeimosinhas()-1));
 
             quantidadeApostadasTxt.setVisibility(View.VISIBLE);
             if (aposta.getQuantidadeTeimosinhas() == 1) {
                 quantidadeApostadasTxt.setText("("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_aposta)+")");
+                accessibilityContent = accessibilityContent + "("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_aposta)+")";
             } else {
                 quantidadeApostadasTxt.setText("("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_apostas)+")");
+                accessibilityContent = accessibilityContent + "("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_apostas)+")";
             }
+
+            //Apenas para acessibilidade
+            concursoLabel.setContentDescription(accessibilityContent);
         }
 
+        //Apenas para acessibilidade
+        String betDateAccessibilityContent = getString(R.string.contest_date) + aposta.getDataEfetivacao() + " " + StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao());
+        dataAposta.setContentDescription(betDateAccessibilityContent);
         //dataApostaTxt.setVisibility(View.VISIBLE);
         dataApostaTxt.setText(aposta.getDataEfetivacao());
         //horaApostaTxt.setVisibility(View.VISIBLE);
         horaApostaTxt.setText(StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao()));
+
 
         if (isApostaPremiada(aposta) && detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null){
             statusApostaTxt.setVisibility(View.VISIBLE);
@@ -364,6 +379,10 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             tv_val_premio_tit.setVisibility(TextView.VISIBLE);
             tv_val_premio.setVisibility(TextView.VISIBLE);
             tv_val_premio.setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
+
+            //Apenas para acessibilidade
+            statusApostaTxt.setContentDescription(statusApostaTxt.getText() + " " + tv_val_premio_tit.getText() + " " + tv_val_premio.getText());
+
             clResgatePremio.setVisibility(View.VISIBLE);
             validadePremioText.setVisibility(View.VISIBLE);
             validadePremioLabel.setVisibility(View.VISIBLE);

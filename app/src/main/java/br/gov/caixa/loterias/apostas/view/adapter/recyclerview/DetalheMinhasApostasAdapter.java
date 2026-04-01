@@ -11,8 +11,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,15 +28,17 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ItemMinhasApostasDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.Shape;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
-import br.gov.caixa.loterias.apostas.utils.SituacaoCompraUtil;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMinhasApostasAdapter.ViewHolder> {
 
+    public static final int ADAPTER_SIZE = 1;
     private final List<ItemMinhasApostasDTO> items;
     private final Context context;
 
     private EstiloModalidadeMKP estilo;
+
+    private static final String CONST_WIDGET = "android.widget.ExpandableListView";
 
     public DetalheMinhasApostasAdapter(Context context, List<ItemMinhasApostasDTO> items) {
         this.context = context;
@@ -52,6 +59,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         ItemMinhasApostasDTO item = items.get(position);
 
         boolean isExpanded = item.isExpanded();
+        handleAccessibility(items.size(), item.isExpanded(),holder.itemView);
         holder.contentlayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.ivExpandCollapse.setRotation(isExpanded ? 180 : 0);
         holder.ivExpandCollapse.setColorFilter(context.getColor(estilo.getCorFonteFundoEscuro()));
@@ -112,6 +120,9 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             holder.tvLabelAcertos.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
             holder.tvAcertos.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
             holder.tvAcertos.setText(montaDescricaoAcertos(item)[0]);
+
+            //Accessibility
+            holder.tvLabelAcertos.setContentDescription(holder.tvLabelAcertos.getText()+ " " + holder.tvAcertos.getText());
 
             if (item.getValorPremio() != null) {
                 holder.llPremio.setVisibility(View.VISIBLE);
@@ -180,6 +191,9 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                     holder.tvAcertos1.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
                     holder.tvAcertos1.setText(montaDescricaoAcertos(item)[1]);
 
+                    //Accessibility
+                    holder.tvLabelAcertos1.setContentDescription(holder.tvLabelAcertos1.getText() + " " + holder.tvAcertos1.getText());
+
                     setupGridNumeros(holder.rvNumberSortedos, Shape.NO_SHAPE, 6, item.getNumerosSorteados(), context.getColor(estilo.getCorFonteFundoEscuro()), Color.TRANSPARENT, Color.TRANSPARENT);
                     setupGridNumeros(holder.rvNumberSortedos2, Shape.NO_SHAPE, 6, item.getNumerosSorteados2(), context.getColor(estilo.getCorFonteFundoEscuro()), Color.TRANSPARENT, Color.TRANSPARENT);
                     setupGridNumerosWithIntersection(holder.rvMeusNumeros, Shape.CIRCULO, 6, item.getSeusNumeros(), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorEscura()),
@@ -231,6 +245,30 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                             item.getNumerosSorteados(), context.getColor(estilo.getCorEscura()), context.getColor(estilo.getCorFonteFundoEscuro()), context.getColor(estilo.getCorFonteFundoEscuro()));
                     break;
             }
+        }
+    }
+
+    private void handleAccessibility(int size, boolean expanded, View itemView) {
+        //Aciona acessibilidade como expandable somente se houver mais de um item no adapter
+        if (size > ADAPTER_SIZE) {
+            ViewCompat.setAccessibilityDelegate(itemView, new AccessibilityDelegateCompat(){
+                @Override
+                public void onInitializeAccessibilityNodeInfo(@NotNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+                    super.onInitializeAccessibilityNodeInfo(host, info);
+
+                    info.setClassName(CONST_WIDGET);
+
+                    if (expanded) {
+                        info.setContentDescription(context.getString(R.string.expandablelistview_expanded_text));
+                    } else {
+                        info.setContentDescription(context.getString(R.string.expandablelistview_retracted_text));
+                    }
+
+//                String text = expanded?context.getString(R.string.expandablelistview_retracted):context.getString(R.string.expandablelistview_expanded);
+//                info.addAction(new AccessibilityNodeInfoCompat
+//                        .AccessibilityActionCompat(AccessibilityNodeInfoCompat.ACTION_CLICK, text));
+                }
+            });
         }
     }
 

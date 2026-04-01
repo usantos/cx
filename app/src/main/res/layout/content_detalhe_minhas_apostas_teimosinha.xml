@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -33,6 +32,8 @@
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
+                    android:focusable="true"
+                    android:importantForAccessibility="yes"
                     android:id="@+id/concursoLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -45,25 +46,27 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
+                    android:importantForAccessibility="no"
                     android:id="@+id/concursoTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/caixa_std_regular"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:text="1234 - 4321"
+                    android:text="@string/contest_example"
                     android:visibility="invisible"
                     app:layout_constraintTop_toBottomOf="@id/concursoLabel"
                     app:layout_constraintStart_toStartOf="@id/concursoLabel" />
 
                 <TextView
+                    android:importantForAccessibility="no"
                     android:id="@+id/quantidadeApostadasTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/caixa_std_regular"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:text="(24 apostas)"
+                    android:text="@string/contest_bet"
                     android:layout_marginStart="6dp"
                     android:visibility="invisible"
                     app:layout_constraintStart_toEndOf="@+id/concursoTxt"
@@ -81,6 +84,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/quantidadeApostadasTxt">
 
                     <TextView
+                        android:focusable="true"
+                        android:importantForAccessibility="yes"
                         android:id="@+id/dataAposta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -95,11 +100,12 @@
                         />
 
                     <TextView
+                        android:importantForAccessibility="no"
                         android:id="@+id/dataApostaTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/caixa_std_regular"
-                        android:text="01/01/2026"
+                        android:text="@string/contest_timestamp_example"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:visibility="visible"
@@ -107,11 +113,12 @@
                         app:layout_constraintTop_toBottomOf="@id/dataAposta" />
 
                     <TextView
+                        android:importantForAccessibility="no"
                         android:id="@+id/horaApostaTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/caixa_std_regular"
-                        android:text="11h20"
+                        android:text="@string/contest_timestamp_example_hour"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:visibility="visible"
@@ -129,11 +136,12 @@
                         app:layout_constraintStart_toEndOf="@+id/dataApostaTxt" />
 
                     <TextView
+                        android:importantForAccessibility="yes"
                         android:id="@+id/statusApostaTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/caixa_std_bold"
-                        android:text="Aguardando"
+                        android:text="@string/contest_example_waiting"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginStart="20dp"
@@ -142,6 +150,8 @@
                         app:layout_constraintStart_toEndOf="@id/divider" />
 
                     <TextView
+                        android:focusable="true"
+                        android:importantForAccessibility="yes"
                         android:id="@+id/tvStatusCentralizado"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -156,6 +166,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
                     <TextView
+                        android:importantForAccessibility="no"
                         android:id="@+id/tv_val_premio_tit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -169,6 +180,7 @@
                         app:layout_constraintTop_toTopOf="@+id/dataApostaTxt" />
 
                     <TextView
+                        android:importantForAccessibility="no"
                         android:id="@+id/tv_val_premio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -184,6 +196,10 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:contentDescription="@string/button_get_reward"
+                    android:focusable="true"
+                    android:importantForAccessibility="yes"
+                    android:clickable="true"
                     android:id="@+id/clResgatePremio"
                     android:layout_width="246dp"
                     android:layout_height="44dp"
@@ -197,6 +213,7 @@
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <LinearLayout
+                        android:importantForAccessibility="no"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -207,12 +224,14 @@
                         app:layout_constraintBottom_toBottomOf="parent">
 
                         <ImageView
+                            android:importantForAccessibility="no"
                             android:id="@+id/ivResgatePremio"
                             android:layout_width="17dp"
                             android:layout_height="17dp"
                             android:src="@drawable/ic_resgatar_premio" />
 
                         <TextView
+                            android:importantForAccessibility="no"
                             android:id="@+id/ResgatarPremioTxt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -272,6 +291,10 @@
                 app:layout_constraintTop_toBottomOf="@id/rv_accordion_teimosinha">
 
                 <ImageView
+                    android:contentDescription="@string/contest_reward_valid_time"
+                    android:importantForAccessibility="yes"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:id="@+id/validadePremioImage"
                     android:layout_width="25dp"
                     android:layout_height="28dp"
@@ -284,6 +307,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
+                    android:importantForAccessibility="no"
                     android:id="@+id/validadePremioLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -298,6 +322,7 @@
                     app:layout_constraintStart_toEndOf="@id/validadePremioImage" />
 
                 <TextView
+                    android:importantForAccessibility="no"
                     android:id="@+id/validadePremioText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -325,6 +350,10 @@
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <LinearLayout
+                        android:contentDescription="@string/button_get_reward"
+                        android:importantForAccessibility="yes"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -335,11 +364,13 @@
                         app:layout_constraintBottom_toBottomOf="parent">
 
                         <ImageView
+                            android:importantForAccessibility="no"
                             android:id="@+id/ivResgatePremio2"
                             android:layout_width="17dp"
                             android:layout_height="17dp"
                             android:src="@drawable/ic_resgatar_premio"/>
                         <TextView
+                            android:importantForAccessibility="no"
                             android:id="@+id/ResgatarPremioTxt2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -366,6 +397,10 @@
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <LinearLayout
+                        android:contentDescription="@string/button_generate_receipt"
+                        android:importantForAccessibility="yes"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -376,6 +411,7 @@
                         app:layout_constraintBottom_toBottomOf="parent">
 
                         <ImageView
+                            android:importantForAccessibility="no"
                             android:id="@+id/ivImageDownload"
                             android:layout_width="17dp"
                             android:layout_height="17dp"
@@ -383,6 +419,7 @@
                             />
 
                         <TextView
+                            android:importantForAccessibility="no"
                             android:id="@+id/gerarConprovanteTxt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -421,6 +458,8 @@
             android:id="@+id/editarApostaBtn"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -452,6 +491,8 @@
 
         <RelativeLayout
             android:id="@+id/carrinhoApostasBtn"
+            android:clickable="true"
+            android:focusable="true"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -504,6 +545,8 @@
             android:layout_weight="1">
 
             <RelativeLayout
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/favoritadoLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -616,6 +659,8 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/adicionarCarrinhoBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
