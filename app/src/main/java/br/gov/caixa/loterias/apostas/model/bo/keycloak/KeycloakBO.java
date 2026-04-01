@@ -106,6 +106,23 @@ public class KeycloakBO {
         return false;
     }
 
+    public boolean isAccessTokenExpirado() {
+        if (getAccessToken() == null) return true;
+
+        try {
+            String expStr = getExpToken();
+            if (expStr == null || expStr.isEmpty()) return true;
+
+            long exp = Long.parseLong(expStr);
+            long now = System.currentTimeMillis() / 1000L;
+
+            return exp <= now;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+
     public String getExpToken() {
         return getFromToken("exp");
     }
