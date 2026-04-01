@@ -29,9 +29,10 @@ public abstract class LoteriasBaseAppActivity extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 
-		if (this instanceof LoginActivity
-				|| this instanceof TokenActivity
-				|| this instanceof SplashScreenActivity) return;
+		if (this instanceof LoginActivity) return;
+		if (this instanceof TokenActivity) return;
+		if (this instanceof SplashScreenActivity) return;
+
 
 		if (AppState.wasInBackground) {
 			AppState.wasInBackground = false;
