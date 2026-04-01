@@ -419,17 +419,21 @@ public class FiltraMarketplaceActivity extends LoteriasAppMarketPlaceActivity {
 
     private void abreActivityQueroNaoQuero(String argQueroNaoQuero){
 
-        ArrayList<Integer> dezenasQuero = new ArrayList<>(dezenasSelecionadasQuero);
-        ArrayList<Integer> dezenasNaoQuero = new ArrayList<>(dezenasSelecionadasNaoQuero);
+        try {
+            ArrayList<Integer> dezenasQuero = new ArrayList<>(dezenasSelecionadasQuero);
+            ArrayList<Integer> dezenasNaoQuero = new ArrayList<>(dezenasSelecionadasNaoQuero);
 
-        Bundle args = new Bundle();
-        args.putString(ARG_TITULO_QUERO_NAO_QUERO, argQueroNaoQuero);
-        args.putIntegerArrayList(ARG_DEZENAS_QUERO, dezenasQuero);
-        args.putIntegerArrayList(ARG_DEZENAS_NAO_QUERO, dezenasNaoQuero);
-        args.putInt(ARG_QTD_MAX_PROGNOSTICOS, prognosticoMaximo);
-        Intent intent = IntentUtil.getIntentOrigemDestino(FiltraMarketplaceActivity.this, QueroNaoQueroActivity.class);
-        intent.putExtras(args);
-        IntentUtil.startActivityForResult(launcher, intent);
+            Bundle args = new Bundle();
+            args.putString(ARG_TITULO_QUERO_NAO_QUERO, argQueroNaoQuero);
+            args.putIntegerArrayList(ARG_DEZENAS_QUERO, dezenasQuero);
+            args.putIntegerArrayList(ARG_DEZENAS_NAO_QUERO, dezenasNaoQuero);
+            args.putInt(ARG_QTD_MAX_PROGNOSTICOS, prognosticoMaximo);
+            Intent intent = IntentUtil.getIntentOrigemDestino(FiltraMarketplaceActivity.this, QueroNaoQueroActivity.class);
+            intent.putExtras(args);
+            IntentUtil.startActivityForResult(launcher, intent);
+        }catch (Exception e){
+
+        }
     }
 
     private OnItemClickListener onItemClickListenerModalidade() {
