@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametrosSimulacao;
 import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
+import br.gov.caixa.loterias.apostas.utils.AlertDialogExperimenteLogarSingleton;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
@@ -407,10 +408,18 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                                                                dialog.dismiss();
                                                            },
                                                            (dialog, which) -> {
-                                                               validarCarrinho();
+                                                               if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+                                                                   validarCarrinho();
+                                                               } else {
+                                                                   AlertDialogExperimenteLogarSingleton.show(this, true, null);
+                                                               }
                                                            });
             } else {
-                validarCarrinho();
+                if (DadosUsuarioBO.checarUsuarioLogado(this)) {
+                    validarCarrinho();
+                } else{
+                    AlertDialogExperimenteLogarSingleton.show(this, true, null);
+                }
             }
         } catch (Exception e){}
     }
