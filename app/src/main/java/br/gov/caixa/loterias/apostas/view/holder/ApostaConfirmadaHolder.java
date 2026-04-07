@@ -179,7 +179,8 @@ public class ApostaConfirmadaHolder extends LoteriasHolder<ApostaDTO> implements
 
 		if (listTipoApostaLinha.size() > 0) {
 			tipoApostaLinhaView.setVisibility(View.VISIBLE);
-			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha_clara, R.color.cinzaescuro, iconColorRes, TipoApostaLinhaView.TriangleDirection.UP);
+			//tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha_clara, R.color.cinzaescuro, iconColorRes, TipoApostaLinhaView.TriangleDirection.UP);
+			tipoApostaLinhaView.setupView(listTipoApostaLinha, R.color.bolao_linha_clara, R.color.cinzaescuro, R.color.cinzaescuro, TipoApostaLinhaView.TriangleDirection.UP);
 		}
 	}
 
