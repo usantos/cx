@@ -26,6 +26,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.DetalhesPremioDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheApostaConfirmadaLotecaAdapter;
@@ -99,7 +100,7 @@ public class ApostaConfirmadaPartidaDetalhesFragment extends ApostaConfirmadaDet
 		} else {
 			dataHoraTextView.setText(aposta.getDataEfetivacao() + getResources().getString(R.string.barra_n) + aposta.getHoraEfetivacao());
 		}
-		statusApostaTextView.setText(aposta.getSituacao().getDescricao());
+		statusApostaTextView.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
 
 		if (aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO || isApostaPremiada(aposta)) {
 
@@ -115,7 +116,7 @@ public class ApostaConfirmadaPartidaDetalhesFragment extends ApostaConfirmadaDet
 				buscaDetalhePremio(aposta.getId(), onBuscaDetalhePremioListener());
 			}
 			if (isApostaPremiada(aposta)){
-				statusApostaTextView.setText(aposta.getSituacao().getDescricao());
+				statusApostaTextView.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
 				clResgatePremio.setVisibility(View.VISIBLE);
 				cl_premio_pago.setVisibility(View.GONE);
 				statusApostaTextView.setVisibility(View.VISIBLE);
@@ -125,7 +126,7 @@ public class ApostaConfirmadaPartidaDetalhesFragment extends ApostaConfirmadaDet
 				statusApostaTextView.setVisibility(View.GONE);
 			}
 		} else {
-			statusApostaTextView.setText(aposta.getSituacao().getDescricao());
+			statusApostaTextView.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
 		}
 
 		initList();

@@ -59,6 +59,7 @@ public class CadastrarActivity extends CadastroActivity {
     private TextView textViewTituloCadastrar2, termoPolitica;
     private ArrayList<String> listUFString, listMunicipios;
     private AppCompatCheckBox aceiteTermo;
+    private AppCompatCheckBox aceiteNotificacoes;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +116,7 @@ public class CadastrarActivity extends CadastroActivity {
         this.textViewTituloCadastrar2 = findViewById(R.id.textViewTituloCadastrar2);
         this.termoPolitica = findViewById(R.id.termoPolitica);
         this.aceiteTermo = findViewById(R.id.aceiteTermo);
+        this.aceiteNotificacoes = findViewById(R.id.aceiteNotificacoes);
         this.naoSeiCepButton = findViewById(R.id.naoSeiCep);
     }
 
@@ -213,6 +215,12 @@ public class CadastrarActivity extends CadastroActivity {
             ViewUtils.alertTitulo(CadastrarActivity.this, R.string.label_atencao, this.getResources().getString( R.string.termos_nao_aceitos ));
             return false;
         }
+        if(aceiteNotificacoes.isChecked()){
+            cadastrarApostadorDTO.setAceitaReceberNoticias(Boolean.TRUE);
+        } else{
+            cadastrarApostadorDTO.setAceitaReceberNoticias(Boolean.FALSE);
+        }
+
         String campos = getResources().getString(R.string.string_vazia);
 
         if (StringUtils.isEmpty(AppUtils.removeMasckCPF(editTextCpfContent.getText().toString()))) {

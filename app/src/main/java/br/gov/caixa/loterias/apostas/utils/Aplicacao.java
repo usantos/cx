@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
@@ -42,6 +43,12 @@ public class Aplicacao extends MultiDexApplication {
         application = this;
         registerActivityLifecycleCallbacks(new br.gov.caixa.loterias.apostas.utils.ActivityLifecycleCallbacks());
         DeviceSDK.getInstance().execute(this);
+
+        ProcessLifecycleOwner
+                .get()
+                .getLifecycle()
+                .addObserver(new AppLifecycleObserver());
+
 
     }
 

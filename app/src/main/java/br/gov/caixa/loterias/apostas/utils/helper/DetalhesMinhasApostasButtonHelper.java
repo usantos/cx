@@ -78,7 +78,7 @@ public class DetalhesMinhasApostasButtonHelper {
         sessaoUsuario = SessaoUsuario.getInstance();
     }
 
-    public void setupButtonListeners() {
+    public void setupButtonListeners(boolean isBolao) {
         ConstraintLayout clResgatePremio = activity.findViewById(R.id.clResgatePremio);
         ConstraintLayout clResgatePremio2 = activity.findViewById(R.id.clResgatePremio2);
         RelativeLayout carrinhoApostasBtn = activity.findViewById(R.id.carrinhoApostasBtn);
@@ -93,6 +93,13 @@ public class DetalhesMinhasApostasButtonHelper {
 
         layoutnomeApostaLayout  = activity.findViewById(R.id.layoutnomeApostaLayout);
         nomeApostaEditTxt = activity.findViewById(R.id.nomeApostaEditTxt);
+
+        if (isBolao) {
+            adicionarCarrinhoBtn.setVisibility(View.GONE);
+            favoriteBtn.setVisibility(View.GONE);
+            favoritadoLayout.setVisibility(View.GONE);
+            editarApostaBtn.setVisibility(View.GONE);
+        }
 
         clResgatePremio.setOnClickListener(v-> startResgateActivity());
         clResgatePremio2.setOnClickListener(v-> startResgateActivity());

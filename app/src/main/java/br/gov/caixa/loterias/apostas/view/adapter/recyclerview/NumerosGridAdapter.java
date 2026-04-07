@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -31,6 +32,8 @@ public class NumerosGridAdapter extends RecyclerView.Adapter<NumerosGridAdapter.
     private int intersectionBackgroudColor;
     private boolean intersectionS7;
 
+    private Context context;
+
     public NumerosGridAdapter(Shape shape, List<String> numbers, int textColor, int borderColor, int backgroudColor) {
         this.shape = shape;
         this.numbers = numbers;
@@ -60,6 +63,7 @@ public class NumerosGridAdapter extends RecyclerView.Adapter<NumerosGridAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
+        context = parent.getContext();
         int layoutId;
         switch (shape) {
             case CIRCULO:
@@ -94,6 +98,8 @@ public class NumerosGridAdapter extends RecyclerView.Adapter<NumerosGridAdapter.
         }
 
         if (isIntersection) {
+            //Accessibility
+            holder.textView.setContentDescription(number + context.getString(R.string.txt_rewarded));
             holder.textView.setTextColor(intersectionTextColor);
         } else {
             holder.textView.setTextColor(textColor);
@@ -108,6 +114,8 @@ public class NumerosGridAdapter extends RecyclerView.Adapter<NumerosGridAdapter.
                 background.setColor(currentBackgroundColor);
             } else {
                 if (isIntersection) {
+                    //Apenas para acessibilidade
+                    holder.textView.setContentDescription(holder.textView.getText() + context.getString(R.string.txt_rewarded));
                     holder.textView.setBackgroundResource(R.drawable.ic_item_trevo_selecionado);
                 } else {
                     holder.textView.setBackgroundResource(R.drawable.ic_item_trevo_branco);

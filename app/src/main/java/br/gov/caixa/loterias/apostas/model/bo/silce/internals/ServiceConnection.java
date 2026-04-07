@@ -182,7 +182,8 @@ public class ServiceConnection {
         if (baseUrl.endsWith("/")) {
             baseSemBarra = baseUrl.substring(0,baseUrl.length() -1);
         }
-        ServicoNuvemUtil.apresentaCaminhoTQS(baseSemBarra + path + fillParamToString(queryParams));
+        //Bloqueadada Não mais necessaria (*** Messaging ***)
+        //ServicoNuvemUtil.apresentaCaminhoTQS(baseSemBarra + path + fillParamToString(queryParams));
         return baseSemBarra + path + fillParamToString(queryParams);
     }
 
