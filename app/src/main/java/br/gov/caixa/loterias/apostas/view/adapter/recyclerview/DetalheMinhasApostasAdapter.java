@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -63,48 +62,50 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         desabilitaTodos(holder);
 
         boolean isExpanded = item.isExpanded();
-        handleAccessibility(items.size(), item.isExpanded(),holder.itemView);
-        holder.contentlayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        handleAccessibility(items.size(), item.isExpanded(), holder.itemView);
+        //holder.contentlayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.ivExpandCollapse.setRotation(isExpanded ? 180 : 0);
         holder.ivExpandCollapse.setColorFilter(context.getColor(estilo.getCorFonteFundoEscuro()));
 
 
-        if(!item.isApurado()) {
-            holder.headerlayout.setVisibility(View.GONE);
-            holder.contentlayout.setVisibility(View.VISIBLE);
+        //if (!item.isApurado()) {
+            //holder.headerlayout.setVisibility(View.GONE);
+            //holder.contentlayout.setVisibility(View.VISIBLE);
             desabilitaTodos(holder);
 
-        isExpanded = item.isExpanded();
+            isExpanded = item.isExpanded();
 
-        //if(!item.isApurado()) {
-        if(!item.isTemAcordeon()) {
-            if (item.getNumerosSorteados() == null) {
-                montaAcordeonCorpoSemResultado(holder, item);
-            } else {
-                montaAcordeonCorpo(holder, item);
+            //if(!item.isApurado()) {
+            if (!item.isTemAcordeon()) {
+                if (item.getNumerosSorteados() == null) {
+                    montaAcordeonCorpoSemResultado(holder, item);
+                } else {
+                    montaAcordeonCorpo(holder, item);
+                }
+                return;
             }
-            return;
-        }
 
-        if (item.isBolao()) {
-            montaAcordeonCabecaBolao(holder, position, item);
-        } else {
-            montaAcordeonCabeca(holder, position, item);
-        }
-
-        if (isExpanded) {
-            if (item.getNumerosSorteados() == null) {
-                montaAcordeonCorpoSemResultado(holder, item);
+            if (item.isBolao()) {
+                montaAcordeonCabecaBolao(holder, position, item);
             } else {
-                montaAcordeonCorpo(holder, item);
+                montaAcordeonCabeca(holder, position, item);
             }
-        }
+
+            if (isExpanded) {
+                if (item.getNumerosSorteados() == null) {
+                    montaAcordeonCorpoSemResultado(holder, item);
+                } else {
+                    montaAcordeonCorpo(holder, item);
+                }
+            }
+//        }
     }
 
     @Override
     public int getItemCount() {
         return items.size();
     }
+
     private void desabilitaTodos(ViewHolder holder) {
         holder.clAcordeonCorpo.setVisibility(View.GONE);
         holder.clAcordeonCabeca.setVisibility(View.GONE);
@@ -446,17 +447,13 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
-
     private void setupGridNumeros(RecyclerView recyclerView, Shape shape, int columns,  List<String> numbers,int textColor, int borderColor, int backgroudColor) {
         recyclerView.setLayoutManager(new GridLayoutManager(context, columns));
         recyclerView.setNestedScrollingEnabled(false);
         NumerosGridAdapter adapter = new NumerosGridAdapter(shape, numbers, textColor, borderColor, backgroudColor);
         recyclerView.setAdapter(adapter);
     }
+
     private void setupGridNumerosWithIntersection(RecyclerView recyclerView, Shape shape,  int columns, List<String> numbers, int textColor, int borderColor, int backgroudColor,
                                                   List<String> intersectionNumbers, int intersectionTextColor, int intersectionBorderColor, int intersectionBackgroudColor) {
         recyclerView.setLayoutManager(new GridLayoutManager(context, columns));
@@ -465,6 +462,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                 intersectionNumbers, intersectionTextColor, intersectionBorderColor, intersectionBackgroudColor);
         recyclerView.setAdapter(adapter);
     }
+
     private void setupGridNumerosWithIntersectionS7(RecyclerView recyclerView, Shape shape,  int columns, List<String> numbers, int textColor, int borderColor, int backgroudColor,
                                                   List<String> intersectionNumbers, int intersectionTextColor, int intersectionBorderColor, int intersectionBackgroudColor) {
         recyclerView.setLayoutManager(new GridLayoutManager(context, columns));
@@ -603,4 +601,5 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             vDivisorTrevo = itemView.findViewById(R.id.divisor_trevo);
         }
     }
+
 }
