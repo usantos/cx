@@ -34,6 +34,7 @@ import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaMesDeSorte;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaParametroEquipe;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLoteca;
 import br.gov.caixa.loterias.apostas.model.dao.tabela.TabelaPartidaLotogol;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 
 /**
@@ -268,7 +269,7 @@ public class DBLoteriasCrud {
                 if (aposta.getSituacao() != null) {
 
                     values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SITUACAO_VALOR, aposta.getSituacao().getValor());
-                    values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SITUACAO_DESCRICAO, aposta.getSituacao().getDescricao());
+                    values.put(TabelaIdentificaoDeUmaApostaDas8Modalidades.COLUNA_SITUACAO_DESCRICAO, ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
                 }
 
                 return db.insert(TabelaIdentificaoDeUmaApostaDas8Modalidades.NOME_TABELA, null, values);

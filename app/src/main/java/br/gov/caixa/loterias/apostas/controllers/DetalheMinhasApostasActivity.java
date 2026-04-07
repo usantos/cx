@@ -53,6 +53,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UF;
 import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.CustomTypefaceSpan;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
@@ -460,7 +461,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
         if (isApostaPremiada(aposta) && detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null){
             statusApostaTxt.setVisibility(View.VISIBLE);
-            statusApostaTxt.setText(aposta.getSituacao().getDescricao());
+            statusApostaTxt.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
             tv_val_premio_tit.setVisibility(TextView.VISIBLE);
             tv_val_premio.setVisibility(TextView.VISIBLE);
             tv_val_premio.setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
@@ -480,17 +481,15 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             validadePremioText.setVisibility(View.GONE);
             validadePremioLabel.setVisibility(View.GONE);
             validadePremioImg.setVisibility(View.GONE);
+            tvStatusCentralizado.setVisibility(TextView.VISIBLE);
             if (isConcursoNaoApurado(aposta)) {
-                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
-                tvStatusCentralizado.setText(R.string.label_concurso_nao_apurado);
+                tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.CONCURSO_NAO_APURADO.getDescricao().replace(" não", "\nnão"));
             }
-            if (isApostaNaoPremiadaOuConcursoFuturo(aposta)) {
-                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
-                tvStatusCentralizado.setText(R.string.label_aposta_nao_premiada);
+            else if (isApostaNaoPremiadaOuConcursoFuturo(aposta)) {
+                tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.NAO_PREMIADA.getDescricao().replace(" não", "\nnão"));
             }
-            if (isApostaPremioPago(aposta)) {
-                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
-                tvStatusCentralizado.setText(R.string.label_aposta_premio_pago);
+            else {
+                tvStatusCentralizado.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
             }
         }
     }
@@ -550,9 +549,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     private boolean isApostaNaoPremiadaOuConcursoFuturo(IdentificaoDeUmaApostaDas8Modalidades aposta) {
         return aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA ||
                aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA_CONCORRENDO_A_CONCURSO_FUTURO;
-    }
-    private boolean isApostaPremioPago(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        return aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO;
     }
     private boolean isEspecial(String tipoConcurso){
         return tipoConcurso.equalsIgnoreCase("2");
