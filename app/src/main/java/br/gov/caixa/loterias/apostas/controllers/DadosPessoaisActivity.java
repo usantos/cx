@@ -1,14 +1,17 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -31,6 +34,7 @@ import java.util.Locale;
 import br.gov.caixa.loterias.apostas.LoteriasBaseAppActivity;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.SessaoUsuario;
+import br.gov.caixa.loterias.apostas.model.bo.BiometriaBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosCorporativosSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.DadosUsuarioBO;
 import br.gov.caixa.loterias.apostas.model.bo.MensagensNetwork;
@@ -59,7 +63,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     private TextView validaLimiteMinContent, validaLimiteMaxContent;
     private MaskedEditText editTextCpfContent, editTextCepContent;
     private SegmentedButtonGroup segmentedButtonSexo;
-    private Button updateDadosPesoaisButton, naoSeiCepButton, updateDadosPessoaisLimiteButton;
+    private Button updateDadosPessoaisButton, naoSeiCepButton, updateDadosPessoaisLimiteButton;
 
     private List<String> listUFString, listMunicipios, listBairros;
     private List<MunicipioDTO> municipioDTOList;
@@ -68,6 +72,10 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
     protected String municipioSelect;
     protected MunicipioIdDTO municipioIdDTOSelect;
     private ApostadorDTO apostadorDTO;
+    private Switch notificacaoSwitch;
+    private LinearLayout containerNotificacoes;
+    private Boolean telaRenderizada = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +126,11 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         validaLimiteMinContent = findViewById( R.id.txt_valida_limite_min );
         validaLimiteMaxContent = findViewById( R.id.txt_valida_limite_max );
         segmentedButtonSexo = findViewById( R.id.segmentedButtonSexo );
-        updateDadosPesoaisButton = findViewById( R.id.updateDadosPesoaisButton );
+        updateDadosPessoaisButton = findViewById( R.id.updateDadosPesoaisButton );
         naoSeiCepButton = findViewById(R.id.naoSeiCep);
         updateDadosPessoaisLimiteButton = findViewById( R.id.updateDadosPessoaisLimiteButton );
+        notificacaoSwitch = findViewById(R.id.notificacao_switch);
+        containerNotificacoes = findViewById(R.id.containerNotificacoes);
 
         Toolbar toolbar = findViewById( R.id.toolbar );
         TextView subtitleToolbar = findViewById( R.id.subtitleToolbar );
@@ -134,6 +144,8 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         //setTitle( ViewUtils.textFuturaAndFuturaBoldTitle( this, getTitle().toString() ) );
         setTitle( ViewUtils.textCaixaSTDBoldTitle( this, getTitle().toString() ) );
         subtitleToolbar.setText( getResources().getString(R.string.seus_dados_pessoais) );
+        atualizarDescricaoNotificacoes(containerNotificacoes, notificacaoSwitch.isChecked());
+
     }
 
     private void setaMetodos() {
@@ -143,7 +155,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         editTextUFContent.setClickable(false);
         //editTextUFContent.setOnClickListener(v -> getUFS());
 
-        updateDadosPesoaisButton.setOnClickListener(view -> {
+        updateDadosPessoaisButton.setOnClickListener(view -> {
             if (validarCamposObrigatorios()){
                 ApostadorAlteracaoDTO apostadorAlteracaoDTO = new ApostadorAlteracaoDTO();
                 apostadorAlteracaoDTO.setCep( editTextCepContent.getUnmaskedText() );
@@ -156,7 +168,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
                 apostadorAlteracaoDTO.setSexo( sexoEnum);
                 apostadorAlteracaoDTO.setAlterandoLoterica( false );
                 apostadorAlteracaoDTO.setMunicipioId( municipioIdDTOSelect );
-
+                apostadorAlteracaoDTO.setAceitaReceberNoticias(notificacaoSwitch.isChecked());
 
                 apostadorAlteracaoDTO.setLimiteDiario(getLimiteDefinido());
                 updateDadosCadastrais( apostadorAlteracaoDTO );
@@ -164,6 +176,19 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
             }
         }
         );
+
+        notificacaoSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!telaRenderizada) return;
+            atualizarDescricaoNotificacoes(containerNotificacoes,isChecked);
+            if (isChecked) {
+                ViewUtils.alertEntendiCustom(this, "Ao ativar esta opção, você receberá notificações importantes de loterias se estiverem habilitadas no seu aparelho. A funcionalidade pode ser ativada ou desativada a qualquer momento. Para salvar, clique em atualizar."
+                );
+            } else {
+                ViewUtils.alertEntendiCustom(this, "Ao desativar esta opção, você não receberá mais notificações de loterias. Para salvar, clique em atualizar.");
+            }
+        });
+
+        containerNotificacoes.setOnClickListener(view -> {notificacaoSwitch.toggle();});
 
         naoSeiCepButton.setOnClickListener(view ->{
             DialogUtils.modalNaoSeiCep(DadosPessoaisActivity.this);
@@ -192,6 +217,23 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         });
     }
 
+
+    private void atualizarDescricaoNotificacoes(View rowNotificacoes, boolean isChecked) {
+        String descricao = isChecked ? "Ativado: Interruptor" : "Desativado: Interruptor";
+        String textoFinal = getString(R.string.label_notificacoes) + ": " + descricao;
+
+        rowNotificacoes.setContentDescription(textoFinal);
+
+        rowNotificacoes.post(() -> {
+            AccessibilityManager accessibilityManager =
+                    (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
+
+            if (accessibilityManager != null && accessibilityManager.isEnabled()) {
+                rowNotificacoes.announceForAccessibility(textoFinal);
+            }
+        });
+    }
+
 //    @SuppressLint("SetTextI18n")
     private void atualizaLayout() {
         editTextCpfContent.setMaskedText( apostadorDTO.getCpf() );
@@ -199,7 +241,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         editTextCepContent.setMaskedText( apostadorDTO.getCep() );
         editTextEmailContent.setText( apostadorDTO.getEmail() );
         editTextLimiteContent.setText( NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiario()) );
-
+        notificacaoSwitch.setChecked(apostadorDTO.getAceitaReceberNoticias());
         String valorLimiteMin = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteMinimoDiario());
         String valorLimiteMax = NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(apostadorDTO.getLimiteDiarioAutorizado());
         editTextLimiteLayout.setHelperText(valorLimiteMin + " até " + valorLimiteMax);
@@ -222,6 +264,7 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
         editTextCepContent.addTextChangedListener(getTextWatcher(editTextCepContent));
         editTextLimiteContent.addTextChangedListener(getTextWatcher(editTextLimiteContent));
 
+        telaRenderizada = true;
     }
 
     @Override
@@ -349,12 +392,12 @@ public class DadosPessoaisActivity extends LoteriasBaseAppActivity {
 
     private void habilitaBotao(boolean isHabilita){
         if(isHabilita){
-            updateDadosPesoaisButton.setEnabled(true);
-            updateDadosPesoaisButton.setBackgroundColor(getResources().getColor(R.color.verdeazul));
+            updateDadosPessoaisButton.setEnabled(true);
+            updateDadosPessoaisButton.setBackgroundColor(getResources().getColor(R.color.verdeazul));
 
         }else{
-            updateDadosPesoaisButton.setEnabled(false);
-            updateDadosPesoaisButton.setBackgroundColor(getResources().getColor(R.color.cinza_desativado));
+            updateDadosPessoaisButton.setEnabled(false);
+            updateDadosPessoaisButton.setBackgroundColor(getResources().getColor(R.color.cinza_desativado));
         }
     }
 
