@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'org.sonarqube'
-apply plugin: 'com.google.firebase.crashlytics'
+
 
 android {
         File certifFile = file(System.getProperty('user.home') + '/certificado.properties')
@@ -415,17 +415,6 @@ repositories {
 
         androidTestImplementation 'androidx.test:runner:1.6.1'
         androidTestUtil 'androidx.test:orchestrator:1.5.0'
-
-        implementation platform("com.google.firebase:firebase-bom:34.11.0")
-        implementation "com.google.firebase:firebase-analytics"
-        implementation "com.google.firebase:firebase-crashlytics"
-        implementation "com.google.firebase:firebase-messaging"
-        implementation "com.google.firebase:firebase-config"
-        implementation "com.google.firebase:firebase-perf"
-        implementation "com.google.firebase:firebase-appcheck"
-        implementation "com.google.firebase:firebase-installations"
-        implementation "com.google.firebase:firebase-sessions"
-
 
     }
 
