@@ -855,6 +855,12 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
                             tipoConcurso = TipoConcursoEnum.fromStringToIdTipoConcurso(filtro.getTipoConcurso());
                         }
                     }
+                    if(filtro == null){
+                        filtro = new FiltroAplicadoMarketplace();
+                        filtro.setModalidade(ModalidadeEnum.fromInteger(idModalidade));
+                        filtro.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcurso));
+                    }
+                    loadParametroJogo(ModalidadeEnum.fromInteger(idModalidade));
                 }
                 AlertDialogUtils.show(BolaoActivity.this);
                 model.zeraPaginacao();
