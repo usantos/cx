@@ -221,7 +221,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
 
     private void loadParametroJogo(ModalidadeEnum modalidade) {
         SessaoUsuario sessaoUsuario = SessaoUsuario.getInstance();
-        ParametroSimulacao parametro = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidade);
+        ParametroSimulacao parametro = ViewUtils.getParametroSimulacao(sessaoUsuario, modalidade,tipoConcurso.toString());
         if (parametro != null) {
             parametroJogo = parametro.getParametroJogo();
         }

@@ -1188,7 +1188,8 @@ public class ViewUtils {
         if (sessaoUsuario.getParametrosSimulacao() != null && sessaoUsuario.getParametrosSimulacao().getParametros() != null) {
             for (ParametroSimulacao parametroSimulacao : sessaoUsuario.getParametrosSimulacao().getParametros()) {
                 if (parametroSimulacao.getParametroJogo().getConcurso().getModalidade() == modalidadeEnum) {
-                    if (parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().getValor().equalsIgnoreCase(valorTipoConcurso)) {
+                    String valorConcurso = parametroSimulacao.getParametroJogo().getConcurso().getTipoConcurso().getValor();
+                    if (valorConcurso.equalsIgnoreCase(valorTipoConcurso)) {
                         return parametroSimulacao;
                     }
                 }
