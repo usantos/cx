@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -260,7 +261,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     private void configurarToolbar(){
         titleToolbar = findViewById(R.id.textCustom);
         titleToolbar.setText(R.string.carrinho_nde_apostas);
-        titleToolbar.setHint(getString(R.string.titulo));
+        ViewCompat.setAccessibilityHeading(titleToolbar,true);
         customButton = findViewById(R.id.customButton);
         customButton.setContentDescription(getString(R.string.voltar));
         customButton.setOnClickListener(v -> onBackPressed());
@@ -268,6 +269,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         customButton.setFocusableInTouchMode(true);
         customButton.requestFocus();
         btnLimpar.setContentDescription(getString(R.string.excluir));
+        btnFavoritar.setContentDescription(getString(R.string.favoritar_carrinho));
     }
 
     private void setaMetodos() {
