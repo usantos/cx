@@ -1650,5 +1650,7 @@
     <string name="expandablelistview_retracted">Recolher</string>
     <string name="expandablelistview_expanded">Expandir</string>
     <string name="txt_rewarded">premiado</string>
+    <string name="txt_space">" "</string>
+    <string name="txt_space_with_word">" de "</string>
 
 </resources>

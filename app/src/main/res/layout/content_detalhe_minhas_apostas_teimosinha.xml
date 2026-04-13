@@ -257,6 +257,10 @@
                     app:layout_constraintBottom_toBottomOf="parent">
 
                     <TextView
+                        android:visibility="gone"
+                        android:importantForAccessibility="yes"
+                        android:focusable="true"
+                        android:clickable="true"
                         android:id="@+id/tvNomeLoterica"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -269,6 +273,7 @@
 
 
                     <TextView
+                        android:importantForAccessibility="yes"
                         android:id="@+id/tvlabelCidadeUf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -280,6 +285,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvNomeLoterica" />
 
                     <TextView
+                        android:importantForAccessibility="no"
                         android:id="@+id/tvTextCidadeUf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -293,6 +299,7 @@
                         app:layout_constraintStart_toEndOf="@+id/tvlabelCidadeUf" />
 
                     <TextView
+                        android:importantForAccessibility="yes"
                         android:id="@+id/tvlabelValorCota"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -304,6 +311,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvlabelCidadeUf" />
 
                     <TextView
+                        android:importantForAccessibility="no"
                         android:id="@+id/tvTextValorCota"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -317,6 +325,7 @@
                         app:layout_constraintStart_toEndOf="@+id/tvlabelValorCota" />
 
                     <TextView
+                        android:importantForAccessibility="yes"
                         android:id="@+id/tvlabelTarifa"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -328,6 +337,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvlabelValorCota" />
 
                     <TextView
+                        android:importantForAccessibility="no"
                         android:id="@+id/tvTextTarifa"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -341,6 +351,7 @@
                         app:layout_constraintStart_toEndOf="@+id/tvlabelTarifa" />
 
                     <TextView
+                        android:importantForAccessibility="yes"
                         android:id="@+id/tvlabelCota"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -352,6 +363,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvlabelTarifa" />
 
                     <TextView
+                        android:importantForAccessibility="no"
                         android:id="@+id/tvTextCota"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

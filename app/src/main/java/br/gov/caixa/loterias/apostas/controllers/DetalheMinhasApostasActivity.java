@@ -392,12 +392,12 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         concursoTxt.setText(aposta.getConcursoInicial().toString());
 
         //Apenas para acessibilidade
-        concursoLabel.setContentDescription(aposta.getConcursoInicial().toString());
+        concursoLabel.setContentDescription(concursoLabel.getText() + getString(R.string.txt_space) + aposta.getConcursoInicial().toString());
 
         if (aposta.getQuantidadeTeimosinhas() == 0) {
             quantidadeApostadasTxt.setVisibility(View.GONE);
         } else {
-            String accessibilityContent = getString(R.string.concursos) + aposta.getConcursoInicial().toString() + " - " +
+            String accessibilityContent = getString(R.string.concursos) + aposta.getConcursoInicial().toString() + " até " +
                     (aposta.getConcursoInicial()+aposta.getQuantidadeTeimosinhas()-1);
 
             concursoTxt.setText(aposta.getConcursoInicial().toString() + " - " +
@@ -419,6 +419,8 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         if (isBolao()) {
             dataApostaTxt.setText(aposta.getReservaCotaBolao().getDataRegistroBolao());
             horaApostaTxt.setText(aposta.getReservaCotaBolao().getHoraRegistroBolao());
+            String betDateAccessibilityContent = getString(R.string.contest_date) + aposta.getReservaCotaBolao().getDataRegistroBolao() + " " + aposta.getReservaCotaBolao().getHoraRegistroBolao();
+            dataAposta.setContentDescription(betDateAccessibilityContent);
 
             clInformacoesBolao.setVisibility(View.VISIBLE);
 
@@ -440,14 +442,20 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             int endValor = ssb.length();
             ssb.setSpan(new CustomTypefaceSpan("", bold),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             ssb.setSpan(new AbsoluteSizeSpan(16, true),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvNomeLoterica.setVisibility(View.VISIBLE);
             tvNomeLoterica.setText(ssb);
+            tvNomeLoterica.setContentDescription(label + getString(R.string.txt_space) + valor);
 
             tvTextCidadeUf.setText(StringUtils.capitalizerNovo(aposta.getReservaCotaBolao().getNumeroLoterica().getNomeMunicipio().trim()) + " - " + UF.siglaFromId(aposta.getReservaCotaBolao().getNumeroLoterica().getIdUF().intValue()));
+            tvlabelCidadeUf.setContentDescription(tvlabelCidadeUf.getText() + getString(R.string.txt_space) + tvTextCidadeUf.getText());
 
             NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
             tvTextValorCota.setText(nf.format(aposta.getReservaCotaBolao().getVrCotaReservada()));
+            tvlabelValorCota.setContentDescription(tvlabelValorCota.getText() + getString(R.string.txt_space) + tvTextValorCota.getText());
             tvTextTarifa.setText(nf.format(aposta.getReservaCotaBolao().getVrTarifaServico()));
+            tvlabelTarifa.setContentDescription(tvlabelTarifa.getText() + getString(R.string.txt_space) + tvTextTarifa.getText());
             tvTextCota.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" + aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
+            tvlabelCota.setContentDescription(tvlabelCota.getText() + getString(R.string.txt_space) + aposta.getReservaCotaBolao().getNumeroCotaReservada() + getString(R.string.txt_space_with_word) + aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
 
         } else {
             //Apenas para acessibilidade

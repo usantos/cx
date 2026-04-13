@@ -32,7 +32,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMinhasApostasAdapter.ViewHolder> {
 
-    public static final int ADAPTER_SIZE = 1;
+    public static final int ADAPTER_SIZE = 0;
     private final List<ItemMinhasApostasDTO> items;
     private final Context context;
 
@@ -438,10 +438,6 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                     } else {
                         info.setContentDescription(context.getString(R.string.expandablelistview_retracted_text));
                     }
-
-//                String text = expanded?context.getString(R.string.expandablelistview_retracted):context.getString(R.string.expandablelistview_expanded);
-//                info.addAction(new AccessibilityNodeInfoCompat
-//                        .AccessibilityActionCompat(AccessibilityNodeInfoCompat.ACTION_CLICK, text));
                 }
             });
         }
