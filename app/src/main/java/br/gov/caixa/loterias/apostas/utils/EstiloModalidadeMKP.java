@@ -186,7 +186,7 @@ public class EstiloModalidadeMKP {
                 imagemTrianguloOutline= R.drawable.ic_tag_bolao_outline_loteca;
                 imagemEspecialCarrossel = R.drawable.loteca_copa;
                 imagemEspecialSimples = R.drawable.loteca_copa_simples;
-                imagemEspecialDupla = -1;
+                imagemEspecialDupla = R.drawable.loteca_copa_dupla;
                 imagemEspecialQuadrada = -1;
                 imagemEspecialDetalhes = R.drawable.loteca_copa_simples;
                 corLetraLista = R.color.loteca_claro_mkp;
