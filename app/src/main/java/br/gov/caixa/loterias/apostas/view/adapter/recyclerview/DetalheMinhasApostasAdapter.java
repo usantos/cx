@@ -156,6 +156,17 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
             isExpanded = !isExpanded;
             notifyItemChanged(position);
         });
+
+        ViewCompat.setAccessibilityDelegate(holder.clAcordeonCabeca, new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+
+                info.setClassName("android.widget.ExpandableListView");
+                info.setSelected(isExpanded);
+                info.setStateDescription(isExpanded ? "Expandido" : "Recolhido");
+            }
+        });
     }
 
     private void montaAcordeonCabecaBolao(ViewHolder holder, int position, ItemMinhasApostasDTO item) {
