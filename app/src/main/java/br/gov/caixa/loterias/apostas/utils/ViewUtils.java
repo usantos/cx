@@ -216,7 +216,9 @@ public class ViewUtils {
                 (dialogInterface, i) -> dialogInterface.dismiss()
                 ,R.string.label_cancelar,R.string.label_confirmar);
 
-        dialog.show();
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
 
         Button nbutton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
         nbutton.setText(R.string.label_cancelar);
