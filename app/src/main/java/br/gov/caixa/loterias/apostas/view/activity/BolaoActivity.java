@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -184,6 +185,7 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnV
         if (tipoConcursoInicial != null)
             filtro.setTipoConcurso(TipoConcursoEnum.fromInteger(tipoConcursoInicial));
         toolBarTxt.setText(ViewUtils.textCaixaSTDBoldTitle(this, getString(R.string.label_bolao_bar_marketplace)));
+        ViewCompat.setAccessibilityHeading(toolBarTxt,true);
 
         scrollView.setOnScrollChangeListener((NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
             View view = v.getChildAt(v.getChildCount() - 1);

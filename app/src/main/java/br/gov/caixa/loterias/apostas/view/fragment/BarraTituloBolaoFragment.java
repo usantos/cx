@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
@@ -42,6 +44,7 @@ public class BarraTituloBolaoFragment extends Fragment {
     private EstiloModalidadeMKP estilo;
 
     private RelativeLayout layoutTrevo;
+    private LinearLayout premioMkp;
 
     private ImageView trevo;
 
@@ -92,6 +95,8 @@ public class BarraTituloBolaoFragment extends Fragment {
         labelConcurso = view.findViewById(R.id.label_concurso_mkp);
         labelSorteio = view.findViewById(R.id.label_sorteio_mkp);
         labelPremioEstimado = view.findViewById(R.id.label_premio_mkp);
+        premioMkp = view.findViewById(R.id.group_premio_mkp);
+        ViewCompat.setAccessibilityHeading(premioMkp,true);
         if(modalidade.equals(ModalidadeEnum.LOTECA)){
             labelSorteio.setText(R.string.label_resultado);
         }
@@ -145,6 +150,7 @@ public class BarraTituloBolaoFragment extends Fragment {
         } else {
             tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
         }
+        ViewCompat.setAccessibilityHeading(tvModalidade,true);
         tvConcurso.setText(concurso);
         tvSorteio.setText(sorteio);
         String valorFormatado = ViewUtils.getMoedaFormatPorExtenso(valorPremio);

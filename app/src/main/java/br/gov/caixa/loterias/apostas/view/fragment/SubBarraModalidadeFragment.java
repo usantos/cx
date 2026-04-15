@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
 import br.gov.caixa.loterias.apostas.utils.EspecialUtils;
@@ -130,6 +131,7 @@ public class SubBarraModalidadeFragment extends Fragment {
 		} else {
 			tvModalidade.setText(ModalidadeEnum.fromString(modalidade).toLowerCase());
 		}
+		ViewCompat.setAccessibilityHeading(tvModalidade,true);
 		tvConcurso.setText(concurso);
 		tvSorteio.setText(sorteio);
 	}
