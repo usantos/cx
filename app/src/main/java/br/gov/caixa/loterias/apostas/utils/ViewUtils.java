@@ -764,8 +764,7 @@ public class ViewUtils {
             BigDecimal valorMil = valor.divide(mil);
             return formatarValorPorExtenso(valorMil, prefixo, "Mil", "Mil", ptBrLocale);
         } else {
-            NumberFormat nf = NumberFormat.getCurrencyInstance(ptBrLocale);
-            return nf.format(valor).replace("R$", prefixo);
+            return "";
         }
     }
 
