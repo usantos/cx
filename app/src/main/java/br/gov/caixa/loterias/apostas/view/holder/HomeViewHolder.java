@@ -63,6 +63,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 	private ImageView relogio;
 	private ImageView calendario;
 	private TextView valorAcumulado;
+	private TextView valorAcumuladoPorExtenso;
 	private ImageView ivEspeciais;
 	private TextView tvNomeEspeciais;
 	private ConstraintLayout clEspeciais;
@@ -112,6 +113,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		tvVoceTem = itemView.findViewById(R.id.tv_voce_tem);
 		titulo = itemView.findViewById(R.id.linearLayoutTopModalidades);
 		valorAcumulado = itemView.findViewById(R.id.textVieCardAcumulatedValue);
+		valorAcumuladoPorExtenso = itemView.findViewById(R.id.textViewSpelledValue);
 		viewSeparador = itemView.findViewById(R.id.viewSeparador);
 		linearCalendar = itemView.findViewById(R.id.linearCalendar);
 		linearRelogio = itemView.findViewById(R.id.linearRelogio);
@@ -161,6 +163,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrapezio()));
 			this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 			this.valorAcumulado.setVisibility(View.INVISIBLE);
+			this.valorAcumuladoPorExtenso.setVisibility(View.INVISIBLE);
 			this.premioEstimadoConcurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.instantanea_texto_card)));
 			this.viewSeparador.setVisibility(View.GONE);
 			this.linearCalendar.setVisibility(View.GONE);
@@ -184,6 +187,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrapezio()));
 			this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 			this.valorAcumulado.setVisibility(View.INVISIBLE);
+			this.valorAcumuladoPorExtenso.setVisibility(View.INVISIBLE);
 			this.premioEstimadoConcurso.setVisibility(View.GONE);
 			this.viewSeparador.setVisibility(View.GONE);
 			this.linearCalendar.setVisibility(View.GONE);
@@ -225,6 +229,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 		this.trevoFundo.setBackground(ContextCompat.getDrawable(itemView.getContext(), estilo.getTrapezio()));
 		this.titulo.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorClara()));
 		this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
+		this.valorAcumuladoPorExtenso.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
 
 		if (modalidade.getConcurso().getTipoConcurso().toString().equals(itemView.getContext().getResources().getString(R.string.especial_maiusculo))) {
 			this.titulo.setVisibility(View.GONE);
@@ -242,9 +247,18 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 
 		if (modalidade.getConcurso().getEstimativa() != null &&
 			modalidade.getConcurso().getEstimativa().compareTo(BigDecimal.ZERO) != 0) {
-			String estimativaFormatado = ViewUtils.getMoedaFormatPorExtenso(modalidade.getConcurso().getEstimativa());
-			this.valorAcumulado.setText(estimativaFormatado);
+			BigDecimal estimativa = modalidade.getConcurso().getEstimativa();
+			String estimativaNumerico = ViewUtils.getMoedaFormatSemCentavos(estimativa);
+			String estimativaPorExtenso = ViewUtils.getMoedaFormatPorExtenso(estimativa);
+			this.valorAcumulado.setText(estimativaNumerico);
 			this.valorAcumulado.setTextSize(20);
+			if (!estimativaPorExtenso.isEmpty()){
+				this.valorAcumuladoPorExtenso.setText(String.format("(%s)", estimativaPorExtenso));
+				this.valorAcumuladoPorExtenso.setTextSize(16);
+				this.valorAcumuladoPorExtenso.setVisibility(View.VISIBLE);
+			} else {
+				valorAcumuladoPorExtenso.setVisibility(View.GONE);
+			}
 			this.premioEstimadoConcurso.setText(ViewUtils.textCaixaSTDBold(itemView.getContext(), itemView.getContext().getString(R.string.label_premio_estimado_concurso_numero_bold,
 																											   modalidade.getConcurso().getNumero())));
 			this.premioEstimadoConcurso.setVisibility(View.VISIBLE);
@@ -252,6 +266,7 @@ public class HomeViewHolder extends LoteriasHolder<Modalidade> implements View.O
 			this.valorAcumulado.setTextColor(ContextCompat.getColor(itemView.getContext(), estilo.getCorLetraLista()));
 			this.valorAcumulado.setText(retornaStringConcursoSemEstimativa(modalidade.getConcurso().getNumero().toString(), estilo.getCorLetraLista()));
 			this.valorAcumulado.setTextSize(14);
+			this.valorAcumuladoPorExtenso.setVisibility(View.GONE);
 
 			this.premioEstimadoConcurso.setVisibility(View.INVISIBLE);
 		}
