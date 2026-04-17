@@ -734,6 +734,15 @@ public class ViewUtils {
         valorTextView.setText(fromHtml(valorFormatoMoedaArray[0] + "<strong> " + valorFormatoMoedaArray[1] + "</strong>"));
     }
 
+    public static String getMoedaFormatSemCentavos(BigDecimal valor) {
+        if (valor == null) {
+            valor = BigDecimal.ZERO;
+        }
+        NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        nf.setMaximumFractionDigits(0);
+        return nf.format(valor);
+    }
+
     public static String getMoedaFormatPorExtenso(BigDecimal valor) {
         if (valor == null) {
             valor = BigDecimal.ZERO;
