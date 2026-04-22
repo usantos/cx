@@ -31,12 +31,22 @@ public class AccessibleSpringDotsIndicator extends LinearLayout {
 
     private int dotColor = Color.TRANSPARENT;
     private int dotSelectedColor = Color.WHITE;
+    private int dotStrokeColor = Color.WHITE;
     private int dotSize;
     private int dotSpacing;
     private float dotCornerRadius;
 
     private final int BORDER_WIDTH_NORMAL;
     private final int BORDER_WIDTH_SELECTED;
+    public interface OnDotClickListener {
+        void onDotClicked(int index);
+    }
+
+    private OnDotClickListener onDotClickListener;
+
+    public void setOnDotClickListener(OnDotClickListener listener) {
+        this.onDotClickListener = listener;
+    }
 
     public AccessibleSpringDotsIndicator(Context context) {
         super(context);
@@ -73,6 +83,7 @@ public class AccessibleSpringDotsIndicator extends LinearLayout {
             dotSize = typedArray.getDimensionPixelSize(R.styleable.AccessibleDotsIndicator_dotsSize, dotSize);
             dotSpacing = typedArray.getDimensionPixelSize(R.styleable.AccessibleDotsIndicator_dotsSpacing, dotSpacing);
             dotCornerRadius = typedArray.getDimension(R.styleable.AccessibleDotsIndicator_dotsCornerRadius, dotCornerRadius);
+            dotStrokeColor = typedArray.getColor(R.styleable.AccessibleDotsIndicator_dotsStrokeColor, dotStrokeColor);
             typedArray.recycle();
         }
     }
@@ -127,11 +138,20 @@ public class AccessibleSpringDotsIndicator extends LinearLayout {
                 @Override
                 public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
                     super.onInitializeAccessibilityNodeInfo(host, info);
-                    info.setHintText("Click para acessar");
+
+                    info.setClassName(android.widget.Button.class.getName()); // semântica de botão
+                    info.setClickable(true);
+                    info.setFocusable(true);
                 }
             });
 
             dot.setOnClickListener(v -> {
+                if (onDotClickListener != null) {
+                    onDotClickListener.onDotClicked(index);
+                    setSelectedIndex(index);
+                    focusAndAnnounceDotAtual();
+                }
+
                 if (viewPager2 != null) {
                     viewPager2.setCurrentItem(index, true);
                 }
@@ -144,6 +164,26 @@ public class AccessibleSpringDotsIndicator extends LinearLayout {
         updateDots();
     }
 
+    private void focusAndAnnounceDotAtual() {
+        if (selectedIndex < 0 || selectedIndex >= dots.size()) return;
+
+        View dot = dots.get(selectedIndex);
+
+        CharSequence cs = dot.getContentDescription();
+        final String announcement = (cs != null && cs.length() > 0)
+                ? cs.toString()
+                : ("Página " + (selectedIndex + 1) + " Atual");
+
+        dot.post(() -> {
+            dot.setFocusable(true);
+            dot.setFocusableInTouchMode(true);
+
+            dot.requestFocus();
+            dot.sendAccessibilityEvent(android.view.accessibility.AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
+            dot.announceForAccessibility(announcement);
+        });
+    }
+
     private void updateDots() {
         for (int i = 0; i < dots.size(); i++) {
             View dot = dots.get(i);
@@ -153,7 +193,7 @@ public class AccessibleSpringDotsIndicator extends LinearLayout {
             int strokeWidth = (i == selectedIndex) ? BORDER_WIDTH_SELECTED : BORDER_WIDTH_NORMAL;
 
             drawable.setColor(color);
-            drawable.setStroke(strokeWidth, Color.WHITE);
+            drawable.setStroke(strokeWidth, dotStrokeColor);
 
             if (i == selectedIndex) {
                 float finalScale = 1f;
@@ -184,7 +224,7 @@ public class AccessibleSpringDotsIndicator extends LinearLayout {
         drawable.setShape(GradientDrawable.RECTANGLE);
         drawable.setCornerRadius(dotCornerRadius);
         drawable.setColor(color);
-        drawable.setStroke(BORDER_WIDTH_NORMAL, Color.WHITE);
+        drawable.setStroke(BORDER_WIDTH_NORMAL, dotStrokeColor);
         return drawable;
     }
 
