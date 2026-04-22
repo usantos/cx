@@ -4,8 +4,12 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,13 +28,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.VolleyError;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.ApostaSilceBO;
 import br.gov.caixa.loterias.apostas.model.bo.RedirectNetwork;
 import br.gov.caixa.loterias.apostas.model.bo.RequestListener;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaBolaoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComprovanteApostaDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ConcursoPremiadoDTO;
@@ -42,17 +49,22 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursosDTOResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
+import br.gov.caixa.loterias.apostas.model.bo.silce.dto.UF;
+import br.gov.caixa.loterias.apostas.model.enums.FontCaixaEnum;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.CustomTypefaceSpan;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
+import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.DetalhesMinhasApostasButtonHelper;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheMinhasApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 
-public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
+public class DetalheMinhasApostasActivity extends AppCompatActivity {
     public static final String ARG_COMPROVANTE = "ARG_COMPROVANTE";
     public static final String ARG_DETALHES_PREMIO = "ARG_DETALHES_PREMIO";
 
@@ -63,7 +75,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
-    private ConstraintLayout clScroll, clResgatePremio, clResgatePremio2, comprovanteLayout;
+    private ConstraintLayout clScroll, clResgatePremio, clResgatePremio2, comprovanteLayout, clInformacoesBolao;
     private ImageView ivResgatePremio, ivResgatePremio2;
     private ImageView validadePremioImg, ivImageDownload;
 
@@ -73,6 +85,8 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     private TextView statusApostaTxt, tv_val_premio, tv_val_premio_tit, tvStatusCentralizado;
     private TextView ResgatarPremioTxt, ResgatarPremioTxt2;
 
+    private TextView tvNomeLoterica, tvlabelCidadeUf, tvTextCidadeUf, tvlabelValorCota, tvTextValorCota,
+                     tvlabelTarifa, tvTextTarifa, tvlabelCota, tvTextCota;
     private TextView validadePremioText, validadePremioLabel, gerarConprovanteTxt;
 
     private TipoApostaLinhaView tipoApostaLinhaView;
@@ -136,13 +150,23 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     private void populaTela() {
         ativaComponentes();
 
-        detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasTeimosinhaActivity.this);
-        detalhesMinhasApostasButtonHelper.setupButtonListeners();
+        detalhesMinhasApostasButtonHelper = new DetalhesMinhasApostasButtonHelper(DetalheMinhasApostasActivity.this);
+        detalhesMinhasApostasButtonHelper.setupButtonListeners(isBolao());
+        detalhesMinhasApostasButtonHelper.setupDTO(comprovanteApostaDTO, detalhesPremioDTO, aposta);
 
         preencheCabecalho();
         preencheTipoApostaLinha();
         preencheRodape();
-        preencheCentro();
+
+        if (isBolao()) {
+            preencheCentroBolao();
+        } else {
+            if (isTeimosinha(aposta)) {
+                preencheCentroTeimosinha();
+            } else {
+                preencheApostaSimples();
+            }
+        }
     }
 
     private void setupToolbar() {
@@ -193,6 +217,18 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         tv_val_premio = findViewById(R.id.tv_val_premio);
 
         tipoApostaLinhaView = findViewById(R.id.tipo_aposta_linha);
+
+        clInformacoesBolao = findViewById(R.id.clInformacoesBolao);
+        //tvlabelNoneLoterica = findViewById(R.id.tvlabelNoneLoterica);
+        tvNomeLoterica = findViewById(R.id.tvNomeLoterica);
+        tvlabelCidadeUf = findViewById(R.id.tvlabelCidadeUf);
+        tvTextCidadeUf = findViewById(R.id.tvTextCidadeUf);
+        tvlabelValorCota = findViewById(R.id.tvlabelValorCota);
+        tvTextValorCota = findViewById(R.id.tvTextValorCota);
+        tvlabelTarifa = findViewById(R.id.tvlabelTarifa);
+        tvTextTarifa = findViewById(R.id.tvTextTarifa);
+        tvlabelCota = findViewById(R.id.tvlabelCota);
+        tvTextCota = findViewById(R.id.tvTextCota);
 
         clResgatePremio = findViewById(R.id.clResgatePremio);
         ivResgatePremio = findViewById(R.id.ivResgatePremio);
@@ -303,6 +339,17 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         tvStatusCentralizado.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tv_val_premio.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
+        //tvlabelNoneLoterica.setTextColor(getColor(estiloMKP.getCorFonteFundoEscuro()));
+        tvNomeLoterica.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        tvlabelCidadeUf.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        tvTextCidadeUf.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        tvlabelValorCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        tvTextValorCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        tvlabelTarifa.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        tvTextTarifa.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        tvlabelCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+        tvTextCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+
         if (aposta.getModalidade().equals(ModalidadeEnum.SUPER_7) || aposta.getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE)) {
             clResgatePremio.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorLetraLista())));
             ivResgatePremio.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
@@ -336,34 +383,92 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private void preencheCabecalho() {
+
+        if (aposta.getQuantidadeTeimosinhas() == 0) {
+            concursoLabel.setText(getString(R.string.label_concurso));
+        }
+
         concursoTxt.setVisibility(View.VISIBLE);
         concursoTxt.setText(aposta.getConcursoInicial().toString());
+
+        //Apenas para acessibilidade
+        concursoLabel.setContentDescription(aposta.getConcursoInicial().toString());
 
         if (aposta.getQuantidadeTeimosinhas() == 0) {
             quantidadeApostadasTxt.setVisibility(View.GONE);
         } else {
+            String accessibilityContent = getString(R.string.concursos) + aposta.getConcursoInicial().toString() + " - " +
+                    (aposta.getConcursoInicial()+aposta.getQuantidadeTeimosinhas()-1);
+
             concursoTxt.setText(aposta.getConcursoInicial().toString() + " - " +
                     (aposta.getConcursoInicial()+aposta.getQuantidadeTeimosinhas()-1));
 
             quantidadeApostadasTxt.setVisibility(View.VISIBLE);
             if (aposta.getQuantidadeTeimosinhas() == 1) {
                 quantidadeApostadasTxt.setText("("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_aposta)+")");
+                accessibilityContent = accessibilityContent + "("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_aposta)+")";
             } else {
                 quantidadeApostadasTxt.setText("("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_apostas)+")");
+                accessibilityContent = accessibilityContent + "("+aposta.getQuantidadeTeimosinhas() + " " + this.getString(R.string.label_apostas)+")";
             }
+
+            //Apenas para acessibilidade
+            concursoLabel.setContentDescription(accessibilityContent);
         }
 
-        //dataApostaTxt.setVisibility(View.VISIBLE);
-        dataApostaTxt.setText(aposta.getDataEfetivacao());
-        //horaApostaTxt.setVisibility(View.VISIBLE);
-        horaApostaTxt.setText(StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao()));
+        if (isBolao()) {
+            dataApostaTxt.setText(aposta.getReservaCotaBolao().getDataRegistroBolao());
+            horaApostaTxt.setText(aposta.getReservaCotaBolao().getHoraRegistroBolao());
+
+            clInformacoesBolao.setVisibility(View.VISIBLE);
+
+            //tvNomeLoterica.setText(aposta.getReservaCotaBolao().getNumeroLoterica().getNome());
+            Typeface regular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
+            Typeface bold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
+            String label = "Nome da Lotérica: ";
+            String valor = aposta.getReservaCotaBolao().getNumeroLoterica().getNome();
+            SpannableStringBuilder ssb = new SpannableStringBuilder();
+            // Label
+            int startLabel = 0;
+            ssb.append(label);
+            int endLabel = ssb.length();
+            ssb.setSpan(new CustomTypefaceSpan("", regular),startLabel,endLabel,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(new AbsoluteSizeSpan(18, true),startLabel,endLabel,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            // Valor
+            int startValor = ssb.length();
+            ssb.append(valor);
+            int endValor = ssb.length();
+            ssb.setSpan(new CustomTypefaceSpan("", bold),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(new AbsoluteSizeSpan(16, true),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            tvNomeLoterica.setText(ssb);
+
+            tvTextCidadeUf.setText(StringUtils.capitalizerNovo(aposta.getReservaCotaBolao().getNumeroLoterica().getNomeMunicipio().trim()) + " - " + UF.siglaFromId(aposta.getReservaCotaBolao().getNumeroLoterica().getIdUF().intValue()));
+
+            NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+            tvTextValorCota.setText(nf.format(aposta.getReservaCotaBolao().getVrCotaReservada()));
+            tvTextTarifa.setText(nf.format(aposta.getReservaCotaBolao().getVrTarifaServico()));
+            tvTextCota.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" + aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
+
+        } else {
+            //Apenas para acessibilidade
+            String betDateAccessibilityContent = getString(R.string.contest_date) + aposta.getDataEfetivacao() + " " + StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao());
+            dataAposta.setContentDescription(betDateAccessibilityContent);
+            //dataApostaTxt.setVisibility(View.VISIBLE);
+            dataApostaTxt.setText(aposta.getDataEfetivacao());
+            //horaApostaTxt.setVisibility(View.VISIBLE);
+            horaApostaTxt.setText(StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao()));
+        }
 
         if (isApostaPremiada(aposta) && detalhesPremioDTO != null && detalhesPremioDTO.getPremio() != null && detalhesPremioDTO.getPremio().getValorLiquido() != null){
             statusApostaTxt.setVisibility(View.VISIBLE);
-            statusApostaTxt.setText(aposta.getSituacao().getDescricao());
+            statusApostaTxt.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
             tv_val_premio_tit.setVisibility(TextView.VISIBLE);
             tv_val_premio.setVisibility(TextView.VISIBLE);
             tv_val_premio.setText(ViewUtils.getMoedaFormat(detalhesPremioDTO.getPremio().getValorLiquido()));
+
+            //Apenas para acessibilidade
+            statusApostaTxt.setContentDescription(statusApostaTxt.getText() + " " + tv_val_premio_tit.getText() + " " + tv_val_premio.getText());
+
             clResgatePremio.setVisibility(View.VISIBLE);
             validadePremioText.setVisibility(View.VISIBLE);
             validadePremioLabel.setVisibility(View.VISIBLE);
@@ -376,17 +481,15 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
             validadePremioText.setVisibility(View.GONE);
             validadePremioLabel.setVisibility(View.GONE);
             validadePremioImg.setVisibility(View.GONE);
+            tvStatusCentralizado.setVisibility(TextView.VISIBLE);
             if (isConcursoNaoApurado(aposta)) {
-                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
-                tvStatusCentralizado.setText(R.string.label_concurso_nao_apurado);
+                tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.CONCURSO_NAO_APURADO.getDescricao().replace(" não", "\nnão"));
             }
-            if (isApostaNaoPremiadaOuConcursoFuturo(aposta)) {
-                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
-                tvStatusCentralizado.setText(R.string.label_aposta_nao_premiada);
+            else if (isApostaNaoPremiadaOuConcursoFuturo(aposta)) {
+                tvStatusCentralizado.setText(SituacaoAposta.EnumSituacaoAposta.NAO_PREMIADA.getDescricao().replace(" não", "\nnão"));
             }
-            if (isApostaPremioPago(aposta)) {
-                tvStatusCentralizado.setVisibility(TextView.VISIBLE);
-                tvStatusCentralizado.setText(R.string.label_aposta_premio_pago);
+            else {
+                tvStatusCentralizado.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
             }
         }
     }
@@ -424,8 +527,16 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
         if (listTipoApostaLinha.size() > 0) {
             tipoApostaLinhaView.setVisibility(View.VISIBLE);
-            tipoApostaLinhaView.setupView(listTipoApostaLinha, estiloMKP.getCorClara(), estiloMKP.getCorFonteFundoClaro(), estiloMKP.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.DOWN);
+            tipoApostaLinhaView.setupView(listTipoApostaLinha, estiloMKP.getCorClara(), estiloMKP.getCorFonteFundoClaro(), estiloMKP.getCorFonteFundoClaro(), TipoApostaLinhaView.TriangleDirection.DOWN, true);
         }
+    }
+
+    private boolean isBolao() {
+        return aposta.getIndicadorCotaBolao();
+    }
+
+    private boolean isTeimosinha(IdentificaoDeUmaApostaDas8Modalidades aposta) {
+        return aposta.getQuantidadeTeimosinhas() > 0;
     }
 
     private boolean isApostaPremiada(IdentificaoDeUmaApostaDas8Modalidades aposta) {
@@ -439,9 +550,6 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         return aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA ||
                aposta.getSituacao().getValor() == SituacaoAposta.NAO_PREMIADA_CONCORRENDO_A_CONCURSO_FUTURO;
     }
-    private boolean isApostaPremioPago(IdentificaoDeUmaApostaDas8Modalidades aposta) {
-        return aposta.getSituacao().getValor() == SituacaoAposta.PREMIO_PAGO;
-    }
     private boolean isEspecial(String tipoConcurso){
         return tipoConcurso.equalsIgnoreCase("2");
     }
@@ -451,17 +559,20 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
     }
 
     private void servicoResultadoModalidadeConcursos() {
-        AlertDialogUtils.show(DetalheMinhasApostasTeimosinhaActivity.this);
+        AlertDialogUtils.show(DetalheMinhasApostasActivity.this);
 
         String txtModalidade = ApostaDTO.lowerCaseFromString(aposta.getModalidade());
         Integer concursoInicial = aposta.getConcursoInicial();
-        Integer concursoFinal = Integer.valueOf((aposta.getConcursoInicial() + aposta.getQuantidadeTeimosinhas() - 1));
+        Integer concursoFinal = aposta.getConcursoInicial();
+        if (isTeimosinha(aposta)) {
+            concursoFinal = Integer.valueOf((aposta.getConcursoInicial() + aposta.getQuantidadeTeimosinhas() - 1));
+        }
 
         ApostaSilceBO.getInstance().getResultadoModalidadeConcurso(txtModalidade, concursoInicial, concursoFinal, new RequestListener<ResultadoConcursosDTOResponse>() {
             @Override
             public void onResponse(ResultadoConcursosDTOResponse response) {
                 if (response.getRedirect() != null) {
-                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalheMinhasApostasTeimosinhaActivity.this);
+                    RedirectNetwork.checkRedirectSucesso(response.getRedirect(), DetalheMinhasApostasActivity.this);
                 }
                 if(response != null){
                     listResultadoConcursoDTO = response.getPayload();
@@ -508,8 +619,7 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         );
     }
 
-    private void preencheCentro() {
-        detalhesMinhasApostasButtonHelper.setupDTO(comprovanteApostaDTO, detalhesPremioDTO, aposta);
+    private void preencheCentroTeimosinha() {
 
         List<ItemMinhasApostasDTO> items = new ArrayList<>();
 
@@ -530,78 +640,98 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
 
                 ArrayList<Number> resultado = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
 
-                switch (resultadoConcursoDTO.getConcurso().getModalidade()) {
+                ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
+                item.setModalidade(aposta.getModalidade());
+                item.setConcurso(resultadoConcursoDTO.getConcurso().getNumero().toString());
+                item.setSituacao(situacao);
+                item.setValorPremio(valorPremio);
+
+                //switch (resultadoConcursoDTO.getConcurso().getModalidade()) {
+                switch (aposta.getModalidade()) {
                     case TIMEMANIA:
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringList(resultado),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome()+"/"+resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getUf(),
-                                aposta.getTimeDoCoracao().getNome()+"/"+aposta.getTimeDoCoracao().getUf(),
-                                valorPremio));
+                        item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                        item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome() + "/" + resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getUf());
+                        item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        item.setSeuTimeMes(aposta.getTimeDoCoracao().getNome()+"/"+aposta.getTimeDoCoracao().getUf());
+                        items.add(item);
                         break;
+
                     case DIA_DE_SORTE:
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringList(resultado),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome(),
-                                aposta.getMesDeSorte().getNome(),
-                                valorPremio));
+                        item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                        item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+                        item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        item.setSeuTimeMes(aposta.getMesDeSorte().getNome());
+                        items.add(item);
                         break;
+
                     case DUPLA_SENA:
+                        item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
                         ArrayList<Number> resultado2 = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosSegundoSorteio();
-
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringList(resultado),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                StringUtils.formatToStringList(resultado2),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                valorPremio));
+                        item.setNumerosSorteados2(StringUtils.formatToStringList(resultado2));
+                        item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        item.setSeusNumeros2(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        items.add(item);
                         break;
+
                     case SUPER_7:
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringListFlexPrimeiro(resultado),
-                                StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()),
-                                valorPremio));
+                        item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(resultado));
+                        item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                        items.add(item);
                         break;
-                    case MAIS_MILIONARIA:
-                        ArrayList<Number> resultadoTrevos = (ArrayList) resultadoConcursoDTO.getTrevosSorteadosPrimeiroSorteio();
 
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringList(resultado),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                valorPremio,
-                                StringUtils.formatToStringList1Digito(resultadoTrevos),
-                                StringUtils.formatToStringList1Digito(aposta.getTrevosSelecionados())));
+                    case MAIS_MILIONARIA:
+                        item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                        ArrayList<Number> resultadoTrevos = (ArrayList) resultadoConcursoDTO.getTrevosSorteadosPrimeiroSorteio();
+                        item.setTrevosSorteados(StringUtils.formatToStringList1Digito(resultadoTrevos));
+                        item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        item.setSeusTrevos(StringUtils.formatToStringList1Digito(aposta.getTrevosSelecionados()));
+                        items.add(item);
                         break;
+
                     case LOTOFACIL:
                     case QUINA:
                     case LOTOMANIA:
                     case MEGA_SENA:
                     default:
-                        items.add(new ItemMinhasApostasDTO(resultadoConcursoDTO.getConcurso().getModalidade(), resultadoConcursoDTO.getConcurso().getNumero().toString(),
-                                situacao,
-                                StringUtils.formatToStringList(resultado),
-                                StringUtils.formatToStringList(aposta.getNumerosSelecionados()),
-                                valorPremio));
+                        item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                        item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                        items.add(item);
                         break;
                 }
             }
         } else {
-            //Concurso nao apurado
-            if (aposta.getModalidade() == ModalidadeEnum.SUPER_7) {
-                items.add(new ItemMinhasApostasDTO(aposta.getModalidade(),
-                        StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados())));
-            } else {
-                items.add(new ItemMinhasApostasDTO(aposta.getModalidade(),
-                        StringUtils.formatToStringList(aposta.getNumerosSelecionados())));
-            }
-        }
+            //Aposta não apurada
+            ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
+            item.setModalidade(aposta.getModalidade());
+            item.setTemAcordeon(false);
 
+            switch (aposta.getModalidade()) {
+                case TIMEMANIA:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    item.setSeuTimeMes(aposta.getTimeDoCoracao().getNome()+"/"+aposta.getTimeDoCoracao().getUf());
+                    break;
+                case DIA_DE_SORTE:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    item.setSeuTimeMes(aposta.getMesDeSorte().getNome());
+                    break;
+                case DUPLA_SENA:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    item.setSeusNumeros2(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    break;
+                case SUPER_7:
+                    item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                    break;
+                case MAIS_MILIONARIA:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    item.setSeusTrevos(StringUtils.formatToStringList1Digito(aposta.getTrevosSelecionados()));
+                    break;
+                default:
+                    item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                    break;
+            }
+
+            items.add(item);
+        }
 
         RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -609,4 +739,193 @@ public class DetalheMinhasApostasTeimosinhaActivity extends AppCompatActivity {
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(adapter);
     }
+
+    private void preencheCentroBolao() {
+
+        List<ItemMinhasApostasDTO> items = new ArrayList<>();
+
+        List<ApostaBolaoDTO> listApostaBolaoDTO = aposta.getReservaCotaBolao().getDescricaoCotaBolao().getListApostasBolao();
+
+        if (listApostaBolaoDTO != null && listApostaBolaoDTO.size() > 0) {
+            for (ApostaBolaoDTO apostaBolaoDTO : listApostaBolaoDTO) {
+
+                ResultadoConcursoDTO resultadoConcursoDTO = null;
+                ArrayList<Number> listResultados = null;
+                if (listResultadoConcursoDTO != null && listResultadoConcursoDTO.size() > 0) {
+                    resultadoConcursoDTO = listResultadoConcursoDTO.get(0);
+                    listResultados = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
+                }
+
+                ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
+                item.setModalidade(aposta.getModalidade());
+                item.setBolao(true);
+                item.setSurpresinha(apostaBolaoDTO.isSurpresinha());
+                if (aposta.getModalidade() != ModalidadeEnum.SUPER_7) {
+                    item.setSeusNumeros(StringUtils.formatToStringList(apostaBolaoDTO.getDezenas()));
+                }
+                if (resultadoConcursoDTO != null) {
+                    if (aposta.getModalidade() != ModalidadeEnum.SUPER_7) {
+                        item.setNumerosSorteados(StringUtils.formatToStringList(listResultados));
+                    }
+                }
+
+                switch (aposta.getModalidade()) {
+                    case TIMEMANIA:
+                        item.setSeuTimeMes(apostaBolaoDTO.getTimeCoracao().getNome() + "/" + apostaBolaoDTO.getTimeCoracao().getUf());
+                        if (resultadoConcursoDTO != null) {
+                            item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome() + "/" + resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getUf());
+                        }
+                        break;
+
+                    case DIA_DE_SORTE:
+                        item.setSeuTimeMes(apostaBolaoDTO.getMesSorte().getNome());
+                        if (resultadoConcursoDTO != null) {
+                            item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+                        }
+                        break;
+
+                    case DUPLA_SENA:
+                        item.setSeusNumeros2(StringUtils.formatToStringList(apostaBolaoDTO.getDezenas()));
+                        if (resultadoConcursoDTO != null) {
+                            ArrayList<Number> listResultados2 = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
+                            item.setNumerosSorteados2(StringUtils.formatToStringList(listResultados2));
+                        }
+                        break;
+
+                    case SUPER_7:
+                        item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(apostaBolaoDTO.getDezenas()));
+                        if (resultadoConcursoDTO != null) {
+                            item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(listResultados));
+                        }
+                        break;
+
+                    case MAIS_MILIONARIA:
+                        item.setSeusTrevos(StringUtils.formatToStringList1Digito(apostaBolaoDTO.getTrevos()));
+                        if (resultadoConcursoDTO != null) {
+                            ArrayList<Number> resultadoTrevos = (ArrayList) resultadoConcursoDTO.getTrevosSorteadosPrimeiroSorteio();
+                            item.setTrevosSorteados(StringUtils.formatToStringList1Digito(resultadoTrevos));
+                        }
+                        break;
+
+                    case LOTOFACIL:
+                    case QUINA:
+                    case LOTOMANIA:
+                    case MEGA_SENA:
+                    default:
+                        break;
+                }
+                items.add(item);
+            }
+        }
+
+        RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        DetalheMinhasApostasAdapter adapter = new DetalheMinhasApostasAdapter(this, items);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void preencheApostaSimples() {
+
+        List<ItemMinhasApostasDTO> items = new ArrayList<>();
+
+        ResultadoConcursoDTO resultadoConcursoDTO = null;
+        ArrayList<Number> resultado = null;
+        BigDecimal valorPremio = null;
+        if (listResultadoConcursoDTO != null && listResultadoConcursoDTO.size() > 0) {
+            resultadoConcursoDTO = listResultadoConcursoDTO.get(0);
+            resultado = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosPrimeiroSorteio();
+
+            if (detalhesPremioDTO != null) {
+                for (ConcursoPremiadoDTO concursoPremiado : detalhesPremioDTO.getPremio().getConcursos()) {
+                    if (concursoPremiado.getConcurso().getNumero().equals(resultadoConcursoDTO.getConcurso().getNumero())) {
+                        valorPremio = concursoPremiado.getValorLiquido();
+                        break;
+                    }
+                }
+            }
+        }
+
+        ItemMinhasApostasDTO item = new ItemMinhasApostasDTO();
+        item.setModalidade(aposta.getModalidade());
+        item.setConcurso(aposta.getConcursoInicial().toString());
+        item.setTemAcordeon(false);
+
+        switch (aposta.getModalidade()) {
+            case TIMEMANIA:
+                item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                item.setSeuTimeMes(aposta.getTimeDoCoracao().getNome()+"/"+aposta.getTimeDoCoracao().getUf());
+                if (resultadoConcursoDTO != null) {
+                    item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                    item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getNome() + "/" + resultadoConcursoDTO.getPremiacaoTimeDoCoracao().getEquipe().getUf());
+                    item.setValorPremio(valorPremio);
+                }
+                items.add(item);
+                break;
+
+            case DIA_DE_SORTE:
+                item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                item.setSeuTimeMes(aposta.getMesDeSorte().getNome());
+                if (resultadoConcursoDTO != null) {
+                    item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                    item.setTimeMesSorteado(resultadoConcursoDTO.getPremiacaoMesDeSorte().getMesDeSorte().getNome());
+                    item.setValorPremio(valorPremio);
+                }
+                items.add(item);
+                break;
+
+            case DUPLA_SENA:
+                item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                item.setSeusNumeros2(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                if (resultadoConcursoDTO != null) {
+                    item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                    ArrayList<Number> resultado2 = (ArrayList) resultadoConcursoDTO.getNumerosSorteadosSegundoSorteio();
+                    item.setNumerosSorteados2(StringUtils.formatToStringList(resultado2));
+                    item.setValorPremio(valorPremio);
+                }
+                items.add(item);
+                break;
+
+            case SUPER_7:
+                item.setSeusNumeros(StringUtils.formatToStringListFlexPrimeiro(aposta.getNumerosSelecionados()));
+                if (resultadoConcursoDTO != null) {
+                    item.setNumerosSorteados(StringUtils.formatToStringListFlexPrimeiro(resultado));
+                    item.setValorPremio(valorPremio);
+                }
+                items.add(item);
+                break;
+
+            case MAIS_MILIONARIA:
+                item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                item.setSeusTrevos(StringUtils.formatToStringList1Digito(aposta.getTrevosSelecionados()));
+                if (resultadoConcursoDTO != null) {
+                    item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                    ArrayList<Number> resultadoTrevos = (ArrayList) resultadoConcursoDTO.getTrevosSorteadosPrimeiroSorteio();
+                    item.setTrevosSorteados(StringUtils.formatToStringList1Digito(resultadoTrevos));
+                    item.setValorPremio(valorPremio);
+                }
+                items.add(item);
+                break;
+
+            case LOTOFACIL:
+            case QUINA:
+            case LOTOMANIA:
+            case MEGA_SENA:
+            default:
+                item.setSeusNumeros(StringUtils.formatToStringList(aposta.getNumerosSelecionados()));
+                if (resultadoConcursoDTO != null) {
+                    item.setNumerosSorteados(StringUtils.formatToStringList(resultado));
+                    item.setValorPremio(valorPremio);
+                }
+                items.add(item);
+                break;
+        }
+
+        RecyclerView recyclerView = findViewById(R.id.rv_accordion_teimosinha);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        DetalheMinhasApostasAdapter adapter = new DetalheMinhasApostasAdapter(this, items);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setAdapter(adapter);
+    }
+
 }

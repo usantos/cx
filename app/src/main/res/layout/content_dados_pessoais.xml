@@ -210,15 +210,53 @@
                     android:alpha="0.3"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:id="@+id/containerNotificacoes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:importantForAccessibility="yes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextEmail">
+
+                <TextView
+                    android:id="@+id/textViewNotificacoes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:textSize="16sp"
+                    android:text="@string/label_notificacoes"
+                    android:importantForAccessibility="no"/>
+
+                <Switch
+                    android:id="@+id/notificacao_switch"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:checked="false"
+                    android:trackTint="@color/switch_track"
+                    android:thumbTint="@color/branco"
+                    android:importantForAccessibility="no"
+                    android:theme="@style/SwitchTheme"
+                    tools:ignore="UseSwitchCompatOrMaterialXml"/>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/limite_titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:text="@string/limite_titulo"
-                android:textSize="15.7sp"
+                android:textSize="16sp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/caixa_std_bold"
-                app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+                app:layout_constraintTop_toBottomOf="@id/containerNotificacoes"
                 />
 
             <com.google.android.material.textfield.TextInputLayout

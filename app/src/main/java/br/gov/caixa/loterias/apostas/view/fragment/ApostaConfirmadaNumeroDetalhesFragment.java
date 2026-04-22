@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ModalidadeEnum;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ResultadoConcursoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacaoAposta;
 import br.gov.caixa.loterias.apostas.model.enums.TipoApostaLinhaEnum;
+import br.gov.caixa.loterias.apostas.utils.ApostaUtils;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.Utils;
@@ -421,7 +422,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 				buscaDetalhePremio(aposta.getId(), onBuscaDetalhePremioListener());
 			}
 			if (isApostaPremiada(aposta)){
-				resultTxt.setText(aposta.getSituacao().getDescricao());
+				resultTxt.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
 				clResgatePremio.setVisibility(View.VISIBLE);
 				cl_premio_pago.setVisibility(View.GONE);
 				resultTxt.setVisibility(View.VISIBLE);
@@ -432,7 +433,7 @@ public class ApostaConfirmadaNumeroDetalhesFragment extends ApostaConfirmadaDeta
 			}
 		} else  {
 			clResgatePremio.setVisibility(View.GONE);
-			resultTxt.setText(aposta.getSituacao().getDescricao());
+			resultTxt.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
 		}
 	}
 

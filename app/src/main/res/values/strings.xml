@@ -129,6 +129,7 @@
     <string name="btn_finalizar">Finalizar</string>
     <string name="declaracao_termo_uso_politica_privacidade">Declaro ter lido e concordado com o</string>
     <string name="termo_de_uso_underline"><u>termo de uso</u>.</string>
+    <string name="declaracao_notificacoes">Aceito receber notificações de loterias.</string>
     <string name="CEP">CEP</string>
     <string name="codigo_loterica">Código Lotérica</string>
     <string name="cod_loterica">Cod. Lotérica: </string>
@@ -1045,8 +1046,6 @@
     <string name="barra_n_time_do_coracao_dois_pontos_espaco">\nTime do coração:&#160;</string>
     <string name="barra_n_mes_da_sorte_dois_pontos">\nMês de sorte:&#160;</string>
     <string name="conferindo_resultado_ponto">Conferindo resultado.</string>
-    <string name="a_conferir">conferir aposta</string>
-    <string name="nao_apurado">Concurso ainda não apurado</string>
     <string name="situacao_dois_pontos_espaco">situação:&#160;</string>
     <string name="premiada_maiusculo">Premiada</string>
     <string name="situacao_dois_pontos_underline">situação: _</string>
@@ -1214,7 +1213,7 @@
     <string name="title_QrCode">QR Code</string>
     <string name="title_digiteSuaAposta">Digite a sua aposta</string>
     <string name="leitor_digital">Acessar com biometria</string>
-
+    <string name="label_notificacoes">Receber notificações</string>
     <string name="entrar">Entrar como</string>
     <string name="ativar_biometria">Necessário habilitar biometria</string>
     <string name="habilitar">Habilitar</string>
@@ -1604,6 +1603,8 @@
     <string name="favoritar_loterica">Favoritar Lotérica</string>
     <string name="seta_detalhes_bolao">Seta para expandir/retrair detalhes do bolão</string>
 
+    <!-- DETALHE MINHAS APOSTAS -->
+    <string name="label_aposta_maiuscula">Aposta</string>
     <string name="resultado_concurso">Resultado do Concurso</string>
     <string name="label_situacao">Situação:</string>
     <string name="label_time_sorteado">Time sorteado</string>
@@ -1613,13 +1614,17 @@
     <string name="label_trevos_sorteados">Trevos sorteados</string>
     <string name="label_trevos">Trevos</string>
     <string name="label_concurso_nao_apurado">Concurso\nnão apurado</string>
-    <string name="label_aposta_nao_premiada">Não premiada</string>
     <string name="label_concurso_nao_premiado">Não premiado</string>
-    <string name="label_aposta_premio_pago">Prêmio pago</string>
     <string name="label_acertos_dois_pontos">Acertos:</string>
     <string name="label_acertos_nenhum">nenhum</string>
     <string name="label_premio_dois_pontos">Prêmio:</string>
     <string name="erro_minas_apostas_teimosinha">Não conseguimos processar sua solicitação.\nTente novamente!</string>
+    <string name="label_cidade_uf">Cidade/UF:</string>
+    <string name="label_valor_cota">Valor da Cota:</string>
+    <string name="label_tarifa_servico">Tarifa de Serviço:</string>
+    <string name="label_cota">Cota:</string>
+    <string name="label_surpresinha">| Surpresinha</string>
+
 
     <string name="ampulheta_processamento">Imagem de Ampulheta para indicar o processamento do pagamento</string>
     <string name="marcador_oval">Marcador oval (bullet) para item de lista</string>
@@ -1631,5 +1636,19 @@
     <string name="caixa_loterias">Você será direcionado para o site da CAIXA Loterias e sairá do aplicativo. Deseja continuar?</string>
     <string name="label_cancelar">Cancelar</string>
     <string name="label_confirmar">Confirmar</string>
+    <string name="contest_example">1234 - 4321</string>
+    <string name="contest_bet">(24 apostas)</string>
+    <string name="contest_date">Data aposta</string>
+    <string name="contest_timestamp_example">01/01/2026</string>
+    <string name="contest_timestamp_example_hour">11h20</string>
+    <string name="contest_example_waiting">Aguardando</string>
+    <string name="button_get_reward">Botão: Resgatar Prêmio</string>
+    <string name="contest_reward_valid_time">Validade prêmio: 90 dias</string>
+    <string name="button_generate_receipt">Botão: gerar comprovante</string>
+    <string name="expandablelistview_expanded_text">Expandido. Toque duas vezes para recolher.</string>
+    <string name="expandablelistview_retracted_text">Recolhido. Toque duas vezes para expandir.</string>
+    <string name="expandablelistview_retracted">Recolher</string>
+    <string name="expandablelistview_expanded">Expandir</string>
+    <string name="txt_rewarded">premiado</string>
 
 </resources>
