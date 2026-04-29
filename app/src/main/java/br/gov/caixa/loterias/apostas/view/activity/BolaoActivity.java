@@ -39,6 +39,7 @@ import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrosselBolaoAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaBolaoAdapter;
+import br.gov.caixa.loterias.apostas.view.custom.PartyAnimationManager;
 import br.gov.caixa.loterias.apostas.view.fragment.FiltroVazioFragment;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
 import br.gov.caixa.loterias.apostas.view.holder.BolaoCarrosselHolder;
@@ -89,6 +90,8 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 	private Integer idModalidade, idModalidadeInicial;
 	private Integer tipoConcurso, tipoConcursoInicial;
+	private PartyAnimationManager animationManager;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +142,14 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 		AlertDialogUtils.show(this);
 		model.buscaDadosUsuario(onBuscaDadosUsuarios());
+
+		//Animação 30 anos
+		if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.MEGA_SENA) {
+			animationManager = new PartyAnimationManager(this);
+			findViewById(android.R.id.content).post(() -> {
+				animationManager.start(6500);
+			});
+		}
 	}
 
 	private void buscaBoloes() {
