@@ -119,6 +119,7 @@ public class PartyAnimationManager {
             mediaPlayer = MediaPlayer.create(context, R.raw.aplauso);
             if (mediaPlayer != null) {
                 mediaPlayer.setLooping(true);
+                mediaPlayer.setVolume(0.60f, 0.60f);
                 mediaPlayer.start();
             }
         }
@@ -403,6 +404,7 @@ public class PartyAnimationManager {
         if (containerWidth <= 0 || containerHeight <= 0) return;
 
         ImageView confetti = new ImageView(context);
+        confetti.setImageResource(R.drawable.ic_confetti_rect);
         confetti.setImageResource(R.drawable.ic_confetti_rect);
 
         int color = confettiColors[random.nextInt(confettiColors.length)];
