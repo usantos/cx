@@ -104,6 +104,7 @@
             <attr name="dotsSize" format="dimension" />
             <attr name="dotsSpacing" format="dimension" />
             <attr name="dotsCornerRadius" format="dimension" />
+            <attr name="dotsStrokeColor" format="color" />
         </declare-styleable>
 
 </resources>

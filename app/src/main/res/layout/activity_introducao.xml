@@ -29,6 +29,7 @@
             android:layout_centerVertical="true"
             app:dotsColor="@color/transparente"
             app:dotsSelectedColor="@color/branco"
+            app:dotsStrokeColor="@color/branco"
             app:dotsSize="12dp"
             app:dotsSpacing="6dp"
             app:dotsCornerRadius="6dp" />
