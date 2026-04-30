@@ -145,10 +145,29 @@ public class BolaoActivity extends LoteriasAppMarketPlaceActivity implements OnE
 
 		//Animação 30 anos
 		if (TipoConcursoEnum.fromInteger(tipoConcursoInicial) == TipoConcursoEnum.ESPECIAL && ModalidadeEnum.fromInteger(idModalidadeInicial) == ModalidadeEnum.MEGA_SENA) {
+
+			AlertDialogUtils.dismiss(); //remove a interfeencia
+
 			animationManager = new PartyAnimationManager(this);
 			findViewById(android.R.id.content).post(() -> {
 				animationManager.start(6500);
 			});
+		}
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (animationManager != null) {
+			animationManager.stop();
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (animationManager != null) {
+			animationManager.stop();
 		}
 	}
 

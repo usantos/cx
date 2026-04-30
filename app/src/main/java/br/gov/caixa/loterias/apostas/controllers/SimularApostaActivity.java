@@ -185,6 +185,22 @@ public class SimularApostaActivity<T> extends LoteriasBaseAppActivity implements
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (animationManager != null) {
+            animationManager.stop();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (animationManager != null) {
+            animationManager.stop();
+        }
+    }
+
     private void preencheBarraTitulo() {
         FragmentUtils.startFragmentBarraTituloSimulacao(getSupportFragmentManager(), R.id.id_fg_barra_titulo,
                 tipoJogo, parametroSimulacao.getConcurso().getNumero().toString(), getDataSorteio(), isEspecial, getCorBackgroundBarraTitulo(), true);
