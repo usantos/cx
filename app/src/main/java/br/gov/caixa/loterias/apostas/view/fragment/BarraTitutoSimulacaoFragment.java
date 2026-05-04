@@ -146,7 +146,12 @@ public class BarraTitutoSimulacaoFragment extends Fragment {
 				if (isMega30) {
 					tvModalidade.setText(SharedPreferencesUtils.getValorString(EspecialUtils.MEGA_DUAS_LINHAS,"").toLowerCase());
 				} else {
-					tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+					if (modalidade == ModalidadeEnum.LOTECA) {
+						tvModalidade.setText(ModalidadeEnum.getDescricaoEspecial(modalidade).toLowerCase());
+						TextViewUtils.mudarTamanhoPorPorcentagem(tvModalidade, -20f);
+					}else {
+						tvModalidade.setText(ModalidadeEnum.getDescricaoEspecialDuasLinhas(modalidade).toLowerCase());
+					}
 				}
 			}
 		} else {
