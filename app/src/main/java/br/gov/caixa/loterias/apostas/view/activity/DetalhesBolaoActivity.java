@@ -66,6 +66,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	public static final String ARG_NUMERO_COTA = "ARG_NUMERO_COTA";
 	public static final String ARG_IS_LOTERICA_FAVORITA = "ARG_IS_LOTERICA_FAVORITA";
 	private TextView tvValorPremio;
+	private TextView tvValorPremioPorExtenso;
 	private TextView tvNomeLoterica, tvValorCota, tvValorTarifa, tvValorTotal, tvNumeroCota, tvCodigoLoterica, tvCidadeUfLoterica, tvFavoritar;
 	private TextView textQtdDezenas, textQtdCotas;
 	private Button btnAdd, btnDiminui, btnAumenta;
@@ -139,6 +140,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		}
 
 		tvValorPremio.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
+		tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(this, estilo.getCorLetraLista()));
 		layoutQtdCotas.setBackground(VectorUtils.getShape(R.drawable.background_border_verde, estilo.getCorClara()));
 		tvValorCotaBtn.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
 		tvLabelQtdCotas.setTextColor(ContextCompat.getColor(this, estilo.getCorFonteFundoClaro()));
@@ -205,6 +207,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 	private void setViews() {
 		layoutDetalhes = findViewById(R.id.layout_detalhes_bolao);
 		tvValorPremio = findViewById(R.id.id_valor_premio);
+		tvValorPremioPorExtenso = findViewById(R.id.id_valor_premio_por_extenso);
 		tvNomeLoterica = findViewById(R.id.nome_loterica);
 		tvCodigoLoterica = findViewById(R.id.codigo_loterica);
 		tvCidadeUfLoterica = findViewById(R.id.cidade_uf_loterica);
@@ -319,7 +322,14 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		String valorTotal = "Total: " + ViewUtils.getMoedaFormat(bolao.getVrUltimaCotaComTarifa());
 
 		botaoFavoritar.setState(isLotericaFavorita);
-		tvValorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
+		tvValorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(bolao.getVrPremioEstimado()));
+		String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado());
+		if (!valorEstimadoPorExtenso.isEmpty()){
+			tvValorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));
+			tvValorPremioPorExtenso.setVisibility(View.VISIBLE);
+		} else {
+			tvValorPremioPorExtenso.setVisibility(View.GONE);
+		}
 		tvNomeLoterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
 		tvCodigoLoterica.setText(codigoLoterica);
 		tvCidadeUfLoterica.setText(cidadeUfLoterica);

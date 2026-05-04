@@ -54,6 +54,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 	private FiltroAplicadoMarketplace filtro;
 	private TextView modalidade;
 	private TextView valorPremio;
+	private TextView valorPremioPorExtenso;
 	private TextView concurso;
     private Boolean isMega30 = false;
 
@@ -67,7 +68,8 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		loterica 	= itemView.findViewById(R.id.loterica_bolao);
 		cidade 		= itemView.findViewById(R.id.cidade_bolao);
 		modalidade 	= itemView.findViewById(R.id.modalidade_bolao);
-		valorPremio = itemView.findViewById(R.id.valor_estimado_premio);
+		valorPremio = itemView.findViewById(R.id.valor_estimado_premio_bolao);
+		valorPremioPorExtenso = itemView.findViewById(R.id.valor_estimado_premio_bolao_por_extenso);
 		concurso = itemView.findViewById(R.id.concurso_bolao);
 		valor 		= itemView.findViewById(R.id.valor_bolao);
 		textQtdDezenas = itemView.findViewById(R.id.descricao_qtd_dezenas_it);
@@ -114,8 +116,13 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 			}
 			cidade.setVisibility(View.GONE);
 			valorPremio.setVisibility(View.VISIBLE);
-			if (bolao.getVrPremioEstimado() != null) {
-				valorPremio.setText(ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado()));
+			valorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(bolao.getVrPremioEstimado()));
+			String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(bolao.getVrPremioEstimado());
+			if (!valorEstimadoPorExtenso.isEmpty()){
+				valorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));
+				valorPremioPorExtenso.setVisibility(View.VISIBLE);
+			} else {
+				valorPremioPorExtenso.setVisibility(View.GONE);
 			}
 			concurso.setVisibility(View.VISIBLE);
 			concurso.setText(String.valueOf("Concurso " + bolao.getConcurso()));
@@ -129,6 +136,7 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 				loterica.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
 			}
 			valorPremio.setVisibility(View.GONE);
+			valorPremioPorExtenso.setVisibility(View.GONE);
 			cidade.setVisibility(View.VISIBLE);
 			String cidadeUf = StringUtils.capitalizerNovo(bolao.getMunicipio().getNome() + " - " + bolao.getUf().getSigla());
 			if (cidadeUf.length() > 13) {

@@ -34,7 +34,7 @@ public class BarraTituloBolaoFragment extends Fragment {
     private static final String ARG_VALOR_PREMIO = "ARG_VALOR_PREMIO";
 
     private View view;
-    private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio, tvValorPremio, labelPremioEstimado;
+    private TextView tvModalidade, tvConcurso, tvSorteio, labelConcurso, labelSorteio, tvValorPremio, tvValorPremioPorExtenso, labelPremioEstimado;
     private ConstraintLayout backgroundModalidade, backgroundPremio;
     private String concurso, sorteio;
     private BigDecimal valorPremio;
@@ -89,6 +89,7 @@ public class BarraTituloBolaoFragment extends Fragment {
         tvConcurso = view.findViewById(R.id.numero_concurso_mkp);
         tvSorteio = view.findViewById(R.id.data_sorteio_mkp);
         tvValorPremio = view.findViewById(R.id.valor_premio_mkp);
+        tvValorPremioPorExtenso = view.findViewById(R.id.valor_premio_mkp_por_extenso);
         backgroundModalidade = view.findViewById(R.id.container_modalidade_mkp);
         backgroundPremio = view.findViewById(R.id.container_premio_estimado_mkp);
 
@@ -117,6 +118,7 @@ public class BarraTituloBolaoFragment extends Fragment {
         tvConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
         tvSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
         tvValorPremio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
+        tvValorPremioPorExtenso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
         labelConcurso.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
         labelSorteio.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoClaro()));
         labelPremioEstimado.setTextColor(ContextCompat.getColor(getContext(), estilo.getCorFonteFundoEscuro()));
@@ -153,7 +155,13 @@ public class BarraTituloBolaoFragment extends Fragment {
         ViewCompat.setAccessibilityHeading(tvModalidade,true);
         tvConcurso.setText(concurso);
         tvSorteio.setText(sorteio);
-        String valorFormatado = ViewUtils.getMoedaFormatPorExtenso(valorPremio);
-        tvValorPremio.setText(valorFormatado);
+        tvValorPremio.setText(ViewUtils.getMoedaFormatSemCentavos(valorPremio));
+        String valorEstimadoPorExtenso = ViewUtils.getMoedaFormatPorExtenso(valorPremio);
+        if (!valorEstimadoPorExtenso.isEmpty()){
+            tvValorPremioPorExtenso.setText(String.format("(%s)",valorEstimadoPorExtenso));
+            tvValorPremioPorExtenso.setVisibility(View.VISIBLE);
+        } else {
+            tvValorPremioPorExtenso.setVisibility(View.GONE);
+        }
     }
 }
