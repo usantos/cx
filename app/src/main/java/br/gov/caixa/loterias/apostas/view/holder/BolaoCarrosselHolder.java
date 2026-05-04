@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 
 import java.math.BigDecimal;
@@ -207,6 +208,7 @@ public class BolaoCarrosselHolder extends LoteriasHolder<CotasBolaoDTO> implemen
 			cabecalho.setVisibility(View.VISIBLE);
 			cabecalhoFiltrado.setVisibility(View.GONE);
 			lotericaNome.setText(StringUtils.capitalizerNovo(bolao.getNomeFantasia()));
+			ViewCompat.setAccessibilityHeading(lotericaNome,true);
 			lotericaCidade.setText(cidadeUf);
 		}
 

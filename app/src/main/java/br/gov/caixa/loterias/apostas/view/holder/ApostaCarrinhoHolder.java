@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,8 +16,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,7 @@ import br.gov.caixa.loterias.apostas.utils.ContagemRegressiva;
 import br.gov.caixa.loterias.apostas.utils.DateUtils;
 import br.gov.caixa.loterias.apostas.utils.EstiloModalidadeMKP;
 import br.gov.caixa.loterias.apostas.utils.ListaUtils;
+import br.gov.caixa.loterias.apostas.utils.SwipeLayout;
 import br.gov.caixa.loterias.apostas.utils.TextViewUtils;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.VectorUtils;
@@ -123,6 +123,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			TextViewUtils.mudarTamanhoPorPorcentagem(this.textViewTipoAposta, -10f);
 		}
 		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+		this.textViewNumeroConcurso.setContentDescription("Concurso " + ViewUtils.getConcursoAtualPorAposta(aposta));
 		this.dadosApostaCarrinho.setBackgroundResource(estiloMKP.getCorEscura());
 
 		if (isBolao) {
@@ -152,6 +153,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 		LinearLayout layoutTimeCoracao   = this.dadosApostaCarrinho.findViewById(R.id.layoutTimeCoracao);
 		TextView     labelTimeCoracao    = this.dadosApostaCarrinho.findViewById(R.id.labelTimeCoracaoTxt);
 		TextView     textViewTimeCoracao = this.dadosApostaCarrinho.findViewById(R.id.textViewTimeCoracao);
+		ImageButton iconExcluir = this.itemView.findViewById(R.id.excluirApostaCarrinho);
 
 		String quantidadeApostadasString;
 		String quantidadeSorteiosString;
@@ -183,7 +185,9 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 //			buttonApostaEspelho.setVisibility(View.VISIBLE);
 //		}
 
-		this.itemView.findViewById(R.id.excluirApostaCarrinho).setOnClickListener(view -> listener.onDeletaAposta(aposta));
+		iconExcluir.setOnClickListener(view -> listener.onDeletaAposta(aposta));
+		iconExcluir.setContentDescription("Excluir");
+
 		if (isBolao) {
 			imageDetalheBoloes.setOnClickListener(view -> listenerBolao.onCotaClick(aposta));
 		}
@@ -252,7 +256,7 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 						//this.tvNumeroConcursoNovo.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
 						this.textViewNumeroConcurso.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 						this.textViewNumeroConcurso.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
-
+						this.textViewNumeroConcurso.setContentDescription("Concurso " + ViewUtils.getConcursoAtualPorAposta(aposta));
 						this.textViewTipoAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 						this.valorAposta.setTextColor(ContextCompat.getColor(context, estiloMKP.getCorLetraLista()));
 					} else {
@@ -349,7 +353,18 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 			ViewUtils.setMoedaFormatHtml(aposta.getReservaCotaBolao().getVrTotalCota(), this.valorAposta);
 		} else {
 			ViewUtils.setMoedaFormatHtml(aposta.getValor(), this.valorAposta);
-			this.numerosAposta.setText(removeUltimoTraco(numeroStr.toString()));
+			String numeros = numeroStr != null
+					? removeUltimoTraco(numeroStr.toString())
+					: "";
+
+			numerosAposta.setText(numeros);
+
+			numerosAposta.setContentDescription(
+					numeros.isEmpty()
+							? ""
+							: numeros.replace("-", ",").replaceAll("\\s*,\\s*", ", ")
+			);
+
 		}
 
 		if (animacao) {
@@ -385,6 +400,8 @@ public class ApostaCarrinhoHolder extends LoteriasHolder<IdentificaoDeUmaApostaD
 
 	private void preencheNumeroConcurso(IdentificaoDeUmaApostaDas8Modalidades aposta, TextView textView) {
 		this.textViewNumeroConcurso.setText(itemView.getContext().getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorAposta(aposta)));
+		this.textViewNumeroConcurso.setContentDescription("Concurso " + ViewUtils.getConcursoAtualPorAposta(aposta));
+
 		if (aposta.getIndicadorCotaBolao() != null && aposta.getIndicadorCotaBolao()){
 			textView.setText(context.getString(R.string.label_aposta_concurso, ViewUtils.getConcursoAtualPorApostaBolao(aposta)));
 		} else {

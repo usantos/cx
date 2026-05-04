@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -228,6 +229,7 @@ public class DetalhesBolaoActivity extends LoteriasAppMarketPlaceActivity implem
 		frameRodape = findViewById(R.id.id_fg_rodape);
 		botaoFavoritar = findViewById(R.id.btn_favoritar_detalhes);
 		tvFavoritar = findViewById(R.id.txt_favoritar_loterica);
+		ViewCompat.setAccessibilityHeading(tvNomeLoterica,true);
 	}
 
 	public void atualizaQuantidadeTextView() {

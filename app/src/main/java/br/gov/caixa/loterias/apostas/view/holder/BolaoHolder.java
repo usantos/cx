@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 
 import java.math.BigDecimal;
 
@@ -89,6 +90,8 @@ public class BolaoHolder extends LoteriasHolder<CotasBolaoDTO> implements View.O
 		btnDiminui.setOnClickListener(this);
 		btnAumenta.setOnClickListener(this);
 		btnAdd.setOnClickListener(this);
+		ViewCompat.setAccessibilityHeading(loterica,true);
+		ViewCompat.setAccessibilityHeading(modalidade,true);
 	}
 
 	@Override

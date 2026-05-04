@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<br.gov.caixa.loterias.apostas.utils.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipeLayout"
@@ -163,6 +163,7 @@
 
                 <TextView
                     android:id="@+id/numeroConcurso"
+                    android:accessibilityTraversalAfter="@id/tipoAposta"
                     style="@style/editTextCaixaRegularTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -251,6 +252,7 @@
 
                 <TextView
                     android:id="@+id/numerosText"
+                    android:accessibilityTraversalAfter="@id/numeroConcurso"
                     style="@style/editTextCaixaRegularTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -288,6 +290,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:clickable="true"
+                android:importantForAccessibility="no"
                 android:gravity="center_horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -295,23 +298,29 @@
 
                 <TextView
                     android:id="@+id/valorAposta"
+                    android:accessibilityTraversalAfter="@id/numerosText"
                     style="@style/editTextCaixaRegularTheme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="14dp"
                     android:layout_marginEnd="16dp"
                     android:text="@string/r_0_00"
+                    android:importantForAccessibility="yes"
                     android:textAlignment="textEnd"
                     android:textSize="14.2sp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/excluirApostaCarrinho"
+                    android:accessibilityTraversalAfter="@id/valorAposta"
                     android:layout_width="18dp"
                     android:layout_height="22dp"
                     android:layout_marginTop="2dp"
+                    android:importantForAccessibility="yes"
                     android:layout_marginEnd="16dp"
+                    android:background="@color/transparente"
+                    app:tint="@color/colorAccent"
                     android:src="@drawable/ic_lixeira_mkp" />
 
             </LinearLayout>
@@ -324,6 +333,7 @@
 
             <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
                 android:id="@+id/tipo_aposta_linha"
+                android:importantForAccessibility="no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
@@ -343,4 +353,4 @@
 
     </LinearLayout>
 
-</com.daimajia.swipe.SwipeLayout>
+</br.gov.caixa.loterias.apostas.utils.SwipeLayout>
