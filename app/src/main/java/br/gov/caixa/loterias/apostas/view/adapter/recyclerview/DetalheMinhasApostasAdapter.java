@@ -62,7 +62,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         desabilitaTodos(holder);
 
         boolean isExpanded = item.isExpanded();
-        handleAccessibility(items.size(), item.isExpanded(), holder.itemView);
+        handleAccessibility(items.size(), item, holder.itemView, position);
         //holder.contentlayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         holder.ivExpandCollapse.setRotation(isExpanded ? 180 : 0);
         holder.ivExpandCollapse.setColorFilter(context.getColor(estilo.getCorFonteFundoEscuro()));
@@ -163,7 +163,6 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
                 super.onInitializeAccessibilityNodeInfo(host, info);
 
                 info.setClassName("android.widget.ExpandableListView");
-                info.setSelected(isExpanded);
                 info.setStateDescription(isExpanded ? "Expandido" : "Recolhido");
             }
         });
@@ -434,7 +433,7 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         }
     }
 
-    private void handleAccessibility(int size, boolean expanded, View itemView) {
+    private void handleAccessibility(int size, ItemMinhasApostasDTO dto, View itemView, int position) {
         //Aciona acessibilidade como expandable somente se houver mais de um item no adapter
         if (size > ADAPTER_SIZE) {
             ViewCompat.setAccessibilityDelegate(itemView, new AccessibilityDelegateCompat(){
@@ -444,10 +443,15 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
 
                     info.setClassName(CONST_WIDGET);
 
-                    if (expanded) {
-                        info.setContentDescription(context.getString(R.string.expandablelistview_expanded_text));
+                    String prefixo = "Aposta: " + position+1 + " de " + getItemCount();
+                    if (!dto.isBolao()) {
+                        prefixo = "Concurso: " + position+1 + " de " + getItemCount();
+                    }
+
+                    if (dto.isExpanded()) {
+                        info.setContentDescription(prefixo + context.getString(R.string.expandablelistview_expanded_text));
                     } else {
-                        info.setContentDescription(context.getString(R.string.expandablelistview_retracted_text));
+                        info.setContentDescription(prefixo + context.getString(R.string.expandablelistview_retracted_text));
                     }
                 }
             });
