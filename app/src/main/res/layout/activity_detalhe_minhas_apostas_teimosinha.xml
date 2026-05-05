@@ -21,6 +21,15 @@
             app:contentInsetStartWithNavigation="0dp"
             app:titleMarginStart="0dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
+                android:gravity="center_vertical"
+                android:layout_gravity="start|center_vertical"
+                android:text="Titulo"
+                android:id="@+id/toolbar_title"/>
+
             <ImageButton
                 android:id="@+id/ib_duvidas"
                 android:layout_width="25dp"
