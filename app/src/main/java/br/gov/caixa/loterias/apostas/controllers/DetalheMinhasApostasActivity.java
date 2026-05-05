@@ -4,24 +4,29 @@ package br.gov.caixa.loterias.apostas.controllers;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,6 +66,7 @@ import br.gov.caixa.loterias.apostas.utils.FonteUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.helper.DetalhesMinhasApostasButtonHelper;
+import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.AccessibleRecyclerAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.DetalheMinhasApostasAdapter;
 import br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView;
 
@@ -76,17 +82,23 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     private IdentificaoDeUmaApostaDas8Modalidades<List<Integer>> aposta;
 
     private ConstraintLayout clScroll, clResgatePremio, clResgatePremio2, comprovanteLayout, clInformacoesBolao;
+
+    private RecyclerView rvFieldsBolao;
+
     private ImageView ivResgatePremio, ivResgatePremio2;
+
     private ImageView validadePremioImg, ivImageDownload;
 
     private View divider;
 
     private TextView concursoLabel, concursoTxt, quantidadeApostadasTxt, dataAposta, dataApostaTxt, horaApostaTxt;
+    private TextView containerConcurso;
+    private TextView clAccessibilityLeft, clAccessibilityRight;
     private TextView statusApostaTxt, tv_val_premio, tv_val_premio_tit, tvStatusCentralizado;
     private TextView ResgatarPremioTxt, ResgatarPremioTxt2;
 
-    private TextView tvNomeLoterica, tvlabelCidadeUf, tvTextCidadeUf, tvlabelValorCota, tvTextValorCota,
-                     tvlabelTarifa, tvTextTarifa, tvlabelCota, tvTextCota;
+//    private TextView tvNomeLoterica, tvlabelCidadeUf, tvTextCidadeUf, tvlabelValorCota, tvTextValorCota,
+//                     tvlabelTarifa, tvTextTarifa, tvlabelCota, tvTextCota;
     private TextView validadePremioText, validadePremioLabel, gerarConprovanteTxt;
 
     private TipoApostaLinhaView tipoApostaLinhaView;
@@ -176,7 +188,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         } else {
             toolbar.setBackgroundColor(ContextCompat.getColor(this, estiloMKP.getCorClara()));
         }
-        toolbar.setTitleTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
+
         setSupportActionBar(toolbar);
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
@@ -185,14 +197,22 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.seta_esquerda);
             upArrow.mutate().setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()), PorterDuff.Mode.SRC_ATOP);
             getSupportActionBar().setHomeAsUpIndicator(upArrow);
+            getSupportActionBar().setHomeActionContentDescription(R.string.txt_voltar);
+            getSupportActionBar().setTitle("");
         }
-        setTitle(ViewUtils.textFuturaAndFuturaBold(this, "_"+ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase()+"_"));
+
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbarTitle.setTextSize(18);
+        toolbarTitle.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
+        toolbarTitle.setText(ViewUtils.textFuturaAndFuturaBold(this, "_"+ViewUtils.getNomeModalidadePorAposta(aposta).toLowerCase()+"_"));
+        ViewCompat.setAccessibilityHeading(toolbarTitle, true);
 
         ImageButton btnDuvidas = findViewById(R.id.ib_duvidas);
         btnDuvidas.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoClaro()));
         btnDuvidas.setOnClickListener(view -> {
             abrirTermosUso();
         });
+        btnDuvidas.setContentDescription(getString(R.string.txt_duvidas));
     }
 
     protected void abrirTermosUso() {
@@ -204,8 +224,12 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         clScroll = findViewById(R.id.cl_scroll_content);
 
         concursoLabel = findViewById(R.id.concursoLabel);
+        containerConcurso = findViewById(R.id.cl_concursos);
         concursoTxt = findViewById(R.id.concursoTxt);
         quantidadeApostadasTxt = findViewById(R.id.quantidadeApostadasTxt);
+
+        clAccessibilityLeft = findViewById(R.id.cl_accessibility_left);
+        clAccessibilityRight = findViewById(R.id.cl_accessibility_right);
         dataAposta = findViewById(R.id.dataAposta);
         dataApostaTxt = findViewById(R.id.dataApostaTxt);
         horaApostaTxt = findViewById(R.id.horaApostaTxt);
@@ -219,18 +243,20 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         tipoApostaLinhaView = findViewById(R.id.tipo_aposta_linha);
 
         clInformacoesBolao = findViewById(R.id.clInformacoesBolao);
+        rvFieldsBolao = findViewById(R.id.rv_fields_bolao);
         //tvlabelNoneLoterica = findViewById(R.id.tvlabelNoneLoterica);
-        tvNomeLoterica = findViewById(R.id.tvNomeLoterica);
-        tvlabelCidadeUf = findViewById(R.id.tvlabelCidadeUf);
-        tvTextCidadeUf = findViewById(R.id.tvTextCidadeUf);
-        tvlabelValorCota = findViewById(R.id.tvlabelValorCota);
-        tvTextValorCota = findViewById(R.id.tvTextValorCota);
-        tvlabelTarifa = findViewById(R.id.tvlabelTarifa);
-        tvTextTarifa = findViewById(R.id.tvTextTarifa);
-        tvlabelCota = findViewById(R.id.tvlabelCota);
-        tvTextCota = findViewById(R.id.tvTextCota);
+//        tvNomeLoterica = findViewById(R.id.tvNomeLoterica);
+//        tvlabelCidadeUf = findViewById(R.id.tvlabelCidadeUf);
+//        tvTextCidadeUf = findViewById(R.id.tvTextCidadeUf);
+//        tvlabelValorCota = findViewById(R.id.tvlabelValorCota);
+//        tvTextValorCota = findViewById(R.id.tvTextValorCota);
+//        tvlabelTarifa = findViewById(R.id.tvlabelTarifa);
+//        tvTextTarifa = findViewById(R.id.tvTextTarifa);
+//        tvlabelCota = findViewById(R.id.tvlabelCota);
+//        tvTextCota = findViewById(R.id.tvTextCota);
 
         clResgatePremio = findViewById(R.id.clResgatePremio);
+        setAccessibilityAnchor();
         ivResgatePremio = findViewById(R.id.ivResgatePremio);
         ResgatarPremioTxt = findViewById(R.id.ResgatarPremioTxt);
 
@@ -249,6 +275,19 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         //Botoes
         clbottons = findViewById(R.id.v_bottom);
         llAdicFav = findViewById(R.id.ll_adic_fav);
+    }
+
+    private void setAccessibilityAnchor() {
+        ViewCompat.setAccessibilityDelegate(clResgatePremio, new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+
+                info.setClassName(android.widget.Button.class.getName());
+                info.setClickable(true);
+                info.addAction(AccessibilityNodeInfoCompat.ACTION_CLICK);
+            }
+        });
     }
 
     private void desativaComponentes() {
@@ -340,15 +379,15 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         tv_val_premio.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
         //tvlabelNoneLoterica.setTextColor(getColor(estiloMKP.getCorFonteFundoEscuro()));
-        tvNomeLoterica.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-        tvlabelCidadeUf.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-        tvTextCidadeUf.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-        tvlabelValorCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-        tvTextValorCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-        tvlabelTarifa.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-        tvTextTarifa.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-        tvlabelCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-        tvTextCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+//        tvNomeLoterica.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+//        tvlabelCidadeUf.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+//        tvTextCidadeUf.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+//        tvlabelValorCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+//        tvTextValorCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+//        tvlabelTarifa.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+//        tvTextTarifa.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+//        tvlabelCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
+//        tvTextCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
         if (aposta.getModalidade().equals(ModalidadeEnum.SUPER_7) || aposta.getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE)) {
             clResgatePremio.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorLetraLista())));
@@ -393,6 +432,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
         //Apenas para acessibilidade
         concursoLabel.setContentDescription(concursoLabel.getText() + getString(R.string.txt_space) + aposta.getConcursoInicial().toString());
+        containerConcurso.setContentDescription(concursoLabel.getContentDescription());
 
         if (aposta.getQuantidadeTeimosinhas() == 0) {
             quantidadeApostadasTxt.setVisibility(View.GONE);
@@ -414,53 +454,34 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
             //Apenas para acessibilidade
             concursoLabel.setContentDescription(accessibilityContent);
+            containerConcurso.setContentDescription(accessibilityContent);
         }
 
         if (isBolao()) {
             dataApostaTxt.setText(aposta.getReservaCotaBolao().getDataRegistroBolao());
             horaApostaTxt.setText(aposta.getReservaCotaBolao().getHoraRegistroBolao());
             String betDateAccessibilityContent = getString(R.string.contest_date) + aposta.getReservaCotaBolao().getDataRegistroBolao() + " " + aposta.getReservaCotaBolao().getHoraRegistroBolao();
-            dataAposta.setContentDescription(betDateAccessibilityContent);
-
+            clAccessibilityLeft.setContentDescription(betDateAccessibilityContent);
             clInformacoesBolao.setVisibility(View.VISIBLE);
 
-            //tvNomeLoterica.setText(aposta.getReservaCotaBolao().getNumeroLoterica().getNome());
-            Typeface regular = FonteUtils.getFonte(FontCaixaEnum.REGULAR);
-            Typeface bold = FonteUtils.getFonte(FontCaixaEnum.BOLD);
-            String label = "Nome da Lotérica: ";
-            String valor = aposta.getReservaCotaBolao().getNumeroLoterica().getNome();
-            SpannableStringBuilder ssb = new SpannableStringBuilder();
-            // Label
-            int startLabel = 0;
-            ssb.append(label);
-            int endLabel = ssb.length();
-            ssb.setSpan(new CustomTypefaceSpan("", regular),startLabel,endLabel,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ssb.setSpan(new AbsoluteSizeSpan(18, true),startLabel,endLabel,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            // Valor
-            int startValor = ssb.length();
-            ssb.append(valor);
-            int endValor = ssb.length();
-            ssb.setSpan(new CustomTypefaceSpan("", bold),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ssb.setSpan(new AbsoluteSizeSpan(16, true),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            tvNomeLoterica.setVisibility(View.VISIBLE);
-            tvNomeLoterica.setText(ssb);
-            tvNomeLoterica.setContentDescription(label + getString(R.string.txt_space) + valor);
-
-            tvTextCidadeUf.setText(StringUtils.capitalizerNovo(aposta.getReservaCotaBolao().getNumeroLoterica().getNomeMunicipio().trim()) + " - " + UF.siglaFromId(aposta.getReservaCotaBolao().getNumeroLoterica().getIdUF().intValue()));
-            tvlabelCidadeUf.setContentDescription(tvlabelCidadeUf.getText() + getString(R.string.txt_space) + tvTextCidadeUf.getText());
-
+            List<Pair<String, String>> labelValue = new ArrayList<>();
+            String labelLoterica = "Nome da Lotérica: ";
+            String valorLoterica = aposta.getReservaCotaBolao().getNumeroLoterica().getNome();
+            labelValue.add(new Pair<>(labelLoterica, valorLoterica));
+            String uf = StringUtils.capitalizerNovo(aposta.getReservaCotaBolao().getNumeroLoterica().getNomeMunicipio().trim()) + " - " + UF.siglaFromId(aposta.getReservaCotaBolao().getNumeroLoterica().getIdUF().intValue());
+            labelValue.add(new Pair<>("Cidade/UF: ", uf));
             NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-            tvTextValorCota.setText(nf.format(aposta.getReservaCotaBolao().getVrCotaReservada()));
-            tvlabelValorCota.setContentDescription(tvlabelValorCota.getText() + getString(R.string.txt_space) + tvTextValorCota.getText());
-            tvTextTarifa.setText(nf.format(aposta.getReservaCotaBolao().getVrTarifaServico()));
-            tvlabelTarifa.setContentDescription(tvlabelTarifa.getText() + getString(R.string.txt_space) + tvTextTarifa.getText());
-            tvTextCota.setText(aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" + aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
-            tvlabelCota.setContentDescription(tvlabelCota.getText() + getString(R.string.txt_space) + aposta.getReservaCotaBolao().getNumeroCotaReservada() + getString(R.string.txt_space_with_word) + aposta.getReservaCotaBolao().getQtdCotaTotalBolao());
+            labelValue.add(new Pair<>("Valor da cota: ", nf.format(aposta.getReservaCotaBolao().getVrCotaReservada())));
+            labelValue.add(new Pair<>("Tarifa de Serviço: ", nf.format(aposta.getReservaCotaBolao().getVrTarifaServico())));
+            labelValue.add(new Pair<>("Cota: ", aposta.getReservaCotaBolao().getNumeroCotaReservada() + "/" + aposta.getReservaCotaBolao().getQtdCotaTotalBolao()));
+
+            setupFieldsBolao(labelValue);
 
         } else {
             //Apenas para acessibilidade
             String betDateAccessibilityContent = getString(R.string.contest_date) + aposta.getDataEfetivacao() + " " + StringUtils.transformToHorahMinuto(aposta.getHoraEfetivacao());
             dataAposta.setContentDescription(betDateAccessibilityContent);
+            clAccessibilityLeft.setContentDescription(betDateAccessibilityContent);
             //dataApostaTxt.setVisibility(View.VISIBLE);
             dataApostaTxt.setText(aposta.getDataEfetivacao());
             //horaApostaTxt.setVisibility(View.VISIBLE);
@@ -476,6 +497,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
             //Apenas para acessibilidade
             statusApostaTxt.setContentDescription(statusApostaTxt.getText() + " " + tv_val_premio_tit.getText() + " " + tv_val_premio.getText());
+            clAccessibilityRight.setContentDescription(statusApostaTxt.getContentDescription());
 
             clResgatePremio.setVisibility(View.VISIBLE);
             validadePremioText.setVisibility(View.VISIBLE);
@@ -499,7 +521,40 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             else {
                 tvStatusCentralizado.setText(ApostaUtils.descricaoCorrigida(aposta.getSituacao()));
             }
+            clAccessibilityRight.setContentDescription(tvStatusCentralizado.getText());
         }
+    }
+
+    @NonNull
+    private static SpannableStringBuilder getSpannableStringBuilder(String label, String valor) {
+        SpannableStringBuilder ssb = new SpannableStringBuilder();
+        // Label
+        int startLabel = 0;
+        ssb.append(label);
+        int endLabel = ssb.length();
+        ssb.setSpan(new CustomTypefaceSpan("", FonteUtils.getFonte(FontCaixaEnum.REGULAR)),startLabel,endLabel,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new AbsoluteSizeSpan(18, true),startLabel,endLabel,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        // Valor
+        int startValor = ssb.length();
+        ssb.append(valor);
+        int endValor = ssb.length();
+        ssb.setSpan(new CustomTypefaceSpan("", FonteUtils.getFonte(FontCaixaEnum.BOLD)),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new AbsoluteSizeSpan(16, true),startValor,endValor,Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ssb;
+    }
+
+    private void setupFieldsBolao(List<Pair<String, String>> list) {
+        AccessibleRecyclerAdapter adapter = new AccessibleRecyclerAdapter(list, estiloMKP.getCorFonteFundoEscuro());
+        rvFieldsBolao.setAdapter(adapter);
+        rvFieldsBolao.setLayoutManager(new LinearLayoutManager(this));
+        rvFieldsBolao.setVisibility(View.VISIBLE);
+//        ViewCompat.setAccessibilityDelegate(rvFieldsBolao, new AccessibilityDelegateCompat(){
+//            @Override
+//            public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+//                super.onInitializeAccessibilityNodeInfo(host, info);
+//                info.setClassName(ListView.class.getName());
+//            }
+//        });
     }
 
     private void preencheRodape() {
