@@ -453,6 +453,8 @@
                 <!-- Card 2: Gerar comprovante -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/comprovanteLayout"
+                    android:importantForAccessibility="yes"
+                    android:contentDescription="@string/button_generate_receipt"
                     android:layout_width="246dp"
                     android:layout_height="44dp"
                     android:background="@drawable/rounded_text_view_colunas"
@@ -464,8 +466,7 @@
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <LinearLayout
-                        android:contentDescription="@string/button_generate_receipt"
-                        android:importantForAccessibility="yes"
+                        android:importantForAccessibility="no"
                         android:clickable="true"
                         android:focusable="true"
                         android:layout_width="0dp"

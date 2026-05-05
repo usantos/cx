@@ -548,13 +548,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         rvFieldsBolao.setAdapter(adapter);
         rvFieldsBolao.setLayoutManager(new LinearLayoutManager(this));
         rvFieldsBolao.setVisibility(View.VISIBLE);
-//        ViewCompat.setAccessibilityDelegate(rvFieldsBolao, new AccessibilityDelegateCompat(){
-//            @Override
-//            public void onInitializeAccessibilityNodeInfo(@NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
-//                super.onInitializeAccessibilityNodeInfo(host, info);
-//                info.setClassName(ListView.class.getName());
-//            }
-//        });
     }
 
     private void preencheRodape() {
