@@ -117,11 +117,13 @@
 
         <!-- LOTOFACIL e outras -->
         <TextView
+            android:accessibilityHeading="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_numeros_sorteados"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Números sorteados"
+            android:text="@string/txt_numeros_sorteados"
+            android:contentDescription="@string/txt_titulo_numeros_sorteados"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:fontFamily="@font/caixa_std_regular"
@@ -183,7 +185,8 @@
                 android:id="@+id/tv_label_time_mes_sorteado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Time sorteado"
+                android:text="@string/txt_time_sorteado"
+                android:contentDescription="@string/txt_titulo_time_sorteado"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:fontFamily="@font/caixa_std_regular" />
@@ -216,7 +219,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/caixa_std_regular"
-            android:text="Meus números"
+            android:text="@string/txt_meus_numeros"
+            android:contentDescription="@string/txt_titulo_meus_numeros"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -228,6 +232,7 @@
             tools:itemCount="1"/>
 
         <TextView
+            android:accessibilityHeading="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_meus_numeros_primeiro_sorteio"
             android:layout_width="wrap_content"
@@ -276,6 +281,7 @@
 
         <!-- DUPLASENA E MAISMILIONARIA-->
         <TextView
+            android:accessibilityHeading="true"
             android:importantForAccessibility="yes"
             android:id="@+id/tv_label_meus_numeros_segundo_sorteio"
             android:layout_width="wrap_content"
