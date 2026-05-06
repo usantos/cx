@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -197,6 +196,7 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(upArrow);
             getSupportActionBar().setHomeActionContentDescription(R.string.txt_voltar);
             getSupportActionBar().setTitle("");
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
