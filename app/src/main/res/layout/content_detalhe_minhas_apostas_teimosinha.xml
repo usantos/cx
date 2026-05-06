@@ -357,51 +357,61 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_accordion_teimosinha">
 
-                <ImageView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:contentDescription="@string/contest_reward_valid_time"
+                    android:id="@+id/validadePremio"
                     android:importantForAccessibility="yes"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:id="@+id/validadePremioImage"
-                    android:layout_width="25dp"
-                    android:layout_height="28dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginStart="21dp"
-                    android:src="@drawable/ic_validade"
-                    app:tint="@color/black"
-                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintRight_toRightOf="parent">
 
-                <TextView
-                    android:importantForAccessibility="no"
-                    android:id="@+id/validadePremioLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/caixa_std_regular"
-                    android:text="@string/label_validade_premio"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="-6dp"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toTopOf="@id/validadePremioImage"
-                    app:layout_constraintStart_toEndOf="@id/validadePremioImage" />
+                    <ImageView
+                        android:importantForAccessibility="no"
+                        android:id="@+id/validadePremioImage"
+                        android:layout_width="25dp"
+                        android:layout_height="28dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="21dp"
+                        android:src="@drawable/ic_validade"
+                        app:tint="@color/black"
+                        android:visibility="visible"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-                <TextView
-                    android:importantForAccessibility="no"
-                    android:id="@+id/validadePremioText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/validadePremioLabel"
-                    android:fontFamily="@font/caixa_std_regular"
-                    android:text="@string/label_noventa_dias"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:layout_marginStart="8dp"
-                    android:visibility="gone"
-                    app:layout_constraintStart_toEndOf="@id/validadePremioImage"
-                    app:layout_constraintTop_toBottomOf="@id/validadePremioLabel" />
+                    <TextView
+                        android:importantForAccessibility="no"
+                        android:id="@+id/validadePremioLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/caixa_std_regular"
+                        android:text="@string/label_validade_premio"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="-6dp"
+                        android:visibility="visible"
+                        app:layout_constraintTop_toTopOf="@id/validadePremioImage"
+                        app:layout_constraintStart_toEndOf="@id/validadePremioImage" />
+
+                    <TextView
+                        android:importantForAccessibility="no"
+                        android:id="@+id/validadePremioText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/validadePremioLabel"
+                        android:fontFamily="@font/caixa_std_regular"
+                        android:text="@string/label_noventa_dias"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:layout_marginStart="8dp"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toEndOf="@id/validadePremioImage"
+                        app:layout_constraintTop_toBottomOf="@id/validadePremioLabel" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <!-- Card 1: Resgatar prêmio -->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -412,7 +422,7 @@
                     android:backgroundTint="@color/black"
                     android:layout_marginTop="12dp"
                     android:visibility="visible"
-                    app:layout_constraintTop_toBottomOf="@+id/validadePremioText"
+                    app:layout_constraintTop_toBottomOf="@+id/validadePremio"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
 
@@ -561,6 +571,7 @@
             android:id="@+id/carrinhoApostasBtn"
             android:clickable="true"
             android:focusable="true"
+            android:importantForAccessibility="yes"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -570,6 +581,7 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <ImageView
+                android:importantForAccessibility="no"
                 android:id="@+id/carrinhoImg"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
@@ -578,6 +590,7 @@
                 app:tint="@color/cinza90"/>
 
             <TextView
+                android:importantForAccessibility="no"
                 android:id="@+id/carrinhoTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
