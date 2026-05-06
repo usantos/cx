@@ -97,8 +97,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     private TextView statusApostaTxt, tv_val_premio, tv_val_premio_tit, tvStatusCentralizado;
     private TextView ResgatarPremioTxt, ResgatarPremioTxt2;
 
-//    private TextView tvNomeLoterica, tvlabelCidadeUf, tvTextCidadeUf, tvlabelValorCota, tvTextValorCota,
-//                     tvlabelTarifa, tvTextTarifa, tvlabelCota, tvTextCota;
     private TextView validadePremioText, validadePremioLabel, gerarConprovanteTxt;
 
     private TipoApostaLinhaView tipoApostaLinhaView;
@@ -244,16 +242,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
 
         clInformacoesBolao = findViewById(R.id.clInformacoesBolao);
         rvFieldsBolao = findViewById(R.id.rv_fields_bolao);
-        //tvlabelNoneLoterica = findViewById(R.id.tvlabelNoneLoterica);
-//        tvNomeLoterica = findViewById(R.id.tvNomeLoterica);
-//        tvlabelCidadeUf = findViewById(R.id.tvlabelCidadeUf);
-//        tvTextCidadeUf = findViewById(R.id.tvTextCidadeUf);
-//        tvlabelValorCota = findViewById(R.id.tvlabelValorCota);
-//        tvTextValorCota = findViewById(R.id.tvTextValorCota);
-//        tvlabelTarifa = findViewById(R.id.tvlabelTarifa);
-//        tvTextTarifa = findViewById(R.id.tvTextTarifa);
-//        tvlabelCota = findViewById(R.id.tvlabelCota);
-//        tvTextCota = findViewById(R.id.tvTextCota);
 
         clResgatePremio = findViewById(R.id.clResgatePremio);
         setAccessibilityAnchor();
@@ -378,17 +366,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
         tvStatusCentralizado.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
         tv_val_premio.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
 
-        //tvlabelNoneLoterica.setTextColor(getColor(estiloMKP.getCorFonteFundoEscuro()));
-//        tvNomeLoterica.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-//        tvlabelCidadeUf.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-//        tvTextCidadeUf.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-//        tvlabelValorCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-//        tvTextValorCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-//        tvlabelTarifa.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-//        tvTextTarifa.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-//        tvlabelCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-//        tvTextCota.setTextColor(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
-
         if (aposta.getModalidade().equals(ModalidadeEnum.SUPER_7) || aposta.getModalidade().equals(ModalidadeEnum.DIA_DE_SORTE)) {
             clResgatePremio.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, estiloMKP.getCorLetraLista())));
             ivResgatePremio.setColorFilter(ContextCompat.getColor(this, estiloMKP.getCorFonteFundoEscuro()));
@@ -422,7 +399,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     }
 
     private void preencheCabecalho() {
-
         if (aposta.getQuantidadeTeimosinhas() == 0) {
             concursoLabel.setText(getString(R.string.label_concurso));
         }
@@ -669,14 +645,12 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     }
 
     private void apresentaErro() {
-
         ViewUtils.alertFecharCustom(this, this.getString(R.string.erro_minas_apostas_teimosinha),
                 () -> { this.finish(); }
         );
     }
 
     private void preencheCentroTeimosinha() {
-
         List<ItemMinhasApostasDTO> items = new ArrayList<>();
 
         if (listResultadoConcursoDTO != null && listResultadoConcursoDTO.size() > 0) {
@@ -882,7 +856,6 @@ public class DetalheMinhasApostasActivity extends AppCompatActivity {
     }
 
     private void preencheApostaSimples() {
-
         List<ItemMinhasApostasDTO> items = new ArrayList<>();
 
         ResultadoConcursoDTO resultadoConcursoDTO = null;
