@@ -226,8 +226,8 @@ public class DetalheMinhasApostasAdapter extends RecyclerView.Adapter<DetalheMin
         holder.tvAcertos.setTextColor(context.getColor(estilo.getCorFonteFundoEscuro()));
         holder.tvAcertos.setText(montaDescricaoAcertos(item)[0]);
 
-            //Accessibility
-            holder.tvLabelAcertos.setContentDescription(holder.tvLabelAcertos.getText()+ " " + holder.tvAcertos.getText());
+        //Accessibility
+        holder.tvLabelAcertos.setContentDescription(holder.tvLabelAcertos.getText()+ " " + holder.tvAcertos.getText());
 
         if (item.getValorPremio() != null) {
             holder.llPremio.setVisibility(View.VISIBLE);
