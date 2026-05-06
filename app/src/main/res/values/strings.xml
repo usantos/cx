@@ -1640,7 +1640,7 @@
     <string name="contest_timestamp_example">01/01/2026</string>
     <string name="contest_timestamp_example_hour">11h20</string>
     <string name="contest_example_waiting">Aguardando</string>
-    <string name="button_get_reward">Botão: Resgatar Prêmio</string>
+    <string name="button_get_reward">Resgatar Prêmio</string>
     <string name="contest_reward_valid_time">Validade prêmio: 90 dias</string>
     <string name="button_generate_receipt">Gerar comprovante</string>
     <string name="expandablelistview_expanded_text">Expandido. Toque duas vezes para recolher.</string>
