@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
@@ -52,6 +53,7 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaDezenaRecycl
 import br.gov.caixa.loterias.apostas.view.config.DezenaConfig;
 import br.gov.caixa.loterias.apostas.view.config.ShapeConfig;
 import br.gov.caixa.loterias.apostas.view.holder.DezenaHolder;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemClickListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnTrevosListener;
@@ -193,7 +195,10 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                 validarApostaFav(getApostaFavoritaDTO());
 
             } else {
-                ViewUtils.alert(getActivity(), getString(R.string.msg_favor_inserir_nome_aposta));
+             DialogUtils.dialogEntendi(
+                        getActivity(),
+                        getString(R.string.msg_favor_inserir_nome_aposta)
+                );
             }
         };
     }
@@ -209,11 +214,15 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
                 if(isErroNegocial(error)){
-                    ViewUtils.alertTitleButtonYesOrNotListener(
+                    DialogUtils.dialogSim(
                             getActivity(),
                             MensagensNetwork.getErrorMessage(error),
-                            (dialogInterface, i) ->
-                                    salvarAposta(apostaFavorita)
+                            new OnDialogBotaoListener() {
+                                @Override
+                                public void onButtonClick(DialogInterface dialog, int which) {
+                                    salvarAposta(apostaFavorita);
+                                }
+                            }
                     );
                 } else {
                     RedirectNetwork.checkRedirect(error, getActivity());
@@ -353,8 +362,15 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
 
             List<String>                  list = getListStringvaloresTrevos(valoresApostas);
 
-            DialogUtils.showDialogListaEscolha(getContext(), getString(R.string.quant_de_trevos), subtitulo,
-                                               list, onDialogListener());
+            DialogUtils.showDialogListItens(
+                    getContext(),
+                    getString(R.string.quant_de_trevos),
+                    subtitulo,
+                    list,
+                    "Confirmar",
+                    "Cancelar",
+                    onDialogListener()
+            );
 
         };
     }
@@ -367,7 +383,11 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
                 textoBotaoTrevosSelecionado = valorApostaSelecionado.getNumeroTrevos() + getString(R.string.espaco_em_branco) + getString(R.string.trevos);
                 if 	((position) > 0 && (!isAvisou))
                 {
-                    ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
+                    DialogUtils.dialogEntendi(
+                            getActivity(),
+                            getString(R.string.msg_qtd_max_ultrapassada_milionaria)
+                    );
+
                     isAvisou = true;
                 }
             }
@@ -434,7 +454,10 @@ public class TrevosFragment extends Fragment implements OnItemClickListener<Deze
             if (!trevoSelecionadoList.contains(numero)) {
                 trevoSelecionadoList.add(numero);
                 if ((trevoSelecionadoList.size() > 2) && (!isAvisou))  {
-                    ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada_milionaria), getString(R.string.btn_entendi));
+                    DialogUtils.dialogEntendi(
+                            getActivity(),
+                            getString(R.string.msg_qtd_max_ultrapassada_milionaria)
+                    );
                     isAvisou = true;
                 }
             }
