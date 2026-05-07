@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,8 +55,10 @@ import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 import br.gov.caixa.loterias.apostas.view.fragment.CopiaColaPixFragment;
 import br.gov.caixa.loterias.apostas.view.listener.OnCopiaColaListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogTresBotoesListener;
 
 public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements OnCopiaColaListener {
 
@@ -184,23 +187,40 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
 
     private void showDialogCompraCancelada() {
         if (!contemBolao()){
-            DialogUtils.showDialogDebitoNaoAutorizado(this,
+            DialogUtils.dialogSim(DetalhesComprasActivity.this,
                     getResources().getString(R.string.mensagem_compra_cancelada_dialog),
-                    true,
-                    getResources().getString(R.string.salvar_carrinho),
-                    false,
-                    onCompraCancelaDialogListener());
+                    new OnDialogBotaoListener() {
+                        @Override
+                        public void onButtonClick(DialogInterface dialog, int which) {
+                            if (dialogFavoritar != null) {
+                                dialogFavoritar.show();
+                            } else {
+                                setaDialogFavoritar();
+                                dialogFavoritar.show();
+                            }
+                        }
+                    }
+            );
         }
     }
 
     private void showDialogCompraCancelada(String descricao) {
         if (!contemBolao()){
-            DialogUtils.showDialogDebitoNaoAutorizado(this,
+            DialogUtils.dialogSim(DetalhesComprasActivity.this,
                     descricao,
-                    true,
-                    getResources().getString(R.string.salvar_carrinho),
-                    false,
-                    onCompraCancelaDialogListener());
+                    new OnDialogBotaoListener() {
+                        @Override
+                        public void onButtonClick(DialogInterface dialog, int which) {
+                            if (dialogFavoritar != null) {
+                                dialogFavoritar.show();
+                            } else {
+                                setaDialogFavoritar();
+                                dialogFavoritar.show();
+                            }
+                        }
+                    }
+            );
+
         }
     }
 
@@ -224,6 +244,7 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
                 loadViewProgress.dismiss();
                 if(response.getPayload().getPayload()){
                     ViewUtils.alertTitulo(DetalhesComprasActivity.this, R.string.label_atencao, response.getPayload().getMensagem());
+                    DialogUtils.dialogEntendi(DetalhesComprasActivity.this,response.getPayload().getMensagem());
                 }
             }
 
@@ -255,7 +276,7 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
     }
 
     private void showDialogEstornada() {
-        DialogUtils.showDialog3Botoes(DetalhesComprasActivity.this,R.drawable.vermelho,
+        DialogUtils.dialogTresBotoes(DetalhesComprasActivity.this,
                 getString(R.string.popup_pix_nao_autorizado),
                 getString(R.string.popup_pix_nao_autorizado_descricao),
                 getString(R.string.gerar_novo_codigo),
@@ -275,24 +296,24 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
     }
 
     private void showDialogDebitoNaoAutorizado() {
-
         if (MeioPagamentoUtil.isPix(compraDTO.getMeioPagamento())){
-            DialogUtils.showDialog3Botoes(this, R.drawable.vermelho,
-                                          getString(R.string.popup_pix_nao_realizado),
-                                          getString(R.string.popup_pix_nao_realizado_descricao),
-                                          getString(R.string.gerar_novo_codigo),
-                                          getString(R.string.alterar_forma_pagamento),
-                                          getString(R.string.btn_title_voltarAoInicio), onDialogListener());
+            DialogUtils.dialogTresBotoes(this,
+                    getString(R.string.popup_pix_nao_realizado),
+                    getString(R.string.popup_pix_nao_realizado_descricao),
+                    getString(R.string.gerar_novo_codigo),
+                    getString(R.string.alterar_forma_pagamento),
+                    getString(R.string.btn_title_voltarAoInicio),
+                    onDialogListener());
         } else {
             showDialogCompraCancelada();
         }
 
     }
 
-    private OnDialog3ButtonsListener onDialogListener() {
-        return new OnDialog3ButtonsListener() {
+    private OnDialogTresBotoesListener onDialogListener() {
+        return new OnDialogTresBotoesListener() {
             @Override
-            public void leftButtom() {
+            public void TopButton(DialogInterface dialog, int which) {
                 //cancelContagem();
                 Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, OrientacaoPixActivity.class);
                 startActivity(intent);
@@ -300,7 +321,7 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
             }
 
             @Override
-            public void centerButtom() {
+            public void CenterButton(DialogInterface dialog, int which) {
                 //cancelContagem();
                 Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, FormaPagamentoActivity.class);
                 startActivity(intent);
@@ -308,7 +329,7 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
             }
 
             @Override
-            public void rightButtom() {
+            public void BottomButton(DialogInterface dialog, int which) {
                 //cancelContagem();
                 //PrincipalActivity_.intent(DetalhesComprasActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP |  Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
                 Intent intent = IntentUtil.getIntentOrigemDestino(DetalhesComprasActivity.this, PrincipalActivity.class);
@@ -704,10 +725,15 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                ViewUtils.alertTitleButtonYesOrNotListener(
-                        DetalhesComprasActivity.this,
+                DialogUtils.dialogSim(DetalhesComprasActivity.this,
                         MensagensNetwork.getErrorMessage(error),
-                        (dialogInterface, i) ->  favoritarCarrinho(nome,idFavorito)
+
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                favoritarCarrinho(nome,idFavorito);
+                            }
+                        }
                 );
             }
         });
@@ -722,11 +748,15 @@ public class DetalhesComprasActivity extends LoteriasBaseAppActivity implements 
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( result.getRedirect(), DetalhesComprasActivity.this);
                 }
-                ViewUtils.alertTitleButton(DetalhesComprasActivity.this,
-                        R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
-                        getString(R.string.ok), dialogInterface -> {
-                            dialogFavoritar.dismiss();
-                            startActivity(new Intent(DetalhesComprasActivity.this, CarrinhosFavoritosActivity.class));
+                DialogUtils.dialogEntendiListener(DetalhesComprasActivity.this,
+                        getString(R.string.carrinho_fav_lbl_msg),
+
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                dialogFavoritar.dismiss();
+                                startActivity(new Intent(DetalhesComprasActivity.this, CarrinhosFavoritosActivity.class));
+                            }
                         }
                 );
             }

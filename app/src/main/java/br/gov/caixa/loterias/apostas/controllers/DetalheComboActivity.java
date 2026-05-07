@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.*;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.viewModel.DetalheComboViewModel;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -171,7 +174,14 @@ public class DetalheComboActivity extends SettingToolbarActivity  {
             }
 
         }else{
-            ViewUtils.alertTitleButton(DetalheComboActivity.this, R.string.label_atencao, getString(R.string.nao_concluiu_operacao), "Ok", dialogInterface -> finish());
+            DialogUtils.dialogEntendiListener(DetalheComboActivity.this, getString(R.string.nao_concluiu_operacao),
+                    new OnDialogBotaoListener() {
+                        @Override
+                        public void onButtonClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    }
+            );
         }
     }
 
