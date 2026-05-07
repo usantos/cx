@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,14 +24,16 @@ import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.ModoVisualizacaoBolaoEnum;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.DetalhesBolaoActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaCarrinhoHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaCarrinhoListener;
 import br.gov.caixa.loterias.apostas.view.listener.BolaoCarrinhoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+
 
 public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaCarrinhoHolder> {
 	private Context context;
@@ -96,14 +99,20 @@ public class CarrinhoApostasListViewAdapter extends RecyclerView.Adapter<ApostaC
 	}
 
 	private void deletarAposta(final IdentificaoDeUmaApostaDas8Modalidades aposta) {
+		DialogUtils.dialogSim(context,
+				context.getResources().getString(R.string.MA010),
 
-		ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), (dialogInterface, i) -> {
-			int positionAposta = getPositionAposta(aposta);
-			if(positionAposta >= 0) {
-				AlertDialogUtils.show(parentActivity);
-				model.deletaApostaCarrinho(aposta, onDeletaApostaCarrinho(aposta, positionAposta, isBolao));
-			}
-		});
+				new OnDialogBotaoListener() {
+					@Override
+					public void onButtonClick(DialogInterface dialog, int which) {
+						int positionAposta = getPositionAposta(aposta);
+						if(positionAposta >= 0) {
+							AlertDialogUtils.show(parentActivity);
+							model.deletaApostaCarrinho(aposta, onDeletaApostaCarrinho(aposta, positionAposta, isBolao));
+						}
+					}
+				}
+		);
 	}
 
 	private OnSilceListener<CarrinhoDTO> onDeletaApostaCarrinho(IdentificaoDeUmaApostaDas8Modalidades aposta, int positionAposta, boolean isBolao) {

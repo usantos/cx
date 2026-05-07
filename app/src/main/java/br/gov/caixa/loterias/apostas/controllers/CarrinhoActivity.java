@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,7 +61,8 @@ import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasLi
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.CarrinhoApostasListViewComboAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView;
 import br.gov.caixa.loterias.apostas.view.fragment.SomadorCarrinhoFragment;
-import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 
 
 public class CarrinhoActivity extends LoteriasBaseAppActivity {
@@ -147,8 +149,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         }
         if (ocorrendoValidacao && !onResume) {
             onResume = true;
-            ViewUtils.alertTitleButton(CarrinhoActivity.this, R.string.label_atencao, CarrinhoActivity.this.getResources().getString( R.string.label_verificar_valor_carrinho ),
-                    CarrinhoActivity.this.getResources().getString( R.string.ok ) );
+            DialogUtils.dialogEntendi(CarrinhoActivity.this, CarrinhoActivity.this.getResources().getString( R.string.label_verificar_valor_carrinho ));
         }
         lerCarrinho();
     }
@@ -317,10 +318,14 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     private void onClickFavoritar() {
-        ViewUtils.alertTitleButton(this, R.string.label_atencao,
+        DialogUtils.dialogEntendiListener(CarrinhoActivity.this,
             getString(R.string.loteca_nao_favorita),
-            getResources().getString(R.string.title_entendi),
-                dialog -> dialogFavoritar.show()
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        dialogFavoritar.show();
+                    }
+                }
         );
     }
 
@@ -362,14 +367,11 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             if (result == LocalizacaoUtils.LOC_NAO_PERMITIDA ||
                     result == LocalizacaoUtils.LOC_NEG_PERMANENTEMENTE ||
                     result == LocalizacaoUtils.LOC_DESATIVADA) {
-                DialogUtils.showDialogDefault(this, 0,
-                        getResources().getString(R.string.label_atencao),
+                DialogUtils.dialogSimNao(CarrinhoActivity.this,
                         getString(R.string.posso_consultar_sua_localizacao),
-                        getResources().getString(R.string.label_sim),
-                        getResources().getString(R.string.label_nao),
-                        new OnDialogListenerLeftRight() {
+                        new OnDialogDoisBotoesListener() {
                             @Override
-                            public void left() {
+                            public void PositiveButton(DialogInterface dialog, int which) {
                                 if (result == LocalizacaoUtils.LOC_NAO_PERMITIDA) {
                                     PermissaoUtil.checkList(CarrinhoActivity.this, PermissaoUtil.getListaLocalizacaoPermissoes(), 123);
                                     LocalizacaoUtils.incrementContLocation();
@@ -381,7 +383,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
                             }
 
                             @Override
-                            public void right() {
+                            public void NegativeButton(DialogInterface dialog, int which) {
                                 showAlertLocalizacao();
                             }
                         });
@@ -413,33 +415,41 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     private void showAlertLocalizacao() {
-        ViewUtils.alertTitleButton(this, R.string.label_atencao,
+        DialogUtils.dialogEntendiListener(CarrinhoActivity.this,
                 getString(R.string.alerta_precisa_estar_no_brasil),
-                getResources().getString(R.string.title_entendi),
-                dialog -> {
-                    //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
-                    Intent intent = IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, PrincipalActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                });
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        //PrincipalActivity_.intent(CarrinhoActivity.this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+                        Intent intent = IntentUtil.getIntentOrigemDestino(CarrinhoActivity.this, PrincipalActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                }
+        );
     }
 
     private void onFluxoLocalizacaoNoBrasil(){
         try {
             if (model.existeCompraMesmoValorEm24horas(carrinho.getValorTotal())){
                 //modal
-                ViewUtils.alertTitleButtonYesOrNotListener(CarrinhoActivity.this,
-                                                           getString(R.string.compra_existente_24_horas),
-                                                           (dialog, which) -> {
-                                                               dialog.dismiss();
-                                                           },
-                                                           (dialog, which) -> {
-                                                               if (DadosUsuarioBO.checarUsuarioLogado(this)) {
-                                                                   validarCarrinho();
-                                                               } else {
-                                                                   AlertDialogExperimenteLogarSingleton.show(this, true, null);
-                                                               }
-                                                           });
+                DialogUtils.dialogSimNao(CarrinhoActivity.this,
+                        getString(R.string.compra_existente_24_horas),
+                        new OnDialogDoisBotoesListener() {
+                            @Override
+                            public void PositiveButton(DialogInterface dialog, int which) {
+                                // sem ação, apenas fecha o dialog
+                            }
+
+                            @Override
+                            public void NegativeButton(DialogInterface dialog, int which) {
+                                if (DadosUsuarioBO.checarUsuarioLogado(CarrinhoActivity.this)) {
+                                    validarCarrinho();
+                                } else {
+                                    AlertDialogExperimenteLogarSingleton.show(CarrinhoActivity.this, true, null);
+                                }
+                            }
+                        });
             } else {
                 if (DadosUsuarioBO.checarUsuarioLogado(this)) {
                     validarCarrinho();
@@ -611,9 +621,15 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             public void error(VolleyError error) {
                 AlertDialogUtils.dismiss();
 
-                ViewUtils.alertTitleButtonYesOrNotListener(CarrinhoActivity.this,
-                                                           MensagensNetwork.getErrorMessage(error),
-                                                           (dialogInterface, i) -> favoritarCarrinho(nome));
+              DialogUtils.dialogSim(CarrinhoActivity.this,
+                        MensagensNetwork.getErrorMessage(error),
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                favoritarCarrinho(nome);
+                            }
+                        }
+                );
             }
         };
     }
@@ -629,9 +645,16 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
             public void success(Object payload) {
                 AlertDialogUtils.dismiss();
 
-                ViewUtils.alertTitleButton(CarrinhoActivity.this,
-                                           R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
-                                           getString(R.string.ok), dialogInterface -> { dialogFavoritar.dismiss(); });
+               DialogUtils.dialogEntendiListener(CarrinhoActivity.this,
+                        getString(R.string.carrinho_fav_lbl_msg),
+
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                dialogFavoritar.dismiss();
+                            }
+                        }
+                );
             }
 
             @Override
@@ -654,10 +677,17 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
     }
 
     protected void clickLimparCarrinhoLinearLayout() {
-        ViewUtils.alertTitleButtonYesOrNotListener(this, getString(R.string.MA011), (dialogInterface, i) -> {
-            AlertDialogUtils.show(CarrinhoActivity.this);
-            model.limparCarrinho(onLimparCarrinhoListener());
-        });
+        DialogUtils.dialogSim(CarrinhoActivity.this,
+                getString(R.string.MA011),
+
+                new OnDialogBotaoListener() {
+                    @Override
+                    public void onButtonClick(DialogInterface dialog, int which) {
+                        AlertDialogUtils.show(CarrinhoActivity.this);
+                        model.limparCarrinho(onLimparCarrinhoListener());
+                    }
+                }
+        );
     }
 
     private OnSilceListener onLimparCarrinhoListener() {
