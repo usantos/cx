@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -43,6 +44,7 @@ import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 
 public class CadastrarActivity extends CadastroActivity {
@@ -157,7 +159,7 @@ public class CadastrarActivity extends CadastroActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loadViewProgress.dismiss();
-                        ViewUtils.alert(CadastrarActivity.this, MensagensNetwork.setMensagem(error, CadastrarActivity.this));
+                        DialogUtils.dialogEntendi(CadastrarActivity.this,  MensagensNetwork.setMensagem(error, CadastrarActivity.this));
                     }
                 });
             }
@@ -167,7 +169,17 @@ public class CadastrarActivity extends CadastroActivity {
 
     private void initOnclick() {
         naoSeiCepButton.setOnClickListener(view ->{
-            DialogUtils.modalNaoSeiCep(CadastrarActivity.this);
+            DialogUtils.dialogTituloConfirmar(CadastrarActivity.this,
+                    getString(R.string.nao_sei_cep),
+                    getString(R.string.voce_sera_redirecionado_para_o_site_dos_correios),
+
+                    new OnDialogBotaoListener() {
+                        @Override
+                        public void onButtonClick(DialogInterface dialog, int which) {
+                            Utils.abreUrl(CadastrarActivity.this, R.string.Url_Correios);
+                        }
+                    }
+            );
         });
         this.termoPolitica.setOnClickListener(v -> {
             Intent intent = new Intent(CadastrarActivity.this, TermosUsoActivity.class);
@@ -212,7 +224,7 @@ public class CadastrarActivity extends CadastroActivity {
         if (aceiteTermo.isChecked()) {
             cadastrarApostadorDTO.setAceitaTermosUso(Boolean.TRUE);
         } else {
-            ViewUtils.alertTitulo(CadastrarActivity.this, R.string.label_atencao, this.getResources().getString( R.string.termos_nao_aceitos ));
+            DialogUtils.dialogEntendi(CadastrarActivity.this, this.getResources().getString( R.string.termos_nao_aceitos ));
             return false;
         }
         if(aceiteNotificacoes.isChecked()){
@@ -256,7 +268,7 @@ public class CadastrarActivity extends CadastroActivity {
             return true;
         } else {
 
-            ViewUtils.alertTitulo(CadastrarActivity.this, R.string.label_atencao, this.getResources().getString( R.string.MA002 ) + " " + campos);
+            DialogUtils.dialogEntendi(CadastrarActivity.this, this.getResources().getString( R.string.MA002 ) + " " + campos);
             return false;
         }
     }
@@ -287,10 +299,7 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
     private void cepInvalido(String msg) {
-        ViewUtils.alertTitleButton(CadastrarActivity.this,
-                R.string.label_atencao,
-                msg,
-                getApplicationContext().getResources().getString(R.string.ok));
+        DialogUtils.dialogEntendi(CadastrarActivity.this, msg);
         editTextUFContent.setText("");
         editTextMunicipioContent.setText("");
         editTextCepContent.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);

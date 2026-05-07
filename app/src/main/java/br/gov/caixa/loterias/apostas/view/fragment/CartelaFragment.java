@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
@@ -368,8 +369,16 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 
 	private void adicionarApostaNoCarrinho() {
 		if(LoginSP.isLoginRealizado() && checaLimiteDiario()){
-			ViewUtils.alertTitleButtonYesOrNotListener(getContext(), getString(R.string.MA014),
-					(dialog, which) -> executaAddCarrinho());
+			DialogUtils.dialogSim(getContext(),
+					getString(R.string.MA014),
+
+					new OnDialogBotaoListener() {
+						@Override
+						public void onButtonClick(DialogInterface dialog, int which) {
+							executaAddCarrinho();
+						}
+					}
+			);
 		} else {
 			executaAddCarrinho();
 		}
@@ -514,7 +523,7 @@ private void zeraLoteca(){
 
 					}
 				} else {
-					ViewUtils.alert(getActivity(), getString(R.string.msg_favor_inserir_nome_aposta));
+					DialogUtils.dialogEntendi(getContext(), getString(R.string.msg_favor_inserir_nome_aposta));
 				}
 			}
 
@@ -1214,11 +1223,11 @@ private void zeraLoteca(){
 							dezenasSelecionadas.add(valorSelecionado);
 							if 	((qtdDezenasPossiveisSelecionadoAtual == (parentActivity.qtdDezenasPossiveisSelecionado-1)) && (!isAvisou))
 							{
-								ViewUtils.alertTitleButton(getActivity(), R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+								DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_qtd_max_ultrapassada));
 								isAvisou = true;
 							}
 						} else {
-							ViewUtils.alert(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
+							DialogUtils.dialogEntendi(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
 						}
 					} else {
 						dezenasSelecionadas.add(valorSelecionado);
@@ -1286,10 +1295,10 @@ private void zeraLoteca(){
 						}
 						atualizaValorTotalAposta(parentActivity.qtdDezenasPossiveisSelecionado, parentActivity.qtdConcursoSelecionado);
 					} else {
-						ViewUtils.alert(getActivity(),
-										getString(R.string.msg_bloqueio_coluna_super_sete_desmarcar).replace(
-												"{qtdColunas}",
-												String.valueOf(listaSelecionados.size())));
+						DialogUtils.dialogEntendi(getActivity(),
+								getString(R.string.msg_bloqueio_coluna_super_sete_desmarcar).replace(
+										"{qtdColunas}",
+										String.valueOf(listaSelecionados.size())));
 					}
 				} else {
 					int maxNumerosParaSelecionar = parametroJogo.getQuantidadeMaxima();
@@ -1313,20 +1322,19 @@ private void zeraLoteca(){
 
 									if 	((qtdTotalSelecionadosSuperSete == (parentActivity.qtdDezenasPossiveisSelecionado)) && (!isAvisou))
 									{
-										ViewUtils.alertTitleButton(getActivity(),R.string.label_atencao, getString(R.string.msg_qtd_max_ultrapassada), getString(R.string.btn_entendi));
+										DialogUtils.dialogEntendi(getActivity(), getString(R.string.msg_qtd_max_ultrapassada));
 										isAvisou = true;
 									}
 								} else {
-									ViewUtils.alert(getActivity(),
-													getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
-															"{qtdColunas}",
-															String.valueOf(adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado))));
+									DialogUtils.dialogEntendi(getActivity(),getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
+													"{qtdColunas}",
+													String.valueOf(adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado))));
 								}
 							} else {
-								ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_col_super_sete));
+								DialogUtils.dialogEntendi(getActivity(),getString(R.string.msg_qtd_max_col_super_sete));
 							}
 						} else {
-							ViewUtils.alert(getActivity(), getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
+							DialogUtils.dialogEntendi(getActivity(),getString(R.string.label_nao_possivel_selecionar_quantidade_numeros_superior_limite_modalidade_loterica));
 						}
 					} else {
 						if (listaSelecionados.size() < adapter.QTD_MAX_POR_COLUNA) {
@@ -1334,13 +1342,12 @@ private void zeraLoteca(){
 								listaSelecionados.add(valorSelecionado);
 								qtdTotalSelecionadosSuperSete++;
 							} else {
-								ViewUtils.alert(getActivity(),
-												getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
-														"{qtdColunas}",
-														String.valueOf(adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado))));
+								DialogUtils.dialogEntendi(getActivity(),getString(R.string.msg_bloqueio_coluna_super_sete_marcar).replace(
+												"{qtdColunas}",
+												String.valueOf(adapter.getQtdColunasMaximas(parentActivity.qtdDezenasPossiveisSelecionado))));
 							}
 						} else {
-							ViewUtils.alert(getActivity(), getString(R.string.msg_qtd_max_col_super_sete));
+							DialogUtils.dialogEntendi(getActivity(),getString(R.string.msg_qtd_max_col_super_sete));
 
 						}
 

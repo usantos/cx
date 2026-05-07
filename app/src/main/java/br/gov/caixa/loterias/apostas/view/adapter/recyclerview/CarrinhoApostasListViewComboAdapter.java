@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.view.adapter.recyclerview;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,18 +20,17 @@ import br.gov.caixa.loterias.apostas.controllers.CarrinhoActivity;
 import br.gov.caixa.loterias.apostas.model.bo.listener.OnSilceListener;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.CarrinhoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ComboApostaDTO;
-import br.gov.caixa.loterias.apostas.model.bo.silce.dto.IdentificaoDeUmaApostaDas8Modalidades;
-import br.gov.caixa.loterias.apostas.model.dao.crud.CarrinhoFavoritoCRUD;
 import br.gov.caixa.loterias.apostas.model.model.CarrinhoModel;
 import br.gov.caixa.loterias.apostas.model.sp.LoginSP;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
-import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.activity.DetalhesComboActivity;
 import br.gov.caixa.loterias.apostas.view.fragment.NumerosSuperSeteFragment;
 import br.gov.caixa.loterias.apostas.view.holder.ApostaCarrinhoComboHolder;
 import br.gov.caixa.loterias.apostas.view.listener.ApostaComboCarrinhoListener;
 import br.gov.caixa.loterias.apostas.view.listener.ComboCarrinhoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 
 public class CarrinhoApostasListViewComboAdapter extends RecyclerView.Adapter<ApostaCarrinhoComboHolder> {
 	private Context context;
@@ -85,13 +85,20 @@ public class CarrinhoApostasListViewComboAdapter extends RecyclerView.Adapter<Ap
 	}
 
 	private void deletarComboAposta(final ComboApostaDTO comboApostaDTO) {
-		ViewUtils.alertTitleButtonYesOrNotListener(context, context.getResources().getString(R.string.MA010), (dialogInterface, i) -> {
-			int positionCombo = getPositionCombo(comboApostaDTO);
-			if(positionCombo >= 0) {
-				AlertDialogUtils.show(parentActivity);
-				model.deletaComboCarrinho(comboApostaDTO, onDeletaComboCarrinho(comboApostaDTO, positionCombo));
-			}
-		});
+		DialogUtils.dialogSim(context,
+				context.getResources().getString(R.string.MA010),
+
+				new OnDialogBotaoListener() {
+					@Override
+					public void onButtonClick(DialogInterface dialog, int which) {
+						int positionCombo = getPositionCombo(comboApostaDTO);
+						if(positionCombo >= 0) {
+							AlertDialogUtils.show(parentActivity);
+							model.deletaComboCarrinho(comboApostaDTO, onDeletaComboCarrinho(comboApostaDTO, positionCombo));
+						}
+					}
+				}
+		);
 	}
 
 	private OnSilceListener<CarrinhoDTO> onDeletaComboCarrinho(ComboApostaDTO comboApostaDTO, int positionCombo) {
