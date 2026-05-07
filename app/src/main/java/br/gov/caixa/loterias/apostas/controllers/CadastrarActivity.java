@@ -121,7 +121,7 @@ public class CadastrarActivity extends CadastroActivity {
     }
 
     private void loadFields() {
-        textViewTituloCadastrar2.setText(ViewUtils.textFuturaAndFuturaBold(this,getResources().getString(R.string.bom_ver_voce)));
+        textViewTituloCadastrar2.setText(ViewUtils.textCaixaSTDBold(this,getResources().getString(R.string.bom_ver_voce)));
     }
 
     public void addUFSpinner() {
