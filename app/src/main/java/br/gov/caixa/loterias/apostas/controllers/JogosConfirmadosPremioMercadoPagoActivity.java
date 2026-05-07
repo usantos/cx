@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.InformacaoPagamentoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.RetornoPadraoResponse;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.StringResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.IntentUtil;
 import br.gov.caixa.loterias.apostas.utils.PdfUtils;
 import br.gov.caixa.loterias.apostas.utils.RateUtils;
@@ -107,10 +108,11 @@ public class JogosConfirmadosPremioMercadoPagoActivity extends LoteriasBaseAppAc
         resgatarPremioButton.setOnClickListener(view -> {
 
             if (!ValidacaoUtils.validarEmail(emailPremioMercadoPagoEditText.getText().toString())) {
-                ViewUtils.alertTitleButton(JogosConfirmadosPremioMercadoPagoActivity.this,
-                                           R.string.label_atencao,
-                                           getResources().getString(R.string.MA021),
-                                           getResources().getString(R.string.ok));
+                DialogUtils.dialogEntendi(
+                        JogosConfirmadosPremioMercadoPagoActivity.this,
+                        getResources().getString(R.string.MA021)
+                );
+
                 return;
             }
             callWebserviceResgatarPremio();
