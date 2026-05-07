@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.apostas.view.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +29,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.internals.CarrinhoSingleton;
 import br.gov.caixa.loterias.apostas.model.model.MeioPagamentoModel;
 import br.gov.caixa.loterias.apostas.view.config.MeioPagamentoConfig;
 import br.gov.caixa.loterias.apostas.view.fragment.MeioPagamentoFragment;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 
 public class FormaPagamentoActivity extends LoteriasBaseAppActivity {
 
@@ -75,16 +77,23 @@ public class FormaPagamentoActivity extends LoteriasBaseAppActivity {
 	private void apresentaAlertaPreCompra() {
 		try {
 			String valor = ViewUtils.getMoedaFormat(CarrinhoSingleton.getInstance().getCarrinho().getValorTotal());
-			ViewUtils.alertTitleCustomPositiveNegativeListener(FormaPagamentoActivity.this,
-					"Cancelar",
-					"Confirmar",
-					FormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valor), (dialog, which) -> {
-						AlertDialogUtils.dismiss();
-						dialog.dismiss();
-						verificaHorarioRepresa();
-					}, (dialog, which) -> {
-						finish();
-					} );
+			DialogUtils.dialogConfirmarCancelar(
+					FormaPagamentoActivity.this,
+					FormaPagamentoActivity.this.getResources().getString(R.string.label_pre_pagamento).replace("{valorCompra}", valor),
+					new OnDialogDoisBotoesListener() {
+						@Override
+						public void PositiveButton(DialogInterface dialog, int which) {
+							AlertDialogUtils.dismiss();
+							dialog.dismiss();
+							verificaHorarioRepresa();
+						}
+
+						@Override
+						public void NegativeButton(DialogInterface dialog, int which) {
+							finish();
+						}
+					}
+			);
 
 		} catch (Exception e){
 			AlertDialogUtils.dismiss();
@@ -135,7 +144,7 @@ public class FormaPagamentoActivity extends LoteriasBaseAppActivity {
 			public void onResponse(RepresaResponse response) {
 				loadViewProgress.dismiss();
 				if(response.getPayload().getPayload()){
-					ViewUtils.alertTitulo(FormaPagamentoActivity.this, R.string.label_atencao, response.getPayload().getMensagem());
+					DialogUtils.dialogEntendi(FormaPagamentoActivity.this,response.getPayload().getMensagem());
 				}
 			}
 
