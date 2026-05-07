@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroJogoDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.ParametroPartida;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.EscudoEquipeUtil;
 import br.gov.caixa.loterias.apostas.utils.Utils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
@@ -82,11 +83,10 @@ public class PartidaView extends LinearLayout {
                 parametroJogoDTO.getConcurso() != null &&
                 parametroJogoDTO.getConcurso().getAberto() != null &&
                 !parametroJogoDTO.getConcurso().getAberto()) {
-            ViewUtils.alertTitleButton(getContext(),
-                                       R.string.label_atencao ,
-                                       getResources().getString(R.string.msg_conc_nao_aberto).replace("{num_concurso}",
-                                                                                                      parametroJogoDTO.getConcurso().getNumero().toString()),
-                                       getResources().getString(R.string.title_entendi));
+            DialogUtils.dialogEntendi(
+                    getContext(),
+                    getResources().getString(R.string.msg_conc_nao_aberto).replace("{num_concurso}",
+                            parametroJogoDTO.getConcurso().getNumero().toString()));
             return false;
         } else {
             return true;

@@ -167,10 +167,9 @@ public class QueroNaoQueroActivity extends LoteriasBaseAppActivity {
         }
     }
     private void mostraDialogNumeroJaEscolhido(){
-        DialogUtils.showDialog1Botao(this, getString(R.string.label_atencao),
-                getString(R.string.alerta_numero_ja_escolhido_quero_nao_quero),
-                getString(R.string.ok),
-                () -> new Dialog(this).dismiss()
+        DialogUtils.dialogEntendi(
+                QueroNaoQueroActivity.this,
+                getString(R.string.alerta_numero_ja_escolhido_quero_nao_quero)
         );
     }
     private void fechar(){

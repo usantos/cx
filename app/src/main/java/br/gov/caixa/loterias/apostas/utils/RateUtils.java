@@ -2,12 +2,14 @@ package br.gov.caixa.loterias.apostas.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 
 import br.gov.caixa.loterias.apostas.BuildConfig;
 import br.gov.caixa.loterias.apostas.R;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
 
 public class RateUtils {
 
@@ -47,18 +49,39 @@ public class RateUtils {
 	}
 
 	private static Dialog getDialog(Activity activity){
-		return ViewUtils.alertTitleCustomPositiveListener(activity,
-														  activity.getString(R.string.aval_titulo),
-														  activity.getString(R.string.aval_negativo),
-														  activity.getString(R.string.aval_positivo),
-														  activity.getString(R.string.aval_desc),
-														  (dialogInterface, i) -> {
-															  setContAbriuAvaliacao(QTD_AVALIACOES_MAXIMAS + 1);
-															  redirecionaParaLoja(activity);
-														  });
+//		return ViewUtils.alertTitleCustomPositiveListener(activity,
+//														  activity.getString(R.string.aval_titulo),
+//														  activity.getString(R.string.aval_negativo),
+//														  activity.getString(R.string.aval_positivo),
+//														  activity.getString(R.string.aval_desc),
+//														  (dialogInterface, i) -> {
+//															  setContAbriuAvaliacao(QTD_AVALIACOES_MAXIMAS + 1);
+//															  redirecionaParaLoja(activity);
+//														  });
+
+		return DialogUtils.dialogRateUtils(
+				activity,
+				activity.getString(R.string.aval_titulo),
+				activity.getString(R.string.aval_desc),
+				activity.getString(R.string.aval_positivo),
+				activity.getString(R.string.aval_negativo),
+				new OnDialogDoisBotoesListener() {
+					@Override
+					public void PositiveButton(DialogInterface dialog, int which) {
+						setContAbriuAvaliacao(QTD_AVALIACOES_MAXIMAS + 1);
+						redirecionaParaLoja(activity);
+					}
+
+					@Override
+					public void NegativeButton(DialogInterface dialog, int which) {
+							//Não faz nada, apenas fecha o popup
+					}
+				}
+		);
 	}
 
 	private static void showDialog(){
+
 		new Handler().postDelayed(() -> dialogAvaliar.show(), 500);
 	}
 
