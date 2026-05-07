@@ -14,6 +14,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
 import br.gov.caixa.loterias.apostas.utils.AppUtils;
 import br.gov.caixa.loterias.apostas.utils.BuildConfigManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
 
@@ -63,7 +64,7 @@ public class AlterarDadosLoginCaixaActivity extends LoteriasBaseAppActivity {
             AppCenterManager.registraEvento(getResources().getString(R.string.event_alterar_dados_caixa));
         }else{
             loadViewProgresas.hide();
-            ViewUtils.alertTitulo(this, R.string.label_atencao, getResources().getString(R.string.seminternet));
+            DialogUtils.dialogEntendi(AlterarDadosLoginCaixaActivity.this, getResources().getString(R.string.seminternet));
         }
     }
 
