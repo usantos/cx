@@ -1,32 +1,65 @@
 package br.gov.caixa.loterias.apostas.utils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Build;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.ViewCompat;
 
 import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialog3ButtonsListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogDoisBotoesListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogFavoritarListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogInputIntTestListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogListenerLeftRight;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSegmentedControlListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogSituacaoCompraListener;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogTresBotoesListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogUmBotaoListener;
 import info.hoang8f.android.segmented.SegmentedGroup;
 
 public class DialogUtils {
+
+    private static AlertDialog dialogAtivo = null;
+
+    private static boolean isDialogAtivo() {
+        return dialogAtivo != null && dialogAtivo.isShowing();
+    }
+
+    private static void registrarDialogAtivo(AlertDialog dialog) {
+        dialogAtivo = dialog;
+        // Limpa a referência quando a dialog for fechada
+        dialog.setOnDismissListener(d -> dialogAtivo = null);
+    }
+
+    private static final String tituloPadrao = "Atenção";
+    private static final String btnEntendi = "Entendi";
+    private static final String btnFechar = "Fechar";
+    private static final String btnConfirmar = "Confirmar";
+    private static final String btnCancelar = "Cancelar";
+    private static final String btnSim = "Sim";
+    private static final String btnNao = "Não";
+
 
     public static void showDialogListaEscolha(Context context, String titulo, String subtitulo,
                                               List<String> list,
@@ -443,5 +476,561 @@ public class DialogUtils {
         });
 
         dialog.show();
+    }
+
+ // PADRONIZAÇÃO DAS DIALOGS
+
+    /*
+        DIALOG PADRÃO 1 - Constrói e exibe a dialog (mais de 90% dos casos).
+     */
+    private static void buildAndShowDialogPadrao(Context context, String titulo, String conteudo,
+                                           String labelBotaoPositivo, DialogInterface.OnClickListener onPositivoListener,
+                                           String labelBotaoNegativo, DialogInterface.OnClickListener onNegativoListener,
+                                           String labelBotaoNeutro, DialogInterface.OnClickListener onNeutroListener){
+
+        if (isContextInvalido(context)) {
+            return;
+        }
+
+
+        //Infla o layout da dialog
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.layout_dialog_padrao, null);
+
+        //Inicializa o Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogView);
+        builder.setCancelable(false); // Impede que a dialog seja fechada ao clicar fora dela
+
+        final AlertDialog dialog = builder.create();
+
+        //Configura os elementos da dialog
+        TextView tvTitulo = dialogView.findViewById(R.id.titulo_dialog_padrao);
+        TextView tvConteudo = dialogView.findViewById(R.id.conteudo_dialog_padrao);
+        LinearLayout layoutTresBotoes = dialogView.findViewById(R.id.layout_tres_botoes);
+        LinearLayout layoutBotoesPadrao = dialogView.findViewById(R.id.layout_botoes_padrao);
+
+        ViewCompat.setAccessibilityHeading(tvTitulo,true);
+        tvTitulo.setFocusableInTouchMode(true);
+        tvTitulo.requestFocus();
+
+        //Caso com dois botões
+        Button btnPositivo = dialogView.findViewById(R.id.button_positivo);
+        Button btnNegativo = dialogView.findViewById(R.id.button_negativo);
+
+        //Caso com três botões
+        Button btnTop = dialogView.findViewById(R.id.btn_top);
+        Button btnCenter = dialogView.findViewById(R.id.btn_center);
+        Button btnBottom = dialogView.findViewById(R.id.btn_bottom);
+
+        boolean isTresBotoes = labelBotaoNeutro !=null && !labelBotaoNeutro.isEmpty();
+        layoutBotoesPadrao.setVisibility(isTresBotoes ? View.GONE : View.VISIBLE);
+        layoutTresBotoes.setVisibility(isTresBotoes ? View.VISIBLE : View.GONE);
+
+        if(titulo != null && !titulo.isEmpty()){
+            tvTitulo.setText(titulo);
+            tvTitulo.setVisibility(View.VISIBLE);
+        } else {
+            tvTitulo.setVisibility(View.GONE);
+        }
+
+        tvConteudo.setText(conteudo != null ? conteudo : "");
+
+        if(isTresBotoes){
+            configuraBotao(btnTop, labelBotaoPositivo, onPositivoListener, dialog);
+            configuraBotao(btnCenter, labelBotaoNegativo, onNegativoListener, dialog);
+            configuraBotao(btnBottom, labelBotaoNeutro, onNeutroListener, dialog);
+        }else{
+            configuraBotao(btnPositivo, labelBotaoPositivo, onPositivoListener, dialog);
+            configuraBotao(btnNegativo, labelBotaoNegativo, onNegativoListener, dialog);
+        }
+
+        dialog.setOnShowListener(d -> {
+            tvTitulo.post(() -> {
+                tvTitulo.performAccessibilityAction(
+                        android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
+                        null
+                );
+            });
+        });
+
+        try {
+            if (!isContextInvalido(context)) {
+                dialog.show();
+            }
+        } catch (WindowManager.BadTokenException | IllegalStateException e) {
+            dialogAtivo = null;
+            return;
+        }
+
+        if(dialog.getWindow() != null){
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * 0.85); // Define a largura da dialog como 85% da largura da tela
+
+            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
+
+    }
+
+  /*
+        DIALOG PADRÃO 2 - layout e comportamento distinto - Constrói e exibe a dialog com ListView para escolha de itens, caso especial (teimosinha, qtd numeros, escolha de trevos, entre outros.)
+   */
+    public static void showDialogListItens(Context context,String titulo, String subtitulo,
+                                           List<String> list,
+                                           String labelBotaoPositivo, String labelBotaoNegativo,
+                                           OnDialogListener dialogListener){
+        if (isContextInvalido(context)) {
+            return;
+        }
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.layout_dialog_itens);
+
+        final ListView listViewItens = dialog.findViewById(R.id.lista_itens_dialog_itens);
+
+        TextView       tituloDialog  = dialog.findViewById(R.id.titulo_dialog_itens);
+        tituloDialog.setText(titulo);
+
+        if (subtitulo != null && !subtitulo.isEmpty()){
+            TextView txtSubtitulo = dialog.findViewById(R.id.subtitulo_dialog_itens);
+            txtSubtitulo.setText(subtitulo);
+            txtSubtitulo.setVisibility(View.VISIBLE);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+                R.layout.item_text_popup_itens, R.id.text_list_itens, list);
+
+        listViewItens.setAdapter(adapter);
+        listViewItens.setSelector(R.drawable.select_unselect_bg_popup_itens);
+
+        listViewItens.setOnItemClickListener((parent, view, position, id) -> {
+            dialogListener.itemSelecionado(position);
+        });
+
+        Button dialogButtonConfirmar       = dialog.findViewById(R.id.button_positivo_itens);
+        Button dialogButtonCancelar = dialog.findViewById(R.id.button_negativo_itens);
+
+        //Caso seja necessário Personalizar o texto dos botões "Confirmar" e "Cancelar" em cenários específicos,
+        // caso contrário, os textos padrão são "Confirmar" e "Cancelar", respectivamente.
+        if(labelBotaoPositivo != null && !labelBotaoPositivo.isEmpty()) {
+            dialogButtonConfirmar.setText(labelBotaoPositivo);
+        }
+        if(labelBotaoNegativo != null && !labelBotaoNegativo.isEmpty()) {
+            dialogButtonCancelar.setText(labelBotaoNegativo);
+        }
+
+        dialogButtonConfirmar.setOnClickListener(v -> {
+            dialogListener.ok();
+            dialog.dismiss();
+        });
+
+        dialogButtonCancelar.setOnClickListener(v -> {
+            dialogListener.cancelar();
+            dialog.dismiss();
+        });
+
+        dialog.show();
+
+        if(dialog.getWindow() != null){
+
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * 0.85); // Define a largura da dialog como 85% da largura da tela
+
+            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
+    }
+
+
+    /*
+     DIALOG PADRÃO 3 - Dialog Favoritar
+     */
+
+    public static Dialog buildDialogFavoritar(Context context, String titulo, OnDialogFavoritarListener listener, boolean manterSurpresinhas) {
+
+        if (isContextInvalido(context)) {
+            return null;
+        }
+
+        final Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.layout_dialog_favoritar);
+
+        TextView       tituloDialog  = dialog.findViewById(R.id.titulo_dialog_favoritar);
+        tituloDialog.setText(titulo);
+
+        EditText editTextFavoritar = dialog.findViewById(R.id.edit_dialog_favoritar);
+
+        LinearLayout layoutManterSurpresinhas = dialog.findViewById(R.id.layout_manter_surpresinhas);
+
+        Button btnConfirmar = dialog.findViewById(R.id.btn_positivo);
+        Button btnCancelar = dialog.findViewById(R.id.btn_negativo);
+
+        if(manterSurpresinhas){
+            layoutManterSurpresinhas.setVisibility(View.VISIBLE);
+        } else {
+            layoutManterSurpresinhas.setVisibility(View.GONE);
+        }
+
+        btnConfirmar.setOnClickListener(v -> {
+            String text = editTextFavoritar.getText().toString();
+            listener.Confirmar(text);
+            dialog.dismiss();
+        });
+
+        btnCancelar.setOnClickListener(v -> {
+            listener.Cancelar();
+            dialog.dismiss();
+        });
+
+        dialog.setOnDismissListener( dialogInterface -> {
+            editTextFavoritar.setText("");
+        });
+
+        if(dialog.getWindow() != null){
+
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * 0.65); // Define a largura da dialog como 85% da largura da tela
+
+            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
+
+        return dialog;
+    }
+
+
+//    private void setaDialogFavoritar() {
+//        dialogFavoritar = new Dialog(this);
+//        dialogFavoritar.setContentView(R.layout.custom_dialog_edit_text);
+//
+//        TextView tituloDialog = dialogFavoritar.findViewById(R.id.tv_titulo);
+//        tituloDialog.setText("Carrinho Favorito");
+//
+//        etCarrinho = dialogFavoritar.findViewById(R.id.et_carrinho);
+//
+//        Button btnOk = dialogFavoritar.findViewById(R.id.btn_ok);
+//        Button btnCancelar = dialogFavoritar.findViewById(R.id.btn_cancelar);
+//
+//        btnOk.setOnClickListener(v -> {
+//            String text = etCarrinho.getText().toString();
+//            if (text != null && !text.isEmpty()) {
+//                validarCarrinhoFavorito(text);
+//            }
+//        });
+//        dialogFavoritar.setOnDismissListener(dialogInterface -> {
+//            etCarrinho.setText("");
+//        });
+//        btnCancelar.setOnClickListener(v -> dialogFavoritar.dismiss());
+//    }
+
+    /*
+        MÉTODO AUXILIAR - Configuração dos botões
+     */
+    private static void configuraBotao(Button button, String label, final DialogInterface.OnClickListener listener, AlertDialog dialog){
+        if(label != null && !label.isEmpty()){
+            button.setText(label);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(v -> {
+                if(listener != null){
+                    listener.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+                }
+                dialog.dismiss();
+            });
+        } else {
+            button.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /*
+         MÉTODO AUXILIAR: Constrói e exibe a dialog para os cenários com apenas ação em um botão.
+    */
+    private static void buildAndShowDialogUmBotao(Context context, String titulo, String conteudo,
+                                                  String labelBotaoPositivo,
+                                                  OnDialogBotaoListener listener) {
+        buildAndShowDialogPadrao(context, titulo, conteudo,
+                labelBotaoPositivo, listener::onButtonClick,
+                null, null, null, null);
+    }
+
+
+
+    /*
+        MÉTODO AUXILIAR: Constrói e exibe a dialog para os cenários com ações (positivo e negativo) em dois botões.
+     */
+    private static void buildAndShowDialogDoisBotoes(Context context, String titulo, String conteudo,
+                                                 String labelBotaoPositivo,
+                                                 String labelBotaoNegativo,
+                                                 OnDialogDoisBotoesListener listener) {
+        buildAndShowDialogPadrao(context, titulo, conteudo,
+                labelBotaoPositivo, listener::PositiveButton,
+                labelBotaoNegativo, listener::NegativeButton, null, null);
+    }
+
+    /*
+        MÉTODO AUXILIAR: Constrói e exibe a dialog para os cenários com ações (positivo, negativo e neutro) nos três botões.
+     */
+    private static void buildAndShowDialogTresBotoes(Context context, String titulo, String conteudo,
+                                                     String labelBotaoTop,
+                                                     String labelBotaoCenter,
+                                                     String labelBotaoBottom,
+                                                     OnDialogTresBotoesListener listener) {
+        buildAndShowDialogPadrao(context, titulo, conteudo,
+                labelBotaoTop, listener::TopButton,
+                labelBotaoCenter, listener::CenterButton,
+                labelBotaoBottom, listener::BottomButton);
+    }
+
+    /*
+        Prevenção de Context inválido (Activity finalizada ou destruída) para evitar crashes ao tentar exibir a dialog.
+    */
+    private static boolean isContextInvalido(Context context) {
+        if (context == null) {
+            return true;
+        }
+
+        if (context instanceof Activity) {
+            Activity activity = (Activity) context;
+
+            if (activity.isFinishing()) {
+                return true;
+            }
+
+            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                    && activity.isDestroyed();
+        }
+
+        return false;
+    }
+
+    /*
+    Nome dos métodos, com aplicação direta, em cada cenário abaixo segue o seguinte padrão:
+    - alert +:
+        - Titulo (se tiver titulo customizado, em caso contrário, o título padrão é "Atenção")
+        - Confirmar/Sim (se tiver ação no botão positivo)
+        - Cancelar/Nao (se tiver ação no botão negativo)
+        - TresBotoes (três botões com ações)
+
+     */
+
+    /*
+    CENÁRIO 1: Com titulo "Atenção" e um botao Entendi (Sem ação personalizada, apenas fecha a dialog)
+     */
+    public static void dialogEntendi(Context context, String conteudo){
+        buildAndShowDialogPadrao(context, tituloPadrao, conteudo, btnEntendi, null, null, null, null, null);
+    }
+
+    /*
+    CENÁRIO 2: Com titulo "Atenção" e um botao Entendi (com ação personalizada no botão "Entendi")
+     */
+    public static void dialogEntendiListener(Context context, String conteudo, OnDialogBotaoListener onEntendiListener){
+        buildAndShowDialogUmBotao(context, tituloPadrao, conteudo, btnEntendi, onEntendiListener);
+    }
+
+    /*
+    CENÁRIO 3: Com titulo customizado e um botao Entendi (com ação personalizada no botão "Entendi")
+     */
+    public static void dialogTituloEntendiListener(Context context, String titulo, String conteudo, OnDialogBotaoListener listener) {
+         buildAndShowDialogUmBotao(context, titulo, conteudo, btnEntendi, listener);
+    }
+
+    /*
+    CENÁRIO 4: Com titulo "Atenção" e um botao customizado (com ação personalizada no botão)
+     */
+    public static void dialogLabelUmBotaoListener(Context context, String conteudo, String labelBotao, OnDialogBotaoListener listener) {
+         buildAndShowDialogUmBotao(context, tituloPadrao, conteudo, labelBotao, listener);
+    }
+
+    /*
+    CENÁRIO 5: Com titulo "Atenção" e um botao "Fechar" (com ação personalizada no botão "Fechar")
+     */
+    public static void dialogFecharListener(Context context, String conteudo, OnDialogBotaoListener listener) {
+         buildAndShowDialogUmBotao(context, tituloPadrao, conteudo, btnFechar, listener);
+    }
+    /*
+    CENÁRIO 6: Com titulo personalizado e um botao "Entendi" (Sem ação personalizada, apenas fecha a dialog)
+    */
+    public static void dialogTituloEntendi(Context context, String titulo, String conteudo){
+         buildAndShowDialogPadrao(context, titulo, conteudo, btnEntendi, null, null, null, null, null);
+    }
+    /*
+    CENÁRIO 7: Com titulo "Atenção" e dois botões, um "Confirmar" e outro "Cancelar" (Ação personalizada somente no botão "Confirmar", o "Cancelar" fecha a dialog sem ação adicional):
+    */
+    public static void dialogConfirmar(Context context, String conteudo, OnDialogBotaoListener onPositivoListener){
+         buildAndShowDialogPadrao(context, tituloPadrao, conteudo, btnConfirmar, onPositivoListener::onButtonClick, btnCancelar, null, null, null);
+    }
+    /*
+    CENÁRIO 8: Com titulo "Atenção" e dois botões, um "Confirmar" e outro "Cancelar" (com ações personalizadas em ambos os botões):
+     */
+    public static void dialogConfirmarCancelar(Context context, String conteudo, OnDialogDoisBotoesListener listener) {
+         buildAndShowDialogDoisBotoes(context, tituloPadrao, conteudo, btnConfirmar, btnCancelar, listener);
+    }
+    /*
+    CENÁRIO 9: Com titulo personalizado e dois botões, um "Confirmar" e outro "Cancelar" (Ação personalizada somente no botão "Confirmar", o "Cancelar" fecha a dialog sem ação adicional):
+    */
+    public static void dialogTituloConfirmar(Context context, String titulo, String conteudo, OnDialogBotaoListener onPositivoListener){
+         buildAndShowDialogPadrao(context, titulo, conteudo, btnConfirmar, onPositivoListener::onButtonClick, btnCancelar, null, null, null);
+    }
+    /*
+    CENÁRIO 10: Com titulo personalizado e dois botões, um "Confirmar" e outro "Cancelar" (com ações personalizadas em ambos os botões):
+     */
+    public static void dialogTituloConfirmarCancelar(Context context, String titulo, String conteudo, OnDialogDoisBotoesListener listener) {
+         buildAndShowDialogDoisBotoes(context, titulo, conteudo, btnConfirmar, btnCancelar, listener);
+    }
+    /*
+    CENÁRIO 11: Com titulo "Atenção" e dois botões, um "Sim" e outro "Não" (Ação personalizada somente no botão "Sim", o "Não" fecha a dialog sem ação adicional):
+    */
+    public static void dialogSim(Context context, String conteudo, OnDialogBotaoListener onPositivoListener){
+         buildAndShowDialogPadrao(context, tituloPadrao, conteudo, btnSim, onPositivoListener::onButtonClick, btnNao, null, null, null);
+    }
+    /*
+    CENÁRIO 12: Com titulo "Atenção" e dois botões, um "Sim" e outro "Não" (com ações personalizadas em ambos os botões):
+     */
+    public static void dialogSimNao(Context context, String conteudo, OnDialogDoisBotoesListener listener) {
+         buildAndShowDialogDoisBotoes(context, tituloPadrao, conteudo, btnSim, btnNao, listener);
+    }
+    /*
+    CENÁRIO 13: Com titulo personalizado e dois botões, um "Sim" e outro "Não" (Ação personalizada somente no botão "Sim", o "Não" fecha a dialog sem ação adicional):
+    */
+    public static void dialogTituloSim(Context context, String titulo, String conteudo, OnDialogBotaoListener onPositivoListener){
+         buildAndShowDialogPadrao(context, titulo, conteudo, btnSim, onPositivoListener::onButtonClick, btnNao, null, null, null);
+    }
+    /*
+    CENÁRIO 14: Com titulo personalizado e dois botões, um "Sim" e outro "Não" (com ações personalizadas em ambos os botões):
+     */
+    public static void dialogTituloSimNao(Context context, String titulo, String conteudo, OnDialogDoisBotoesListener listener) {
+         buildAndShowDialogDoisBotoes(context, titulo, conteudo, btnSim, btnNao, listener);
+    }
+
+    /*
+    CENÁRIO 15: Com titulo personalizado e dois botões, com labels personalizados e ações personalizadas em ambos os botões:
+    */
+    public static void dialogDoisBotoesPersonalizados(Context context, String titulo, String conteudo,String labelBtnPositivo, String labelBtnNegativo, OnDialogDoisBotoesListener listener) {
+        buildAndShowDialogDoisBotoes(context, titulo, conteudo, labelBtnPositivo, labelBtnNegativo, listener);
+    }
+
+    /*
+    CENÁRIO 16: Com titulo personalizado e três botões, com labels personalizados e ações personalizadas em todos os botões:
+     */
+    public static void dialogTresBotoes(Context context, String titulo, String conteudo,
+                                       String labelTopBtn, String labelCenterBtn, String labelBottomBtn,
+                                       OnDialogTresBotoesListener listener) {
+         buildAndShowDialogTresBotoes(context, titulo, conteudo,
+                labelTopBtn,
+                labelCenterBtn,
+                labelBottomBtn, listener);
+    }
+
+
+    /*
+      CENÁRIOS ESPECÍFICOS QUE FOGEM DO PADRÃO ---------------------------------------------------------------------------------------
+    */
+
+    /*
+       Constrói e exibe a dialog com comportamento específico a cada caso.
+     */
+    private static Dialog buildAndShowDialogReturn(Context context, String titulo, String conteudo,
+                                                   String labelBotaoPositivo, DialogInterface.OnClickListener onPositivoListener,
+                                                   String labelBotaoNegativo, DialogInterface.OnClickListener onNegativoListener,
+                                                   String labelBotaoNeutro, DialogInterface.OnClickListener onNeutroListener){
+
+        if (isContextInvalido(context)) {
+            return null;
+        }
+
+        if (isDialogAtivo()) return null;
+
+        //Infla o layout da dialog
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.layout_dialog_padrao, null);
+
+        //Inicializa o Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogView);
+        builder.setCancelable(false); // Impede que a dialog seja fechada ao clicar fora dela
+
+        final AlertDialog dialog = builder.create();
+
+        //Configura os elementos da dialog
+        TextView tvTitulo = dialogView.findViewById(R.id.titulo_dialog_padrao);
+        TextView tvConteudo = dialogView.findViewById(R.id.conteudo_dialog_padrao);
+        LinearLayout layoutTresBotoes = dialogView.findViewById(R.id.layout_tres_botoes);
+        LinearLayout layoutBotoesPadrao = dialogView.findViewById(R.id.layout_botoes_padrao);
+
+        ViewCompat.setAccessibilityHeading(tvTitulo,true);
+        tvTitulo.setFocusableInTouchMode(true);
+        tvTitulo.requestFocus();
+
+        //Caso com dois botões
+        Button btnPositivo = dialogView.findViewById(R.id.button_positivo);
+        Button btnNegativo = dialogView.findViewById(R.id.button_negativo);
+
+        //Caso com três botões
+        Button btnTop = dialogView.findViewById(R.id.btn_top);
+        Button btnCenter = dialogView.findViewById(R.id.btn_center);
+        Button btnBottom = dialogView.findViewById(R.id.btn_bottom);
+
+        boolean isTresBotoes = labelBotaoNeutro !=null && !labelBotaoNeutro.isEmpty();
+        layoutBotoesPadrao.setVisibility(isTresBotoes ? View.GONE : View.VISIBLE);
+        layoutTresBotoes.setVisibility(isTresBotoes ? View.VISIBLE : View.GONE);
+
+        if(titulo != null && !titulo.isEmpty()){
+            tvTitulo.setText(titulo);
+            tvTitulo.setVisibility(View.VISIBLE);
+        } else {
+            tvTitulo.setVisibility(View.GONE);
+        }
+
+        tvConteudo.setText(conteudo != null ? conteudo : "");
+
+        if(isTresBotoes){
+            configuraBotao(btnTop, labelBotaoPositivo, onPositivoListener, dialog);
+            configuraBotao(btnCenter, labelBotaoNegativo, onNegativoListener, dialog);
+            configuraBotao(btnBottom, labelBotaoNeutro, onNeutroListener, dialog);
+        }else{
+            configuraBotao(btnPositivo, labelBotaoPositivo, onPositivoListener, dialog);
+            configuraBotao(btnNegativo, labelBotaoNegativo, onNegativoListener, dialog);
+        }
+
+        dialog.setOnShowListener(d -> {
+            tvTitulo.post(() -> {
+                tvTitulo.performAccessibilityAction(
+                        android.view.accessibility.AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
+                        null
+                );
+            });
+        });
+
+        // Registra como ativa ANTES de show() para evitar race condition.
+        // O OnDismissListener interno limpa dialogAtivo quando o chamador fechar via dismiss().
+        // ATENÇÃO: não defina outro setOnDismissListener externamente — será sobrescrito.
+        dialogAtivo = dialog;
+        dialog.setOnDismissListener(d -> dialogAtivo = null);
+
+        if(dialog.getWindow() != null){
+
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * 0.85); // Define a largura da dialog como 85% da largura da tela
+
+            dialog.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
+        return dialog;
+    }
+
+    public static Dialog dialogTituloDoisBotoesReturn(Context context, String titulo, String conteudo,String labelBtnPositivo, String labelBtnNegativo, OnDialogDoisBotoesListener listener) {
+        return buildAndShowDialogReturn(context, titulo, conteudo,
+                labelBtnPositivo, listener::PositiveButton,
+                labelBtnNegativo, listener::NegativeButton, null, null);
+    }
+
+    public static Dialog dialogRateUtils(Context context, String titulo, String conteudo,String labelBtnPositivo, String labelBtnNegativo, OnDialogDoisBotoesListener listener) {
+        return buildAndShowDialogReturn(context, titulo, conteudo,
+                labelBtnPositivo, listener::PositiveButton,
+                labelBtnNegativo, listener::NegativeButton, null, null);
     }
 }
