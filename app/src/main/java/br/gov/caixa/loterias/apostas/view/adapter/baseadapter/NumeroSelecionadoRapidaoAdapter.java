@@ -20,6 +20,7 @@ import java.util.List;
 
 import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bean.NumerosSelecionadosRapidao;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 
 
@@ -109,7 +110,7 @@ public class NumeroSelecionadoRapidaoAdapter extends BaseAdapter {
         convertView.setOnClickListener(v -> {
             for(Integer item : listaNumerosContrariosRapidao){
                 if (item == numerosSelecionadosRapidao[position].getNumero()){
-                    ViewUtils.alert(mContext, mContext.getString(R.string.MA016));
+                    DialogUtils.dialogEntendi(mContext, mContext.getString(R.string.MA016));
                     return;
                 }
             }
