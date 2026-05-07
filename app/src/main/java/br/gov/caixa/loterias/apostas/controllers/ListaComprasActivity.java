@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.apostas.controllers;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +48,7 @@ import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraDTO;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.SituacoesCompraResponse;
 import br.gov.caixa.loterias.apostas.utils.AlertDialogUtils;
 import br.gov.caixa.loterias.apostas.utils.AppCenterManager;
+import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.ExpandableListDataFiltro;
 import br.gov.caixa.loterias.apostas.utils.ServicoFactoryUtil;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
@@ -54,6 +56,7 @@ import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.adapter.baseadapter.FiltroComprasAdapter;
 import br.gov.caixa.loterias.apostas.view.adapter.recyclerview.ListaComprasRecyclerViewAdapter;
 import br.gov.caixa.loterias.apostas.view.custom.LoadingViewLoterias;
+import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnFavoritarClickListener;
 
 public class ListaComprasActivity extends LoteriasBaseAppActivity {
@@ -447,10 +450,15 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 AlertDialogUtils.dismiss();
-                ViewUtils.alertTitleButtonYesOrNotListener(
+               DialogUtils.dialogSim(
                         ListaComprasActivity.this,
                         MensagensNetwork.getErrorMessage(error),
-                        (dialogInterface, i) ->  favoritarCarrinho(nome,idFavorito)
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                favoritarCarrinho(nome,idFavorito);
+                            }
+                        }
                 );
             }
         });
