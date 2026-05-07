@@ -179,7 +179,7 @@ public class EstiloModalidadeMKP {
                 corClara = R.color.loteca_claro_mkp;
                 corEscura = R.color.loteca_escuro_mkp;
                 trapezio = R.drawable.background_trapeze_loteca_mkp;
-                trapezioEspecial = -1;
+                trapezioEspecial = R.drawable.loteca_copa_trapezio;
                 fundoEspecial = -1;
                 shapeBtnDetalhes = R.drawable.btn_rounded_loteca_outlined;
                 imagemTriangulo = R.drawable.ic_tag_bolao_loteca;
@@ -187,7 +187,7 @@ public class EstiloModalidadeMKP {
                 imagemEspecialCarrossel = R.drawable.loteca_copa;
                 imagemEspecialSimples = R.drawable.loteca_copa_simples;
                 imagemEspecialDupla = R.drawable.loteca_copa_dupla;
-                imagemEspecialQuadrada = -1;
+                imagemEspecialQuadrada = R.drawable.loteca_copa_quadrado;
                 imagemEspecialDetalhes = R.drawable.loteca_copa_simples;
                 corLetraLista = R.color.loteca_claro_mkp;
                 corFonteFundoClaro = R.color.branco;
