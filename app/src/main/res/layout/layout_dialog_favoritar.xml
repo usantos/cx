@@ -28,11 +28,14 @@
     <EditText
         android:id="@+id/edit_dialog_favoritar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:textAlignment="textStart"
         android:textColor="@color/cinza110"
+        android:hint="@string/nome_do_carrinho_favorito"
         android:textSize="16sp"
+        android:inputType="text"
+        android:autofillHints="name"
         android:fontFamily="@font/caixa_std_regular"/>
 
     <LinearLayout
@@ -50,7 +53,7 @@
             android:layout_height="wrap_content"
             android:buttonTint="@color/blue_caixa"
             android:layout_marginTop="10dp"
-            android:checked="true"
+            android:checked="false"
             android:fontFamily="@font/caixa_std_regular"
             />
         <TextView
@@ -82,7 +85,7 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             android:textAllCaps="false"
-            tools:text="Cancelar"
+            android:text="@string/cancelar"
             android:fontFamily="@font/caixa_std_regular"
             android:textColor="@color/cinza110"
             android:textSize="16sp"
@@ -96,7 +99,7 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             android:textAllCaps="false"
-            tools:text="Confirmar"
+            android:text="@string/confirmar"
             android:textSize="16sp"
             android:fontFamily="@font/caixa_std_semi_bold"
             android:textColor="@color/blue_caixa"

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -432,6 +433,16 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
             dialogFavoritar.findViewById(R.id.ck_manter_surpresinhas).setVisibility(View.GONE);
             dialogFavoritar.findViewById(R.id.tv_manter_surpresinhas).setVisibility(View.GONE);
         });
+
+        if(dialogFavoritar.getWindow() != null){
+
+            int screenWidth = getResources().getDisplayMetrics().widthPixels;
+            int dialogWidth = (int) (screenWidth * 0.85); // Define a largura da dialog como 85% da largura da tela
+
+            dialogFavoritar.getWindow().setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialogFavoritar.getWindow().setBackgroundDrawableResource(R.drawable.rounded_dialog_background);
+
+        }
     }
 
     private void validarCarrinhoFavorito(String nome, Long idFavorito){
@@ -473,11 +484,15 @@ public class ListaComprasActivity extends LoteriasBaseAppActivity {
                 if (result.getRedirect() != null) {
                     RedirectNetwork.checkRedirectSucesso( result.getRedirect(), ListaComprasActivity.this);
                 }
-                ViewUtils.alertTitleButton(ListaComprasActivity.this,
-                        R.string.label_atencao, getString(R.string.carrinho_fav_lbl_msg),
-                        getString(R.string.ok), dialogInterface -> {
-                            dialogFavoritar.dismiss();
-                            startActivity(new Intent(ListaComprasActivity.this, CarrinhosFavoritosActivity.class));
+                DialogUtils.dialogEntendiListener(
+                        ListaComprasActivity.this,
+                        getString(R.string.carrinho_fav_lbl_msg),
+                        new OnDialogBotaoListener() {
+                            @Override
+                            public void onButtonClick(DialogInterface dialog, int which) {
+                                dialogFavoritar.dismiss();
+                                startActivity(new Intent(ListaComprasActivity.this, CarrinhosFavoritosActivity.class));
+                            }
                         }
                 );
             }
