@@ -11,8 +11,12 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 
@@ -93,6 +97,8 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
 
     //fragments
     private SomadorCarrinhoFragment somadorCarrinhoFragment;
+    private TextView titleToolbar;
+    private ImageButton customButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,11 +254,22 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         btnFavoritar = findViewById(R.id.ib_favoritar);
         vLoading = findViewById(R.id.pb_loading);
         svCarrinho = findViewById(R.id.sv_carrinho);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(ViewUtils.textCaixaSTDBoldTitle(this, "_Carrinho de apostas_"));
+        configurarToolbar();
         setaDialogFavoritar();
+    }
+
+    private void configurarToolbar(){
+        titleToolbar = findViewById(R.id.textCustom);
+        titleToolbar.setText(R.string.carrinho_nde_apostas);
+        ViewCompat.setAccessibilityHeading(titleToolbar,true);
+        customButton = findViewById(R.id.customButton);
+        customButton.setContentDescription(getString(R.string.voltar));
+        customButton.setOnClickListener(v -> onBackPressed());
+        customButton.setFocusable(true);
+        customButton.setFocusableInTouchMode(true);
+        customButton.requestFocus();
+        btnLimpar.setContentDescription(getString(R.string.excluir));
+        btnFavoritar.setContentDescription(getString(R.string.favoritar_carrinho));
     }
 
     private void setaMetodos() {
@@ -272,6 +289,7 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         rvListaApostas.setAdapter(new CarrinhoApostasListViewAdapter(this, (ArrayList<IdentificaoDeUmaApostaDas8Modalidades>) listApostas, this, true, model, false));
         rvListaApostas.setExpanded(Boolean.TRUE);
         rvListaApostas.setItemViewCacheSize(PAGE_SIZE);
+        configuraSwipe(rvListaApostas);
 
         layoutManagerCombos = new LinearLayoutManager(this);
         rvListaCombos.setLayoutManager(layoutManagerCombos);
@@ -912,5 +930,39 @@ public class CarrinhoActivity extends LoteriasBaseAppActivity {
         //Toast.makeText(this, getString(R.string.cotas_expiradas_excluidas_carrinho),
         //        Toast.LENGTH_SHORT).show();
         MessagingUtils.criaNotificacaoNova(this, "", this.getString(R.string.cotas_expiradas_excluidas_carrinho));
+    }
+
+
+    public void configuraSwipe(RecyclerView recyclerView){
+        ItemTouchHelper.SimpleCallback callback =
+                new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+                    @Override
+                    public boolean onMove(
+                            RecyclerView recyclerView,
+                            RecyclerView.ViewHolder viewHolder,
+                            RecyclerView.ViewHolder target) {
+                        return false;
+                    }
+
+                    @Override
+                    public int getSwipeDirs(
+                            @NonNull RecyclerView recyclerView,
+                            @NonNull RecyclerView.ViewHolder viewHolder) {
+
+                        // bloqueia swipe do usuário ✅
+                        return 0;
+                    }
+
+                    @Override
+                    public void onSwiped(
+                            @NonNull RecyclerView.ViewHolder viewHolder,
+                            int direction) {
+                        // nunca chamado
+                    }
+                };
+
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(recyclerView);
     }
 }

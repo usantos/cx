@@ -241,9 +241,6 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		model = new SimularApostaModel(getActivity());
 		cartelaModel = new CartelaModel();
 		partidasSelecionadas = new HashSet<>();
-		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)){
-			configuraBotoesLotecaOuLotogol();
-		}
 
 	}
 
@@ -252,6 +249,12 @@ public class CartelaFragment extends Fragment implements OnClickListener, Locate
 		super.onStart();
 
 		loadParametroJogo();
+
+		if(parentActivity != null && parametroJogo != null){
+			if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTECA) || parametroJogo.isTipoJogo(ModalidadeEnum.LOTOGOL)){
+				configuraBotoesLotecaOuLotogol();
+			}
+		}
 
 		if (parametroJogo.isTipoJogo(ModalidadeEnum.LOTOMANIA)) {
 			opcaoOutrosNumerosLayout = view.findViewById(R.id.opcaoOutrosNumerosLayout);

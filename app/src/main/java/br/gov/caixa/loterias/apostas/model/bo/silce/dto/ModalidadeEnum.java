@@ -211,6 +211,8 @@ public enum ModalidadeEnum implements Serializable {
                 return "Mega da Virada";
             case DUPLA_SENA:
                 return "Dupla de Páscoa";
+            case LOTECA:
+                return "Copa da Loteca";
         }
         return "";
     }
@@ -225,6 +227,8 @@ public enum ModalidadeEnum implements Serializable {
                 return "Mega da \nVirada";
             case DUPLA_SENA:
                 return "Dupla de \nPáscoa";
+            case LOTECA:
+                return "Copa da \nLoteca";
         }
         return "";
     }
